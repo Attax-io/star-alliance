@@ -1,0 +1,1545 @@
+Split: 12 train, 8 test (holdout=0.4)
+
+============================================================
+Iteration 1/5
+Description: Multi-wave deep audit campaign for large codebases — typically used to reconcile out-of-date documentation with reality, audit a project before a major release, or systematically map an unfamiliar large system. Use this skill whenever the user mentions a deep audit, doc-sync, reconcile docs with code, campaign, deep dive on the whole app, or expresses any of these symptoms — docs citing contradictory counts of the same thing, headline numbers that feel stale, a graphify/dependency-graph run revealing structural drift, or the project being too big to walk in one pass. Also use it when the user wants to coordinate many parallel subagents on a multi-task investigation with a synthesis at the end. The skill structures the work into 4 waves (foundation reality, deep structural, domain depth, synthesis and doc rewrite), assigns Claude models per task complexity, makes every subagent emit a numbered findings file, then drives a master synthesis and staged doc rewrites with a clear promotion gate.
+============================================================
+Train: 18/36 correct, precision=100% recall=0% accuracy=50% (81.4s)
+  [FAIL] rate=0/3 expected=True: before our pre-IPO audit we need a full systems-level realit
+  [FAIL] rate=0/3 expected=True: spin up a multi-wave audit on the current dir. assign opus w
+  [FAIL] rate=0/3 expected=True: I inherited this codebase from a contractor and the docs are
+  [FAIL] rate=0/3 expected=True: i need a structured deep dive of the whole monorepo with sub
+  [FAIL] rate=0/3 expected=True: ok our docs are a mess. BACKEND.md says we have 101 tables i
+  [FAIL] rate=0/3 expected=True: i just ran graphify on lex_council/apps and it found 1542 we
+  [PASS] rate=0/3 expected=False: our rule C6 in the guidelines says types should be named wit
+  [PASS] rate=0/3 expected=False: explain how the file_class hierarchy works in this app. just
+  [PASS] rate=0/3 expected=False: this one file `app/[locale]/(admin)/admin/files/page.tsx` is
+  [PASS] rate=0/3 expected=False: review the PR i just opened. it touches 4 files in apps/web/
+  [PASS] rate=0/3 expected=False: the audit log table got hit with 50M rows last month and que
+  [PASS] rate=0/3 expected=False: we got a security advisory from supabase saying 4 of our RLS
+Test : 12/24 correct, precision=100% recall=0% accuracy=50% (0.0s)
+  [FAIL] rate=0/3 expected=True: the supabase pooler is timing out on every execute_sql call 
+  [FAIL] rate=0/3 expected=True: doc sync time. give me a campaign with parallel subagents co
+  [FAIL] rate=0/3 expected=True: we're cutting v1.7.0 next week. before we ship i want a full
+  [FAIL] rate=0/3 expected=True: got 3 hours before standup. let's reconcile FRONTEND.md and 
+  [PASS] rate=0/3 expected=False: we have a lot of tech debt items piling up in linear. help m
+  [PASS] rate=0/3 expected=False: create an ADR for choosing between trpc and rest for our new
+  [PASS] rate=0/3 expected=False: we need docs for the new attendance upload feature. it goes 
+  [PASS] rate=0/3 expected=False: i want to refactor the transactions table — split it into tr
+
+Improving description...
+Proposed (12.8s): Use this skill when the user wants a large-scale audit, deep dive, or systematic reconciliation across an entire codebase, app, or monorepo — especially work too big to do in one pass and that benefits from multiple parallel subagents plus a final synthesis. Trigger on requests like: reconcile docs with code, doc-sync, pre-release/pre-IPO readiness check, systems-level reality check, "the docs are stale/contradictory", inherited codebase mapping, ghost references to functions/tables that don't exist, conflicting counts of the same thing across docs, follow-up to a graphify or dependency-graph run revealing drift or god-objects, or any ask to "spin up a multi-wave audit", coordinate many agents in parallel with a synthesis at the end, or assign opus/sonnet across audit tasks and log findings to numbered files for later doc promotion. Skip for single-file reviews, one-rule checks, single-PR reviews, or targeted bug/perf/security fixes scoped to a small surface — those are lighter-weight tasks, not campaigns.
+
+============================================================
+Iteration 2/5
+Description: Use this skill when the user wants a large-scale audit, deep dive, or systematic reconciliation across an entire codebase, app, or monorepo — especially work too big to do in one pass and that benefits from multiple parallel subagents plus a final synthesis. Trigger on requests like: reconcile docs with code, doc-sync, pre-release/pre-IPO readiness check, systems-level reality check, "the docs are stale/contradictory", inherited codebase mapping, ghost references to functions/tables that don't exist, conflicting counts of the same thing across docs, follow-up to a graphify or dependency-graph run revealing drift or god-objects, or any ask to "spin up a multi-wave audit", coordinate many agents in parallel with a synthesis at the end, or assign opus/sonnet across audit tasks and log findings to numbered files for later doc promotion. Skip for single-file reviews, one-rule checks, single-PR reviews, or targeted bug/perf/security fixes scoped to a small surface — those are lighter-weight tasks, not campaigns.
+============================================================
+Train: 18/36 correct, precision=100% recall=0% accuracy=50% (87.7s)
+  [FAIL] rate=0/3 expected=True: i need a structured deep dive of the whole monorepo with sub
+  [FAIL] rate=0/3 expected=True: before our pre-IPO audit we need a full systems-level realit
+  [FAIL] rate=0/3 expected=True: I inherited this codebase from a contractor and the docs are
+  [FAIL] rate=0/3 expected=True: spin up a multi-wave audit on the current dir. assign opus w
+  [FAIL] rate=0/3 expected=True: ok our docs are a mess. BACKEND.md says we have 101 tables i
+  [FAIL] rate=0/3 expected=True: i just ran graphify on lex_council/apps and it found 1542 we
+  [PASS] rate=0/3 expected=False: our rule C6 in the guidelines says types should be named wit
+  [PASS] rate=0/3 expected=False: explain how the file_class hierarchy works in this app. just
+  [PASS] rate=0/3 expected=False: this one file `app/[locale]/(admin)/admin/files/page.tsx` is
+  [PASS] rate=0/3 expected=False: the audit log table got hit with 50M rows last month and que
+  [PASS] rate=0/3 expected=False: review the PR i just opened. it touches 4 files in apps/web/
+  [PASS] rate=0/3 expected=False: we got a security advisory from supabase saying 4 of our RLS
+Test : 12/24 correct, precision=100% recall=0% accuracy=50% (0.0s)
+  [FAIL] rate=0/3 expected=True: the supabase pooler is timing out on every execute_sql call 
+  [FAIL] rate=0/3 expected=True: doc sync time. give me a campaign with parallel subagents co
+  [FAIL] rate=0/3 expected=True: we're cutting v1.7.0 next week. before we ship i want a full
+  [FAIL] rate=0/3 expected=True: got 3 hours before standup. let's reconcile FRONTEND.md and 
+  [PASS] rate=0/3 expected=False: create an ADR for choosing between trpc and rest for our new
+  [PASS] rate=0/3 expected=False: we have a lot of tech debt items piling up in linear. help m
+  [PASS] rate=0/3 expected=False: we need docs for the new attendance upload feature. it goes 
+  [PASS] rate=0/3 expected=False: i want to refactor the transactions table — split it into tr
+
+Improving description...
+Proposed (19.7s): Use this skill when the user asks for a deep audit, deep dive, doc-sync, doc reconciliation, multi-wave audit, systems-level reality check, pre-release/pre-IPO readiness review, or systematic mapping of an inherited or unfamiliar codebase. Use it when docs are stale, contradictory, or cite different counts of the same thing; when there are ghost references to functions/tables/modules that don't exist; when a graphify or dependency-graph run surfaces drift, weakly-connected nodes, or god-object candidates needing verification; or when the user wants to coordinate many parallel subagents across a codebase/monorepo and end with a single synthesis plus concrete doc updates. Also use it when the user mentions assigning opus/sonnet across audit tasks, logging findings to numbered files, or staging doc rewrites before promotion. Skip for single-file reviews, single-PR reviews, one-rule pattern checks, or targeted bug/perf/security fixes — those are lighter tasks, not campaigns.
+
+============================================================
+Iteration 3/5
+Description: Use this skill when the user asks for a deep audit, deep dive, doc-sync, doc reconciliation, multi-wave audit, systems-level reality check, pre-release/pre-IPO readiness review, or systematic mapping of an inherited or unfamiliar codebase. Use it when docs are stale, contradictory, or cite different counts of the same thing; when there are ghost references to functions/tables/modules that don't exist; when a graphify or dependency-graph run surfaces drift, weakly-connected nodes, or god-object candidates needing verification; or when the user wants to coordinate many parallel subagents across a codebase/monorepo and end with a single synthesis plus concrete doc updates. Also use it when the user mentions assigning opus/sonnet across audit tasks, logging findings to numbered files, or staging doc rewrites before promotion. Skip for single-file reviews, single-PR reviews, one-rule pattern checks, or targeted bug/perf/security fixes — those are lighter tasks, not campaigns.
+============================================================
+Train: 18/36 correct, precision=100% recall=0% accuracy=50% (74.8s)
+  [FAIL] rate=0/3 expected=True: before our pre-IPO audit we need a full systems-level realit
+  [FAIL] rate=0/3 expected=True: spin up a multi-wave audit on the current dir. assign opus w
+  [FAIL] rate=0/3 expected=True: i need a structured deep dive of the whole monorepo with sub
+  [FAIL] rate=0/3 expected=True: I inherited this codebase from a contractor and the docs are
+  [FAIL] rate=0/3 expected=True: ok our docs are a mess. BACKEND.md says we have 101 tables i
+  [FAIL] rate=0/3 expected=True: i just ran graphify on lex_council/apps and it found 1542 we
+  [PASS] rate=0/3 expected=False: our rule C6 in the guidelines says types should be named wit
+  [PASS] rate=0/3 expected=False: explain how the file_class hierarchy works in this app. just
+  [PASS] rate=0/3 expected=False: this one file `app/[locale]/(admin)/admin/files/page.tsx` is
+  [PASS] rate=0/3 expected=False: review the PR i just opened. it touches 4 files in apps/web/
+  [PASS] rate=0/3 expected=False: the audit log table got hit with 50M rows last month and que
+  [PASS] rate=0/3 expected=False: we got a security advisory from supabase saying 4 of our RLS
+Test : 12/24 correct, precision=100% recall=0% accuracy=50% (0.0s)
+  [FAIL] rate=0/3 expected=True: the supabase pooler is timing out on every execute_sql call 
+  [FAIL] rate=0/3 expected=True: doc sync time. give me a campaign with parallel subagents co
+  [FAIL] rate=0/3 expected=True: we're cutting v1.7.0 next week. before we ship i want a full
+  [FAIL] rate=0/3 expected=True: got 3 hours before standup. let's reconcile FRONTEND.md and 
+  [PASS] rate=0/3 expected=False: we have a lot of tech debt items piling up in linear. help m
+  [PASS] rate=0/3 expected=False: create an ADR for choosing between trpc and rest for our new
+  [PASS] rate=0/3 expected=False: we need docs for the new attendance upload feature. it goes 
+  [PASS] rate=0/3 expected=False: i want to refactor the transactions table — split it into tr
+
+Improving description...
+Proposed (14.6s): Use this skill whenever the user wants to audit, deep-dive, or reconcile an entire codebase, app, or monorepo — work too big for a single pass. Trigger on: "deep audit", "deep dive on the whole app", "doc-sync", "reconcile docs with code", "systems-level reality check", pre-release/pre-IPO readiness reviews, mapping an inherited or unfamiliar codebase, or following up a graphify/dependency-graph run that surfaced drift, weakly-connected nodes, or god-object candidates. Trigger on symptoms: docs citing different counts of the same thing, ghost references to functions/tables/modules that don't exist, contractor handoffs with stale documentation, or any ask to spin up multi-wave audits, coordinate parallel subagents with a final synthesis, assign opus/sonnet across audit tasks, or stage doc rewrites before promotion. Skip for single-file reviews, single-PR reviews, one-rule pattern checks, or targeted bug/perf/security fixes — those are lighter tasks, not campaigns.
+
+============================================================
+Iteration 4/5
+Description: Use this skill whenever the user wants to audit, deep-dive, or reconcile an entire codebase, app, or monorepo — work too big for a single pass. Trigger on: "deep audit", "deep dive on the whole app", "doc-sync", "reconcile docs with code", "systems-level reality check", pre-release/pre-IPO readiness reviews, mapping an inherited or unfamiliar codebase, or following up a graphify/dependency-graph run that surfaced drift, weakly-connected nodes, or god-object candidates. Trigger on symptoms: docs citing different counts of the same thing, ghost references to functions/tables/modules that don't exist, contractor handoffs with stale documentation, or any ask to spin up multi-wave audits, coordinate parallel subagents with a final synthesis, assign opus/sonnet across audit tasks, or stage doc rewrites before promotion. Skip for single-file reviews, single-PR reviews, one-rule pattern checks, or targeted bug/perf/security fixes — those are lighter tasks, not campaigns.
+============================================================
+Train: 18/36 correct, precision=100% recall=0% accuracy=50% (80.2s)
+  [FAIL] rate=0/3 expected=True: before our pre-IPO audit we need a full systems-level realit
+  [FAIL] rate=0/3 expected=True: i need a structured deep dive of the whole monorepo with sub
+  [FAIL] rate=0/3 expected=True: spin up a multi-wave audit on the current dir. assign opus w
+  [FAIL] rate=0/3 expected=True: I inherited this codebase from a contractor and the docs are
+  [FAIL] rate=0/3 expected=True: i just ran graphify on lex_council/apps and it found 1542 we
+  [FAIL] rate=0/3 expected=True: ok our docs are a mess. BACKEND.md says we have 101 tables i
+  [PASS] rate=0/3 expected=False: our rule C6 in the guidelines says types should be named wit
+  [PASS] rate=0/3 expected=False: explain how the file_class hierarchy works in this app. just
+  [PASS] rate=0/3 expected=False: this one file `app/[locale]/(admin)/admin/files/page.tsx` is
+  [PASS] rate=0/3 expected=False: review the PR i just opened. it touches 4 files in apps/web/
+  [PASS] rate=0/3 expected=False: we got a security advisory from supabase saying 4 of our RLS
+  [PASS] rate=0/3 expected=False: the audit log table got hit with 50M rows last month and que
+Test : 12/24 correct, precision=100% recall=0% accuracy=50% (0.0s)
+  [FAIL] rate=0/3 expected=True: doc sync time. give me a campaign with parallel subagents co
+  [FAIL] rate=0/3 expected=True: we're cutting v1.7.0 next week. before we ship i want a full
+  [FAIL] rate=0/3 expected=True: the supabase pooler is timing out on every execute_sql call 
+  [FAIL] rate=0/3 expected=True: got 3 hours before standup. let's reconcile FRONTEND.md and 
+  [PASS] rate=0/3 expected=False: create an ADR for choosing between trpc and rest for our new
+  [PASS] rate=0/3 expected=False: we need docs for the new attendance upload feature. it goes 
+  [PASS] rate=0/3 expected=False: we have a lot of tech debt items piling up in linear. help m
+  [PASS] rate=0/3 expected=False: i want to refactor the transactions table — split it into tr
+
+Improving description...
+Proposed (25.1s): Use this skill when the user wants to audit, deep-dive, or reconcile an entire codebase, app, or monorepo against its docs — work too big for one pass that benefits from coordinating parallel subagents into a final synthesis plus concrete doc updates. Triggers: stale or contradictory docs (different counts of the same thing, ghost references to functions/tables that don't exist, inherited-contractor handoffs), pre-release or pre-IPO readiness checks, systems-level reality checks, multi-wave audits, doc-sync or doc-vs-code reconciliation, or follow-ups to a graphify/dependency-graph run surfacing drift, weakly-connected nodes, or god-object candidates. Also triggers when the user wants parallel subagents, opus/sonnet assignment across audit tasks, numbered findings files, or staged doc rewrites before promotion. Skip for single-file reviews, single-PR reviews, one-rule pattern checks, or targeted bug/perf/security fixes scoped to a small surface.
+
+============================================================
+Iteration 5/5
+Description: Use this skill when the user wants to audit, deep-dive, or reconcile an entire codebase, app, or monorepo against its docs — work too big for one pass that benefits from coordinating parallel subagents into a final synthesis plus concrete doc updates. Triggers: stale or contradictory docs (different counts of the same thing, ghost references to functions/tables that don't exist, inherited-contractor handoffs), pre-release or pre-IPO readiness checks, systems-level reality checks, multi-wave audits, doc-sync or doc-vs-code reconciliation, or follow-ups to a graphify/dependency-graph run surfacing drift, weakly-connected nodes, or god-object candidates. Also triggers when the user wants parallel subagents, opus/sonnet assignment across audit tasks, numbered findings files, or staged doc rewrites before promotion. Skip for single-file reviews, single-PR reviews, one-rule pattern checks, or targeted bug/perf/security fixes scoped to a small surface.
+============================================================
+Train: 18/36 correct, precision=100% recall=0% accuracy=50% (78.3s)
+  [FAIL] rate=0/3 expected=True: i need a structured deep dive of the whole monorepo with sub
+  [FAIL] rate=0/3 expected=True: I inherited this codebase from a contractor and the docs are
+  [FAIL] rate=0/3 expected=True: before our pre-IPO audit we need a full systems-level realit
+  [FAIL] rate=0/3 expected=True: spin up a multi-wave audit on the current dir. assign opus w
+  [FAIL] rate=0/3 expected=True: ok our docs are a mess. BACKEND.md says we have 101 tables i
+  [FAIL] rate=0/3 expected=True: i just ran graphify on lex_council/apps and it found 1542 we
+  [PASS] rate=0/3 expected=False: our rule C6 in the guidelines says types should be named wit
+  [PASS] rate=0/3 expected=False: explain how the file_class hierarchy works in this app. just
+  [PASS] rate=0/3 expected=False: this one file `app/[locale]/(admin)/admin/files/page.tsx` is
+  [PASS] rate=0/3 expected=False: review the PR i just opened. it touches 4 files in apps/web/
+  [PASS] rate=0/3 expected=False: we got a security advisory from supabase saying 4 of our RLS
+  [PASS] rate=0/3 expected=False: the audit log table got hit with 50M rows last month and que
+Test : 12/24 correct, precision=100% recall=0% accuracy=50% (0.0s)
+  [FAIL] rate=0/3 expected=True: the supabase pooler is timing out on every execute_sql call 
+  [FAIL] rate=0/3 expected=True: doc sync time. give me a campaign with parallel subagents co
+  [FAIL] rate=0/3 expected=True: we're cutting v1.7.0 next week. before we ship i want a full
+  [FAIL] rate=0/3 expected=True: got 3 hours before standup. let's reconcile FRONTEND.md and 
+  [PASS] rate=0/3 expected=False: we have a lot of tech debt items piling up in linear. help m
+  [PASS] rate=0/3 expected=False: create an ADR for choosing between trpc and rest for our new
+  [PASS] rate=0/3 expected=False: we need docs for the new attendance upload feature. it goes 
+  [PASS] rate=0/3 expected=False: i want to refactor the transactions table — split it into tr
+
+Max iterations reached (5).
+
+Exit reason: max_iterations (5)
+Best score: 4/8 (iteration 1)
+{
+  "exit_reason": "max_iterations (5)",
+  "original_description": "Multi-wave deep audit campaign for large codebases \u2014 typically used to reconcile out-of-date documentation with reality, audit a project before a major release, or systematically map an unfamiliar large system. Use this skill whenever the user mentions a deep audit, doc-sync, reconcile docs with code, campaign, deep dive on the whole app, or expresses any of these symptoms \u2014 docs citing contradictory counts of the same thing, headline numbers that feel stale, a graphify/dependency-graph run revealing structural drift, or the project being too big to walk in one pass. Also use it when the user wants to coordinate many parallel subagents on a multi-task investigation with a synthesis at the end. The skill structures the work into 4 waves (foundation reality, deep structural, domain depth, synthesis and doc rewrite), assigns Claude models per task complexity, makes every subagent emit a numbered findings file, then drives a master synthesis and staged doc rewrites with a clear promotion gate.",
+  "best_description": "Multi-wave deep audit campaign for large codebases \u2014 typically used to reconcile out-of-date documentation with reality, audit a project before a major release, or systematically map an unfamiliar large system. Use this skill whenever the user mentions a deep audit, doc-sync, reconcile docs with code, campaign, deep dive on the whole app, or expresses any of these symptoms \u2014 docs citing contradictory counts of the same thing, headline numbers that feel stale, a graphify/dependency-graph run revealing structural drift, or the project being too big to walk in one pass. Also use it when the user wants to coordinate many parallel subagents on a multi-task investigation with a synthesis at the end. The skill structures the work into 4 waves (foundation reality, deep structural, domain depth, synthesis and doc rewrite), assigns Claude models per task complexity, makes every subagent emit a numbered findings file, then drives a master synthesis and staged doc rewrites with a clear promotion gate.",
+  "best_score": "4/8",
+  "best_train_score": "6/12",
+  "best_test_score": "4/8",
+  "final_description": "Use this skill when the user wants to audit, deep-dive, or reconcile an entire codebase, app, or monorepo against its docs \u2014 work too big for one pass that benefits from coordinating parallel subagents into a final synthesis plus concrete doc updates. Triggers: stale or contradictory docs (different counts of the same thing, ghost references to functions/tables that don't exist, inherited-contractor handoffs), pre-release or pre-IPO readiness checks, systems-level reality checks, multi-wave audits, doc-sync or doc-vs-code reconciliation, or follow-ups to a graphify/dependency-graph run surfacing drift, weakly-connected nodes, or god-object candidates. Also triggers when the user wants parallel subagents, opus/sonnet assignment across audit tasks, numbered findings files, or staged doc rewrites before promotion. Skip for single-file reviews, single-PR reviews, one-rule pattern checks, or targeted bug/perf/security fixes scoped to a small surface.",
+  "iterations_run": 5,
+  "holdout": 0.4,
+  "train_size": 12,
+  "test_size": 8,
+  "history": [
+    {
+      "iteration": 1,
+      "description": "Multi-wave deep audit campaign for large codebases \u2014 typically used to reconcile out-of-date documentation with reality, audit a project before a major release, or systematically map an unfamiliar large system. Use this skill whenever the user mentions a deep audit, doc-sync, reconcile docs with code, campaign, deep dive on the whole app, or expresses any of these symptoms \u2014 docs citing contradictory counts of the same thing, headline numbers that feel stale, a graphify/dependency-graph run revealing structural drift, or the project being too big to walk in one pass. Also use it when the user wants to coordinate many parallel subagents on a multi-task investigation with a synthesis at the end. The skill structures the work into 4 waves (foundation reality, deep structural, domain depth, synthesis and doc rewrite), assigns Claude models per task complexity, makes every subagent emit a numbered findings file, then drives a master synthesis and staged doc rewrites with a clear promotion gate.",
+      "train_passed": 6,
+      "train_failed": 6,
+      "train_total": 12,
+      "train_results": [
+        {
+          "query": "before our pre-IPO audit we need a full systems-level reality check on this app \u2014 schema, RLS, mutations, realtime, the whole thing. then update the architecture docs.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "spin up a multi-wave audit on the current dir. assign opus where it matters and sonnet for the mechanical stuff. log every finding to its own file so we can promote the doc rewrites later",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "I inherited this codebase from a contractor and the docs are super stale. Three different counts of triggers in the same file, references to tables that don't exist anymore, and a list of edge functions where some are deployed and some aren't. Help me get this back to a single source of truth.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "i need a structured deep dive of the whole monorepo with subagents working in parallel and a synthesis at the end. similar to that doc-sync run we did last quarter",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "ok our docs are a mess. BACKEND.md says we have 101 tables in one place, 106 in another and 114 in the footer. CLAUDE.md references a helper called makeAsyncAction that doesn't exist anywhere in the codebase. can you do a real deep dive and reconcile the docs with the actual app?",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "i just ran graphify on lex_council/apps and it found 1542 weakly-connected nodes and a god-object candidate. before I touch anything I want to verify this against code reality and figure out which docs are out of sync. lots of moving parts so probably needs multiple agents in parallel",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "our rule C6 in the guidelines says types should be named with underscores but everywhere in the code they use hyphens. just update the rule to match reality, no need for a big audit",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "explain how the file_class hierarchy works in this app. just walk me through the model \u2014 i don't need a deep audit, i just want to understand it",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "this one file `app/[locale]/(admin)/admin/files/page.tsx` is missing a permissiongate wrapper. can you add one with perm='fd_vap' and verify the layout already has getUser()?",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "review the PR i just opened. it touches 4 files in apps/web/components \u2014 looking for security issues and consistency with the rest of the codebase",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "the audit log table got hit with 50M rows last month and queries are slow. partition it by month? add an index? lay out options.",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "we got a security advisory from supabase saying 4 of our RLS policies have auth_rls_initplan warnings. fix them \u2014 they need (select auth.fn()) instead of auth.fn()",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ],
+      "test_passed": 4,
+      "test_failed": 4,
+      "test_total": 8,
+      "test_results": [
+        {
+          "query": "the supabase pooler is timing out on every execute_sql call but the management API still works. i still want to start the audit now \u2014 can you run it against the migration files and mark anything we couldnt verify so we come back to it?",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "doc sync time. give me a campaign with parallel subagents covering backend reality, frontend reality, integration, rule compliance, then synthesize and update the planet hub docs",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "we're cutting v1.7.0 next week. before we ship i want a full audit \u2014 does the code match the architecture docs, are there ghost references, dead routes, misnamed views, that kind of thing. the project is ~700 source files so it'll need to be split up",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "got 3 hours before standup. let's reconcile FRONTEND.md and INTEGRATION.md against what's actually shipped. parallelize as much as possible, give me a synthesis i can paste into slack",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "we have a lot of tech debt items piling up in linear. help me categorize them by area (frontend, backend, infra) and rank by impact-vs-effort so we can plan a sprint",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "create an ADR for choosing between trpc and rest for our new admin api. compare developer ergonomics, type safety, performance, and existing codebase fit",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "we need docs for the new attendance upload feature. it goes through a CSV \u2192 ata edge function \u2192 atnd_punches insert. write me a markdown page explaining the flow.",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "i want to refactor the transactions table \u2014 split it into transactions_header and transactions_lines. plan this out as a multi-phase migration with backfill, dual-write, cutover, cleanup.",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ],
+      "passed": 6,
+      "failed": 6,
+      "total": 12,
+      "results": [
+        {
+          "query": "before our pre-IPO audit we need a full systems-level reality check on this app \u2014 schema, RLS, mutations, realtime, the whole thing. then update the architecture docs.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "spin up a multi-wave audit on the current dir. assign opus where it matters and sonnet for the mechanical stuff. log every finding to its own file so we can promote the doc rewrites later",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "I inherited this codebase from a contractor and the docs are super stale. Three different counts of triggers in the same file, references to tables that don't exist anymore, and a list of edge functions where some are deployed and some aren't. Help me get this back to a single source of truth.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "i need a structured deep dive of the whole monorepo with subagents working in parallel and a synthesis at the end. similar to that doc-sync run we did last quarter",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "ok our docs are a mess. BACKEND.md says we have 101 tables in one place, 106 in another and 114 in the footer. CLAUDE.md references a helper called makeAsyncAction that doesn't exist anywhere in the codebase. can you do a real deep dive and reconcile the docs with the actual app?",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "i just ran graphify on lex_council/apps and it found 1542 weakly-connected nodes and a god-object candidate. before I touch anything I want to verify this against code reality and figure out which docs are out of sync. lots of moving parts so probably needs multiple agents in parallel",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "our rule C6 in the guidelines says types should be named with underscores but everywhere in the code they use hyphens. just update the rule to match reality, no need for a big audit",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "explain how the file_class hierarchy works in this app. just walk me through the model \u2014 i don't need a deep audit, i just want to understand it",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "this one file `app/[locale]/(admin)/admin/files/page.tsx` is missing a permissiongate wrapper. can you add one with perm='fd_vap' and verify the layout already has getUser()?",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "review the PR i just opened. it touches 4 files in apps/web/components \u2014 looking for security issues and consistency with the rest of the codebase",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "the audit log table got hit with 50M rows last month and queries are slow. partition it by month? add an index? lay out options.",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "we got a security advisory from supabase saying 4 of our RLS policies have auth_rls_initplan warnings. fix them \u2014 they need (select auth.fn()) instead of auth.fn()",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "iteration": 2,
+      "description": "Use this skill when the user wants a large-scale audit, deep dive, or systematic reconciliation across an entire codebase, app, or monorepo \u2014 especially work too big to do in one pass and that benefits from multiple parallel subagents plus a final synthesis. Trigger on requests like: reconcile docs with code, doc-sync, pre-release/pre-IPO readiness check, systems-level reality check, \"the docs are stale/contradictory\", inherited codebase mapping, ghost references to functions/tables that don't exist, conflicting counts of the same thing across docs, follow-up to a graphify or dependency-graph run revealing drift or god-objects, or any ask to \"spin up a multi-wave audit\", coordinate many agents in parallel with a synthesis at the end, or assign opus/sonnet across audit tasks and log findings to numbered files for later doc promotion. Skip for single-file reviews, one-rule checks, single-PR reviews, or targeted bug/perf/security fixes scoped to a small surface \u2014 those are lighter-weight tasks, not campaigns.",
+      "train_passed": 6,
+      "train_failed": 6,
+      "train_total": 12,
+      "train_results": [
+        {
+          "query": "i need a structured deep dive of the whole monorepo with subagents working in parallel and a synthesis at the end. similar to that doc-sync run we did last quarter",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "before our pre-IPO audit we need a full systems-level reality check on this app \u2014 schema, RLS, mutations, realtime, the whole thing. then update the architecture docs.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "I inherited this codebase from a contractor and the docs are super stale. Three different counts of triggers in the same file, references to tables that don't exist anymore, and a list of edge functions where some are deployed and some aren't. Help me get this back to a single source of truth.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "spin up a multi-wave audit on the current dir. assign opus where it matters and sonnet for the mechanical stuff. log every finding to its own file so we can promote the doc rewrites later",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "ok our docs are a mess. BACKEND.md says we have 101 tables in one place, 106 in another and 114 in the footer. CLAUDE.md references a helper called makeAsyncAction that doesn't exist anywhere in the codebase. can you do a real deep dive and reconcile the docs with the actual app?",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "i just ran graphify on lex_council/apps and it found 1542 weakly-connected nodes and a god-object candidate. before I touch anything I want to verify this against code reality and figure out which docs are out of sync. lots of moving parts so probably needs multiple agents in parallel",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "our rule C6 in the guidelines says types should be named with underscores but everywhere in the code they use hyphens. just update the rule to match reality, no need for a big audit",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "explain how the file_class hierarchy works in this app. just walk me through the model \u2014 i don't need a deep audit, i just want to understand it",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "this one file `app/[locale]/(admin)/admin/files/page.tsx` is missing a permissiongate wrapper. can you add one with perm='fd_vap' and verify the layout already has getUser()?",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "the audit log table got hit with 50M rows last month and queries are slow. partition it by month? add an index? lay out options.",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "review the PR i just opened. it touches 4 files in apps/web/components \u2014 looking for security issues and consistency with the rest of the codebase",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "we got a security advisory from supabase saying 4 of our RLS policies have auth_rls_initplan warnings. fix them \u2014 they need (select auth.fn()) instead of auth.fn()",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ],
+      "test_passed": 4,
+      "test_failed": 4,
+      "test_total": 8,
+      "test_results": [
+        {
+          "query": "the supabase pooler is timing out on every execute_sql call but the management API still works. i still want to start the audit now \u2014 can you run it against the migration files and mark anything we couldnt verify so we come back to it?",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "doc sync time. give me a campaign with parallel subagents covering backend reality, frontend reality, integration, rule compliance, then synthesize and update the planet hub docs",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "we're cutting v1.7.0 next week. before we ship i want a full audit \u2014 does the code match the architecture docs, are there ghost references, dead routes, misnamed views, that kind of thing. the project is ~700 source files so it'll need to be split up",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "got 3 hours before standup. let's reconcile FRONTEND.md and INTEGRATION.md against what's actually shipped. parallelize as much as possible, give me a synthesis i can paste into slack",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "create an ADR for choosing between trpc and rest for our new admin api. compare developer ergonomics, type safety, performance, and existing codebase fit",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "we have a lot of tech debt items piling up in linear. help me categorize them by area (frontend, backend, infra) and rank by impact-vs-effort so we can plan a sprint",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "we need docs for the new attendance upload feature. it goes through a CSV \u2192 ata edge function \u2192 atnd_punches insert. write me a markdown page explaining the flow.",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "i want to refactor the transactions table \u2014 split it into transactions_header and transactions_lines. plan this out as a multi-phase migration with backfill, dual-write, cutover, cleanup.",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ],
+      "passed": 6,
+      "failed": 6,
+      "total": 12,
+      "results": [
+        {
+          "query": "i need a structured deep dive of the whole monorepo with subagents working in parallel and a synthesis at the end. similar to that doc-sync run we did last quarter",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "before our pre-IPO audit we need a full systems-level reality check on this app \u2014 schema, RLS, mutations, realtime, the whole thing. then update the architecture docs.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "I inherited this codebase from a contractor and the docs are super stale. Three different counts of triggers in the same file, references to tables that don't exist anymore, and a list of edge functions where some are deployed and some aren't. Help me get this back to a single source of truth.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "spin up a multi-wave audit on the current dir. assign opus where it matters and sonnet for the mechanical stuff. log every finding to its own file so we can promote the doc rewrites later",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "ok our docs are a mess. BACKEND.md says we have 101 tables in one place, 106 in another and 114 in the footer. CLAUDE.md references a helper called makeAsyncAction that doesn't exist anywhere in the codebase. can you do a real deep dive and reconcile the docs with the actual app?",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "i just ran graphify on lex_council/apps and it found 1542 weakly-connected nodes and a god-object candidate. before I touch anything I want to verify this against code reality and figure out which docs are out of sync. lots of moving parts so probably needs multiple agents in parallel",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "our rule C6 in the guidelines says types should be named with underscores but everywhere in the code they use hyphens. just update the rule to match reality, no need for a big audit",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "explain how the file_class hierarchy works in this app. just walk me through the model \u2014 i don't need a deep audit, i just want to understand it",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "this one file `app/[locale]/(admin)/admin/files/page.tsx` is missing a permissiongate wrapper. can you add one with perm='fd_vap' and verify the layout already has getUser()?",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "the audit log table got hit with 50M rows last month and queries are slow. partition it by month? add an index? lay out options.",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "review the PR i just opened. it touches 4 files in apps/web/components \u2014 looking for security issues and consistency with the rest of the codebase",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "we got a security advisory from supabase saying 4 of our RLS policies have auth_rls_initplan warnings. fix them \u2014 they need (select auth.fn()) instead of auth.fn()",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "iteration": 3,
+      "description": "Use this skill when the user asks for a deep audit, deep dive, doc-sync, doc reconciliation, multi-wave audit, systems-level reality check, pre-release/pre-IPO readiness review, or systematic mapping of an inherited or unfamiliar codebase. Use it when docs are stale, contradictory, or cite different counts of the same thing; when there are ghost references to functions/tables/modules that don't exist; when a graphify or dependency-graph run surfaces drift, weakly-connected nodes, or god-object candidates needing verification; or when the user wants to coordinate many parallel subagents across a codebase/monorepo and end with a single synthesis plus concrete doc updates. Also use it when the user mentions assigning opus/sonnet across audit tasks, logging findings to numbered files, or staging doc rewrites before promotion. Skip for single-file reviews, single-PR reviews, one-rule pattern checks, or targeted bug/perf/security fixes \u2014 those are lighter tasks, not campaigns.",
+      "train_passed": 6,
+      "train_failed": 6,
+      "train_total": 12,
+      "train_results": [
+        {
+          "query": "before our pre-IPO audit we need a full systems-level reality check on this app \u2014 schema, RLS, mutations, realtime, the whole thing. then update the architecture docs.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "spin up a multi-wave audit on the current dir. assign opus where it matters and sonnet for the mechanical stuff. log every finding to its own file so we can promote the doc rewrites later",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "i need a structured deep dive of the whole monorepo with subagents working in parallel and a synthesis at the end. similar to that doc-sync run we did last quarter",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "I inherited this codebase from a contractor and the docs are super stale. Three different counts of triggers in the same file, references to tables that don't exist anymore, and a list of edge functions where some are deployed and some aren't. Help me get this back to a single source of truth.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "ok our docs are a mess. BACKEND.md says we have 101 tables in one place, 106 in another and 114 in the footer. CLAUDE.md references a helper called makeAsyncAction that doesn't exist anywhere in the codebase. can you do a real deep dive and reconcile the docs with the actual app?",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "i just ran graphify on lex_council/apps and it found 1542 weakly-connected nodes and a god-object candidate. before I touch anything I want to verify this against code reality and figure out which docs are out of sync. lots of moving parts so probably needs multiple agents in parallel",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "our rule C6 in the guidelines says types should be named with underscores but everywhere in the code they use hyphens. just update the rule to match reality, no need for a big audit",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "explain how the file_class hierarchy works in this app. just walk me through the model \u2014 i don't need a deep audit, i just want to understand it",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "this one file `app/[locale]/(admin)/admin/files/page.tsx` is missing a permissiongate wrapper. can you add one with perm='fd_vap' and verify the layout already has getUser()?",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "review the PR i just opened. it touches 4 files in apps/web/components \u2014 looking for security issues and consistency with the rest of the codebase",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "the audit log table got hit with 50M rows last month and queries are slow. partition it by month? add an index? lay out options.",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "we got a security advisory from supabase saying 4 of our RLS policies have auth_rls_initplan warnings. fix them \u2014 they need (select auth.fn()) instead of auth.fn()",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ],
+      "test_passed": 4,
+      "test_failed": 4,
+      "test_total": 8,
+      "test_results": [
+        {
+          "query": "the supabase pooler is timing out on every execute_sql call but the management API still works. i still want to start the audit now \u2014 can you run it against the migration files and mark anything we couldnt verify so we come back to it?",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "doc sync time. give me a campaign with parallel subagents covering backend reality, frontend reality, integration, rule compliance, then synthesize and update the planet hub docs",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "we're cutting v1.7.0 next week. before we ship i want a full audit \u2014 does the code match the architecture docs, are there ghost references, dead routes, misnamed views, that kind of thing. the project is ~700 source files so it'll need to be split up",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "got 3 hours before standup. let's reconcile FRONTEND.md and INTEGRATION.md against what's actually shipped. parallelize as much as possible, give me a synthesis i can paste into slack",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "we have a lot of tech debt items piling up in linear. help me categorize them by area (frontend, backend, infra) and rank by impact-vs-effort so we can plan a sprint",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "create an ADR for choosing between trpc and rest for our new admin api. compare developer ergonomics, type safety, performance, and existing codebase fit",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "we need docs for the new attendance upload feature. it goes through a CSV \u2192 ata edge function \u2192 atnd_punches insert. write me a markdown page explaining the flow.",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "i want to refactor the transactions table \u2014 split it into transactions_header and transactions_lines. plan this out as a multi-phase migration with backfill, dual-write, cutover, cleanup.",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ],
+      "passed": 6,
+      "failed": 6,
+      "total": 12,
+      "results": [
+        {
+          "query": "before our pre-IPO audit we need a full systems-level reality check on this app \u2014 schema, RLS, mutations, realtime, the whole thing. then update the architecture docs.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "spin up a multi-wave audit on the current dir. assign opus where it matters and sonnet for the mechanical stuff. log every finding to its own file so we can promote the doc rewrites later",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "i need a structured deep dive of the whole monorepo with subagents working in parallel and a synthesis at the end. similar to that doc-sync run we did last quarter",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "I inherited this codebase from a contractor and the docs are super stale. Three different counts of triggers in the same file, references to tables that don't exist anymore, and a list of edge functions where some are deployed and some aren't. Help me get this back to a single source of truth.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "ok our docs are a mess. BACKEND.md says we have 101 tables in one place, 106 in another and 114 in the footer. CLAUDE.md references a helper called makeAsyncAction that doesn't exist anywhere in the codebase. can you do a real deep dive and reconcile the docs with the actual app?",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "i just ran graphify on lex_council/apps and it found 1542 weakly-connected nodes and a god-object candidate. before I touch anything I want to verify this against code reality and figure out which docs are out of sync. lots of moving parts so probably needs multiple agents in parallel",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "our rule C6 in the guidelines says types should be named with underscores but everywhere in the code they use hyphens. just update the rule to match reality, no need for a big audit",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "explain how the file_class hierarchy works in this app. just walk me through the model \u2014 i don't need a deep audit, i just want to understand it",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "this one file `app/[locale]/(admin)/admin/files/page.tsx` is missing a permissiongate wrapper. can you add one with perm='fd_vap' and verify the layout already has getUser()?",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "review the PR i just opened. it touches 4 files in apps/web/components \u2014 looking for security issues and consistency with the rest of the codebase",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "the audit log table got hit with 50M rows last month and queries are slow. partition it by month? add an index? lay out options.",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "we got a security advisory from supabase saying 4 of our RLS policies have auth_rls_initplan warnings. fix them \u2014 they need (select auth.fn()) instead of auth.fn()",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "iteration": 4,
+      "description": "Use this skill whenever the user wants to audit, deep-dive, or reconcile an entire codebase, app, or monorepo \u2014 work too big for a single pass. Trigger on: \"deep audit\", \"deep dive on the whole app\", \"doc-sync\", \"reconcile docs with code\", \"systems-level reality check\", pre-release/pre-IPO readiness reviews, mapping an inherited or unfamiliar codebase, or following up a graphify/dependency-graph run that surfaced drift, weakly-connected nodes, or god-object candidates. Trigger on symptoms: docs citing different counts of the same thing, ghost references to functions/tables/modules that don't exist, contractor handoffs with stale documentation, or any ask to spin up multi-wave audits, coordinate parallel subagents with a final synthesis, assign opus/sonnet across audit tasks, or stage doc rewrites before promotion. Skip for single-file reviews, single-PR reviews, one-rule pattern checks, or targeted bug/perf/security fixes \u2014 those are lighter tasks, not campaigns.",
+      "train_passed": 6,
+      "train_failed": 6,
+      "train_total": 12,
+      "train_results": [
+        {
+          "query": "before our pre-IPO audit we need a full systems-level reality check on this app \u2014 schema, RLS, mutations, realtime, the whole thing. then update the architecture docs.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "i need a structured deep dive of the whole monorepo with subagents working in parallel and a synthesis at the end. similar to that doc-sync run we did last quarter",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "spin up a multi-wave audit on the current dir. assign opus where it matters and sonnet for the mechanical stuff. log every finding to its own file so we can promote the doc rewrites later",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "I inherited this codebase from a contractor and the docs are super stale. Three different counts of triggers in the same file, references to tables that don't exist anymore, and a list of edge functions where some are deployed and some aren't. Help me get this back to a single source of truth.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "i just ran graphify on lex_council/apps and it found 1542 weakly-connected nodes and a god-object candidate. before I touch anything I want to verify this against code reality and figure out which docs are out of sync. lots of moving parts so probably needs multiple agents in parallel",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "ok our docs are a mess. BACKEND.md says we have 101 tables in one place, 106 in another and 114 in the footer. CLAUDE.md references a helper called makeAsyncAction that doesn't exist anywhere in the codebase. can you do a real deep dive and reconcile the docs with the actual app?",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "our rule C6 in the guidelines says types should be named with underscores but everywhere in the code they use hyphens. just update the rule to match reality, no need for a big audit",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "explain how the file_class hierarchy works in this app. just walk me through the model \u2014 i don't need a deep audit, i just want to understand it",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "this one file `app/[locale]/(admin)/admin/files/page.tsx` is missing a permissiongate wrapper. can you add one with perm='fd_vap' and verify the layout already has getUser()?",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "review the PR i just opened. it touches 4 files in apps/web/components \u2014 looking for security issues and consistency with the rest of the codebase",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "we got a security advisory from supabase saying 4 of our RLS policies have auth_rls_initplan warnings. fix them \u2014 they need (select auth.fn()) instead of auth.fn()",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "the audit log table got hit with 50M rows last month and queries are slow. partition it by month? add an index? lay out options.",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ],
+      "test_passed": 4,
+      "test_failed": 4,
+      "test_total": 8,
+      "test_results": [
+        {
+          "query": "doc sync time. give me a campaign with parallel subagents covering backend reality, frontend reality, integration, rule compliance, then synthesize and update the planet hub docs",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "we're cutting v1.7.0 next week. before we ship i want a full audit \u2014 does the code match the architecture docs, are there ghost references, dead routes, misnamed views, that kind of thing. the project is ~700 source files so it'll need to be split up",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "the supabase pooler is timing out on every execute_sql call but the management API still works. i still want to start the audit now \u2014 can you run it against the migration files and mark anything we couldnt verify so we come back to it?",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "got 3 hours before standup. let's reconcile FRONTEND.md and INTEGRATION.md against what's actually shipped. parallelize as much as possible, give me a synthesis i can paste into slack",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "create an ADR for choosing between trpc and rest for our new admin api. compare developer ergonomics, type safety, performance, and existing codebase fit",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "we need docs for the new attendance upload feature. it goes through a CSV \u2192 ata edge function \u2192 atnd_punches insert. write me a markdown page explaining the flow.",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "we have a lot of tech debt items piling up in linear. help me categorize them by area (frontend, backend, infra) and rank by impact-vs-effort so we can plan a sprint",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "i want to refactor the transactions table \u2014 split it into transactions_header and transactions_lines. plan this out as a multi-phase migration with backfill, dual-write, cutover, cleanup.",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ],
+      "passed": 6,
+      "failed": 6,
+      "total": 12,
+      "results": [
+        {
+          "query": "before our pre-IPO audit we need a full systems-level reality check on this app \u2014 schema, RLS, mutations, realtime, the whole thing. then update the architecture docs.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "i need a structured deep dive of the whole monorepo with subagents working in parallel and a synthesis at the end. similar to that doc-sync run we did last quarter",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "spin up a multi-wave audit on the current dir. assign opus where it matters and sonnet for the mechanical stuff. log every finding to its own file so we can promote the doc rewrites later",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "I inherited this codebase from a contractor and the docs are super stale. Three different counts of triggers in the same file, references to tables that don't exist anymore, and a list of edge functions where some are deployed and some aren't. Help me get this back to a single source of truth.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "i just ran graphify on lex_council/apps and it found 1542 weakly-connected nodes and a god-object candidate. before I touch anything I want to verify this against code reality and figure out which docs are out of sync. lots of moving parts so probably needs multiple agents in parallel",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "ok our docs are a mess. BACKEND.md says we have 101 tables in one place, 106 in another and 114 in the footer. CLAUDE.md references a helper called makeAsyncAction that doesn't exist anywhere in the codebase. can you do a real deep dive and reconcile the docs with the actual app?",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "our rule C6 in the guidelines says types should be named with underscores but everywhere in the code they use hyphens. just update the rule to match reality, no need for a big audit",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "explain how the file_class hierarchy works in this app. just walk me through the model \u2014 i don't need a deep audit, i just want to understand it",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "this one file `app/[locale]/(admin)/admin/files/page.tsx` is missing a permissiongate wrapper. can you add one with perm='fd_vap' and verify the layout already has getUser()?",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "review the PR i just opened. it touches 4 files in apps/web/components \u2014 looking for security issues and consistency with the rest of the codebase",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "we got a security advisory from supabase saying 4 of our RLS policies have auth_rls_initplan warnings. fix them \u2014 they need (select auth.fn()) instead of auth.fn()",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "the audit log table got hit with 50M rows last month and queries are slow. partition it by month? add an index? lay out options.",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ]
+    },
+    {
+      "iteration": 5,
+      "description": "Use this skill when the user wants to audit, deep-dive, or reconcile an entire codebase, app, or monorepo against its docs \u2014 work too big for one pass that benefits from coordinating parallel subagents into a final synthesis plus concrete doc updates. Triggers: stale or contradictory docs (different counts of the same thing, ghost references to functions/tables that don't exist, inherited-contractor handoffs), pre-release or pre-IPO readiness checks, systems-level reality checks, multi-wave audits, doc-sync or doc-vs-code reconciliation, or follow-ups to a graphify/dependency-graph run surfacing drift, weakly-connected nodes, or god-object candidates. Also triggers when the user wants parallel subagents, opus/sonnet assignment across audit tasks, numbered findings files, or staged doc rewrites before promotion. Skip for single-file reviews, single-PR reviews, one-rule pattern checks, or targeted bug/perf/security fixes scoped to a small surface.",
+      "train_passed": 6,
+      "train_failed": 6,
+      "train_total": 12,
+      "train_results": [
+        {
+          "query": "i need a structured deep dive of the whole monorepo with subagents working in parallel and a synthesis at the end. similar to that doc-sync run we did last quarter",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "I inherited this codebase from a contractor and the docs are super stale. Three different counts of triggers in the same file, references to tables that don't exist anymore, and a list of edge functions where some are deployed and some aren't. Help me get this back to a single source of truth.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "before our pre-IPO audit we need a full systems-level reality check on this app \u2014 schema, RLS, mutations, realtime, the whole thing. then update the architecture docs.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "spin up a multi-wave audit on the current dir. assign opus where it matters and sonnet for the mechanical stuff. log every finding to its own file so we can promote the doc rewrites later",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "ok our docs are a mess. BACKEND.md says we have 101 tables in one place, 106 in another and 114 in the footer. CLAUDE.md references a helper called makeAsyncAction that doesn't exist anywhere in the codebase. can you do a real deep dive and reconcile the docs with the actual app?",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "i just ran graphify on lex_council/apps and it found 1542 weakly-connected nodes and a god-object candidate. before I touch anything I want to verify this against code reality and figure out which docs are out of sync. lots of moving parts so probably needs multiple agents in parallel",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "our rule C6 in the guidelines says types should be named with underscores but everywhere in the code they use hyphens. just update the rule to match reality, no need for a big audit",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "explain how the file_class hierarchy works in this app. just walk me through the model \u2014 i don't need a deep audit, i just want to understand it",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "this one file `app/[locale]/(admin)/admin/files/page.tsx` is missing a permissiongate wrapper. can you add one with perm='fd_vap' and verify the layout already has getUser()?",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "review the PR i just opened. it touches 4 files in apps/web/components \u2014 looking for security issues and consistency with the rest of the codebase",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "we got a security advisory from supabase saying 4 of our RLS policies have auth_rls_initplan warnings. fix them \u2014 they need (select auth.fn()) instead of auth.fn()",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "the audit log table got hit with 50M rows last month and queries are slow. partition it by month? add an index? lay out options.",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ],
+      "test_passed": 4,
+      "test_failed": 4,
+      "test_total": 8,
+      "test_results": [
+        {
+          "query": "the supabase pooler is timing out on every execute_sql call but the management API still works. i still want to start the audit now \u2014 can you run it against the migration files and mark anything we couldnt verify so we come back to it?",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "doc sync time. give me a campaign with parallel subagents covering backend reality, frontend reality, integration, rule compliance, then synthesize and update the planet hub docs",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "we're cutting v1.7.0 next week. before we ship i want a full audit \u2014 does the code match the architecture docs, are there ghost references, dead routes, misnamed views, that kind of thing. the project is ~700 source files so it'll need to be split up",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "got 3 hours before standup. let's reconcile FRONTEND.md and INTEGRATION.md against what's actually shipped. parallelize as much as possible, give me a synthesis i can paste into slack",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "we have a lot of tech debt items piling up in linear. help me categorize them by area (frontend, backend, infra) and rank by impact-vs-effort so we can plan a sprint",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "create an ADR for choosing between trpc and rest for our new admin api. compare developer ergonomics, type safety, performance, and existing codebase fit",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "we need docs for the new attendance upload feature. it goes through a CSV \u2192 ata edge function \u2192 atnd_punches insert. write me a markdown page explaining the flow.",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "i want to refactor the transactions table \u2014 split it into transactions_header and transactions_lines. plan this out as a multi-phase migration with backfill, dual-write, cutover, cleanup.",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ],
+      "passed": 6,
+      "failed": 6,
+      "total": 12,
+      "results": [
+        {
+          "query": "i need a structured deep dive of the whole monorepo with subagents working in parallel and a synthesis at the end. similar to that doc-sync run we did last quarter",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "I inherited this codebase from a contractor and the docs are super stale. Three different counts of triggers in the same file, references to tables that don't exist anymore, and a list of edge functions where some are deployed and some aren't. Help me get this back to a single source of truth.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "before our pre-IPO audit we need a full systems-level reality check on this app \u2014 schema, RLS, mutations, realtime, the whole thing. then update the architecture docs.",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "spin up a multi-wave audit on the current dir. assign opus where it matters and sonnet for the mechanical stuff. log every finding to its own file so we can promote the doc rewrites later",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "ok our docs are a mess. BACKEND.md says we have 101 tables in one place, 106 in another and 114 in the footer. CLAUDE.md references a helper called makeAsyncAction that doesn't exist anywhere in the codebase. can you do a real deep dive and reconcile the docs with the actual app?",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "i just ran graphify on lex_council/apps and it found 1542 weakly-connected nodes and a god-object candidate. before I touch anything I want to verify this against code reality and figure out which docs are out of sync. lots of moving parts so probably needs multiple agents in parallel",
+          "should_trigger": true,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": false
+        },
+        {
+          "query": "our rule C6 in the guidelines says types should be named with underscores but everywhere in the code they use hyphens. just update the rule to match reality, no need for a big audit",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "explain how the file_class hierarchy works in this app. just walk me through the model \u2014 i don't need a deep audit, i just want to understand it",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "this one file `app/[locale]/(admin)/admin/files/page.tsx` is missing a permissiongate wrapper. can you add one with perm='fd_vap' and verify the layout already has getUser()?",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "review the PR i just opened. it touches 4 files in apps/web/components \u2014 looking for security issues and consistency with the rest of the codebase",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "we got a security advisory from supabase saying 4 of our RLS policies have auth_rls_initplan warnings. fix them \u2014 they need (select auth.fn()) instead of auth.fn()",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        },
+        {
+          "query": "the audit log table got hit with 50M rows last month and queries are slow. partition it by month? add an index? lay out options.",
+          "should_trigger": false,
+          "trigger_rate": 0.0,
+          "triggers": 0,
+          "runs": 3,
+          "pass": true
+        }
+      ]
+    }
+  ]
+}
+Report: /var/folders/yj/qjmb0jtj48d3cc6b877cw3gc0000gn/T/skill_description_report_conquering-campaign_20260510_142331.html
+
