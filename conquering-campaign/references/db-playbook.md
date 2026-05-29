@@ -69,6 +69,17 @@ When a DB phase renames a function/view/trigger AND shrinks its body. Declare `d
 
 ---
 
+## Applying migrations off the failed preview pipeline + concurrent-actor git isolation (#95 #96 #97 #99)
+
+The lex_council Supabase **git→preview auto-pipeline is `MIGRATIONS_FAILED`** (since 2026-05-23 — `[[project_supabase-migrations-applied-via-mcp-not-pipeline]]`). "Push a feature branch → auto-spawn a preview" does NOT work here; assuming it does burns turns on a build that never lands. The proven path (Campaigns B + E, 2026-05-29, both shipped clean):
+
+1. **Isolate git in a WORKTREE, never `git checkout -b` (#95).** A concurrent actor (#33, `[[discovery_concurrent-migration-actor]]`) keeps dozens of uncommitted FE files + interleaved `20260529*` migrations in the MAIN working copy; switching HEAD there can hijack/co-mingle their commits, and a session-end auto-commit bundles files you never touched. `git worktree add .claude/worktrees/<name> -b <branch>` (branch from HEAD) gives a clean isolated tree holding only your new files. Commit by explicit path, prove the staged set (`git diff --cached --name-only`), push, PR. Run all git INSIDE `lex_council/` (submodule; the workspace root has no remote — #87).
+2. **Apply idempotent/reversible migrations via MCP `apply_migration` after showing the SQL (#96).** PDAAV still holds: G3 re-probe live → show the exact SQL (P3) → `apply_migration` to prod (project_id `bqgrpnsvplvicnmzxwkm`, G2) → ground-truth SELECT + `get_advisors`. Make the DDL idempotent (`IF NOT EXISTS` / `CREATE OR REPLACE`) so a future pipeline re-apply is a no-op. **Commit the migration FILE to the branch for record** even though it was applied out-of-band. A *manual* `create_branch` (fresh isolated project_ref, ~$0.01344/hr) still works if a real preview is genuinely needed — don't burn money retrying the failed auto-pipeline.
+3. **Reversibility gates the cadence (#97).** Reversible `CREATE OR REPLACE` (function/view/trigger bodies, additive/idempotent DDL) proceeds with the SQL shown even under `autonomous`. An **irreversible `DROP` or a money-/auth-adjacent bulk refactor ALWAYS gets the full SQL shown + an explicit go**, carries `RESTRICT` (never `CASCADE` on faith — the error lists any new dependent), and runs a **delete-time LIVE re-grep** (FE + `view-registry.ts` + `pg_depend` + `supabase/migrations/`+`functions/`) at the moment of the drop, not from the plan's stale list. Campaign B dropped 16 reversible orphan views + 3 fns under show-SQL but KEPT its 3 `*_bak_20260527_pool` data tables for "a moment of certainty" (irreversible data loss). Pairs with #14 (candidate-not-committed deletions).
+4. **`gh` may be absent (#99).** This machine has no `gh` CLI — don't fail the handoff: push the branch and hand the user the `github.com/<org>/<repo>/pull/new/<branch>` URL (lex: `github.com/Attax-io/lex_council/pull/new/<branch>`).
+
+---
+
 ## New DB lessons (v3.0.0 mine)
 
 ### Function bodies are TEXT, not OID-bound (#67)

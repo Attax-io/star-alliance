@@ -4,6 +4,30 @@ Semver: **MAJOR** = paradigm shift / artifact-layout change · **MINOR** = new s
 
 ---
 
+### v3.6.1 — 2026-05-29 — Concurrent-actor git isolation + off-pipeline migration apply + DROP show-gate + gh handoff (PATCH)
+
+Reflection-pass over the **app-wide-consolidation audit + its first two built campaigns (B — BE mechanical simplify; E — perf FK-indexes)**. Four field-proven DB/git disciplines that the campaigns invented at execution time but the skill hadn't codified. All four are clarifications/sub-patterns to existing sections — no new wave, artifact, or cadence — hence PATCH.
+
+**What changed:**
+- **#95 worktree-isolation.** §Environment hazards + references/db-playbook.md: when a concurrent actor (#33) holds uncommitted changes in the MAIN working copy, branch via `git worktree add .claude/worktrees/<name> -b <branch>`, NEVER `git checkout -b` (moves HEAD in their tree → hijack/co-mingle). Both Campaigns B+E shipped on worktrees.
+- **#96 apply-via-MCP when the preview pipeline is `MIGRATIONS_FAILED`.** references/db-playbook.md new section: the lex Supabase git→preview pipeline is failed since 2026-05-23 → apply idempotent/reversible migrations via MCP `apply_migration` after show-SQL (P3) + G3 re-probe; commit the migration file for record (idempotent on any re-apply).
+- **#97 reversibility show-gate.** §Autonomous decision ladder + §5.1: under autonomous, reversible `CREATE OR REPLACE` proceeds with show-SQL; an irreversible `DROP` / money-/auth-adjacent bulk refactor ALWAYS gets full SQL shown + explicit go, carries `RESTRICT`, and runs a delete-time LIVE re-grep (Campaign B kept its `*_bak` tables, dropped the reversible orphans). Sharpens #14 with the reversibility axis.
+- **#99 `gh`-absent handoff.** §5.3 + §Environment hazards: `gh` isn't installed → push + hand over the `pull/new/<branch>` URL, don't fail.
+
+**Why PATCH:** all four refine existing sections (env hazards, the ladder, §5.1, db-playbook) + 4 catalog rows; no new heading-level discipline, fully backward-compatible.
+
+---
+
+### v3.6.0 — 2026-05-29 — Audit same-session lens-extension (MINOR)
+
+From the same audit: the `2026-05-29_app-wide-consolidation` audit closed at 6 findings, then grew **in-session** with 5 new read-only investigation lenses ("at Atta's request" — access-correctness, component-substitution, droppable-schema, mergeable-columns, slow-views), each folded into the ONE `99-synthesis.md` + build-plan-proposal + vault-log. The skill had §0.0.1 (same-session BUILD pivot) but no AUDIT equivalent — so a lens-extension risked being mis-opened as a new campaign or duplicating the synthesis/vault-log.
+
+**What changed:** new **§0.0.6 — Audit same-session lens-extension** (reopen `completed → in-progress`, append an `LN_lens` phase with `discovered_during: same-session-lens`, skip W0+W2, run focused read-only W1/W3, fold a new `NN-<lens>.md` + `## Extension lenses` synthesis block + build-plan rows IN PLACE, edit the vault-log not duplicate, re-close); a §0.0 resume-table row; a §Trigger-phrase precedence row (2b — ahead of §1.4 / §5.8); new failure mode **#98**. A lens that surfaces a shipped bug or needs a write escalates out to `bug-fix`/EXTENSION.
+
+**Why MINOR:** new §0.0.6 sub-section (a new heading + a discipline + a failure-mode class), fully backward-compatible — no wave-structure, artifact-layout, or cadence change.
+
+---
+
 ### v3.5.0 — 2026-05-29 — Workflow-tool deterministic orchestration EMIT (MINOR)
 
 Pairs the skill with Claude Code's deterministic **Workflow tool** (a JS script orchestrating subagents via `parallel`/`pipeline`/`schema`-checked returns/`log`/`resume`) — the third instance of the "compose with a main-loop/external feature via a portable EMIT" move after v3.2.0 (`/goal`) and v3.3.0 (`spawn_task`). Motivated by the user asking whether the skill could be upgraded with the Workflow tool; designed + adversarially critiqued via a 4-agent workflow (which was itself the read-only structured-fan-out the integration targets).
