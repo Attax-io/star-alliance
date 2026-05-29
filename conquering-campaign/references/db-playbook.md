@@ -1,6 +1,20 @@
 # DB playbook — conquering-campaign
 
-Load this for any phase touching schema / RLS / views / triggers / functions / migrations. SKILL.md keeps the one-line gates (G2, G3) + the named-pattern index; the full procedures + the project-specific schema facts live here.
+Load this for any phase touching schema / RLS / views / triggers / functions / migrations. SKILL.md keeps the one-line gates (G2, G3, G6) + the named-pattern index; the full procedures + the project-specific schema facts live here.
+
+---
+
+## G6 — DB-object conformity (before creating OR altering any table / view / trigger / RPC)
+
+The DB twin of G1. The rules are NOT restated here — they live in the app docs, and the app doc is the source of truth. **Conform, don't invent; point, don't duplicate.** Read the leaf doc first (docs-before-SQL, P11/P13), then probe, then draft. On any conflict `docs/V2-CONVENTIONS.md` wins (W5); for RLS `docs/RLS-BUNDLES.md`; for names `docs/DB-NAMING-OVERHAUL.md`. If the app doc and this checklist ever disagree, follow the doc and flag the drift.
+
+1. **Naming (W2 / DB-NAMING).** Tables = plain snake_case nouns. Page view = `{portal}_{section}_{entity}_{purpose}` (no `_js`). Foundation view = `{entity}_{role}` (only 4 exist — resist a 5th; write page-scoped views instead). Trigger fn (`private` schema) = `{owner}_on_{watched}_{bef|aft}_{ins|upd|del}[_purpose]`, ≤63 chars. pg_trigger object = `trg_{timing}_{ops}` (never repeat the table name). Public RPC = `{verb}_{object}` (`get_`/`is_`/`has_`/`check_`). FK = `{table}_{col}_fkey`. Type file = `{entity}-{role}-{shape}.ts` all-hyphen.
+2. **View safety (S11/S12).** `WITH (security_invoker = true)` ALWAYS — `CREATE OR REPLACE VIEW` silently drops it, so re-`ALTER VIEW … SET (security_invoker = true)` every time. Append-only columns (new cols at the END of the SELECT — 42P16). No shared views — every consumer page gets its own, even if the SELECT is identical. Max view-chain depth = 2.
+3. **Security boilerplate.** Public RPC = `SECURITY DEFINER` + `SET search_path TO ''` + fully-qualified refs (`public.x`, never bare `x`) + `REVOKE EXECUTE … FROM PUBLIC, anon` + `GRANT EXECUTE … TO authenticated, service_role` + first line `IF (SELECT auth.uid()) IS NULL THEN RAISE EXCEPTION 'unauthorized'; END IF;`. Trigger fn = the same MINUS the auth check and MINUS REVOKE/GRANT (RLS context guarantees the caller). Hand-edit `types.ts` after any RPC signature change (#86).
+4. **RLS bundles (W6).** Every NEW table gets ONE `FOR ALL` policy composed from the named catalog in `RLS-BUNDLES.md` (`is_self`, `has_perm`, `can_see_file`, `not_deleted`, `trash_visible`, `parent_visible`, …): `USING` = read rule, `WITH CHECK` = write rule. **Never inline a raw `EXISTS(user_permissions …)` or a hand-rolled owner check** — if no bundle fits, PROPOSE a new bundle in RLS-BUNDLES.md, don't inline. Always `(SELECT auth.uid())`, never bare (InitPlan caching). Never add a 2nd permissive policy — OR-merge into the existing `USING`; power-admin fast-path goes FIRST in the OR (#78). Soft-delete = `not_deleted() OR trash_visible()` inside the one policy. The §2a-RLS effective-access check still runs after any policy write. (Existing-policy rollout is half-done — see `[[discovery_rls-bundle-half-built]]`.)
+5. **View registry (W3).** Every view referenced from `apps/web/` is a key in `lib/view-registry.ts`; FE reads `VIEWS.<key>`, never a raw string literal. A new view = +1 registry key + 1 migration in the SAME commit.
+6. **Writes via RPC (C4/C30).** All FE writes go through `lib/mutations/` via `callRpc(db().rpc('verb_object', …))`. `grep -E "db\(\)\.from\(.*\)\.(insert|update|delete|upsert)" apps/web/lib/mutations` must return 0. A new write surface = a new RPC, never a `.from().insert()`.
+7. **Soft-delete is the only delete (C31).** 13 entity families: `delete*` wrappers route to `soft_delete_*` RPCs; hard-delete is programmer-only via `/admin/trash` + `hard_delete_trash_row`. A new entity that participates in trash gets a `soft_delete_*` RPC + the `not_deleted()/trash_visible()` bundle, never a raw `DELETE`.
 
 ---
 
@@ -105,6 +119,24 @@ A preview branch created WITHOUT production data has 0 `auth.users` → login fa
 
 ### Cron-only RPC appears dead on a branch (#80)
 pg_cron state may not transfer to branches. Verify cron-invoked RPCs against PRODUCTION `cron.job`, never a branch, before classifying them dead.
+
+### execute_sql in a begin/rollback swallows trigger RAISE (#85)
+Testing whether a trigger BLOCKS a write by wrapping it `begin; <dml>; rollback;` in one `execute_sql` returns `[]` (clean) whether the trigger raised or not — the rollback discards the RAISE, so you cannot tell "blocked" from "allowed". Use a plpgsql sub-transaction that captures the outcome and surfaces it as a NOTICE, then raise to discard side effects:
+```sql
+do $$ begin
+  begin
+    <dml that should be blocked>;
+    raise notice 'PROBE: not blocked';
+  exception when others then
+    raise notice 'PROBE: blocked — %', sqlerrm;
+  end;
+  raise exception 'probe rollback';   -- discard any side effects
+end $$;
+```
+Read the NOTICE from the MCP response / `get_logs`. Lex memory `[[discovery_execute-sql-swallows-raise-in-rollback]]`.
+
+### Hand-edit types.ts for small schema changes — never regen-overwrite (#86)
+`supabase gen types … > types.ts` reformats the WHOLE file (generator style diverges from the committed file) → a 19-line change becomes a ~95K-line diff even after prettier (one case: 48942+/46666− vs a 19+/9− hand-edit). For a small change (a column, an RPC signature) hand-edit the affected `Row`/`Insert`/`Update`/`Functions` blocks. Watch substring collisions when find-replacing a column name (`ppl_link` ⊂ `b_ppl_link`). Reserve a full regen for large multi-object migrations where the diff is unavoidable. Lex memory `[[feedback_supabase-typegen-reformats-whole-file]]`.
 
 ---
 

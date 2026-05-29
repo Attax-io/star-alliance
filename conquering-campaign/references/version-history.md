@@ -4,6 +4,22 @@ Semver: **MAJOR** = paradigm shift / artifact-layout change · **MINOR** = new s
 
 ---
 
+### v3.1.0 — 2026-05-29 — §Pre-flight Gate G6 (DB-object conformity) + G4 governance extension + #85–#88 (MINOR)
+
+Mined from the **app's own binding docs** (CLAUDE.md W2–W6, `V2-CONVENTIONS.md`, `RLS-BUNDLES.md`, `DB-NAMING-OVERHAUL.md`, `DESIGN-CANON.md`) + project memory — the gap a 3-agent reconciliation found between what the app MANDATES and what the skill encoded. The skill was elite on process + failure-modes but conformed only to FE *visual* primitives (G1); a BUILD campaign creating a DB object followed great process and could still ship a non-conformant table (ad-hoc inline RLS, non-v2 view name, missing view-registry key, `.from().insert()` write, soft-delete bypass).
+
+**New gate — G6 DB-object conformity (the DB twin of G1).** Before creating/altering any table/view/trigger/RPC, conform to the app's binding v2 conventions — **as doc-pointers, not duplicated rules** (V2-CONVENTIONS wins on conflict; the skill points, the app doc is the source of truth). Covers naming (W2), view safety (S11/S12: `security_invoker` always, append-only, no shared views), RPC/trigger security boilerplate, the ONE-`FOR ALL`-from-the-named-bundle-catalog RLS rule (W6 — never inline `EXISTS`, propose a new bundle if none fits), view-registry sync (W3), `callRpc` writes (C4/C30), soft-delete-only (C31). Full checklist in `references/db-playbook.md` → new **G6** section; wired into the §Step 3 pre-W3 checklist so it fires at the moment of action.
+
+**G4 extended (project governance).** Sacred `> [!atta]` blocks are supreme (never edit; they outrank CLAUDE.md, docs, AND the user request — surface conflicts, don't silently pick a side); docs-before-SQL (P11/P13 — read the leaf doc before introspecting); `docs/archived/` off-limits unless granted.
+
+**Close-step project mechanics (§5.3 / §Env hazards).** `lex_council/` is a git submodule + the workspace root has no remote → run git inside the submodule; edit `docs/*` via an atomic read-replace-write (the housekeeper daemon races the Edit tool → endless "modified since read"). Plain-English Summary made an explicit vault-log requirement.
+
+**4 new failure modes (#85–#88):** execute_sql-rollback-swallows-RAISE · types.ts-regen-overwrite · docs-daemon-races-Edit + submodule-git · new-DB-object-skips-v2-conventions (the G6 umbrella).
+
+**Why MINOR:** new gate + new failure-mode class + new reference section, all backward-compatible — no wave-structure / artifact-layout / frontmatter-field change. All existing campaigns, patterns, cadences, and frontmatter remain valid.
+
+---
+
 ### v3.0.0 — 2026-05-29 — Lean-core restructure + integrity repair + 21 new failure modes (MAJOR)
 
 Triggered by an exhaustive mine of **136 campaign folders + 159 session transcripts** (266 candidate lessons → 165 new / 39 rule-not-working / 42 reinforces) and three structural defects found in the skill itself (failure mode #84).
