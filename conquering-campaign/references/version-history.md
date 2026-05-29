@@ -4,6 +4,20 @@ Semver: **MAJOR** = paradigm shift / artifact-layout change · **MINOR** = new s
 
 ---
 
+### v3.2.0 — 2026-05-29 — Emit a ready-to-paste `/goal` line at plan approval (MINOR)
+
+Pairs the skill with Claude Code's built-in **`/goal`** command (v2.1.139+) — a session-scoped prompt-based Stop hook that re-fires Claude after each turn until a fast model confirms the condition holds against the transcript. The user always invoked `/conquering-campaign` + `/goal` together; this collapses the double-invocation.
+
+**What it is NOT:** a skill cannot set `/goal` (a skill is a prompt; `/goal` is user-typed / `-p`). So this is the portable Tier-1 integration, not a hard merge.
+
+**What changed:** §Step 2 now emits ONE ready-to-paste `/goal <condition>` block at plan approval, built from the plan's Q9 success criteria + "all phases `completed`, `99-risk-sweep.md` written, tsc+lint clean, <interaction-recipe outcome>". The condition is phrased for `/goal`'s **transcript-only evaluator** (it can't read files / run tools), capped ≤4000 chars, with a turn bound. New `goal_line:` frontmatter records it for `--resume` re-paste. New failure mode **#89** (writing a `/goal` condition as unobservable file-state). Pasting the line is OPTIONAL — attended runs ride the cadence; it's for hands-off runs.
+
+**Considered + rejected:** a Tier-2 campaign-guard Stop hook in settings.json (auto-enforces persistence while a plan is `status: in-progress`). Rejected as the default — machine-local (doesn't sync), rebuilds a maintained built-in, and a self-blocking hook is a footgun needing an `awaiting-approval`/`blocked` escape protocol. Tier 1 ships with the skill to every machine + Cowork with zero risk.
+
+**Why MINOR:** new §Step 2 discipline + frontmatter field + failure mode, fully backward-compatible.
+
+---
+
 ### v3.1.0 — 2026-05-29 — §Pre-flight Gate G6 (DB-object conformity) + G4 governance extension + #85–#88 (MINOR)
 
 Mined from the **app's own binding docs** (CLAUDE.md W2–W6, `V2-CONVENTIONS.md`, `RLS-BUNDLES.md`, `DB-NAMING-OVERHAUL.md`, `DESIGN-CANON.md`) + project memory — the gap a 3-agent reconciliation found between what the app MANDATES and what the skill encoded. The skill was elite on process + failure-modes but conformed only to FE *visual* primitives (G1); a BUILD campaign creating a DB object followed great process and could still ship a non-conformant table (ad-hoc inline RLS, non-v2 view name, missing view-registry key, `.from().insert()` write, soft-delete bypass).
