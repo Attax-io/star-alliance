@@ -2,6 +2,33 @@
 
 Full wave-by-wave brief templates for subagent dispatch. Two top-level sections — one per mode. Read the right section before launching each wave.
 
+---
+
+## Deterministic orchestration (Workflow tool) — optional executor for the read-only waves
+
+On **Claude Code CLI**, when the user has opted into orchestration, the read-only fan-out the skill already does can run on the deterministic **Workflow tool** instead of the in-message `Agent`-call dispatch. This is an OPTIONAL executor, never a dependency — absent the tool (Cowork/headless) or unprompted, the in-message dispatch below runs unchanged. Probe + skip table: SKILL.md §0.7. EMIT (not invoke), per-wave after discovery: SKILL.md §Step 2.
+
+**Why narrow.** The in-message dispatch ALREADY runs concurrently and ALREADY barriers (the main loop cannot proceed until every tool-result returns). So a deterministic barrier buys little for the ordinary parallel `Agent`-call wave. The genuine wins are for a **true scripted batch** — the `>20-file source-walk` — and for write fan-outs needing filesystem isolation.
+
+**Eligibility.** ONLY read-only parallel-barrier waves (W1 / W2 / W3-audit), the `>20-file source-walk`, and an approved NON-DB fan-out write sweep. NEVER the planning interrogation, any `AskUserQuestion` gate (forced_gate, pivot-chain, promotion, >5-min-batch confirm), W3 DB/red writes, or W4 synthesis (the boundary mirrors exactly why a skill emits `/goal` rather than setting it).
+
+**Primitive mapping** (ship this table, not a copy-paste script — a hard-coded sketch with concrete paths doubles the #84 sync-drift trap):
+
+| Wave / pattern | Primitive | Agent `schema` shape | Failure modes addressed |
+|---|---|---|---|
+| `>20-file source-walk` | `pipeline(files, inspect)` | `{ jsonPath, count, anomalies[] }` | #42 (enforced JSON-on-disk + auto-retry), #39/#40 (harness checkpoint + `resume`), #75 (`log`) |
+| W1 / W2 / W3-audit fan-out | `parallel(thunks)` + `schema` | `{ outputPath, sectionsWritten[], counts, anomalies[], status }` | marginal vs in-message dispatch — emit only for hands-off / large runs; #75 heartbeat |
+| Approved ≥5-file NON-DB sweep | `parallel` + `isolation:'worktree'` | `{ file, converted, deviationNeeded }` | #91 (main writes shared docs post-barrier; agents return summaries only) |
+| Scope-survey count | `parallel` (3 strategies) + `Math.max` | `{ n }` | #76 (multi-strategy reconcile, not one single-line regex) |
+
+**Completeness, not just existence.** `parallel()` nulls an ERRORED agent (the deterministic form of "relaunch the missing task"), but a **truncated-but-succeeded** agent returns a thin-but-valid result a shallow schema accepts. So every `schema` MUST carry completeness predicates (required-non-empty fields, min counts), and the main-agent "spot-check one for completeness" step stays even under the script.
+
+**EMIT timing.** An eligible script consumes prior-wave output (the source-walk file list comes from W1; W2 reads W1 findings), so emit it **per-wave just-in-time with real paths**, never a single plan-approval block with placeholder arrays. The script body has no filesystem/Node API, but agents inside use every tool (Read/Grep/Edit/MCP via ToolSearch). The main agent owns every shared artefact (vault-log, risk-sweep, plan frontmatter), written AFTER the barrier.
+
+**Authoring gotcha.** The script validator rejects `Date.now`/`new Date`/`Math.random` (a deterministic-resume guard) and false-positives on the substring `date` inside words like "vali**date**d" / "consoli**date**d" — avoid those words in agent prompts/labels, or the launch errors.
+
+---
+
 ## W0 — Offline pre-scan (both modes, main agent only)
 
 W0 runs before any Claude subagent is dispatched. The main agent executes it directly via the Bash
@@ -302,6 +329,8 @@ Output sections: Method · Module compliance table · Reference pattern (the cle
 Read every findings file. Write `99-synthesis.md` per the template in [templates.md#synthesis](templates.md#synthesis). Don't delegate — synthesis benefits from a single mind reading all the evidence.
 
 ### W4 step 2 — Staged doc rewrites (parallel subagents)
+
+> Workflow-eligible (CLI + opt-in): `parallel` + `isolation:'worktree'`, one agent per doc to `docs/staged/` — but the synthesis that FEEDS them stays main-agent (W4 step 1). See Deterministic orchestration.
 
 One agent per doc. Each gets the synthesis + their target doc + instructions to:
 

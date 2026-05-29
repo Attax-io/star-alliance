@@ -4,6 +4,25 @@ Semver: **MAJOR** = paradigm shift / artifact-layout change · **MINOR** = new s
 
 ---
 
+### v3.5.0 — 2026-05-29 — Workflow-tool deterministic orchestration EMIT (MINOR)
+
+Pairs the skill with Claude Code's deterministic **Workflow tool** (a JS script orchestrating subagents via `parallel`/`pipeline`/`schema`-checked returns/`log`/`resume`) — the third instance of the "compose with a main-loop/external feature via a portable EMIT" move after v3.2.0 (`/goal`) and v3.3.0 (`spawn_task`). Motivated by the user asking whether the skill could be upgraded with the Workflow tool; designed + adversarially critiqued via a 4-agent workflow (which was itself the read-only structured-fan-out the integration targets).
+
+**The honest framing (from the adversarial review).** The skill ALREADY fans out subagents in parallel via in-message `Agent`-call dispatch, and that dispatch ALREADY barriers (the main loop blocks until every tool-result returns). So the Workflow tool's marquee deterministic-barrier buys little for the everyday wave. The genuine win is NARROW: the `>20-file source-walk` is a true scripted batch (hand-rolled today with `fs.appendFileSync` + checkpoint-every-K) — `pipeline()` + `schema` + harness `resume` retires #39/#40/#42/#75 there. Write fan-outs gain `isolation:'worktree'`. Everything else is marginal.
+
+**What changed:** §0.7 capability probe + skip table (mirrors the Ollama W0 skip table); §Step 2 emits a ready-to-run script — but **per-wave just-in-time with real paths**, NOT a single plan-approval line, because an eligible script consumes prior-wave output (explicitly NOT the same as the `/goal` single declarative line, which has no such dependency); `workflow-orchestration` named pattern; `workflow_available` / `workflow_emitted` frontmatter; full eligibility + primitive-mapping TABLE (not a copy-paste sketch — a hard-coded script with paths would double the #84 drift trap) in references/wave-playbook.md → Deterministic orchestration. New failure modes **#93** (hand-orchestrated batch non-determinism — scoped to the source-walk loop, NOT over-claiming #41/#91) + **#94** (Workflow-as-hard-dependency / unprompted-invocation — the portability + opt-in trap).
+
+**Considered + rejected:** (a) making the script the DEFAULT path or having the skill auto-invoke it — breaks Cowork/headless portability + violates the explicit-opt-in constraint; the in-message prose dispatch stays the portable default. (b) a single plan-approval EMIT like `/goal` — the script consumes discovery output that doesn't exist at approval → placeholder arrays that fail silently. (c) encoding W1/W2/W3-audit/W4 as workflow scripts — redundant with the already-barriered in-message dispatch; only the source-walk batch + write fan-outs clear the bar.
+
+**Why MINOR:** new §0.7 + §Step 2 sub-section + a discipline + a failure-mode class + 2 frontmatter fields, fully backward-compatible — no wave-structure, artifact-layout, cadence, or existing-frontmatter change. Every wave, named pattern (PDAAV, RIBS, source-walk, fan-out sweep), and cadence remains valid; absent the tool the skill behaves identically to v3.4.0.
+
+---
+
+## v3.4.0 — 2026-05-29
+
+- §Subagent dispatch: new **fan-out sweep** named pattern — sanctioned exception to "build-W3 writes by main agent" when ≥5 disjoint sibling files need the SAME mechanical behavior-preserving refactor (one general-purpose subagent per file + canonical-reference brief), gated by a main-agent **structural-grep matrix** (tsc/lint prove compile, grep proves conversion) + line-by-line deep-review of the 1–2 riskiest. Resolves the #74 context-exhaustion vs W3-main-writes tension.
+- #91 (fan-out subagents collide writing a shared doc → return summaries, main consolidates) + #92 (first live consumer of a dormant/barrel-promoted primitive hits a latent runtime bug tsc/lint miss → treat as interactive verification). From the container-action-zone-ux campaign.
+
 ### v3.3.0 — 2026-05-29 — §5.7 auto-spawns a post-campaign `/cleanup` follow-up session (MINOR)
 
 Closes the loop with the **cleanup** skill: the user always ran `/cleanup followups` by hand after a campaign — now conquering launches it. At close (after §5.5 `status: completed` + §5.3 vault-log), §5.7 calls `mcp__ccd_session__spawn_task` to spin up a FRESH session + worktree that runs `/cleanup followups` (+ mode-specific sweeps for what the campaign touched), with a **self-contained** handoff prompt that inlines the `99-risk-sweep.md` ## Open items + touched-surface list + the campaign path.
