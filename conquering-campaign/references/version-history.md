@@ -4,6 +4,18 @@ Semver: **MAJOR** = paradigm shift / artifact-layout change · **MINOR** = new s
 
 ---
 
+### v3.3.0 — 2026-05-29 — §5.7 auto-spawns a post-campaign `/cleanup` follow-up session (MINOR)
+
+Closes the loop with the **cleanup** skill: the user always ran `/cleanup followups` by hand after a campaign — now conquering launches it. At close (after §5.5 `status: completed` + §5.3 vault-log), §5.7 calls `mcp__ccd_session__spawn_task` to spin up a FRESH session + worktree that runs `/cleanup followups` (+ mode-specific sweeps for what the campaign touched), with a **self-contained** handoff prompt that inlines the `99-risk-sweep.md` ## Open items + touched-surface list + the campaign path.
+
+**Mostly wiring, not new machinery:** cleanup's `followups` mode already locates the most-recent `status: completed` campaign and greps its `99-risk-sweep.md` `## Open items` / `spawn_task` / `follow-up` markers; conquering already writes that risk-sweep + flips the status. The only missing link was the spawn — now added at §5.7 + a G5 close-checklist bullet.
+
+**Durable fallback:** if `spawn_task` is unavailable (Cowork/headless) or the chip is dismissed, the committed risk-sweep open-items ARE the queue a later `/cleanup followups` finds — the handoff survives. New failure mode **#90** (self-containment of the spawn prompt + don't-double-spawn-on-pivot).
+
+**Why MINOR:** new §5.7 close step + G5 bullet + #90, fully backward-compatible.
+
+---
+
 ### v3.2.0 — 2026-05-29 — Emit a ready-to-paste `/goal` line at plan approval (MINOR)
 
 Pairs the skill with Claude Code's built-in **`/goal`** command (v2.1.139+) — a session-scoped prompt-based Stop hook that re-fires Claude after each turn until a fast model confirms the condition holds against the transcript. The user always invoked `/conquering-campaign` + `/goal` together; this collapses the double-invocation.
