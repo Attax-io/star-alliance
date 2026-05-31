@@ -4,6 +4,16 @@ Semver: **MAJOR** = paradigm shift / artifact-layout change · **MINOR** = new s
 
 ---
 
+### v3.6.2 — 2026-05-30 — Worktree verification (no node_modules) + BUILD-re-verifies-AUDIT-counts (PATCH)
+
+Reflection-pass over **Campaign A** (FE adopt-and-relocate — the audit's first FE build, shipped on `feat/campaign-a-fe-adopt`). Two field-proven clarifications to existing sections — no new wave/artifact/cadence — hence PATCH.
+
+**What changed:**
+- **#95 completed.** §Environment hazards + failure-modes `95.`: a fresh `git worktree` has NO `node_modules` (gitignored, not copied) → `tsc`/`lint`/preview can't run until you symlink every `node_modules` dir from the primary checkout (`find . -maxdepth 3 -name node_modules`); the symlink resolves workspace `@repo/*` to the primary's `packages/`, so confirm `git status packages/` is clean there first (else you verify against the concurrent-actor-dirty source). Much faster than `npm install` in the worktree. Campaign A symlinked root + `apps/web` and verified green.
+- **#100 (new).** §Common failure modes + §Step 3 + G1: a BUILD extending an AUDIT must re-verify the audit's "N files share an identical block" structural count against live source before the extraction edit — Campaign A's FE-2 found the "10 files / 15 fields / byte-identical" claim held for only 4 rows / 8 fields (the other 6 diverged in casing / nullability `?` vs `| null` / field presence / mapper fallbacks / no-block). Extract only the provably-identical subset; record scope + exclusions in the primitive's doc comment; never force a merge needing consumer edits. The BUILD/extension twin of #8 + #32.
+
+---
+
 ### v3.6.1 — 2026-05-29 — Concurrent-actor git isolation + off-pipeline migration apply + DROP show-gate + gh handoff (PATCH)
 
 Reflection-pass over the **app-wide-consolidation audit + its first two built campaigns (B — BE mechanical simplify; E — perf FK-indexes)**. Four field-proven DB/git disciplines that the campaigns invented at execution time but the skill hadn't codified. All four are clarifications/sub-patterns to existing sections — no new wave, artifact, or cadence — hence PATCH.
