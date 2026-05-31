@@ -1,10 +1,10 @@
 ---
 name: cleanup
-version: 1.8.1
+version: 1.9.0
 description: Multi-mode hygiene skill for Lex Council. Today's modes — language (LIVE); consolidate (LIVE, i18n key dedup); errors (LIVE); postgres (LIVE, Supabase advisors + pg health, auto-fix FK indexes, flag schema issues for campaign); lint (LIVE, ESLint --fix safe rules + tsc, surface architectural violations); consolidate-code (LIVE, code-side duplicate detection via scripts/consolidate_code.py — components/views/RLS-predicates/constants/literals — registry CONSOLIDATION-CANDIDATES.md, byte-compare before merge, dry-run extract); release (LIVE, app-upgrade gate + version bump — runs the lint+errors+postgres+bundle/Next16 hygiene gate then performs the full version bump: app.config.ts + changelog + doc-stamp sync + git block; absorbs the retired update-app-version skill); docs (LIVE, scripts/docs_cleanup.py — frontmatter/wikilinks/orphans/retired-names/artifacts/campaign-drift); followups (LIVE, scripts/followups_cleanup.py — locate/extract/classify deferred items). See UPGRADE-ROUTES.md for the skill roadmap. Run every hygiene mode at once + get one severity-ranked triage dashboard via `scripts/run_all.py` ("run all cleanups"). Use this skill whenever the user says "run cleanup", "/cleanup", "/lex_cleanup", "clean up the languages", "translate untranslated", "i18n cleanup", "fill in translations", "language cleanup", "consolidate translations", "merge safe-to-merge keys", "clear duplicates", "check the dev log", "sweep the dev errors", "what errors did i hit", "fix the dev errors", "check postgres", "check the db health", "run the postgres sweep", "check supabase advisors", "fix the advisor issues", "check the db errors", "run lint", "fix the lint errors", "sweep the lint issues", "check tsc", "run eslint", "sync the doc footers", "doc cleanup", "finish the followups", "close the followups", "bump the version", "update the app version", "release X.Y.Z", "ship a release", "cut a new version", or any phrasing that implies sweeping the app for a class of accumulated drift after new pages or keys or campaigns landed. Auto-discovers scope, parallelizes the heavy work across N subagents (5 for language; 1 per planet for docs), applies results, verifies, and delegates the vault log to vault-log-compliance. Skill is upgradable — add new modes by appending a §Mode section + adding a router branch under §Workflow; bump the `version` per §Versioning whenever the skill changes.
 ---
 
-# Cleanup — Lex Council hygiene sweeps (v1.8.1)
+# Cleanup — Lex Council hygiene sweeps (v1.9.0)
 
 This skill packages the operational recipes for periodic cleanup passes that
 the app accumulates between feature builds. Each mode is independent; the
@@ -79,6 +79,37 @@ very different blast radius.
 If the user's phrasing matches more than one mode (e.g. "run cleanup after
 that campaign"), prefer `followups` over `docs` — the post-campaign sweep
 is more specific.
+
+### Step CL — Closeout: app patch bump (every mode, binding)
+
+Every cleanup session that **applies at least one change** bumps the app
+version's last segment by 1 (e.g. `1.7.26 → 1.7.27`) — no matter how big or
+small the sweep. This is a deliberate always-on counter so every hygiene pass
+is traceable to a version.
+
+At closeout — after the mode's edits have landed and verification (tsc/lint, or
+the mode's own checks) is green, alongside the vault log — run **once**:
+
+```sh
+python3 ~/.claude/skills/cleanup/scripts/bump_app_patch.py bump
+```
+
+It increments the PATCH segment in **both** `apps/web/config/app.config.ts`
+(canonical `APP_CONFIG.version`) and `apps/web/package.json` (mirror), keeps them
+in sync, and prints `old → new`. Stage both edited files in the **same commit**
+as the cleanup, and name the new version in the vault log + commit message.
+
+Rules:
+- **Exactly once per session**, even when several modes ran (e.g. `run all
+  cleanups` then a couple of applies) — one session = one patch bump.
+- **Skip when the session applied no changes** — a pure detect-only / dry-run
+  sweep does not bump (`run_all.py` detect, any `*_cleanup.py detect`,
+  `/cleanup release --gate`, `--dry`, or a "nothing to clean" result).
+- **`release` mode does NOT call this** — it performs its own full version bump
+  (possibly minor/major) per `references/release-procedure.md`. Never double-bump
+  in a release session.
+- Drift guard: if the two version literals already disagree the script refuses
+  (exit 3) — run `/cleanup release` to reconcile, then proceed.
 
 ### Mode: language
 
@@ -1879,6 +1910,7 @@ modified.** The contract:
 
 | Version | Date | Summary |
 |---|---|---|
+| **1.9.0** | 2026-05-31 | **Always-on app patch bump (every mode).** New closeout step (§Workflow Step CL): every cleanup session that applies ≥1 change bumps the app version's last segment by 1 (e.g. 1.7.26 → 1.7.27) — no matter how big or small. New `scripts/bump_app_patch.py` (`show` / `bump [--dry]`) increments PATCH in BOTH `apps/web/config/app.config.ts` (canonical) and `apps/web/package.json` (mirror), keeps them in sync, refuses on drift (exit 3). Rules: once per session; skip on no-op/detect-only/dry-run/`--gate`; `release` mode excluded (does its own full bump — never double-bump). Staged in the same commit as the cleanup + named in the vault log. |
 | **1.8.1** | 2026-05-29 | **`followups` is now auto-spawned by `conquering-campaign` at campaign close** (its v3.3.0 §5.7 calls `spawn_task` → a fresh session/worktree runs `/cleanup followups` with the campaign's `99-risk-sweep.md` ## Open items inlined). Doc note added to the followups mode recording the pairing; **no script change** — the mode already locates the most-recent `status: completed` campaign + greps `## Open items` / `spawn_task` / `follow-up`. The committed risk-sweep stays the durable fallback if the spawn is skipped/dismissed. |
 | **1.8.0** | 2026-05-29 | **Tier-0 lesson-wiring + Tier-1 orchestrator (resolves UPGRADE-ROUTES R4/R5/R7).** Wired 7 codified-but-never-built lessons into their scripts: **L9/L10/L15/L17** → `postgres_cleanup.py detect` now emits + classifies the security_invoker-missing / stale-prosrc / permissive-RLS (`qual='true'`) / dead-`service_role` / rls-enabled-no-policy health queries (were prose-only, depended on Claude remembering); **L11 + L19** → `lint_cleanup.py` gained a `baseline` subcommand (reports new-on-touched-files vs pre-existing-suppressed) + a view-registry cross-check (every `VIEWS.<key>` usage must exist in `view-registry.ts` — the guaranteed-TS2304 guard; live: 151 keys / 333 callsites / 0 missing); **L14** → `errors_cleanup.py` suppresses ThemeToggle/`Extra attributes` hydration noise; **L16** → `i18n_cleanup.py detect` surfaces untranslatable `window.confirm()` debt (live: 7 calls / 5 files). Bug fixes: `docs_cleanup.py wikilinks` now buckets code-file links (`[[page.tsx]]`) as `code-link` not `broken` (broken 3238→1015); the hardcoded home-path `LEX_ROOT` in lint/docs/followups/consolidate_code replaced with a `default_root()` walk-up (cross-machine portability per W1); `postgres` `datetime.utcnow()`→`now(timezone.utc)`. **NEW `scripts/run_all.py` (R7)** — the `run all cleanups` orchestrator: runs the local hygiene modes detect-only, merges every `/tmp/*.json` into one severity-ranked (CRITICAL→HIGH→MED→LOW) `/tmp/cleanup_triage.md` dashboard + per-mode last-run age; postgres (MCP) + apply-modes excluded. `run` re-runs then merges, `report` merges existing, `--fast` skips the two slowest. Step-0 `run all cleanups` row now points at it. | **All three DRAFT modes go LIVE — `docs`, `followups`, `consolidate-code`** ("add the drafts + upgrade"). Companion scripts written + smoke-tested against the live tree: `scripts/docs_cleanup.py` (610 ln; subcommands frontmatter/wikilinks/orphans/retired-names/artifacts/campaign-drift/all — detect-only, never edits docs; live run surfaced 3,238 broken + 3,717 archived-pointer wikilinks, 393 orphan vault-logs, 17 retired names), `scripts/followups_cleanup.py` (396 ln; locate/extract/classify/mark — execution of doable items stays Claude's job), `scripts/consolidate_code.py` (514 ln; scan/classify/surface/extract — live: PANEL_WIDTH×45, PAGE_SIZE_OPTIONS×2, 119 off-token hex, 3 dup-function groups; `extract` dry-run only, byte-compare hard rule enforced — never auto-merges). Description, §Modes table, Step-0 router, and the three §Mode section headers flipped DRAFT→LIVE; "run all cleanups" now includes docs + followups (consolidate-code + release stay explicit-invoke). **9 LIVE modes, 0 DRAFT.** UPGRADE-ROUTES.md R1/R3/R6 resolved. |
 | **1.6.0** | 2026-05-29 | **`release` mode goes LIVE — merged the retired `update-app-version` skill into cleanup.** The DRAFT `pre-release` gate is promoted to a unified two-phase `release` mode: Phase 1 hygiene gate (lint+errors+postgres + Cloudflare/OpenNext bundle-wall + Next.js 16 hazards → green/red verdict), Phase 2 full version bump (canonical `app.config.ts` + `package.json` mirror decision + `logs/X.Y.Z.md` changelog + `logs/INDEX.md` row + doc-stamp sync to ARCHITECTURE + Vault Core ×3 + git block). Full bump recipe extracted to `references/release-procedure.md` (lifted from the deleted skill, with the 2026-05-29 corrections baked in: ZUSTAND-STORES dropped — archived; Vault Core has THREE stamps; package.json is a real drift-prone mirror, not a 0.x placeholder). Standalone `skills/update-app-version/` deleted. Description + Step-0 router + trigger phrases absorbed ("bump the version", "release X.Y.Z", "ship a release", "make it 1.7.X"). `--gate` flag added for gate-only runs. UPGRADE-ROUTES.md R2 resolved (user chose merge over the recommended hand-off); L20 marked RESOLVED. |
