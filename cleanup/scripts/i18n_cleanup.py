@@ -12,7 +12,7 @@ Default messages root: lex_council/apps/web/public/messages
 Override with --root <path> or CLEANUP_MESSAGES_ROOT env var.
 """
 from __future__ import annotations
-import argparse, collections, glob, json, os, re, sys
+import argparse, collections, glob, json, os, re, subprocess, sys
 from pathlib import Path
 from typing import Iterable
 
@@ -107,6 +107,35 @@ def collect_targets(root: Path, locales: Iterable[str],
     return targets
 
 
+def scan_window_confirm(messages_root: Path) -> list[dict]:
+    """Grep apps/web for window.confirm( calls (L16 — untranslatable i18n debt).
+
+    Purely additive surfacing: these strings can't be covered by the key-scan
+    because they never reach the JSON. messages_root is .../apps/web/public/
+    messages, so .parent.parent is the apps/web tree to grep.
+    """
+    web_root = messages_root.parent.parent  # public/messages → web
+    if not web_root.is_dir():
+        return []
+    try:
+        proc = subprocess.run(
+            ['grep', '-rn', '--include=*.ts', '--include=*.tsx',
+             r'window\.confirm(', str(web_root)],
+            capture_output=True, text=True,
+        )
+    except FileNotFoundError:
+        return []
+    hits: list[dict] = []
+    for line in proc.stdout.splitlines():
+        # grep -rn format: <path>:<lineno>:<text>
+        parts = line.split(':', 2)
+        if len(parts) < 3:
+            continue
+        path, lineno, text = parts
+        hits.append({'file': path, 'line': lineno, 'text': text.strip()})
+    return hits
+
+
 def cmd_detect(args):
     root = Path(args.root) if args.root else default_root()
     out_dir = Path(args.out_dir).resolve()
@@ -124,6 +153,17 @@ def cmd_detect(args):
     for loc, n, p in summary:
         print(f"{loc:<6} {n:>8}  {p}")
     print(f"\nTotal: {sum(n for _, n, _ in summary)} (ns, key, en) tuples across {len(locales)} locales")
+
+    # L16 — additive surfacing: window.confirm() calls are untranslatable i18n debt
+    # the key-scan above can't see. Cheap one-grep pass over the apps/web tree.
+    confirm_hits = scan_window_confirm(root)
+    if confirm_hits:
+        n_files = len({h['file'] for h in confirm_hits})
+        wc_path = Path('/tmp/i18n_window_confirm.json')
+        with wc_path.open('w', encoding='utf-8') as f:
+            json.dump(confirm_hits, f, ensure_ascii=False, indent=2)
+        print(f"\U0001F6A9 {len(confirm_hits)} window.confirm() calls "
+              f"(untranslatable — i18n debt) across {n_files} files → {wc_path}")
 
 
 def set_nested(d: dict, dotted_key: str, value):
