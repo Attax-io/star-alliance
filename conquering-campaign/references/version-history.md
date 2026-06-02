@@ -4,6 +4,24 @@ Semver: **MAJOR** = paradigm shift / artifact-layout change · **MINOR** = new s
 
 ---
 
+### v3.7.0 — 2026-06-02 — Gate G0 campaign-worthiness triage-or-EXIT + `micro` retired + multiplier scope-gate (MINOR)
+
+Triggered by Atta — "we have used conquering campaign too much lately" — and a mine of the on-disk corpus: **136 campaign folders** (123 build + 13 audit), **74% of build folders (91/123) ≤3 files**, **`scope:` recorded in 0/116 plans**, 19% never reaching `status: completed`, and a `2026-06-02_dark-mode-color-fix` campaign that auto-spawned a `/cleanup` color session (doing a `/cleanup`-mode's job twice). The skill already *told itself* to bounce small work (§Two modes "this is overkill — offer a lighter pass" + the `micro` tier) but it never fired — soft-worded, buried below the mode table, read only AFTER the skill committed, and `micro` still built a campaign. Every gate G1–G6 governed *how to execute well*; none governed *whether to run at all*. This is the skill's own v3.0.0 meta-lesson ("a buried rule fires as a user correction — front-loading is the cure, not more prose") applied to the one boundary that never got a gate.
+
+**What changed:**
+- **New Gate G0 — campaign-worthiness triage-or-EXIT (the FIRST gate, before Step 0; the only gate that decides *whether* to run, not *how*).** Clear the BUILD bar (≥3 real surfaces / multi-phase / must-stay-deployable staging) or the AUDIT bar (real doc↔code/DB reconciliation across the app), else **EXIT**: decline + route to `/cleanup <mode>` (colors/lint/i18n/postgres) · single bug-fix · direct edit under P3, creating NO folder. File count is NOT the bar — *surfaces / staging* is. Override only on explicit user insistence (`g0_override:` frontmatter).
+- **`micro` tier retired** — it IS the G0 exit now (≤2-file/≤10-line work is not a campaign). Its only non-waivable keeps (tsc+lint, §5.3 vault-log P8) are project rules that apply to ANY edit regardless.
+- **Trigger-precedence row 6b** — a NEW request that fails the G0 bar EXITs; row 6b gates rows 7–9 (they start a NEW campaign → only fire after clearing G0), while rows 1–6 attach to an existing campaign/predecessor and bypass G0 (never re-triage in-flight work).
+- **Multiplier scope-gate** — §5.7 `/cleanup` spawn + §Step 2 `/goal` + Workflow emits fire only for scope ≥ medium. A small/express/bug-fix campaign that cleared G0 doesn't multiply into more sessions.
+- **§Skill self-health sprawl metric** — every reflection pass now prints `campaigns / thin(≤3 files) / no-scope-decl` (baseline 2026-06-02: 123 / 91 / 116); a rising thin% or no-scope% means G0 isn't firing.
+- **`g0_override` frontmatter field** + **#101** (over-invocation / ceremony-inflation, the umbrella) + **#102** (`scope:` declared in 0/116 → right-sizing silently dead, the measurement gap that let #101 hide).
+
+**Considered + rejected:** (a) deleting the 91 thin folders — treats the symptom, not the cause; G0 prevents new ones, and the corpus stays as the #101/#102 evidence. (b) hard-blocking the broad trigger phrases ("ship this refactor") in the description — they legitimately match real campaigns too; G0's surface/staging test is the right discriminator, not phrase-banning. (c) making `small`/express exit too — a genuinely multi-surface 4–5-file change with staged verification IS a (small) campaign; the bar is surfaces/staging, not raw file count, so `small` stays.
+
+**Why MINOR:** new G0 gate (new heading + discipline) + 2 failure-mode classes + 1 precedence row + 1 self-health metric + 1 frontmatter field. Fully backward-compatible — every wave, named pattern, cadence, and existing frontmatter field stays valid; a genuine campaign behaves identically. The only behavior change is that sub-campaign work now EXITs instead of spinning ceremony.
+
+---
+
 ### v3.6.2 — 2026-05-30 — Worktree verification (no node_modules) + BUILD-re-verifies-AUDIT-counts (PATCH)
 
 Reflection-pass over **Campaign A** (FE adopt-and-relocate — the audit's first FE build, shipped on `feat/campaign-a-fe-adopt`). Two field-proven clarifications to existing sections — no new wave/artifact/cadence — hence PATCH.

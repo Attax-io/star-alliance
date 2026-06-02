@@ -626,3 +626,31 @@ N+1. **Open questions**
 
 <read-only designation — explicit for the mode/wave>
 ```
+
+---
+
+## Subagent dispatch
+
+- Default subagent type `general-purpose` (specialised agents have constrained write contracts). Hand each a self-contained brief: pre-existing files to read first (incl. `00-w0-offline-prescan.md`), exact output path, frontmatter, sections, and **explicit read-only vs may-write**. Audit + build-W1 are read-only; build-W2 writes only its own phase-plan file; **build-W3 writes are done by the main agent**, not an unapproved subagent.
+- Run a wave's tasks in parallel (one message, multiple Agent calls). Track agent IDs for relaunch. Verify a dispatched file exists on disk before claiming done. After any wait >30s, re-Read the next target before Editing (#41).
+- **Source-walk template** (>20 files inspected → JSON-on-disk, never inline): brief specifies inputs, per-item steps, exact JSON output path `<campaign>/NN-<topic>.json`, "cover every item once, dedupe by <key>, cap at <N>"; reply with counts + anomalies only. The main thread parses one file + builds SQL/UI from the typed shape (#42).
+- **Long batches** (N>20 items) write progress to a sidecar via `fs.appendFileSync('progress.log', …)`, not `console.log` (stdout is buffered to non-TTY) — tailable + survives a kill (#39). Checkpoint incrementally every K (5 for ≤100, 20 for >100); confirm strategy via one `AskUserQuestion` before any >5min batch (#40).
+
+- **Fan-out sweep** (named) — when ≥5 sibling files need the SAME mechanical, behavior-preserving refactor (apply one converted reference to N adapters), "build-W3 writes by main agent" yields to #74 (context exhaustion across N dense files): dispatch one `general-purpose` subagent per **disjoint** file, each briefed with (a) the canonical already-converted reference file, (b) a behavior-preserving mandate (every handler / guard / conditional identical — only restructure), (c) "touch ONLY your file; do NOT write shared docs (#91)". Then the MAIN agent runs the verification gate: full `tsc` + scoped `lint` + a **structural-grep matrix** asserting the target shape on every file (new API present, legacy absent) — tsc/lint prove it compiles, the grep proves it actually converted — and deep-reviews the 1–2 riskiest (money / state-machine) line-by-line; the rest ride the grep + the user's visual pass. Never fan-out writes to a shared file (#91).
+
+- **Workflow-orchestration** (named) — on Claude Code CLI, when the user opted into orchestration AND a wave is a genuine scripted batch (the `>20-file source-walk`, #42) or an approved ≥5-file NON-DB fan-out sweep, the EMITTED Workflow script (§Step 2) replaces the hand-rolled `fs.appendFileSync` batch loop / prose barrier with `pipeline()` (no inter-stage barrier; harness checkpoint + `resume` retires #39/#40), `schema`-checked agent returns (the #42 JSON-on-disk cure, now auto-retried — carry completeness predicates so shallow truncation can't pass), `isolation:'worktree'` for parallel write sweeps, and `log()`/`phase()` heartbeat (#75). The script writes NO shared artefact — the MAIN agent consolidates the vault-log / risk-sweep after the barrier (#91). NOT for the everyday parallel `Agent`-call wave (already barriered in-message) and NEVER for DB/red writes, gates, or W4 synthesis. Absent the tool, the prose dispatch runs unchanged. Detail: references/wave-playbook.md → Deterministic orchestration. (#93, #94)
+
+**Named patterns** (declare in plan frontmatter; full procedures in the playbooks): `PDAAV` / `PDAAV-RIBS` (DB — references/db-playbook.md) · `RIBS` / `RIBS-N` (FE rename+shrink — references/fe-i18n-playbook.md) · source-walk · scoped-lint (§5.2) · fan-out sweep · workflow-orchestration (§Step 2 emit) · checkpoint markers.
+
+---
+
+## Model assignment
+
+| Tier | Who | When | Cost |
+|---|---|---|---|
+| **W0 — Ollama** | main agent via Bash | file listing, grep counts, surface map, doc summarisation | free (local) |
+| **W1–W3 — sonnet** | `general-purpose` subagent | mechanical scanning, route/hook/type mapping, standard pattern work | mid |
+| **W1–W3 — opus** | `general-purpose` subagent | security, RLS, synthesis, money-adjacent, schema/trigger reasoning | highest |
+| **W4 — you** | main agent | synthesis / risk sweep — never delegated | conversation turn |
+
+Effort is set via prompt language (the Agent tool has no effort param): **deep** — "Reason step by step. Think through every implication and edge case. Flag uncertainty rather than guessing." **standard** — no special phrase. **fast** — "Mechanical task. List/count/map only. Don't reason beyond what you observe." opus+deep for security/RLS/synthesis/money; sonnet+fast for mechanical scanning; never deep on a mechanical task; avoid haiku when W0 ran.

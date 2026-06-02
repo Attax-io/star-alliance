@@ -1,10 +1,16 @@
 # Cleanup skill — upgrade routes
 
-Checkup of `cleanup` v1.4.0. Maps every place the skill can still grow, ranked by
+Checkup of `cleanup` v1.9.1. Maps every place the skill can still grow, ranked by
 value × effort. Companion to SKILL.md §Versioning. Re-read this before the next upgrade
 pass so routes aren't re-derived from scratch.
 
-**Current state (v1.8.0):** 9 LIVE modes + a `run_all.py` orchestrator (R7). 0 DRAFT. 7 codified lessons (L9/L10/L11/L14/L15/L16/L17/L19) now wired into their scripts. Cross-machine `default_root()` portability across all scripts. 24 cross-mode lessons (L1–L24).
+**Current state (v1.10.0):** 9 LIVE modes + a `run_all.py` orchestrator (R7) + a `commit_scope.py`
+helper (R10) + an always-on app patch bump on every change-applying sweep (v1.9.0). 0 DRAFT.
+**R1–R7 + R10 all DONE.** 8 codified lessons (L9/L10/L11/L14/L15/L16/L17/L19 + **L27 → `commit_scope.py`**)
+wired into their scripts; cross-machine `default_root()` portability across all scripts. **31 cross-mode
+lessons (L1–L31)** — L25–L31 added 2026-06-02 from mining the heavy 2026-05-30→06-02 usage; L27 now
+mechanized (R10), L25/L26/L28–L31 still prose-only.
+**Open routes: R8 (dead-code mode), R9 (`--since` incremental).**
 
 ---
 
@@ -21,6 +27,7 @@ pass so routes aren't re-derived from scratch.
 | ~~R7~~ | `run all cleanups` orchestrator | **DONE (v1.8.0)** | — | — | `scripts/run_all.py` — runs local modes + ranked `/tmp/cleanup_triage.md` |
 | R8 | `dead-code` / orphan-sweep mode | new mode | MED | M | ts-prune/knip integration |
 | R9 | cross-mode `--since` incremental | enhance all | LOW | S | per-mode offset markers |
+| ~~R10~~ | concurrent-actor commit-scoper | **DONE (v1.10.0)** | — | — | LIVE — `scripts/commit_scope.py` (scan/buildcheck/emit), wired into followups Step F5.5 |
 
 ---
 
@@ -193,6 +200,37 @@ outperforms LLM here (per conquering-campaign §0.5.1 4th skip reason).
 run only sees new drift. Low value until the modes are run frequently.
 
 ---
+
+## R10 — concurrent-actor commit-scoper (from §L27)
+
+> **✅ DONE 2026-06-02 (v1.10.0).** Shipped as `scripts/commit_scope.py` (`scan`/`buildcheck`/`emit`,
+> stdlib-only, `git` via subprocess) + wired into the followups mode as Step F5.5. Live-validated on its
+> own build: 57 dirty files in `lex_council/` → 2 owned correctly isolated from 45 foreign + 12 daemon
+> counter-bumps. The spec below is kept as the build record.
+
+**Why now:** the followups sweep auto-spawned by `conquering-campaign` at campaign close (v1.8.1)
+lands in a working tree that a *parallel* session is actively editing (FE source + DB + all-locale
+i18n + docs-daemon counter bumps). Three of the four 2026-05-30→06-02 sweeps hit this: 35–119 dirty
+files belonging to other workstreams sat next to the campaign's own. A naive `git add -A` commits
+someone else's half-finished work and can break `main`. §L27 codifies the discipline; this route
+mechanizes it so it isn't re-derived by hand each sweep.
+
+**Target:** a `scripts/commit_scope.py` (or a `followups`/`run_all` subcommand) that, given a campaign
+dir (or an explicit owned-file list), emits:
+
+1. `git status --porcelain` → the full dirty set.
+2. The **campaign-owned** subset = files named in the campaign plan / vault log / `git diff` of the
+   campaign's own commits, MINUS the exclusion tells (docs `claude_hits:` counter-only diffs, barrel
+   `index.ts` export adds you didn't author, `messages/*` from a parallel locale run).
+3. A **buildability gate**: parse the staged files' imports; fail if any resolves to a still-dirty
+   sibling (so the partial commit can't leave `main` un-buildable in isolation).
+4. The exact `git add <list>` block for the human to run (never auto-commits — staging is the deliverable).
+
+**Effort:** S — it's git porcelain + a shallow import-graph walk; the exclusion heuristics are already
+written in §L27. Pairs naturally with wiring L25–L31 (the lessons are the spec).
+
+**Caveat:** git lives **inside** `lex_council/` (submodule); the script must `cd` there, not the
+workspace root (memory `discovery_lex-council-git-submodule`).
 
 ## Version-path guidance
 

@@ -90,6 +90,16 @@ Recurs in any campaign touching client state that persists across reloads (theme
 - **JSON hygiene (#72):** (a) deleting the alphabetically-last key leaves a trailing comma → canonicalize the JSON after any key delete; (b) renaming an EN key orphans DB `key_path` overrides silently — cross-reference key_path vs live JSON before saving; (c) reordered interpolation needs NAMED params `t('key',{month,day})`, never positional; (d) register a locale in `routing.ts` only AFTER its message files exist; (e) re-run the dead-key grep after any phase that ADDS `t()` calls (a P1-purged key can resurrect in P2).
 - **`@/i18n/navigation` with `pathnames:{}`:** `useRouter().push` / `<Link>` types compute to `never` — use `next/navigation` for `push`, `next/link` for `<Link>`; only `usePathname` from `@/i18n/navigation` is safe. Lex memory `[[discovery_i18n-navigation-pathnames-empty]]`.
 
+---
+
+## Conformity & consolidation (the always-on disciplines)
+
+**Conformity:** read the pattern docs + the reference's FULL render function before writing (G1/P4). Match visual hierarchy, token usage (`C.*`, `<MIcon>`, design tokens — no hardcoded hex / raw Material Symbols / Tailwind), naming, layout direction (LTR container for Arabic DB content in an English panel). Resolve inconsistency toward the majority pattern; don't add to it. At W4 run a conformity check incl. a stale doc-comment sweep for every design fact the campaign changed.
+
+**Consolidation:** (1) inventory existing shared primitives; (2) extract before composing when 3+ consumers need a pattern; (3) extend a near-duplicate rather than fork; (4) **grep before changing a shared default** — decide the new value across ALL sites in one pass (the grep feeds the §W3 stale-override sweep); (5) **N=3+ union-prop audit** — when a ≥3-value render-mode union prop has N-1 legacy values, drop the prop + the dead branches + helpers used only by them, in the same phase (#58). Extraction phase comes BEFORE consumption phases. At cleanup: grep zero live imports of replaced components, delete, confirm `tsc`.
+
+---
+
 ### Translation generation (extends `generation_strategy: deferred-parallel-subagents`)
 - Plan must list **intentionally-EN values** (brand names, numeric stats, abbreviations CSV/ID/MFN, URLs) as an exclude list AND **valid cognates per locale** (FR: Finances, Documents; ES: Error, No) so the EN=locale check doesn't false-alarm.
 - **Locale anchor protocol:** each translation subagent reads 5–10 existing translated values in the target locale before generating, to anchor tone/register.
