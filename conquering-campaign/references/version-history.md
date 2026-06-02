@@ -4,6 +4,22 @@ Semver: **MAJOR** = paradigm shift / artifact-layout change · **MINOR** = new s
 
 ---
 
+### v3.7.1 — 2026-06-02 — Completed the lean-core-v2 extraction (§Env hazards + §Deploy/§Self-health → references) (PATCH)
+
+A parallel `cc WIP` commit (claude-skills `af46561`, same day) had begun extracting three encyclopedic SKILL.md sections into their own reference files but left it half-done — the files existed (`references/env-hazards.md`, `references/skill-maintenance.md`) but orphaned: the sections were still inline in SKILL.md, nothing referenced the new files, and `skill-maintenance.md` was a pre-v3.7.0 snapshot (no over-invocation sprawl metric, stale self-health grep, "700" vs SKILL's "1200" core target). At Atta's "finish what's open" this completes it.
+
+**What changed:**
+- **§Environment hazards** (the dense inline paragraph) → **references/env-hazards.md** (exploded per-hazard index). SKILL.md keeps a stub heading + a one-line pointer naming the hazard #s (#20/#28/#41/#48/#51/#63/#73/#87/#95/#99).
+- **§Deploy & sync** + **§Skill self-health** → **references/skill-maintenance.md** (copy-table + sync procedure + the self-health checks incl. the G0 sprawl metric). SKILL.md keeps two stub headings + pointers.
+- **Refreshed `skill-maintenance.md`** to the shipped v3.7.0 self-health: the over-invocation sprawl metric (pruned of `node_modules`/worktrees), the digit-safe referenced-file grep, the corrected baseline (161 / 115 / 49-of-153), a ~700-line core target (the lean intent).
+- Wired both files into SKILL.md §Reference files; the core shrank ~40 lines.
+
+**Why stubs, not deletions:** failure-mode rows + cross-refs point at `§Environment hazards` / `§Deploy` / `§Skill self-health` by name — keeping the headings as one-line pointers preserves every anchor (the same lean-core pattern the skill already uses, "full prose in the playbooks"). Also avoided clobbering the parallel session: `af46561` is committed (not uncommitted-tree state), so this is sequential git on `main`, not the #33/#95 co-mingle hazard.
+
+**Why PATCH:** pure doc relocation — no new gate, discipline, failure-mode, wave, cadence, or frontmatter field; behavior identical with the tool absent or present. (A small continuation of the existing v3.0.0 split, not the new reading model that made v3.0.0 a MAJOR.)
+
+---
+
 ### v3.7.0 — 2026-06-02 — Gate G0 campaign-worthiness triage-or-EXIT + `micro` retired + multiplier scope-gate (MINOR)
 
 Triggered by Atta — "we have used conquering campaign too much lately" — and a mine of the on-disk corpus: **161 campaign folders** (123 in the primary lex build root), **74% of the lex build folders ≤3 files** (71% across all roots), 19% never reaching `status: completed`, and a `2026-06-02_dark-mode-color-fix` campaign that auto-spawned a `/cleanup` color session (doing a `/cleanup`-mode's job twice). The skill already *told itself* to bounce small work (§Two modes "this is overkill — offer a lighter pass" + the `micro` tier) but it never fired — soft-worded, buried below the mode table, read only AFTER the skill committed, and `micro` still built a campaign. Every gate G1–G6 governed *how to execute well*; none governed *whether to run at all*. This is the skill's own v3.0.0 meta-lesson ("a buried rule fires as a user correction — front-loading is the cure, not more prose") applied to the one boundary that never got a gate.
