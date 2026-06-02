@@ -1,9 +1,19 @@
 # Conquering-campaign over-invocation — reflection input (2026-06-02)
 
-> **Status: DRAFT / unshipped.** Lessons + proposed v3.7.0 route mined from the last ~3 days of
-> sessions + the on-disk campaign folder corpus. Trigger: Atta — "we have used conquering campaign
-> too much lately." Not yet wired into SKILL.md. This session deliberately did NOT open a campaign
-> to produce this (correct — analysis is read-only + one notes file, exactly the bar the fix defends).
+> **Status: SHIPPED as v3.7.0 (2026-06-02).** Lessons + route mined from the last ~3 days of sessions
+> + the on-disk campaign folder corpus. Trigger: Atta — "we have used conquering campaign too much
+> lately." Now wired into SKILL.md as **Gate G0** + `micro`-retired + precedence row 6b + the multiplier
+> scope-gate + the self-health sprawl metric + failure modes #101/#102. This session deliberately did
+> NOT open a campaign to produce this (correct — read-only + a few notes files, exactly the bar the fix defends).
+>
+> **⚠ CORRECTION (same session, an #32 instance).** An earlier draft of the scope statistic below
+> read "0/116 plans declare `scope:`." That zero was a measurement artifact — a zsh `for f in
+> */00-plan.md …` glob hit `no matches found` and aborted the mining loop before it read a file.
+> Re-verified with `grep -l '^scope:'`: **84/116 (72%) DO declare scope** (104/153 across all roots).
+> The scope rows below are corrected; the thin-folder / over-invocation evidence (#101) was measured
+> independently and stands. #102 was reframed from "discipline dead" to "incompletely enforced +
+> sizing ≠ gating." Also: the raw folder total is **161** (pruned of `node_modules` + #95 worktree
+> copies — an unpruned `*-campaigns` find triple-counts to 539); the lex build root holds 123.
 
 ---
 
@@ -28,7 +38,7 @@ pre-flight gate (G0) with an EXIT verdict** — don't add more prose.
 | Total campaign folders (build + audit) | **136** (123 build + 13 audit) | v3.0.0 mined "136 campaigns" on 2026-05-29 — i.e. the baseline was already inflated; the reflex is the norm, not the exception |
 | Build folders with **≤3 files** | **91 / 123 (74%)** | a real multi-wave BUILD = plan + per-phase + `99-risk-sweep` ≥4 files. 74% never produced the full artifact set → sub-campaign work in campaign clothes |
 | Build folders with exactly **1 file** | many (`drop-gfn-linking-columns`, `user-prefs-drop-language`, `customer-gfn-access-table`, `member-filter-per-role`, `auto-contract-on-fee-invoice`, …) | single-migration / single-view jobs. Textbook over-invocation |
-| Build plans recording **`scope:` frontmatter** | **0 / 116** | the right-sizing tier the skill leans on is *never written* → the discipline is silently dead (#102) |
+| Build plans recording **`scope:` frontmatter** | **84 / 116 (72%)** ✏️corrected | declared in the *majority* — so NOT "dead" (the 0/116 was a glob-abort artifact). The real gap (#102): ~28% omit it, and a declared scope only *sizes* a campaign — it never asks whether to open one |
 | Build plans that **never reached `status: completed`** | **22 / 116 (19%)** | abandoned ceremony — pollutes the §0.0 resume-scan + the lesson-mine |
 | Build folders with **no `00-campaign-plan.md` at all** | **7** | empty/skeleton-less folders — the §0.0 "empty folder = planning failure" smell, at volume |
 | Campaigns in the **last ~3 days** | wages-tax-calculator · dark-mode-color-fix · user-manual-authoring · financial-model-build · postgres-security-perf · unified-point-ledger · auto-credit-limit | ~2.5/day for a one-maintainer app = "too much lately" confirmed |
@@ -57,9 +67,10 @@ fires as a user correction.*
    bottom of the mode section, and read only *after* the skill is already running. It is prose, not a
    gate.
 2. **Scope decision tree (§Step 2)** — has a `micro` tier, but `micro` still produces *a campaign*
-   (just trims artifacts). And `scope:` is recorded in 0/116 plans, so the tree isn't being applied at
-   all. `micro` is self-defeating: "files ≤2 ∧ lines ≤10 ∧ no new files ∧ no migrations → no plan file,
-   conversation IS the plan" describes something that **should not be a campaign at all**.
+   (just trims artifacts). `scope:` IS declared in ~72% of plans (corrected — see banner), so the tree
+   is mostly applied; the real flaw is that a declared scope only *sizes* a campaign and never asks
+   whether to open one. `micro` is self-defeating: "files ≤2 ∧ lines ≤10 ∧ no new files ∧ no migrations
+   → no plan file, conversation IS the plan" describes something that **should not be a campaign at all**.
 3. **Trigger-phrase precedence (§326)** — 9 rows, *all* of which assume a campaign is happening. The
    lowest-precedence default (row 9) is "Standard planning interrogation" = run a campaign. **There is
    no EXIT row.** The table cannot bounce a request out of the skill.
@@ -100,17 +111,17 @@ buried — front-loading + cutting bulk is the cure, not more prose").
    / migration-bearing)`.
 4. **`scope:` becomes a measured invariant.** §Skill self-health gains a sprawl check it reports at
    every reflection pass: `% folders missing scope:`, `% never-completed`, `% ≤3-file`, `% no-plan`.
-   Drift becomes visible so the skill self-corrects over time. (0/116 today is the baseline.)
+   Drift becomes visible so the skill self-corrects over time. (Baseline 2026-06-02, pruned: 161 folders / 115 thin (71%) / 49-of-153 plans missing scope.)
 5. **Scope-gate the auto-spawn multiplier.** §5.7 `/cleanup` spawn + `/goal` emit + Workflow emit fire
    only for scope ≥ **medium**. A `small`/`bug-fix` job that slipped past G0 doesn't spawn a session.
 6. **New failure modes:**
    - **#101 — Campaign over-invocation / ceremony-inflation.** Symptom: a dated folder + waves + spawn
      created for ≤small work. Evidence: 74% ≤3-file folders, 0 scope declarations, color-fix → spawned
      color-cleanup. Cure: G0 EXIT + micro-folds-into-exit + precedence row 0 + scope-gated auto-spawn.
-   - **#102 — Scope tier declared in 0% of plans → right-sizing discipline silently dead.** The
-     declaration gate (#54) forbids *silent trims* but never forced `scope:` to be *written* on the
-     non-trimmed path. Cure: self-health sprawl metric (#4 above) + make `scope:` a plan-approval
-     blocker the way the model-assignment table is (P2).
+   - **#102 — scope-declaration incompletely enforced + sizing ≠ gating.** ~28% of plans omit `scope:`
+     (NOT 0% — that was a glob-abort artifact; true rate 72%), and even a declared scope only *sizes* a
+     campaign, never asks whether to open one. The declaration gate (#54) operates inside "this IS a
+     campaign." Cure: G0 gates the run; self-health sprawl metric (#4) pushes declaration → 100%.
 
 **Why MINOR:** new G0 gate + 2 failure-mode classes + 1 precedence row + 1 self-health metric.
 Backward-compatible — every wave, pattern, cadence, and frontmatter field stays valid; a genuine
