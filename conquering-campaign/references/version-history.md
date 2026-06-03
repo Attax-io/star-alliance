@@ -4,6 +4,36 @@ Semver: **MAJOR** = paradigm shift / artifact-layout change · **MINOR** = new s
 
 ---
 
+### v3.8.1 — 2026-06-04 — Playbook patch: RLS-IMPERSONATE, anon-RPC reads, dormant-gate, RTL transform (PATCH)
+
+Additive field-lessons from the latest sessions (2026-06-02 → 06-04), mined in `references/REFLECTION-2026-06-04.md`. No new gate/wave/cadence — playbook + failure-mode additions only.
+
+**What changed:**
+- **`RLS-IMPERSONATE` named pattern (#104)** — the §2a-RLS effective-access check formalized into a named both-direction proof (`BEGIN … ROLLBACK` + `SET LOCAL ROLE authenticated` + `set_config('request.jwt.claims', …)` + a discriminating table) plus the cheap class detector `pg_policies WHERE qual='true' AND 'authenticated'=ANY(roles)`. From the 2026-06-02 security audit (report/counter/HR tables shipped `USING(true)` → customer reads all rows). Added to §Named patterns, G3, db-playbook §2a.
+- **G6 anon-RPC public-read sub-rule (#105)** — public/anon/SSR surfaces read through an anon-granted `SECURITY DEFINER` RPC, never a `security_invoker` view (anon base-SELECT → silent `42501`; the sitemap emitted 0 URLs). db-playbook G6 item 8.
+- **Dormant-gate audience probe (#106)** — G5 close-checklist now counts the live rows a new perm/scope/tier admits; a zero-audience gate ships as `CHK-` "dormant until X", not a silent green (`admin_scope=0` admits nobody). Generalizes #92.
+- **RTL directional-transform trap (#107)** — `translateX(100%)`/`right:0` in an edge slide-over doesn't flip under RTL; use `lib/rtl.ts` + `<SlideOverPanel>` + `useIsRtl`. fe-i18n-playbook §New FE lessons. Plus the E6 id-type-agnostic bulk-primitive one-liner.
+- **Hardened #96** — the preview pipeline is *reliably* dead (a fresh branch is `MIGRATIONS_FAILED` AND dataless), so a prod `BEGIN…ROLLBACK` dry-run IS the validation path; don't spend turns branching. failure-modes #96 + db-playbook off-pipeline §.
+
+**Why PATCH:** four new failure-mode rows + one named-pattern + playbook prose; no new gate/wave/cadence/artifact-layout. A campaign behaves identically; these sharpen DB-security and RTL conformity execution.
+
+---
+
+### v3.8.0 — 2026-06-04 — Made G0 bite: PreToolUse hook + description under-match + bar redefinition + coherence metric (MINOR)
+
+v3.7.0 shipped Gate G0 (campaign-worthiness EXIT) on 2026-06-02. **Measured 2 days later it had not bitten.** All-roots corpus (pruned, from project root): folders grew **161→180 (+19 in 2 days)**, thin(≤3-file)% **dead flat at 71%**, a 1-file bug-fix (`2026-06-04_bug253`) still opened a folder, and **53 folders** declared `scope: medium|full` while holding ≤2 files (scope-inflation the presence-only self-health metric was blind to). Root cause is the skill's own meta-lesson, recursive: G0 is in-skill prose, read only AFTER the trigger matched and the skill loaded — but the over-invocation decision is made the instant the phrase matches. A gate inside the skill can't bounce a request that already loaded it. (An earlier "156 / −5" read was a lex-submodule-cwd undercount — trusting it was itself the #32 trap; corrected to the project-root number.)
+
+**What changed:**
+- **PreToolUse hook `g0-campaign-guard.sh` (matcher `Write`)** — surfaces a HUMAN G0 checkpoint (`permissionDecision: ask`) the instant a NEW `*-campaigns/*/00-campaign-plan.md` is written; resumes/edits pass (`os.path.exists` guard); fail-open on any parse error. The only enforcement the agent can't self-bypass. Registered in `.claude/settings.json`; project-local (NOT part of the portable skill copy). Build gotcha caught + fixed in-session: pass python via `python3 -c '…'`, not a `<<'PY'` heredoc (which hijacks stdin so the JSON never arrives).
+- **Description trigger under-matches** — the over-broad phrases ("build this feature", "ship this refactor", "proceed in application") qualified inline with the bar, so the router under-fires before the skill loads (the only change acting before load).
+- **G0 bar redefined** — "≥3 real surfaces" → "≥3 INDEPENDENT logical changes" (a single vertical slice RPC+mutation+UI+i18n = ONE, not "4 surfaces"; the `bug253` counter-example inlined).
+- **Self-health metric: presence → coherence** — adds `scope-INFLATED` (tier ≥ medium on a ≤2-file non-content folder), `loose-files` (a `.md` directly under a `*-campaigns` root), `off-enum-status`; baseline refreshed (180/127/49/INFLATED 53/loose 1/off-enum 20). The loose-file count uses `find` not a glob (a `for f in *.md` aborts under zsh — the #32 artifact, met again while writing this metric).
+- **#103** — the recursive "a gate added to cure a buried rule is itself buried" meta-failure.
+
+**Why MINOR:** a new enforcement layer (hook) + bar redefinition + coherence metric + one failure-mode class. Backward-compatible — a genuine campaign behaves identically; only sub-bar work now meets a human gate at folder-creation. (REFLECTION-2026-06-04.md.)
+
+---
+
 ### v3.7.1 — 2026-06-02 — Completed the lean-core-v2 extraction (§Env hazards + §Deploy/§Self-health → references) (PATCH)
 
 A parallel `cc WIP` commit (claude-skills `af46561`, same day) had begun extracting three encyclopedic SKILL.md sections into their own reference files but left it half-done — the files existed (`references/env-hazards.md`, `references/skill-maintenance.md`) but orphaned: the sections were still inline in SKILL.md, nothing referenced the new files, and `skill-maintenance.md` was a pre-v3.7.0 snapshot (no over-invocation sprawl metric, stale self-health grep, "700" vs SKILL's "1200" core target). At Atta's "finish what's open" this completes it.

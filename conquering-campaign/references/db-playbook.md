@@ -15,6 +15,8 @@ The DB twin of G1. The rules are NOT restated here — they live in the app docs
 5. **View registry (W3).** Every view referenced from `apps/web/` is a key in `lib/view-registry.ts`; FE reads `VIEWS.<key>`, never a raw string literal. A new view = +1 registry key + 1 migration in the SAME commit.
 6. **Writes via RPC (C4/C30).** All FE writes go through `lib/mutations/` via `callRpc(db().rpc('verb_object', …))`. `grep -E "db\(\)\.from\(.*\)\.(insert|update|delete|upsert)" apps/web/lib/mutations` must return 0. A new write surface = a new RPC, never a `.from().insert()`.
 7. **Soft-delete is the only delete (C31).** 13 entity families: `delete*` wrappers route to `soft_delete_*` RPCs; hard-delete is programmer-only via `/admin/trash` + `hard_delete_trash_row`. A new entity that participates in trash gets a `soft_delete_*` RPC + the `not_deleted()/trash_visible()` bundle, never a raw `DELETE`.
+8. **Public / anon read path = anon-granted `SECURITY DEFINER` RPC, never a `security_invoker` view (#105).** Any surface read by the `anon` role — sitemap, robots, marketing/public pages, SSR fetches before auth — must read through a `SECURITY DEFINER` RPC `GRANT EXECUTE … TO anon` (the visibility predicate computed INSIDE the RPC, e.g. `get_public_team` = `(is_attorney OR is_partner) AND is_in_service AND NOT has_left`). A `security_invoker` view runs its base SELECT *as anon*, which has no base-table grant → `42501` → **silently** swallowed into an empty result (the sitemap emitted 0 URLs this way — not a build error, nothing caught it). Never grant `anon` a base-table SELECT to make a view work; write the RPC. **No `USING(true)`** on a multi-tenant table granted to `authenticated` (item 4's twin on the read side) — prove with `RLS-IMPERSONATE` (§2a), detect with the `qual='true'` sweep.
+9. **Dormant-gate audience probe (#106 — a G5/close-checklist item, repeated here for DB phases).** When a phase ships a new perm key / `admin_scope` value / tier, COUNT the live rows that satisfy it before declaring done — `admin_scope=0` matches 0 of 90 users, so every `admin_scope=0` gate admits nobody (a silent no-op, not a feature). A zero-audience gate ships as a `CHK-` with "dormant until X populated", never a silent green. (`[[discovery_admin-scope-global-tier-dormant]]`.)
 
 ---
 
@@ -41,17 +43,26 @@ Every DB phase follows this. Declare `db_pattern: PDAAV` in the plan.
    ```
    Record the SELECT results in the phase change-log as evidence.
 
-### 2a-RLS — effective-access check (when a phase changed an RLS policy / grant / view-security)
-Qual-text-matches-intent is necessary; effective-access-matches-intent is sufficient (failure mode #47). A policy text can match while a restrictive policy on the same table, a missing grant, or a `security_invoker=false` wrapping view blocks/admits the user. Run a representative SELECT under a simulated authenticated context for BOTH an admit-user and a deny-user:
+### 2a-RLS / `RLS-IMPERSONATE` — effective-access proof (when a phase touches RLS / grants / view-security — #47, #104)
+Qual-text-matches-intent is necessary; effective-access-matches-intent is sufficient (#47). Policy text can match while a restrictive policy, a missing grant, or a `security_invoker=false` wrapping view blocks/admits the user — **policy text is a lead, not proof.** The 2026-06-02 security audit proved this at cost: report/counter/HR tables (`member_hr_records`, `advances_member_counters`, `folder_counts`, `task_counts`, `org_calendar`) shipped `USING(true)` for `authenticated`, so a customer read every firm row — invisible in the policy text, obvious under impersonation (#104).
+
+**Cheap deterministic detector** for the whole `USING(true)` class — run on any RLS-touching wave:
 ```sql
-set local role authenticated;
-set local request.jwt.claim.sub to '<uuid-that-SHOULD-see-rows>';
-select count(*) from <view_or_table>;     -- expect > 0
-reset role; set local role authenticated;
-set local request.jwt.claim.sub to '<uuid-that-should-NOT>';
-select count(*) from <view_or_table>;     -- expect 0
+select schemaname, tablename, policyname, cmd
+from pg_policies
+where qual = 'true' and 'authenticated' = any(roles);   -- any hit on a MULTI-TENANT table is a candidate leak
 ```
-Record both counts. When a phase bundles ≥2 access-control-layer changes (RLS + grant, grant + view-security), assign sub-phase IDs (`P1a`, `P1b`) and verify each layer independently (§2b phase atomicity).
+
+**`RLS-IMPERSONATE` — the both-direction proof.** Wrap in `BEGIN … ROLLBACK` (nothing persists), use the `set_config` jwt.claims form (not the older `set local request.jwt.claim.sub`), and pick a **discriminating** table — one where a customer must see SOME rows but NOT all:
+```sql
+begin;
+set local role authenticated;
+select set_config('request.jwt.claims', '{"sub":"<a-real-customer-uuid>","role":"authenticated"}', true);
+select count(*) from <discriminating_view_or_table>;   -- expect the customer's OWN subset, NOT the full table
+-- positive control: a row they SHOULD see returns; negative: a foreign row does NOT
+rollback;
+```
+Record both counts. A count equal to the full-table count = a cross-tenant leak. The audit's `10-rls-effective-access.md` is the standing regression suite — re-run it after any RLS change. When a phase bundles ≥2 access-control-layer changes (RLS + grant, grant + view-security), assign sub-phase IDs (`P1a`, `P1b`) and verify each layer independently (§2b phase atomicity). (lex memory `[[discovery_rls-impersonation-harness-mcp]]`, `[[discovery_qual-true-rls-cross-tenant-leaks]]`.)
 
 ### Concurrent-actor re-probe (failure mode #33 extension, G3)
 Production schema can flip mid-session from another actor's migrations. A subagent's live read can be stale before it executes. **Re-probe the live schema + check the `supabase_migrations` ledger at the START of every DB wave**, not just at plan-write time. If interleaved foreign migrations appear, STOP and reconcile before drafting. (`v2-trigger-column-drift` drafted nickname fixes against a snapshot a parallel campaign had already reversed — the fix would have hard-broken prod.)
@@ -71,7 +82,7 @@ When a DB phase renames a function/view/trigger AND shrinks its body. Declare `d
 
 ## Applying migrations off the failed preview pipeline + concurrent-actor git isolation (#95 #96 #97 #99)
 
-The lex_council Supabase **git→preview auto-pipeline is `MIGRATIONS_FAILED`** (since 2026-05-23 — `[[project_supabase-migrations-applied-via-mcp-not-pipeline]]`). "Push a feature branch → auto-spawn a preview" does NOT work here; assuming it does burns turns on a build that never lands. The proven path (Campaigns B + E, 2026-05-29, both shipped clean):
+The lex_council Supabase **git→preview auto-pipeline is `MIGRATIONS_FAILED`** (since 2026-05-23 — `[[project_supabase-migrations-applied-via-mcp-not-pipeline]]`). "Push a feature branch → auto-spawn a preview" does NOT work here; assuming it does burns turns on a build that never lands. **Re-confirmed 2026-06-02 (#96/E5): the breakage is *reliable*, not intermittent — even a fresh `create_branch` comes up `MIGRATIONS_FAILED` AND dataless, so you cannot validate on a preview at all.** Stop treating "spin a branch to validate" as an option; the validation substitute is a prod `BEGIN … <DDL/DML> … ROLLBACK` dry-run (nothing persists), paired with the `RLS-IMPERSONATE` harness (§2a) for any RLS change. (`[[discovery_supabase-preview-branch-still-broken]]`.) The proven write path (Campaigns B + E, 2026-05-29, both shipped clean):
 
 1. **Isolate git in a WORKTREE, never `git checkout -b` (#95).** A concurrent actor (#33, `[[discovery_concurrent-migration-actor]]`) keeps dozens of uncommitted FE files + interleaved `20260529*` migrations in the MAIN working copy; switching HEAD there can hijack/co-mingle their commits, and a session-end auto-commit bundles files you never touched. `git worktree add .claude/worktrees/<name> -b <branch>` (branch from HEAD) gives a clean isolated tree holding only your new files. Commit by explicit path, prove the staged set (`git diff --cached --name-only`), push, PR. Run all git INSIDE `lex_council/` (submodule; the workspace root has no remote — #87).
 2. **Apply idempotent/reversible migrations via MCP `apply_migration` after showing the SQL (#96).** PDAAV still holds: G3 re-probe live → show the exact SQL (P3) → `apply_migration` to prod (project_id `bqgrpnsvplvicnmzxwkm`, G2) → ground-truth SELECT + `get_advisors`. Make the DDL idempotent (`IF NOT EXISTS` / `CREATE OR REPLACE`) so a future pipeline re-apply is a no-op. **Commit the migration FILE to the branch for record** even though it was applied out-of-band. A *manual* `create_branch` (fresh isolated project_ref, ~$0.01344/hr) still works if a real preview is genuinely needed — don't burn money retrying the failed auto-pipeline.
