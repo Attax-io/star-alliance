@@ -1,10 +1,10 @@
 ---
 name: cleanup
-version: 1.10.0
-description: Multi-mode hygiene skill for Lex Council. Modes — language (i18n translations); consolidate (i18n key dedup); errors (dev log sweep); postgres (Supabase advisors + pg health); lint (ESLint --fix + tsc); consolidate-code (duplicate component/RLS/constant detection); release (version bump + hygiene gate; absorbs update-app-version); docs (frontmatter/wikilinks/orphans); followups (deferred items). Run all at once via scripts/run_all.py. Triggers: "run cleanup", "/cleanup", "i18n cleanup", "translate untranslated", "fix dev errors", "check postgres", "check db health", "run lint", "fix lint", "doc cleanup", "finish followups", "bump the version", "release X.Y.Z", "ship a release", or any hygiene sweep after a campaign. Full mode recipes in references/.
+version: 1.11.0
+description: Multi-mode hygiene skill for Lex Council. Modes — language (i18n translations); consolidate (i18n key dedup); hardcoded (find + extract raw hardcoded UI text to next-intl keys, then translate via language); errors (dev log sweep); postgres (Supabase advisors + pg health); lint (ESLint --fix + tsc); consolidate-code (duplicate component/RLS/constant detection); release (version bump + hygiene gate; absorbs update-app-version); docs (frontmatter/wikilinks/orphans); followups (deferred items). Run all at once via scripts/run_all.py. Triggers: "run cleanup", "/cleanup", "i18n cleanup", "translate untranslated", "find hardcoded text", "extract hardcoded strings", "fix dev errors", "check postgres", "check db health", "run lint", "fix lint", "doc cleanup", "finish followups", "bump the version", "release X.Y.Z", "ship a release", or any hygiene sweep after a campaign. Full mode recipes in references/.
 ---
 
-# Cleanup — Lex Council hygiene sweeps (v1.10.0)
+# Cleanup — Lex Council hygiene sweeps (v1.11.0)
 
 This skill packages the operational recipes for periodic cleanup passes that
 the app accumulates between feature builds. Each mode is independent; the
@@ -28,6 +28,7 @@ skill body routes to the right workflow based on what the user asked for.
 | **release** | LIVE | App-upgrade gate + version bump. Phase 1 — hygiene gate: lint + errors + postgres + Cloudflare/OpenNext bundle wall + Next.js 16 hazard probes → green/red verdict. Phase 2 (only if green) — full bump: `app.config.ts` + changelog + doc-stamp sync + git block. Full recipe in `references/release-procedure.md`. Gate-only via `/cleanup release --gate`. |
 | **docs** | LIVE | Sync stale frontmatter dates + counts on planet hubs; flag broken wikilinks + archived-pointers; find orphan vault-logs; bump app version stamp in Vault Core; grep for retired-primitive names; detect post-rename narrative artifacts. Script: `scripts/docs_cleanup.py`. |
 | **followups** | LIVE | After a campaign closes, sweep vault-logs + risk-sweep files for deferred items. Classify as doable-autonomously / needs-user-hands / accepted-permanent-exception. Execute doable ones in parallel; surface the rest. Script: `scripts/followups_cleanup.py`. |
+| **hardcoded** | LIVE | Find raw hardcoded user-facing English text still in components (.tsx/.ts) and extract it to next-intl `t()` keys — the gap `language` (translates existing keys) / `consolidate` (dedups keys) never covered. Script: `scripts/i18n_extract.py` (detect/merge/propagate/verify); recipe `references/mode-hardcoded.md`. Scales 1-file → one-agent-per-file fan-out → `/conquering-campaign`. |
 
 ## When to invoke this skill
 
@@ -46,6 +47,7 @@ Trigger phrases (any of):
 - "pre-release check", "ready to release", "bump the version", "update the app version", "release X.Y.Z", "ship a release", "make it 1.7.X", "/cleanup release" → routes to `release` (use `--gate` for gate-only)
 - "sync the doc footers", "doc cleanup", "check the docs are fresh" → routes to `docs`
 - "finish the followups", "close the followups", "sweep the campaign followups" → routes to `followups`
+- "find hardcoded text", "extract hardcoded strings", "key-ify the hardcoded strings", "/cleanup hardcoded" → routes to `hardcoded`
 
 Skip when: user is mid-feature and work isn't ready; a cleanup pass ran today and nothing new was added; user is asking about something else ("clean up this component" = refactoring, not this skill).
 
@@ -66,6 +68,7 @@ Look at the user's phrasing. Default mode is `language` unless they explicitly n
 | "pre-release check", "bump the version", "release X.Y.Z", "make it 1.7.X", "/cleanup release" | `release` (add `--gate` for gate-only) |
 | "sync the doc footers", "doc cleanup", "/cleanup docs" | `docs` |
 | "finish the followups", "close the followups", "/cleanup followups" | `followups` |
+| "find hardcoded text", "extract hardcoded strings", "key-ify the hardcoded strings", "/cleanup hardcoded" | `hardcoded` |
 | "run all cleanups", "/cleanup all", "what's drifted" | run `python3 ~/.claude/skills/cleanup/scripts/run_all.py run [--fast]` — runs local hygiene modes detect-only, writes severity-ranked `/tmp/cleanup_triage.md` + per-mode last-run age |
 
 If the user's phrasing matches more than one mode (e.g. "run cleanup after that campaign"), prefer `followups` over `docs` — the post-campaign sweep is more specific.
@@ -98,6 +101,10 @@ Rules:
 ### Mode: language
 
 Read `references/mode-language.md` for the full recipe (Steps L1–L5: detect scope, spawn 5 parallel translation agents, pre-flight + apply, verify, vault log). That file also contains the brand glossary, locale contracts, agent prompt templates, and per-locale fill tables needed to construct the subagent prompts.
+
+### Mode: hardcoded
+
+Read `references/mode-hardcoded.md` for the full recipe (Steps H1–H8: detect candidates + reuse-map + briefs, extract scoped-inline-or-fan-out, single-writer merge + reuse-existence check, propagate to 6 locales, translate via the `language` mode, verify t()-keys resolve + smart-quote scan, fix the 4 known fan-out failure modes, vault log). Finds + extracts raw hardcoded UI text to keys — the producer half that `language` (the translator) and `consolidate` (the deduper) lack.
 
 ### Mode: docs
 
@@ -169,6 +176,7 @@ This skill carries a semantic version in its frontmatter (`version: X.Y.Z`) and 
 
 | Version | Date | Summary |
 |---|---|---|
+| **1.11.0** | 2026-06-03 | **New `hardcoded` mode — find + extract raw hardcoded UI text to i18n keys** (the gap `language`/`consolidate` never covered: they translate/dedup existing keys; neither reads component source). New `scripts/i18n_extract.py` (detect/merge/propagate/verify) + `references/mode-hardcoded.md` (recipe H1–H8). detect harvests JSX/prop/toast literal candidates + reuse-maps against existing keys + emits per-file agent briefs; merge single-writer-merges agent key-maps into `en/<ns>.json` + reuse-existence check (catches mislabeled-reuse keys → runtime MISSING_MESSAGE); propagate fills all 6 locales (EN placeholder); verify asserts every t()-key resolves + flags smart-quote useTranslations (TS1127). #91-safe fan-out (1 agent/file → key-map → main single writer); scales 1-file → app-wide → `/conquering-campaign` for multi-session. Mined from the 2026-06-03 app-wide extraction (109 files / 372 keys / 393×5 translated). New mode → MINOR. |
 | **1.10.0** | 2026-06-02 | **Lessons L25–L31 + route R10 mechanized (`scripts/commit_scope.py`).** Mined the heavy 2026-05-30→06-02 usage (4 followup sweeps + 2 run-all passes) into 7 new landmine lessons: language count-semantics (verify>detect, detect-blind-to-absent-keys, cognate floor, phantom MISSING_MESSAGE=stale dev cache) (L25), exact-JSON-writer minimal-diff (L26), concurrent-actor scoped commit (L27), offline-MCP/dead-dev-log degrade-with-receipts (L28), zero-edit no-bump/no-log (L29), scanner self-reference false positives (L30), advisor accepted-by-convention netting (L31). **R10 shipped** — `scripts/commit_scope.py` (`scan`/`buildcheck`/`emit`) partitions the co-mingled dirty tree so a followups commit stages only campaign-owned files (mechanizes L27); wired into mode-followups Step F5.5. Live-validated: 57 dirty files in `lex_council/`, isolated the 2 owned from 45 foreign + 12 daemon bumps. New script, backward-compatible → MINOR. |
 | **1.9.0** | 2026-05-31 | **Two simultaneous MINOR additions.** (1) **Always-on app patch bump (every mode).** New closeout step (§Workflow Step CL): every cleanup session that applies ≥1 change bumps the app version's last segment by 1. New `scripts/bump_app_patch.py` (`show` / `bump [--dry]`) increments PATCH in BOTH `apps/web/config/app.config.ts` (canonical) and `apps/web/package.json` (mirror), keeps them in sync, refuses on drift (exit 3). Rules: once per session; skip on no-op/detect-only/dry-run/`--gate`; `release` mode excluded (does its own full bump — never double-bump). (2) **Reference extraction refactor (Cowork installer word-limit fix).** All 9 mode recipes + 24 landmine lessons extracted to `references/mode-*.md` + `references/landmines.md`. SKILL.md is now a slim routing stub (target < 3,000 words vs prior 15,000+). No behavioral change — all content preserved in reference files; `Read references/mode-X.md` at the top of each mode section. Cowork skill installer limit is ~10,000 words; prior 15,342-word file failed installation. |
 | **1.8.1** | 2026-05-29 | `followups` is now auto-spawned by `conquering-campaign` at campaign close (its v3.3.0 §5.7 calls `spawn_task`). Doc note added; no script change. |
@@ -195,6 +203,8 @@ This skill carries a semantic version in its frontmatter (`version: X.Y.Z`) and 
 - `references/mode-lint.md` — lint mode recipe.
 - `references/mode-consolidate-code.md` — consolidate-code mode recipe.
 - `references/mode-release.md` — release mode gate recipe (Phase 1).
+- `references/mode-hardcoded.md` — hardcoded mode recipe (find + extract raw UI text to keys).
+- `scripts/i18n_extract.py` — hardcoded mode machinery (detect/merge/propagate/verify).
 - `references/landmines.md` — L1–L31 cross-mode lessons.
 - `scripts/commit_scope.py` — concurrent-actor commit-scoper (R10, §L27): scan/buildcheck/emit; never commits.
 - [[2026-06-02_cleanup-skill-lessons-l25-l31]] — vault log for the L25–L31 + R10 (v1.10.0) upgrade.

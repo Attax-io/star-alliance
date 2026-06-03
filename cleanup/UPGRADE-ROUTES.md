@@ -4,13 +4,13 @@ Checkup of `cleanup` v1.9.1. Maps every place the skill can still grow, ranked b
 value × effort. Companion to SKILL.md §Versioning. Re-read this before the next upgrade
 pass so routes aren't re-derived from scratch.
 
-**Current state (v1.10.0):** 9 LIVE modes + a `run_all.py` orchestrator (R7) + a `commit_scope.py`
+**Current state (v1.11.0):** 10 LIVE modes (added `hardcoded` — i18n extraction, R11) + a `run_all.py` orchestrator (R7) + a `commit_scope.py`
 helper (R10) + an always-on app patch bump on every change-applying sweep (v1.9.0). 0 DRAFT.
 **R1–R7 + R10 all DONE.** 8 codified lessons (L9/L10/L11/L14/L15/L16/L17/L19 + **L27 → `commit_scope.py`**)
 wired into their scripts; cross-machine `default_root()` portability across all scripts. **31 cross-mode
 lessons (L1–L31)** — L25–L31 added 2026-06-02 from mining the heavy 2026-05-30→06-02 usage; L27 now
 mechanized (R10), L25/L26/L28–L31 still prose-only.
-**Open routes: R8 (dead-code mode), R9 (`--since` incremental).**
+**Open routes: R8 (dead-code mode), R9 (`--since` incremental).** R11 (i18n extraction) DONE v1.11.0.
 
 ---
 
@@ -28,6 +28,7 @@ mechanized (R10), L25/L26/L28–L31 still prose-only.
 | R8 | `dead-code` / orphan-sweep mode | new mode | MED | M | ts-prune/knip integration |
 | R9 | cross-mode `--since` incremental | enhance all | LOW | S | per-mode offset markers |
 | ~~R10~~ | concurrent-actor commit-scoper | **DONE (v1.10.0)** | — | — | LIVE — `scripts/commit_scope.py` (scan/buildcheck/emit), wired into followups Step F5.5 |
+| ~~R11~~ | `hardcoded` i18n-extraction mode | **DONE (v1.11.0)** | — | — | LIVE — `scripts/i18n_extract.py` (detect/merge/propagate/verify) + `references/mode-hardcoded.md`; find raw hardcoded UI text → keys → translate via `language` |
 
 ---
 
