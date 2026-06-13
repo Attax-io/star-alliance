@@ -32,7 +32,9 @@ tables already exist: `source_laws`, `law_articles`, `law_article_translations`,
 | `law_article_translations` | 5 locales × each article | `law_article_id` FK, `locale` (en/fr/es/ru/zh), `content`, `article_number`, `chapter`, `section` — unique `(law_article_id, locale)` |
 | `source_law_translations` | 5 locales × law metadata | `source_law_id` FK, `locale`, `subject`, `issuing_authority`, `summary` — unique `(source_law_id, locale)` |
 
-- `sort_order`: promulgation `1..N`, main articles `100 + N`, attached tables `300 + N` (tables sort last).
+- `sort_order`: assigned by **document order** — promulgation `1..N`, main articles `100 + seq`, attached
+  tables `1000 + seq` (tables sort last). Document-order numbering is what lets `مكرر` (bis) articles get
+  unique, in-sequence slots (e.g. `مادة 46 مكرر 3` between 46 and 47).
 - `published = false` on load; flip to `true` only in the Publish phase. `source_laws.article_count` reads
   0 until articles are published, then the trigger sets it to the published count.
 - The 5 target locales use **Western digits** (1,2,3) — including Chinese. AR keeps Arabic-Indic digits.
@@ -65,10 +67,12 @@ script reads it via the `CODEX_CONFIG` env var. Run scripts with `node`.
 ```sh
 node scripts/parse_law.js
 ```
-Writes `<tmp>/articles.json` + `<tmp>/frontmatter.json` and prints a structure report. It **asserts**:
-promulgation contiguous from 1, main articles contiguous from 1, every row has non-empty `content_ar`,
-table count matches. **Do not proceed unless validation passes.** Spot-check one multi-paragraph article
-and one table (pipe grid preserved, `[[wikilinks]]` stripped to display text).
+Writes `<tmp>/articles.json` + `<tmp>/frontmatter.json` and prints a structure report. It **reconciles**
+parsed rows against EVERY article/table heading in the source (promulgation / main / table counts must
+match), flags any unrecognized `### مادة …`/`### Article …` heading that matched no regex (would be silently
+dropped — extend the regex if so), reports how many `مكرر` (bis) articles were captured, and asserts every
+row has non-empty `content_ar`. **Do not proceed unless validation passes** (exit 0). Spot-check one
+multi-paragraph article and one table (pipe grid preserved, `[[wikilinks]]` stripped to display text).
 
 ### Phase 2 — Insert source law + articles
 
@@ -150,7 +154,7 @@ is good practice (mirrors the predecessors). Commit + push the docs to `main` (s
 | `## مواد الإصدار` / `## الباب …` / `## الجداول الملحقة` | chapter boundary (resets section) |
 | `### الفصل …` | section boundary |
 | `### مادة N إصدار` | promulgation article |
-| `### مادة N` | main article (form A) |
+| `### مادة N` / `### مادة N مكرر` / `### مادة N مكرر K` | main article (form A, incl. bis/مكرر variants) |
 | `### Article N — مادة N` | main article (form B — the 148/2019 extraction mixed both forms) |
 | `### جدول رقم N — <title>` | attached table |
 

@@ -30,10 +30,13 @@ const stripWikilinks = (s) =>
 const RE_H2      = /^## (.+)$/
 const RE_H3      = /^### (.+)$/
 const RE_PROMUL  = /^مادة\s+(\d+)\s+إصدار\s*$/
-const RE_MAIN_A  = /^مادة\s+(\d+)\s*$/
-const RE_MAIN_B  = /^Article\s+(\d+)\s+—\s+مادة\s+(\d+)\s*$/
+// Main article forms — accept an optional "مكرر" / "مكرر N" (bis) suffix.
+const RE_MAIN_A  = /^مادة\s+(\d+)(?:\s+(مكرر(?:\s+\d+)?))?\s*$/
+const RE_MAIN_B  = /^Article\s+(\d+)\s+—\s+مادة\s+(\d+)(?:\s+(مكرر(?:\s+\d+)?))?\s*$/
 const RE_TABLE   = /^جدول\s+رقم\s+(\d+)\s*(?:—\s*(.+))?$/
 const RE_SECTION = /^الفصل\b/
+
+const artNum = (n, bis) => `مادة ${toAr(n)}${bis ? ' ' + toAr(bis) : ''}`
 
 const raw = fs.readFileSync(cfg.sourcePath, 'utf8')
 
@@ -80,12 +83,12 @@ while (i < lines.length) {
     }
     if ((mm = h.match(RE_MAIN_B))) {
       const b = collectBody(i)
-      articles.push({ kind: 'main', _num: +mm[2], article_number_ar: `مادة ${toAr(mm[2])}`, chapter, section, content_ar: b.text })
+      articles.push({ kind: 'main', _num: +mm[2], _bis: mm[3] || null, article_number_ar: artNum(mm[2], mm[3]), chapter, section, content_ar: b.text })
       i = b.next; continue
     }
     if ((mm = h.match(RE_MAIN_A))) {
       const b = collectBody(i)
-      articles.push({ kind: 'main', _num: +mm[1], article_number_ar: `مادة ${toAr(mm[1])}`, chapter, section, content_ar: b.text })
+      articles.push({ kind: 'main', _num: +mm[1], _bis: mm[2] || null, article_number_ar: artNum(mm[1], mm[2]), chapter, section, content_ar: b.text })
       i = b.next; continue
     }
     if ((mm = h.match(RE_TABLE))) {
@@ -100,36 +103,46 @@ while (i < lines.length) {
   i++
 }
 
+// sort_order by DOCUMENT ORDER (handles bis/مكرر articles without collisions):
+//   promulgation 1..N · main 100+seq · tables 1000+seq. Array is already in document order.
+let pSeq = 0, mSeq = 0, tSeq = 0
 articles.forEach((a) => {
-  a.sort_order = a.kind === 'promulgation' ? a._num : a.kind === 'main' ? 100 + a._num : 300 + a._num
+  a.sort_order = a.kind === 'promulgation' ? ++pSeq : a.kind === 'main' ? 100 + (++mSeq) : 1000 + (++tSeq)
 })
 articles.sort((x, y) => x.sort_order - y.sort_order)
-articles.forEach((a, k) => { a.idx = k + 1; delete a._num })
+articles.forEach((a, k) => { a.idx = k + 1; delete a._num; delete a._bis })
 
 fs.writeFileSync(path.join(cfg.tmp, 'articles.json'), JSON.stringify(articles, null, 2))
 
-/* ── Validation ── */
+/* ── Validation: reconcile parsed rows against EVERY article/table heading in the source ── */
 const counts = articles.reduce((acc, a) => ((acc[a.kind] = (acc[a.kind] || 0) + 1), acc), {})
-const mainNums = articles.filter((a) => a.kind === 'main').map((a) => a.sort_order - 100).sort((p, q) => p - q)
-const promulNums = articles.filter((a) => a.kind === 'promulgation').map((a) => a.sort_order).sort((p, q) => p - q)
 const empties = articles.filter((a) => !a.content_ar || !a.content_ar.trim())
 
-function contiguous(nums, label, from) {
-  const exp = Array.from({ length: nums.length }, (_, k) => from + k)
-  const ok = nums.length === exp.length && nums.every((v, k) => v === exp[k])
-  console.log(`  ${ok ? '✓' : '✗'} ${label}: ${nums.length} numbers ${nums[0] ?? '-'}–${nums[nums.length - 1] ?? '-'} ${ok ? 'contiguous' : 'GAPS/DUPS → ' + JSON.stringify(exp.filter((v) => !nums.includes(v)).slice(0, 30))}`)
+const h3s = lines.map((l) => { const m = l.match(RE_H3); return m ? m[1].trim() : null }).filter(Boolean)
+const srcP = h3s.filter((t) => RE_PROMUL.test(t)).length
+const srcMain = h3s.filter((t) => !RE_PROMUL.test(t) && (RE_MAIN_A.test(t) || RE_MAIN_B.test(t))).length
+const srcTable = h3s.filter((t) => RE_TABLE.test(t)).length
+// any `### مادة …` / `### Article …` heading that matched NO article regex → would be silently dropped
+const unrecognized = h3s.filter((t) => /^(مادة|Article)\b/.test(t) && !RE_PROMUL.test(t) && !RE_MAIN_A.test(t) && !RE_MAIN_B.test(t))
+
+const reconcile = (label, got, src) => {
+  const ok = got === src
+  console.log(`  ${ok ? '✓' : '✗'} ${label}: parsed ${got} vs ${src} source headings${ok ? '' : ' — MISMATCH (articles dropped/mis-parsed)'}`)
   return ok
 }
 
 console.log(`Parsed ${articles.length} rows → ${path.join(cfg.tmp, 'articles.json')}`)
 console.log(`Kind breakdown: ${JSON.stringify(counts)}`)
-const okP = articles.some((a) => a.kind === 'promulgation') ? contiguous(promulNums, 'promulgation', 1) : true
-const okM = contiguous(mainNums, 'main articles', 1)
+const okP = reconcile('promulgation', counts.promulgation || 0, srcP)
+const okM = reconcile('main articles', counts.main || 0, srcMain)
+const okT = reconcile('tables', counts.table || 0, srcTable)
 console.log(`  ${empties.length === 0 ? '✓' : '✗'} content_ar non-empty: ${articles.length - empties.length}/${articles.length}` + (empties.length ? ` (EMPTY: ${empties.map((e) => e.article_number_ar).join(', ')})` : ''))
-console.log(`  tables: ${counts.table || 0}`)
+const bisCount = articles.filter((a) => a.article_number_ar.includes('مكرر')).length
+if (bisCount) console.log(`  ℹ ${bisCount} bis (مكرر) articles captured`)
+if (unrecognized.length) console.log(`  ✗ ${unrecognized.length} UNRECOGNIZED article-like headings (extend the regex): ${unrecognized.slice(0, 12).join(' | ')}`)
 console.log(`First: ${articles[0]?.article_number_ar} | chap="${articles[0]?.chapter}"`)
 console.log(`Last:  ${articles[articles.length - 1]?.article_number_ar} | sec="${articles[articles.length - 1]?.section}"`)
 
-const allOk = okP && okM && empties.length === 0
+const allOk = okP && okM && okT && empties.length === 0 && unrecognized.length === 0
 console.log(`\n${allOk ? '✓✓ VALIDATION PASSED — review the breakdown, then proceed.' : '✗✗ VALIDATION FAILED — adjust the heading regexes in parse_law.js for this law.'}`)
 process.exit(allOk ? 0 : 1)
