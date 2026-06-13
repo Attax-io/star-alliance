@@ -4,7 +4,7 @@ The end-to-end recipe. The companion script
 `scripts/i18n_cleanup.py` owns the mechanical detect/apply/verify steps;
 this section owns the agent orchestration that sits between them.
 
-## Step L1 — Detect scope
+#### Step L1 — Detect scope
 
 Run from the repo root:
 
@@ -26,7 +26,7 @@ Show the user the per-locale counts and ask whether to proceed. If the
 total is large (>500), surface the top 3 namespaces by count so they
 know where the work is concentrated.
 
-## Step L2 — Spawn 5 parallel translation agents
+#### Step L2 — Spawn 5 parallel translation agents
 
 Spawn 5 general-purpose subagents **in a single message** (so they run
 concurrently). Each gets the per-locale agent prompt from §"Agent prompt
@@ -47,7 +47,7 @@ Hard contract every agent must satisfy:
 - Write output to `/tmp/translations_{loc}.json` as a pure JSON array
   of `{ns, key, translated}` — no markdown fences, no commentary.
 
-## Step L3 — Pre-flight + apply
+#### Step L3 — Pre-flight + apply
 
 When all 5 agents have completed:
 
@@ -64,7 +64,7 @@ On pass, the script writes each translation into
 `messages/{loc}/{ns}.json` via a dotted-key nested-dict walker. JSON
 structure + indentation + trailing newlines preserved.
 
-## Step L4 — Verify
+#### Step L4 — Verify
 
 ```bash
 python3 ~/.claude/skills/cleanup/scripts/i18n_cleanup.py verify
@@ -81,7 +81,7 @@ the user.
 `tsc` should pass cleanly — JSON edits can't break types but it's
 worth confirming nothing else regressed.
 
-## Step L5 — Vault log
+#### Step L5 — Vault log
 
 Delegate to the **vault-log-compliance** skill. Provide it a one-line
 summary of what changed (locale counts + delta) so it can draft an
@@ -182,26 +182,3 @@ Process:
 | **fr** | standard European French — formal legal/business register, "vous" form, proper accents | Cognates OK identical to English where natural — FR "Finances", "Documents", "Notifications", "Transactions", "Performance", "Permissions" are the correct French; but "Details" → "Détails" (add accent), "Created" → "Créé". When EN form is identical to natural French, return it unchanged. | "Loading…" → "Chargement…", "Castle" (chess metaphor) → "Roque", "Force Close" → "Fermeture forcée" |
 | **ru** | standard professional Russian — formal "вы" form | Not applicable. Russian grammatical case may reorder placeholders — that's required. | "Loading…" → "Загрузка…", "Castle" → "Рокировка", "Force Close" → "Принудительное закрытие" |
 | **zh** | Simplified Chinese (简体中文) — Mainland register, NOT Traditional, full-width sentence punctuation, half-width for placeholders/brand | Not applicable. Use Arabic numerals (1, 2, 3) not 一二三. | "Loading…" → "加载中…", "Castle" → "易位", "Kanban" → "看板", "Force Close" → "强制关闭" |
-
-## Decision points to surface to the user
-
-Always pause for explicit confirmation at these gates:
-
-1. **After detect** — show counts, ask "proceed with {N} translations across {M} locales?"
-2. **After pre-flight in apply** — if any locale fails, show what failed
-   and ask whether to skip or force.
-3. **Before vault log** — the vault-log-compliance skill always shows
-   its draft and asks; let that gate inherit normally.
-
-Do NOT pause between agent completions — they run in parallel and you'll
-be notified as each finishes.
-
-## Memory + drift
-
-When this skill discovers something the project should remember
-(new brand terms, locale-specific gotchas, a namespace that should be
-exempt), update auto-memory in
-`/Users/atta/.claude/projects/-Users-atta-Documents-Claude-Projects-Lex-Council-App/memory/`
-per the auto-memory rules. Also append the new brand term to
-`scripts/i18n_cleanup.py:BRAND_OR_CODE` so the next pass picks it up
-automatically.

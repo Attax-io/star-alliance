@@ -18,8 +18,16 @@ Subcommands:
             Follow-ups / Cleanup headings + inline marker sentences), de-dupe.
             Writes /tmp/followup_items.json.
   classify  Bucket each item: doable-autonomously / needs-user-hands /
-            accepted-permanent-exception (uncertain → needs-user-hands). Writes
-            /tmp/followup_classified.json + prints the doable list.
+            accepted-permanent-exception (uncertain → needs-user-hands;
+            environmental/prod-vs-repo → accepted, overriding the verb heuristic
+            — R13/L37). Writes /tmp/followup_classified.json + prints the doable list.
+  parity    [R13/L34] Per-locale key-PRESENCE count for a namespace subtree
+            (parity <ns> [dotted.subtree]); flags locales where the subtree is
+            ABSENT (raw MISSING_MESSAGE, invisible to `language detect`). exit 2
+            if any locale is absent.
+  orphan-index  [R13/L36] Vault-logs present on disk but missing from
+            vault-logs/INDEX.md; scopes to the located campaign's own log (per
+            L27) and emits the INDEX row template. Never edits INDEX.md.
   mark      Stamp /tmp/last_followup_sweep_marker so the next locate starts
             after this sweep.
 
@@ -92,6 +100,19 @@ EXCEPTION_KW = (
     "leave as-is", "leave as is", "leave it as-is", "won't fix", "wont fix",
     "accepted", "intentional", "by design", "not a bug", "no regression",
     "acceptable",
+)
+# R13/L37 — environmental steady-state: the resolution lives OUTSIDE this session's
+# reach (prod-vs-repo drift, the apply-via-MCP migration ledger, a concurrent actor's
+# tree). The verb heuristic mis-tags these "doable" because they contain
+# "migration" / "verify" — this guard runs BEFORE the doable check and overrides it.
+# Source: 2026-06-04 doc-version-merge followups (FU-002 was wrongly tagged doable);
+# memory discovery_supabase-migrations-applied-via-mcp-not-pipeline.
+ENVIRONMENTAL_KW = (
+    "migration ledger", "prod migration", "ledger diverge", "diverges from",
+    "apply-via-mcp", "apply via mcp", "applied to prod", "already on prod",
+    "prod-vs-repo", "prod vs repo", "steady-state", "steady state",
+    "concurrent actor", "concurrent session", "belongs to other",
+    "belongs to another", "other workstream",
 )
 # needs-user-hands — reachable only outside the repo / dangerous to auto-do.
 HANDS_KW = (
@@ -336,6 +357,8 @@ def _classify_one(desc):
     low = desc.lower()
     if any(k in low for k in EXCEPTION_KW):
         return "accepted-permanent-exception"
+    if any(k in low for k in ENVIRONMENTAL_KW):    # R13/L37 — override the verb heuristic
+        return "accepted-permanent-exception"
     hands = any(k in low for k in HANDS_KW)
     doable = any(k in low for k in DOABLE_KW)
     if doable and not hands:
@@ -386,6 +409,123 @@ def cmd_classify():
     return items
 
 
+# ── R13/L34 — per-locale key-PRESENCE parity ─────────────────────────────────
+
+MSG_ROOT = os.path.join(LEX_ROOT, "apps", "web", "public", "messages")
+ALL_LOCALES = ["en", "ar", "es", "fr", "ru", "zh"]
+
+
+def _count_leaves(node):
+    """Count string leaves under a JSON node (a namespace subtree)."""
+    if isinstance(node, str):
+        return 1
+    if isinstance(node, dict):
+        return sum(_count_leaves(v) for v in node.values())
+    return 0
+
+
+def cmd_parity():
+    """L34 — per-locale key-PRESENCE count for a namespace subtree. Flags locales
+    where the subtree is ABSENT (renders raw MISSING_MESSAGE, worse than English,
+    and INVISIBLE to `language detect` which only sees present-but-equal-to-EN).
+    A campaign that hand-adds keys to only some locales is the recurring cause.
+
+    Usage: parity <ns> [dotted.subtree]
+      e.g. parity admin containers.document.merge
+    """
+    if len(sys.argv) < 3:
+        print("Usage: python3 followups_cleanup.py parity <ns> [dotted.subtree]")
+        sys.exit(1)
+    ns = sys.argv[2]
+    sub = sys.argv[3] if len(sys.argv) > 3 else None
+    counts = {}
+    for loc in ALL_LOCALES:
+        fp = os.path.join(MSG_ROOT, loc, f"{ns}.json")
+        if not os.path.isfile(fp):
+            counts[loc] = -1
+            continue
+        try:
+            node = json.load(open(fp, encoding="utf-8"))
+            ok = True
+            if sub:
+                for p in sub.split("."):
+                    if isinstance(node, dict) and p in node:
+                        node = node[p]
+                    else:
+                        ok = False
+                        break
+            counts[loc] = _count_leaves(node) if ok else 0
+        except Exception:
+            counts[loc] = -1
+    base = counts.get("en", 0)
+    label = ns + (f" / {sub}" if sub else "")
+    print(f"locale parity — {label}:")
+    absent = []
+    for loc in ALL_LOCALES:
+        c = counts[loc]
+        if c == -1:
+            tag = "  (file missing)"
+        elif c == 0 and base > 0:
+            tag = "  ← ABSENT (raw MISSING_MESSAGE — propagate EN values first)"
+            absent.append(loc)
+        elif base and c != base:
+            tag = f"  (≠ en {base} — translation gap, run `language`)"
+        else:
+            tag = ""
+        print(f"  {loc}: {c}{tag}")
+    if absent:
+        print(f"\n!! {len(absent)} locale(s) ABSENT: {', '.join(absent)} — "
+              f"propagate the EN subtree into them, THEN run the `language` mode on {ns}.")
+        sys.exit(2)
+    print("\n✓ all locales present (any count diff is a translation gap, not absence).")
+
+
+# ── R13/L36 — predecessor orphan-INDEX detector ──────────────────────────────
+
+def cmd_orphan_index():
+    """L36 — vault-log files present on disk but absent from vault-logs/INDEX.md.
+    Campaigns reliably forget the INDEX row; the followups `docs` check is the
+    backstop. Scopes to the LOCATED campaign's own log(s) (per L27 — other
+    sessions' orphans are flagged but left for their owners). Detect + emit the
+    INDEX row template; Claude writes it (this script never edits INDEX.md)."""
+    vl_dir = os.path.join(DOCS, "vault-logs")
+    index = os.path.join(vl_dir, "INDEX.md")
+    if not os.path.isdir(vl_dir) or not os.path.isfile(index):
+        print(f"🚩 vault-logs dir or INDEX.md missing under {DOCS}")
+        sys.exit(1)
+    refs = set(re.findall(r"\[\[([0-9]{4}-[0-9]{2}-[0-9]{2}_[^\]]+?)\]\]",
+                          open(index, encoding="utf-8").read()))
+    files = [f[:-3] for f in os.listdir(vl_dir)
+             if re.match(r"^\d{4}-\d{2}-\d{2}_", f) and f.endswith(".md") and " " not in f]
+    orphans = sorted(f for f in files if f not in refs)
+
+    # Scope hint: the located campaign's topic (so we surface YOURS, not the sea of others).
+    topic = None
+    if os.path.exists(CAMPAIGN_FILE):
+        base = os.path.basename(open(CAMPAIGN_FILE).read().strip())
+        m = re.match(r"\d{4}-\d{2}-\d{2}_(.+)", base)
+        if m:
+            topic = m.group(1)
+    mine = [o for o in orphans if topic and topic in o]
+    others = [o for o in orphans if o not in mine]
+
+    if not orphans:
+        print("✓ no orphan vault-logs — INDEX.md is complete.")
+        return
+    if mine:
+        print(f"!! predecessor orphan(s) — ADD to INDEX.md (this is YOURS):")
+        for o in mine:
+            print(f"   | {o[:10]} | [[{o}]] | <one-line summary> |")
+    if others:
+        print(f"\n? {len(others)} other orphan(s) — flagged by `docs`; per L27 leave for their owners:")
+        for o in others[:15]:
+            print(f"   [[{o}]]")
+        if len(others) > 15:
+            print(f"   … +{len(others) - 15} more (historical backlog — a `docs`/audit job, not this sweep)")
+    if not mine and topic:
+        print(f"\n✓ the located campaign ('{topic}') is indexed — no predecessor orphan to fix.")
+
+
 def cmd_mark():
     """Record this sweep so the next locate starts after it."""
     stamp = datetime.now(timezone.utc).isoformat(timespec="seconds")
@@ -406,6 +546,8 @@ COMMANDS = {
     "locate": cmd_locate,
     "extract": cmd_extract,
     "classify": cmd_classify,
+    "parity": cmd_parity,
+    "orphan-index": cmd_orphan_index,
     "mark": cmd_mark,
 }
 

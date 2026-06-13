@@ -21,7 +21,7 @@ production. Three traps documented from the 2026-05-28 first pass:
 "callsite map". Always run `scripts/consolidate_cleanup.py map-callsites`,
 which does the AST-aware resolution properly.
 
-## Step C1 — Detect safe-to-merge candidates
+#### Step C1 — Detect safe-to-merge candidates
 
 ```bash
 python3 ~/.claude/skills/cleanup/scripts/consolidate_cleanup.py detect
@@ -35,7 +35,7 @@ must be added.
 The output is the input to a CONVERSATION with the user — not an
 auto-apply candidate list. Most of these groups should NOT be merged.
 
-## Step C2 — Pick the surgical set with the user
+#### Step C2 — Pick the surgical set with the user
 
 Default policy (codified from the 2026-05-28 first run): **only merge
 universal labels with zero domain semantics.** The accepted "safe to
@@ -56,7 +56,7 @@ When in doubt, ask the user explicitly. Don't infer.
 Write the selected target set to `/tmp/consolidation_keys.json` as
 `[{ "old": "fully.qualified.doomed.key", "new": "common.target.key" }, ...]`.
 
-## Step C3 — Verify target keys exist in `common.json`
+#### Step C3 — Verify target keys exist in `common.json`
 
 Read `messages/en/common.json` and confirm every `new` key already
 exists. If any are missing, the consolidate pass needs to ADD them
@@ -64,7 +64,7 @@ first (with translations in every locale — this is itself a small
 `language` mode pass). Most surgical sets won't need this — common
 already has `labels.*` and `actions.*` populated.
 
-## Step C4 — Map callsites (AST-aware)
+#### Step C4 — Map callsites (AST-aware)
 
 ```bash
 python3 ~/.claude/skills/cleanup/scripts/consolidate_cleanup.py map-callsites
@@ -90,7 +90,7 @@ HALF the components do. `tsc` will catch this with `Cannot find name
 'tc'` — fix by adding `const tc = useTranslations('common')` to the
 other component(s) manually.
 
-## Step C5 — Apply (two-phase)
+#### Step C5 — Apply (two-phase)
 
 ```bash
 python3 ~/.claude/skills/cleanup/scripts/consolidate_cleanup.py apply
@@ -110,7 +110,7 @@ on the same line/file get rewritten together. The "could not find" skip
 messages on the second occurrence of identical callsites are benign
 (already replaced).
 
-## Step C6 — Verify
+#### Step C6 — Verify
 
 ```bash
 cd lex_council && npx turbo run check-types --filter=web
@@ -124,7 +124,7 @@ The verify subcommand prints the new safe-to-merge group count + JSON
 parse status. Expect the count to drop by the number of merged groups
 (e.g. 10 surgical merges → drops by 10).
 
-## Step C7 — Vault log
+#### Step C7 — Vault log
 
 Delegate to **vault-log-compliance**. The entry should document:
 
@@ -136,7 +136,7 @@ Delegate to **vault-log-compliance**. The entry should document:
 If the consolidation pass extends a same-day `language` pass, link the
 two vault logs as a sequence.
 
-## Step C8 — Memory update
+#### Step C8 — Memory update
 
 If the surgical pass surfaced new keys that should become canonical
 `common.*` targets (e.g. a frequently-duplicated label), add a memory

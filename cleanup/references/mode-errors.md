@@ -15,7 +15,7 @@ sink + log + parser turn that into a one-command read. The mode also
 codifies what counts as an *unambiguous* code-bug so auto-fix is
 safe (E4 rubric).
 
-## Step E0 — Pre-flight
+#### Step E0 — Pre-flight
 
 Confirm `/tmp/lex-dev.log` exists. If not, surface the tee command and
 abort:
@@ -38,7 +38,7 @@ in case a future refactor removed them):
 If any is missing, surface the gap. Don't auto-recreate — the user
 might have removed it deliberately.
 
-## Step E1 — Detect
+#### Step E1 — Detect
 
 ```sh
 python3 ~/.claude/skills/cleanup/scripts/errors_cleanup.py detect [--since]
@@ -63,7 +63,7 @@ The parser handles:
 Dedupe key: `(error_type, first 200 chars of message, first repo-frame
 path:line)`. Output: `/tmp/dev_errors.json`.
 
-## Step E2 — Classify
+#### Step E2 — Classify
 
 ```sh
 python3 ~/.claude/skills/cleanup/scripts/errors_cleanup.py classify
@@ -80,7 +80,7 @@ Each unique entry classified as one of:
 
 Output: `/tmp/dev_errors_classified.json` + a printed summary table.
 
-## Step E3 — Surface the triage list
+#### Step E3 — Surface the triage list
 
 Show the user:
 
@@ -99,7 +99,7 @@ Format per entry:
   count: 3
 ```
 
-## Step E4 — Auto-fix unambiguous code-bugs
+#### Step E4 — Auto-fix unambiguous code-bugs
 
 **Auto-fix rubric (strict).** Apply a fix only if ALL of these hold:
 
@@ -126,7 +126,7 @@ After applying a fix, run `tsc` (E5) before the next fix in the
 batch — if a fix breaks types, abort the batch and surface the
 remaining errors for human triage.
 
-## Step E5 — Verify
+#### Step E5 — Verify
 
 ```sh
 cd lex_council && npx turbo run check-types --filter=web
@@ -142,7 +142,7 @@ python3 ~/.claude/skills/cleanup/scripts/errors_cleanup.py detect --since
 If any of the original error signatures recurs, the auto-fix didn't
 actually address the root cause — surface it for a second pass.
 
-## Step E6 — Mark
+#### Step E6 — Mark
 
 ```sh
 python3 ~/.claude/skills/cleanup/scripts/errors_cleanup.py mark
@@ -151,7 +151,7 @@ python3 ~/.claude/skills/cleanup/scripts/errors_cleanup.py mark
 Records the current log EOF in `/tmp/last_errors_cleanup_offset` so
 the next `detect --since` only reads new entries.
 
-## Step E7 — Vault log
+#### Step E7 — Vault log
 
 Delegate to **vault-log-compliance** *only if code changed*. For
 triage-only runs (no auto-fix applied, user did not request a manual

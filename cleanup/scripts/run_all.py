@@ -233,7 +233,37 @@ def f_followups():
     return out
 
 
-EXTRACTORS = [f_postgres, f_lint, f_errors, f_consolidate_code, f_docs, f_i18n, f_followups]
+def f_leaks():
+    out = []
+    d = load_json("/tmp/i18n_leaks.json")
+    if isinstance(d, dict):
+        en = d.get("en_absent") or []
+        if en:
+            out.append({"mode": "leaks", "sev": "HIGH",
+                        "title": f"{len(en)} i18n key(s) used in code but ABSENT from EN (render as raw key-path)",
+                        "count": len(en), "drill": "/tmp/i18n_leaks.json"})
+        la = d.get("locale_absent") or {}
+        tot = sum(len(v) for v in la.values()) if isinstance(la, dict) else 0
+        if tot:
+            out.append({"mode": "leaks", "sev": "MED",
+                        "title": f"{tot} key(s) in EN but missing from a non-EN locale (raw in that locale)",
+                        "count": tot, "drill": "/tmp/i18n_leaks.json"})
+    return out
+
+
+def f_bundle():
+    out = []
+    d = load_json("/tmp/bundle_violations.json")
+    if isinstance(d, dict):
+        n = d.get("violation_count") or 0
+        if n:
+            out.append({"mode": "bundle", "sev": "HIGH",
+                        "title": f"{n} heavy lib(s) leaking into the SSR/Worker bundle (Cloudflare 3 MiB deploy-wall risk)",
+                        "count": n, "drill": "/tmp/bundle_violations.json"})
+    return out
+
+
+EXTRACTORS = [f_postgres, f_lint, f_errors, f_consolidate_code, f_docs, f_i18n, f_leaks, f_bundle, f_followups]
 
 # (mode-label, script, [argv per stage], timeout-seconds, skip-when-fast)
 RUNS = [
@@ -242,6 +272,8 @@ RUNS = [
     ("language",         "i18n_cleanup.py",        [["detect"]],                       90,  False),
     ("consolidate-code", "consolidate_code.py",    [["scan"], ["classify"]],          150,  True),
     ("lint",             "lint_cleanup.py",        [["detect"], ["classify"]],        180,  True),
+    ("leaks",            "i18n_extract.py",        [["leaks"]],                       120,  False),
+    ("bundle",           "bundle_cleanup.py",      [["detect"]],                       60,  False),
 ]
 
 LAST_RUN_PROBE = {
@@ -251,6 +283,8 @@ LAST_RUN_PROBE = {
     "consolidate-code": "/tmp/consolidate_code_scan.json",
     "docs": "/tmp/docs_orphans.json",
     "language": "/tmp/translation_targets_fr.json",
+    "leaks": "/tmp/i18n_leaks.json",
+    "bundle": "/tmp/bundle_violations.json",
     "followups": "/tmp/followup_classified.json",
 }
 

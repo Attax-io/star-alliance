@@ -1,10 +1,10 @@
 ---
 name: cleanup
-version: 1.11.0
-description: Multi-mode hygiene skill for Lex Council. Modes — language (i18n translations); consolidate (i18n key dedup); hardcoded (find + extract raw hardcoded UI text to next-intl keys, then translate via language); errors (dev log sweep); postgres (Supabase advisors + pg health); lint (ESLint --fix + tsc); consolidate-code (duplicate component/RLS/constant detection); release (version bump + hygiene gate; absorbs update-app-version); docs (frontmatter/wikilinks/orphans); followups (deferred items). Run all at once via scripts/run_all.py. Triggers: "run cleanup", "/cleanup", "i18n cleanup", "translate untranslated", "find hardcoded text", "extract hardcoded strings", "fix dev errors", "check postgres", "check db health", "run lint", "fix lint", "doc cleanup", "finish followups", "bump the version", "release X.Y.Z", "ship a release", or any hygiene sweep after a campaign. Full mode recipes in references/.
+version: 1.14.0
+description: Multi-mode hygiene skill for Lex Council. Modes — language (i18n translations); consolidate (i18n key dedup); hardcoded (find + extract raw hardcoded UI text to next-intl keys, then translate via language); leaks (find i18n keys USED in code but ABSENT from locale JSON → render as raw key-paths); errors (dev log sweep); postgres (Supabase advisors + pg health); lint (ESLint --fix + tsc); consolidate-code (duplicate component/RLS/constant detection); bundle (Cloudflare/OpenNext Worker size-wall hygiene); release (version bump + hygiene gate; absorbs update-app-version); docs (frontmatter/wikilinks/orphans); followups (deferred items). Run all at once via scripts/run_all.py. Triggers: "run cleanup", "/cleanup", "i18n cleanup", "translate untranslated", "find hardcoded text", "extract hardcoded strings", "find leaking keys", "missing translation keys", "raw key paths", "fix dev errors", "check postgres", "check db health", "run lint", "fix lint", "consolidate code", "check the bundle size", "worker size limit", "doc cleanup", "finish followups", "bump the version", "release X.Y.Z", "ship a release", or any hygiene sweep after a campaign. Full mode recipes in references/.
 ---
 
-# Cleanup — Lex Council hygiene sweeps (v1.11.0)
+# Cleanup — Lex Council hygiene sweeps (v1.14.0)
 
 This skill packages the operational recipes for periodic cleanup passes that
 the app accumulates between feature builds. Each mode is independent; the
@@ -29,6 +29,8 @@ skill body routes to the right workflow based on what the user asked for.
 | **docs** | LIVE | Sync stale frontmatter dates + counts on planet hubs; flag broken wikilinks + archived-pointers; find orphan vault-logs; bump app version stamp in Vault Core; grep for retired-primitive names; detect post-rename narrative artifacts. Script: `scripts/docs_cleanup.py`. |
 | **followups** | LIVE | After a campaign closes, sweep vault-logs + risk-sweep files for deferred items. Classify as doable-autonomously / needs-user-hands / accepted-permanent-exception. Execute doable ones in parallel; surface the rest. Script: `scripts/followups_cleanup.py`. |
 | **hardcoded** | LIVE | Find raw hardcoded user-facing English text still in components (.tsx/.ts) and extract it to next-intl `t()` keys — the gap `language` (translates existing keys) / `consolidate` (dedups keys) never covered. Script: `scripts/i18n_extract.py` (detect/merge/propagate/verify); recipe `references/mode-hardcoded.md`. Scales 1-file → one-agent-per-file fan-out → `/conquering-campaign`. |
+| **leaks** | LIVE | The INVERSE of `hardcoded`: keys USED in code (`t('ns.key')`) but ABSENT from the locale JSON → render as the raw uppercased key-path (next-intl `getMessageFallback`) in the UI. `scripts/i18n_extract.py leaks` resolves every static `t()` key app-wide (matches `useTranslations` **and** `getTranslations`/`{namespace:}`), flags EN-absent (HIGH) + locale-parity (MED). Detect+surface only. The class that leaked the public Codex page twice. Recipe `references/mode-leaks.md`. |
+| **bundle** | LIVE | Cloudflare/OpenNext **Worker size-wall** hygiene. `detect` (static, build-free) flags heavy client-only libs (`recharts`) imported OUTSIDE the `.body`+`dynamic({ssr:false})` convention so they leak into the SSR/Worker bundle (the class that failed the 1.7.60 deploy); `measure` (build-gated) gzips the built worker vs the 3 MiB free / 10 MiB paid wall. Feeds the `release` gate + `run_all`. Script: `scripts/bundle_cleanup.py`. Recipe `references/mode-bundle.md`. |
 
 ## When to invoke this skill
 
@@ -48,6 +50,8 @@ Trigger phrases (any of):
 - "sync the doc footers", "doc cleanup", "check the docs are fresh" → routes to `docs`
 - "finish the followups", "close the followups", "sweep the campaign followups" → routes to `followups`
 - "find hardcoded text", "extract hardcoded strings", "key-ify the hardcoded strings", "/cleanup hardcoded" → routes to `hardcoded`
+- "find leaking keys", "missing translation keys", "keys showing as raw text", "raw key paths", "why is the UI showing the key name", "/cleanup leaks" → routes to `leaks`
+- "check the bundle size", "is the app too big", "worker size limit", "trim the bundle", "the deploy failed on size", "/cleanup bundle" → routes to `bundle`
 
 Skip when: user is mid-feature and work isn't ready; a cleanup pass ran today and nothing new was added; user is asking about something else ("clean up this component" = refactoring, not this skill).
 
@@ -69,6 +73,8 @@ Look at the user's phrasing. Default mode is `language` unless they explicitly n
 | "sync the doc footers", "doc cleanup", "/cleanup docs" | `docs` |
 | "finish the followups", "close the followups", "/cleanup followups" | `followups` |
 | "find hardcoded text", "extract hardcoded strings", "key-ify the hardcoded strings", "/cleanup hardcoded" | `hardcoded` |
+| "find leaking keys", "missing translation keys", "raw key paths", "/cleanup leaks" | `leaks` |
+| "check the bundle size", "worker size limit", "the deploy failed on size", "/cleanup bundle" | `bundle` |
 | "run all cleanups", "/cleanup all", "what's drifted" | run `python3 ~/.claude/skills/cleanup/scripts/run_all.py run [--fast]` — runs local hygiene modes detect-only, writes severity-ranked `/tmp/cleanup_triage.md` + per-mode last-run age |
 
 If the user's phrasing matches more than one mode (e.g. "run cleanup after that campaign"), prefer `followups` over `docs` — the post-campaign sweep is more specific.
@@ -106,6 +112,10 @@ Read `references/mode-language.md` for the full recipe (Steps L1–L5: detect sc
 
 Read `references/mode-hardcoded.md` for the full recipe (Steps H1–H8: detect candidates + reuse-map + briefs, extract scoped-inline-or-fan-out, single-writer merge + reuse-existence check, propagate to 6 locales, translate via the `language` mode, verify t()-keys resolve + smart-quote scan, fix the 4 known fan-out failure modes, vault log). Finds + extracts raw hardcoded UI text to keys — the producer half that `language` (the translator) and `consolidate` (the deduper) lack.
 
+### Mode: leaks
+
+Read `references/mode-leaks.md` for the full recipe (Steps LK1–LK3: detect via `i18n_extract.py leaks` — resolve every static `t()` key app-wide, classify EN-absent HIGH / locale-absent MED; mint the EN value (never auto-added) + propagate/translate; verify + log). The INVERSE of `hardcoded` and the blind spot of `language` — keys used in code but absent from the JSON render as raw key-paths in the UI.
+
 ### Mode: docs
 
 Read `references/mode-docs.md` for the full recipe (Steps D1–D10: planet hub inventory, frontmatter sweep, ground-truth count probes, wikilink rot sweep, orphan vault-logs, retired-name registry, post-rename narrative artifacts, in-progress campaign drift, findings file, apply + vault log).
@@ -140,17 +150,21 @@ Read `references/mode-consolidate-code.md` for the full recipe (Steps CC1–CC5:
 
 **Priority order:** C35 ghost-views (CRITICAL) → C1 PANEL_WIDTH ×44 (codemod) → C38 i18n dup groups → C28/C29 legacy `_js` views → C7/C8/C11 V9-container primitives → C23–C27 DB view/RLS merge → C30 admin_perms god-table (XL).
 
+### Mode: bundle
+
+Read `references/mode-bundle.md` for the full recipe: `detect` (static, build-free — flags heavy client-only libs imported outside the `.body`+`dynamic({ssr:false})` isolation convention; exit 2 on findings) + `measure` (build-gated — gzip `.open-next/worker.js` vs the 3 MiB free / 10 MiB paid wall; degrades-with-receipts when unbuilt or a stale placeholder). The `release` gate PR2 delegates its hard size check here; also wired into `run_all`.
+
 ### Mode: release
 
 Read `references/mode-release.md` for the full gate recipe (Steps PR1–PR4: hygiene gate, release-specific hazard checks, doc-stamp staleness warning, gate verdict). Phase 2 (version bump) runs per `references/release-procedure.md`.
 
 ## Lessons learned (cross-mode architecture)
 
-31 codified landmine lessons (L1–L31) covering MCP reachability taxonomy, behavior-parity verification, post-rename artifacts, look-alike-but-different trap, PostToolUse race conditions, continuation markers, vault-log size thresholds, `security_invoker` silent-drop, postgres multi-pass discipline, lint baseline noise, `no-unused-expressions` architectural status, hex literal grep, ThemeToggle/StrictMode noise, stale trigger bodies, i18n namespace scope trap, release-time failure cluster, byte-compare before merge, dev-server session survival, skill version-sync drift, language count-semantics (verify vs detect + absent-key blindness), exact-JSON-writer churn, concurrent-actor commit scoping, offline-MCP degrade-with-receipts, zero-edit no-bump, scanner self-reference, and advisor accepted-by-convention netting.
+39 codified landmine lessons (L1–L39) covering MCP reachability taxonomy, behavior-parity verification, post-rename artifacts, look-alike-but-different trap, PostToolUse race conditions, continuation markers, vault-log size thresholds, `security_invoker` silent-drop, postgres multi-pass discipline, lint baseline noise, `no-unused-expressions` architectural status, hex literal grep, ThemeToggle/StrictMode noise, stale trigger bodies, i18n namespace scope trap, release-time failure cluster, byte-compare before merge, dev-server session survival, skill version-sync drift, language count-semantics (verify vs detect + absent-key blindness), exact-JSON-writer churn, concurrent-actor commit scoping, offline-MCP degrade-with-receipts, zero-edit no-bump, scanner self-reference, advisor accepted-by-convention netting, mutation-module error-codes-not-strings (L32), ternary/nullish-fallback literal escape (L33), campaign locale-parity gaps (L34), single-word-label domain specificity (L35), orphaned-INDEX vault-logs (L36), followups over-tagging environmental items (L37), used-but-absent key leaks (L38), and heavy-lib Worker-wall busting (L39).
 
 > **Read `references/landmines.md`** before any cleanup pass that touches DB schema, consolidation, or release.
 
-Eight lessons are also wired into scripts: L9/L10/L15/L17 → `postgres_cleanup.py`; L11 + L19 → `lint_cleanup.py`; L14 → `errors_cleanup.py`; L16 → `i18n_cleanup.py`; L27 → `commit_scope.py` (v1.10.0).
+Lessons also wired into scripts: L9/L10/L15/L17 → `postgres_cleanup.py`; L11 + L19 → `lint_cleanup.py`; L14 → `errors_cleanup.py`; L16 → `i18n_cleanup.py`; L27 → `commit_scope.py` (v1.10.0); L33 → `i18n_extract.py detect` (`expr` context, v1.12.0); L34/L36/L37 → `followups_cleanup.py` (`parity` / `orphan-index` / classifier guard, v1.12.0); L38 → `i18n_extract.py leaks` (v1.13.0); L39 → `bundle_cleanup.py` (v1.14.0).
 
 ## Why this skill exists
 
@@ -176,6 +190,10 @@ This skill carries a semantic version in its frontmatter (`version: X.Y.Z`) and 
 
 | Version | Date | Summary |
 |---|---|---|
+| **1.14.0** | 2026-06-09 | **New `bundle` mode — Cloudflare/OpenNext Worker size-wall hygiene** (the class that failed the 1.7.60 deploy: members `CreditStatsBar` imported recharts directly into an SSR'd component). New `scripts/bundle_cleanup.py`: `detect` (static, build-free — direct-heavy-import / broken-isolation, exit 2) + `measure` (gzip `.open-next/worker.js` vs the 3 MiB free / 10 MiB paid wall, degrade-with-receipts). The `release` gate PR2 now delegates its hard size check to `bundle measure`; wired into `run_all` + router + Modes table + §L39. New mode → MINOR. |
+| **1.13.0** | 2026-06-04 | **New `leaks` mode — detect i18n keys USED in code but ABSENT from the locale JSON** (render as raw key-paths; leaked the public Codex page twice). New `i18n_extract.py leaks`: resolves every STATIC `t()` key app-wide → `en_absent` (HIGH) + `locale_absent` (MED); matches BOTH `useTranslations` AND `getTranslations`/`{namespace:}` (the server-page gap that would have missed the Codex leak), skips template-literal keys (zero false positives). Wired into `run_all` + router + Modes table + §Mode: leaks (LK1–LK3) + §L38. New mode → MINOR. |
+| **1.12.0** | 2026-06-04 | **Mechanized R12 + R13 — wired L33/L34/L36/L37 into their scripts.** R12: `i18n_extract.py detect` gains an `expr` candidate context (nullish-fallback + ternary-tail + `fail(`) closing the 57-file residual gap (L33). R13: `followups_cleanup.py` gains `parity` (per-locale key-presence, exit 2 on absent — L34) + `orphan-index` (disk-present/INDEX-absent vault-logs, own-log-only — L36) + an `ENVIRONMENTAL_KW` classifier guard (prod-vs-repo items → accepted-exception — L37). Backward-compatible → MINOR. |
+| **1.11.1** | 2026-06-04 | §Lessons +L32–L37 — mined the June 3–4 sessions (app-wide `hardcoded` extraction + the parity/orphan follow-ups). Prose-only landmines; no script change → PATCH. |
 | **1.11.0** | 2026-06-03 | **New `hardcoded` mode — find + extract raw hardcoded UI text to i18n keys** (the gap `language`/`consolidate` never covered: they translate/dedup existing keys; neither reads component source). New `scripts/i18n_extract.py` (detect/merge/propagate/verify) + `references/mode-hardcoded.md` (recipe H1–H8). detect harvests JSX/prop/toast literal candidates + reuse-maps against existing keys + emits per-file agent briefs; merge single-writer-merges agent key-maps into `en/<ns>.json` + reuse-existence check (catches mislabeled-reuse keys → runtime MISSING_MESSAGE); propagate fills all 6 locales (EN placeholder); verify asserts every t()-key resolves + flags smart-quote useTranslations (TS1127). #91-safe fan-out (1 agent/file → key-map → main single writer); scales 1-file → app-wide → `/conquering-campaign` for multi-session. Mined from the 2026-06-03 app-wide extraction (109 files / 372 keys / 393×5 translated). New mode → MINOR. |
 | **1.10.0** | 2026-06-02 | **Lessons L25–L31 + route R10 mechanized (`scripts/commit_scope.py`).** Mined the heavy 2026-05-30→06-02 usage (4 followup sweeps + 2 run-all passes) into 7 new landmine lessons: language count-semantics (verify>detect, detect-blind-to-absent-keys, cognate floor, phantom MISSING_MESSAGE=stale dev cache) (L25), exact-JSON-writer minimal-diff (L26), concurrent-actor scoped commit (L27), offline-MCP/dead-dev-log degrade-with-receipts (L28), zero-edit no-bump/no-log (L29), scanner self-reference false positives (L30), advisor accepted-by-convention netting (L31). **R10 shipped** — `scripts/commit_scope.py` (`scan`/`buildcheck`/`emit`) partitions the co-mingled dirty tree so a followups commit stages only campaign-owned files (mechanizes L27); wired into mode-followups Step F5.5. Live-validated: 57 dirty files in `lex_council/`, isolated the 2 owned from 45 foreign + 12 daemon bumps. New script, backward-compatible → MINOR. |
 | **1.9.0** | 2026-05-31 | **Two simultaneous MINOR additions.** (1) **Always-on app patch bump (every mode).** New closeout step (§Workflow Step CL): every cleanup session that applies ≥1 change bumps the app version's last segment by 1. New `scripts/bump_app_patch.py` (`show` / `bump [--dry]`) increments PATCH in BOTH `apps/web/config/app.config.ts` (canonical) and `apps/web/package.json` (mirror), keeps them in sync, refuses on drift (exit 3). Rules: once per session; skip on no-op/detect-only/dry-run/`--gate`; `release` mode excluded (does its own full bump — never double-bump). (2) **Reference extraction refactor (Cowork installer word-limit fix).** All 9 mode recipes + 24 landmine lessons extracted to `references/mode-*.md` + `references/landmines.md`. SKILL.md is now a slim routing stub (target < 3,000 words vs prior 15,000+). No behavioral change — all content preserved in reference files; `Read references/mode-X.md` at the top of each mode section. Cowork skill installer limit is ~10,000 words; prior 15,342-word file failed installation. |
@@ -204,8 +222,11 @@ This skill carries a semantic version in its frontmatter (`version: X.Y.Z`) and 
 - `references/mode-consolidate-code.md` — consolidate-code mode recipe.
 - `references/mode-release.md` — release mode gate recipe (Phase 1).
 - `references/mode-hardcoded.md` — hardcoded mode recipe (find + extract raw UI text to keys).
-- `scripts/i18n_extract.py` — hardcoded mode machinery (detect/merge/propagate/verify).
-- `references/landmines.md` — L1–L31 cross-mode lessons.
+- `references/mode-leaks.md` — leaks mode recipe (used-but-absent i18n keys → raw key-paths).
+- `references/mode-bundle.md` — bundle mode recipe (Cloudflare/OpenNext Worker size-wall hygiene).
+- `scripts/i18n_extract.py` — hardcoded + leaks mode machinery (detect/merge/propagate/verify/leaks).
+- `scripts/bundle_cleanup.py` — bundle mode machinery (detect/measure).
+- `references/landmines.md` — L1–L39 cross-mode lessons.
 - `scripts/commit_scope.py` — concurrent-actor commit-scoper (R10, §L27): scan/buildcheck/emit; never commits.
 - [[2026-06-02_cleanup-skill-lessons-l25-l31]] — vault log for the L25–L31 + R10 (v1.10.0) upgrade.
 - `vault-log-compliance` skill — delegated to in every mode's vault log step.

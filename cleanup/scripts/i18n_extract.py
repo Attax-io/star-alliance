@@ -49,7 +49,18 @@ PROP_RE = re.compile(
     r'eyebrow|hint|sub)\s*=\s*(?:"([^"{}\n]{2,})"|\'([^\'{}\n]{2,})\')')
 CALL_RE = re.compile(
     r'(?:toast\.(?:success|error|info|warning|message)|throw new Error|'
-    r'showError|setError|setActionError)\(\s*(?:"([^"{}\n]{2,})"|\'([^\'{}\n]{2,})\')')
+    r'showError|setError|setActionError|fail)\(\s*(?:"([^"{}\n]{2,})"|\'([^\'{}\n]{2,})\')')
+
+# R12 (L33) — expression-context literals the JSX/prop/call harvest misses:
+# nullish-fallback (`x ?? 'Failed to delete'`) + ternary tail
+# (`error.message ? error.message : 'Something failed'`). This bucket is where
+# error / validation / permission copy hides; the 2026-06-03 campaign needed a
+# 57-file follow-up sweep for ~84 of them. High-recall — the agent layer is the
+# accuracy pass. The ternary body is bounded by [^?:\n]{1,80} so an object key
+# (`x: '…'`, no preceding `?`) never matches and nested ternaries don't run away;
+# it captures the FALSE/fallback branch, where the literal lives.
+EXPR_NULLISH_RE = re.compile(r'\?\?\s*(?:"([^"{}\n]{3,})"|\'([^\'{}\n]{3,})\')')
+EXPR_TERNARY_RE = re.compile(r'\?[^?:\n]{1,80}:\s*(?:"([^"{}\n]{3,})"|\'([^\'{}\n]{3,})\')')
 
 EXCLUDE_DIR = ('__tests__', 'node_modules', '.next', '/_dev/', '.stories.')
 
@@ -194,12 +205,17 @@ def cmd_detect(args):
             lit = m.group(1) or m.group(2)
             cns = 'toasts' if 'toast' in txt[m.start():m.start()+12] else 'errors'
             _add(entries, dedupe, txt, m.start(), 'call', lit, cns, base, reuse)
+        for rx in (EXPR_NULLISH_RE, EXPR_TERNARY_RE):       # R12 (L33) expression-context bucket
+            for m in rx.finditer(txt):
+                _add(entries, dedupe, txt, m.start(), 'expr', m.group(1) or m.group(2), 'errors', base, reuse)
         if not entries:
             continue
         totals['files'] += 1
         totals['candidates'] += len(entries)
         totals['reuse'] += sum(1 for e in entries if e['reuseKey'])
         totals['new'] += sum(1 for e in entries if not e['reuseKey'])
+        for e in entries:                                   # R12 — per-context tally
+            totals[e['context']] = totals.get(e['context'], 0) + 1
         rec = {'idx': idx, 'file': rel, 'abs': str(fp), 'alreadyUsesI18n': already, 'entries': entries}
         inventory.append(rec)
         if args.briefs:
@@ -208,6 +224,9 @@ def cmd_detect(args):
     (out_dir / 'inventory.json').write_text(json.dumps(inventory, indent=2, ensure_ascii=False), encoding='utf-8')
     print(f"files-with-candidates: {totals['files']}  candidates: {totals['candidates']}  "
           f"reuse-mappable: {totals['reuse']}  new-keys: {totals['new']}")
+    print(f"  by context: jsx={totals.get('jsx',0)} prop={totals.get('prop',0)} "
+          f"call={totals.get('call',0)} expr={totals.get('expr',0)}  "
+          f"(expr = R12 nullish/ternary-fallback bucket — verify these closely, higher false-positive rate)")
     print(f"inventory → {out_dir/'inventory.json'}" + (f"  briefs → {briefs_dir}/b*.json" if args.briefs else ""))
     if totals['files'] > 60:
         print("NOTE: >60 files — app-wide scale. Fan-out (one agent/file) or /conquering-campaign for multi-session.")
@@ -350,7 +369,8 @@ def cmd_verify(args):
     wr = web_root(root)
     per_ns, _ = load_en(root)
     unresolved, smart = [], []
-    use_re = re.compile(r'useTranslations\(\s*[\'"]([^\'"]+)[\'"]')
+    use_re = re.compile(r'(?:useTranslations|getTranslations)\(\s*[\'"]([^\'"]+)[\'"]')
+    nsobj_re = re.compile(r'namespace:\s*[\'"]([^\'"]+)[\'"]')
     call_re = re.compile(r'\b[a-zA-Z]\w*\(\s*[\'"]([a-z][\w]*(?:\.[\w]+)+)[\'"]')
     smart_re = re.compile(r'(?:useTranslations|getTranslations)\(\s*[‘’“”]')
     for fp in scan_files(wr, args.scope):
@@ -360,7 +380,7 @@ def cmd_verify(args):
             continue
         if smart_re.search(txt):
             smart.append(str(fp.relative_to(wr)))
-        ns_in_file = set(use_re.findall(txt))
+        ns_in_file = set(use_re.findall(txt)) | set(nsobj_re.findall(txt))
         if not ns_in_file:
             continue
         # candidate namespaces: the first segment of each useTranslations arg
@@ -399,6 +419,156 @@ def cmd_verify(args):
         print("verify clean — no smart-quote calls; all sampled t()-keys resolve.")
 
 
+# ── leaks mode (the `leaks` cleanup mode) ─────────────────────────────────────
+# Find i18n keys USED in code (t('ns.key')) but ABSENT from the locale JSON — they
+# render as the raw uppercased key path (next-intl getMessageFallback) in the UI.
+# This is the inverse of `hardcoded` (text not in keys) and invisible to `language`
+# (which only sees keys present-but-equal-to-EN). The class that leaked the public
+# Codex page (codex.col_type/col_status/filter_status absent) twice. See SKILL.md
+# §Mode: leaks + lessons L25/L34/L38.
+
+# Declares a translation namespace: useTranslations('ns') / getTranslations('ns')
+# / getTranslations({ ..., namespace: 'ns' }). MUST match getTranslations too —
+# server components (the Codex page) declare their namespace that way, and a
+# useTranslations-only scan misses every leak on a server page.
+NS_DECL_RE = re.compile(r'(?:useTranslations|getTranslations)\(\s*[\'"]([^\'"]+)[\'"]')
+NS_OBJ_RE = re.compile(r'namespace:\s*[\'"]([^\'"]+)[\'"]')
+# A static dotted t-key argument: t('a.b'), tc('labels.x'), t(`a.b`) is EXCLUDED
+# (backtick = dynamic/template, can't statically resolve — no false positive).
+# Captures (fn_name, key) so the ns-declaring calls (useTranslations('portal.x'))
+# can be skipped — they take a dotted string too and would otherwise self-flag.
+TKEY_RE = re.compile(r'\b([a-zA-Z]\w*)\(\s*[\'"]([a-z][\w]*(?:\.[\w]+)+)[\'"]')
+NS_DECL_FNS = {'useTranslations', 'getTranslations'}
+
+# Standalone non-i18n callers that accept a dotted-string first arg.
+# Method calls (.push / .eq / .add / .filter etc.) are caught by the
+# dot-prefix check below; these are standalone functions that also happen
+# to take dotted non-i18n strings (analytics events, etc.).
+_LEAKS_SKIP_FNS = frozenset({
+    'trackActivityEvent', 'trackEvent', 'logEvent', 'emitEvent',
+})
+
+# Wrapper: const ic = (key: string) => t('prefix.' + key)
+# Captures (alias, prefix) so ic('sub.key') resolves as 'prefix.sub.key'
+# instead of being flagged as an unknown key.
+_WRAPPER_DECL_RE = re.compile(
+    r"const\s+(\w+)\s*=\s*\([^)]*\)\s*=>\s*\w+\(\s*['\"]"
+    r"([a-z][a-z0-9_]*(?:\.[a-z0-9_]+)*)\.['\"]"
+)
+
+
+def _key_candidates(key: str, ns_in_file: set[str]):
+    """All (ns, dotted) a static t-key could map to, given the file's declared
+    namespaces. Handles: key carrying its own ns prefix (t('common.x') in any
+    file), bare key under each declared ns (t('codex.x') with getTranslations
+    ('public') -> public.codex.x), and sub-namespace decls (useTranslations
+    ('portal.verification_flow') + t('band') -> portal.verification_flow.band)."""
+    out, seen = [], set()
+    top = key.split('.', 1)[0]
+    if top in NAMESPACES:
+        out.append((top, key[len(top) + 1:]))
+    for full_ns in ns_in_file:
+        base = full_ns.split('.', 1)
+        ns = base[0]
+        sub = (base[1] + '.') if len(base) == 2 else ''
+        out.append((ns, sub + key))
+    res = []
+    for ns, d in out:
+        if ns in NAMESPACES and d and (ns, d) not in seen:
+            seen.add((ns, d)); res.append((ns, d))
+    return res
+
+
+def load_all_locales(root: Path):
+    """{loc: {ns: {dotted_key: value}}} flattened, for all 6 locales."""
+    per = {}
+    for loc in ALL_LOCALES:
+        per[loc] = {}
+        for ns in NAMESPACES:
+            fp = root / loc / f'{ns}.json'
+            per[loc][ns] = flatten(json.load(fp.open(encoding='utf-8'))) if fp.exists() else {}
+    return per
+
+
+def cmd_leaks(args):
+    """Scan every t()-call app-wide; report keys absent from EN (raw-path leak)
+    and keys present in EN but absent from a non-EN locale (per-locale leak)."""
+    root = Path(args.root).resolve() if args.root else default_root()
+    wr = web_root(root)
+    loc_maps = load_all_locales(root)
+    en = loc_maps['en']
+    en_absent, locale_absent = [], {loc: [] for loc in NON_EN_LOCALES}
+    files_scanned = keys_checked = 0
+    for fp in scan_files(wr, args.scope):
+        try:
+            txt = fp.read_text(encoding='utf-8')
+        except Exception:
+            continue
+        ns_in_file = set(NS_DECL_RE.findall(txt)) | set(NS_OBJ_RE.findall(txt))
+        if not ns_in_file:
+            continue                      # no declared ns -> can't resolve (prop-passed t); skip
+        files_scanned += 1
+        rel = str(fp.relative_to(wr))
+        wrapper_ns = {}
+        for wm in _WRAPPER_DECL_RE.finditer(txt):
+            wrapper_ns[wm.group(1)] = wm.group(2)
+        keys = set()
+        for m in TKEY_RE.finditer(txt):
+            fn, key = m.group(1), m.group(2)
+            if fn in NS_DECL_FNS or fn in _LEAKS_SKIP_FNS:
+                continue
+            # Skip method calls: chips.add('x') / arr.push('x') / .eq('x') etc.
+            if m.start() > 0 and txt[m.start() - 1] == '.':
+                continue
+            # Resolve wrapper alias: ic('sub.key') → 'prefix.sub.key'
+            if fn in wrapper_ns:
+                key = wrapper_ns[fn] + '.' + key
+            keys.add(key)
+        for key in sorted(keys):
+            if key.split('.', 1)[0] in ('http', 'https'):
+                continue
+            cands = _key_candidates(key, ns_in_file)
+            if not cands:
+                continue
+            keys_checked += 1
+            hit = next(((ns, d) for ns, d in cands if d in en.get(ns, {})), None)
+            if not hit:
+                en_absent.append({'file': rel, 'key': key,
+                                  'candidates': [f'{ns}.{d}' for ns, d in cands]})
+                continue
+            ns, d = hit
+            for loc in NON_EN_LOCALES:
+                if d not in loc_maps[loc].get(ns, {}):
+                    locale_absent[loc].append({'file': rel, 'key': f'{ns}.{d}'})
+    # dedupe en_absent by (key) keeping first file
+    seen, en_uniq = set(), []
+    for e in en_absent:
+        if e['key'] not in seen:
+            seen.add(e['key']); en_uniq.append(e)
+    out = {'en_absent': en_uniq,
+           'locale_absent': {l: v for l, v in locale_absent.items() if v},
+           'stats': {'files_scanned': files_scanned, 'keys_checked': keys_checked,
+                     'en_absent': len(en_uniq),
+                     'locale_absent_total': sum(len(v) for v in locale_absent.values())}}
+    Path(args.out).write_text(json.dumps(out, indent=2, ensure_ascii=False), encoding='utf-8')
+    print(f"i18n leaks — scanned {files_scanned} files, {keys_checked} static t()-keys")
+    if en_uniq:
+        print(f"\n🔴 {len(en_uniq)} key(s) ABSENT from EN (render as raw key-path — MISSING_MESSAGE):")
+        for e in en_uniq[:40]:
+            print(f"   {e['file']}  t('{e['key']}')  →  tried {', '.join(e['candidates'])}")
+        if len(en_uniq) > 40:
+            print(f"   … (+{len(en_uniq) - 40} more in {args.out})")
+    parity = {l: v for l, v in locale_absent.items() if v}
+    if parity:
+        print(f"\n🟡 present in EN but absent from a non-EN locale (raw in that locale only):")
+        for loc, v in parity.items():
+            ex = ', '.join(sorted({x['key'] for x in v})[:5])
+            print(f"   {loc}: {len({x['key'] for x in v})} key(s)  e.g. {ex}")
+    if not en_uniq and not parity:
+        print("✓ no leaking keys — every static t()-key resolves in all 6 locales.")
+    print(f"\n→ {args.out}")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     sub = ap.add_subparsers(dest='cmd', required=True)
@@ -421,6 +591,11 @@ def main():
     v = sub.add_parser('verify', help='assert t()-keys resolve in en/*.json + flag smart-quote calls')
     v.add_argument('--root'); v.add_argument('--scope', nargs='+')
     v.set_defaults(func=cmd_verify)
+
+    lk = sub.add_parser('leaks', help='app-wide: keys used in t() but ABSENT from EN (raw-path leak) or a non-EN locale')
+    lk.add_argument('--root'); lk.add_argument('--scope', nargs='+', help='paths under apps/web (default: app components lib hooks store)')
+    lk.add_argument('--out', default='/tmp/i18n_leaks.json')
+    lk.set_defaults(func=cmd_leaks)
 
     args = ap.parse_args()
     args.func(args)

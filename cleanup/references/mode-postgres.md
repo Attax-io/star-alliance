@@ -12,7 +12,7 @@ conquering-campaign session to handle it safely with the PDAAV pattern.
 Claude writes the raw JSON outputs to temp files; the script classifies and acts on them.
 Always use `project_id bqgrpnsvplvicnmzxwkm` for every MCP call.
 
-## Step PG0 — Pre-flight
+#### Step PG0 — Pre-flight
 
 Confirm the Supabase MCP is reachable:
 
@@ -24,7 +24,7 @@ Confirm the Supabase MCP is reachable:
 If MCP is unavailable, surface the error and abort — postgres mode cannot run without
 Supabase MCP access.
 
-## Step PG1 — Detect
+#### Step PG1 — Detect
 
 Run the two MCP calls and write their output:
 
@@ -80,7 +80,7 @@ python3 ~/.claude/skills/cleanup/scripts/postgres_cleanup.py detect
 
 Show the user the total issue count per source (advisors vs health queries) and ask whether to proceed.
 
-## Step PG2 — Classify
+#### Step PG2 — Classify
 
 ```bash
 python3 ~/.claude/skills/cleanup/scripts/postgres_cleanup.py classify
@@ -97,7 +97,7 @@ Tier mapping:
 
 Print the classification summary. Confirm auto-fix count before proceeding.
 
-## Step PG3 — Apply (advisory-auto-fix only)
+#### Step PG3 — Apply (advisory-auto-fix only)
 
 ```bash
 python3 ~/.claude/skills/cleanup/scripts/postgres_cleanup.py apply
@@ -117,7 +117,7 @@ auto-fix tier (unexpected by the script) is escalated to `schema-campaign` inste
 (`YYYYMMDDHHMMSS`). Confirm the format matches before calling `apply_migration`. A mismatch
 causes `MIGRATIONS_FAILED` on preview branches, leaving the DB empty and unresponsive.
 
-## Step PG4 — Verify
+#### Step PG4 — Verify
 
 Re-run health queries and advisors; report delta:
 
@@ -128,7 +128,7 @@ python3 ~/.claude/skills/cleanup/scripts/postgres_cleanup.py verify
 
 Expected: advisory-auto-fix count drops to 0. If any remain, surface them as needing manual review.
 
-## Step PG5 — Surface schema-campaign items
+#### Step PG5 — Surface schema-campaign items
 
 ```bash
 python3 ~/.claude/skills/cleanup/scripts/postgres_cleanup.py surface
@@ -137,7 +137,7 @@ python3 ~/.claude/skills/cleanup/scripts/postgres_cleanup.py surface
 Print the full triage list. For each `schema-campaign` item, suggest the conquering-campaign
 trigger phrase the user would use (e.g., "add RLS to the `notifications` table").
 
-## Step PG6 — Vault log
+#### Step PG6 — Vault log
 
 Delegate to **vault-log-compliance** *only if a migration was applied*. For triage-only runs,
 no vault log needed.
@@ -145,9 +145,7 @@ no vault log needed.
 The entry should document: each auto-fixed index (table + column + `CREATE INDEX` SQL), advisor
 delta (before → after count), and the schema-campaign checklist for the user.
 
----
-
-## Key traps for postgres mode
+**Key traps for postgres mode:**
 
 - **`CREATE OR REPLACE VIEW` silently drops `security_invoker=true`** — if any view is touched
   during this pass (even incidentally), follow up with `ALTER VIEW <v> SET (security_invoker = true)`.
@@ -159,10 +157,3 @@ delta (before → after count), and the schema-campaign checklist for the user.
 - **New trigger/RPC advisor warnings** — new trigger functions and RPCs almost always generate
   `search_path` + anon-EXECUTE advisor warnings. Fix inline when writing the object; don't
   defer to a cleanup pass.
-- **`get_advisors` misses overly-permissive RLS** — supplement with:
-  ```sql
-  SELECT schemaname, tablename, policyname, cmd, qual, with_check
-  FROM pg_policies WHERE schemaname = 'public' AND (qual = 'true' OR qual IS NULL);
-  ```
-- **Multi-pass required** — fixing the top-N advisories often reveals Nth+1 advisory hidden
-  behind them. Loop until `get_advisors` returns empty (or only known-intentional exceptions).

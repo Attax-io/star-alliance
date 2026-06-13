@@ -6,7 +6,7 @@ A periodic hygiene sweep of the planet hubs. Lighter-weight than a full
 audit campaign (`conquering-campaign` AUDIT mode) — runs the cheap
 catch-all checks that surface drift without re-querying the entire DB.
 
-## Step D1 — Inventory the planet hubs
+#### Step D1 — Inventory the planet hubs
 
 The skill ships with a hard-coded list of planet hubs (matches what the
 2026-05-28 solar-system audit covered). If a future hub is added, append
@@ -23,7 +23,7 @@ DESIGN-CANON.md
 V2-CONVENTIONS.md
 ```
 
-## Step D2 — Per-hub frontmatter sweep
+#### Step D2 — Per-hub frontmatter sweep
 
 For each hub, run these checks and produce a per-hub findings line. The
 companion script `scripts/docs_cleanup.py` owns the mechanical
@@ -36,7 +36,7 @@ parts; this section owns the contract.
 | **Frontmatter promises a checkpoint file that doesn't exist** | `checkpoint_file` field resolves to a real path | Surface |
 | **App version stamp drift (Vault Core only)** | `app_version` frontmatter + body "App version: X.Y.Z" line vs `apps/web/config/app.config.ts` | Auto-update both Vault Core surfaces |
 
-## Step D3 — Ground-truth counts table
+#### Step D3 — Ground-truth counts table
 
 For each planet hub, run these probes (composable; the script can skip
 any whose hub doesn't declare the matching count key):
@@ -60,7 +60,7 @@ any whose hub doesn't declare the matching count key):
 **MCP project_id is always `bqgrpnsvplvicnmzxwkm`** (production). Skip
 DB probes silently if MCP isn't available; flag the skip in the output.
 
-## Step D4 — Wikilink rot sweep
+#### Step D4 — Wikilink rot sweep
 
 Across `lex_council/docs/`:
 
@@ -78,7 +78,7 @@ For each `[[X]]`:
   with the recommendation to retarget or strike.
 - **Resolved** — silently OK.
 
-## Step D5 — Orphan vault-logs
+#### Step D5 — Orphan vault-logs
 
 ```bash
 # Vault-log files that exist
@@ -93,7 +93,7 @@ comm -23 <(sort /tmp/vl_files.txt) <(sort /tmp/vl_indexed.txt | sed 's/$/.md/')
 Surface every orphan. Auto-fixing is risky (the entry's summary needs
 prose); flag for the user to triage.
 
-## Step D6 — Retired-name registry sweep
+#### Step D6 — Retired-name registry sweep
 
 Maintain a hard-coded list of names retired by past large refactors.
 Grep all docs for each occurrence; surface for triage. Auto-fixing is
@@ -118,7 +118,7 @@ When adding to the registry, also add a one-line note about the
 retirement (vault-log link + date) so the surfaced grep hit is easy to
 classify.
 
-## Step D7 — Post-rename narrative-artifact sweep
+#### Step D7 — Post-rename narrative-artifact sweep
 
 Telltale pattern from the 2026-05-28 audit's BACKEND.md global-replace
 leftovers: prose that reads `X (v2; was X)` — same name on both sides
@@ -136,7 +136,7 @@ Surface each; the user picks the correct pre-v2 name from their head
 (or the script can look up `<retired-names-registry>` for the matching
 pre-rename name when there's only one candidate).
 
-## Step D8 — In-progress campaign drift
+#### Step D8 — In-progress campaign drift
 
 Cross-reference `build-campaigns/*/00-campaign-plan.md` frontmatter
 `status:` against vault-log existence:
@@ -155,7 +155,7 @@ Surface each. Auto-update to `status: completed` is risky (the
 `phases_completed` array may not be accurate either) — flag for the
 user.
 
-## Step D9 — Per-hub findings file + summary
+#### Step D9 — Per-hub findings file + summary
 
 Each hub gets a one-line summary in the findings file
 (`/tmp/docs_cleanup_findings.md`) so the user can scan + triage:
@@ -166,7 +166,7 @@ Each hub gets a one-line summary in the findings file
   prose: 4 occurrences; narrative artifacts: 2 (`X (v2; was X)`); status: STALE.
 ```
 
-## Step D10 — Apply + vault log
+#### Step D10 — Apply + vault log
 
 Auto-fixed items (frontmatter date bumps, count auto-bumps when delta
 < 5%, app version stamp) get a single small vault-log entry via

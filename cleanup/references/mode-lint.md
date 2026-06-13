@@ -11,7 +11,7 @@ mode supports BOTH: (a) full-project sweep (to build a debt baseline), and (b) s
 **No preview server required.** This mode does not need Claude to open a browser session.
 All verification is tsc + ESLint only.
 
-## Step L0 — Pre-flight
+#### Step L0 — Pre-flight
 
 ```bash
 # Confirm we're in lex_council/
@@ -22,7 +22,7 @@ grep '"lint"' lex_council/package.json
 
 If not in the right directory or lint script missing, surface and abort.
 
-## Step L1 — Detect
+#### Step L1 — Detect
 
 ```bash
 python3 ~/.claude/skills/cleanup/scripts/lint_cleanup.py detect
@@ -43,7 +43,7 @@ cd lex_council && npx turbo run check-types --force --filter=web
 
 before investigating — the force flag bypasses stale cache.
 
-## Step L2 — Classify
+#### Step L2 — Classify
 
 ```bash
 python3 ~/.claude/skills/cleanup/scripts/lint_cleanup.py classify
@@ -62,7 +62,7 @@ Tier mapping:
 as a statement (`cond ? a.foo() : a.bar()`), which fails `no-unused-expressions`. The fix is
 always `if/else` — never `eslint-disable`. Auto-fix is blocked for this rule.
 
-## Step L3 — Scoping (optional)
+#### Step L3 — Scoping (optional)
 
 For proving a campaign's changes are clean independent of pre-existing project-wide warnings:
 
@@ -79,7 +79,7 @@ echo "EXIT=$?"
 `EXIT=0` proves the campaign-touched surface is clean. Report both the full-project result
 (with provenance note for pre-existing failures) AND the scoped result.
 
-## Step L4 — Apply
+#### Step L4 — Apply
 
 ```bash
 python3 ~/.claude/skills/cleanup/scripts/lint_cleanup.py apply
@@ -95,7 +95,7 @@ no-trailing-spaces. Full list in `scripts/lint_cleanup.py:SAFE_FIXABLE_RULES`.
 **Auto-fix batch limit**: apply at most 50 files per run. Larger batches risk a single
 unfixable file blocking the whole batch. Run verify between batches if > 50 files.
 
-## Step L5 — Verify
+#### Step L5 — Verify
 
 ```bash
 python3 ~/.claude/skills/cleanup/scripts/lint_cleanup.py verify
@@ -110,7 +110,7 @@ cd lex_council && npx turbo run check-types --force --filter=web
 Expected: auto-fixable count drops to 0. tsc passes. Architectural count unchanged
 (those require campaigns, not auto-fix).
 
-## Step L6 — Surface architectural violations
+#### Step L6 — Surface architectural violations
 
 ```bash
 python3 ~/.claude/skills/cleanup/scripts/lint_cleanup.py surface
@@ -132,7 +132,7 @@ grep -rn '#[0-9a-fA-F]\{3,6\}' \
 
 A count > 10 is a flag for a token-sweep campaign. Surface to the user as an advisory.
 
-## Step L7 — Vault log
+#### Step L7 — Vault log
 
 Delegate to **vault-log-compliance** *only if code changed* (auto-fix was applied). For
 triage-only runs, no vault log needed.
@@ -140,9 +140,7 @@ triage-only runs, no vault log needed.
 The entry should document: files fixed, rules resolved, tsc result, architectural violations
 surfaced as campaign candidates, and the off-token hex count if > 0.
 
----
-
-## Key traps for lint mode
+**Key traps for lint mode:**
 
 - **Pre-existing parse errors block the whole app typecheck.** A single unterminated string
   literal stops tsc from analyzing any other file. Run `tsc --noEmit` first to confirm the
@@ -155,11 +153,3 @@ surfaced as campaign candidates, and the off-token hex count if > 0.
 - **`useTranslations` cleanup** requires removing BOTH the import AND the `const t = ...` line.
   ESLint `--fix` removes unused-import but leaves the `const` declaration, causing a follow-up
   `no-unused-vars` error on the next run. Fix both in one pass.
-- **`react-hooks/exhaustive-deps` suppressions on mutation callbacks are intentional.** Do NOT
-  remove these suppressions — they are correct design decisions. Classify as `reviewed-intentional`.
-- **`no-undef` errors for `Buffer`, `process`, `module`, `require` in `scripts/`** — fix is
-  `/* eslint-env node */` at the top of the file, NOT per-line `eslint-disable`.
-- **TS2304 `Cannot find name 'VIEWS'`** always means a missing view-registry key in
-  `apps/web/lib/view-registry.ts` — grep for `VIEWS.<key>` usages not in the registry.
-- **Always report delta**, not raw counts: "N new warnings on campaign-touched files
-  (M pre-existing suppressed)".

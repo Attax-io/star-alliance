@@ -1,16 +1,17 @@
 # Cleanup skill — upgrade routes
 
-Checkup of `cleanup` v1.9.1. Maps every place the skill can still grow, ranked by
+Checkup of `cleanup` v1.14.0. Maps every place the skill can still grow, ranked by
 value × effort. Companion to SKILL.md §Versioning. Re-read this before the next upgrade
 pass so routes aren't re-derived from scratch.
 
-**Current state (v1.11.0):** 10 LIVE modes (added `hardcoded` — i18n extraction, R11) + a `run_all.py` orchestrator (R7) + a `commit_scope.py`
+**Current state (v1.14.0):** 12 LIVE modes (`leaks` — used-but-absent i18n keys, v1.13.0; `bundle` — Worker size-wall, R14) + a `run_all.py` orchestrator (R7) + a `commit_scope.py`
 helper (R10) + an always-on app patch bump on every change-applying sweep (v1.9.0). 0 DRAFT.
-**R1–R7 + R10 all DONE.** 8 codified lessons (L9/L10/L11/L14/L15/L16/L17/L19 + **L27 → `commit_scope.py`**)
-wired into their scripts; cross-machine `default_root()` portability across all scripts. **31 cross-mode
-lessons (L1–L31)** — L25–L31 added 2026-06-02 from mining the heavy 2026-05-30→06-02 usage; L27 now
-mechanized (R10), L25/L26/L28–L31 still prose-only.
-**Open routes: R8 (dead-code mode), R9 (`--since` incremental).** R11 (i18n extraction) DONE v1.11.0.
+**R1–R7 + R10 + R11 + R12 + R13 + R14 all DONE.** **39 cross-mode lessons (L1–L39)** — L39 (OpenNext Worker 3 MiB wall → `bundle` mode) added 2026-06-09 from the 1.7.60 deploy failure; L38 (leaks) v1.13.0; L32–L37 added 2026-06-04 from
+mining the June 3–4 `hardcoded`-extraction + bug#244/#245 followup sweeps; L25–L31 added 2026-06-02.
+Mechanized into scripts: L9/L10/L11/L14/L15/L16/L17/L19, **L27 → `commit_scope.py` (R10)**, **L33 → `i18n_extract.py` detect (R12)**,
+**L34/L36/L37 → `followups_cleanup.py` parity/orphan-index/classifier-guard (R13)**; L25/L26/L28–L32/L35 still prose-only.
+Cross-machine `default_root()` portability across all scripts.
+**Open routes: R8 (dead-code mode), R9 (`--since` incremental).**
 
 ---
 
@@ -28,7 +29,10 @@ mechanized (R10), L25/L26/L28–L31 still prose-only.
 | R8 | `dead-code` / orphan-sweep mode | new mode | MED | M | ts-prune/knip integration |
 | R9 | cross-mode `--since` incremental | enhance all | LOW | S | per-mode offset markers |
 | ~~R10~~ | concurrent-actor commit-scoper | **DONE (v1.10.0)** | — | — | LIVE — `scripts/commit_scope.py` (scan/buildcheck/emit), wired into followups Step F5.5 |
-| ~~R11~~ | `hardcoded` i18n-extraction mode | **DONE (v1.11.0)** | — | — | LIVE — `scripts/i18n_extract.py` (detect/merge/propagate/verify) + `references/mode-hardcoded.md`; find raw hardcoded UI text → keys → translate via `language` |
+| ~~R11~~ | `hardcoded` i18n-extraction mode | **DONE (v1.11.0)** | — | — | LIVE — `scripts/i18n_extract.py` (detect/merge/propagate/verify); find raw hardcoded UI text → keys → translate via `language` |
+| ~~R12~~ | widen `hardcoded` `detect` harvest (expression-context bucket) | **DONE (v1.12.0)** | — | — | LIVE — `i18n_extract.py detect` `expr` context (nullish/ternary-tail + `fail(`) + per-context tally; mechanizes L33 |
+| ~~R13~~ | followups hardening (locale-parity + orphan-INDEX + classifier guard) | **DONE (v1.12.0)** | — | — | LIVE — `followups_cleanup.py` `parity` / `orphan-index` subcommands + `ENVIRONMENTAL_KW` guard; mechanizes L34/L36/L37 |
+| ~~R14~~ | `bundle` mode — Cloudflare/OpenNext Worker size-wall | **DONE (v1.14.0)** | — | — | LIVE — `scripts/bundle_cleanup.py` (`detect` static heavy-lib-leak scan / `measure` gzip worker vs wall); wired into the `release` gate PR2 + `run_all`; mechanizes L39 (the 1.7.60 deploy failure) |
 
 ---
 
@@ -240,3 +244,85 @@ workspace root (memory `discovery_lex-council-git-submodule`).
 - Renaming/removing a mode or changing a script's subcommand contract → **MAJOR**
 
 Ship script enhancements (R4/R5) as a quick patch; batch new-mode work (R1/R2) as minors.
+
+---
+
+## R11 — `hardcoded` i18n-extraction mode
+
+> **✅ DONE 2026-06-03 (v1.11.0).** Shipped as the LIVE `hardcoded` mode — `scripts/i18n_extract.py`
+> (detect/merge/propagate/verify) + §Mode recipe H1–H8. Mined from the 2026-06-03 app-wide i18n
+> extraction (109 files / 372 keys / 393×5 translated / v1.7.42). Analysis kept as the build record.
+
+**Gap it closed:** the three i18n modes could TRANSLATE existing keys (`language`) and DEDUP keys
+(`consolidate` / `consolidate-code`) but none could FIND raw hardcoded English text in component
+source and turn it into keys. A string hardcoded in a `.tsx` was invisible to every mode — `language
+detect` only compares JSON values. `hardcoded` reads the source.
+
+**Pipeline (H1–H8):** detect (candidate harvest + exclusions + reuse-map + per-file briefs) → extract
+(scoped inline ≤~15 files, else one-agent-per-file fan-out; #91-safe: agent edits own `.tsx` + returns
+a key-map, NEVER a locale JSON) → merge (single-writer into `en/<ns>.json` + reuse-existence check that
+catches mislabeled-reuse keys) → propagate (all 6 locales, EN placeholder) → translate (hand off to
+`language`) → verify (every `t()`-key resolves + smart-quote scan) → fix the 4 known fan-out failure
+modes → vault-log.
+
+**Boundary with conquering-campaign:** `hardcoded` scales 1-file → app-wide, but a true app-wide
+multi-session pass (>~150 files) is campaign-scale — `/conquering-campaign` DRIVES this same script
+machinery across waves with resume checkpoints. The mode is the reusable engine; the campaign is the
+multi-session orchestrator.
+
+---
+
+## R12 — widen `hardcoded` `detect` to the expression-context bucket (mechanizes L33)
+
+> **✅ DONE 2026-06-04 (v1.12.0).** Shipped in `i18n_extract.py detect` — new `expr` candidate context
+> (`EXPR_NULLISH_RE` + `EXPR_TERNARY_RE`, body bounded `[^?:\n]{1,80}`) + `fail(` added to `CALL_RE` +
+> a per-context tally (`jsx/prop/call/expr`) in the detect summary. Live: `expr=4` on lib/mutations+hooks.
+> The spec below is kept as the build record.
+
+**Current:** `i18n_extract.py detect` harvests JSX text nodes, UI prop literals
+(`label`/`placeholder`/`title`/…), and `toast.*` / `throw new Error` copy. It MISSES English in
+TypeScript expression contexts — and that miss is expensive: the 2026-06-03 app-wide pass keyed 372
+strings, then its **followups sweep found ~84 more genuine user-facing literals across 57 files** that
+detect never surfaced (L33). Every `hardcoded` pass currently needs a manual residual grep + a separate
+follow-up sweep.
+
+**Target:** add a second harvest pass over these forms, then run the existing exclusion + reuse-map
+pipeline on the new candidates:
+
+| Form | Regex sketch |
+|---|---|
+| Nullish-fallback | `\?\?\s*'([A-Z][^']{3,})'` |
+| Ternary tail | `\?\s*[^:]+:\s*'([A-Z][^']{3,})'` |
+| `showError`/`fail`/`toast.*` string arg | `(showError\|fail\|toast\.\w+)\(\s*'([A-Z][^']{3,})'` |
+| `throw new Error` | confirm existing coverage extends to multi-word args |
+
+**Risk:** the ternary tail over-matches non-UI strings (`variant`, `className`, enum ids). Reuse the
+existing exclusion classes (CSS / identifier / snake-id / ≤5-char acronym) **and** require a
+space-containing or ≥3-word value to raise precision. **Effort S** — a regex bucket + the existing
+classifier. **Value HIGH** — turns the "always-needs-a-residual-sweep" tail into a single pass.
+
+## R13 — followups mode hardening (mechanizes L34 / L36 / L37)
+
+> **✅ DONE 2026-06-04 (v1.12.0).** Shipped in `followups_cleanup.py` — two new subcommands (`parity <ns>
+> [dotted.subtree]` exits 2 on an absent locale; `orphan-index` emits the predecessor INDEX row, scoped
+> per L27) + an `ENVIRONMENTAL_KW` guard in `classify` that overrides the verb heuristic. Live: parity
+> 12×6 on `admin/containers.document.merge`, FU-002 phrasing → accepted. The spec below is the build record.
+
+Three small `followups_cleanup.py` additions, each a codified lesson the mode currently leans on Claude
+to remember by hand:
+
+1. **Locale-presence parity (L34)** — for every namespace the predecessor campaign added, count keys
+   per locale (`en ar es fr ru zh`); any locale at `0` is **absent** (renders raw `MISSING_MESSAGE`),
+   not merely untranslated, and is invisible to `language detect`. Emit it as a propagate-first action,
+   not a translate action.
+2. **Predecessor orphan-INDEX auto-fix (L36)** — the campaign's own vault-log basename ∉
+   `vault-logs/INDEX.md` is deterministic; prepend its row. Scope to the predecessor ONLY (L27) — leave
+   other sessions' orphans for `docs` to flag. This has hit on three consecutive sweeps, so it belongs
+   in the script, not the operator's memory.
+3. **Classifier environmental guard (L37)** — items whose resolution is environmental (prod-vs-repo
+   drift, migration-ledger divergence, external dashboard / NAS / CI, `[!atta]` gate) are forced to
+   needs-hands / accepted regardless of the verb heuristic, instead of being mis-tagged `doable`.
+
+**Effort S–M. Value MED.** Pairs with R12 — both are "mechanize the June-3–4 lessons" so the next sweep
+doesn't re-derive them. (The L36 root cause also wants an upstream fix in `conquering-campaign` — write
+the INDEX row at campaign close — but that's a cross-skill route, not a cleanup change.)

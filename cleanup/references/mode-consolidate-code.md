@@ -12,7 +12,7 @@ via AST resolution. `consolidate-code` touches arbitrary code shapes (components
 RLS predicates, constants) with different detection + different risk. Conflating them would
 overload one script.
 
-## Step CC1 — Refresh the registry
+#### Step CC1 — Refresh the registry
 
 Re-run the detection greps for each candidate class against the live codebase. The
 highest-signal verified-live detections:
@@ -34,7 +34,7 @@ For DB-side candidates, the canonical source is the persisted
 `docs/audit-campaigns/2026-05-22_db-wide-consolidation-audit/99-synthesis.md` (74 findings) —
 read it; don't re-derive.
 
-## Step CC2 — Classify each candidate (3 tiers)
+#### Step CC2 — Classify each candidate (3 tiers)
 
 | Tier | Criteria | Action |
 |---|---|---|
@@ -42,7 +42,7 @@ read it; don't re-derive.
 | **T2 needs-campaign** | Cross-cutting, >15 sites, OR behavior-parity risk (DB view merge, RLS predicate extraction, button-role standardization) | Surface; open a conquering-campaign |
 | **T3 resolved** | Already consolidated | Record so re-mining doesn't re-flag |
 
-## Step CC3 — Byte-compare before any merge (HARD RULE)
+#### Step CC3 — Byte-compare before any merge (HARD RULE)
 
 §L2 + §L4 (look-alike-but-different). Before merging N near-duplicate literals/views/predicates
 into one helper, **byte-compare them**. If any pair differs, either keep them separate or make
@@ -53,14 +53,14 @@ The i18n `consolidate` mode already encodes this (only merge when translation ma
 locale). `consolidate-code` must encode it for code: only merge when all N are byte-identical
 OR the difference is captured in the merged API.
 
-## Step CC4 — Extract T1, surface T2
+#### Step CC4 — Extract T1, surface T2
 
 For T1: extract the shared primitive/const FIRST, then replace each consumer (per the
 conquering-campaign extraction-first phase ordering). Run tsc + lint after each extraction.
 
 For T2: write/refresh the registry entry, recommend the conquering-campaign trigger phrase.
 
-## Step CC5 — Vault log
+#### Step CC5 — Vault log
 
 Delegate to **vault-log-compliance** if code changed. The entry documents: which T1 candidates
 were extracted (before/after consumer counts), which T2 were surfaced, registry delta.

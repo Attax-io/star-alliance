@@ -1,7 +1,6 @@
-# Mode: hardcoded — find + extract raw hardcoded UI text to i18n keys
+# Mode: hardcoded — full recipe
 
-> Full recipe for the `hardcoded` cleanup mode (SKILL.md carries the stub).
-> **Script:** `python3 ~/.claude/skills/cleanup/scripts/i18n_extract.py <detect|merge|propagate|verify>` — the deterministic machinery. The `.tsx` edits + translation are the agent/recipe layer.
+> **Script:** `python3 ~/.claude/skills/cleanup/scripts/i18n_extract.py <detect|merge|propagate|verify>` — the deterministic machinery (candidate harvest + reuse-map + single-writer key merge + 6-locale propagate + MISSING_MESSAGE verify). The `.tsx` edits + the translation are the agent/recipe layer.
 
 Find raw hardcoded user-facing English text still living in components and turn
 it into next-intl `t()` keys. This is the capability the other i18n modes do NOT
@@ -14,14 +13,14 @@ then hands the new keys to `language` for translation.
 inline. More → fan out one agent per file. >~150 files across multiple sessions
 is genuinely campaign-scale → `/conquering-campaign` (which DRIVES this same
 machinery). The 2026-06-03 app-wide pass keyed 109 files / 372 keys / 393×5
-translated this way (Lex Council app v1.7.42).
+translated this way (v1.7.42).
 
 > **`hardcoded` vs `language`.** `hardcoded` is the *producer* (creates keys from
 > source); `language` is the *translator* (fills non-EN values). A `hardcoded`
 > pass ALWAYS ends by running `language` on the keys it just created. Never
 > re-implement translation inside this mode.
 
-## Step H1 — Detect
+#### Step H1 — Detect
 
 ```bash
 python3 ~/.claude/skills/cleanup/scripts/i18n_extract.py detect \
@@ -39,11 +38,11 @@ the existing EN keys — a literal whose value already exists (preferring
 `/tmp/i18n_extract/inventory.json` + (with `--briefs`) one `_briefs/b<i>.json`
 per file.
 
-detect is **HIGH-RECALL** — like `language` detect it over-counts (L25); the
+detect is **HIGH-RECALL** — like `language` detect it over-counts (§L25); the
 agent layer (H2) is the accuracy pass that confirms which candidates are genuinely
 user-facing. Show the user the counts + the >60-file scale note before proceeding.
 
-## Step H2 — Extract (scoped inline, or fan-out)
+#### Step H2 — Extract (scoped inline, or fan-out)
 
 The agent layer turns each file's literals into `t()` calls. **#91-safe contract
 (binding): an extraction agent edits ONLY its own file and returns/writes a
@@ -72,7 +71,7 @@ Convert hardcoded user-facing text in ONE file to next-intl t() calls. Behavior-
 5. Write your result object to <KEYS_DIR>/b<i>.json AND return it as StructuredOutput: {file, status, namespace_keys, reused_keys, wiring_added, literals_replaced, needs_review, notes}.
 ```
 
-## Step H3 — Merge (single writer)
+#### Step H3 — Merge (single writer)
 
 ```bash
 python3 ~/.claude/skills/cleanup/scripts/i18n_extract.py merge --keys-dir <agent-sidecar-dir>
@@ -86,25 +85,25 @@ because the browser client is untyped). For each missing one, recover the litera
 from that file's brief and add it as a new key. Writes
 `/tmp/i18n_extract/merge_report.json`.
 
-## Step H4 — Propagate to all 6 locales
+#### Step H4 — Propagate to all 6 locales
 
 ```bash
 python3 ~/.claude/skills/cleanup/scripts/i18n_extract.py propagate
 ```
 
 Sets every merged key into ar/fr/ru/zh/es with the EN value as placeholder.
-Absent keys are invisible to `language` detect (L25) — propagation is what makes
+Absent keys are invisible to `language` detect (§L25) — propagation is what makes
 them present-but-EN and therefore translatable. After this the app renders in
 every locale (no `MISSING_MESSAGE`), just showing English until H5.
 
-## Step H5 — Translate (hand off to the `language` mode)
+#### Step H5 — Translate (hand off to the `language` mode)
 
-Run the `language` mode (`references/mode-language.md`) end-to-end on the
-now-present-but-EN keys: `i18n_cleanup.py detect` → 5 translation agents →
-`apply` → `verify`. Scope the detect to the touched namespaces if you want to
-avoid re-translating pre-existing drift. Do NOT re-implement translation here.
+Run the `language` mode (above) end-to-end on the now-present-but-EN keys:
+`i18n_cleanup.py detect` → 5 translation agents → `apply` → `verify`. Scope the
+detect to the touched namespaces if you want to avoid re-translating pre-existing
+drift. Do NOT re-implement translation here.
 
-## Step H6 — Verify
+#### Step H6 — Verify
 
 ```bash
 python3 ~/.claude/skills/cleanup/scripts/i18n_extract.py verify --scope <touched paths>
@@ -115,7 +114,7 @@ cd lex_council && npx turbo run check-types --force && npx eslint apps/web && np
 MISSING_MESSAGE guard) and flags smart-quote `useTranslations`/`getTranslations`
 calls (TS1127). Then the standard gate. Every new key must exist in all 6 locales.
 
-## Step H7 — Fix the known fan-out failure modes
+#### Step H7 — Fix the known fan-out failure modes
 
 The 2026-06-03 fan-out surfaced exactly these — auto-fix all before closing:
 
@@ -125,18 +124,11 @@ The 2026-06-03 fan-out surfaced exactly these — auto-fix all before closing:
 | `tsc` TS1127 "Invalid character" | smart-quote `useTranslations('ns')` → straight quotes |
 | `react-hooks/exhaustive-deps` "missing 't' / 'tCommon'" | the added `t` var is a new hook dependency → add it to the `useMemo`/`useCallback`/`useEffect` dep array |
 | dead-code file got i18n'd (rules-of-hooks on a 0-caller fn) | revert that file (don't carry dead i18n); prune its now-orphan keys |
-| concurrent actor editing the same tree | stage with exact NUL-literal pathspecs (`commit_scope.py` / mode-followups §F5.5); never `git add -A` |
+| concurrent actor editing the same tree | stage with exact NUL-literal pathspecs (`commit_scope.py` / §F5.5); never `git add -A` |
 
-## Step H8 — Vault log + patch bump
+#### Step H8 — Vault log + patch bump
 
 Delegate to **vault-log-compliance** (note locale counts + key totals + the
 deferred tail). Run the §Step CL app patch bump once. If the pass spanned the
 whole app across sessions, prefer `/conquering-campaign` so each batch ships green
 with its own resume checkpoint.
-
-## Boundary with conquering-campaign
-
-`hardcoded` scales 1-file → app-wide, but a true app-wide multi-session pass
-(>~150 files) is campaign-scale — `/conquering-campaign` DRIVES this same script
-machinery across waves with resume checkpoints. The mode is the reusable engine;
-the campaign is the multi-session orchestrator.
