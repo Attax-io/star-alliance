@@ -1,7 +1,8 @@
 ---
 name: strategies-review
-version: 1.0.0
 description: Review pending strategies and move them to executed then check the docs.
+metadata:
+  version: 1.0.0
 ---
 
 ## Step 1 — Load the resolutions log first

@@ -1,7 +1,8 @@
 ---
 name: industrial-brutalist-ui
-version: 1.0.0
 description: Raw mechanical interfaces fusing Swiss typographic print with military terminal aesthetics. Rigid grids, extreme type scale contrast, utilitarian color, analog degradation effects. For data-heavy dashboards, portfolios, or editorial sites that need to feel like declassified blueprints.
+metadata:
+  version: 1.0.0
 ---
 
 # SKILL: Industrial Brutalism & Tactical Telemetry UI

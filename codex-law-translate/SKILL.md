@@ -1,6 +1,5 @@
 ---
 name: codex-law-translate
-version: 1.0.0
 description: >
   End-to-end pipeline for loading a real-world law into the Lex Council legal codex,
   translated into all 5 non-Arabic locales (en/fr/es/ru/zh), then adversarially revised
@@ -12,6 +11,8 @@ description: >
   translation (source_law_translations) → full adversarial QA revision (Opus reviewers) → publish
   (published=true on all articles + the source law). Translation is done by Claude subagents
   (Ollama is gone). All writes go to production via service-role REST — no DDL, idempotent.
+metadata:
+  version: 1.0.0
 ---
 
 # Codex Law Translate (Lex Council)

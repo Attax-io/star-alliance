@@ -1,6 +1,5 @@
 ---
 name: article-creator
-version: 1.0.0
 description: >
   End-to-end procedure for creating a public Insights article and pushing it to the
   Lex Council production DB (public.articles + public.article_translations) in all 6
@@ -14,6 +13,8 @@ description: >
   the uploaded_by FK to auth.users, EN-canonical fallback semantics, the draft-RLS
   admin-read trap, dollar-quoting for markdown bodies, and the mandatory P3 approval
   + P8 vault log. Load silently.
+metadata:
+  version: 1.0.0
 ---
 
 # Article Creator — Insights CMS Pipeline

@@ -1,7 +1,8 @@
 ---
 name: minimalist-ui
-version: 1.0.0
 description: Clean editorial-style interfaces. Warm monochrome palette, typographic contrast, flat bento grids, muted pastels. No gradients, no heavy shadows.
+metadata:
+  version: 1.0.0
 ---
 
 # Protocol: Premium Utilitarian Minimalism UI Architect

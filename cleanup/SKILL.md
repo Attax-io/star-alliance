@@ -1,7 +1,8 @@
 ---
 name: cleanup
-version: 1.14.1
 description: "Multi-mode hygiene skill for Lex Council. Modes — language (i18n translations); consolidate (i18n key dedup); hardcoded (extract raw UI text to next-intl keys); leaks (i18n keys USED in code but ABSENT from JSON → render as raw key-paths); errors (dev log sweep); postgres (Supabase advisors + pg health); lint (ESLint --fix + tsc); consolidate-code (duplicate component/RLS/constant detection); bundle (Cloudflare/OpenNext Worker size-wall hygiene); release (version bump + hygiene gate); docs (frontmatter/wikilinks/orphans); followups (deferred items). Run all at once via scripts/run_all.py. Triggers: \"run cleanup\", \"/cleanup\", \"i18n cleanup\", \"translate untranslated\", \"find hardcoded text\", \"find leaking keys\", \"raw key paths\", \"fix dev errors\", \"check postgres\", \"run lint\", \"consolidate code\", \"check the bundle size\", \"doc cleanup\", \"finish followups\", \"bump the version\", \"release X.Y.Z\", or any hygiene sweep after a campaign. Full mode recipes in references/."
+metadata:
+  version: 1.14.1
 ---
 
 # Cleanup — Lex Council hygiene sweeps (v1.14.1)

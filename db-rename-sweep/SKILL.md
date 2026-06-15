@@ -1,6 +1,5 @@
 ---
 name: db-rename-sweep
-version: 1.0.0
 description: >
   Loads the full surface inventory for any Lex Council table or column rename before
   the first migration line is written. Use this skill whenever the user asks to rename
@@ -13,6 +12,8 @@ description: >
   trigger bodies, view defs, RLS policy bodies, edge functions, frontend types,
   markdown docs, auto-memory, scheduled tasks, etc.) and the single most common failure
   mode is forgetting one. Load silently — no need to announce the skill is running.
+metadata:
+  version: 1.0.0
 ---
 
 # DB Rename Sweep — Context Loader

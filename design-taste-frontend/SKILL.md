@@ -1,7 +1,8 @@
 ---
 name: design-taste-frontend
-version: 1.0.0
 description: Senior UI/UX Engineer. Architect digital interfaces overriding default LLM biases. Enforces metric-based rules, strict component architecture, CSS hardware acceleration, and balanced design engineering.
+metadata:
+  version: 1.0.0
 ---
 
 # High-Agency Frontend Skill

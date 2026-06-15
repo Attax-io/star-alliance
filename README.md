@@ -7,15 +7,18 @@ through the Cowork skill installer; all are kept in sync with the on-device copi
 
 ## Versioning — every skill is upgradable
 
-Every skill carries a **canonical version** in the top-level `version:` field of its `SKILL.md`
+Every skill carries a **canonical version** under **`metadata.version`** in its `SKILL.md`
 frontmatter. That field is the single source of truth; [`VERSIONS.md`](VERSIONS.md) is the
-at-a-glance registry that mirrors it.
+at-a-glance registry that mirrors it. (A *top-level* `version:` is rejected by the Agent Skills
+frontmatter validator — only `name`, `description`, `license`, `allowed-tools`, `metadata`, and
+`compatibility` are allowed at the top level, so the version goes under `metadata`.)
 
 ```yaml
 ---
 name: my-skill
-version: 1.2.0      # ← canonical, top-level. Bump on every change.
 description: ...
+metadata:
+  version: 1.2.0      # ← canonical. Bump on every change.
 ---
 ```
 
@@ -29,11 +32,14 @@ description: ...
 
 **On any skill change, in the same commit:**
 
-1. Bump the skill's top-level `version:`.
-2. Update its row in [`VERSIONS.md`](VERSIONS.md).
+1. Bump the skill's `metadata.version`.
+2. Regenerate [`VERSIONS.md`](VERSIONS.md) (`python3 skillsmith/scripts/skill_registry.py write`).
 3. If the skill keeps its own changelog (e.g. `cleanup`, `conquering-campaign`), add an entry there too.
 4. Re-sync the on-device copy if the skill runs from `~/.claude/skills/` (a stale device copy
    silently runs old code — the `cleanup` §L24 lesson).
+
+The **`skillsmith`** skill automates all of this — `/skillsmith` sync / upgrade / create. See its
+`SKILL.md`.
 
 ## `vendored` / `external` skills
 
@@ -54,9 +60,14 @@ skill's measured word/line counts + status) live in [`VERSIONS.md`](VERSIONS.md)
 
 | Limit | Rule |
 |---|---|
-| **description** | **≤ 1024 characters** — hard. Frontmatter validation rejects anything longer, so keep the description tight and trigger-focused (the authoring guidance is ~100 words anyway). |
+| **frontmatter keys** | only `name`, `description`, `license`, `allowed-tools`, `metadata`, `compatibility` at the top level — hard. Put `version` (and any custom field) under `metadata`. |
+| **description** | **≤ 1024 characters and no `<`/`>`** — hard. The validator rejects both. Keep it tight and trigger-focused (authoring guidance is ~100 words anyway). |
+| **name** | kebab-case, ≤ 64 chars — hard. |
 | **SKILL.md body** | **< 500 lines ideal** — soft. As you approach it, add a layer of hierarchy and push detail into `references/` with clear pointers rather than growing the body. |
 | **SKILL.md body** | **keep well under ~10k words** — the Cowork installer rejects very large bodies (a 15,342-word file is known to fail). Bundled `references/`, `scripts/`, and `assets/` do **not** count toward this — that's why the stub pattern (slim `SKILL.md` + `references/mode-*.md`) works (see `cleanup`). |
+
+The authoritative gate is **`skill-creator`'s `quick_validate.py` green** on every skill. `skillsmith`
+runs it as part of `sync`/`create`; the one sanctioned failure is the external `impeccable` (npx-managed).
 
 **Keeping a skill installable as it grows:** when the body gets large, extract the verbose recipes
 into `references/*.md` and leave a one-line `Read references/X.md` pointer in `SKILL.md`. The model

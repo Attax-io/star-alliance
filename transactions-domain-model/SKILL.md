@@ -1,6 +1,5 @@
 ---
 name: transactions-domain-model
-version: 1.0.0
 description: >
   Loads the complete Lex Council transactions domain model before any transaction-related work begins.
   Use this skill whenever the user mentions or asks about: transactions, transaction types, safe transactions,
@@ -12,6 +11,8 @@ description: >
   Also trigger when the user says "work on transactions", "fix a transaction bug", "add a transaction feature",
   "transaction page", or references any file under finances/. Load silently in the background — no need to
   announce the skill is running.
+metadata:
+  version: 1.0.0
 ---
 
 # Transactions Domain Model

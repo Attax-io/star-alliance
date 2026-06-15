@@ -1,6 +1,5 @@
 ---
 name: supabase-postgres-best-practices
-version: 1.1.1
 description: Postgres performance optimization and best practices from Supabase. Use this skill when writing, reviewing, or optimizing Postgres queries, schema designs, or database configurations.
 license: MIT
 metadata:
