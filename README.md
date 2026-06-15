@@ -47,6 +47,28 @@ version) for provenance:
 
 When refreshing a vendored skill from upstream, reconcile both versions and update `VERSIONS.md`.
 
+## Cowork-friendly & installable
+
+Every skill is kept installable through the Cowork skill installer. The constraints (and each
+skill's measured word/line counts + status) live in [`VERSIONS.md`](VERSIONS.md):
+
+| Limit | Rule |
+|---|---|
+| **description** | **≤ 1024 characters** — hard. Frontmatter validation rejects anything longer, so keep the description tight and trigger-focused (the authoring guidance is ~100 words anyway). |
+| **SKILL.md body** | **< 500 lines ideal** — soft. As you approach it, add a layer of hierarchy and push detail into `references/` with clear pointers rather than growing the body. |
+| **SKILL.md body** | **keep well under ~10k words** — the Cowork installer rejects very large bodies (a 15,342-word file is known to fail). Bundled `references/`, `scripts/`, and `assets/` do **not** count toward this — that's why the stub pattern (slim `SKILL.md` + `references/mode-*.md`) works (see `cleanup`). |
+
+**Keeping a skill installable as it grows:** when the body gets large, extract the verbose recipes
+into `references/*.md` and leave a one-line `Read references/X.md` pointer in `SKILL.md`. The model
+loads them on demand; the installer only weighs the slim body. `cleanup` and `conquering-campaign`
+are the worked examples.
+
+Current status: 0 hard violations. `conquering-campaign` sits just over the ~10k-word figure
+(within the 500-line spec) — flagged in `VERSIONS.md` as a lean-pass candidate. The image/design
+skills (`graphify`, `image-to-code`, `imagegen-*`, `brandkit`) are over the 500-line ideal but well
+under the word ceiling — installable, trim-when-convenient.
+
 ## Registry
 
-See [`VERSIONS.md`](VERSIONS.md) for the full skill → version table (28 skills).
+See [`VERSIONS.md`](VERSIONS.md) for the full skill → version table with word counts and Cowork
+status (28 skills).

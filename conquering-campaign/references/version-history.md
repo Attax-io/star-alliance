@@ -4,6 +4,15 @@ Semver: **MAJOR** = paradigm shift / artifact-layout change · **MINOR** = new s
 
 ---
 
+### v3.8.2 — 2026-06-15 — Cowork packaging: lean description + version-history/anti-pattern extraction (PATCH)
+
+Pure packaging/relocation — no gate, wave, cadence, or routing-logic change. Done to keep the skill installable through the Cowork skill installer.
+
+- **Description trimmed 2806 → 1003 chars** to satisfy the ≤1024-char frontmatter limit. The over-stuffed mechanics prose was redundant with the body; kept the three modes, the G0 bar, and the trigger phrases.
+- **Inline §Version history recap (~730 words)** — already duplicated in this file — compressed to current-version + pointer.
+- **§Anti-pattern quick-lookup (~410 words)** relocated to `references/failure-modes.md` (§Anti-pattern quick-lookup); SKILL.md keeps the heading + a pointer. `#N` numbering preserved.
+- Net: SKILL.md body **11,404 → 10,294 words** (470 lines, within the <500-line ideal). Repo copy is the Cowork-packaged edition; the device 3.8.1 canonical keeps the richer description.
+
 ### v3.8.1 — 2026-06-04 — Playbook patch: RLS-IMPERSONATE, anon-RPC reads, dormant-gate, RTL transform (PATCH)
 
 Additive field-lessons from the latest sessions (2026-06-02 → 06-04), mined in `references/REFLECTION-2026-06-04.md`. No new gate/wave/cadence — playbook + failure-mode additions only.
