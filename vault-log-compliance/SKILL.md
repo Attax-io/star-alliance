@@ -1,5 +1,6 @@
 ---
 name: vault-log-compliance
+version: 1.0.0
 description: Enforces P8 vault-logging compliance for Lex Council. Use this skill whenever a session has touched backend code (migrations, views, triggers, RPC functions, RLS policies, edge functions, cron jobs), frontend code (components, pages, hooks, mutations, stores), schema changes, or bug fixes — even if the user doesn't explicitly ask for a vault log. Also use when the user says phrases like "vault log this", "does this need a vault log?", "log what I did", "P8", "write a vault-log entry", or when finishing up work and unsure whether it qualifies. Skill audits what was touched, checks whether a covering vault-log entry already exists, drafts one in the project's established format if missing, and updates the INDEX.md and affected docs' Last Synced footers. Ask Atta to approve the draft before writing.
 ---
 

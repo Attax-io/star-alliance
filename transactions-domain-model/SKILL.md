@@ -1,5 +1,6 @@
 ---
 name: transactions-domain-model
+version: 1.0.0
 description: >
   Loads the complete Lex Council transactions domain model before any transaction-related work begins.
   Use this skill whenever the user mentions or asks about: transactions, transaction types, safe transactions,

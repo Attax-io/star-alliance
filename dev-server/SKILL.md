@@ -1,5 +1,6 @@
 ---
 name: dev-server
+version: 1.0.0
 description: "Use this skill whenever the user says 'open dev server', 'run dev server', 'restart dev server', 'start the app', 'launch dev', 'open the app', or any variation of starting/restarting/viewing the local Next.js development server. Handles start and restart in one turn — no ToolSearch round-trips needed."
 ---
 

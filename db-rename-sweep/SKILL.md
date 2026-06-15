@@ -1,5 +1,6 @@
 ---
 name: db-rename-sweep
+version: 1.0.0
 description: >
   Loads the full surface inventory for any Lex Council table or column rename before
   the first migration line is written. Use this skill whenever the user asks to rename

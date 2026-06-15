@@ -1,5 +1,6 @@
 ---
 name: bug-fix-workflow
+version: 1.0.0
 description: The Lex Council end-to-end bug workflow — pull reports from the bug_reports table, triage their status, investigate + reproduce the real root cause, fix following project conventions, and flip each row to Fixed once the fix is genuinely live. Use whenever the user says "pull the bugs", "work the bugs", "check the bug reports", "fix the bugs", "go through the bug table", "mark this bug fixed", "set them fixed if fixed", "triage bugs", "what bugs are open", or any phrasing about pulling / triaging / fixing / closing reported bugs. Loads the bug_reports schema, the status-code conventions, the status-trigger gotcha, the "doesn't work" reproduction technique, and the rule for WHEN a bug may be marked Fixed (DB fixes now, frontend fixes only after deploy).
 ---
 

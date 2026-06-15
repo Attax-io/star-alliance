@@ -1,5 +1,6 @@
 ---
 name: article-creator
+version: 1.0.0
 description: >
   End-to-end procedure for creating a public Insights article and pushing it to the
   Lex Council production DB (public.articles + public.article_translations) in all 6
