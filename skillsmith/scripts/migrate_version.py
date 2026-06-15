@@ -19,13 +19,25 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import os
 import re
 import sys
 from pathlib import Path
 
 
 def default_repo() -> Path:
-    return Path(__file__).resolve().parents[2]
+    """Resolve the claude-skills repo regardless of cwd / install location."""
+    env = os.environ.get("CLAUDE_SKILLS_REPO")
+    if env:
+        return Path(env).expanduser()
+    here = Path(__file__).resolve()
+    for anc in here.parents:
+        if (anc / "VERSIONS.md").exists() and (anc / ".git").exists():
+            return anc
+    known = Path.home() / "Documents" / "Claude" / "Projects" / "claude-skills"
+    if (known / "VERSIONS.md").exists():
+        return known
+    return here.parents[2]
 
 
 def split_fm(text: str):

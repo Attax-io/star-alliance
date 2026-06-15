@@ -22,6 +22,7 @@ Limits (see references/cowork-limits.md):
 from __future__ import annotations
 
 import argparse
+import os
 import re
 import sys
 from pathlib import Path
@@ -41,8 +42,20 @@ VENDORED = {
 
 
 def default_repo() -> Path:
-    # this file: <repo>/skillsmith/scripts/skill_registry.py
-    return Path(__file__).resolve().parents[2]
+    """Resolve the claude-skills repo regardless of where this runs from — the repo
+    checkout OR the ~/.claude/skills global install (where parents[2] would wrongly be
+    ~/.claude/skills). Order: $CLAUDE_SKILLS_REPO → marker-detect → known path → parents[2]."""
+    env = os.environ.get("CLAUDE_SKILLS_REPO")
+    if env:
+        return Path(env).expanduser()
+    here = Path(__file__).resolve()
+    for anc in here.parents:
+        if (anc / "VERSIONS.md").exists() and (anc / ".git").exists():
+            return anc
+    known = Path.home() / "Documents" / "Claude" / "Projects" / "claude-skills"
+    if (known / "VERSIONS.md").exists():
+        return known
+    return here.parents[2]
 
 
 def split_frontmatter(text: str):
