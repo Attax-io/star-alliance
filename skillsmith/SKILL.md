@@ -2,10 +2,10 @@
 name: skillsmith
 description: "Manage, sync, upgrade, create, and auto-evolve Claude skills across the claude-skills repo and the on-device copies (~/.claude/skills global + per-project .claude/skills). Modes — sync: reconcile repo and device by metadata.version, honoring fork+external exceptions. upgrade: bump a skill's version, regenerate the VERSIONS.md registry, run the Cowork-compliance check, add a changelog entry. create: author a new skill via the official skill-creator, then make it upgradeable. routine: a daily, fully-autonomous self-improvement loop that mines your code, projects, and sessions with the Stanford STORM method (5 personas, contradiction map, synthesis, peer review) to find upgrade routes, new-skill ideas, and bugs, then applies the high-confidence ones (skillsmith itself included). Triggers: 'sync my skills', 'upgrade a skill', 'create a skill', 'install my skills', 'run the skill routine', 'evolve my skills', '/skillsmith'. Scripts in scripts/; procedures in references/."
 metadata:
-  version: 1.1.0
+  version: 1.1.1
 ---
 
-# skillsmith — manage, sync, upgrade, create & auto-evolve Claude skills (v1.1.0)
+# skillsmith — manage, sync, upgrade, create & auto-evolve Claude skills (v1.1.1)
 
 The control panel for the `claude-skills` repo. It keeps every skill **versioned**,
 **Cowork-installable**, and **in sync** between the git repo and the on-device copies — and it
@@ -100,7 +100,7 @@ Read **`references/upgrade-playbook.md`**. In short: make the edit → bump `met
 Read **`references/create-playbook.md`**. In short: run the official **`skill-creator`** workflow (capture intent → interview → write `SKILL.md` → optional eval; validate with skill-creator's `quick_validate.py`) to produce the new skill, THEN make it upgradeable: add `metadata.version: 1.0.0`, write a description ≤1024 chars with no `<`/`>`, keep the body lean (extract to `references/` early), drop it into the repo, run `skill_registry.py write`, and (if wanted) `skill_sync.py apply --skill NAME` to install it to the device. Commit + push.
 
 ### Mode: routine
-Read **`references/routine-playbook.md`** + **`references/storm-method.md`**. The daily self-improvement loop. Five stages: **A Harvest** (`routine_scan.py` — read-only gather of skill versions/status + every mention & friction snippet across the repo, your projects, and session transcripts, + new-skill signals) → **B Research** (run the 4-step STORM method per active skill: 5-persona scan → contradiction map → synthesis dossier → peer review with 1–10 confidence; fan out as a Workflow when the active set is large) → **C Notebook** (write `references/routine-ledger/YYYY-MM-DD.md` incrementally — the committed, watchable memory) → **D Execute** (drive `upgrade-playbook`/`create-playbook` for every finding scoring **≥8/10** that clears the §R4 guards) → **E Report** (one labeled revertible commit per change, `git push`, Run Summary). **Autonomy = fully autonomous** (acts without asking, ≥8/10 gate, forks/externals never auto-edited, skillsmith self-edits last + validated per §R6). **Budget:** top ~3 actions / ~8 skills STORMed per run (§R5). **Schedule:** local LaunchAgent fires `run_routine.sh` daily ~06:00 (§R7); watch via `tail -f routine-logs/<date>.log`, the ledger, or run `/skillsmith routine` interactively to watch live.
+Read **`references/routine-playbook.md`** + **`references/storm-method.md`**. The daily self-improvement loop. Five stages: **A Harvest** (`routine_scan.py` — read-only gather of skill versions/status + every mention & friction snippet across the repo, your projects, and session transcripts, + new-skill signals) → **B Research** (run the 4-step STORM method per active skill: 5-persona scan → contradiction map → synthesis dossier → peer review with 1–10 confidence; fan out as a Workflow when the active set is large) → **C Notebook** (write `references/routine-ledger/YYYY-MM-DD.md` incrementally — the committed, watchable memory) → **D Execute** (drive `upgrade-playbook`/`create-playbook` for every finding scoring **≥8/10** that clears the §R4 guards) → **E Report** (one labeled revertible commit per change, `git push`, Run Summary). **Autonomy = fully autonomous** (acts without asking, ≥8/10 gate, forks/externals edited with fork-aware handling per §R4.2, skillsmith self-edits last + validated per §R6). **Budget:** top ~3 actions / ~8 skills STORMed per run (§R5). **Schedule:** local LaunchAgent fires `run_routine.sh` daily ~06:00 (§R7); watch via `tail -f routine-logs/<date>.log`, the ledger, or run `/skillsmith routine` interactively to watch live.
 
 ## Invariants (every mode)
 
@@ -114,12 +114,13 @@ Read **`references/routine-playbook.md`** + **`references/storm-method.md`**. Th
 
 ## Versioning
 
-This skill is versioned (`metadata.version` in frontmatter, currently **1.1.0**) and self-registers in `VERSIONS.md`. Bump it on every change — PATCH for fixes/wording, MINOR for a new mode or capability, MAJOR for a breaking workflow change — and add a §Changelog row. (The `routine` mode upgrades skillsmith through exactly this contract — see §R6.)
+This skill is versioned (`metadata.version` in frontmatter, currently **1.1.1**) and self-registers in `VERSIONS.md`. Bump it on every change — PATCH for fixes/wording, MINOR for a new mode or capability, MAJOR for a breaking workflow change — and add a §Changelog row. (The `routine` mode upgrades skillsmith through exactly this contract — see §R6.)
 
 ## Changelog
 
 | Version | Date | Summary |
 |---|---|---|
+| **1.1.1** | 2026-06-20 | `routine` may now upgrade the fork/external skills too (`cleanup`, `conquering-campaign`, `impeccable`) — Atta opted them in. Edited with fork-aware handling (§R4.2): forks per `sync-playbook.md` §S3 (never blind-overwrite the stub with the monolith), `impeccable` via `npx impeccable` refresh only. Same ≥8/10 gate applies. |
 | **1.1.0** | 2026-06-20 | Added the **`routine`** mode — a daily, fully-autonomous STORM-driven self-improvement loop (Harvest → STORM research → ledger → execute ≥8/10 findings → commit/push). New files: `references/routine-playbook.md`, `references/storm-method.md` (Stanford STORM adapted to skill evolution), `references/routine-ledger/` (committed memory), `scripts/routine_scan.py` (read-only harvest of skills × code/projects/sessions), `scripts/run_routine.sh` (headless runner, `--max-budget-usd` capped), `assets/com.attax.skillsmith-routine.plist` (daily LaunchAgent ~06:00). Scope = repo + all `~/Documents/Claude/Projects` + session transcripts. Guards: forks/externals never auto-edited, Cowork-clean-or-revert, cooldown, self-upgrade-last (§R6). Bumps skillsmith itself through its own `upgrade` contract. |
 | **1.0.0** | 2026-06-15 | Initial release. Three modes — `sync` (repo↔device reconcile), `upgrade` (version bump + registry + Cowork-compliance), `create` (skill-creator → upgradeable). Scripts: `skill_registry.py` (report/write/check), `skill_sync.py` (status/plan/apply), `migrate_version.py` (top-level → metadata.version). Encodes the conventions established across the 2026-06-15 skills-repo work (canonical `metadata.version`, `VERSIONS.md` registry, Cowork limits incl. the description angle-bracket ban, fork/external exceptions). |
 

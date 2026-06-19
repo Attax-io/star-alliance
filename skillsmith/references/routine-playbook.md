@@ -105,9 +105,14 @@ or a future run.
 ## §R4 — Guards (every autonomous action passes ALL of these)
 
 1. **Confidence ≥ 8/10** from STORM peer review. No exceptions for auto-apply.
-2. **Not a fork/external.** `cleanup`, `conquering-campaign`, `impeccable` (the `EXCEPTIONS`/`VENDORED`
-   sets) are **never** auto-edited by the routine — flag in the ledger, leave for a human. Externals
-   self-update (`npx impeccable`).
+2. **Forks + externals: edit them, but with their handling — never blind.** (Atta opted these IN,
+   2026-06-20.) `cleanup` and `conquering-campaign` are forks (repo = lean Cowork edition, device =
+   full canonical/monolith); the routine MAY upgrade them, but per their fork rules
+   (`sync-playbook.md` §S3 — edit the correct edition, re-apply the lean packaging, NEVER rsync the
+   monolith over the stub). The sync scripts deliberately `SKIP` forks on `apply`, so do that device
+   sync by hand. `impeccable` is an external, npx-managed package (~37 MB): the only valid "edit" is
+   `npx impeccable` to refresh — hand-edits to its source get clobbered, so a finding against it
+   becomes a *refresh* action, not a source edit. Apply the same ≥8/10 gate to all three.
 3. **Cowork-clean after the edit.** `skill_registry.py check NAME` must report 0 hard violations, or
    the edit is reverted and logged. Description stays ≤1024 chars with no `<`/`>`.
 4. **No duplicate skills.** Before `create`, confirm the idea isn't already covered (grep the registry
