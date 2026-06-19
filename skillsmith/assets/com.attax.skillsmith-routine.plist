@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  skillsmith daily routine — macOS LaunchAgent.
+  Install:  cp skillsmith/assets/com.attax.skillsmith-routine.plist ~/Library/LaunchAgents/
+            launchctl load ~/Library/LaunchAgents/com.attax.skillsmith-routine.plist
+  Disable:  launchctl unload ~/Library/LaunchAgents/com.attax.skillsmith-routine.plist
+  Retime:   edit StartCalendarInterval below, then unload + load again.
+  Logs:     ~/Documents/Claude/Projects/claude-skills/skillsmith/routine-logs/launchd.out
+            (the run's own dated log is routine-logs/YYYY-MM-DD.log)
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.attax.skillsmith-routine</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>/Users/attaselim/Documents/Claude/Projects/claude-skills/skillsmith/scripts/run_routine.sh</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/attaselim/Documents/Claude/Projects/claude-skills</string>
+
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>6</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+
+    <key>RunAtLoad</key>
+    <false/>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+        <key>HOME</key>
+        <string>/Users/attaselim</string>
+    </dict>
+
+    <key>StandardOutPath</key>
+    <string>/Users/attaselim/Documents/Claude/Projects/claude-skills/skillsmith/routine-logs/launchd.out</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/attaselim/Documents/Claude/Projects/claude-skills/skillsmith/routine-logs/launchd.err</string>
+
+    <key>ProcessType</key>
+    <string>Background</string>
+</dict>
+</plist>

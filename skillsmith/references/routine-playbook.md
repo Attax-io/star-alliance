@@ -1,0 +1,194 @@
+# Mode: routine — the daily STORM-driven skill-evolution loop
+
+Goal: **once a day, autonomously make the skill library better.** Each run mines your code, projects,
+and session transcripts; researches every candidate change with the STORM method
+(`storm-method.md`); writes its findings to a durable ledger; applies the high-confidence ones
+(upgrades, new skills, bug fixes — skillsmith itself included); and commits + pushes, leaving a
+human-readable trail you can watch and revert.
+
+This mode reuses `upgrade-playbook.md` and `create-playbook.md` as its execution primitives. It does
+not invent a second way to bump/register/sync — it drives the existing ones, gated by STORM.
+
+> **Autonomy (Atta's choice, 2026-06-20): FULLY AUTONOMOUS.** The run applies upgrades, creates
+> skills, and commits+pushes without asking — but ONLY for findings whose STORM peer-review
+> confidence is **≥ 8/10** and that clear the guards in §R4. Everything it does is logged to the
+> ledger and lands as a labeled, revertible git commit. Lower-confidence findings are written to the
+> ledger as proposals, not applied.
+
+> **Visibility (Atta's requirement): the run must be watchable.** It narrates every stage to a live
+> markdown ledger entry as it goes (not just at the end), and the runner tees CLI output to a dated
+> log. You can `tail -f` either, open them in an editor, or read the git commits. To watch it happen
+> live, invoke `routine` yourself in an interactive session (see §R7).
+
+---
+
+## The five stages
+
+```
+A. HARVEST   gather the corpus           (scripts/routine_scan.py — read-only)
+B. RESEARCH  STORM per skill + gaps       (storm-method.md — model / Workflow fan-out)
+C. NOTEBOOK  write the dated ledger entry (references/routine-ledger/YYYY-MM-DD.md)
+D. EXECUTE   apply ≥8/10 findings         (upgrade-playbook + create-playbook, guarded)
+E. REPORT    commit, push, summarize      (one labeled commit per applied change)
+```
+
+### Stage A — Harvest (read-only)
+
+```sh
+python3 skillsmith/scripts/routine_scan.py --days 14 --out skillsmith/routine-logs/scan-YYYY-MM-DD.json
+```
+
+The scan (see the script's header) gathers, **read-only**:
+- every skill's name, `metadata.version`, Cowork status, mtime, and days-since-last-change;
+- every mention of each skill across the configured roots (default: the `claude-skills` repo, every
+  project under `~/Documents/Claude/Projects`, and your session transcripts in
+  `~/.claude/projects/**/*.jsonl`, last `--days`);
+- friction snippets — lines near a skill mention containing error/fail/bug/confus/wrong/should/instead/
+  "didn't work" — these are the upgrade signal;
+- recurring session topics with **no** matching skill — the new-skill signal.
+
+Open the JSON (or let Stage B read it). Nothing is written outside `routine-logs/` here.
+
+### Stage B — Research (STORM)
+
+For each skill that the harvest flags as **active or frictionful** (skip dormant, zero-mention skills
+this run), run the four STORM steps from `storm-method.md`: five-persona scan → contradiction map →
+synthesis dossier → peer review with confidence scores. Also run one STORM pass on the **gap list**
+(recurring topics with no skill) to decide which, if any, are worth creating.
+
+**Run it as a Workflow when the active set is large.** One subagent per persona per skill is the
+clean fan-out; a synthesis agent and a peer-review agent close each skill. Pattern:
+
+```
+pipeline(activeSkills,
+  s => parallel(PERSONAS.map(p => () => agent(personaPrompt(p, s, corpus[s]), {schema: VERDICT}))),
+  verdicts => agent(synthesisPrompt(verdicts), {schema: DOSSIER}),
+  dossier  => agent(peerReviewPrompt(dossier), {schema: GRADED}))
+```
+
+Budget the fan-out; don't STORM all 28 skills every day (see §R5).
+
+### Stage C — Notebook (the durable memory)
+
+Append a dated entry to **`references/routine-ledger/YYYY-MM-DD.md`** (format in
+`routine-ledger/README.md`). It records, per skill: the dossier, the ranked upgrade routes, the
+confidence scores, the new-skill candidates, and the bugs found. **Write this incrementally as Stage
+B completes each skill** — this file is how you (and the user watching) see what the run is thinking
+before it acts. The ledger is committed; it is the routine's cross-run memory, so the next run can
+see what was proposed-but-deferred and whether a past upgrade actually helped.
+
+### Stage D — Execute (autonomous, guarded)
+
+Walk the graded findings high-confidence-first. For each finding with **peer-review confidence ≥ 8**
+that clears §R4:
+
+- **Upgrade an existing skill** → run `upgrade-playbook.md` (edit → bump SemVer → changelog →
+  `skill_registry.py check NAME` → `skill_registry.py write` → re-sync device). One commit.
+- **Create a new skill** → run `create-playbook.md` (skill-creator → make upgradeable → place in repo
+  → register → optional install). One commit.
+- **Fix a bug** in a skill → treat as a PATCH upgrade.
+
+Respect the per-run budget (§R5). Everything below 8/10 stays in the ledger as a proposal for a human
+or a future run.
+
+### Stage E — Report
+
+- Commit each applied change separately, message:
+  `skillsmith routine YYYY-MM-DD: <verb> <skill> — <one-line> [conf N/10]`.
+- `git push origin main`.
+- Write a **Run Summary** at the top of the ledger entry: what was applied, what was deferred, total
+  cost, and the single highest-value proposal for next time.
+- If a push notification channel is configured, emit the one-line summary.
+
+---
+
+## §R4 — Guards (every autonomous action passes ALL of these)
+
+1. **Confidence ≥ 8/10** from STORM peer review. No exceptions for auto-apply.
+2. **Not a fork/external.** `cleanup`, `conquering-campaign`, `impeccable` (the `EXCEPTIONS`/`VENDORED`
+   sets) are **never** auto-edited by the routine — flag in the ledger, leave for a human. Externals
+   self-update (`npx impeccable`).
+3. **Cowork-clean after the edit.** `skill_registry.py check NAME` must report 0 hard violations, or
+   the edit is reverted and logged. Description stays ≤1024 chars with no `<`/`>`.
+4. **No duplicate skills.** Before `create`, confirm the idea isn't already covered (grep the registry
+   + descriptions). A near-duplicate becomes an *upgrade* of the existing skill instead.
+5. **Cooldown.** Don't re-touch a skill upgraded by the routine in the last **3 days** unless the
+   finding is a real bug (correctness), not a polish.
+6. **Self-upgrade is special** — see §R6.
+7. **Reversible.** Every change is its own commit on `main`. The routine never force-pushes, never
+   rebases, never `git push origin <branch>:main`. A bad day is `git revert`.
+
+---
+
+## §R5 — Per-run budget (so it converges, not churns)
+
+- **Top-N actions per run: default 3** (highest combined synthesis+peer-review score first). The point
+  is steady daily improvement, not rewriting everything at once.
+- **STORM at most ~8 skills per run** (the active/frictionful set, ranked by mention count + friction).
+  Dormant skills are skipped until a session actually exercises them.
+- **`--max-budget-usd` cap** on the headless invocation (default $10/run, set in `run_routine.sh`) is
+  the hard ceiling; if STORM is mid-skill when it trips, finish the current skill, write the ledger,
+  and stop cleanly.
+- Tune N / the cap / the day-count at the top of `run_routine.sh` and in the `routine_scan.py` flags.
+
+---
+
+## §R6 — Self-upgrade safety (skillsmith improving skillsmith)
+
+The routine is allowed to upgrade **skillsmith itself** — that's the point of "improve my skills
+including skillsmith." But a self-edit must never break the run that makes it:
+
+1. **Do skillsmith's own changes LAST**, after every other skill is done and the registry is written.
+2. The running process already loaded the *old* skillsmith into context, so a self-edit only takes
+   effect **next** run — never hot-swap mid-run.
+3. After a self-edit: **`skill_registry.py check skillsmith` must pass** — this is the hard gate (no
+   deps). Also run the skill-creator `quick_validate.py` **when `pyyaml` is importable** (best-effort:
+   it needs `import yaml`, which is absent on the stock homebrew python3 — do NOT
+   `--break-system-packages` to get it; the registry check is the gate that matters). If the gate
+   fails, **`git checkout` the self-edit** (revert it) and log the failure as a proposal. A broken
+   skillsmith must not be committed.
+4. Bump skillsmith's own `metadata.version` + changelog like any other upgrade.
+
+---
+
+## §R7 — The scheduler (how "each day" fires) + watching it
+
+Cloud routines can't see your local files, so this runs **locally** via a macOS LaunchAgent.
+
+| Artifact | Path | Role |
+|---|---|---|
+| runner | `scripts/run_routine.sh` | sets PATH, `cd`s to the repo, invokes `claude` headless on this mode with full perms + a `--max-budget-usd` cap, tees output to `routine-logs/`. |
+| LaunchAgent | `assets/com.attax.skillsmith-routine.plist` → installed to `~/Library/LaunchAgents/` | fires the runner daily (default **06:00** local). |
+| run log | `routine-logs/YYYY-MM-DD.log` | full CLI transcript of the run (gitignored). |
+| ledger | `references/routine-ledger/YYYY-MM-DD.md` | the human-readable findings + run summary (committed). |
+
+**Enable / disable:**
+```sh
+launchctl load   ~/Library/LaunchAgents/com.attax.skillsmith-routine.plist   # on
+launchctl unload ~/Library/LaunchAgents/com.attax.skillsmith-routine.plist   # off (kill switch)
+launchctl list | grep skillsmith                                             # is it loaded?
+```
+Change the time: edit `StartCalendarInterval` in the plist, then `unload` + `load`.
+
+**Watch a run:**
+- Live, on demand: in an interactive Claude Code session run **`/skillsmith routine`** and read it
+  happen in real time. Same playbook, you're just watching.
+- A scheduled run: `tail -f routine-logs/$(date +%F).log`, open today's ledger entry in your editor,
+  or read the commits: `git -C ~/Documents/Claude/Projects/claude-skills log --oneline --since=today`.
+
+**Permissions:** the headless invocation runs with `--permission-mode bypassPermissions` (Atta asked
+for "all necessary perms") so it never blocks on a prompt at 6am. That is a real bypass — the kill
+switch above and the per-commit revertibility are the safety net. First scheduled run may need a
+valid Claude Code login in `~/.claude`; if the log shows an auth error, open Claude Code once
+interactively to refresh, then let the next day's run proceed.
+
+---
+
+## Quick recipes
+
+- **"run the routine now"** → `routine` mode, Stages A→E, fully autonomous per §R4.
+- **"what would the routine do? don't apply"** → run Stages A→C only (harvest + STORM + ledger), then
+  stop. Everything is a proposal; nothing is executed.
+- **"turn the daily run on/off"** → the `launchctl load`/`unload` pair in §R7.
+- **"why did it change skill X yesterday?"** → read `routine-ledger/<date>.md` (the dossier +
+  confidence) and `git show` the commit.
