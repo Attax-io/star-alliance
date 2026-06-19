@@ -104,7 +104,11 @@ def read_fm_version_status(skill_md: Path):
                 else:
                     break
         else:
-            desc = head.strip("\"'")
+            # mirror skill_registry.get_description: strip surrounding quotes AND
+            # unescape \" so the char count matches the authoritative Cowork gate
+            # (a quoted desc with N \"-escapes was over-counted by N, producing
+            # phantom desc>1024 flags — e.g. cleanup read 1025 here vs 991 there).
+            desc = head.strip('"').strip("'").replace('\\"', '"')
     desc = desc.strip()
     bw = len(body.split())
     bl = body.count("\n") + 1
