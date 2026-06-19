@@ -27,7 +27,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`article-creator`](article-creator/SKILL.md) | 1.0.0 | own | 138 / 923 | 730 / 96 | ✓ lean | End-to-end procedure for creating a public Insights article and pushing it to the Lex Coun… |
 | [`brandkit`](brandkit/SKILL.md) | 1.0.0 | own | 52 / 464 | 2543 / 796 | ○ large | Premium brand-kit image generation skill for creating high-end brand-guidelines boards, lo… |
 | [`bug-fix-workflow`](bug-fix-workflow/SKILL.md) | 1.0.0 | own | 124 / 761 | 1221 / 148 | ✓ lean | The Lex Council end-to-end bug workflow — pull reports from the bug_reports table, triage … |
-| [`cleanup`](cleanup/SKILL.md) | 1.17.0 | own | 150 / 1087 | 4398 / 273 | ✗ desc>1024 | Multi-mode hygiene skill for Lex Council |
+| [`cleanup`](cleanup/SKILL.md) | 1.17.1 | own | 135 / 991 | 4459 / 274 | ✓ lean | Multi-mode hygiene skill for Lex Council |
 | [`codex-law-translate`](codex-law-translate/SKILL.md) | 1.0.0 | own | 134 / 908 | 1354 / 171 | ✓ lean | End-to-end pipeline for loading a real-world law into the Lex Council legal codex, transla… |
 | [`conquering-campaign`](conquering-campaign/SKILL.md) | 3.8.2 | own | 140 / 1001 | 10290 / 467 | ⚠ body>10k | Multi-wave campaign skill for work too big for one pass |
 | [`db-rename-sweep`](db-rename-sweep/SKILL.md) | 1.0.0 | own | 146 / 910 | 269 / 36 | ✓ lean | Loads the full surface inventory for any Lex Council table or column rename before the fir… |
@@ -54,4 +54,4 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`transactions-domain-model`](transactions-domain-model/SKILL.md) | 1.0.0 | own | 108 / 951 | 2459 / 347 | ✓ lean | Loads the complete Lex Council transactions domain model before any transaction-related wo… |
 | [`vault-log-compliance`](vault-log-compliance/SKILL.md) | 1.0.0 | own | 128 / 807 | 1185 / 110 | ✓ lean | Enforces P8 vault-logging compliance for Lex Council |
 
-_29 skills — 22 lean · 5 large (installable, over the 500-line ideal) · 1 near the word ceiling · 1 hard violations._
+_29 skills — 23 lean · 5 large (installable, over the 500-line ideal) · 1 near the word ceiling · 0 hard violations._
