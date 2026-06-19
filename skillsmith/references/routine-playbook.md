@@ -158,34 +158,39 @@ including skillsmith." But a self-edit must never break the run that makes it:
 
 ## §R7 — The scheduler (how "each day" fires) + watching it
 
-Cloud routines can't see your local files, so this runs **locally** via a macOS LaunchAgent.
+The routine runs **locally** (it needs your files + session transcripts; cloud routines can't see
+them). Primary mechanism = a **native Claude Code routine** (it shows in the app's *Routines* panel,
+next to your other routines). The macOS LaunchAgent is an optional fallback.
 
-| Artifact | Path | Role |
-|---|---|---|
-| runner | `scripts/run_routine.sh` | sets PATH, `cd`s to the repo, invokes `claude` headless on this mode with full perms + a `--max-budget-usd` cap, tees output to `routine-logs/`. |
-| LaunchAgent | `assets/com.attax.skillsmith-routine.plist` → installed to `~/Library/LaunchAgents/` | fires the runner daily (default **06:00** local). |
-| run log | `routine-logs/YYYY-MM-DD.log` | full CLI transcript of the run (gitignored). |
-| ledger | `references/routine-ledger/YYYY-MM-DD.md` | the human-readable findings + run summary (committed). |
+### Primary: native Claude Code routine — in the *Routines* panel (set up 2026-06-20)
+Registered via the scheduled-tasks system as task **`skillsmith-routine`**
+(`~/.claude/scheduled-tasks/skillsmith-routine/SKILL.md`), cron `0 6 * * *` (daily ~06:00 local,
+small jitter). Enable / disable / retime / **Run now** from the Routines panel, or via
+`mcp__scheduled-tasks__update_scheduled_task`.
 
-**Enable / disable:**
+- **Runs while the Claude Code app is open** (if it's closed when due, it runs on next launch).
+- **Permissions:** the first run pre-approves the tools it needs (Bash git/python, Edit/Write, Skill,
+  Workflow, `git -C <repo> push`); approvals are stored on the task and auto-applied to later runs.
+  **Click "Run now" once** to pre-approve so the 06:00 runs never stall on a prompt.
+- **No hard `$` cap** here (that was a LaunchAgent-only flag) — the per-run budget is the soft §R5
+  limit (top ~3 actions, ~8 skills STORMed), enforced by the task prompt.
+
+### Optional fallback: macOS LaunchAgent — runs even when the app is closed, hard `$` cap
+`scripts/run_routine.sh` (headless `claude -p` with `--permission-mode bypassPermissions` +
+`--max-budget-usd` cap, tees to `routine-logs/`) fired by `assets/com.attax.skillsmith-routine.plist`.
+Use only if you want app-closed running or the hard dollar cap — and if you install it, **disable the
+native routine first** so it doesn't double-run.
 ```sh
-launchctl load   ~/Library/LaunchAgents/com.attax.skillsmith-routine.plist   # on
-launchctl unload ~/Library/LaunchAgents/com.attax.skillsmith-routine.plist   # off (kill switch)
-launchctl list | grep skillsmith                                             # is it loaded?
+cp assets/com.attax.skillsmith-routine.plist ~/Library/LaunchAgents/ \
+  && launchctl load -w ~/Library/LaunchAgents/com.attax.skillsmith-routine.plist   # on
+launchctl unload ~/Library/LaunchAgents/com.attax.skillsmith-routine.plist          # off
 ```
-Change the time: edit `StartCalendarInterval` in the plist, then `unload` + `load`.
 
-**Watch a run:**
-- Live, on demand: in an interactive Claude Code session run **`/skillsmith routine`** and read it
-  happen in real time. Same playbook, you're just watching.
-- A scheduled run: `tail -f routine-logs/$(date +%F).log`, open today's ledger entry in your editor,
-  or read the commits: `git -C ~/Documents/Claude/Projects/claude-skills log --oneline --since=today`.
-
-**Permissions:** the headless invocation runs with `--permission-mode bypassPermissions` (Atta asked
-for "all necessary perms") so it never blocks on a prompt at 6am. That is a real bypass — the kill
-switch above and the per-commit revertibility are the safety net. First scheduled run may need a
-valid Claude Code login in `~/.claude`; if the log shows an auth error, open Claude Code once
-interactively to refresh, then let the next day's run proceed.
+### Watch a run
+- Live, on demand: run **`/skillsmith routine`** in an interactive session and watch it happen.
+- A scheduled run: it notifies on completion; or open today's ledger entry
+  `references/routine-ledger/<date>.md`, or read the commits
+  (`git -C ~/Documents/Claude/Projects/claude-skills log --oneline --since=today`).
 
 ---
 
