@@ -24,6 +24,15 @@ abort:
 npx turbo dev 2>&1 | tee /tmp/lex-dev.log
 ```
 
+> **Unattended / scheduled context (no user — e.g. the
+> `lex-cleanup-rotation` routine):** there is no teed dev server, so
+> `/tmp/lex-dev.log` is absent every run. This mode is then a **structural
+> no-op** — declare it immediately and `rotate.py advance --noop`. Do NOT
+> start a dev server unattended (that's the user's job; the rotation must
+> never spawn a long-running server). The mode only does real work when a
+> human left a dev session running with the tee in place, so it is
+> effectively interactive-only.
+
 Also confirm the runtime pieces are present (one-time setup, but check
 in case a future refactor removed them):
 

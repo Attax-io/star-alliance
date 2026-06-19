@@ -56,6 +56,9 @@ collide on the shared locale JSON, which is exactly why merge is centralized.
   maps inside the component, add sub-component hooks where needed.
 - **>~15 files (fan-out):** spawn one `general-purpose` agent per file (batch in
   waves of ~10–15, `run_in_background: true`, like the `language` mode's 5 agents).
+  **Unattended/scheduled context (no user): spawn FOREGROUND (omit
+  `run_in_background`)** — background *writing* subagents are denied in the no-user
+  scheduled context and fail silently. See mode-language §L2.
   Each is briefed with its `_briefs/b<i>.json` + the brief below, edits its file,
   and writes a sidecar `b<i>.json` (`{file, namespace_keys, reused_keys,
   literals_replaced, needs_review, notes}`) to a keys dir.

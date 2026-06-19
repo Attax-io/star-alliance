@@ -235,7 +235,10 @@ def dedupe_issues(issues):
 
 # ── L19: view-registry cross-check ───────────────────────────────────────────
 
-VIEWS_USAGE_RE = re.compile(r"VIEWS\.([a-zA-Z_][a-zA-Z0-9_]*)")
+# Negative lookbehind: only the standalone `VIEWS` object, never a suffix of
+# another identifier (e.g. `LINK_VIEWS.map(` was flagged as a phantom missing
+# `VIEWS.map` key when the regex had no left boundary).
+VIEWS_USAGE_RE = re.compile(r"(?<![A-Za-z0-9_])VIEWS\.([a-zA-Z_][a-zA-Z0-9_]*)")
 # Registry keys are object properties: `  key_name: 'value',` — capture the key.
 REGISTRY_KEY_RE = re.compile(r"^\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*:")
 

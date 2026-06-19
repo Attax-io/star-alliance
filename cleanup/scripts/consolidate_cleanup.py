@@ -155,9 +155,18 @@ def cmd_detect(args):
 
 # ── map-callsites ──────────────────────────────────────────────────────────
 
+# Matches BOTH client (`const t = useTranslations('ns')`) and server-component
+# (`const t = await getTranslations('ns')` / `getTranslations({ namespace:'ns' })`)
+# bindings. Missing the `await` and object-namespace forms made server-only keys
+# (e.g. public.codex.*) look DEAD and risked deleting live keys → MISSING_MESSAGE.
+# namespace = group(2) [string arg] or group(3) [object namespace].
 USE_TRANS_RE = re.compile(
-    r"(?:const|let|var)\s+(\w+)\s*=\s*(?:use|get)Translations\s*\(\s*"
-    r"(?:[`'\"]([^`'\"]*)[`'\"])?\s*\)"
+    r"(?:const|let|var)\s+(\w+)\s*=\s*(?:await\s+)?(?:use|get)Translations\s*\(\s*"
+    r"(?:"
+    r"[`'\"]([^`'\"]*)[`'\"]"
+    r"|"
+    r"\{[^}]*namespace\s*:\s*[`'\"]([^`'\"]*)[`'\"][^}]*\}"
+    r")?\s*\)"
 )
 T_CALL_RE = re.compile(r"(?<!\w)(\w+)\s*\(\s*[`'\"]([^`'\"]+)[`'\"]")
 
@@ -190,7 +199,7 @@ def cmd_map_callsites(args):
         except Exception:
             continue
         # Build var → namespace map
-        var_ns = {m.group(1): (m.group(2) or '') for m in USE_TRANS_RE.finditer(content)}
+        var_ns = {m.group(1): (m.group(2) or m.group(3) or '') for m in USE_TRANS_RE.finditer(content)}
         if not var_ns: continue
         for line_num, line in enumerate(content.split('\n'), start=1):
             for tm in T_CALL_RE.finditer(line):
@@ -222,7 +231,7 @@ def cmd_map_callsites(args):
             content = (code_root / fpath).read_text(encoding='utf-8')
         except Exception:
             continue
-        bindings = {m.group(1): m.group(2) or '' for m in USE_TRANS_RE.finditer(content)}
+        bindings = {m.group(1): m.group(2) or m.group(3) or '' for m in USE_TRANS_RE.finditer(content)}
         common_var = next((v for v, ns in bindings.items() if ns == 'common'), None)
         plan.append({
             'file': fpath,

@@ -1,15 +1,15 @@
 # Cleanup skill — upgrade routes
 
-Checkup of `cleanup` v1.14.0. Maps every place the skill can still grow, ranked by
+Checkup of `cleanup` v1.16.0. Maps every place the skill can still grow, ranked by
 value × effort. Companion to SKILL.md §Versioning. Re-read this before the next upgrade
 pass so routes aren't re-derived from scratch.
 
-**Current state (v1.14.0):** 12 LIVE modes (`leaks` — used-but-absent i18n keys, v1.13.0; `bundle` — Worker size-wall, R14) + a `run_all.py` orchestrator (R7) + a `commit_scope.py`
-helper (R10) + an always-on app patch bump on every change-applying sweep (v1.9.0). 0 DRAFT.
-**R1–R7 + R10 + R11 + R12 + R13 + R14 all DONE.** **39 cross-mode lessons (L1–L39)** — L39 (OpenNext Worker 3 MiB wall → `bundle` mode) added 2026-06-09 from the 1.7.60 deploy failure; L38 (leaks) v1.13.0; L32–L37 added 2026-06-04 from
+**Current state (v1.16.0):** 13 LIVE modes (`leaks` — used-but-absent i18n keys, v1.13.0; `bundle` — Worker size-wall, R14; `manual` — DB-backed in-app user manual i18n, v1.15.0) + a `run_all.py` orchestrator (R7) + a `commit_scope.py`
+helper (R10) + a `rotate.py` rotation driver (R15, v1.16.0) feeding the hourly `lex-cleanup-rotation` routine + an always-on app patch bump on every change-applying sweep (v1.9.0). 0 DRAFT.
+**R1–R7 + R10–R15 all DONE.** **40 cross-mode lessons (L1–L40)** — L40 (rotation-routine discipline: never push / one mode per run / `sync-order`) added 2026-06-17 with R15; L39 (OpenNext Worker 3 MiB wall → `bundle` mode) added 2026-06-09 from the 1.7.60 deploy failure; L38 (leaks) v1.13.0; L32–L37 added 2026-06-04 from
 mining the June 3–4 `hardcoded`-extraction + bug#244/#245 followup sweeps; L25–L31 added 2026-06-02.
 Mechanized into scripts: L9/L10/L11/L14/L15/L16/L17/L19, **L27 → `commit_scope.py` (R10)**, **L33 → `i18n_extract.py` detect (R12)**,
-**L34/L36/L37 → `followups_cleanup.py` parity/orphan-index/classifier-guard (R13)**; L25/L26/L28–L32/L35 still prose-only.
+**L34/L36/L37 → `followups_cleanup.py` parity/orphan-index/classifier-guard (R13)**, **L40 → `rotate.py` (R15)**; L25/L26/L28–L32/L35 still prose-only.
 Cross-machine `default_root()` portability across all scripts.
 **Open routes: R8 (dead-code mode), R9 (`--since` incremental).**
 
@@ -33,6 +33,7 @@ Cross-machine `default_root()` portability across all scripts.
 | ~~R12~~ | widen `hardcoded` `detect` harvest (expression-context bucket) | **DONE (v1.12.0)** | — | — | LIVE — `i18n_extract.py detect` `expr` context (nullish/ternary-tail + `fail(`) + per-context tally; mechanizes L33 |
 | ~~R13~~ | followups hardening (locale-parity + orphan-INDEX + classifier guard) | **DONE (v1.12.0)** | — | — | LIVE — `followups_cleanup.py` `parity` / `orphan-index` subcommands + `ENVIRONMENTAL_KW` guard; mechanizes L34/L36/L37 |
 | ~~R14~~ | `bundle` mode — Cloudflare/OpenNext Worker size-wall | **DONE (v1.14.0)** | — | — | LIVE — `scripts/bundle_cleanup.py` (`detect` static heavy-lib-leak scan / `measure` gzip worker vs wall); wired into the `release` gate PR2 + `run_all`; mechanizes L39 (the 1.7.60 deploy failure) |
+| ~~R15~~ | hourly rotation routine driver | **DONE (v1.16.0)** | — | — | LIVE — `scripts/rotate.py` (`next` / `advance` / `show` / `sync-order`) drives the `lex-cleanup-rotation` scheduled task: one mode per hour, applies + commits per run, **never pushes**; `release` excluded; `sync-order` auto-folds future LIVE modes; mechanizes L40 |
 
 ---
 
@@ -326,3 +327,31 @@ to remember by hand:
 **Effort S–M. Value MED.** Pairs with R12 — both are "mechanize the June-3–4 lessons" so the next sweep
 doesn't re-derive them. (The L36 root cause also wants an upstream fix in `conquering-campaign` — write
 the INDEX row at campaign close — but that's a cross-skill route, not a cleanup change.)
+
+---
+
+## R15 — hourly rotation routine driver (from the "local routine" ask)
+
+> **✅ DONE 2026-06-17 (v1.16.0).** Shipped as `scripts/rotate.py` + the `lex-cleanup-rotation`
+> scheduled task + `.claude/commands/cleanup-routine.md` + SKILL.md §Step RT + §L40.
+
+**Why:** the user wanted a local **routine** that does everything the cleanup skill does **except push** —
+running unattended on a schedule, one cleanup spot at a time, hour after hour. A scheduled task is a fresh
+session each run (no memory), so the rotation needs durable on-disk state and a driver the skill *owns*
+(not prose buried in a command file).
+
+**Shipped:**
+- `scripts/rotate.py` over the cursor `<workspace>/.claude/cleanup-routine-state.json`
+  (`order` / `next_index` / `history`): `next` (mode this run), `advance [--noop]` (log + step, wraps),
+  `show`, `sync-order` (append any newly-LIVE SKILL.md mode to the rotation; filters `release`).
+- The hourly `lex-cleanup-rotation` scheduled task: `rotate.py next` → that one mode full-auto →
+  Step CL bump + vault log + commit in `lex_council/` → `rotate.py advance` → commit cursor in root.
+  **NEVER pushes.**
+- `sync-order` is the "accommodate from now" hook — a future `/cleanup` mode auto-joins the rotation with
+  no edit to the routine or the cursor.
+
+**Hard rules (→ §L40):** never `git push`; exactly one mode per run; `release` is never rotated; each
+mode's own guardrails still bound it (postgres additive-only + prod `project_id` check first).
+
+**Effort S** — stdlib-only cursor driver + a SKILL.md LIVE-row regex. **Value HIGH** — turns the skill
+into an unattended drift-eater that still leaves the push gate to the human.

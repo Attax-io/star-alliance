@@ -1,11 +1,29 @@
 ---
 name: cleanup
-description: "Multi-mode hygiene skill for Lex Council. Modes — language (i18n translations); consolidate (i18n key dedup); hardcoded (extract raw UI text to next-intl keys); leaks (i18n keys USED in code but ABSENT from JSON → render as raw key-paths); errors (dev log sweep); postgres (Supabase advisors + pg health); lint (ESLint --fix + tsc); consolidate-code (duplicate component/RLS/constant detection); bundle (Cloudflare/OpenNext Worker size-wall hygiene); release (version bump + hygiene gate); docs (frontmatter/wikilinks/orphans); followups (deferred items). Run all at once via scripts/run_all.py. Triggers: \"run cleanup\", \"/cleanup\", \"i18n cleanup\", \"translate untranslated\", \"find hardcoded text\", \"find leaking keys\", \"raw key paths\", \"fix dev errors\", \"check postgres\", \"run lint\", \"consolidate code\", \"check the bundle size\", \"doc cleanup\", \"finish followups\", \"bump the version\", \"release X.Y.Z\", or any hygiene sweep after a campaign. Full mode recipes in references/."
+description: "Multi-mode hygiene skill for Lex Council. Modes — language (i18n translations); consolidate (i18n key dedup); hardcoded (extract raw UI text to next-intl keys); leaks (i18n keys USED in code but ABSENT from JSON → render as raw key-paths); errors (dev log sweep); postgres (Supabase advisors + pg health); lint (ESLint --fix + tsc); consolidate-code (duplicate component/RLS/constant detection); bundle (Cloudflare/OpenNext Worker size-wall hygiene); release (version bump + hygiene gate); docs (frontmatter/wikilinks/orphans); followups (deferred items); manual (keep the in-app user manual translated + fresh in all 6 locales, like the app docs). Run all at once via scripts/run_all.py. Triggers: \"run cleanup\", \"/cleanup\", \"i18n cleanup\", \"translate untranslated\", \"find hardcoded text\", \"find leaking keys\", \"raw key paths\", \"fix dev errors\", \"check postgres\", \"run lint\", \"consolidate code\", \"check the bundle size\", \"doc cleanup\", \"finish followups\", \"update the manual\", \"bump the version\", \"release X.Y.Z\", or any hygiene sweep after a campaign. Full mode recipes in references/."
 metadata:
-  version: 1.14.1
+  version: 1.17.0
 ---
 
-# Cleanup — Lex Council hygiene sweeps (v1.14.1)
+# Cleanup — Lex Council hygiene sweeps (v1.17.0)
+
+<!-- v1.17.0 (2026-06-19) — detector + scheduled-context + watermark upgrade.
+  See UPGRADE-NOTES.md for the full session-mined rationale.
+  • False-positive fixes: consolidate-code dup-function regex no longer matches
+    array/object-literal consts (+ byte_identical flag, §CC3); leaks recognizes
+    backtick-template prefix wrappers (`t(`ns.${k}`)`) — killed 62 phantom leaks;
+    lint/registry VIEWS regex anchored (no more `LINK_VIEWS.map`); consolidate
+    dead-key scan sees `await getTranslations`/object-namespace server components;
+    expr-bucket pre-filters CSS funcs/hex/dimensions.
+  • Scheduled-context: ~/.claude/skills/cleanup symlinked to the project skill so
+    the routine's `~/.claude/skills/cleanup/scripts/*` paths resolve; language +
+    hardcoded recipes note FOREGROUND subagents when unattended (background writes
+    are silently denied); errors mode is an explicit no-op unattended (never
+    auto-starts a dev server).
+  • NEW watermark.py — per-mode "what changed since last pass" cursor for docs +
+    manual (cleanup-docs-state.json / cleanup-manual-state.json); both recipes now
+    gate on it and escalate to a /conquering-campaign AUDIT past 3 new vault-logs. -->
+
 
 This skill packages the operational recipes for periodic cleanup passes that
 the app accumulates between feature builds. Each mode is independent; the
@@ -32,6 +50,7 @@ skill body routes to the right workflow based on what the user asked for.
 | **hardcoded** | LIVE | Find raw hardcoded user-facing English text still in components (.tsx/.ts) and extract it to next-intl `t()` keys — the gap `language` (translates existing keys) / `consolidate` (dedups keys) never covered. Script: `scripts/i18n_extract.py` (detect/merge/propagate/verify); recipe `references/mode-hardcoded.md`. Scales 1-file → one-agent-per-file fan-out → `/conquering-campaign`. |
 | **leaks** | LIVE | The INVERSE of `hardcoded`: keys USED in code (`t('ns.key')`) but ABSENT from the locale JSON → render as the raw uppercased key-path (next-intl `getMessageFallback`) in the UI. `scripts/i18n_extract.py leaks` resolves every static `t()` key app-wide (matches `useTranslations` **and** `getTranslations`/`{namespace:}`), flags EN-absent (HIGH) + locale-parity (MED). Detect+surface only. The class that leaked the public Codex page twice. Recipe `references/mode-leaks.md`. |
 | **bundle** | LIVE | Cloudflare/OpenNext **Worker size-wall** hygiene. `detect` (static, build-free) flags heavy client-only libs (`recharts`) imported OUTSIDE the `.body`+`dynamic({ssr:false})` convention so they leak into the SSR/Worker bundle (the class that failed the 1.7.60 deploy); `measure` (build-gated) gzips the built worker vs the 3 MiB free / 10 MiB paid wall. Feeds the `release` gate + `run_all`. Script: `scripts/bundle_cleanup.py`. Recipe `references/mode-bundle.md`. |
+| **manual** | LIVE | Keep the DB-backed in-app user manual translated + fresh (like `docs` does for the planet hubs). Detects Parts whose EN `body_md` hash ≠ stored `source_md_hash` per locale (**stale**) or have no row (**missing**); re-translates the gaps and **auto-publishes** via a per-Part translation workflow (routes / backticked code / `§` numbers / heading anchors kept verbatim); also flags Parts whose EN may be drifted by recent app changes (surface-only). MCP + workflow driven (no static script). Recipe `references/mode-manual.md`. |
 
 ## When to invoke this skill
 
@@ -53,6 +72,7 @@ Trigger phrases (any of):
 - "find hardcoded text", "extract hardcoded strings", "key-ify the hardcoded strings", "/cleanup hardcoded" → routes to `hardcoded`
 - "find leaking keys", "missing translation keys", "keys showing as raw text", "raw key paths", "why is the UI showing the key name", "/cleanup leaks" → routes to `leaks`
 - "check the bundle size", "is the app too big", "worker size limit", "trim the bundle", "the deploy failed on size", "/cleanup bundle" → routes to `bundle`
+- "update the manual translations", "is the manual up to date", "translate the manual", "the manual is stale", "/cleanup manual" → routes to `manual`
 
 Skip when: user is mid-feature and work isn't ready; a cleanup pass ran today and nothing new was added; user is asking about something else ("clean up this component" = refactoring, not this skill).
 
@@ -76,7 +96,9 @@ Look at the user's phrasing. Default mode is `language` unless they explicitly n
 | "find hardcoded text", "extract hardcoded strings", "key-ify the hardcoded strings", "/cleanup hardcoded" | `hardcoded` |
 | "find leaking keys", "missing translation keys", "raw key paths", "/cleanup leaks" | `leaks` |
 | "check the bundle size", "worker size limit", "the deploy failed on size", "/cleanup bundle" | `bundle` |
+| "update the manual translations", "is the manual up to date", "translate the manual", "/cleanup manual" | `manual` |
 | "run all cleanups", "/cleanup all", "what's drifted" | run `python3 ~/.claude/skills/cleanup/scripts/run_all.py run [--fast]` — runs local hygiene modes detect-only, writes severity-ranked `/tmp/cleanup_triage.md` + per-mode last-run age |
+| `/cleanup-routine`, the hourly `lex-cleanup-rotation` task, "do the next cleanup spot" | one mode this run = `python3 ~/.claude/skills/cleanup/scripts/rotate.py next`; full recipe in **§Step RT** — applies, commits, **never pushes** |
 
 If the user's phrasing matches more than one mode (e.g. "run cleanup after that campaign"), prefer `followups` over `docs` — the post-campaign sweep is more specific.
 
@@ -104,6 +126,19 @@ Rules:
 - **Skip when the session applied no changes** — a pure detect-only / dry-run sweep does not bump (`run_all.py` detect, any `*_cleanup.py detect`, `/cleanup release --gate`, `--dry`, or a "nothing to clean" result).
 - **`release` mode does NOT call this** — it performs its own full version bump (possibly minor/major) per `references/release-procedure.md`. Never double-bump in a release session.
 - Drift guard: if the two version literals already disagree the script refuses (exit 3) — run `/cleanup release` to reconcile, then proceed.
+
+### Step RT — Hourly rotation routine (R15)
+
+The `lex-cleanup-rotation` scheduled task (Scheduled sidebar) runs **ONE mode per hour**, cycling the rotation so each hour works the next "spot". It is local (runs while the app is open; fires on next launch if missed) and **NEVER pushes** — every applying run commits to the working tree and leaves `git push` to the user. Each run is its own fresh session with no memory, so the on-disk cursor is the only state.
+
+- **Cursor:** `<workspace>/.claude/cleanup-routine-state.json` (`order`, `next_index`, `history`). **Driver:** `scripts/rotate.py` —
+  - `next` — print the mode to run THIS run.
+  - `advance [--noop]` — log that mode (applied / no-op) + step `next_index` (wraps).
+  - `show` — full state + recent runs.
+  - `sync-order` — fold any newly-LIVE `/cleanup` mode into the rotation (run it so future modes auto-join **from now**; `release` is filtered out).
+- **Per-run contract:** `rotate.py next` → run that one mode full-auto (each mode's own guardrails still bound it — postgres stays additive-only and verifies prod `project_id` first) → if ≥1 change applied: verify green, **Step CL bump once**, vault log, commit INSIDE `lex_council/` (submodule) → `rotate.py advance` (`--noop` if nothing applied) → commit the cursor in the workspace root (no remote). **Never `git push`.**
+- **Rotation excludes `release`** — a real version release stays human-driven. The Step CL "once per session" rule = once per routine run (so an applying spot bumps the patch each hour by design).
+- Canonical prose: `.claude/commands/cleanup-routine.md` (also runnable by hand as `/cleanup-routine`). See §L40 + `UPGRADE-ROUTES.md` R15.
 
 ### Mode: language
 
@@ -161,11 +196,11 @@ Read `references/mode-release.md` for the full gate recipe (Steps PR1–PR4: hyg
 
 ## Lessons learned (cross-mode architecture)
 
-39 codified landmine lessons (L1–L39) covering MCP reachability taxonomy, behavior-parity verification, post-rename artifacts, look-alike-but-different trap, PostToolUse race conditions, continuation markers, vault-log size thresholds, `security_invoker` silent-drop, postgres multi-pass discipline, lint baseline noise, `no-unused-expressions` architectural status, hex literal grep, ThemeToggle/StrictMode noise, stale trigger bodies, i18n namespace scope trap, release-time failure cluster, byte-compare before merge, dev-server session survival, skill version-sync drift, language count-semantics (verify vs detect + absent-key blindness), exact-JSON-writer churn, concurrent-actor commit scoping, offline-MCP degrade-with-receipts, zero-edit no-bump, scanner self-reference, advisor accepted-by-convention netting, mutation-module error-codes-not-strings (L32), ternary/nullish-fallback literal escape (L33), campaign locale-parity gaps (L34), single-word-label domain specificity (L35), orphaned-INDEX vault-logs (L36), followups over-tagging environmental items (L37), used-but-absent key leaks (L38), and heavy-lib Worker-wall busting (L39).
+40 codified landmine lessons (L1–L40) covering MCP reachability taxonomy, behavior-parity verification, post-rename artifacts, look-alike-but-different trap, PostToolUse race conditions, continuation markers, vault-log size thresholds, `security_invoker` silent-drop, postgres multi-pass discipline, lint baseline noise, `no-unused-expressions` architectural status, hex literal grep, ThemeToggle/StrictMode noise, stale trigger bodies, i18n namespace scope trap, release-time failure cluster, byte-compare before merge, dev-server session survival, skill version-sync drift, language count-semantics (verify vs detect + absent-key blindness), exact-JSON-writer churn, concurrent-actor commit scoping, offline-MCP degrade-with-receipts, zero-edit no-bump, scanner self-reference, advisor accepted-by-convention netting, mutation-module error-codes-not-strings (L32), ternary/nullish-fallback literal escape (L33), campaign locale-parity gaps (L34), single-word-label domain specificity (L35), orphaned-INDEX vault-logs (L36), followups over-tagging environmental items (L37), used-but-absent key leaks (L38), heavy-lib Worker-wall busting (L39), and unattended rotation-routine discipline (L40).
 
 > **Read `references/landmines.md`** before any cleanup pass that touches DB schema, consolidation, or release.
 
-Lessons also wired into scripts: L9/L10/L15/L17 → `postgres_cleanup.py`; L11 + L19 → `lint_cleanup.py`; L14 → `errors_cleanup.py`; L16 → `i18n_cleanup.py`; L27 → `commit_scope.py` (v1.10.0); L33 → `i18n_extract.py detect` (`expr` context, v1.12.0); L34/L36/L37 → `followups_cleanup.py` (`parity` / `orphan-index` / classifier guard, v1.12.0); L38 → `i18n_extract.py leaks` (v1.13.0); L39 → `bundle_cleanup.py` (v1.14.0).
+Lessons also wired into scripts: L9/L10/L15/L17 → `postgres_cleanup.py`; L11 + L19 → `lint_cleanup.py`; L14 → `errors_cleanup.py`; L16 → `i18n_cleanup.py`; L27 → `commit_scope.py` (v1.10.0); L33 → `i18n_extract.py detect` (`expr` context, v1.12.0); L34/L36/L37 → `followups_cleanup.py` (`parity` / `orphan-index` / classifier guard, v1.12.0); L38 → `i18n_extract.py leaks` (v1.13.0); L39 → `bundle_cleanup.py` (v1.14.0); L40 → `rotate.py` (v1.16.0).
 
 ## Why this skill exists
 
@@ -191,6 +226,8 @@ This skill carries a semantic version in its frontmatter (`version: X.Y.Z`) and 
 
 | Version | Date | Summary |
 |---|---|---|
+| **1.16.0** | 2026-06-17 | **New `rotate.py` rotation driver (R15) — accommodates the hourly `lex-cleanup-rotation` routine.** A local scheduled task runs ONE mode per hour, cycling the rotation so each hour works the next spot; it applies + commits each run but **NEVER pushes** (push stays the user's call). New `scripts/rotate.py` (`next` / `advance [--noop]` / `show` / `sync-order`) owns the on-disk cursor `<workspace>/.claude/cleanup-routine-state.json`; `sync-order` auto-folds any newly-LIVE mode into the rotation **from now** and filters out `release`. New §Step RT + Step-0 router row + §L40 + `.claude/commands/cleanup-routine.md`. New entry-point, backward-compatible → MINOR. |
+| **1.15.0** | 2026-06-17 | **New `manual` mode — keep the DB-backed in-app user manual translated + fresh in all 6 locales** (like `docs` does for the planet hubs). Detects Parts whose EN `body_md` hash ≠ stored `source_md_hash` (**stale**) or have no row (**missing**), re-translates the gaps and auto-publishes via a per-Part workflow (routes / backticked code / `§` numbers / heading anchors kept verbatim); also surfaces EN Parts possibly drifted by recent app changes. MCP + workflow driven (no static script). Recipe `references/mode-manual.md`. New mode → MINOR. _(Changelog row backfilled 2026-06-17.)_ |
 | **1.14.1** | 2026-06-15 | **Cowork packaging (stub copy).** Trimmed the frontmatter description 1186 → 973 chars to satisfy the ≤1024-char limit (dropped redundant trigger phrases; the full set stays in §When to invoke). No behavioral/mode change → PATCH. (Repo stub copy only; the device monolith keeps its richer description.) |
 | **1.14.0** | 2026-06-09 | **New `bundle` mode — Cloudflare/OpenNext Worker size-wall hygiene** (the class that failed the 1.7.60 deploy: members `CreditStatsBar` imported recharts directly into an SSR'd component). New `scripts/bundle_cleanup.py`: `detect` (static, build-free — direct-heavy-import / broken-isolation, exit 2) + `measure` (gzip `.open-next/worker.js` vs the 3 MiB free / 10 MiB paid wall, degrade-with-receipts). The `release` gate PR2 now delegates its hard size check to `bundle measure`; wired into `run_all` + router + Modes table + §L39. New mode → MINOR. |
 | **1.13.0** | 2026-06-04 | **New `leaks` mode — detect i18n keys USED in code but ABSENT from the locale JSON** (render as raw key-paths; leaked the public Codex page twice). New `i18n_extract.py leaks`: resolves every STATIC `t()` key app-wide → `en_absent` (HIGH) + `locale_absent` (MED); matches BOTH `useTranslations` AND `getTranslations`/`{namespace:}` (the server-page gap that would have missed the Codex leak), skips template-literal keys (zero false positives). Wired into `run_all` + router + Modes table + §Mode: leaks (LK1–LK3) + §L38. New mode → MINOR. |
@@ -211,7 +248,7 @@ This skill carries a semantic version in its frontmatter (`version: X.Y.Z`) and 
 
 ## Related
 
-- `UPGRADE-ROUTES.md` — skill roadmap; 10 ranked growth routes (R1–R10; R1–R7 + R10 done).
+- `UPGRADE-ROUTES.md` — skill roadmap; 15 ranked growth routes (R1–R15; R1–R7 + R10–R15 done; R8/R9 open).
 - `CONSOLIDATION-CANDIDATES.md` — 41 open consolidation candidates (FE/config/DB/i18n, 3 tiers).
 - `references/release-procedure.md` — full version-bump recipe (Phase 2 of release mode).
 - `references/mode-language.md` — language mode recipe + brand glossary + locale contracts + agent prompt templates.
@@ -226,9 +263,12 @@ This skill carries a semantic version in its frontmatter (`version: X.Y.Z`) and 
 - `references/mode-hardcoded.md` — hardcoded mode recipe (find + extract raw UI text to keys).
 - `references/mode-leaks.md` — leaks mode recipe (used-but-absent i18n keys → raw key-paths).
 - `references/mode-bundle.md` — bundle mode recipe (Cloudflare/OpenNext Worker size-wall hygiene).
+- `references/mode-manual.md` — manual mode recipe (DB-backed in-app user manual i18n freshness).
 - `scripts/i18n_extract.py` — hardcoded + leaks mode machinery (detect/merge/propagate/verify/leaks).
 - `scripts/bundle_cleanup.py` — bundle mode machinery (detect/measure).
-- `references/landmines.md` — L1–L39 cross-mode lessons.
+- `scripts/rotate.py` — hourly rotation driver (R15, §L40): next/advance/show/sync-order over the routine cursor; never commits or pushes.
+- `.claude/commands/cleanup-routine.md` — one-spot-per-run rotation command (the `lex-cleanup-rotation` routine + manual `/cleanup-routine`).
+- `references/landmines.md` — L1–L40 cross-mode lessons.
 - `scripts/commit_scope.py` — concurrent-actor commit-scoper (R10, §L27): scan/buildcheck/emit; never commits.
 - [[2026-06-02_cleanup-skill-lessons-l25-l31]] — vault log for the L25–L31 + R10 (v1.10.0) upgrade.
 - `vault-log-compliance` skill — delegated to in every mode's vault log step.

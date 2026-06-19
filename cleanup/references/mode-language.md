@@ -35,6 +35,15 @@ templates" below, with the locale-specific bits filled in.
 Use `run_in_background: true` for each. The user's terminal will
 notify you as each completes — do NOT poll.
 
+> **Unattended / scheduled context (no user present — e.g. the
+> `lex-cleanup-rotation` routine): spawn the agents in the FOREGROUND
+> (omit `run_in_background`).** Background subagents that perform *writes*
+> are denied in the no-user scheduled context and fail silently, so a
+> background run produces zero translations and looks like a no-op. Run
+> them foreground (still in one message so they're concurrent) and wait
+> for the results inline. This applies to every mode that spawns *writing*
+> subagents (also `hardcoded`).
+
 Hard contract every agent must satisfy:
 
 - Read its target file (`/tmp/translation_targets_{loc}.json`).

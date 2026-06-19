@@ -154,8 +154,14 @@ _FN_DECL_RE = re.compile(
     r"export\s+(?:async\s+)?function\s+([A-Za-z_$][\w$]*)\s*[(<]"
 )
 # export const NAME = (async) ( ... ) =>   /  export const NAME = (async) X =>
+# Ends at the `=>` so the caller can require a block body ({) to immediately
+# follow. WITHOUT the `=>` anchor this also matched data consts (`= [...]`,
+# `= {...}`) and then hashed an inner array-element / object literal, producing
+# phantom "duplicate functions" (e.g. two INDUSTRIES arrays whose first element
+# object is byte-identical; two `labelStyle` CSSProperties objects). §CC3.
 _FN_ARROW_RE = re.compile(
-    r"export\s+const\s+([A-Za-z_$][\w$]*)\s*(?::[^=]+)?=\s*(?:async\s+)?\(?"
+    r"export\s+const\s+([A-Za-z_$][\w$]*)\s*(?::[^=]+)?=\s*(?:async\s+)?"
+    r"(?:\([^()]*\)|[A-Za-z_$][\w$]*)\s*(?::[^=>{]+)?=>"
 )
 
 
@@ -198,12 +204,23 @@ def _extract_function_hashes(abs_path):
     except Exception:
         return results
 
-    for rx in (_FN_DECL_RE, _FN_ARROW_RE):
+    for rx, is_arrow in ((_FN_DECL_RE, False), (_FN_ARROW_RE, True)):
         for m in rx.finditer(src):
             name = m.group(1)
-            brace = src.find("{", m.end() - 1)
-            if brace == -1 or brace - m.end() > 200:
-                continue  # arrow with no block body, or too far → skip
+            if is_arrow:
+                # The arrow body brace must IMMEDIATELY follow `=>` (only
+                # whitespace between). An expression-body arrow (`=> expr`) or a
+                # data const has no such brace → skip. This is what stops the
+                # array/object-literal false positives.
+                rest = src[m.end():]
+                stripped = rest.lstrip()
+                if not stripped.startswith("{"):
+                    continue
+                brace = m.end() + (len(rest) - len(stripped))
+            else:
+                brace = src.find("{", m.end() - 1)
+                if brace == -1 or brace - m.end() > 200:
+                    continue  # decl with no/too-far block body → skip
             body = _match_brace_body(src, brace)
             if body is None:
                 # Fallback: first ~400 non-whitespace chars after the brace.
@@ -212,11 +229,11 @@ def _extract_function_hashes(abs_path):
                 if len(compact) < 40:
                     continue
                 h = hashlib.sha1(compact.encode("utf-8", "replace")).hexdigest()
-                results.append((name, h))
+                results.append((name, h, compact))
                 continue
             h = _normalized_hash(body)
             if h:
-                results.append((name, h))
+                results.append((name, h, body))
     return results
 
 
@@ -282,26 +299,35 @@ def cmd_scan():
             continue
         rel = os.path.relpath(abs_path, LEX_ROOT)
         seen_here = set()
-        for name, h in pairs:
+        for name, h, body in pairs:
             # dedupe identical (file,hash) so an in-file repeat isn't a "group"
             if (rel, h) in seen_here:
                 continue
             seen_here.add((rel, h))
-            by_hash[h].append({"file": rel, "fn": name})
+            by_hash[h].append({"file": rel, "fn": name, "_body": body})
 
     dup_groups = []
     for h, members in by_hash.items():
         files = {m["file"] for m in members}
         if len(files) >= 2:  # same body-hash in ≥2 distinct files
+            # §CC3 hard rule: the normalized hash collapses whitespace, so a
+            # group can be normalized-equal yet differ in real bytes. Re-compare
+            # raw bodies — only byte-identical groups are safe to call "clones";
+            # the rest are normalized-only and must be hand-verified.
+            raw = {m["_body"] for m in members}
+            byte_identical = len(raw) == 1
             dup_groups.append({
                 "hash": h[:12],
                 "file_count": len(files),
-                "members": sorted(members, key=lambda m: (m["file"], m["fn"])),
+                "byte_identical": byte_identical,
+                "members": sorted(
+                    ({"file": m["file"], "fn": m["fn"]} for m in members),
+                    key=lambda m: (m["file"], m["fn"])),
             })
-    dup_groups.sort(key=lambda g: -g["file_count"])
+    dup_groups.sort(key=lambda g: (-int(g["byte_identical"]), -g["file_count"]))
     detections["dup_functions"] = {
         "what": "exported function bodies with an identical normalized hash in "
-                "≥2 files (best-effort extraction)",
+                "≥2 files (best-effort; byte_identical flag = raw bodies match)",
         "group_count": len(dup_groups),
         "files_scanned": scanned,
         "files_skipped": skipped,

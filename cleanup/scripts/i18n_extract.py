@@ -130,6 +130,19 @@ def is_excluded(s: str) -> tuple[bool, str]:
         return True, 'snake-id'
     if '://' in s or '@' in s or s.startswith('/') or s.startswith('http'):
         return True, 'url-or-path'
+    # CSS values masquerading as copy — the dominant expr-bucket noise source
+    # (`rgba(...)`, `var(--x)`, gradients, transforms, hex colors, bare
+    # dimensions like "0 0 8px"). None are UI strings; cut them pre-agent.
+    if re.search(r'(?:rgba?|hsla?|var|calc|url|(?:linear|radial|conic)-gradient|'
+                 r'translate[XYZ3d]*|scale[XY]?|rotate[XYZ]?|skew[XY]?|matrix|'
+                 r'cubic-bezier|inset|blur|drop-shadow)\s*\(', s):
+        return True, 'css-func'
+    if re.fullmatch(r'#[0-9a-fA-F]{3,8}', s):
+        return True, 'hex-color'
+    _toks = [t for t in re.split(r'[\s,]+', s.strip()) if t]
+    if _toks and all(re.fullmatch(r'-?\d[\d.]*(?:px|rem|em|vh|vw|%|fr|deg|ms|s)?', t)
+                     for t in _toks):
+        return True, 'css-dimension'
     if PLACEHOLDER_RE.fullmatch(s):
         return True, 'placeholder-only'
     if not re.search(r'[A-Za-z]{2,}', s):
@@ -448,12 +461,22 @@ _LEAKS_SKIP_FNS = frozenset({
     'trackActivityEvent', 'trackEvent', 'logEvent', 'emitEvent',
 })
 
-# Wrapper: const ic = (key: string) => t('prefix.' + key)
+# Wrapper: const ic = (key: string) => t('prefix.' + key)   [concat form]
+#       or const ic = (k) => t(`prefix.${k}`)                [template form]
+#       or const ic = k => t(`prefix.${k}`)                  [no-paren arg]
 # Captures (alias, prefix) so ic('sub.key') resolves as 'prefix.sub.key'
-# instead of being flagged as an unknown key.
+# instead of being flagged as an unknown key. The template form is the one the
+# inheritance-calculator uses (`ic=(k)=>t(`inheritance_calculator.${k}`)`); when
+# only the concat form was matched, every ic('x') callsite resolved WITHOUT its
+# prefix → ~62 phantom "absent from EN" leaks every rotation. §L38.
+# group(1)=alias, group(2)=concat prefix OR group(3)=template prefix.
 _WRAPPER_DECL_RE = re.compile(
-    r"const\s+(\w+)\s*=\s*\([^)]*\)\s*=>\s*\w+\(\s*['\"]"
-    r"([a-z][a-z0-9_]*(?:\.[a-z0-9_]+)*)\.['\"]"
+    r"const\s+(\w+)\s*=\s*(?:\([^)]*\)|\w+)\s*=>\s*\w+\(\s*"
+    r"(?:"
+    r"['\"]([a-z][a-z0-9_]*(?:\.[a-z0-9_]+)*)\.['\"]"   # t('prefix.' + key)
+    r"|"
+    r"`([a-z][a-z0-9_]*(?:\.[a-z0-9_]+)*)\.\$\{"        # t(`prefix.${key}`)
+    r")"
 )
 
 
@@ -511,7 +534,7 @@ def cmd_leaks(args):
         rel = str(fp.relative_to(wr))
         wrapper_ns = {}
         for wm in _WRAPPER_DECL_RE.finditer(txt):
-            wrapper_ns[wm.group(1)] = wm.group(2)
+            wrapper_ns[wm.group(1)] = wm.group(2) or wm.group(3)
         keys = set()
         for m in TKEY_RE.finditer(txt):
             fn, key = m.group(1), m.group(2)

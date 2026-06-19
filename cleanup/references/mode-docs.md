@@ -6,6 +6,34 @@ A periodic hygiene sweep of the planet hubs. Lighter-weight than a full
 audit campaign (`conquering-campaign` AUDIT mode) — runs the cheap
 catch-all checks that surface drift without re-querying the entire DB.
 
+#### Step D0 — Watermark: act on what changed, not the baseline
+
+This mode used to re-flag the same broken-wikilink / stale-date baseline every
+run because it had no memory of its last pass. Start with the watermark so the
+run is driven by *new* feature activity:
+
+```sh
+python3 ~/.claude/skills/cleanup/scripts/watermark.py status docs   # exit 10 = escalate
+```
+
+- **Escalation (exit 10 / 🚩):** ≥3 vault-logs shipped since the last docs pass.
+  The cheap catch-all checks won't reconcile that much drift — `spawn_task` a
+  `/conquering-campaign` AUDIT for the docs surface (or, in interactive use, tell
+  the user), then still run the cheap checks below for anything quick.
+- **Nothing new (✓):** the hubs haven't fallen behind any shipped work — run the
+  cheap checks (D1–D8) only if the frontmatter dates are themselves stale;
+  otherwise this is a legitimate fast no-op.
+- **A few new logs:** proceed with D1–D8 as normal, prioritizing the hub sections
+  the new vault-logs touched (`watermark.py since docs` lists them).
+
+**At the END of the run** (whether it applied fixes or was a no-op), stamp the
+watermark so the next run diffs from here:
+
+```sh
+python3 ~/.claude/skills/cleanup/scripts/watermark.py advance docs          # did real work
+python3 ~/.claude/skills/cleanup/scripts/watermark.py advance docs --noop   # no-op pass
+```
+
 #### Step D1 — Inventory the planet hubs
 
 The skill ships with a hard-coded list of planet hubs (matches what the
@@ -21,7 +49,15 @@ FRONTEND.md
 INTEGRATION.md
 DESIGN-CANON.md
 V2-CONVENTIONS.md
+DB-NAMING-OVERHAUL.md
+FINANCIAL-MODEL.md
+RLS-BUNDLES.md
 ```
+
+> Better than a hard-coded list: `ls lex_council/docs/*.md` and treat every
+> top-level `.md` as a candidate hub (the list above drifts as hubs are added —
+> `FINANCIAL-MODEL.md` / `RLS-BUNDLES.md` existed unlisted for weeks). Glob first,
+> then narrow to the ones with planet-hub frontmatter.
 
 #### Step D2 — Per-hub frontmatter sweep
 

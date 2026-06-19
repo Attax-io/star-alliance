@@ -795,3 +795,29 @@ a present-but-tiny `worker.js` is a stale placeholder → degrade-with-receipts,
 never a false "OK"; and a skill upgrade is **dead on the `/cleanup` path unless
 the copy that actually loads carries it** (sync the copies or the mode never
 runs). Wired into the `release` gate PR2 + `run_all`.
+
+### L40 — The unattended rotation routine has three non-negotiables: never push, one mode per run, keep the order synced (rotate.py / routine)
+
+The hourly `lex-cleanup-rotation` task (R15, v1.16.0) runs `/cleanup` unattended,
+so the safety rails that a human session enforces by judgment must be encoded:
+
+1. **Never `git push`.** The whole reason the user asked for this routine is to
+   auto-apply + commit but keep the push to `origin/main` a manual gate. A
+   routine that pushes silently lands unreviewed hygiene edits (i18n rewrites,
+   `eslint --fix`, additive migrations) on `main`. `rotate.py` never touches git;
+   the routine prompt + `.claude/commands/cleanup-routine.md` commit only. If you
+   ever wire push in, you've broken the contract.
+2. **Exactly one mode per run.** Each scheduled run is a fresh, memory-less
+   session. Running `run_all` or chaining modes unattended multiplies blast radius
+   and makes a bad commit hard to attribute. The cursor (`next_index`) is the only
+   memory; `rotate.py next` picks the single spot, `rotate.py advance` steps it.
+3. **`release` is never rotated, and the order must stay synced.** A real release
+   (version bump + changelog + git block) must stay human-driven — `rotate.py
+   sync-order` filters `release` out and folds every *other* newly-LIVE mode into
+   the rotation, so a mode added to SKILL.md doesn't silently fall out of coverage
+   ("accommodate from now"). Run `sync-order` whenever a mode is added.
+
+Corollary: each mode's own guardrails still hold under the routine — `postgres`
+stays additive-only and verifies the prod `project_id` before any write; detect-only
+modes (`bundle`, `leaks`) just report. The routine doesn't relax them; it inherits
+them. Mechanized in `scripts/rotate.py`; full per-run recipe in SKILL.md §Step RT.
