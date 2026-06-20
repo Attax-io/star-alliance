@@ -12,10 +12,28 @@ description: >
   "transaction page", or references any file under finances/. Load silently in the background — no need to
   announce the skill is running.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 ---
 
 # Transactions Domain Model
+
+> ⚠️ **Schema-name staleness (this model was written ~April 2026, BEFORE the 2026-05-24 v2 DB-naming
+> overhaul).** The *concepts* below — 13 types, the three-gate Create→Agree→Certify lifecycle, the
+> trigger-owns-derived-fields rule, the six tab views, the two form modals — are still accurate. But
+> several **table / view / column names are pre-v2 and are GONE on current `main`.** Before writing
+> any code or SQL against a name from this skill, verify it against the live schema (`information_schema`)
+> and `lex_council/docs/V2-CONVENTIONS.md`. Known-dead names used below and their v2 successors:
+> - `council_members` → `users` (member identity); `n_name` columns → resolve via the v2 member view
+> - `fd` / `fd_access` / `fd_access_js` → `folders` / `folder_access`
+> - the `_js` view suffix is **retired** — e.g. `transactions_personal_js` → `transactions_personal`;
+>   page-specific views follow `{portal}_{section}_{entity}_{purpose}` (e.g. `admin_finances_transactions_pending`)
+> - `admin_perms` / `cm_ap` → v2 permission model (`user_permissions`, `has_perm`); `branches_js.b_gfn_link` is pre-v2
+> - **Writes:** as of 2026-06-19 the app routes ALL writes through `callServerRpc → /api/rpc` (server
+>   cookie client) to dodge the Safari `navigator.locks` wedge — not the per-route `createAdminClient()`
+>   pattern §9 describes. Treat §9's routes as the historical shape; confirm the current transport.
+>
+> A full rename pass of this skill is a deferred follow-up (needs a live DB read to verify each successor).
+> Until then: **trust the model, verify the names.**
 
 This skill provides the complete mental model of the Lex Council transactions subsystem. Read this
 before touching any transaction-related code, view, trigger, or API route. The system is non-trivial —
@@ -359,3 +377,12 @@ For deep context on past decisions, read these vault logs:
 | 2026-04-24 | `transactions-approval-tab` | Approval tab with consent gating |
 | 2026-04-24 | `wallet-to-safe-rename` | Terminology rename across codebase |
 | 2026-04-24 | `legacy-data-consistency-fix` | 464 legacy rows fixed for consistency |
+
+---
+
+## Changelog
+
+| Version | Change |
+|---|---|
+| 1.1.0 | Added the **v2 schema-name staleness banner** at the top: the domain *concepts* remain accurate but table/view/column names (`council_members`, `n_name`, `fd_access_js`, the `_js` view suffix, `admin_perms`, `branches_js`) are pre-v2 (2026-05-24 overhaul) and GONE on `main`; lists v2 successors + the 2026-06-19 server-transport write change, and routes name-verification to V2-CONVENTIONS.md. Full per-name rewrite deferred (needs live DB read). |
+| 1.0.0 | Initial — complete pre-v2 transactions domain model. |
