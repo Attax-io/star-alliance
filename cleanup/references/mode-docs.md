@@ -114,6 +114,13 @@ For each `[[X]]`:
   with the recommendation to retarget or strike.
 - **Resolved** — silently OK.
 
+**Systemic threshold (same logic as D5).** When the broken-wikilink count is
+**> 50**, the docs corpus has systemic link rot, not isolated typos. Stop
+enumerating per-link; emit one systemic finding recommending a wholesale link
+audit (often the same unmaintained-INDEX root cause as D5 — reconcile them into
+a single systemic recommendation in the D9 summary rather than two walls of
+per-item flags). Below 50, flag each broken link individually as above.
+
 #### Step D5 — Orphan vault-logs
 
 ```bash
@@ -126,8 +133,21 @@ grep -oE '\[\[[0-9]{4}-[0-9]{2}-[0-9]{2}_[^]]+\]\]' lex_council/docs/vault-logs/
 comm -23 <(sort /tmp/vl_files.txt) <(sort /tmp/vl_indexed.txt | sed 's/$/.md/')
 ```
 
-Surface every orphan. Auto-fixing is risky (the entry's summary needs
-prose); flag for the user to triage.
+**Systemic vs. per-file — stop enumerating past the threshold.** When the
+orphan count is **> 25 files OR > 20% of all vault-log files**, the INDEX is
+*structurally* unmaintained — this is one systemic class, not N per-file misses.
+Do **not** list 540 orphans and do **not** add entries to the INDEX one-by-one.
+Emit a **single** systemic finding instead:
+
+> `systemic: vault-log INDEX unmaintained — <N> orphans (<P>% of files).
+>  Wholesale decision required: (a) regenerate INDEX.md from the file list
+>  + per-file summaries, or (b) accept the unmaintained state and watermark
+>  it so future runs stop re-flagging. NOT a per-file triage.`
+
+A real session (2026-06-20) hit exactly this: ~540 orphans + ~1299 broken
+wikilinks. Enumerating them is noise; the wholesale decision is the only
+actionable output. Below the threshold (a handful of orphans), surface each
+for triage as before — auto-fixing is risky (the entry's summary needs prose).
 
 #### Step D6 — Retired-name registry sweep
 
@@ -200,6 +220,15 @@ Each hub gets a one-line summary in the findings file
 - **BACKEND.md** — counts: tables 132→106 (DRIFT >5%, flag for audit);
   wikilinks: 0 broken; orphan vault-logs in scope: 0; retired-names in
   prose: 4 occurrences; narrative artifacts: 2 (`X (v2; was X)`); status: STALE.
+```
+
+When D4/D5 cross their systemic thresholds, the per-hub lines collapse into a
+single corpus-level systemic line at the top of the findings file:
+
+```markdown
+- **SYSTEMIC — vault-log INDEX unmaintained** — 540 orphans (82% of files) +
+  1299 broken wikilinks. Wholesale decision required (regenerate INDEX or
+  accept+watermark). Per-file orphan/link enumeration suppressed (noise).
 ```
 
 #### Step D10 — Apply + vault log

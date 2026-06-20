@@ -2,10 +2,10 @@
 name: cleanup
 description: "Multi-mode hygiene skill for Lex Council. Modes — language (i18n translations); consolidate (i18n key dedup); hardcoded (extract raw UI text to next-intl keys); leaks (i18n keys used in code but missing from JSON); errors (dev log sweep); postgres (Supabase advisors + pg health); lint (ESLint --fix + tsc); consolidate-code (duplicate code detection); bundle (Cloudflare Worker size-wall hygiene); release (version bump + hygiene gate); docs (frontmatter/wikilinks/orphans); followups (deferred items); manual (in-app user manual translated in all 6 locales). Run all via scripts/run_all.py. Triggers: \"run cleanup\", \"/cleanup\", \"i18n cleanup\", \"translate untranslated\", \"find hardcoded text\", \"find leaking keys\", \"raw key paths\", \"fix dev errors\", \"check postgres\", \"run lint\", \"consolidate code\", \"check the bundle size\", \"doc cleanup\", \"finish followups\", \"update the manual\", \"bump the version\", \"release X.Y.Z\", or any hygiene sweep after a campaign. Full mode recipes in references/."
 metadata:
-  version: 1.17.1
+  version: 1.18.0
 ---
 
-# Cleanup — Lex Council hygiene sweeps (v1.17.1)
+# Cleanup — Lex Council hygiene sweeps (v1.18.0)
 
 <!-- v1.17.0 (2026-06-19) — detector + scheduled-context + watermark upgrade.
   See UPGRADE-NOTES.md for the full session-mined rationale.
@@ -226,6 +226,7 @@ This skill carries a semantic version in its frontmatter (`version: X.Y.Z`) and 
 
 | Version | Date | Summary |
 |---|---|---|
+| **1.18.0** | 2026-06-20 | **`docs` mode systemic-threshold escape (D4 + D5).** When orphan vault-logs exceed **25 files OR 20% of the corpus**, or broken wikilinks exceed **50**, the INDEX is structurally unmaintained — the mode now emits ONE systemic finding recommending a *wholesale* decision (regenerate INDEX, or accept+watermark) instead of enumerating hundreds of per-file flags. D9 summary collapses to a single corpus-level systemic line. Session-mined: a real `/cleanup docs` run hit ~540 orphans + ~1299 broken links and the per-file walls were pure noise; the wholesale decision is the only actionable output. Flag-only recipe addition, no destructive-path change → MINOR. (skillsmith routine 2026-06-20, conf 8/10.) |
 | **1.17.1** | 2026-06-20 | **Cowork packaging (stub copy).** Trimmed the frontmatter description 1087 → 991 chars to satisfy the ≤1024-char hard limit (condensed the per-mode parenthetical hints on `leaks`/`consolidate-code`/`bundle`/`manual`; full mode list + every trigger phrase preserved — they are the triggering mechanism). No behavioral/mode change → PATCH. (Repo stub copy only; the device monolith keeps its richer description.) |
 | **1.16.0** | 2026-06-17 | **New `rotate.py` rotation driver (R15) — accommodates the hourly `lex-cleanup-rotation` routine.** A local scheduled task runs ONE mode per hour, cycling the rotation so each hour works the next spot; it applies + commits each run but **NEVER pushes** (push stays the user's call). New `scripts/rotate.py` (`next` / `advance [--noop]` / `show` / `sync-order`) owns the on-disk cursor `<workspace>/.claude/cleanup-routine-state.json`; `sync-order` auto-folds any newly-LIVE mode into the rotation **from now** and filters out `release`. New §Step RT + Step-0 router row + §L40 + `.claude/commands/cleanup-routine.md`. New entry-point, backward-compatible → MINOR. |
 | **1.15.0** | 2026-06-17 | **New `manual` mode — keep the DB-backed in-app user manual translated + fresh in all 6 locales** (like `docs` does for the planet hubs). Detects Parts whose EN `body_md` hash ≠ stored `source_md_hash` (**stale**) or have no row (**missing**), re-translates the gaps and auto-publishes via a per-Part workflow (routes / backticked code / `§` numbers / heading anchors kept verbatim); also surfaces EN Parts possibly drifted by recent app changes. MCP + workflow driven (no static script). Recipe `references/mode-manual.md`. New mode → MINOR. _(Changelog row backfilled 2026-06-17.)_ |
