@@ -239,6 +239,24 @@ def message_texts(raw):
         # was mis-flagged as vault-log-compliance ×6 because its text names that skill).
         if obj.get("isMeta") is True:
             continue
+        # MACHINE-ORIGIN user turns — NOT lines Atta typed. Ledger 2026-06-20 runs 2–4
+        # deferred this class as "needs message-author provenance … not reachable by lexical
+        # filters"; the provenance signal turns out to be STRUCTURAL after all. The routine's
+        # own Agent/Workflow fan-out injects user-role dispatch prompts (a STORM "MISSION:
+        # extract recurring HYGIENE DEBT…" prompt) that read as real turns. They are tagged
+        # by one of three structural markers, NONE of which a genuine typed turn carries:
+        #   • `isSidechain: True` (+ `agentId`) — the SUBAGENT's own session: the dispatch
+        #     prompt is that subagent's first user turn. This is the canonical subagent
+        #     marker; a sidechain is by definition not Atta typing.
+        #   • `sourceToolAssistantUUID` / `toolUseResult` — the PARENT session's record of a
+        #     tool call (tool_result blobs + the dispatched prompt the parent logged).
+        # Ground-truthed on a Lex session: 6/6 genuine Atta turns carry NONE of these; every
+        # machine turn (incl. the dispatch prompt, in all 4 of its copies) carries one. This
+        # closes the last friction-noise class — the routine's own past dispatch prompts.
+        if (obj.get("isSidechain") is True
+                or "sourceToolAssistantUUID" in obj
+                or obj.get("toolUseResult") is not None):
+            continue
         role = obj.get("type") or ""
         msg = obj.get("message") if isinstance(obj.get("message"), dict) else None
         if msg and not role:

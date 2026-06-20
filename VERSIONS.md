@@ -46,7 +46,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`obsidian-markdown`](obsidian-markdown/SKILL.md) | 1.0.0 | own | 36 / 262 | 610 / 164 | ✓ lean | Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, a… |
 | [`performance`](performance/SKILL.md) | 1.0 | vendored | 32 / 219 | 1034 / 355 | ✓ lean | Optimize web performance for faster loading and better user experience |
 | [`redesign-existing-projects`](redesign-existing-projects/SKILL.md) | 1.0.0 | own | 31 / 225 | 2174 / 176 | ✓ lean | Upgrades existing websites and apps to premium quality |
-| [`skillsmith`](skillsmith/SKILL.md) | 1.1.6 | own | 131 / 980 | 2696 / 134 | ✓ lean | Manage, sync, upgrade, create, and auto-evolve Claude skills across the claude-skills repo… |
+| [`skillsmith`](skillsmith/SKILL.md) | 1.1.7 | own | 131 / 980 | 2905 / 134 | ✓ lean | Manage, sync, upgrade, create, and auto-evolve Claude skills across the claude-skills repo… |
 | [`stitch-design-taste`](stitch-design-taste/SKILL.md) | 1.0.0 | own | 29 / 257 | 1628 / 182 | ✓ lean | Semantic Design System Skill for Google Stitch |
 | [`strategies-review`](strategies-review/SKILL.md) | 1.0.0 | own | 12 / 72 | 297 / 45 | ✓ lean | Review pending strategies and move them to executed then check the docs. |
 | [`supabase`](supabase/SKILL.md) | 0.1.2 | vendored | 58 / 475 | 1184 / 107 | ✓ lean | Use when doing ANY task involving Supabase |
