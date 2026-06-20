@@ -12,28 +12,39 @@ description: >
   "transaction page", or references any file under finances/. Load silently in the background — no need to
   announce the skill is running.
 metadata:
-  version: 1.1.0
+  version: 1.2.0
 ---
 
 # Transactions Domain Model
 
 > ⚠️ **Schema-name staleness (this model was written ~April 2026, BEFORE the 2026-05-24 v2 DB-naming
 > overhaul).** The *concepts* below — 13 types, the three-gate Create→Agree→Certify lifecycle, the
-> trigger-owns-derived-fields rule, the six tab views, the two form modals — are still accurate. But
-> several **table / view / column names are pre-v2 and are GONE on current `main`.** Before writing
-> any code or SQL against a name from this skill, verify it against the live schema (`information_schema`)
-> and `lex_council/docs/V2-CONVENTIONS.md`. Known-dead names used below and their v2 successors:
+> trigger-owns-derived-fields rule, the tab views, the two form modals — are still accurate. The
+> **table / view names were pre-v2 and GONE on current `main`; as of 2026-06-21 they have been
+> verified against the live `information_schema` and corrected in §5/§6 below.** Mapping (live-checked
+> 2026-06-21, project `bqgrpnsvplvicnmzxwkm`):
+> - the `_js` view suffix is **retired** — all six `transactions_*_js` views are DROPPED. v2 splits the
+>   old single page across the **admin** and **members** portals, each with its own `{portal}_{section}_{entity}_{purpose}` view:
+>   `transactions_approval_js` → `admin_finances_transactions_approval`,
+>   `transactions_certification_js` → `admin_finances_transactions_certification`,
+>   `transactions_safe_js` → `admin_finances_transactions_safe`,
+>   `transactions_history_js` → `admin_finances_transactions_history`,
+>   `transactions_pending_js` → `admin_finances_transactions_pending`,
+>   `transactions_personal_js` → `members_finances_transactions_personal`,
+>   `transactions_container_js` → `admin_files_transactions_detail`.
 > - `council_members` → `users` (member identity); `n_name` columns → resolve via the v2 member view
 > - `fd` / `fd_access` / `fd_access_js` → `folders` / `folder_access`
-> - the `_js` view suffix is **retired** — e.g. `transactions_personal_js` → `transactions_personal`;
->   page-specific views follow `{portal}_{section}_{entity}_{purpose}` (e.g. `admin_finances_transactions_pending`)
-> - `admin_perms` / `cm_ap` → v2 permission model (`user_permissions`, `has_perm`); `branches_js.b_gfn_link` is pre-v2
+> - `admin_perms` / `cm_ap` → v2 permission model (`user_permissions`, `has_perm`); `branches_js` → `branches`
+> - `transaction_templates` table → DROPPED; templates live in the generic `templates` table (admin list view `admin_templates_list`)
+> - **Still live & verified-correct:** the `tr_on_tr_b_iu` trigger, and the columns
+>   `action_required_user_inquestion`, `done_by`, `transaction_to`, `payment_for_fees`, `on_customer_by_agreement`.
 > - **Writes:** as of 2026-06-19 the app routes ALL writes through `callServerRpc → /api/rpc` (server
 >   cookie client) to dodge the Safari `navigator.locks` wedge — not the per-route `createAdminClient()`
 >   pattern §9 describes. Treat §9's routes as the historical shape; confirm the current transport.
 >
-> A full rename pass of this skill is a deferred follow-up (needs a live DB read to verify each successor).
-> Until then: **trust the model, verify the names.**
+> The view *names* are now live-corrected; the per-view **column lists and exact WHERE semantics** were
+> NOT re-verified (the old "45-column, zero-drift" claim in §5 is pre-v2 and no longer holds now that
+> admin/members views diverged). **Trust the model, trust the corrected names, re-check column shapes.**
 
 This skill provides the complete mental model of the Lex Council transactions subsystem. Read this
 before touching any transaction-related code, view, trigger, or API route. The system is non-trivial —
@@ -183,35 +194,40 @@ the trigger immediately overwrites it.
 The transactions page uses six tabs, each backed by its own Supabase view with permission-tier
 filtering baked into the WHERE clause (defense-in-depth).
 
-| Tab | View | Permission | Filter | Special |
-|-----|------|-----------|--------|---------|
-| **Personal** | `transactions_personal_js` | Always permitted | `auth.uid() = ANY(user_concerned)` + `is_certified = true` | Certified-only for the current user |
-| **Pending** | `transactions_pending_js` | Always permitted | `auth.uid() = ANY(user_concerned)` + `(NOT is_agreed_on OR NOT is_certified)` | User's own unfinished transactions |
-| **Approval** | `transactions_approval_js` | `tr_agree_on_transactions` | `is_agreed_on = false` | Has extra `allow_admin_conscent` column |
-| **Certification** | `transactions_certification_js` | `tr_certification_vap` | `is_certified = false` | Shows bulk-certify tickboxes |
-| **Safe** | `transactions_safe_js` | `tr_safe_vap` | `transaction_type IN (3,4,5,6,9)` | Safe types only |
-| **History** | `transactions_history_js` | `tr_history_vap` | None (all transactions) | Full unfiltered view |
+> **View names below are v2-live (verified 2026-06-21).** The Filter/Special columns describe the
+> *pre-v2 concept* and were not re-verified against the new view bodies — treat them as the intent,
+> not a column-level guarantee.
 
-**Container view:** `transactions_container_js` is used by `TransactionContainerV8` (the detail popup)
+| Tab | View (v2-live) | Permission | Filter | Special |
+|-----|------|-----------|--------|---------|
+| **Personal** | `members_finances_transactions_personal` | Always permitted | `auth.uid() = ANY(user_concerned)` + `is_certified = true` | Certified-only for the current user (members portal) |
+| **Pending** | `admin_finances_transactions_pending` | Always permitted | `auth.uid() = ANY(user_concerned)` + `(NOT is_agreed_on OR NOT is_certified)` | User's own unfinished transactions |
+| **Approval** | `admin_finances_transactions_approval` | `tr_agree_on_transactions` | `is_agreed_on = false` | Has extra `allow_admin_conscent` column |
+| **Certification** | `admin_finances_transactions_certification` | `tr_certification_vap` | `is_certified = false` | Shows bulk-certify tickboxes |
+| **Safe** | `admin_finances_transactions_safe` | `tr_safe_vap` | `transaction_type IN (3,4,5,6,9)` | Safe types only |
+| **History** | `admin_finances_transactions_history` | `tr_history_vap` | None (all transactions) | Full unfiltered view |
+
+**Container view:** `admin_files_transactions_detail` is used by `TransactionContainerV8` (the detail popup)
 and the activity timeline. It has a wider WHERE clause: `(tr_history_vap OR tr_safe_vap OR tr_certification_vap OR user_concerned OR ar_owner)`.
 
 **Tab order:** Personal → Pending → Approval → Certification → Safe → History
 
-**All views share the same 45-column SELECT** — zero column drift. The difference is only in
-the WHERE clause and JOINs (Personal/Pending skip `admin_perms`; Safe/Cert/History add it;
-Container adds both `admin_perms` and `ppl` for AR-owner path).
+**Column shapes diverged in v2.** The pre-v2 "all views share one 45-column SELECT, zero drift" claim
+no longer holds — the admin and members views are now distinct surfaces. Re-read the live view body
+before relying on any specific column.
 
 **Default view mode on refresh:** `personal` (hardcoded in `transactions-store.ts`). This ensures
 every user lands on their own transactions after a browser refresh, not on a permission-gated tab
 they may not have access to. Changing this default to `safe` caused a bug (see vault log
 `2026-04-17_transactions-default-tab-sticks-to-safe-on-refresh.md`).
 
-**File-access base gate** (shared by all six views):
+**File-access base gate** (pre-v2 shape — `council_members`→`users`, `fd_access_js`→`folder_access`
+in v2; the v2 canonical path is the `user_can_see_file` helper, see V2-CONVENTIONS.md):
 ```
-branches_access @> ARRAY[(SELECT cm.in_branch FROM council_members cm WHERE cm.id = auth.uid())]
+branches_access @> ARRAY[(SELECT u.in_branch FROM users u WHERE u.id = auth.uid())]
 OR auth.uid() = ANY(users_access)
 OR EXISTS (
-  SELECT 1 FROM fd_access_js anc
+  SELECT 1 FROM folder_access anc
   WHERE anc.file_id = ANY(ARRAY[gfn_ref, mfn_ref, bfn_ref, sfn_ref])
     AND auth.uid() = ANY(anc.users_access)
 )
@@ -255,7 +271,8 @@ OR EXISTS (
 - Certify shown when `canCertify && !r.isCertified && r.isAgreedOn`
 
 ### Transaction Templates
-- Stored in `public.transaction_templates` (DB) — per-user, max 200
+- Stored in the generic `public.templates` table (DB) — per-user, max 200; the pre-v2
+  `transaction_templates` table is DROPPED. Admin list view: `admin_templates_list`.
 - Template ref 1 = transaction template; refs 2-4 reserved for other kinds
 - Validation in `apps/web/app/api/templates/_helpers.ts`:
   - Each row needs `title`, `amount > 0`, `txMode` ('normal'|'safe'), `transactionType`
@@ -301,13 +318,14 @@ The Approval tab is gated by `tr_agree_on_transactions` (same permission as the 
 4. **View mode default must be `personal`.** Changing it to any permission-gated tab (like `safe`)
    causes users without that permission to see an empty/broken page after refresh.
 
-5. **The Approval tab has an extra column.** `transactions_approval_js` exposes
+5. **The Approval tab has an extra column.** `admin_finances_transactions_approval` exposes
    `allow_admin_conscent` — other views do NOT. The history page uses `APPROVAL_SELECT_COLS`
    (which appends this column) only when `viewMode === 'approval'`.
 
 6. **`fileRef` is required for all transactions** including safe types. For safe types, the
-   form auto-resolves `fileRef` to the branch's GFN file (`branches_js.b_gfn_link`). The create
-   route validates `fileRef` is present and rejects without it.
+   form auto-resolves `fileRef` to the branch's GFN file (pre-v2: `branches_js.b_gfn_link`;
+   v2: the `branches` table — verify the current GFN-link column). The create route validates
+   `fileRef` is present and rejects without it.
 
 7. **Mode flip resets type.** In both modals, switching between Normal and Safe clears the
    selected `transactionType` because the type lists are disjoint.
@@ -384,5 +402,6 @@ For deep context on past decisions, read these vault logs:
 
 | Version | Change |
 |---|---|
+| 1.2.0 | **Per-name v2 rewrite (the deferred 1.1.0 follow-up), now done — names verified live against `information_schema` 2026-06-21 (project `bqgrpnsvplvicnmzxwkm`).** Proven DEAD and corrected in-body: all six `transactions_*_js` views + `transactions_container_js` (→ `admin_finances_transactions_{approval,certification,safe,history,pending}` / `members_finances_transactions_personal` / `admin_files_transactions_detail`), `fd_access_js` (→ `folder_access`), `branches_js` (→ `branches`), `transaction_templates` table (→ generic `templates` / `admin_templates_list`). Proven STILL-LIVE (kept): `tr_on_tr_b_iu` trigger + the 5 transaction columns. Retired the false "all views = one 45-column SELECT, zero drift" claim (admin/members views diverged in v2). Column shapes + exact WHERE semantics still flagged for re-check. |
 | 1.1.0 | Added the **v2 schema-name staleness banner** at the top: the domain *concepts* remain accurate but table/view/column names (`council_members`, `n_name`, `fd_access_js`, the `_js` view suffix, `admin_perms`, `branches_js`) are pre-v2 (2026-05-24 overhaul) and GONE on `main`; lists v2 successors + the 2026-06-19 server-transport write change, and routes name-verification to V2-CONVENTIONS.md. Full per-name rewrite deferred (needs live DB read). |
 | 1.0.0 | Initial — complete pre-v2 transactions domain model. |

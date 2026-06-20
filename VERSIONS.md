@@ -51,7 +51,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`strategies-review`](strategies-review/SKILL.md) | 1.0.0 | own | 12 / 72 | 297 / 45 | ✓ lean | Review pending strategies and move them to executed then check the docs. |
 | [`supabase`](supabase/SKILL.md) | 0.1.2 | vendored | 58 / 475 | 1184 / 107 | ✓ lean | Use when doing ANY task involving Supabase |
 | [`supabase-postgres-best-practices`](supabase-postgres-best-practices/SKILL.md) | 1.1.1 | vendored | 23 / 183 | 242 / 55 | ✓ lean | Postgres performance optimization and best practices from Supabase |
-| [`transactions-domain-model`](transactions-domain-model/SKILL.md) | 1.1.0 | own | 108 / 951 | 2767 / 374 | ✓ lean | Loads the complete Lex Council transactions domain model before any transaction-related wo… |
+| [`transactions-domain-model`](transactions-domain-model/SKILL.md) | 1.2.0 | own | 108 / 951 | 3017 / 393 | ✓ lean | Loads the complete Lex Council transactions domain model before any transaction-related wo… |
 | [`vault-log-compliance`](vault-log-compliance/SKILL.md) | 1.1.0 | own | 128 / 807 | 1445 / 120 | ✓ lean | Enforces P8 vault-logging compliance for Lex Council |
 
 _29 skills — 23 lean · 5 large (installable, over the 500-line ideal) · 1 near the word ceiling · 0 hard violations._
