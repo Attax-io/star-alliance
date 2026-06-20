@@ -1,15 +1,16 @@
 ---
 name: bug-fix-workflow
-description: The Lex Council end-to-end bug workflow — pull reports from the bug_reports table, triage their status, investigate + reproduce the real root cause, fix following project conventions, and flip each row to Fixed once the fix is genuinely live. Use whenever the user says "pull the bugs", "work the bugs", "check the bug reports", "fix the bugs", "go through the bug table", "mark this bug fixed", "set them fixed if fixed", "triage bugs", "what bugs are open", or any phrasing about pulling / triaging / fixing / closing reported bugs. Loads the bug_reports schema, the status-code conventions, the status-trigger gotcha, the "doesn't work" reproduction technique, and the rule for WHEN a bug may be marked Fixed (DB fixes now, frontend fixes only after deploy).
+description: The Lex Council end-to-end bug workflow — pull reports from the bug_reports table, triage their status, investigate + reproduce the real root cause, fix following project conventions, flip each row to Fixed once the fix is genuinely live, AND file (push) new bugs it surfaces back into the table. Use whenever the user says "pull the bugs", "work the bugs", "fix the bugs", "triage bugs", "what bugs are open", or any phrasing about pulling / triaging / fixing / closing reported bugs — OR to push/file bugs: "file a bug", "log this as a bug", "push these as bugs", "file the bugs you find". Loads the bug_reports schema, the status-code conventions, the status-trigger gotcha, the INSERT/push pattern (identity PK, trigger-filled names, reporter-uuid lookup, status=1, no notification fires), the "doesn't work" reproduction technique, and the rule for WHEN a bug may be marked Fixed (DB fixes now, frontend fixes only after deploy).
 metadata:
-  version: 1.0.0
+  version: 1.1.1
 ---
 
 # Bug-Fix Workflow (Lex Council)
 
 This is the canonical loop for working user-reported bugs in Lex Council. Reports live in the
 `public.bug_reports` table (admins file them from the in-app bug button; reporters often write in
-**Arabic**). The job is: pull → triage → investigate → fix → close — without lying about "Fixed".
+**Arabic**). The job is: pull → triage → investigate → fix → close — **and push** (file new bugs the
+work surfaces) — without lying about "Fixed".
 
 **Production project_id = `bqgrpnsvplvicnmzxwkm`.** Every MCP `execute_sql` / `apply_migration` runs there.
 
@@ -24,7 +25,7 @@ This is the canonical loop for working user-reported bugs in Lex Council. Report
 | `br_title` | short title (often Arabic) |
 | `br_text` | full report body (often Arabic — **translate it**) |
 | `br_user` / `br_user_name` | reporter uuid + denormalized name |
-| `br_status` | **bigint status code** — the only column you write |
+| `br_status` | **bigint status code** — on triage the only column you write; on a new INSERT also set `br_title`/`br_text`/`br_user` (see **Push**) |
 | `br_status_name` | denormalized label — **do NOT write it**, a trigger maintains it |
 | `br_image_url` | optional attached screenshot |
 | `br_deleted_at` | soft-delete; always filter `br_deleted_at IS NULL` |
@@ -46,9 +47,69 @@ Page view: `admin_files_bugs_list`. Admin UI: `/admin/files/bugs` (open to every
 **recomputes `br_status_name` from `br_status`** and refreshes `br_user_name` from
 `user_preferences.nickname`. So:
 
-- **Only ever `UPDATE ... SET br_status = N`.** The name follows automatically. Setting `br_status_name`
-  yourself is pointless and will be overwritten.
+- **On triage, only ever `UPDATE ... SET br_status = N`.** The name follows automatically. Setting
+  `br_status_name` yourself is pointless and will be overwritten.
 - An UPDATE re-reads the reporter's nickname; harmless, but don't be surprised if `br_user_name` shifts.
+- On **INSERT** the same trigger fills both `br_status_name` and `br_user_name` — so when filing a new
+  bug, set only `br_status` (+ `br_title`/`br_text`/`br_user`) and let the trigger name them. See **Push**.
+
+---
+
+## Push — filing a new bug (when the work *surfaces* one)
+
+Beyond working existing reports, this workflow can **file** new bugs into `bug_reports` — e.g. an audit,
+a review, or an investigation turns up real defects that are out of scope to fix right now. Pick the route
+by where the bug belongs:
+
+- **A real defect / tech-debt in *this* app (Lex Council)** → **INSERT a row** (below). It then shows on
+  `/admin/files/bugs` like any reported bug, and a later run of this same workflow can pull + fix it.
+- **Belongs to a *different* repo, or each item wants its own one-click fix session** → prefer a
+  `spawn_task` chip instead (lighter; gives the user a worktree per item). Don't double-file the same item.
+
+### The INSERT (validated 2026-06-19)
+
+```sql
+INSERT INTO public.bug_reports (br_title, br_text, br_user, br_status)
+VALUES (
+  '<short English title>',
+  '<self-contained body — what is wrong, where (file / RPC / view), how it was found; NO chat refs>',
+  '<reporter uuid>',   -- the acting admin; look it up, never guess
+  1                    -- 1 = Submitted (newly found)
+)
+RETURNING br_id, br_status_name, br_user_name;   -- read back: confirm the trigger filled the names
+```
+
+Column rules (the INSERT counterpart to the trigger gotcha above):
+
+- **Set only** `br_title`, `br_text`, `br_user`, `br_status`.
+- **Never set** `br_id` (identity `BY DEFAULT` — auto, off `bug_reports_br_id_seq`), `br_at` (defaults
+  `now()`), or `br_status_name` / `br_user_name` (the `brp_on_brp_b` BEFORE-INSERT trigger fills both —
+  anything you write is overwritten).
+- `br_status = 1` (Submitted) for a freshly found bug. Use `2` (Pending) only if it's already
+  acknowledged/triaged-but-deferred.
+- `RETURNING` and read it back — a NULL `br_user_name` just means the reporter has no
+  `user_preferences.nickname`, not a failure.
+- Batch many at once with `VALUES (…),(…),(…)`.
+
+### Reporter uuid — look it up, never guess
+
+```sql
+SELECT id FROM auth.users WHERE email = '<reporter-email>';   -- e.g. atta@lexcouncil.com
+```
+
+File under the acting admin unless told otherwise (Atta = `ebee8b0b-fc92-4cb6-ac44-b89fabbcee4c`).
+
+### Safe-to-file notes
+
+- **No notification spam:** the only trigger on `bug_reports` is `brp_on_brp_b` (BEFORE INSERT/UPDATE,
+  name-recompute). There is **no AFTER-INSERT notify** — filing does not alert staff. Re-check if a
+  notification trigger is ever added.
+- **Prod write, but plain DML** (not DDL): no migration file, and **no vault log** required for *filing*
+  (same rule as a status flip — operational data maintenance). Fixing the filed bug later still does.
+- **Self-contained body:** the row outlives the session — put file paths, the RPC/view name, and how it
+  was found in `br_text`. Never "see above".
+- **Title hygiene:** prefix non-defect backlog so it isn't mistaken for a user defect — `[Mobile-prep] …`,
+  `[Tech-debt] …`, `[Security] …`, `[Perf] …`.
 
 ---
 
@@ -150,3 +211,5 @@ Never mark a bug Fixed because the code is written; mark it Fixed because a user
 - [ ] `tsc` + `eslint` clean; no dev server started.
 - [ ] Vault log written + INDEX row prepended.
 - [ ] Flipped to Fixed **only** for fixes that are live (DB now / FE post-deploy).
+- [ ] **Filing** a new bug? Set only `br_title`/`br_text`/`br_user`/`br_status=1`; let the trigger name it; `RETURNING` to confirm.
+- [ ] Looked up the reporter uuid by email (never guessed); `br_text` is self-contained (no chat refs); non-defect rows prefixed (`[Mobile-prep]` etc.).
