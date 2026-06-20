@@ -32,7 +32,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`conquering-campaign`](conquering-campaign/SKILL.md) | 3.8.2 | own | 140 / 1001 | 10290 / 467 | ⚠ body>10k | Multi-wave campaign skill for work too big for one pass |
 | [`db-rename-sweep`](db-rename-sweep/SKILL.md) | 1.0.0 | own | 146 / 910 | 269 / 36 | ✓ lean | Loads the full surface inventory for any Lex Council table or column rename before the fir… |
 | [`design-taste-frontend`](design-taste-frontend/SKILL.md) | 1.0.0 | own | 23 / 202 | 2896 / 224 | ✓ lean | Senior UI/UX Engineer |
-| [`dev-server`](dev-server/SKILL.md) | 1.0.0 | own | 46 / 303 | 311 / 55 | ✓ lean | Use this skill whenever the user says 'open dev server', 'run dev server', 'restart dev se… |
+| [`dev-server`](dev-server/SKILL.md) | 1.1.0 | own | 46 / 303 | 645 / 74 | ✓ lean | Use this skill whenever the user says 'open dev server', 'run dev server', 'restart dev se… |
 | [`full-output-enforcement`](full-output-enforcement/SKILL.md) | 1.0.0 | own | 25 / 203 | 382 / 47 | ✓ lean | Overrides default LLM truncation behavior |
 | [`gpt-taste`](gpt-taste/SKILL.md) | 1.0.0 | own | 39 / 312 | 1090 / 72 | ✓ lean | Elite UX/UI & Advanced GSAP Motion Engineer |
 | [`graphify`](graphify/SKILL.md) | 1.0.0 | own | 35 / 225 | 5904 / 1026 | ○ large | any input (code, docs, papers, images, videos) to knowledge graph |

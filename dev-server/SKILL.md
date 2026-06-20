@@ -2,12 +2,22 @@
 name: dev-server
 description: "Use this skill whenever the user says 'open dev server', 'run dev server', 'restart dev server', 'start the app', 'launch dev', 'open the app', or any variation of starting/restarting/viewing the local Next.js development server. Handles start and restart in one turn — no ToolSearch round-trips needed."
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 ---
 
 # Dev Server
 
 Manages the local Next.js dev server for the current project using the Claude Preview MCP tools. Assumes the project has a `.claude/launch.json` entry named `web` (or another configurable name — see Notes).
+
+## Step 0 — Project precedence check (do this FIRST, once per session)
+
+This skill is generic. Some projects **forbid the preview MCP tools** and mandate a plain terminal start instead. Before doing anything else, check the active project for such a directive:
+
+- Scan the project's `CLAUDE.md` and its memory (`.claude/.../memory/` or the loaded `MEMORY.md`) for a **preview-tools ban** or a **mandated terminal/Bash-start directive** (phrases like "don't invoke the dev-server skill", "preview tools banned", "preview_start banned", "give terminal command instead", "use background Bash to start").
+- **If such a directive exists:** do NOT call any `preview_*` MCP tool. Instead run the project's prescribed terminal start (e.g. kill the port then background-start: `lsof -ti:3000 | xargs kill -9 2>/dev/null; cd <dir> && npx turbo dev` as a background process), report the command + URL, and STOP. The project directive always wins.
+- **If no such directive exists:** proceed with the normal preview path below.
+
+> Example (Lex Council): its memory `feedback_no-dev-server-hijack` bans this skill + all preview tools and requires `kill :3000` then `cd lex_council && npx turbo dev` via background Bash. In that project, Step 0 short-circuits to the Bash start and the preview path is never used.
 
 ## Tools (pre-loaded — no ToolSearch needed)
 
@@ -21,6 +31,8 @@ The server name in `launch.json` is **`web`** (port 3000).
 
 ### Open (default)
 User says: "open dev server", "run dev server", "start the app", etc.
+
+**Run Step 0 first.** If the project bans preview tools, follow that path and stop. Otherwise:
 
 1. Call `preview_start` with `name: "web"`
 2. Note the returned `serverId`
@@ -57,3 +69,10 @@ If the server fails to start, quote the exact error and stop — don't retry bli
 - Don't explain the steps — just do them and show the result
 - If the project's `launch.json` uses a different server name than `web`, replace the `name: "web"` arg with the actual name. Detect via `cat .claude/launch.json` once per session.
 - If caveman / terse mode is active in the project, keep responses minimal — screenshot + one URL line, no narration.
+
+## Changelog
+
+| Version | Date | Summary |
+|---|---|---|
+| **1.1.0** | 2026-06-20 | Added **Step 0 — Project precedence check** (skillsmith routine, conf 9/10). The skill mandated the preview MCP path unconditionally, which collided with projects that ban preview tools and require a terminal start (e.g. Lex Council's `no-dev-server-hijack` memory — collision had already fired twice). Step 0 now detects a per-project preview-ban / mandated-terminal-start directive once per session and, if found, runs the project's own Bash start instead of any `preview_*` tool. Conditional + additive — generic projects keep the preview path unchanged. |
+| **1.0.0** | — | Initial release: start/restart the local Next.js dev server via Claude Preview MCP tools in one turn. |
