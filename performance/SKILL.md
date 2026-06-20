@@ -4,7 +4,7 @@ description: Optimize web performance for faster loading and better user experie
 license: MIT
 metadata:
   author: web-quality-skills
-  version: "1.0"
+  version: "1.0.1"
 ---
 
 # Performance optimization
@@ -358,4 +358,13 @@ onCLS(console.log);
 
 ## References
 
-For Core Web Vitals specific optimizations, see [Core Web Vitals](../core-web-vitals/SKILL.md).
+Core Web Vitals targets and how to read them live in the **Measurement** section above
+(LCP / FCP / Speed Index / TBT / TTI + the `web-vitals` library snippet). For the canonical
+definitions and field-data guidance, see [web.dev — Core Web Vitals](https://web.dev/articles/vitals).
+
+## Changelog
+
+| Version | Date | Summary |
+|---|---|---|
+| **1.0.1** | 2026-06-20 | Fixed a dangling cross-reference (skillsmith routine, conf 9/10). The `## References` section pointed at `../core-web-vitals/SKILL.md`, a sibling skill that was never vendored into this repo, so the link resolved nowhere. Its Core Web Vitals metrics are already covered in the in-skill **Measurement** table — repointed the reference at that section plus the canonical `web.dev/vitals` doc. Content-only; no behavioral change. |
+| **1.0** | — | Initial vendored release: Lighthouse-based web performance optimization (budgets, critical rendering path, image/font/caching strategy, runtime perf, measurement). |

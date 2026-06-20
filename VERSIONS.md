@@ -44,7 +44,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`industrial-brutalist-ui`](industrial-brutalist-ui/SKILL.md) | 1.0.0 | own | 36 / 286 | 1034 / 90 | ✓ lean | Raw mechanical interfaces fusing Swiss typographic print with military terminal aesthetics |
 | [`minimalist-ui`](minimalist-ui/SKILL.md) | 1.0.0 | own | 18 / 145 | 1066 / 83 | ✓ lean | Clean editorial-style interfaces |
 | [`obsidian-markdown`](obsidian-markdown/SKILL.md) | 1.0.0 | own | 36 / 262 | 610 / 164 | ✓ lean | Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, a… |
-| [`performance`](performance/SKILL.md) | 1.0 | vendored | 32 / 219 | 1034 / 355 | ✓ lean | Optimize web performance for faster loading and better user experience |
+| [`performance`](performance/SKILL.md) | 1.0.1 | vendored | 32 / 219 | 1164 / 364 | ✓ lean | Optimize web performance for faster loading and better user experience |
 | [`redesign-existing-projects`](redesign-existing-projects/SKILL.md) | 1.0.0 | own | 31 / 225 | 2174 / 176 | ✓ lean | Upgrades existing websites and apps to premium quality |
 | [`skillsmith`](skillsmith/SKILL.md) | 1.1.7 | own | 131 / 980 | 2905 / 134 | ✓ lean | Manage, sync, upgrade, create, and auto-evolve Claude skills across the claude-skills repo… |
 | [`stitch-design-taste`](stitch-design-taste/SKILL.md) | 1.0.0 | own | 29 / 257 | 1628 / 182 | ✓ lean | Semantic Design System Skill for Google Stitch |
