@@ -2,7 +2,7 @@
 name: vault-log-compliance
 description: Enforces P8 vault-logging compliance for Lex Council. Use this skill whenever a session has touched backend code (migrations, views, triggers, RPC functions, RLS policies, edge functions, cron jobs), frontend code (components, pages, hooks, mutations, stores), schema changes, or bug fixes — even if the user doesn't explicitly ask for a vault log. Also use when the user says phrases like "vault log this", "does this need a vault log?", "log what I did", "P8", "write a vault-log entry", or when finishing up work and unsure whether it qualifies. Skill audits what was touched, checks whether a covering vault-log entry already exists, drafts one in the project's established format if missing, and updates the INDEX.md and affected docs' Last Synced footers. Ask Atta to approve the draft before writing.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 ---
 
 # Vault-Log Compliance (P8)
@@ -17,7 +17,7 @@ Applies when **any** of the following happened in the current session:
 
 - A migration was applied (via Supabase MCP apply_migration or execute_sql with DDL).
 - A view, trigger, RPC function, RLS policy, cron job, or edge function was added, modified, or dropped.
-- A .tsx, .ts, .jsx, or .js file in lex_council/app/, lex_council/lib/, or lex_council/components/ was created, modified, or deleted.
+- A .tsx, .ts, .jsx, or .js file in lex_council/apps/web/app/, lex_council/apps/web/lib/, or lex_council/apps/web/components/ was created, modified, or deleted.
 - A component, store, hook, mutation, or page was added or refactored.
 - A bug was fixed in any of the above.
 - The user explicitly requested logging ("vault log this", "does this need a vault log?", "P8", etc.).
@@ -66,6 +66,7 @@ Frontmatter at top:
 
 Then H1 title with date, then a `> ` quote-block one-sentence summary, then sections as applicable:
 
+- **Plain-English Summary** — **MANDATORY first section, binding from 2026-05-29** (primary_instructions §4 / GENERAL-GUIDELINES §P8 / CLAUDE.md §P8). 3–5 sentences, **no code, no jargon without explanation**: what changed, what it fixes or enables, and what Atta needs to do next (if anything). Written so anyone familiar with the product — but not the code — can follow along. This is the **first thing Atta reads**; it leads every log and is never optional, even for a "just a frontend tweak" or "DB-only migration" entry. Put it *above* Context.
 - **Context** — 2–4 sentences on why the change was needed. Reference driving concern (audit finding, user bug, phase gate, prior vault log).
 - **Changes — Backend** — a `# | Type | Target | What Changed | Why` table. Types: CREATE/ALTER/DROP TABLE, CREATE OR REPLACE VIEW, CREATE/ALTER TRIGGER, CREATE OR REPLACE FUNCTION, POLICY (for RLS), CREATE/DROP INDEX, COMMENT. Follow with **Migration name:** on its own line if applicable.
 - **Changes — Frontend** — `# | File | What Changed | Why` table.
@@ -82,6 +83,8 @@ Before writing to disk, show the user the full draft in the chat. Ask:
 > Here's the vault-log draft for what we did. Anything to add or change before I write it?
 
 Wait for approval. If the user says "looks good" or similar, proceed. If they request changes, apply them and re-present. Do not write silently.
+
+**Triggering is automatic, not the gate.** CLAUDE.md §P8 is binding: log **immediately, right after the edit — not at the end of the session, not after the user asks**. So *deciding to log* needs no prompt; this skill should fire on its own the moment a qualifying change lands. The approval gate above is only about the **content** (so a misleading log doesn't poison downstream doc-reconciliation) — never an excuse to skip or defer logging until asked. For iterative tweaks to the same file in one session, update the existing log rather than creating a duplicate.
 
 ### Step 5 — Write the vault log, update the index, footers
 
@@ -112,3 +115,10 @@ The housekeeper runs autonomously on vault logs, and anything you write here bec
 - lex_council/docs/housekeeping/README.md — how the housekeeper consumes these logs.
 - lex_council/docs/vault-logs/INDEX.md — the chronological index this skill updates.
 - Example logs to study for format: 2026-04-24_attendance-v2-phase-5-shrink-trigger.md, 2026-04-22_housekeeping-run1.md, 2026-04-24_housekeeping-v2-scheduled-and-live.md.
+
+## Changelog
+
+| Version | Change |
+|---|---|
+| 1.1.0 | Step 3: added the **mandatory `## Plain-English Summary` lead section** (binding 2026-05-29 per CLAUDE.md §P8 — every vault log must open with it). Step 4: clarified that *triggering* the log is automatic/unprompted (log immediately after the edit, never wait to be asked) while the approval gate is content-only. Fixed change-detection paths `lex_council/app|lib|components/` → `lex_council/apps/web/app|lib|components/`. |
+| 1.0.0 | Initial — P8 vault-log compliance enforcer. |
