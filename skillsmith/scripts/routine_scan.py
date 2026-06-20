@@ -62,6 +62,10 @@ BOILERPLATE = re.compile(
     r"\bper [a-z][a-z-]+-workflow\b|read claude\.md)",
     re.I,
 )
+# A YAML frontmatter `description:` line is a skill/command/spec DEFINITION wherever it
+# lives (e.g. a `*-skill-DELTA.md` spec doc), not usage friction — drop it per-line
+# (belt-and-suspenders for any description echo outside the .claude/ dirs we now prune).
+FRONTMATTER_DESC = re.compile(r"^\s*description:\s*", re.I)
 
 
 def is_definitional(fp: Path) -> bool:
@@ -72,7 +76,14 @@ def is_definitional(fp: Path) -> bool:
 TEXT_EXT = {".md", ".mdx", ".txt", ".ts", ".tsx", ".js", ".jsx", ".py", ".json",
             ".sql", ".sh", ".yml", ".yaml", ".toml"}
 SKIP_DIRS = {".git", "node_modules", ".next", "__pycache__", "dist", "build",
-             ".turbo", ".vercel", "coverage", ".cache"}
+             ".turbo", ".vercel", "coverage", ".cache",
+             # tooling/config/transient, never a usage corpus (ledger 2026-06-20 run 3):
+             #   .claude/ holds skills, commands, agents, settings AND .claude/worktrees/ —
+             #   agent worktrees are throwaway duplicate repo checkouts whose campaign docs
+             #   were the dominant residual friction noise (cleanup×3, supabase×3). The
+             #   session-transcripts root is ~/.claude/projects, walked from INSIDE .claude,
+             #   so SKIP_DIRS pruning (subdirs only) never touches it.
+             ".claude", "worktrees"}
 MAX_FILE_BYTES = 2_000_000
 STOP = set((
     # articles / glue
@@ -183,25 +194,50 @@ def message_texts(raw):
             obj = json.loads(line)
         except (ValueError, TypeError):
             continue
+        # `isMeta: True` marks a HARNESS-INJECTED message — the available-skills/agents
+        # catalog (each skill's description echoed verbatim as a standalone ≤1024-char
+        # block), system-reminders, hook output. None are the user exercising a skill, so a
+        # friction keyword inside is noise. This is the robust signal that subsumes the
+        # string-marker drops below — it catches the HEADERLESS description echo a marker
+        # can't see (run 3: lex_cleanup's desc, a device skill not even in repo inventory,
+        # was mis-flagged as vault-log-compliance ×6 because its text names that skill).
+        if obj.get("isMeta") is True:
+            continue
         role = obj.get("type") or ""
         msg = obj.get("message") if isinstance(obj.get("message"), dict) else None
         if msg and not role:
             role = msg.get("role", "")
         content = msg.get("content") if msg else obj.get("content")
         if isinstance(content, str):
-            yield role, content
+            texts = [content]
         elif isinstance(content, list):
             texts = [b["text"] for b in content
                      if isinstance(b, dict) and isinstance(b.get("text"), str)]
-            # Invoking a Skill injects its FULL SKILL.md into a user-role message
-            # (header "Base directory for this skill:" + the body — incl. changelog
-            # rows that literally describe fixed bugs). That's the skill DEFINITION
-            # echoed into the transcript, not the user exercising it → drop the whole
-            # message (185 such injections were the dominant residual, ledger 2026-06-20).
-            if any("base directory for this skill:" in t.lower() for t in texts):
-                continue
-            for t in texts:
-                yield role, t
+        else:
+            continue
+        # Drop whole messages that ECHO a skill definition / catalog / control prompt into
+        # the transcript — these MENTION skills without the user exercising them, so any
+        # friction keyword inside is noise (ledger 2026-06-20). Applies to BOTH string- and
+        # list-content messages: the catalog + scheduled-task prompt arrive as STRING content
+        # (system-reminder/wrapper appended as one blob), so checking only the list branch
+        # missed them (run 3 first-pass bug):
+        #   • "base directory for this skill:" — a Skill invocation injecting its FULL
+        #     SKILL.md (body + changelog rows that literally describe fixed bugs); 185 such
+        #     injections were the dominant residual at run 2.
+        #   • "available for use with the skill tool" / "available agent types for the agent
+        #     tool" — the system available-skills/agents CATALOG, which echoes EVERY skill's
+        #     description (run 2 deferred class A: lex_cleanup's desc was mis-flagged as
+        #     vault-log-compliance ×6 friction).
+        #   • "<scheduled-task" — the routine's OWN control prompt, re-injected each run (it
+        #     flagged skillsmith/impeccable ×3 on the routine's Stage-D line).
+        MSG_DROP = ("base directory for this skill:",
+                    "available for use with the skill tool",
+                    "available agent types for the agent tool",
+                    "<scheduled-task")
+        if any(mark in t.lower() for t in texts for mark in MSG_DROP):
+            continue
+        for t in texts:
+            yield role, t
 
 
 def scan_files(roots, names, cutoff, max_snippets):
@@ -255,6 +291,7 @@ def scan_files(roots, names, cutoff, max_snippets):
                         if n in low:
                             hit_names.add(n)
                             if (FRICTION.search(ln) and not BOILERPLATE.search(ln)
+                                    and not FRONTMATTER_DESC.match(ln)
                                     and len(friction[n]) < max_snippets):
                                 friction[n].append({"where": str(fp), "snippet": ln.strip()[:280]})
                     if is_sessions and REQUEST.search(ln) and 8 < len(ln) < 400:
