@@ -2,10 +2,10 @@
 name: skillsmith
 description: "Manage, sync, upgrade, create, and auto-evolve Claude skills across the claude-skills repo and the on-device copies (~/.claude/skills global + per-project .claude/skills). Modes — sync: reconcile repo and device by metadata.version, honoring fork+external exceptions. upgrade: bump a skill's version, regenerate the VERSIONS.md registry, run the Cowork-compliance check, add a changelog entry. create: author a new skill via the official skill-creator, then make it upgradeable. routine: a daily, fully-autonomous self-improvement loop that mines your code, projects, and sessions with the Stanford STORM method (5 personas, contradiction map, synthesis, peer review) to find upgrade routes, new-skill ideas, and bugs, then applies the high-confidence ones (skillsmith itself included). Triggers: 'sync my skills', 'upgrade a skill', 'create a skill', 'install my skills', 'run the skill routine', 'evolve my skills', '/skillsmith'. Scripts in scripts/; procedures in references/."
 metadata:
-  version: 1.1.3
+  version: 1.1.4
 ---
 
-# skillsmith — manage, sync, upgrade, create & auto-evolve Claude skills (v1.1.2)
+# skillsmith — manage, sync, upgrade, create & auto-evolve Claude skills (v1.1.4)
 
 The control panel for the `claude-skills` repo. It keeps every skill **versioned**,
 **Cowork-installable**, and **in sync** between the git repo and the on-device copies — and it
@@ -114,12 +114,13 @@ Read **`references/routine-playbook.md`** + **`references/storm-method.md`**. Th
 
 ## Versioning
 
-This skill is versioned (`metadata.version` in frontmatter, currently **1.1.3**) and self-registers in `VERSIONS.md`. Bump it on every change — PATCH for fixes/wording, MINOR for a new mode or capability, MAJOR for a breaking workflow change — and add a §Changelog row. (The `routine` mode upgrades skillsmith through exactly this contract — see §R6.)
+This skill is versioned (`metadata.version` in frontmatter, currently **1.1.4**) and self-registers in `VERSIONS.md`. Bump it on every change — PATCH for fixes/wording, MINOR for a new mode or capability, MAJOR for a breaking workflow change — and add a §Changelog row. (The `routine` mode upgrades skillsmith through exactly this contract — see §R6.)
 
 ## Changelog
 
 | Version | Date | Summary |
 |---|---|---|
+| **1.1.4** | 2026-06-20 | **Routine self-fix (carried the 2026-06-20 "next-best proposal" to done):** `routine_scan.py` now applies a **source-class filter** so the `frictionful` signal stops being ~100% noise. (1) Files that are skill/command **definitions** (`/.claude/skills\|commands/`), **config permission lists** (`settings.json`/`settings.local.json`), or **generated log indexes** (`vault-logs/INDEX.md`) are skipped entirely — a skill *described* isn't a skill *used* (same principle that already excludes the repo). (2) Per-line **boilerplate** ("Docs consulted", "delegate to", "invoke the X skill", "per X-workflow", "read CLAUDE.md") is dropped from friction. (3) Session transcripts that inject a skill's full SKILL.md (`Base directory for this skill:` header + changelog rows that literally say "bug"/"fix") are dropped at the message level — **185 such injections** were the dominant residual. Verified: noise snippets fell from the all-definitional baseline (cleanup 6→0 own-DONE-items, skillsmith 6→2 self-changelog gone, supabase `.claude` matches gone, transactions/vault-log delegate-boilerplate gone). **Deferred (ledger 2026-06-20, run 2):** two newly-surfaced residual classes — (A) the **system available-skills block** echoes a skill's *description* into the transcript (vault-log-compliance still shows 6 `lex_cleanup`-desc lines; catchable, different vector from the `Base directory` header), and (B) **topical/word-collision** in app docs (`supabase`/`performance`/`dev-server` matching legitimate `docs/` prose; genuinely hard — needs a usage-vs-topic semantic gate). |
 | **1.1.3** | 2026-06-20 | **Bug fix (found by the routine itself, day 1):** `routine_scan.py` over-counted quoted descriptions — it stripped the surrounding quotes but left internal `\"`-escapes as 2 chars each, so a quoted desc with N escapes read N chars too long. `cleanup` measured **1025 → phantom `desc>1024` flag** while the authoritative `skill_registry.py check` (which unescapes) read **991 ✓ lean**. Fixed by mirroring the registry's `.replace('\\"', '"')`. The harvest's desc/body status labels now agree with the Cowork gate. Deferred (ledger 2026-06-20): the friction detector keyword-matches the skills' own docs / vault-log "Docs consulted" boilerplate / settings.json permission lines, so "frictionful" is dominated by noise — needs a source-class filter. |
 | **1.1.2** | 2026-06-20 | Scheduler moved to a **native Claude Code routine** (`skillsmith-routine`, daily `0 6 * * *`) — it now shows in the app's *Routines* panel beside the other routines, instead of an invisible macOS LaunchAgent. The LaunchAgent (`run_routine.sh` + plist) is demoted to an optional app-closed fallback (it keeps the hard `--max-budget-usd` cap). §R7 rewritten; first run pre-approves tools via "Run now". |
 | **1.1.1** | 2026-06-20 | `routine` may now upgrade the fork/external skills too (`cleanup`, `conquering-campaign`, `impeccable`) — Atta opted them in. Edited with fork-aware handling (§R4.2): forks per `sync-playbook.md` §S3 (never blind-overwrite the stub with the monolith), `impeccable` via `npx impeccable` refresh only. Same ≥8/10 gate applies. |

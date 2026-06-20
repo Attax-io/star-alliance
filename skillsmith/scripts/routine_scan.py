@@ -42,6 +42,32 @@ REQUEST = re.compile(
     r"automate|generate|write|set up|implement)\b",
     re.I,
 )
+# Source classes that are NEVER real usage friction — they MENTION a skill without
+# exercising it, so a FRICTION keyword nearby is noise, not an upgrade signal:
+#   • skill/command DEFINITIONS under .claude/skills|commands/ (a skill *described*
+#     in its own SKILL.md/references is not a skill *used* — the same principle that
+#     already excludes the repo itself);
+#   • config permission lists (settings.json / settings.local.json — "Bash(... skill)");
+#   • generated vault-log indexes (vault-logs/INDEX.md — title rows, never friction).
+# Pre-filter (ledger 2026-06-20): without these, ALL 13 "frictionful" skills were 100%
+# definitional/boilerplate noise. DEFINITIONAL files are skipped entirely (mention +
+# friction); BOILERPLATE is a per-LINE filter for "consulted / delegate to / invoke the
+# X skill" references that live inside legitimately-scanned vault-logs & session prompts.
+DEFINITIONAL_PATH = re.compile(
+    r"([/\\]\.claude[/\\](skills|commands)[/\\]|[/\\]vault-logs[/\\]INDEX\.)", re.I
+)
+CONFIG_BASENAMES = {"settings.json", "settings.local.json"}
+BOILERPLATE = re.compile(
+    r"(docs?\s+consulted|consulted:|delegate to|invoke the |"
+    r"\bper [a-z][a-z-]+-workflow\b|read claude\.md)",
+    re.I,
+)
+
+
+def is_definitional(fp: Path) -> bool:
+    """A skill/command definition, config permission list, or generated log index —
+    a mention here is inventory, not usage. Excluded from the mention+friction scan."""
+    return bool(DEFINITIONAL_PATH.search(str(fp))) or fp.name in CONFIG_BASENAMES
 # text-ish files worth scanning for skill mentions in project trees
 TEXT_EXT = {".md", ".mdx", ".txt", ".ts", ".tsx", ".js", ".jsx", ".py", ".json",
             ".sql", ".sh", ".yml", ".yaml", ".toml"}
@@ -165,9 +191,17 @@ def message_texts(raw):
         if isinstance(content, str):
             yield role, content
         elif isinstance(content, list):
-            for b in content:
-                if isinstance(b, dict) and isinstance(b.get("text"), str):
-                    yield role, b["text"]
+            texts = [b["text"] for b in content
+                     if isinstance(b, dict) and isinstance(b.get("text"), str)]
+            # Invoking a Skill injects its FULL SKILL.md into a user-role message
+            # (header "Base directory for this skill:" + the body — incl. changelog
+            # rows that literally describe fixed bugs). That's the skill DEFINITION
+            # echoed into the transcript, not the user exercising it → drop the whole
+            # message (185 such injections were the dominant residual, ledger 2026-06-20).
+            if any("base directory for this skill:" in t.lower() for t in texts):
+                continue
+            for t in texts:
+                yield role, t
 
 
 def scan_files(roots, names, cutoff, max_snippets):
@@ -189,6 +223,8 @@ def scan_files(roots, names, cutoff, max_snippets):
             dirs[:] = [d for d in dirs if d not in SKIP_DIRS]
             for fn in files:
                 fp = Path(cur) / fn
+                if is_definitional(fp):   # skill/command def, config perms, log index — not usage
+                    continue
                 ext = fp.suffix.lower()
                 if is_sessions:
                     if ext != ".jsonl":
@@ -218,7 +254,8 @@ def scan_files(roots, names, cutoff, max_snippets):
                     for n in names:
                         if n in low:
                             hit_names.add(n)
-                            if FRICTION.search(ln) and len(friction[n]) < max_snippets:
+                            if (FRICTION.search(ln) and not BOILERPLATE.search(ln)
+                                    and len(friction[n]) < max_snippets):
                                 friction[n].append({"where": str(fp), "snippet": ln.strip()[:280]})
                     if is_sessions and REQUEST.search(ln) and 8 < len(ln) < 400:
                         request_lines.append(ln.strip())
