@@ -14,7 +14,7 @@ description: >
   admin-read trap, dollar-quoting for markdown bodies, and the mandatory P3 approval
   + P8 vault log. Load silently.
 metadata:
-  version: 1.0.0
+  version: 1.0.1
 ---
 
 # Article Creator — Insights CMS Pipeline
@@ -90,9 +90,16 @@ Expect 1 row, `locales = 6`.
 - **`uploaded_by` → auth.users:** not `public.users`. A random users.id will FK-fail.
 - **Draft RLS trap (fixed 2026-06-10, stay alert):** `article_translations` once had
   only the `read_published` policy, so draft translations were invisible in the admin
-  editor (empty fields). `p_article_translations_admin_read`
-  (`private.has_perm('insights_vap')`) now fixes this. If an admin editor shows an
-  empty draft again, check `pg_policy` on `article_translations` FIRST.
+  editor (empty fields). **Three SELECT policies now grant draft read** (verified live
+  on `pg_policy`, prod `bqgrpnsvplvicnmzxwkm`, 2026-06-21):
+  1. `read_published` — anyone, only `status='published'` rows.
+  2. `p_article_translations_admin_read` — `private.has_perm('insights_vap')` (the
+     admin-editor fix).
+  3. `p_article_translations_author_read` — the article's own author
+     (`articles.author_user_id = (SELECT auth.uid())`) reads their own drafts.
+  If an admin editor shows an empty draft again, check `pg_policy` on
+  `article_translations` FIRST: confirm the caller holds `insights_vap` **or** is the
+  `author_user_id` — if neither, that's expected RLS, not a bug.
 - **Dollar-quoting:** never single-quote bodies; pick a tag (e.g. `$tx$`) and assert
   it doesn't occur inside any text.
 - **Publishing:** `status='published'` must come with `published_at = now()`;
@@ -110,3 +117,12 @@ Expect 1 row, `locales = 6`.
   (`apps/web/app/[locale]/(admin)/admin/files/insights/`, drawer fetches
   `article_translations` directly — RLS-enforced).
 - Sitemap picks up published articles automatically (`app/sitemap.ts`).
+
+## Changelog
+
+- **1.0.1** (2026-06-21) — Draft-RLS trap note completed against live `pg_policy`:
+  the admin-read claim (`p_article_translations_admin_read` /
+  `private.has_perm('insights_vap')`) is **verified accurate**, and the previously
+  omitted third SELECT policy `p_article_translations_author_read` (author reads own
+  drafts) is now documented. Diagnostic step rewritten to check perm **or** authorship.
+- **1.0.0** — Initial Insights CMS pipeline skill.
