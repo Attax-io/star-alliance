@@ -2,7 +2,7 @@
 name: bug-fix-workflow
 description: The Lex Council end-to-end bug workflow — pull reports from the bug_reports table, triage their status, investigate + reproduce the real root cause, fix following project conventions, flip each row to Fixed once the fix is genuinely live, AND file (push) new bugs it surfaces back into the table. Use whenever the user says "pull the bugs", "work the bugs", "fix the bugs", "triage bugs", "what bugs are open", or any phrasing about pulling / triaging / fixing / closing reported bugs — OR to push/file bugs: "file a bug", "log this as a bug", "push these as bugs", "file the bugs you find". Loads the bug_reports schema, the status-code conventions, the status-trigger gotcha, the INSERT/push pattern (identity PK, trigger-filled names, reporter-uuid lookup, status=1, no notification fires), the "doesn't work" reproduction technique, and the rule for WHEN a bug may be marked Fixed (DB fixes now, frontend fixes only after deploy).
 metadata:
-  version: 1.1.1
+  version: 1.1.2
 ---
 
 # Bug-Fix Workflow (Lex Council)
@@ -37,7 +37,7 @@ Page view: `admin_files_bugs_list`. Admin UI: `/admin/files/bugs` (open to every
 | Code | Name | Meaning |
 |---|---|---|
 | `1` | Submitted | Freshly filed, not yet looked at |
-| `2` | Pending | Acknowledged / in progress (or fixed-but-not-yet-deployed) |
+| `2` | Investigated & Pending | Acknowledged / investigated / in progress (or fixed-but-not-yet-deployed). **Live trigger label is `Investigated & Pending`** (relabeled by the bug-triage routine; verified on prod `bqgrpnsvplvicnmzxwkm` 2026-06-21). Older rows may still read the legacy `Pending` denorm until next write re-fires `brp_on_brp_b`. |
 | `3` | Rejected | Won't-fix / not-a-bug / duplicate |
 | `4` | Fixed | The fix is **live** |
 
@@ -213,3 +213,12 @@ Never mark a bug Fixed because the code is written; mark it Fixed because a user
 - [ ] Flipped to Fixed **only** for fixes that are live (DB now / FE post-deploy).
 - [ ] **Filing** a new bug? Set only `br_title`/`br_text`/`br_user`/`br_status=1`; let the trigger name it; `RETURNING` to confirm.
 - [ ] Looked up the reporter uuid by email (never guessed); `br_text` is self-contained (no chat refs); non-defect rows prefixed (`[Mobile-prep]` etc.).
+
+---
+
+## Changelog
+
+- **1.1.2** (2026-06-21) — Status-2 label corrected to the live trigger value
+  **`Investigated & Pending`** (was the stale `Pending`), verified on prod
+  `bqgrpnsvplvicnmzxwkm` — 7 rows carry the new label, 3 legacy rows still read `Pending`
+  until their next write re-fires `brp_on_brp_b`. Codes 1/3/4 confirmed unchanged.
