@@ -24,9 +24,9 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 
 | Skill | Ver | Src | Desc (words / chars) | Body (words / lines) | Cowork | What it does |
 |---|---|---|---|---|---|---|---|
-| [`article-creator`](article-creator/SKILL.md) | 1.0.0 | own | 138 / 923 | 730 / 96 | ✓ lean | End-to-end procedure for creating a public Insights article and pushing it to the Lex Coun… |
+| [`article-creator`](article-creator/SKILL.md) | 1.0.1 | own | 138 / 923 | 839 / 112 | ✓ lean | End-to-end procedure for creating a public Insights article and pushing it to the Lex Coun… |
 | [`brandkit`](brandkit/SKILL.md) | 1.0.0 | own | 52 / 464 | 2543 / 796 | ○ large | Premium brand-kit image generation skill for creating high-end brand-guidelines boards, lo… |
-| [`bug-fix-workflow`](bug-fix-workflow/SKILL.md) | 1.1.1 | own | 151 / 934 | 1757 / 211 | ✓ lean | The Lex Council end-to-end bug workflow — pull reports from the bug_reports table, triage … |
+| [`bug-fix-workflow`](bug-fix-workflow/SKILL.md) | 1.1.2 | own | 151 / 934 | 1841 / 220 | ✓ lean | The Lex Council end-to-end bug workflow — pull reports from the bug_reports table, triage … |
 | [`cleanup`](cleanup/SKILL.md) | 1.18.0 | own | 135 / 991 | 4566 / 275 | ✓ lean | Multi-mode hygiene skill for Lex Council |
 | [`codex-law-translate`](codex-law-translate/SKILL.md) | 1.0.0 | own | 134 / 908 | 1354 / 171 | ✓ lean | End-to-end pipeline for loading a real-world law into the Lex Council legal codex, transla… |
 | [`conquering-campaign`](conquering-campaign/SKILL.md) | 3.8.2 | own | 140 / 1001 | 10290 / 467 | ⚠ body>10k | Multi-wave campaign skill for work too big for one pass |
