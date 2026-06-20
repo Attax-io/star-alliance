@@ -6,8 +6,11 @@ anything outside its --out file:
   • every skill's name, metadata.version, Cowork status, mtime, days-since-change
   • how often each skill is mentioned across the configured roots (your repos + session
     transcripts), within the last --days
-  • "friction" snippets — lines near a skill mention that smell like a problem
-    (error/fail/bug/confus/wrong/should/instead/"didn't work") → the UPGRADE signal
+  • "friction" snippets — a SESSION-TRANSCRIPT USER TURN that names a skill and smells
+    like a problem (error/fail/bug/confus/wrong/should/instead/"didn't work") → the
+    UPGRADE signal. Friction is a LIVE-USAGE signal: only a session user turn actually
+    *exercises* a skill, so project files (app docs, vault-logs, memory) feed the mention
+    count but NEVER friction — they *describe* domain work where a skill name is a topic.
   • recurring task-request keywords in recent sessions that match NO skill → the
     NEW-SKILL signal
 
@@ -66,6 +69,39 @@ BOILERPLATE = re.compile(
 # lives (e.g. a `*-skill-DELTA.md` spec doc), not usage friction — drop it per-line
 # (belt-and-suspenders for any description echo outside the .claude/ dirs we now prune).
 FRONTMATTER_DESC = re.compile(r"^\s*description:\s*", re.I)
+# A USER turn that merely LOCATES / READS / INSTALLS a skill, or pastes its file path,
+# is not friction USING it — drop these from the (now session-only) friction signal.
+# Ledger 2026-06-20 run 4: after restricting friction to session user turns, the 3
+# surviving snippets were all one definitional ask — "Read the … bug-fix-workflow skill
+# and report its full mechanics … the skill file is likely under <path> … search for it".
+SKILL_META = re.compile(
+    r"(read the .{0,40}\bskill\b|the skill file\b|search for it\b|"
+    r"report its (full )?mechanics|\.claude[/\\]skills[/\\]|\bskill\.md\b|"
+    r"where is the .{0,40}\bskill\b|install (the )?.{0,40}\bskill\b|"
+    r"^[-*\s]*[`/].{0,4}/users/)",
+    re.I,
+)
+
+
+def is_skill_ref(low_line: str, name: str) -> bool:
+    """True when `name` appears as a SKILL/COMMAND REFERENCE, not a bare domain noun.
+
+    The collision class (ledger 2026-06-20 run 4): short common-word skill names —
+    `supabase`, `cleanup`, `performance`, `dev-server`, `bug-fix-workflow` — also match the
+    PRODUCT / ACTIVITY / TASK they're named after. App session prompts say "Supabase
+    project_id=…", "other parallel cleanup sessions", "extract performance lessons", "Fix a
+    bug" — a friction word sitting next to the bare noun, but that's the APP's friction, not
+    the skill's. v1.1.5 predicted this needs a "usage-vs-topic gate". The gate: a genuine
+    skill reference is the slash-command `/name`, or the name next to the word
+    "skill/mode/command" ("name skill", "skill name", "name mode"). A bare domain noun is
+    not — and the looser "run/use/invoke name" verb-form is rejected on purpose: for a skill
+    whose name IS the product/activity it collides hard ("Use the Supabase MCP" = the
+    product, "the cleanup runs" = the activity), so it is NOT a reliable skill marker.
+    Higher precision, lower recall is the right trade for an autonomous signal: a missed
+    genuine friction just isn't auto-surfaced this run; acting on app-noise is worse."""
+    n = re.escape(name)
+    return bool(re.search(
+        rf"(/{n}\b|\b{n}\s+(skill|mode|command)\b|\bskill\s+{n}\b)", low_line))
 
 
 def is_definitional(fp: Path) -> bool:
@@ -290,8 +326,21 @@ def scan_files(roots, names, cutoff, max_snippets):
                     for n in names:
                         if n in low:
                             hit_names.add(n)
-                            if (FRICTION.search(ln) and not BOILERPLATE.search(ln)
+                            # FRICTION IS SESSION-ONLY. A project file (app docs, vault-logs,
+                            # memory) names a skill as a DOMAIN TOPIC — cleanup the activity,
+                            # performance the metric, supabase the product — sitting next to
+                            # ordinary software-friction words; it describes work, it doesn't
+                            # *use* the skill. 31/36 such snippets were 100% noise across runs
+                            # 1–3, which kept trying to path/keyword-filter them. The clean
+                            # cut: only a session USER turn exercises a skill, so only there can
+                            # there be friction. Project-file mentions still feed mention_total
+                            # (topical interest → STORM ranking); they just can't be friction.
+                            # Within user turns, SKILL_META drops locate/read/install lines.
+                            if (is_sessions and FRICTION.search(ln)
+                                    and is_skill_ref(low, n)
+                                    and not BOILERPLATE.search(ln)
                                     and not FRONTMATTER_DESC.match(ln)
+                                    and not SKILL_META.search(ln)
                                     and len(friction[n]) < max_snippets):
                                 friction[n].append({"where": str(fp), "snippet": ln.strip()[:280]})
                     if is_sessions and REQUEST.search(ln) and 8 < len(ln) < 400:
