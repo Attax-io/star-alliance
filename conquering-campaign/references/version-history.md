@@ -4,6 +4,10 @@ Semver: **MAJOR** = paradigm shift / artifact-layout change · **MINOR** = new s
 
 ---
 
+### v3.8.3 — 2026-06-21 — G2 stale-MCP-handle / reconnect clause (PATCH)
+
+G2 ("Verify project_id") previously only named the `-32600`/permission signature → wrong project_id. It had no guidance for the *other* Supabase-MCP failure mode: a network/`ERR_FAILED`/`fetch failed` on even a parameterless call (`list_projects`), or the MCP tools simply missing at session start. That signature is a **stale / unattached handle on reconnect**, not a project_id problem — the fix is to re-attach the server (`/mcp` reconnect) and retry once, NOT to blame `project_id` or declare the MCP down. Added that branch to the G2 bullet, cross-linked `[[discovery_supabase-mcp-may-need-reconnect]]`. Verified gap before the edit: 0 hits for reconnect/`ERR_FAILED`/re-attach across SKILL.md + references. Standing routine proposal **P-B** (raised Run 23, 2026-06-21); applied this run after diff proved repo == Lex device canonical byte-for-byte (no monolith-over-stub fork hazard → the sanctioned lean-edition PATCH is safe in-scope). Device-copy sync to the Lex Council project-local copy remains an attended remainder (out of routine scope). Conf 8/10.
+
 ### v3.8.2 — 2026-06-15 — Cowork packaging: lean description + version-history/anti-pattern extraction (PATCH)
 
 Pure packaging/relocation — no gate, wave, cadence, or routing-logic change. Done to keep the skill installable through the Cowork skill installer.
