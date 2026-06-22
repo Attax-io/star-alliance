@@ -28,7 +28,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`brandkit`](brandkit/SKILL.md) | 1.0.0 | own | 52 / 464 | 2543 / 796 | ○ large | Premium brand-kit image generation skill for creating high-end brand-guidelines boards, lo… |
 | [`bug-fix-workflow`](bug-fix-workflow/SKILL.md) | 1.1.2 | own | 151 / 934 | 1841 / 220 | ✓ lean | The Lex Council end-to-end bug workflow — pull reports from the bug_reports table, triage … |
 | [`cleanup`](cleanup/SKILL.md) | 1.18.0 | own | 135 / 991 | 4566 / 275 | ✓ lean | Multi-mode hygiene skill for Lex Council |
-| [`codex-law-translate`](codex-law-translate/SKILL.md) | 1.0.0 | own | 134 / 908 | 1354 / 171 | ✓ lean | End-to-end pipeline for loading a real-world law into the Lex Council legal codex, transla… |
+| [`codex-law-translate`](codex-law-translate/SKILL.md) | 1.1.0 | own | 134 / 908 | 2112 / 229 | ✓ lean | End-to-end pipeline for loading a real-world law into the Lex Council legal codex, transla… |
 | [`conquering-campaign`](conquering-campaign/SKILL.md) | 3.8.3 | own | 140 / 1001 | 10351 / 467 | ⚠ body>10k | Multi-wave campaign skill for work too big for one pass |
 | [`db-rename-sweep`](db-rename-sweep/SKILL.md) | 1.1.0 | own | 146 / 910 | 542 / 49 | ✓ lean | Loads the full surface inventory for any Lex Council table or column rename before the fir… |
 | [`design-taste-frontend`](design-taste-frontend/SKILL.md) | 1.0.0 | own | 23 / 202 | 2896 / 224 | ✓ lean | Senior UI/UX Engineer |
