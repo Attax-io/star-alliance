@@ -309,6 +309,12 @@ body{
   <div class="card-grid" id="cardGrid"></div>
 </div>
 
+<!-- SKILL POOL VIEW -->
+<div class="roster" id="skillPoolView" style="display:none">
+  <div class="section-head" style="margin-bottom:16px"><h3>All Skills</h3><span class="pill">29 in the guild</span></div>
+  <div class="skill-list" id="skillPoolList"></div>
+</div>
+
 <!-- PROFILE -->
 <div class="profile" id="profileView">
   <div id="profileContent"></div>
@@ -584,10 +590,36 @@ function showProfile(name){
 function showRoster(){
   rosterView.style.display='block';
   profileView.classList.remove('active');
+  document.getElementById('skillPoolView').style.display='none';
   document.getElementById('pageTitle').textContent='Guild Roster';
   document.getElementById('pageSub').textContent='9 members · 29 skills';
   document.querySelectorAll('.sidebar .nav-item').forEach(n=>n.classList.remove('active'));
   document.querySelector('.nav-item[data-view="roster"]').classList.add('active');
+}
+
+function showSkillPool(){
+  rosterView.style.display='none';
+  profileView.classList.remove('active');
+  document.getElementById('skillPoolView').style.display='block';
+  document.getElementById('pageTitle').textContent='Skill Pool';
+  document.getElementById('pageSub').textContent='29 skills in the guild arsenal';
+  document.querySelectorAll('.sidebar .nav-item').forEach(n=>n.classList.remove('active'));
+  document.querySelector('.nav-item[data-view="skills"]').classList.add('active');
+
+  // Build the full skill list — all 29 skills, sorted alphabetically
+  const list=document.getElementById('skillPoolList');
+  const allSkills=Object.entries(SKILLS).sort((a,b)=>a[0].localeCompare(b[0]));
+  list.innerHTML=allSkills.map(([name,sk])=>{
+    // Find which members use this skill
+    const users=MEMBERS.filter(m=>m.skills.includes(name)).map(m=>m.name);
+    const isShared=users.length>1;
+    return `<div class="skill-row">
+      <span class="sk-name${isShared?' shared':''}">${esc(name)}${isShared?`<span class="shared-mark">⟂ ${users.length} members</span>`:''}</span>
+      <span class="sk-type ${sk.type}">${TYPE_LABEL[sk.type]}</span>
+      <span class="sk-ver">${esc(sk.version)}</span>
+      <span class="sk-blurb">${esc(sk.blurb)}${users.length?` · <span style="color:var(--hint)">used by: ${users.join(', ')}</span>`:' · <span style="color:var(--red)">unassigned</span>'}</span>
+    </div>`;
+  }).join('');
 }
 
 // ── NAV ──
@@ -600,6 +632,7 @@ function renderNav(){
     n.addEventListener('click',()=>showProfile(n.dataset.m));
   });
   document.querySelector('.nav-item[data-view="roster"]').addEventListener('click',showRoster);
+  document.querySelector('.nav-item[data-view="skills"]').addEventListener('click',showSkillPool);
 }
 
 // ── SEARCH ──
