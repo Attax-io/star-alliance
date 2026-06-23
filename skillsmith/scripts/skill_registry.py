@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""skillsmith — registry + Cowork-compliance for the claude-skills repo.
+"""skillsmith — registry + Cowork-compliance for the star-alliance repo.
 
 Single source of truth for "what version is each skill and is it Cowork-installable".
 Measures the two limits that matter (description chars, SKILL.md body words/lines),
@@ -12,7 +12,7 @@ Subcommands:
                     (description > 1024 chars). `name` limits to one skill.
 
 Paths default to the repo this script lives in (…/skillsmith/../..). Override with
-  --repo /path/to/claude-skills
+  --repo /path/to/star-alliance
 
 Limits (see references/cowork-limits.md):
   description  <= 1024 chars      HARD  (frontmatter validation reject)
@@ -42,17 +42,17 @@ VENDORED = {
 
 
 def default_repo() -> Path:
-    """Resolve the claude-skills repo regardless of where this runs from — the repo
+    """Resolve the star-alliance repo regardless of where this runs from — the repo
     checkout OR the ~/.claude/skills global install (where parents[2] would wrongly be
-    ~/.claude/skills). Order: $CLAUDE_SKILLS_REPO → marker-detect → known path → parents[2]."""
-    env = os.environ.get("CLAUDE_SKILLS_REPO")
+    ~/.claude/skills). Order: $STAR_ALLIANCE_REPO → marker-detect → known path → parents[2]."""
+    env = os.environ.get("STAR_ALLIANCE_REPO")
     if env:
         return Path(env).expanduser()
     here = Path(__file__).resolve()
     for anc in here.parents:
         if (anc / "VERSIONS.md").exists() and (anc / ".git").exists():
             return anc
-    known = Path.home() / "Documents" / "Claude" / "Projects" / "claude-skills"
+    known = Path.home() / "Documents" / "Claude" / "Projects" / "star-alliance"
     if (known / "VERSIONS.md").exists():
         return known
     return here.parents[2]

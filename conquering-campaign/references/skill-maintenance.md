@@ -12,7 +12,7 @@ This skill exists in multiple locations that drift. After ANY edit to SKILL.md o
 |---|---|---|
 | Project-local (canonical) | `<project>/.claude/skills/conquering-campaign/` | what runs in this project's Claude Code |
 | Slash-command pointer | `<project>/.claude/commands/conquering-campaign.md` | the `/conquering-campaign` entry point — must point at `.claude/skills/conquering-campaign/SKILL.md` (NOT a stale `_skill-updates/` path) |
-| Source repo | `~/Documents/Claude/Projects/claude-skills/conquering-campaign/` | distribution source (git: `Attax-io/claude-skills`, branch `main`) |
+| Source repo | `~/Documents/Claude/Projects/star-alliance/conquering-campaign/` | distribution source (git: `Attax-io/star-alliance`, branch `main`) |
 | Cowork customize page | (web) | Cowork sessions — paste the full text |
 
 Sync step: `diff -rq <canonical>/SKILL.md+references <source>` — must be empty (source keeps its own `evals/`). Confirm the slash-command pointer path resolves. When pasting into Cowork, paste the WHOLE file (a partial `cp` once produced duplicate frontmatter). **The canonical copy is project-local; propagate FROM it.**

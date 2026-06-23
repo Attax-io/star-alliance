@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""skillsmith — reconcile the claude-skills repo with the on-device copies.
+"""skillsmith — reconcile the star-alliance repo with the on-device copies.
 
 Three locations hold skills:
-  repo     ~/Documents/Claude/Projects/claude-skills        (distribution source, git)
+  repo     ~/Documents/Claude/Projects/star-alliance        (distribution source, git)
   global   ~/.claude/skills                                 (what /<skill> actually loads)
   project  <cwd>/.claude/skills                              (per-project overrides)
 
@@ -41,16 +41,16 @@ RSYNC_EXCLUDES = ["--exclude", ".git", "--exclude", "__pycache__", "--exclude", 
 
 
 def default_repo() -> Path:
-    """Resolve the claude-skills repo regardless of cwd / install location (the global
+    """Resolve the star-alliance repo regardless of cwd / install location (the global
     copy's parents[2] is ~/.claude/skills, which would make --repo == --global)."""
-    env = os.environ.get("CLAUDE_SKILLS_REPO")
+    env = os.environ.get("STAR_ALLIANCE_REPO")
     if env:
         return Path(env).expanduser()
     here = Path(__file__).resolve()
     for anc in here.parents:
         if (anc / "VERSIONS.md").exists() and (anc / ".git").exists():
             return anc
-    known = Path.home() / "Documents" / "Claude" / "Projects" / "claude-skills"
+    known = Path.home() / "Documents" / "Claude" / "Projects" / "star-alliance"
     if (known / "VERSIONS.md").exists():
         return known
     return here.parents[2]

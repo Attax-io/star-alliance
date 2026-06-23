@@ -26,15 +26,15 @@ from pathlib import Path
 
 
 def default_repo() -> Path:
-    """Resolve the claude-skills repo regardless of cwd / install location."""
-    env = os.environ.get("CLAUDE_SKILLS_REPO")
+    """Resolve the star-alliance repo regardless of cwd / install location."""
+    env = os.environ.get("STAR_ALLIANCE_REPO")
     if env:
         return Path(env).expanduser()
     here = Path(__file__).resolve()
     for anc in here.parents:
         if (anc / "VERSIONS.md").exists() and (anc / ".git").exists():
             return anc
-    known = Path.home() / "Documents" / "Claude" / "Projects" / "claude-skills"
+    known = Path.home() / "Documents" / "Claude" / "Projects" / "star-alliance"
     if (known / "VERSIONS.md").exists():
         return known
     return here.parents[2]

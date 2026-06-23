@@ -191,7 +191,7 @@ bounce a request that already loaded the skill. Three moves, lightest-touch firs
 2. Ask Atta on move 5 (the hook) — highest leverage, but a harness change.
 3. v3.8.1 playbook patch — fold E1–E6 into the two playbooks + 4 new failure modes (#104–#107) +
    harden #96.
-4. Per §Deploy: sync both copies (anthropic-skills + claude-skills), `diff -rq`, bump
+4. Per §Deploy: sync both copies (anthropic-skills + star-alliance), `diff -rq`, bump
    `version-history.md`.
 
 **Why this order:** moves 1–4 are zero-risk doc edits that correct a measured regression; move 5 is the

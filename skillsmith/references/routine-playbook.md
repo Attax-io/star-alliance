@@ -40,7 +40,7 @@ python3 skillsmith/scripts/routine_scan.py --days 14 --out skillsmith/routine-lo
 
 The scan (see the script's header) gathers, **read-only**:
 - every skill's name, `metadata.version`, Cowork status, mtime, and days-since-last-change;
-- every mention of each skill across the configured roots (default: the `claude-skills` repo, every
+- every mention of each skill across the configured roots (default: the `star-alliance` repo, every
   project under `~/Documents/Claude/Projects`, and your session transcripts in
   `~/.claude/projects/**/*.jsonl`, last `--days`);
 - friction snippets — lines near a skill mention containing error/fail/bug/confus/wrong/should/instead/
@@ -190,7 +190,7 @@ launchctl unload ~/Library/LaunchAgents/com.attax.skillsmith-routine.plist      
 - Live, on demand: run **`/skillsmith routine`** in an interactive session and watch it happen.
 - A scheduled run: it notifies on completion; or open today's ledger entry
   `references/routine-ledger/<date>.md`, or read the commits
-  (`git -C ~/Documents/Claude/Projects/claude-skills log --oneline --since=today`).
+  (`git -C ~/Documents/Claude/Projects/star-alliance log --oneline --since=today`).
 
 ---
 

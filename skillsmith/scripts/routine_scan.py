@@ -19,7 +19,7 @@ This script makes NO judgments and changes NO skills — it just feeds the model
 STORM isn't grepping blind.
 
 Roots (defaults, override with --root, repeatable):
-  the claude-skills repo · every dir under ~/Documents/Claude/Projects · ~/.claude/projects
+  the star-alliance repo · every dir under ~/Documents/Claude/Projects · ~/.claude/projects
   (session transcripts, *.jsonl)
 
 Usage:
@@ -137,14 +137,14 @@ STOP = set((
 
 
 def default_repo() -> Path:
-    env = os.environ.get("CLAUDE_SKILLS_REPO")
+    env = os.environ.get("STAR_ALLIANCE_REPO")
     if env:
         return Path(env).expanduser()
     here = Path(__file__).resolve()
     for anc in here.parents:
         if (anc / "VERSIONS.md").exists() and (anc / ".git").exists():
             return anc
-    known = Path.home() / "Documents" / "Claude" / "Projects" / "claude-skills"
+    known = Path.home() / "Documents" / "Claude" / "Projects" / "star-alliance"
     return known if (known / "VERSIONS.md").exists() else here.parents[2]
 
 

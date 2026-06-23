@@ -49,7 +49,7 @@ v3.7.0 shipped Gate G0 (campaign-worthiness EXIT) on 2026-06-02. **Measured 2 da
 
 ### v3.7.1 — 2026-06-02 — Completed the lean-core-v2 extraction (§Env hazards + §Deploy/§Self-health → references) (PATCH)
 
-A parallel `cc WIP` commit (claude-skills `af46561`, same day) had begun extracting three encyclopedic SKILL.md sections into their own reference files but left it half-done — the files existed (`references/env-hazards.md`, `references/skill-maintenance.md`) but orphaned: the sections were still inline in SKILL.md, nothing referenced the new files, and `skill-maintenance.md` was a pre-v3.7.0 snapshot (no over-invocation sprawl metric, stale self-health grep, "700" vs SKILL's "1200" core target). At Atta's "finish what's open" this completes it.
+A parallel `cc WIP` commit (star-alliance `af46561`, same day) had begun extracting three encyclopedic SKILL.md sections into their own reference files but left it half-done — the files existed (`references/env-hazards.md`, `references/skill-maintenance.md`) but orphaned: the sections were still inline in SKILL.md, nothing referenced the new files, and `skill-maintenance.md` was a pre-v3.7.0 snapshot (no over-invocation sprawl metric, stale self-health grep, "700" vs SKILL's "1200" core target). At Atta's "finish what's open" this completes it.
 
 **What changed:**
 - **§Environment hazards** (the dense inline paragraph) → **references/env-hazards.md** (exploded per-hazard index). SKILL.md keeps a stub heading + a one-line pointer naming the hazard #s (#20/#28/#41/#48/#51/#63/#73/#87/#95/#99).
@@ -184,7 +184,7 @@ Triggered by an exhaustive mine of **136 campaign folders + 159 session transcri
 
 **Integrity repair:**
 - **Recreated the dangling companion files.** v2.0.0 "externalized" failure-mode prose + version history to a `_skill-updates/` staging dir, committed once (`640d730`), then deleted the staging dir without co-locating the files next to the live SKILL.md — leaving every `FAILURE-MODES.md#N` / `VERSION-HISTORY.md` reference pointing at nothing, and the 87-line "externalized" cut losing most of the prose. v3.0.0 recovers the full #1–#61 prose from the v1.13.1 source and lands the catalog as `references/failure-modes.md` (#1–#84) + this `references/version-history.md`.
-- **Re-synced the two diverged copies** (source `claude-skills/` was v1.13.1/May-18; project-local was v2.0.0/May-29) and added a **§Deploy** section listing every copy + a post-edit sync step.
+- **Re-synced the two diverged copies** (source `star-alliance/` was v1.13.1/May-18; project-local was v2.0.0/May-29) and added a **§Deploy** section listing every copy + a post-edit sync step.
 
 **Lean-core restructure (the "efficient" goal):**
 - SKILL.md cut from 2,446 lines to a lean operating core; encyclopedic detail moved (not deleted) to on-demand references: `failure-modes.md`, `db-playbook.md`, `fe-i18n-playbook.md`, plus existing `templates.md`, `wave-playbook.md`, `checkpoint-pattern.md`.

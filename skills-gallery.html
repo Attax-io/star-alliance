@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Claude Skills — Live Gallery</title>
+<style>
+:root{
+ --bg:#faf9f5;--surface:#ffffff;--line:rgba(0,0,0,.10);--line2:rgba(0,0,0,.18);
+ --txt:#1f1e1c;--mut:#6b6a64;--hint:#94938c;--accent:#c2511f;--panel:#f4f2ec;
+ --g50:#F1EFE8;--g800:#2C2C2A;--g600:#5F5E5A;--b50:#E6F1FB;--b800:#0C447C;--b600:#185FA5;
+ --t50:#E1F5EE;--t800:#085041;--t600:#0F6E56;--a50:#FAEEDA;--a800:#633806;--a600:#854F0B;
+ --p50:#EEEDFE;--p800:#3C3489;--p600:#534AB7;
+}
+@media (prefers-color-scheme:dark){:root{
+ --bg:#1c1b19;--surface:#262522;--line:rgba(255,255,255,.10);--line2:rgba(255,255,255,.20);
+ --txt:#ece9e2;--mut:#a8a69d;--hint:#807e76;--accent:#e8915f;--panel:#201f1c;
+ --g50:#2C2C2A;--g800:#D3D1C7;--g600:#B4B2A9;--b50:#0C2238;--b800:#B5D4F4;--b600:#85B7EB;
+ --t50:#06281F;--t800:#9FE1CB;--t600:#5DCAA5;--a50:#3a2503;--a800:#FAC775;--a600:#EF9F27;
+ --p50:#211d44;--p800:#CECBF6;--p600:#AFA9EC; }}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:32px 24px 64px}
+h1{font-size:26px;font-weight:600;margin:0;letter-spacing:-.02em}
+.sub{color:var(--mut);font-size:13.5px;margin:6px 0 0}.sub b{color:var(--txt);font-weight:600}
+.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:22px 0 16px}
+.search{flex:1;min-width:220px;display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:0 12px;height:42px}
+.search input{border:0;outline:0;background:transparent;color:var(--txt);font-size:14.5px;width:100%}
+.search svg{width:17px;height:17px;color:var(--hint);flex:none}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.chip{cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--mut);border-radius:999px;padding:7px 13px;font-size:12.5px;font-weight:500;user-select:none;transition:.12s}
+.chip:hover{border-color:var(--line2)}.chip.active{background:var(--txt);color:var(--bg);border-color:var(--txt)}
+.chip .n{opacity:.6;margin-left:5px;font-variant-numeric:tabular-nums}
+select{height:42px;border:1px solid var(--line);background:var(--surface);color:var(--txt);border-radius:10px;padding:0 12px;font-size:13.5px;outline:0;cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column;transition:.14s}
+.card:hover{border-color:var(--line2)}
+.card.open{grid-column:1/-1}
+.top{display:flex;align-items:center;gap:13px;margin-bottom:12px}
+.tile{width:50px;height:50px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:27px;flex:none;line-height:1}
+.nm{font-size:15px;font-weight:600;margin:0;word-break:break-word}
+.meta{display:flex;align-items:center;gap:7px;margin-top:3px;flex-wrap:wrap}
+.lvl{font-size:11px;font-weight:600;padding:2px 9px;border-radius:999px}
+.ver{font-size:11px;color:var(--mut);font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.srct{font-size:10px;color:var(--hint);text-transform:uppercase;letter-spacing:.06em}
+.blurb{font-size:13.5px;color:var(--mut);margin:0 0 14px}
+.foot{display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:1px solid var(--line);padding-top:11px;margin-top:auto}
+.lines{font-size:11.5px;color:var(--hint);font-variant-numeric:tabular-nums}
+.dtl{cursor:pointer;border:1px solid var(--line);background:transparent;color:var(--accent);border-radius:8px;padding:5px 12px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:5px;transition:.12s}
+.dtl:hover{background:var(--panel);border-color:var(--line2)}
+.detail{display:none;margin-top:14px;border-top:1px solid var(--line);padding-top:14px}
+.detail.show{display:block}
+.drow{display:flex;gap:14px;padding:7px 0;border-bottom:1px solid var(--line)}
+.drow:last-of-type{border-bottom:0}
+.dlab{flex:none;width:108px;font-size:11px;font-weight:600;color:var(--hint);text-transform:uppercase;letter-spacing:.05em;padding-top:2px}
+.dval{font-size:13px;color:var(--txt);min-width:0}
+.ocs{display:flex;gap:6px;flex-wrap:wrap}
+.oc{font-size:11.5px;background:var(--panel);border:1px solid var(--line);color:var(--mut);border-radius:6px;padding:3px 8px}
+.dval code{background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:11.5px;margin:0 3px 4px 0;display:inline-block}
+.dmeta{margin-top:11px;font-size:11.5px;color:var(--hint);font-variant-numeric:tabular-nums}
+.empty{color:var(--mut);text-align:center;padding:48px 0;font-size:14px}
+.gt-gray{background:var(--g50);color:var(--g800)}.lv-gray{background:var(--g50);color:var(--g800)}
+.gt-blue{background:var(--b50);color:var(--b800)}.lv-blue{background:var(--b50);color:var(--b800)}
+.gt-teal{background:var(--t50);color:var(--t800)}.lv-teal{background:var(--t50);color:var(--t800)}
+.gt-amber{background:var(--a50);color:var(--a800)}.lv-amber{background:var(--a50);color:var(--a800)}
+.gt-purple{background:var(--p50);color:var(--p800)}.lv-purple{background:var(--p50);color:var(--p800)}
+footer{color:var(--hint);font-size:12px;margin-top:34px;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <div>
+  <h1>Claude Skills</h1>
+  <p class="sub"><b id="count">29</b> skills · live from <b>~/.claude/skills</b> · icons &amp; levels by <b>minimax-m3:cloud</b></p>
+ </div>
+ <div class="controls">
+  <label class="search">
+   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+   <input id="q" type="text" placeholder="Search names, descriptions, outline, triggers…" autocomplete="off"/>
+  </label>
+  <select id="sort">
+   <option value="level">Sort: Level (high→low)</option>
+   <option value="name">Sort: Name (A→Z)</option>
+   <option value="ver">Sort: Version</option>
+   <option value="size">Sort: Size (lines)</option>
+  </select>
+ </div>
+ <div class="chips" id="chips"></div>
+ <div class="grid" id="grid"></div>
+ <div class="empty" id="empty" style="display:none">No skills match.</div>
+ <footer>Details are read straight from each skill's <code>SKILL.md</code> (description, body outline, <code>references/</code> &amp; <code>scripts/</code>). Data generated by <code>build_dashboard.py</code> — re-run it to refresh after editing skills.</footer>
+</div>
+<script src="skills-data.js"></script>
+<script>
+const ORDER = ["Foundational","Intermediate","Advanced","Elite","Master"];
+let activeLevel="All", query="", openSet=new Set();
+const grid=document.getElementById('grid'), empty=document.getElementById('empty');
+document.getElementById('count').textContent=SKILLS.length;
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function buildChips(){
+ const box=document.getElementById('chips');const c={};ORDER.forEach(l=>c[l]=0);SKILLS.forEach(s=>c[s.level]++);
+ const mk=(t,v,n)=>`<div class="chip${v===activeLevel?' active':''}" data-l="${v}">${t}<span class="n">${n}</span></div>`;
+ box.innerHTML=mk("All","All",SKILLS.length)+ORDER.map(l=>mk(l,l,c[l])).join('');
+ box.querySelectorAll('.chip').forEach(c=>c.onclick=()=>{activeLevel=c.dataset.l;buildChips();render();});
+}
+function sortList(list){
+ const by=document.getElementById('sort').value;
+ const pv=x=>x.version.split('.').map(n=>+(n.replace(/\D/g,''))||0);
+ return [...list].sort((a,b)=>{
+  if(by==='name')return a.name.localeCompare(b.name);
+  if(by==='size')return b.body_lines-a.body_lines;
+  if(by==='ver'){const A=pv(a),B=pv(b);for(let i=0;i<3;i++){if((B[i]||0)!=(A[i]||0))return (B[i]||0)-(A[i]||0)}return 0}
+  return ORDER.indexOf(b.level)-ORDER.indexOf(a.level)||a.name.localeCompare(b.name);
+ });
+}
+function detailHTML(s){
+ const row=(l,h)=>h?`<div class="drow"><span class="dlab">${l}</span><div class="dval">${h}</div></div>`:'';
+ const ocs=a=>a.length?`<div class="ocs">${a.map(x=>`<span class="oc">${esc(x)}</span>`).join('')}</div>`:'';
+ const files=a=>a.length?a.map(f=>`<code>${esc(f)}</code>`).join(''):'';
+ return row('Intro',esc(s.intro))
+  +row('Modes',esc(s.modes))
+  +row('Triggers',esc(s.triggers))
+  +row('Outline ('+s.sections.length+')',ocs(s.sections))
+  +row('references/ ('+s.refs.length+')',files(s.refs))
+  +row('scripts/ ('+s.scripts.length+')',files(s.scripts))
+  +row('Full description',esc(s.desc))
+  +`<div class="dmeta">Level ${s.level} · v${s.version} · ${s.src} · ${s.body_lines} lines · ${s.words} words</div>`;
+}
+function render(){
+ let list=SKILLS.filter(s=>activeLevel==='All'||s.level===activeLevel);
+ if(query){const q=query.toLowerCase();list=list.filter(s=>(s.name+' '+s.blurb+' '+s.desc+' '+s.level+' '+s.sections.join(' ')+' '+s.triggers).toLowerCase().includes(q))}
+ list=sortList(list);
+ empty.style.display=list.length?'none':'block';
+ grid.innerHTML=list.map(s=>{const op=openSet.has(s.name);return `
+  <div class="card${op?' open':''}">
+   <div class="top">
+    <div class="tile gt-${s.ramp}">${s.icon}</div>
+    <div style="min-width:0">
+     <p class="nm">${esc(s.name)}</p>
+     <div class="meta"><span class="lvl lv-${s.ramp}">${s.level}</span><span class="ver">v${s.version}</span><span class="srct">${s.src}</span></div>
+    </div>
+   </div>
+   <p class="blurb">${esc(s.blurb)}</p>
+   <div class="foot">
+    <span class="lines">${s.body_lines} lines · ${s.words} words</span>
+    <button class="dtl" data-n="${esc(s.name)}"><i></i>${op?'Hide':'Details'}</button>
+   </div>
+   <div class="detail${op?' show':''}">${op?detailHTML(s):''}</div>
+  </div>`}).join('');
+ grid.querySelectorAll('.dtl').forEach(b=>b.onclick=()=>{const n=b.dataset.n;openSet.has(n)?openSet.delete(n):openSet.add(n);render();});
+}
+document.getElementById('q').addEventListener('input',e=>{query=e.target.value;render();});
+document.getElementById('sort').addEventListener('change',render);
+buildChips();render();
+</script>
+</body>
+</html>

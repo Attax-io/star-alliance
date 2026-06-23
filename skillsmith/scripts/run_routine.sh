@@ -8,7 +8,7 @@
 set -uo pipefail
 
 # ── config (tune here) ───────────────────────────────────────────────
-REPO="${CLAUDE_SKILLS_REPO:-$HOME/Documents/Claude/Projects/claude-skills}"
+REPO="${STAR_ALLIANCE_REPO:-$HOME/Documents/Claude/Projects/star-alliance}"
 CLAUDE_BIN="/opt/homebrew/bin/claude"
 MODEL="opus"
 MAX_BUDGET_USD="10"          # hard ceiling per run (§R5)

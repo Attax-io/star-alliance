@@ -5,7 +5,7 @@
             launchctl load ~/Library/LaunchAgents/com.attax.skillsmith-routine.plist
   Disable:  launchctl unload ~/Library/LaunchAgents/com.attax.skillsmith-routine.plist
   Retime:   edit StartCalendarInterval below, then unload + load again.
-  Logs:     ~/Documents/Claude/Projects/claude-skills/skillsmith/routine-logs/launchd.out
+  Logs:     ~/Documents/Claude/Projects/star-alliance/skillsmith/routine-logs/launchd.out
             (the run's own dated log is routine-logs/YYYY-MM-DD.log)
 -->
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -17,11 +17,11 @@
     <key>ProgramArguments</key>
     <array>
         <string>/bin/bash</string>
-        <string>/Users/attaselim/Documents/Claude/Projects/claude-skills/skillsmith/scripts/run_routine.sh</string>
+        <string>/Users/attaselim/Documents/Claude/Projects/star-alliance/skillsmith/scripts/run_routine.sh</string>
     </array>
 
     <key>WorkingDirectory</key>
-    <string>/Users/attaselim/Documents/Claude/Projects/claude-skills</string>
+    <string>/Users/attaselim/Documents/Claude/Projects/star-alliance</string>
 
     <key>StartCalendarInterval</key>
     <dict>
@@ -43,9 +43,9 @@
     </dict>
 
     <key>StandardOutPath</key>
-    <string>/Users/attaselim/Documents/Claude/Projects/claude-skills/skillsmith/routine-logs/launchd.out</string>
+    <string>/Users/attaselim/Documents/Claude/Projects/star-alliance/skillsmith/routine-logs/launchd.out</string>
     <key>StandardErrorPath</key>
-    <string>/Users/attaselim/Documents/Claude/Projects/claude-skills/skillsmith/routine-logs/launchd.err</string>
+    <string>/Users/attaselim/Documents/Claude/Projects/star-alliance/skillsmith/routine-logs/launchd.err</string>
 
     <key>ProcessType</key>
     <string>Background</string>

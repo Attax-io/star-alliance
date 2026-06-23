@@ -131,4 +131,4 @@ spinning ceremony.
 **Files the v3.7.0 edit would touch:** `SKILL.md` (G0 block + line-66 promotion + precedence row 0 +
 description-phrase qualifier + §5.7 scope-gate + §Skill self-health metric + retire `micro` row) ·
 `references/failure-modes.md` (#101, #102) · `references/version-history.md` (v3.7.0 entry) · the 2
-sync copies (anthropic-skills + claude-skills) per §Deploy.
+sync copies (anthropic-skills + star-alliance) per §Deploy.

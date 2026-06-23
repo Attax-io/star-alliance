@@ -1,4 +1,4 @@
-# claude-skills
+# Star Alliance
 
 Atta's personal Claude Code / Claude Agent skill library. Each top-level directory is one skill
 (a `SKILL.md` plus optional `scripts/`, `references/`, `assets/`). Some are distributed onward

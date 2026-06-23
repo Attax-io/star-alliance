@@ -39,7 +39,7 @@ Before it lands in the repo, ensure:
 ## Step C3 — Place it in the repo
 
 ```sh
-mv <new-skill> ~/Documents/Claude/Projects/claude-skills/<name>     # one dir per skill at repo root
+mv <new-skill> ~/Documents/Claude/Projects/star-alliance/<name>     # one dir per skill at repo root
 python3 skillsmith/scripts/skill_registry.py check <name>           # 0 hard violations
 python3 skillsmith/scripts/skill_registry.py write                  # add it to VERSIONS.md
 ```

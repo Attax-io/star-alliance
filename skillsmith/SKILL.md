@@ -1,13 +1,13 @@
 ---
 name: skillsmith
-description: "Manage, sync, upgrade, create, and auto-evolve Claude skills across the claude-skills repo and the on-device copies (~/.claude/skills global + per-project .claude/skills). Modes — sync: reconcile repo and device by metadata.version, honoring fork+external exceptions. upgrade: bump a skill's version, regenerate the VERSIONS.md registry, run the Cowork-compliance check, add a changelog entry. create: author a new skill via the official skill-creator, then make it upgradeable. routine: a daily, fully-autonomous self-improvement loop that mines your code, projects, and sessions with the Stanford STORM method (5 personas, contradiction map, synthesis, peer review) to find upgrade routes, new-skill ideas, and bugs, then applies the high-confidence ones (skillsmith itself included). Triggers: 'sync my skills', 'upgrade a skill', 'create a skill', 'install my skills', 'run the skill routine', 'evolve my skills', '/skillsmith'. Scripts in scripts/; procedures in references/."
+description: "Manage, sync, upgrade, create, and auto-evolve Star Alliance skills across the star-alliance repo and the on-device copies (~/.claude/skills global + per-project .claude/skills). Modes — sync: reconcile repo and device by metadata.version, honoring fork+external exceptions. upgrade: bump a skill's version, regenerate the VERSIONS.md registry, run the Cowork-compliance check, add a changelog entry. create: author a new skill via the official skill-creator, then make it upgradeable. routine: a daily, fully-autonomous self-improvement loop that mines your code, projects, and sessions with the Stanford STORM method (5 personas, contradiction map, synthesis, peer review) to find upgrade routes, new-skill ideas, and bugs, then applies the high-confidence ones (skillsmith itself included). Triggers: 'sync my skills', 'upgrade a skill', 'create a skill', 'install my skills', 'run the skill routine', 'evolve my skills', '/skillsmith'. Scripts in scripts/; procedures in references/."
 metadata:
   version: 1.1.7
 ---
 
-# skillsmith — manage, sync, upgrade, create & auto-evolve Claude skills (v1.1.7)
+# skillsmith — manage, sync, upgrade, create & auto-evolve Star Alliance skills (v1.1.7)
 
-The control panel for the `claude-skills` repo. It keeps every skill **versioned**,
+The control panel for the `star-alliance` repo. It keeps every skill **versioned**,
 **Cowork-installable**, and **in sync** between the git repo and the on-device copies — and it
 authors new skills (via the official `skill-creator`) already wired into those conventions.
 As of **v1.1.0** it also **evolves the library on its own**: the `routine` mode runs daily, mines
@@ -23,7 +23,7 @@ included**.
 
 | Location | Path | Role |
 |---|---|---|
-| **repo** | `~/Documents/Claude/Projects/claude-skills` | Distribution source (git: `Attax-io/claude-skills`). Holds `VERSIONS.md`. |
+| **repo** | `~/Documents/Claude/Projects/star-alliance` | Distribution source (git: `Attax-io/star-alliance`). Holds `VERSIONS.md`. |
 | **global** | `~/.claude/skills` | What `/<skill>` actually loads. A stale global silently runs old code. |
 | **project** | `<cwd>/.claude/skills` | Per-project overrides / localizations (may intentionally differ). |
 
@@ -108,7 +108,7 @@ Read **`references/routine-playbook.md`** + **`references/storm-method.md`**. Th
 2. **Cowork limits hold** (see `references/cowork-limits.md`): description ≤1024 chars with no `<`/`>` (HARD); only `name/description/license/allowed-tools/metadata/compatibility` allowed at top level; SKILL.md under 500 lines (ideal) and well under ~10k words; `references/`, `scripts/`, `assets/` don't count → extract there as the body grows.
 3. **The device copy is what runs.** After any repo edit to a skill that loads from `~/.claude/skills`, re-sync the device copy or the old code keeps running (the `cleanup` §L24 lesson).
 4. **Respect forks + externals.** Never blind-overwrite a documented fork (the `cleanup` stub, the `conquering-campaign` Cowork edition) or an external (`impeccable`, `npx impeccable`). The scripts skip them; you handle them per their playbook.
-5. **Commit + push the repo** at the end (git remote `Attax-io/claude-skills`, `main`).
+5. **Commit + push the repo** at the end (git remote `Attax-io/star-alliance`, `main`).
 6. **Self-edits land last + validated.** When any mode — especially `routine` — edits **skillsmith itself**, do it after all other work, then re-validate (`skill_registry.py check skillsmith` + skill-creator `quick_validate.py`) and **revert on failure**. The running process already holds the old skillsmith; a self-edit only takes effect next run. Never hot-swap mid-run. (routine §R6.)
 7. **Autonomous actions are gated + reversible.** `routine` only auto-applies findings with STORM peer-review confidence **≥8/10**; every change is its own commit on `main` (never force-push / rebase / `push origin <branch>:main`). A bad run is `git revert`.
 

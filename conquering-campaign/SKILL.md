@@ -368,7 +368,7 @@ Effort is set via prompt language (the Agent tool has no effort param): **deep**
 
 ## Deploy & sync (#84)
 
-Full copy-table + sync procedure → **references/skill-maintenance.md**. The canonical copy is project-local — **propagate FROM it**; after ANY edit to SKILL.md or references/, sync every copy and `diff -rq` (source keeps its own `evals/`). Source repo: `Attax-io/claude-skills` (branch `main`).
+Full copy-table + sync procedure → **references/skill-maintenance.md**. The canonical copy is project-local — **propagate FROM it**; after ANY edit to SKILL.md or references/, sync every copy and `diff -rq` (source keeps its own `evals/`). Source repo: `Attax-io/star-alliance` (branch `main`).
 
 ## Skill self-health (run at every reflection pass — #84)
 

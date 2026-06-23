@@ -1,6 +1,6 @@
 # Mode: sync — reconcile the repo with the on-device copies
 
-Goal: the git repo (`Attax-io/claude-skills`) and the on-device copies (`~/.claude/skills` global,
+Goal: the git repo (`Attax-io/star-alliance`) and the on-device copies (`~/.claude/skills` global,
 `<cwd>/.claude/skills` project) agree — newer versions are installed where they run, device-ahead
 work flows back to the repo, and intentional divergences are left alone.
 
