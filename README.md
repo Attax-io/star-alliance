@@ -31,11 +31,14 @@ project's `.claude/agents/` and installing their skills.
 
 | Member | Role | Skills | Deploy When |
 |---|---|---|---|
+| **the Butler** | Orchestrator — takes orders, routes work to other members | conquering-campaign, cleanup, skillsmith | Any request — the Butler decides who handles what |
 | **the Architect** | Systems design, domain modeling, database architecture | transactions-domain-model, db-rename-sweep, supabase, supabase-postgres-best-practices, cleanup | "design the system", "model the domain", "architect the database" |
+| **the Developer** | Writing code, fixing bugs, hands-on implementation | bug-fix-workflow, db-rename-sweep, dev-server, supabase, supabase-postgres-best-practices, full-output-enforcement, cleanup, obsidian-markdown | "write the code", "fix this bug", "implement this feature" |
 | **the Designer** | UI/UX design, visual quality, brand kits, image-to-code | design-taste-frontend, high-end-visual-design, image-to-code, imagegen-frontend-web, imagegen-frontend-mobile, brandkit, minimalist-ui, industrial-brutalist-ui, impeccable, stitch-design-taste, gpt-taste, redesign-existing-projects | "design the UI", "make it look premium", "create a brand kit" |
 | **the Strategist** | Multi-wave campaigns, bug workflows, performance | conquering-campaign, bug-fix-workflow, performance, strategies-review, vault-log-compliance, cleanup | "plan the campaign", "break this into waves", "run the bug workflow" |
 | **the Translator** | Legal codex, law translation, multi-locale content | codex-law-translate, article-creator, obsidian-markdown | "load this law", "translate this law", "add translations" |
 | **the Engineer** | Dev servers, knowledge graphs, tooling, output enforcement | dev-server, graphify, full-output-enforcement, cleanup | "open dev server", "generate a knowledge graph", "full output mode" |
+| **the Merchant** | Investment analysis, trading strategies, market research, portfolio management | _(skills to be recruited)_ | "analyze this investment", "build a trading strategy", "research this market" |
 | **the Quartermaster** | Skill management, syncing, upgrading, daily evolution | skillsmith, cleanup | "sync my skills", "upgrade a skill", "run the skill routine" |
 
 ### Shared skills
