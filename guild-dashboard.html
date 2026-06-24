@@ -233,12 +233,28 @@ body{
 .skill-empty .se-sub{font-size:13px;color:var(--hint);max-width:360px;margin:0 auto}
 
 /* Arsenal */
-.weapon-list{display:flex;flex-direction:column;gap:10px}
-.weapon-row{display:grid;grid-template-columns:60px 140px 1fr;gap:16px;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;transition:.1s}
-.weapon-row:hover{border-color:var(--border2);background:var(--surface2)}
-.wp-priority{font-size:11px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.04em}
-.wp-name{font-size:14px;font-weight:700;color:var(--txt)}
-.wp-desc{font-size:13px;color:var(--mut);line-height:1.5}
+.arsenal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:14px}
+.arsenal-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:16px 12px;text-align:center;
+  transition:.12s;position:relative;overflow:hidden;
+}
+.arsenal-card:hover{border-color:var(--border2);box-shadow:0 4px 12px var(--shadow)}
+.arsenal-card .ac-icon{
+  width:64px;height:64px;border-radius:14px;margin:0 auto 10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:28px;position:relative;overflow:hidden;
+}
+.arsenal-card .ac-icon svg{position:absolute;inset:0;width:100%;height:100%}
+.arsenal-card .ac-name{font-size:13px;font-weight:700;margin-bottom:4px}
+.arsenal-card .ac-type{font-size:10px;font-weight:600;color:var(--hint);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.arsenal-card .ac-desc{font-size:11px;color:var(--mut);line-height:1.45}
+.arsenal-card .ac-rank{
+  position:absolute;top:8px;right:10px;
+  font-size:10px;font-weight:700;color:var(--gold);
+  background:var(--gold-bg);border:1px solid var(--border);
+  padding:1px 7px;border-radius:4px;
+}
 
 /* Deploy */
 .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -473,6 +489,18 @@ const MEMBERS=[
 
 const TYPE_LABEL={own:"OWN",vendored:"VENDORED",external:"EXTERNAL"};
 
+// Weapon icons — SVG for each AI model
+const WEAPON_ICONS={
+  "opus":`<svg viewBox="0 0 64 64"><defs><linearGradient id="wi-opus" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d4ac4e"/><stop offset="1" stop-color="#8a6f1e"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(#wi-opus)" opacity=".15"/><path d="M32 12 L32 52 M32 12 L24 20 M32 12 L40 20 M22 30 L42 30 M20 38 L44 38 M24 46 L40 46" stroke="#d4ac4e" stroke-width="2.5" stroke-linecap="round"/><circle cx="32" cy="12" r="3" fill="#d4ac4e"/></svg>`,
+  "sonnet":`<svg viewBox="0 0 64 64"><defs><linearGradient id="wi-sonnet" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5e9ef5"/><stop offset="1" stop-color="#2a5d9e"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(#wi-sonnet)" opacity=".15"/><path d="M32 14 L32 50 M32 14 L26 22 M32 14 L38 22 M24 28 L40 28 M22 36 L42 36 M24 44 L40 44" stroke="#5e9ef5" stroke-width="2.5" stroke-linecap="round"/></svg>`,
+  "haiku":`<svg viewBox="0 0 64 64"><defs><linearGradient id="wi-haiku" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4ec985"/><stop offset="1" stop-color="#2a8a5a"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(#wi-haiku)" opacity=".15"/><path d="M32 16 L32 48 M32 16 L28 22 M32 16 L36 22 M26 28 L38 28 M26 34 L38 34" stroke="#4ec985" stroke-width="2" stroke-linecap="round"/><path d="M28 40 L36 40" stroke="#4ec985" stroke-width="2" stroke-linecap="round"/></svg>`,
+  "gpt-5.5":`<svg viewBox="0 0 64 64"><defs><linearGradient id="wi-gpt" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7c5dc8"/><stop offset="1" stop-color="#4a3590"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(#wi-gpt)" opacity=".15"/><path d="M32 10 L42 26 L52 30 L42 34 L32 50 L22 34 L12 30 L22 26 Z" fill="none" stroke="#7c5dc8" stroke-width="2.5" stroke-linejoin="round"/><circle cx="32" cy="30" r="4" fill="#7c5dc8" opacity=".6"/></svg>`,
+  "glm-5.2":`<svg viewBox="0 0 64 64"><defs><linearGradient id="wi-glm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3ec5b8"/><stop offset="1" stop-color="#1a8a80"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(#wi-glm)" opacity=".15"/><path d="M32 12 L32 52 M20 24 L44 24 M16 32 L48 32 M20 40 L44 40" stroke="#3ec5b8" stroke-width="2.5" stroke-linecap="round"/><circle cx="32" cy="32" r="3" fill="#3ec5b8"/></svg>`,
+  "kimi-k2.7":`<svg viewBox="0 0 64 64"><defs><linearGradient id="wi-kimi" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d54d7a"/><stop offset="1" stop-color="#8a2a4e"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(#wi-kimi)" opacity=".15"/><path d="M16 48 Q32 8 48 48" fill="none" stroke="#d54d7a" stroke-width="2.5"/><path d="M16 48 L48 48" stroke="#d54d7a" stroke-width="2" opacity=".4"/><path d="M22 38 L42 38 M20 43 L44 43" stroke="#d54d7a" stroke-width="1.5" opacity=".5"/><circle cx="32" cy="22" r="2.5" fill="#d54d7a"/></svg>`,
+  "minimax-m3":`<svg viewBox="0 0 64 64"><defs><linearGradient id="wi-mm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e8b84e"/><stop offset="1" stop-color="#a08028"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(#wi-mm)" opacity=".15"/><path d="M32 14 L38 26 L50 28 L41 37 L44 50 L32 43 L20 50 L23 37 L14 28 L26 26 Z" fill="none" stroke="#e8b84e" stroke-width="2" stroke-linejoin="round"/><circle cx="32" cy="30" r="3" fill="#e8b84e" opacity=".5"/></svg>`,
+  "default":`<svg viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="var(--surface2)"/><path d="M32 14 L38 26 L50 28 L41 37 L44 50 L32 43 L20 50 L23 37 L14 28 L26 26 Z" fill="none" stroke="var(--hint)" stroke-width="2" stroke-linejoin="round"/></svg>`
+};
+
 const sharedCount={};
 MEMBERS.forEach(m=>m.skills.forEach(s=>{sharedCount[s]=(sharedCount[s]||0)+1}));
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -529,7 +557,7 @@ function showProfile(name){
       <button class="pt-back" onclick="showRoster()">← Back</button>
     </div>
     <div class="profile-desc">${esc(m.desc)}</div>
-    <div class="section"><div class="section-head"><h3>Arsenal</h3><span class="pill">3 weapons</span></div><div class="weapon-list">${m.weapons.map((w,i)=>`<div class="weapon-row"><span class="wp-priority">${i===0?'1st':i===1?'2nd':'3rd'}</span><span class="wp-name">${w}</span><span class="wp-desc">${m.weaponsDesc[i]}</span></div>`).join('')}</div></div>
+    <div class="section"><div class="section-head"><h3>Arsenal</h3><span class="pill">${m.weapons.length} weapons</span></div><div class="arsenal-grid">${m.weapons.map((w,i)=>{const wd=m.weaponsDesc[i]||'';const wt=wd.split(' — ')[0]||w;const wdRest=wd.split(' — ').slice(1).join(' — ')||'';return `<div class="arsenal-card"><span class="ac-rank">${i+1}${i===0?'st':i===1?'nd':'rd'}</span><div class="ac-icon">${WEAPON_ICONS[w]||WEAPON_ICONS['default']}</div><div class="ac-name">${esc(w)}</div><div class="ac-type">${esc(wt)}</div><div class="ac-desc">${esc(wdRest)}</div></div>`}).join('')}</div></div>
     <div class="section"><div class="section-head"><h3>Skill Pool</h3><span class="pill">${m.skills.length} skills</span></div>${skillHTML}</div>
     <div class="section"><div class="section-head"><h3>Deployment</h3></div><div class="info-grid">
       <div class="info-box"><div class="ib-label">Deploy When</div><div class="ib-text">${esc(m.deploy)}</div></div>
