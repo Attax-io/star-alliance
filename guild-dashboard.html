@@ -206,11 +206,13 @@ body{
 /* Skill pool */
 .skill-list{display:flex;flex-direction:column;gap:10px}
 .skill-row{
-  display:grid;grid-template-columns:1.5fr auto auto 2.5fr;gap:18px;align-items:center;
+  display:grid;grid-template-columns:36px 1.5fr auto auto 2.5fr;gap:14px;align-items:center;
   background:var(--surface);border:1px solid var(--border);
-  border-radius:10px;padding:16px 20px;transition:.1s;
+  border-radius:10px;padding:14px 18px;transition:.1s;
 }
 .skill-row:hover{border-color:var(--border2);background:var(--surface2)}
+.skill-row .sk-icon{width:36px;height:36px;border-radius:8px;overflow:hidden;flex:none}
+.skill-row .sk-icon svg{width:100%;height:100%}
 .skill-row .sk-name{font-size:14px;font-weight:600}
 .skill-row .sk-name.shared{color:var(--purple)}
 .skill-row .sk-name .shared-mark{font-size:11px;opacity:.6;margin-left:8px;font-weight:400}
@@ -489,6 +491,43 @@ const MEMBERS=[
 
 const TYPE_LABEL={own:"OWN",vendored:"VENDORED",external:"EXTERNAL"};
 
+// Skill icons — small colored SVG with emoji for each skill
+const SKILL_ICONS={
+  "article-creator":{emoji:"📝",bg:"#5e9ef5"},
+  "brandkit":{emoji:"🎨",bg:"#d54d7a"},
+  "bug-fix-workflow":{emoji:"🐛",bg:"#c4382a"},
+  "cleanup":{emoji:"🧹",bg:"#3da155"},
+  "codex-law-translate":{emoji:"⚖️",bg:"#b89530"},
+  "conquering-campaign":{emoji:"🚀",bg:"#7c5dc8"},
+  "db-rename-sweep":{emoji:"🏷️",bg:"#3b7dd8"},
+  "design-taste-frontend":{emoji:"🎨",bg:"#d54d7a"},
+  "dev-server":{emoji:"🖥️",bg:"#2ba89a"},
+  "full-output-enforcement":{emoji:"📢",bg:"#e8b84e"},
+  "gpt-taste":{emoji:"✨",bg:"#7c5dc8"},
+  "graphify":{emoji:"🕸️",bg:"#3ec5b8"},
+  "high-end-visual-design":{emoji:"💎",bg:"#d54d7a"},
+  "image-to-code":{emoji:"🖼️",bg:"#5e9ef5"},
+  "imagegen-frontend-mobile":{emoji:"📱",bg:"#d54d7a"},
+  "imagegen-frontend-web":{emoji:"🌐",bg:"#5e9ef5"},
+  "impeccable":{emoji:"✨",bg:"#7c5dc8"},
+  "industrial-brutalist-ui":{emoji:"⚙️",bg:"#7a7468"},
+  "minimalist-ui":{emoji:"⬜",bg:"#a59e90"},
+  "obsidian-markdown":{emoji:"📝",bg:"#7c5dc8"},
+  "performance":{emoji:"⚡",bg:"#e8b84e"},
+  "redesign-existing-projects":{emoji:"🔄",bg:"#3da155"},
+  "skillsmith":{emoji:"🛠️",bg:"#b89530"},
+  "stitch-design-taste":{emoji:"🧵",bg:"#d54d7a"},
+  "strategies-review":{emoji:"📋",bg:"#3b7dd8"},
+  "supabase":{emoji:"🔥",bg:"#3da155"},
+  "supabase-postgres-best-practices":{emoji:"🐘",bg:"#3b7dd8"},
+  "transactions-domain-model":{emoji:"💳",bg:"#5e9ef5"},
+  "vault-log-compliance":{emoji:"🛡️",bg:"#7a7468"}
+};
+function skillIcon(name){
+  const ic=SKILL_ICONS[name]||{emoji:"📦",bg:"#a59e90"};
+  return `<svg viewBox="0 0 36 36"><rect width="36" height="36" rx="8" fill="${ic.bg}" opacity=".15"/><text x="18" y="24" text-anchor="middle" font-size="18">${ic.emoji}</text></svg>`;
+}
+
 // Weapon icons — SVG for each AI model
 const WEAPON_ICONS={
   "opus":`<svg viewBox="0 0 64 64"><defs><linearGradient id="wi-opus" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d4ac4e"/><stop offset="1" stop-color="#8a6f1e"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(#wi-opus)" opacity=".15"/><path d="M32 12 L32 52 M32 12 L24 20 M32 12 L40 20 M22 30 L42 30 M20 38 L44 38 M24 46 L40 46" stroke="#d4ac4e" stroke-width="2.5" stroke-linecap="round"/><circle cx="32" cy="12" r="3" fill="#d4ac4e"/></svg>`,
@@ -535,6 +574,7 @@ function showProfile(name){
     skillHTML=`<div class="skill-empty"><div class="se-icon">⚔️</div><div class="se-title">No skills recruited yet</div><div class="se-sub">Skills to recruit: market analysis, backtesting framework, portfolio rebalancing, risk assessment</div></div>`;
   } else {
     skillHTML=`<div class="skill-list">${m.skills.map(s=>{const sk=SKILLS[s]||{type:"own",version:"?",blurb:""};const isShared=sharedCount[s]>1;return `<div class="skill-row">
+      <div class="sk-icon">${skillIcon(s)}</div>
       <span class="sk-name${isShared?' shared':''}">${esc(s)}${isShared?'<span class="shared-mark">⟂ shared</span>':''}</span>
       <span class="sk-type ${sk.type}">${TYPE_LABEL[sk.type]}</span>
       <span class="sk-ver">${esc(sk.version)}</span>
@@ -596,6 +636,7 @@ function showSkillPool(){
     const users=MEMBERS.filter(m=>m.skills.includes(name)).map(m=>m.name);
     const isShared=users.length>1;
     return `<div class="skill-row">
+      <div class="sk-icon">${skillIcon(name)}</div>
       <span class="sk-name${isShared?' shared':''}">${esc(name)}${isShared?`<span class="shared-mark">⟂ ${users.length} members</span>`:''}</span>
       <span class="sk-type ${sk.type}">${TYPE_LABEL[sk.type]}</span>
       <span class="sk-ver">${esc(sk.version)}</span>
