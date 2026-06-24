@@ -203,15 +203,6 @@ body{
 .section-head h3{font-size:17px;font-weight:700}
 .section-head .pill{font-size:12px;color:var(--hint);background:var(--surface2);border:1px solid var(--border);padding:3px 12px;border-radius:6px;font-weight:600}
 
-/* Stats */
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
-.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px}
-.stat-card .sc-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
-.stat-card .sc-name{font-size:13px;font-weight:600;color:var(--mut)}
-.stat-card .sc-val{font-size:20px;font-weight:700}
-.stat-bar{height:6px;background:var(--surface2);border-radius:3px;overflow:hidden;border:1px solid var(--border)}
-.stat-bar .fill{height:100%;border-radius:3px;transition:.5s ease;width:0}
-
 /* Skill pool */
 .skill-list{display:flex;flex-direction:column;gap:10px}
 .skill-row{
@@ -276,7 +267,6 @@ body{
   .main{margin-left:0}
   .card-grid{grid-template-columns:1fr}
   .info-grid,.does-grid{grid-template-columns:1fr}
-  .stat-grid{grid-template-columns:1fr}
   .skill-row{grid-template-columns:1fr;gap:8px}
   .roster,.profile{padding:20px}
 }
@@ -390,7 +380,6 @@ const MEMBERS=[
    triggers:"Any request — The Butler decides who handles what",
    does:["Receives orders and decides which member handles what","Briefs members with clear, specific tasks and context","Tracks progress across all active dispatches","Reports results back to the user","Plans multi-step requests into waves before dispatching"],
    doesnt:["Does not do specialist work — orchestrates only","Does not write code, design UIs, or model domains"],
-   stats:{Command:95,Strategy:80,Speed:70,Precision:85,Synergy:90},
    avatar:`<svg viewBox="0 0 96 96"><defs><radialGradient id="a-butler" cx="50%" cy="35%" r="60%"><stop offset="0" stop-color="#3a3218"/><stop offset="1" stop-color="#1a1610"/></radialGradient></defs><rect width="96" height="96" rx="12" fill="url(#a-butler)"/><path d="M48 18 C39 18 33 26 33 36 C33 42 36 47 40 50 L38 58 L43 62 L48 60 L53 62 L58 58 L56 50 C60 47 63 42 63 36 C63 26 57 18 48 18Z" fill="#e8c93a" opacity=".85"/><circle cx="42" cy="34" r="2.5" fill="#1a1610"/><circle cx="54" cy="34" r="2.5" fill="#1a1610"/><path d="M42 44 Q48 48 54 44" stroke="#1a1610" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M48 60 L48 66 M43 66 L53 66" stroke="#e8c93a" stroke-width="2" stroke-linecap="round"/></svg>`},
 
   {name:"The Architect",role:"Systems Design · Database Architecture",model:"sonnet",color:"#3b7dd8",
@@ -402,7 +391,6 @@ const MEMBERS=[
    triggers:"design the system · model the domain · architect the database",
    does:["Domain modeling and transaction boundaries","Database schema design and migration","Structural refactoring with rename sweeps","Code hygiene"],
    doesnt:["Does not write marketing copy or design UIs","Does not run campaigns alone"],
-   stats:{Design:92,Architecture:95,Precision:88,Database:90,Synergy:72},
    avatar:`<svg viewBox="0 0 96 96"><defs><radialGradient id="a-arch" cx="50%" cy="35%" r="60%"><stop offset="0" stop-color="#102030"/><stop offset="1" stop-color="#0a1520"/></radialGradient></defs><rect width="96" height="96" rx="12" fill="url(#a-arch)"/><path d="M48 16 L32 24 L32 42 L48 50 L64 42 L64 24 Z" fill="none" stroke="#5e9ef5" stroke-width="2.5" stroke-linejoin="round"/><path d="M32 24 L48 32 L64 24 M48 32 L48 50" stroke="#5e9ef5" stroke-width="2" opacity=".6"/><path d="M18 54 L78 54 L78 72 L18 72 Z" fill="none" stroke="#5e9ef5" stroke-width="2" opacity=".5"/><circle cx="48" cy="42" r="3.5" fill="#5e9ef5" opacity=".7"/></svg>`},
 
   {name:"The Developer",role:"Writing Code · Fixing Bugs · Implementation",model:"sonnet",color:"#3da155",
@@ -414,7 +402,6 @@ const MEMBERS=[
    triggers:"write the code · fix this bug · implement this feature",
    does:["Writing and applying code changes","Bug fixing end-to-end","Database operations and migrations","Dev server management","Code refactoring"],
    doesnt:["Does not design architecture","Does not plan campaigns","Does not design UIs"],
-   stats:{Coding:95,Debugging:88,Speed:85,Precision:82,Synergy:75},
    avatar:`<svg viewBox="0 0 96 96"><defs><radialGradient id="a-dev" cx="50%" cy="35%" r="60%"><stop offset="0" stop-color="#102820"/><stop offset="1" stop-color="#0a1815"/></radialGradient></defs><rect width="96" height="96" rx="12" fill="url(#a-dev)"/><path d="M30 36 L22 44 L30 52 M66 36 L74 44 L66 52" stroke="#4ec985" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M42 30 L38 58 M54 30 L50 58" stroke="#4ec985" stroke-width="2.5" fill="none" stroke-linecap="round" opacity=".7"/></svg>`},
 
   {name:"The Designer",role:"UI/UX · Visual Quality · Brand Kits",model:"sonnet",color:"#d54d7a",
@@ -426,7 +413,6 @@ const MEMBERS=[
    triggers:"design the UI · make it look premium · create a brand kit",
    does:["Frontend visual design (web and mobile)","Image-to-code conversion","Brand kit creation","Design systems","Redesigning existing projects"],
    doesnt:["Does not design database schemas","Does not run multi-wave campaigns"],
-   stats:{Design:98,Creativity:95,Precision:85,Detail:92,Synergy:70},
    avatar:`<svg viewBox="0 0 96 96"><defs><radialGradient id="a-design" cx="50%" cy="35%" r="60%"><stop offset="0" stop-color="#2d1018"/><stop offset="1" stop-color="#1f0a10"/></radialGradient></defs><rect width="96" height="96" rx="12" fill="url(#a-design)"/><circle cx="38" cy="36" r="7" fill="#ff6b8a" opacity=".8"/><circle cx="58" cy="36" r="7" fill="#4ec985" opacity=".8"/><circle cx="48" cy="52" r="7" fill="#5e9ef5" opacity=".8"/><circle cx="36" cy="50" r="5" fill="#e8c93a" opacity=".7"/><circle cx="60" cy="50" r="5" fill="#a67cf2" opacity=".7"/></svg>`},
 
   {name:"The Strategist",role:"Multi-Wave Campaigns · Performance",model:"opus",color:"#7c5dc8",
@@ -438,7 +424,6 @@ const MEMBERS=[
    triggers:"plan the campaign · break this into waves · optimize performance",
    does:["Multi-wave campaign planning and execution","Bug triage and fix workflow","Web performance optimization","Strategy review and tracking","Vault-logging compliance"],
    doesnt:["Does not design UIs","Does not model domains","Does not translate legal documents"],
-   stats:{Strategy:95,Planning:92,Command:85,Endurance:90,Synergy:82},
    avatar:`<svg viewBox="0 0 96 96"><defs><radialGradient id="a-strat" cx="50%" cy="35%" r="60%"><stop offset="0" stop-color="#201030"/><stop offset="1" stop-color="#150820"/></radialGradient></defs><rect width="96" height="96" rx="12" fill="url(#a-strat)"/><path d="M48 14 L40 24 L45 24 L45 34 L35 34 L40 28 L30 28 L35 22 L25 22 L48 14 Z M48 14 L56 24 L51 24 L51 34 L61 34 L56 28 L66 28 L61 22 L71 22 L48 14Z" fill="#a67cf2" opacity=".5"/><path d="M48 34 L48 68" stroke="#a67cf2" stroke-width="2.5"/><path d="M36 68 L60 68 L57 76 L39 76 Z" fill="#a67cf2" opacity=".4"/></svg>`},
 
   {name:"The Translator",role:"Legal Codex · Law Translation",model:"sonnet",color:"#b89530",
@@ -450,7 +435,6 @@ const MEMBERS=[
    triggers:"load this law · translate this law · add translations",
    does:["Loading laws into the legal codex","Multi-locale translation (6 locales)","Article creation and publishing","Obsidian-flavored markdown"],
    doesnt:["Does not design systems","Does not plan campaigns"],
-   stats:{Translation:95,Precision:92,Detail:90,Knowledge:85,Synergy:60},
    avatar:`<svg viewBox="0 0 96 96"><defs><radialGradient id="a-trans" cx="50%" cy="35%" r="60%"><stop offset="0" stop-color="#2d2018"/><stop offset="1" stop-color="#1f1508"/></radialGradient></defs><rect width="96" height="96" rx="12" fill="url(#a-trans)"/><path d="M28 20 L28 70 L68 70 L68 20 Z" fill="none" stroke="#d4a05a" stroke-width="2"/><path d="M28 20 L48 26 L68 20" stroke="#d4a05a" stroke-width="2" fill="none"/><path d="M36 32 L60 32 M36 40 L60 40 M36 48 L60 48 M36 56 L54 56" stroke="#d4a05a" stroke-width=".8" opacity=".4"/><path d="M42 40 L47 45 L56 36" stroke="#d4a05a" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>`},
 
   {name:"The Engineer",role:"Dev Servers · Knowledge Graphs · Tooling",model:"sonnet",color:"#2ba89a",
@@ -462,7 +446,6 @@ const MEMBERS=[
    triggers:"open dev server · generate a knowledge graph · full output mode",
    does:["Dev server lifecycle management","Knowledge graph generation from any input","Full output enforcement","Workspace hygiene"],
    doesnt:["Does not design UIs","Does not plan campaigns","Does not model domains"],
-   stats:{Infrastructure:90,Tooling:88,Reliability:85,Problem_Solving:82,Synergy:72},
    avatar:`<svg viewBox="0 0 96 96"><defs><radialGradient id="a-eng" cx="50%" cy="35%" r="60%"><stop offset="0" stop-color="#102028"/><stop offset="1" stop-color="#0a1018"/></radialGradient></defs><rect width="96" height="96" rx="12" fill="url(#a-eng)"/><circle cx="48" cy="38" r="9" fill="none" stroke="#3ec5b8" stroke-width="2.5"/><circle cx="48" cy="38" r="4" fill="#3ec5b8" opacity=".5"/><path d="M36 38 L31 38 M65 38 L60 38 M48 26 L48 21 M48 55 L48 50" stroke="#3ec5b8" stroke-width="2" stroke-linecap="round"/><path d="M32 60 L64 60 L64 74 L32 74 Z" fill="none" stroke="#3ec5b8" stroke-width="2"/><path d="M37 65 L59 65 M37 69 L53 69" stroke="#3ec5b8" stroke-width="1" opacity=".4"/></svg>`},
 
   {name:"The Merchant",role:"Investment · Trading · Market Research",model:"opus",color:"#3da155",
@@ -474,7 +457,6 @@ const MEMBERS=[
    triggers:"analyze this investment · build a trading strategy · research this market",
    does:["Investment analysis (fundamental and technical)","Trading strategy development and backtesting","Market research and trend analysis","Portfolio management and asset allocation","Risk assessment and position sizing"],
    doesnt:["Does not write application code","Does not design systems","Does not plan engineering campaigns"],
-   stats:{Analysis:95,Risk:90,Market:88,Precision:85,Synergy:65},
    avatar:`<svg viewBox="0 0 96 96"><defs><radialGradient id="a-merc" cx="50%" cy="35%" r="60%"><stop offset="0" stop-color="#102820"/><stop offset="1" stop-color="#0a1812"/></radialGradient></defs><rect width="96" height="96" rx="12" fill="url(#a-merc)"/><path d="M48 18 L48 62" stroke="#4ec9a0" stroke-width="3"/><circle cx="48" cy="18" r="4" fill="#4ec9a0"/><path d="M24 42 L72 42" stroke="#4ec9a0" stroke-width="2" opacity=".3"/><path d="M24 42 L24 50 L34 50 L34 42 M62 42 L62 54 L72 54 L72 42" fill="none" stroke="#4ec9a0" stroke-width="2"/><path d="M48 42 L48 36 L42 36 L42 42 M48 42 L48 48 L54 48 L54 42" fill="none" stroke="#4ec9a0" stroke-width="2" opacity=".5"/><rect x="28" y="60" width="6" height="8" rx="1" fill="#4ec9a0" opacity=".3"/><rect x="38" y="60" width="6" height="12" rx="1" fill="#4ec9a0" opacity=".4"/><rect x="48" y="60" width="6" height="6" rx="1" fill="#4ec9a0" opacity=".25"/><rect x="58" y="60" width="6" height="14" rx="1" fill="#4ec9a0" opacity=".35"/></svg>`},
 
   {name:"The Quartermaster",role:"Skill Management · Syncing · Evolution",model:"sonnet",color:"#b89530",
@@ -486,21 +468,14 @@ const MEMBERS=[
    triggers:"sync my skills · upgrade a skill · create a skill · run the skill routine",
    does:["Skill sync (repo ↔ device)","Skill upgrades with version bumping","New skill creation via skill-creator","Daily autonomous skill evolution","Workspace hygiene"],
    doesnt:["Does not design UIs","Does not plan campaigns","Does not model domains"],
-   stats:{Management:92,Precision:90,Knowledge:85,Reliability:88,Synergy:80},
    avatar:`<svg viewBox="0 0 96 96"><defs><radialGradient id="a-quart" cx="50%" cy="35%" r="60%"><stop offset="0" stop-color="#2d2010"/><stop offset="1" stop-color="#1f1408"/></radialGradient></defs><rect width="96" height="96" rx="12" fill="url(#a-quart)"/><path d="M48 14 L62 20 L62 36 C62 45 56 51 48 53 C40 51 34 45 34 36 L34 20 Z" fill="none" stroke="#e8b84e" stroke-width="2.5" stroke-linejoin="round"/><path d="M40 28 L45 33 L56 22" stroke="#e8b84e" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M48 53 L48 60 M40 60 L56 60 L56 68 L40 68 Z" fill="#e8b84e" opacity=".4"/></svg>`}
 ];
 
 const TYPE_LABEL={own:"OWN",vendored:"VENDORED",external:"EXTERNAL"};
-const STAT_COLORS={Command:"#b89530",Strategy:"#7c5dc8",Speed:"#3da155",Precision:"#3b7dd8",Synergy:"#d54d7a",
-  Design:"#d54d7a",Architecture:"#3b7dd8",Database:"#3b7dd8",Coding:"#3da155",Debugging:"#3da155",
-  Creativity:"#d54d7a",Detail:"#2ba89a",Planning:"#7c5dc8",Endurance:"#b89530",Translation:"#b89530",
-  Knowledge:"#b89530",Infrastructure:"#2ba89a",Tooling:"#2ba89a",Reliability:"#3da155",
-  Problem_Solving:"#3b7dd8",Analysis:"#3da155",Risk:"#c4382a",Market:"#2ba89a",Management:"#b89530"};
 
 const sharedCount={};
 MEMBERS.forEach(m=>m.skills.forEach(s=>{sharedCount[s]=(sharedCount[s]||0)+1}));
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const statLabel=k=>k.replace(/_/g,' ');
 const rosterView=document.getElementById('rosterView');
 const profileView=document.getElementById('profileView');
 
@@ -527,11 +502,6 @@ function renderRoster(){
 
 function showProfile(name){
   const m=MEMBERS.find(x=>x.name===name);if(!m)return;
-  const stats=Object.entries(m.stats);
-  const statHTML=stats.map(([k,v])=>{const c=STAT_COLORS[k]||'#b89530';return `<div class="stat-card">
-    <div class="sc-top"><span class="sc-name">${esc(statLabel(k))}</span><span class="sc-val">${v}</span></div>
-    <div class="stat-bar"><div class="fill" style="background:${c};width:0" data-w="${v}"></div></div></div>`}).join('');
-
   let skillHTML;
   if(m.skills.length===0){
     skillHTML=`<div class="skill-empty"><div class="se-icon">⚔️</div><div class="se-title">No skills recruited yet</div><div class="se-sub">Skills to recruit: market analysis, backtesting framework, portfolio rebalancing, risk assessment</div></div>`;
@@ -559,7 +529,6 @@ function showProfile(name){
       <button class="pt-back" onclick="showRoster()">← Back</button>
     </div>
     <div class="profile-desc">${esc(m.desc)}</div>
-    <div class="section"><div class="section-head"><h3>Stats</h3></div><div class="stat-grid">${statHTML}</div></div>
     <div class="section"><div class="section-head"><h3>Arsenal</h3><span class="pill">3 weapons</span></div><div class="weapon-list">${m.weapons.map((w,i)=>`<div class="weapon-row"><span class="wp-priority">${i===0?'1st':i===1?'2nd':'3rd'}</span><span class="wp-name">${w}</span><span class="wp-desc">${m.weaponsDesc[i]}</span></div>`).join('')}</div></div>
     <div class="section"><div class="section-head"><h3>Skill Pool</h3><span class="pill">${m.skills.length} skills</span></div>${skillHTML}</div>
     <div class="section"><div class="section-head"><h3>Deployment</h3></div><div class="info-grid">
@@ -576,7 +545,6 @@ function showProfile(name){
   document.getElementById('pageTitle').textContent=m.name;
   document.getElementById('pageSub').textContent=m.role;
   document.querySelectorAll('.sidebar .nav-item').forEach(n=>n.classList.remove('active'));
-  setTimeout(()=>{document.querySelectorAll('.stat-bar .fill').forEach(f=>{f.style.width=f.dataset.w+'%'})},50);
 }
 
 function showRoster(){
