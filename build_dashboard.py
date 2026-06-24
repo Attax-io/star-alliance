@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Build the skills dashboard data file.
+"""Build the guild dashboard data file.
 
 Reads every SKILL.md in the repo + dashboard-meta.json, merges them,
-and writes skills-data.js (loaded by skills-gallery.html via <script src>).
+and writes skills-data.js (loaded by guild-dashboard.html via <script src>).
 
 Auto-extracted from SKILL.md:
   name, version, desc, body_lines, words, intro, sections, refs, scripts, src, ramp

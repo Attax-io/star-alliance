@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Star Alliance — Guild</title>
+<title>Star Alliance — Guild Dashboard</title>
 <style>
 :root{
   --bg:#f5f3ef;
@@ -128,6 +128,8 @@ body{
 .theme-toggle .icon-sun{display:block}
 [data-theme="dark"] .theme-toggle .icon-moon{display:block}
 [data-theme="dark"] .theme-toggle .icon-sun{display:none}
+#refreshBtn svg{transition:transform .5s ease}
+#refreshBtn.spinning svg{transform:rotate(360deg)}
 
 /* ═══ ROSTER ═══ */
 .roster{padding:32px}
@@ -161,6 +163,9 @@ body{
 }
 .member-card .mc-model{font-size:12px;color:var(--hint);font-weight:600;text-transform:uppercase;letter-spacing:.03em}
 .member-card .mc-nskills{font-size:12px;color:var(--gold);font-weight:700}
+.member-card .mc-weapons{display:flex;gap:4px;align-items:center;margin-left:auto;margin-right:12px}
+.member-card .mc-weapon{font-size:10px;font-weight:600;color:var(--hint);background:var(--surface);border:1px solid var(--border);padding:2px 7px;border-radius:4px}
+.member-card .mc-weapon.primary{color:var(--gold);border-color:rgba(184,149,48,.3);background:var(--gold-bg)}
 
 /* ═══ PROFILE ═══ */
 .profile{padding:32px;display:none}
@@ -236,6 +241,14 @@ body{
 .skill-empty .se-title{font-size:15px;font-weight:600;color:var(--mut);margin-bottom:6px}
 .skill-empty .se-sub{font-size:13px;color:var(--hint);max-width:360px;margin:0 auto}
 
+/* Arsenal */
+.weapon-list{display:flex;flex-direction:column;gap:10px}
+.weapon-row{display:grid;grid-template-columns:60px 140px 1fr;gap:16px;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;transition:.1s}
+.weapon-row:hover{border-color:var(--border2);background:var(--surface2)}
+.wp-priority{font-size:11px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.04em}
+.wp-name{font-size:14px;font-weight:700;color:var(--txt)}
+.wp-desc{font-size:13px;color:var(--mut);line-height:1.5}
+
 /* Deploy */
 .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .info-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px}
@@ -297,7 +310,7 @@ body{
   </div>
   <div class="sidebar-footer">
     <div class="stat"><span>Members</span><b>9</b></div>
-    <div class="stat"><span>Skills</span><b>29</b></div>
+    <div class="stat"><span>Skills</span><b>30</b></div>
     <div class="stat"><span>Violations</span><b style="color:var(--green)">0</b></div>
   </div>
 </aside>
@@ -305,7 +318,7 @@ body{
 <div class="main">
 <div class="topbar">
   <h1 id="pageTitle">Guild Roster</h1>
-  <span class="sub" id="pageSub">9 members · 29 skills</span>
+  <span class="sub" id="pageSub">9 members · 30 skills</span>
   <div class="search">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
     <input id="searchInput" type="text" placeholder="Search members…" autocomplete="off"/>
@@ -314,6 +327,9 @@ body{
     <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2m0 18v2M4.2 4.2l1.4 1.4m12.8 12.8l1.4 1.4M1 12h2m18 0h2M4.2 19.8l1.4-1.4m12.8-12.8l1.4-1.4"/></svg>
     <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
   </button>
+  <button class="theme-toggle" id="refreshBtn" title="Refresh dashboard" style="position:relative">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.5 9a9 9 0 0 1 14.8-3.4L23 10M1 14l4.7 4.4A9 9 0 0 0 20.5 15"/></svg>
+  </button>
 </div>
 
 <div class="roster" id="rosterView">
@@ -321,7 +337,7 @@ body{
 </div>
 
 <div class="roster" id="skillPoolView" style="display:none">
-  <div class="section-head" style="margin-bottom:20px"><h3>All Skills</h3><span class="pill">29 in the guild</span></div>
+  <div class="section-head" style="margin-bottom:20px"><h3>All Skills</h3><span class="pill">30 in the guild</span></div>
   <div class="skill-list" id="skillPoolList"></div>
 </div>
 
@@ -360,12 +376,15 @@ const SKILLS={
   "supabase":{type:"vendored",version:"0.1.2",blurb:"All-in-one Supabase toolkit spanning database auth storage vectors"},
   "supabase-postgres-best-practices":{type:"vendored",version:"1.1.1",blurb:"Postgres performance optimization and best practices from Supabase"},
   "transactions-domain-model":{type:"own",version:"1.2.0",blurb:"Loads Lex Council transactions domain model before any work"},
-  "vault-log-compliance":{type:"own",version:"1.1.0",blurb:"Enforces P8 vault-logging compliance across all backend code"}
+  "vault-log-compliance":{type:"own",version:"1.1.0",blurb:"Enforces P8 vault-logging compliance across all backend code"},
+"fallen-sword-design-language":{type:"own",version:"1.0.0",blurb:"Vocabulary, mechanics, and lore of Fallen Sword — dark fantasy design language"}
 };
 
 const MEMBERS=[
   {name:"The Butler",role:"Orchestrator · First Point of Contact",model:"opus",color:"#b89530",
-   skills:["conquering-campaign","cleanup","skillsmith"],
+   skills:["conquering-campaign","cleanup","skillsmith","fallen-sword-design-language"],
+   weapons:["opus","sonnet","glm-5.2"],
+   weaponsDesc:["Claude Opus — the heaviest blade. Deepest reasoning for complex routing.","Claude Sonnet — the reliable longsword. Fast enough for daily dispatch.","GLM-5.2 — the staff. Strong multilingual analysis."],
    desc:"Takes your orders and routes them to the right member. Knows the full roster, who's good at what, and how to sequence their work.",
    deploy:"Any request — The Butler decides who handles what",
    triggers:"Any request — The Butler decides who handles what",
@@ -375,7 +394,9 @@ const MEMBERS=[
    avatar:`<svg viewBox="0 0 96 96"><defs><radialGradient id="a-butler" cx="50%" cy="35%" r="60%"><stop offset="0" stop-color="#3a3218"/><stop offset="1" stop-color="#1a1610"/></radialGradient></defs><rect width="96" height="96" rx="12" fill="url(#a-butler)"/><path d="M48 18 C39 18 33 26 33 36 C33 42 36 47 40 50 L38 58 L43 62 L48 60 L53 62 L58 58 L56 50 C60 47 63 42 63 36 C63 26 57 18 48 18Z" fill="#e8c93a" opacity=".85"/><circle cx="42" cy="34" r="2.5" fill="#1a1610"/><circle cx="54" cy="34" r="2.5" fill="#1a1610"/><path d="M42 44 Q48 48 54 44" stroke="#1a1610" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M48 60 L48 66 M43 66 L53 66" stroke="#e8c93a" stroke-width="2" stroke-linecap="round"/></svg>`},
 
   {name:"The Architect",role:"Systems Design · Database Architecture",model:"sonnet",color:"#3b7dd8",
-   skills:["transactions-domain-model","db-rename-sweep","supabase","supabase-postgres-best-practices","cleanup"],
+   skills:["transactions-domain-model","db-rename-sweep","supabase","supabase-postgres-best-practices","cleanup","fallen-sword-design-language"],
+   weapons:["opus","gpt-5.5","sonnet"],
+   weaponsDesc:["Claude Opus — the heaviest blade. Deepest reasoning for schema modeling.","GPT-5.5 — the enchanted blade. Exceptional analytical reasoning.","Claude Sonnet — the reliable longsword for daily structural work."],
    desc:"Designs systems and database architecture. Thinks in data flow, domain boundaries, and structural integrity.",
    deploy:"System design, domain modeling, database architecture, structural refactoring",
    triggers:"design the system · model the domain · architect the database",
@@ -385,7 +406,9 @@ const MEMBERS=[
    avatar:`<svg viewBox="0 0 96 96"><defs><radialGradient id="a-arch" cx="50%" cy="35%" r="60%"><stop offset="0" stop-color="#102030"/><stop offset="1" stop-color="#0a1520"/></radialGradient></defs><rect width="96" height="96" rx="12" fill="url(#a-arch)"/><path d="M48 16 L32 24 L32 42 L48 50 L64 42 L64 24 Z" fill="none" stroke="#5e9ef5" stroke-width="2.5" stroke-linejoin="round"/><path d="M32 24 L48 32 L64 24 M48 32 L48 50" stroke="#5e9ef5" stroke-width="2" opacity=".6"/><path d="M18 54 L78 54 L78 72 L18 72 Z" fill="none" stroke="#5e9ef5" stroke-width="2" opacity=".5"/><circle cx="48" cy="42" r="3.5" fill="#5e9ef5" opacity=".7"/></svg>`},
 
   {name:"The Developer",role:"Writing Code · Fixing Bugs · Implementation",model:"sonnet",color:"#3da155",
-   skills:["bug-fix-workflow","db-rename-sweep","dev-server","supabase","supabase-postgres-best-practices","full-output-enforcement","cleanup","obsidian-markdown"],
+   skills:["bug-fix-workflow","db-rename-sweep","dev-server","supabase","supabase-postgres-best-practices","full-output-enforcement","cleanup","obsidian-markdown","fallen-sword-design-language"],
+   weapons:["sonnet","kimi-k2.7","haiku"],
+   weaponsDesc:["Claude Sonnet — the reliable longsword for daily coding.","Kimi K2.7 — the greatbow. Massive context for big codebases.","Claude Haiku — the dagger. Fast for quick fixes."],
    desc:"Writes code, fixes bugs, implements features. Takes specs and turns them into working code. Tests before saying it's done.",
    deploy:"Writing code, applying changes, fixing bugs, implementing features",
    triggers:"write the code · fix this bug · implement this feature",
@@ -395,7 +418,9 @@ const MEMBERS=[
    avatar:`<svg viewBox="0 0 96 96"><defs><radialGradient id="a-dev" cx="50%" cy="35%" r="60%"><stop offset="0" stop-color="#102820"/><stop offset="1" stop-color="#0a1815"/></radialGradient></defs><rect width="96" height="96" rx="12" fill="url(#a-dev)"/><path d="M30 36 L22 44 L30 52 M66 36 L74 44 L66 52" stroke="#4ec985" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M42 30 L38 58 M54 30 L50 58" stroke="#4ec985" stroke-width="2.5" fill="none" stroke-linecap="round" opacity=".7"/></svg>`},
 
   {name:"The Designer",role:"UI/UX · Visual Quality · Brand Kits",model:"sonnet",color:"#d54d7a",
-   skills:["design-taste-frontend","high-end-visual-design","image-to-code","imagegen-frontend-web","imagegen-frontend-mobile","brandkit","minimalist-ui","industrial-brutalist-ui","impeccable","stitch-design-taste","gpt-taste","redesign-existing-projects"],
+   skills:["design-taste-frontend","high-end-visual-design","image-to-code","imagegen-frontend-web","imagegen-frontend-mobile","brandkit","minimalist-ui","industrial-brutalist-ui","impeccable","stitch-design-taste","gpt-taste","redesign-existing-projects","fallen-sword-design-language"],
+   weapons:["gpt-5.5","sonnet","minimax-m3"],
+   weaponsDesc:["GPT-5.5 — the enchanted blade. Exceptional visual creativity.","Claude Sonnet — the reliable longsword for iteration speed.","MiniMax M3 — the crossbow. Precise for structural work."],
    desc:"Premium UI/UX designer. Turns rough sketches into polished interfaces. Design is how the product communicates.",
    deploy:"UI/UX design, visual quality, brand kits, image-to-code conversion",
    triggers:"design the UI · make it look premium · create a brand kit",
@@ -405,7 +430,9 @@ const MEMBERS=[
    avatar:`<svg viewBox="0 0 96 96"><defs><radialGradient id="a-design" cx="50%" cy="35%" r="60%"><stop offset="0" stop-color="#2d1018"/><stop offset="1" stop-color="#1f0a10"/></radialGradient></defs><rect width="96" height="96" rx="12" fill="url(#a-design)"/><circle cx="38" cy="36" r="7" fill="#ff6b8a" opacity=".8"/><circle cx="58" cy="36" r="7" fill="#4ec985" opacity=".8"/><circle cx="48" cy="52" r="7" fill="#5e9ef5" opacity=".8"/><circle cx="36" cy="50" r="5" fill="#e8c93a" opacity=".7"/><circle cx="60" cy="50" r="5" fill="#a67cf2" opacity=".7"/></svg>`},
 
   {name:"The Strategist",role:"Multi-Wave Campaigns · Performance",model:"opus",color:"#7c5dc8",
-   skills:["conquering-campaign","bug-fix-workflow","performance","strategies-review","vault-log-compliance","cleanup"],
+   skills:["conquering-campaign","bug-fix-workflow","performance","strategies-review","vault-log-compliance","cleanup","fallen-sword-design-language"],
+   weapons:["opus","kimi-k2.7","glm-5.2"],
+   weaponsDesc:["Claude Opus — the heaviest blade for complex multi-wave planning.","Kimi K2.7 — the greatbow for long campaign documents.","GLM-5.2 — the staff for analytical breakdowns."],
    desc:"Campaign commander. Handles work too big for a single pass. Breaks it into waves and drives them to completion.",
    deploy:"Large multi-wave projects, campaign planning, bug workflows, performance",
    triggers:"plan the campaign · break this into waves · optimize performance",
@@ -415,7 +442,9 @@ const MEMBERS=[
    avatar:`<svg viewBox="0 0 96 96"><defs><radialGradient id="a-strat" cx="50%" cy="35%" r="60%"><stop offset="0" stop-color="#201030"/><stop offset="1" stop-color="#150820"/></radialGradient></defs><rect width="96" height="96" rx="12" fill="url(#a-strat)"/><path d="M48 14 L40 24 L45 24 L45 34 L35 34 L40 28 L30 28 L35 22 L25 22 L48 14 Z M48 14 L56 24 L51 24 L51 34 L61 34 L56 28 L66 28 L61 22 L71 22 L48 14Z" fill="#a67cf2" opacity=".5"/><path d="M48 34 L48 68" stroke="#a67cf2" stroke-width="2.5"/><path d="M36 68 L60 68 L57 76 L39 76 Z" fill="#a67cf2" opacity=".4"/></svg>`},
 
   {name:"The Translator",role:"Legal Codex · Law Translation",model:"sonnet",color:"#b89530",
-   skills:["codex-law-translate","article-creator","obsidian-markdown"],
+   skills:["codex-law-translate","article-creator","obsidian-markdown","fallen-sword-design-language"],
+   weapons:["gpt-5.5","glm-5.2","kimi-k2.7"],
+   weaponsDesc:["GPT-5.5 — the enchanted blade. Best multilingual.","GLM-5.2 — the staff. Strongest Chinese/multilingual.","Kimi K2.7 — the greatbow for long legal documents."],
    desc:"Legal codex specialist. Loads real-world laws, translates them across all locales, and creates published content.",
    deploy:"Legal codex loading, law translation, multi-locale content work",
    triggers:"load this law · translate this law · add translations",
@@ -425,7 +454,9 @@ const MEMBERS=[
    avatar:`<svg viewBox="0 0 96 96"><defs><radialGradient id="a-trans" cx="50%" cy="35%" r="60%"><stop offset="0" stop-color="#2d2018"/><stop offset="1" stop-color="#1f1508"/></radialGradient></defs><rect width="96" height="96" rx="12" fill="url(#a-trans)"/><path d="M28 20 L28 70 L68 70 L68 20 Z" fill="none" stroke="#d4a05a" stroke-width="2"/><path d="M28 20 L48 26 L68 20" stroke="#d4a05a" stroke-width="2" fill="none"/><path d="M36 32 L60 32 M36 40 L60 40 M36 48 L60 48 M36 56 L54 56" stroke="#d4a05a" stroke-width=".8" opacity=".4"/><path d="M42 40 L47 45 L56 36" stroke="#d4a05a" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>`},
 
   {name:"The Engineer",role:"Dev Servers · Knowledge Graphs · Tooling",model:"sonnet",color:"#2ba89a",
-   skills:["dev-server","graphify","full-output-enforcement","cleanup"],
+   skills:["dev-server","graphify","full-output-enforcement","cleanup","fallen-sword-design-language"],
+   weapons:["sonnet","haiku","minimax-m3"],
+   weaponsDesc:["Claude Sonnet — the reliable longsword for daily server management.","Claude Haiku — the dagger for quick server ops.","MiniMax M3 — the crossbow for repetitive tooling."],
    desc:"Infrastructure and tooling specialist. Keeps the dev environment running, generates knowledge graphs, and enforces full output.",
    deploy:"Dev server management, knowledge graph generation, tooling, output enforcement",
    triggers:"open dev server · generate a knowledge graph · full output mode",
@@ -435,7 +466,9 @@ const MEMBERS=[
    avatar:`<svg viewBox="0 0 96 96"><defs><radialGradient id="a-eng" cx="50%" cy="35%" r="60%"><stop offset="0" stop-color="#102028"/><stop offset="1" stop-color="#0a1018"/></radialGradient></defs><rect width="96" height="96" rx="12" fill="url(#a-eng)"/><circle cx="48" cy="38" r="9" fill="none" stroke="#3ec5b8" stroke-width="2.5"/><circle cx="48" cy="38" r="4" fill="#3ec5b8" opacity=".5"/><path d="M36 38 L31 38 M65 38 L60 38 M48 26 L48 21 M48 55 L48 50" stroke="#3ec5b8" stroke-width="2" stroke-linecap="round"/><path d="M32 60 L64 60 L64 74 L32 74 Z" fill="none" stroke="#3ec5b8" stroke-width="2"/><path d="M37 65 L59 65 M37 69 L53 69" stroke="#3ec5b8" stroke-width="1" opacity=".4"/></svg>`},
 
   {name:"The Merchant",role:"Investment · Trading · Market Research",model:"opus",color:"#3da155",
-   skills:[],
+   skills:["fallen-sword-design-language"],
+   weapons:["opus","gpt-5.5","glm-5.2"],
+   weaponsDesc:["Claude Opus — the heaviest blade for deep financial analysis.","GPT-5.5 — the enchanted blade for market reasoning.","GLM-5.2 — the staff for data analysis."],
    desc:"Investment and trading specialist. Analyzes markets, builds trading strategies, assesses risk, and manages portfolios with rigor.",
    deploy:"Investment analysis, trading strategies, market research, portfolio management",
    triggers:"analyze this investment · build a trading strategy · research this market",
@@ -445,7 +478,9 @@ const MEMBERS=[
    avatar:`<svg viewBox="0 0 96 96"><defs><radialGradient id="a-merc" cx="50%" cy="35%" r="60%"><stop offset="0" stop-color="#102820"/><stop offset="1" stop-color="#0a1812"/></radialGradient></defs><rect width="96" height="96" rx="12" fill="url(#a-merc)"/><path d="M48 18 L48 62" stroke="#4ec9a0" stroke-width="3"/><circle cx="48" cy="18" r="4" fill="#4ec9a0"/><path d="M24 42 L72 42" stroke="#4ec9a0" stroke-width="2" opacity=".3"/><path d="M24 42 L24 50 L34 50 L34 42 M62 42 L62 54 L72 54 L72 42" fill="none" stroke="#4ec9a0" stroke-width="2"/><path d="M48 42 L48 36 L42 36 L42 42 M48 42 L48 48 L54 48 L54 42" fill="none" stroke="#4ec9a0" stroke-width="2" opacity=".5"/><rect x="28" y="60" width="6" height="8" rx="1" fill="#4ec9a0" opacity=".3"/><rect x="38" y="60" width="6" height="12" rx="1" fill="#4ec9a0" opacity=".4"/><rect x="48" y="60" width="6" height="6" rx="1" fill="#4ec9a0" opacity=".25"/><rect x="58" y="60" width="6" height="14" rx="1" fill="#4ec9a0" opacity=".35"/></svg>`},
 
   {name:"The Quartermaster",role:"Skill Management · Syncing · Evolution",model:"sonnet",color:"#b89530",
-   skills:["skillsmith","cleanup"],
+   skills:["skillsmith","cleanup","fallen-sword-design-language"],
+   weapons:["sonnet","haiku","minimax-m3"],
+   weaponsDesc:["Claude Sonnet — the reliable longsword for daily skill management.","Claude Haiku — the dagger for quick syncs.","MiniMax M3 — the crossbow for routine versioning."],
    desc:"Keeper of the guild's arsenal. Manages skills — versioning, syncing, upgrading, creating new ones. Runs the daily evolution routine.",
    deploy:"Skill management, syncing, upgrading, creating new skills, daily evolution routine",
    triggers:"sync my skills · upgrade a skill · create a skill · run the skill routine",
@@ -484,7 +519,7 @@ function renderRoster(){
           <div class="mc-skills">${tags}${extra}</div>
         </div>
       </div>
-      <div class="mc-foot"><span class="mc-model">${m.model}</span><span class="mc-nskills">${m.skills.length} skills</span></div>
+      <div class="mc-foot"><span class="mc-model">${m.model}</span><div class="mc-weapons">${m.weapons.map((w,i)=>`<span class="mc-weapon${i===0?' primary':''}">${w}</span>`).join('')}</div><span class="mc-nskills">${m.skills.length} skills</span></div>
     </div>`;
   }).join('');
   grid.querySelectorAll('.member-card').forEach(c=>c.addEventListener('click',()=>showProfile(c.dataset.m)));
@@ -525,6 +560,7 @@ function showProfile(name){
     </div>
     <div class="profile-desc">${esc(m.desc)}</div>
     <div class="section"><div class="section-head"><h3>Stats</h3></div><div class="stat-grid">${statHTML}</div></div>
+    <div class="section"><div class="section-head"><h3>Arsenal</h3><span class="pill">3 weapons</span></div><div class="weapon-list">${m.weapons.map((w,i)=>`<div class="weapon-row"><span class="wp-priority">${i===0?'1st':i===1?'2nd':'3rd'}</span><span class="wp-name">${w}</span><span class="wp-desc">${m.weaponsDesc[i]}</span></div>`).join('')}</div></div>
     <div class="section"><div class="section-head"><h3>Skill Pool</h3><span class="pill">${m.skills.length} skills</span></div>${skillHTML}</div>
     <div class="section"><div class="section-head"><h3>Deployment</h3></div><div class="info-grid">
       <div class="info-box"><div class="ib-label">Deploy When</div><div class="ib-text">${esc(m.deploy)}</div></div>
@@ -547,7 +583,7 @@ function showRoster(){
   rosterView.style.display='block';profileView.classList.remove('active');
   document.getElementById('skillPoolView').style.display='none';
   document.getElementById('pageTitle').textContent='Guild Roster';
-  document.getElementById('pageSub').textContent='9 members · 29 skills';
+  document.getElementById('pageSub').textContent='9 members · 30 skills';
   document.querySelectorAll('.sidebar .nav-item').forEach(n=>n.classList.remove('active'));
   document.querySelector('.nav-item[data-view="roster"]').classList.add('active');
 }
@@ -556,7 +592,7 @@ function showSkillPool(){
   rosterView.style.display='none';profileView.classList.remove('active');
   document.getElementById('skillPoolView').style.display='block';
   document.getElementById('pageTitle').textContent='Skill Pool';
-  document.getElementById('pageSub').textContent='29 skills in the guild arsenal';
+  document.getElementById('pageSub').textContent='30 skills in the guild arsenal';
   document.querySelectorAll('.sidebar .nav-item').forEach(n=>n.classList.remove('active'));
   document.querySelector('.nav-item[data-view="skills"]').classList.add('active');
   const list=document.getElementById('skillPoolList');
@@ -607,6 +643,15 @@ try{
 themeToggle.addEventListener('click',()=>{
   const isDark=document.documentElement.getAttribute('data-theme')==='dark';
   setTheme(!isDark);
+});
+
+// ── REFRESH ──
+const refreshBtn=document.getElementById('refreshBtn');
+refreshBtn.addEventListener('click',()=>{
+  refreshBtn.classList.add('spinning');
+  setTimeout(()=>refreshBtn.classList.remove('spinning'),500);
+  // Reload the page to pick up any changes to skills-data.js or the HTML
+  location.reload();
 });
 </script>
 </body>

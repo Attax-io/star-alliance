@@ -346,6 +346,35 @@ const SKILLS = [
     "ramp": "gray"
   },
   {
+    "name": "fallen-sword-design-language",
+    "version": "—",
+    "icon": "⚔️",
+    "blurb": "Vocabulary, mechanics, and lore of Fallen Sword — dark fantasy design language",
+    "level": "Advanced",
+    "body_lines": 285,
+    "words": 1976,
+    "desc": "The vocabulary, mechanics, and lore of Fallen Sword — a classic browser-based MMORPG set in the world of Erildath. Load this when working on any game project inspired by or using Fallen Sword's design language. Triggers: 'use the Fallen Sword design language', 'Fallen Sword style', 'Erildath', 'make it sound like Fallen Sword'.",
+    "intro": "A reference for the vocabulary, mechanics, and lore of Fallen Sword — a free-to-play browser MMORPG by Hunted Cow Studios, running since 2006. Use this to give any project the feel of Fallen Sword: old-school MUD roots, deep skill trees, item-driven combat, and a dark fantasy world called Erildath.",
+    "sections": [
+      "1. World & Lore",
+      "2. Core Mechanics & Vocabulary",
+      "3. Items & Equipment",
+      "4. Creatures & Bestiary",
+      "5. World Areas (naming conventions)",
+      "6. Guilds & Social Systems",
+      "7. Economy",
+      "8. Design Language Summary",
+      "9. Quick Reference: The Skill Tree (for design inspiration)"
+    ],
+    "triggers": "",
+    "modes": "",
+    "refs": [],
+    "scripts": [],
+    "tabler": "ti-sword",
+    "src": "own",
+    "ramp": "teal"
+  },
+  {
     "name": "full-output-enforcement",
     "version": "1.0.0",
     "icon": "🛡️",

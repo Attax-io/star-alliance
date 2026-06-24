@@ -230,5 +230,13 @@
     "tabler": "ti-shield-check",
     "triggers": ", RPC functions, RLS policies, edge functions, cron jobs), frontend code (components, pages, hooks, mutations, stores), schema changes, or bug fixes — even if the user doesn't explicitly ask for a vault log. Also use when the user says phrases like \"vault log ",
     "modes": ""
+  },
+  "fallen-sword-design-language": {
+    "icon": "⚔️",
+    "blurb": "Vocabulary, mechanics, and lore of Fallen Sword — dark fantasy design language",
+    "level": "Advanced",
+    "tabler": "ti-sword",
+    "triggers": "",
+    "modes": ""
   }
 }
