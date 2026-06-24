@@ -34,6 +34,27 @@ E. REPORT    commit, push, summarize      (one labeled commit per applied change
 
 ### Stage A — Harvest (read-only)
 
+**Pre-flight — resolve the repo before anything else (added Run 28, 2026-06-24).** The canonical repo
+is **`Attax-io/star-alliance`**, checked out at **`~/Documents/Claude/Projects/star-alliance`**
+(renamed from `claude-skills` on 2026-06-24 — GitHub auto-redirects the old name). The scheduler hands
+you a path; before you scan, **make sure it actually exists and is the canonical checkout** — the repo
+lives under iCloud `~/Documents` and a rename / eviction / fresh machine can leave the handed path
+dead. A run that can't find the repo dies at Stage A, so self-heal instead of aborting:
+
+```sh
+REPO="$HOME/Documents/Claude/Projects/star-alliance"
+[ -d "$REPO/.git" ] || gh repo clone Attax-io/star-alliance "$REPO"   # re-clone if missing
+git -C "$REPO" remote get-url origin                                   # expect …/Attax-io/star-alliance.git
+```
+
+- If you were handed a **stale `…/claude-skills` path**, redirect to `…/star-alliance` — do **not**
+  `gh repo clone` into the old name (gh follows the GitHub redirect and creates a confusing
+  *redirect-duplicate*; clone to the explicit `star-alliance` target instead). If a duplicate already
+  exists, confirm it has no unique commits/working changes, then delete it and operate the canonical
+  checkout only.
+- Because a fresh checkout makes every file's mtime "now", **take cooldowns (§R4.5) from `git log`
+  dates, not file mtime**, on any run where the repo was just (re)materialised.
+
 ```sh
 python3 skillsmith/scripts/routine_scan.py --days 14 --out skillsmith/routine-logs/scan-YYYY-MM-DD.json
 ```

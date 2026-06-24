@@ -33,6 +33,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`db-rename-sweep`](db-rename-sweep/SKILL.md) | 1.1.0 | own | 146 / 910 | 542 / 49 | ✓ lean | Loads the full surface inventory for any Lex Council table or column rename before the fir… |
 | [`design-taste-frontend`](design-taste-frontend/SKILL.md) | 1.0.0 | own | 23 / 202 | 2896 / 224 | ✓ lean | Senior UI/UX Engineer |
 | [`dev-server`](dev-server/SKILL.md) | 1.1.0 | own | 46 / 303 | 645 / 74 | ✓ lean | Use this skill whenever the user says 'open dev server', 'run dev server', 'restart dev se… |
+| [`fallen-sword-design-language`](fallen-sword-design-language/SKILL.md) | — | own | 52 / 329 | 1976 / 286 | ✓ lean | The vocabulary, mechanics, and lore of Fallen Sword — a classic browser-based MMORPG set i… |
 | [`full-output-enforcement`](full-output-enforcement/SKILL.md) | 1.0.0 | own | 25 / 203 | 382 / 47 | ✓ lean | Overrides default LLM truncation behavior |
 | [`gpt-taste`](gpt-taste/SKILL.md) | 1.0.0 | own | 39 / 312 | 1090 / 72 | ✓ lean | Elite UX/UI & Advanced GSAP Motion Engineer |
 | [`graphify`](graphify/SKILL.md) | 1.0.0 | own | 35 / 225 | 5904 / 1026 | ○ large | any input (code, docs, papers, images, videos) to knowledge graph |
@@ -46,7 +47,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`obsidian-markdown`](obsidian-markdown/SKILL.md) | 1.0.0 | own | 36 / 262 | 610 / 164 | ✓ lean | Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, a… |
 | [`performance`](performance/SKILL.md) | 1.0.1 | vendored | 32 / 219 | 1164 / 364 | ✓ lean | Optimize web performance for faster loading and better user experience |
 | [`redesign-existing-projects`](redesign-existing-projects/SKILL.md) | 1.0.0 | own | 31 / 225 | 2174 / 176 | ✓ lean | Upgrades existing websites and apps to premium quality |
-| [`skillsmith`](skillsmith/SKILL.md) | 1.1.7 | own | 132 / 987 | 2906 / 134 | ✓ lean | Manage, sync, upgrade, create, and auto-evolve Star Alliance skills across the star-allian… |
+| [`skillsmith`](skillsmith/SKILL.md) | 1.1.8 | own | 132 / 987 | 3078 / 135 | ✓ lean | Manage, sync, upgrade, create, and auto-evolve Star Alliance skills across the star-allian… |
 | [`stitch-design-taste`](stitch-design-taste/SKILL.md) | 1.0.0 | own | 29 / 257 | 1628 / 182 | ✓ lean | Semantic Design System Skill for Google Stitch |
 | [`strategies-review`](strategies-review/SKILL.md) | 1.0.0 | own | 12 / 72 | 297 / 45 | ✓ lean | Review pending strategies and move them to executed then check the docs. |
 | [`supabase`](supabase/SKILL.md) | 0.1.2 | vendored | 58 / 475 | 1184 / 107 | ✓ lean | Use when doing ANY task involving Supabase |
@@ -54,4 +55,4 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`transactions-domain-model`](transactions-domain-model/SKILL.md) | 1.2.0 | own | 108 / 951 | 3017 / 393 | ✓ lean | Loads the complete Lex Council transactions domain model before any transaction-related wo… |
 | [`vault-log-compliance`](vault-log-compliance/SKILL.md) | 1.1.0 | own | 128 / 807 | 1445 / 120 | ✓ lean | Enforces P8 vault-logging compliance for Lex Council |
 
-_29 skills — 23 lean · 5 large (installable, over the 500-line ideal) · 1 near the word ceiling · 0 hard violations._
+_30 skills — 24 lean · 5 large (installable, over the 500-line ideal) · 1 near the word ceiling · 0 hard violations._
