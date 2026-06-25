@@ -1,13 +1,13 @@
 {
   "meta": {
     "name": "Star Alliance",
-    "generated": "2026-06-25T21:51:56Z",
+    "generated": "2026-06-25T21:57:38Z",
     "schemaVersion": 2,
     "counts": {
       "members": 9,
       "skills": 31,
       "domains": 3,
-      "log": 33
+      "log": 37
     }
   },
   "members": [
@@ -2051,6 +2051,28 @@
   "log": {
     "entries": [
       {
+        "id": 10,
+        "date": "2026-06-26",
+        "type": "dashboard",
+        "title": "Rebuilt dashboard as buildless cosmic command center",
+        "who": "Atta",
+        "detail": "Replaced guild-dashboard.html + four separate data files with a single buildless dashboard: index.html, app.css, app.js loaded via const GUILD in guild-data.js. Removed build_dashboard.py, guild-dashboard.html, skills-data.js, dashboard-meta.json. Added build_guild_log.py, log_event.py, guild-log.json, skills-meta.json, members-meta.json, domains.json pipeline. Dashboard now serves without a build step — open index.html directly.",
+        "ref": [
+          "the-butler"
+        ]
+      },
+      {
+        "id": 9,
+        "date": "2026-06-26",
+        "type": "structure",
+        "title": "Migrated all 31 skills to star-alliance-skills/, agents to star-alliance-agents/",
+        "who": "Atta",
+        "detail": "Moved every skill directory from the repo root into star-alliance-skills/ (31 skills). Moved member agent definitions from members/ into star-alliance-agents/. Updated VERSIONS.md links and regeneration command to point to star-alliance-skills/. Updated README to reflect new directory layout.",
+        "ref": [
+          "skillsmith"
+        ]
+      },
+      {
         "id": 8,
         "date": "2026-06-26",
         "type": "dashboard",
@@ -2134,6 +2156,30 @@
         "title": "Reorganised repo: star-alliance-skills/ + star-alliance-agents/ folders",
         "who": "Atta",
         "detail": "30 skills moved into star-alliance-skills/, 9 agents moved into star-alliance-agents/. build_dashboard.py updated, README + member files updated. Removed the legacy flat layout and members/ folder."
+      },
+      {
+        "date": "2026-06-26",
+        "type": "skill-create",
+        "title": "Add skill: guild-log",
+        "who": "Atta",
+        "ref": [
+          "guild-log"
+        ],
+        "commit": "650b7781",
+        "_derived": true,
+        "id": "g-650b7781-add-skill-guild-log"
+      },
+      {
+        "date": "2026-06-26",
+        "type": "skill-create",
+        "title": "Add skill: impeccable",
+        "who": "Atta",
+        "ref": [
+          "impeccable"
+        ],
+        "commit": "650b7781",
+        "_derived": true,
+        "id": "g-650b7781-add-skill-impeccable"
       },
       {
         "date": "2026-06-24",
@@ -2509,6 +2555,6 @@
         "id": "g-325a46a5-add-skill-conquering-campaign"
       }
     ],
-    "count": 33
+    "count": 37
   }
 }
