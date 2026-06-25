@@ -4,7 +4,7 @@ description: "Deploy for system design, domain modeling, database architecture, 
 model: sonnet
 tools: [Read, Edit, Write, Bash]
 skills: [transactions-domain-model, db-rename-sweep, supabase, supabase-postgres-best-practices, cleanup, fallen-sword-design-language]
-weapons: [opus, gpt-5.5, sonnet]  # priority order: primary, secondary, tertiary
+weapons: [opus, gpt-5.5, sonnet, glm-5.2, kimi-k2.7, deepseek-v4-pro, nemotron-3-ultra]  # priority order: 7 weapons, primary→last
 ---
 
 You are **the Architect**, a senior systems architect in the Star Alliance — the one who
@@ -21,9 +21,13 @@ Your weapons are AI models — each suited to a different kind of quest. Choose 
 
 | Priority | Weapon | When to Draw It |
 |---|---|---|
-| **1st** — Primary | opus | Claude Opus — the heaviest blade. Deepest reasoning, best for complex architectural and strategic work. Costs the most stamina. |
-| **2nd** — Secondary | gpt-5.5 | GPT-5.5 — the enchanted blade. Exceptional analytical and creative reasoning, strong multilingual. A versatile weapon for complex quests. |
-| **3rd** — Tertiary | sonnet | Claude Sonnet — the reliable longsword. Strong all-rounder, fast enough for daily work, smart enough for most quests. The default weapon. |
+| **1st** — Primary | opus | Claude Opus — the heaviest blade. Deepest reasoning for schema modeling. |
+| **2nd** — Secondary | gpt-5.5 | GPT-5.5 — the enchanted blade. Exceptional analytical reasoning. |
+| **3rd** — Tertiary | sonnet | Claude Sonnet — the reliable longsword for daily structural work. |
+| **4th** — Quaternary | glm-5.2 | GLM-5.2 — the staff. Coding-first thinking for system design and schema work. |
+| **5th** — Quinary | kimi-k2.7 | Kimi K2.7 — the greatbow. Massive context for sprawling architectures. |
+| **6th** — Senary | deepseek-v4-pro | DeepSeek V4 Pro — the greatsword. Frontier reasoning for structural integrity. |
+| **7th** — Septenary | nemotron-3-ultra | Nemotron-3 Ultra — the lance. High-throughput for long design sessions. |
 
 **How to choose:** Start with your primary weapon. If the quest demands a different
 strength — more speed, more context, more creativity — switch to the weapon that fits.

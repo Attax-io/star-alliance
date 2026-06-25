@@ -1,0 +1,2514 @@
+{
+  "meta": {
+    "name": "Star Alliance",
+    "generated": "2026-06-25T21:51:56Z",
+    "schemaVersion": 2,
+    "counts": {
+      "members": 9,
+      "skills": 31,
+      "domains": 3,
+      "log": 33
+    }
+  },
+  "members": [
+    {
+      "id": "the-butler",
+      "name": "The Butler",
+      "role": "Orchestrator · First Point of Contact",
+      "model": "opus",
+      "color": "#b89530",
+      "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-butler\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#3a3218\"/><stop offset=\"1\" stop-color=\"#1a1610\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-butler)\"/><path d=\"M48 18 C39 18 33 26 33 36 C33 42 36 47 40 50 L38 58 L43 62 L48 60 L53 62 L58 58 L56 50 C60 47 63 42 63 36 C63 26 57 18 48 18Z\" fill=\"#e8c93a\" opacity=\".85\"/><circle cx=\"42\" cy=\"34\" r=\"2.5\" fill=\"#1a1610\"/><circle cx=\"54\" cy=\"34\" r=\"2.5\" fill=\"#1a1610\"/><path d=\"M42 44 Q48 48 54 44\" stroke=\"#1a1610\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/><path d=\"M48 60 L48 66 M43 66 L53 66\" stroke=\"#e8c93a\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
+      "summary": "Takes your orders and routes them to the right member. Knows the full roster, who's good at what, and how to sequence their work.",
+      "deploy": "Any request — The Butler decides who handles what",
+      "triggers": "Any request — The Butler decides who handles what",
+      "description": "The first point of contact. Deploy for any request — The Butler receives orders, decides which guild member handles what, and orchestrates the work. Triggers: any task or request, 'coordinate the team', 'who should handle this', 'get this done'.",
+      "weapons": [
+        {
+          "model": "opus",
+          "desc": "Claude Opus — the heaviest blade. Deepest reasoning for complex routing."
+        },
+        {
+          "model": "sonnet",
+          "desc": "Claude Sonnet — the reliable longsword. Fast enough for daily dispatch."
+        },
+        {
+          "model": "glm-5.2",
+          "desc": "GLM-5.2 — the staff. Strong multilingual analysis."
+        },
+        {
+          "model": "gpt-5.5",
+          "desc": "GPT-5.5 — the enchanted blade. Analytical second opinion for tricky routing calls."
+        },
+        {
+          "model": "kimi-k2.7",
+          "desc": "Kimi K2.7 — the greatbow. Massive context to hold the whole roster and sequence state."
+        },
+        {
+          "model": "deepseek-v4-pro",
+          "desc": "DeepSeek V4 Pro — the greatsword. Frontier reasoning for complex multi-step routing."
+        },
+        {
+          "model": "nemotron-3-ultra",
+          "desc": "Nemotron-3 Ultra — the lance. High-throughput for long orchestration runs."
+        }
+      ],
+      "does": [
+        "Receives orders and decides which member handles what",
+        "Briefs members with clear, specific tasks and context",
+        "Tracks progress across all active dispatches",
+        "Reports results back to the user",
+        "Plans multi-step requests into waves before dispatching"
+      ],
+      "doesnt": [
+        "Does not do specialist work — orchestrates only",
+        "Does not write code, design UIs, or model domains"
+      ],
+      "skills": [
+        "conquering-campaign",
+        "cleanup",
+        "skillsmith",
+        "fallen-sword-design-language"
+      ]
+    },
+    {
+      "id": "the-architect",
+      "name": "The Architect",
+      "role": "Systems Design · Database Architecture",
+      "model": "sonnet",
+      "color": "#3b7dd8",
+      "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-arch\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#102030\"/><stop offset=\"1\" stop-color=\"#0a1520\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-arch)\"/><path d=\"M48 16 L32 24 L32 42 L48 50 L64 42 L64 24 Z\" fill=\"none\" stroke=\"#5e9ef5\" stroke-width=\"2.5\" stroke-linejoin=\"round\"/><path d=\"M32 24 L48 32 L64 24 M48 32 L48 50\" stroke=\"#5e9ef5\" stroke-width=\"2\" opacity=\".6\"/><path d=\"M18 54 L78 54 L78 72 L18 72 Z\" fill=\"none\" stroke=\"#5e9ef5\" stroke-width=\"2\" opacity=\".5\"/><circle cx=\"48\" cy=\"42\" r=\"3.5\" fill=\"#5e9ef5\" opacity=\".7\"/></svg>",
+      "summary": "Designs systems and database architecture. Thinks in data flow, domain boundaries, and structural integrity.",
+      "deploy": "System design, domain modeling, database architecture, structural refactoring",
+      "triggers": "design the system · model the domain · architect the database",
+      "description": "Deploy for system design, domain modeling, database architecture, and structural refactoring. Triggers: 'design the system', 'model the domain', 'architect the database', 'refactor the structure'.",
+      "weapons": [
+        {
+          "model": "opus",
+          "desc": "Claude Opus — the heaviest blade. Deepest reasoning for schema modeling."
+        },
+        {
+          "model": "gpt-5.5",
+          "desc": "GPT-5.5 — the enchanted blade. Exceptional analytical reasoning."
+        },
+        {
+          "model": "sonnet",
+          "desc": "Claude Sonnet — the reliable longsword for daily structural work."
+        },
+        {
+          "model": "glm-5.2",
+          "desc": "GLM-5.2 — the staff. Coding-first thinking for system design and schema work."
+        },
+        {
+          "model": "kimi-k2.7",
+          "desc": "Kimi K2.7 — the greatbow. Massive context for sprawling architectures."
+        },
+        {
+          "model": "deepseek-v4-pro",
+          "desc": "DeepSeek V4 Pro — the greatsword. Frontier reasoning for structural integrity."
+        },
+        {
+          "model": "nemotron-3-ultra",
+          "desc": "Nemotron-3 Ultra — the lance. High-throughput for long design sessions."
+        }
+      ],
+      "does": [
+        "Domain modeling and transaction boundaries",
+        "Database schema design and migration",
+        "Structural refactoring with rename sweeps",
+        "Code hygiene"
+      ],
+      "doesnt": [
+        "Does not write marketing copy or design UIs",
+        "Does not run campaigns alone"
+      ],
+      "skills": [
+        "transactions-domain-model",
+        "db-rename-sweep",
+        "supabase",
+        "supabase-postgres-best-practices",
+        "cleanup",
+        "fallen-sword-design-language"
+      ]
+    },
+    {
+      "id": "the-developer",
+      "name": "The Developer",
+      "role": "Writing Code · Fixing Bugs · Implementation",
+      "model": "sonnet",
+      "color": "#3da155",
+      "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-dev\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#102820\"/><stop offset=\"1\" stop-color=\"#0a1815\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-dev)\"/><path d=\"M30 36 L22 44 L30 52 M66 36 L74 44 L66 52\" stroke=\"#4ec985\" stroke-width=\"3\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M42 30 L38 58 M54 30 L50 58\" stroke=\"#4ec985\" stroke-width=\"2.5\" fill=\"none\" stroke-linecap=\"round\" opacity=\".7\"/></svg>",
+      "summary": "Writes code, fixes bugs, implements features. Takes specs and turns them into working code. Tests before saying it's done.",
+      "deploy": "Writing code, applying changes, fixing bugs, implementing features",
+      "triggers": "write the code · fix this bug · implement this feature",
+      "description": "Deploy for writing code, applying changes, fixing bugs, implementing features, and hands-on development work. Triggers: 'write the code', 'implement this', 'fix this bug', 'apply the changes', 'build this feature', 'refactor this code'.",
+      "weapons": [
+        {
+          "model": "sonnet",
+          "desc": "Claude Sonnet — the reliable longsword for daily coding."
+        },
+        {
+          "model": "kimi-k2.7",
+          "desc": "Kimi K2.7 — the greatbow. Massive context for big codebases."
+        },
+        {
+          "model": "haiku",
+          "desc": "Claude Haiku — the dagger. Fast for quick fixes."
+        },
+        {
+          "model": "opus",
+          "desc": "Claude Opus — the heaviest blade. Deepest reasoning for the gnarliest bugs."
+        },
+        {
+          "model": "glm-5.2",
+          "desc": "GLM-5.2 — the staff. Coding-first precision for implementation."
+        },
+        {
+          "model": "gpt-5.5",
+          "desc": "GPT-5.5 — the enchanted blade. Analytical second opinion on tough code."
+        },
+        {
+          "model": "deepseek-v4-pro",
+          "desc": "DeepSeek V4 Pro — the greatsword. Frontier MoE reasoning for complex code."
+        }
+      ],
+      "does": [
+        "Writing and applying code changes",
+        "Bug fixing end-to-end",
+        "Database operations and migrations",
+        "Dev server management",
+        "Code refactoring"
+      ],
+      "doesnt": [
+        "Does not design architecture",
+        "Does not plan campaigns",
+        "Does not design UIs"
+      ],
+      "skills": [
+        "bug-fix-workflow",
+        "db-rename-sweep",
+        "dev-server",
+        "supabase",
+        "supabase-postgres-best-practices",
+        "full-output-enforcement",
+        "cleanup",
+        "obsidian-markdown",
+        "fallen-sword-design-language"
+      ]
+    },
+    {
+      "id": "the-designer",
+      "name": "The Designer",
+      "role": "UI/UX · Visual Quality · Brand Kits",
+      "model": "sonnet",
+      "color": "#d54d7a",
+      "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-design\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#2d1018\"/><stop offset=\"1\" stop-color=\"#1f0a10\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-design)\"/><circle cx=\"38\" cy=\"36\" r=\"7\" fill=\"#ff6b8a\" opacity=\".8\"/><circle cx=\"58\" cy=\"36\" r=\"7\" fill=\"#4ec985\" opacity=\".8\"/><circle cx=\"48\" cy=\"52\" r=\"7\" fill=\"#5e9ef5\" opacity=\".8\"/><circle cx=\"36\" cy=\"50\" r=\"5\" fill=\"#e8c93a\" opacity=\".7\"/><circle cx=\"60\" cy=\"50\" r=\"5\" fill=\"#a67cf2\" opacity=\".7\"/></svg>",
+      "summary": "Premium UI/UX designer. Turns rough sketches into polished interfaces. Design is how the product communicates.",
+      "deploy": "UI/UX design, visual quality, brand kits, image-to-code conversion",
+      "triggers": "design the UI · make it look premium · create a brand kit",
+      "description": "Deploy for UI/UX design, frontend visual quality, brand kits, image-to-code conversion, and design system work. Triggers: 'design the UI', 'make it look premium', 'create a brand kit', 'convert this image to code', 'redesign this'.",
+      "weapons": [
+        {
+          "model": "gpt-5.5",
+          "desc": "GPT-5.5 — the enchanted blade. Exceptional visual creativity."
+        },
+        {
+          "model": "sonnet",
+          "desc": "Claude Sonnet — the reliable longsword for iteration speed."
+        },
+        {
+          "model": "minimax-m3",
+          "desc": "MiniMax M3 — the crossbow. Precise for structural work."
+        },
+        {
+          "model": "opus",
+          "desc": "Claude Opus — the heaviest blade. Deepest reasoning for design direction."
+        },
+        {
+          "model": "haiku",
+          "desc": "Claude Haiku — the dagger. Fast cheap passes for design iteration."
+        },
+        {
+          "model": "qwen3.5",
+          "desc": "Qwen 3.5 — the shortsword. Versatile workhorse for day-to-day polish."
+        },
+        {
+          "model": "gemma4",
+          "desc": "Gemma 4 — the throwing knife. Light quick cheap passes for visual scraps."
+        }
+      ],
+      "does": [
+        "Frontend visual design (web and mobile)",
+        "Image-to-code conversion",
+        "Brand kit creation",
+        "Design systems",
+        "Redesigning existing projects"
+      ],
+      "doesnt": [
+        "Does not design database schemas",
+        "Does not run multi-wave campaigns"
+      ],
+      "skills": [
+        "design-taste-frontend",
+        "high-end-visual-design",
+        "image-to-code",
+        "imagegen-frontend-web",
+        "imagegen-frontend-mobile",
+        "brandkit",
+        "minimalist-ui",
+        "industrial-brutalist-ui",
+        "impeccable",
+        "stitch-design-taste",
+        "gpt-taste",
+        "redesign-existing-projects",
+        "fallen-sword-design-language"
+      ]
+    },
+    {
+      "id": "the-strategist",
+      "name": "The Strategist",
+      "role": "Multi-Wave Campaigns · Performance",
+      "model": "opus",
+      "color": "#7c5dc8",
+      "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-strat\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#201030\"/><stop offset=\"1\" stop-color=\"#150820\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-strat)\"/><path d=\"M48 14 L40 24 L45 24 L45 34 L35 34 L40 28 L30 28 L35 22 L25 22 L48 14 Z M48 14 L56 24 L51 24 L51 34 L61 34 L56 28 L66 28 L61 22 L71 22 L48 14Z\" fill=\"#a67cf2\" opacity=\".5\"/><path d=\"M48 34 L48 68\" stroke=\"#a67cf2\" stroke-width=\"2.5\"/><path d=\"M36 68 L60 68 L57 76 L39 76 Z\" fill=\"#a67cf2\" opacity=\".4\"/></svg>",
+      "summary": "Campaign commander. Handles work too big for a single pass. Breaks it into waves and drives them to completion.",
+      "deploy": "Large multi-wave projects, campaign planning, bug workflows, performance",
+      "triggers": "plan the campaign · break this into waves · optimize performance",
+      "description": "Deploy for large multi-wave projects, campaign planning, bug workflows, and performance optimization. Triggers: 'plan the campaign', 'break this into waves', 'run the bug workflow', 'optimize performance', 'this is too big for one pass'.",
+      "weapons": [
+        {
+          "model": "opus",
+          "desc": "Claude Opus — the heaviest blade for complex multi-wave planning."
+        },
+        {
+          "model": "kimi-k2.7",
+          "desc": "Kimi K2.7 — the greatbow for long campaign documents."
+        },
+        {
+          "model": "glm-5.2",
+          "desc": "GLM-5.2 — the staff for analytical breakdowns."
+        },
+        {
+          "model": "gpt-5.5",
+          "desc": "GPT-5.5 — the enchanted blade. Analytical and creative second opinion for campaign plans."
+        },
+        {
+          "model": "sonnet",
+          "desc": "Claude Sonnet — the reliable longsword. Fast balanced daily wave driver."
+        },
+        {
+          "model": "deepseek-v4-pro",
+          "desc": "DeepSeek V4 Pro — the greatsword. Frontier reasoning for multi-wave strategy."
+        },
+        {
+          "model": "nemotron-3-ultra",
+          "desc": "Nemotron-3 Ultra — the lance. High-throughput for long campaign runs."
+        }
+      ],
+      "does": [
+        "Multi-wave campaign planning and execution",
+        "Bug triage and fix workflow",
+        "Web performance optimization",
+        "Strategy review and tracking",
+        "Vault-logging compliance"
+      ],
+      "doesnt": [
+        "Does not design UIs",
+        "Does not model domains",
+        "Does not translate legal documents"
+      ],
+      "skills": [
+        "conquering-campaign",
+        "bug-fix-workflow",
+        "performance",
+        "strategies-review",
+        "vault-log-compliance",
+        "cleanup",
+        "fallen-sword-design-language"
+      ]
+    },
+    {
+      "id": "the-translator",
+      "name": "The Translator",
+      "role": "Legal Codex · Law Translation",
+      "model": "sonnet",
+      "color": "#b89530",
+      "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-trans\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#2d2018\"/><stop offset=\"1\" stop-color=\"#1f1508\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-trans)\"/><path d=\"M28 20 L28 70 L68 70 L68 20 Z\" fill=\"none\" stroke=\"#d4a05a\" stroke-width=\"2\"/><path d=\"M28 20 L48 26 L68 20\" stroke=\"#d4a05a\" stroke-width=\"2\" fill=\"none\"/><path d=\"M36 32 L60 32 M36 40 L60 40 M36 48 L60 48 M36 56 L54 56\" stroke=\"#d4a05a\" stroke-width=\".8\" opacity=\".4\"/><path d=\"M42 40 L47 45 L56 36\" stroke=\"#d4a05a\" stroke-width=\"2.5\" fill=\"none\" stroke-linecap=\"round\"/></svg>",
+      "summary": "Legal codex specialist. Loads real-world laws, translates them across all locales, and creates published content.",
+      "deploy": "Legal codex loading, law translation, multi-locale content work",
+      "triggers": "load this law · translate this law · add translations",
+      "description": "Deploy for legal codex loading, law translation, and multi-locale content work. Triggers: 'load this law', 'translate this law', 'add translations', 'legal codex'.",
+      "weapons": [
+        {
+          "model": "gpt-5.5",
+          "desc": "GPT-5.5 — the enchanted blade. Best multilingual."
+        },
+        {
+          "model": "glm-5.2",
+          "desc": "GLM-5.2 — the staff. Strongest Chinese/multilingual."
+        },
+        {
+          "model": "kimi-k2.7",
+          "desc": "Kimi K2.7 — the greatbow for long legal documents."
+        },
+        {
+          "model": "opus",
+          "desc": "Claude Opus — the heaviest blade. Deepest reasoning for legal nuance."
+        },
+        {
+          "model": "sonnet",
+          "desc": "Claude Sonnet — the reliable longsword. Fast balanced daily translation work."
+        },
+        {
+          "model": "haiku",
+          "desc": "Claude Haiku — the dagger. Fastest cheap quick translations across locales."
+        },
+        {
+          "model": "deepseek-v4-pro",
+          "desc": "DeepSeek V4 Pro — the greatsword. Frontier reasoning for complex legal analysis."
+        }
+      ],
+      "does": [
+        "Loading laws into the legal codex",
+        "Multi-locale translation (6 locales)",
+        "Article creation and publishing",
+        "Obsidian-flavored markdown"
+      ],
+      "doesnt": [
+        "Does not design systems",
+        "Does not plan campaigns"
+      ],
+      "skills": [
+        "codex-law-translate",
+        "article-creator",
+        "obsidian-markdown",
+        "fallen-sword-design-language"
+      ]
+    },
+    {
+      "id": "the-engineer",
+      "name": "The Engineer",
+      "role": "Dev Servers · Knowledge Graphs · Tooling",
+      "model": "sonnet",
+      "color": "#2ba89a",
+      "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-eng\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#102028\"/><stop offset=\"1\" stop-color=\"#0a1018\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-eng)\"/><circle cx=\"48\" cy=\"38\" r=\"9\" fill=\"none\" stroke=\"#3ec5b8\" stroke-width=\"2.5\"/><circle cx=\"48\" cy=\"38\" r=\"4\" fill=\"#3ec5b8\" opacity=\".5\"/><path d=\"M36 38 L31 38 M65 38 L60 38 M48 26 L48 21 M48 55 L48 50\" stroke=\"#3ec5b8\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M32 60 L64 60 L64 74 L32 74 Z\" fill=\"none\" stroke=\"#3ec5b8\" stroke-width=\"2\"/><path d=\"M37 65 L59 65 M37 69 L53 69\" stroke=\"#3ec5b8\" stroke-width=\"1\" opacity=\".4\"/></svg>",
+      "summary": "Infrastructure and tooling specialist. Keeps the dev environment running, generates knowledge graphs, and enforces full output.",
+      "deploy": "Dev server management, knowledge graph generation, tooling, output enforcement",
+      "triggers": "open dev server · generate a knowledge graph · full output mode",
+      "description": "Deploy for dev server management, dev server debugging, knowledge graph generation, and output enforcement. Triggers: 'open dev server', 'run dev server', 'restart dev server', 'generate a knowledge graph', 'full output mode'.",
+      "weapons": [
+        {
+          "model": "sonnet",
+          "desc": "Claude Sonnet — the reliable longsword for daily server management."
+        },
+        {
+          "model": "haiku",
+          "desc": "Claude Haiku — the dagger for quick server ops."
+        },
+        {
+          "model": "minimax-m3",
+          "desc": "MiniMax M3 — the crossbow for repetitive tooling."
+        },
+        {
+          "model": "opus",
+          "desc": "Claude Opus — the heaviest blade. Deepest reasoning for infrastructure calls."
+        },
+        {
+          "model": "glm-5.2",
+          "desc": "GLM-5.2 — the staff. Coding-first precision for tooling."
+        },
+        {
+          "model": "kimi-k2.7",
+          "desc": "Kimi K2.7 — the greatbow. Massive context for sprawling knowledge graphs."
+        },
+        {
+          "model": "deepseek-v4-pro",
+          "desc": "DeepSeek V4 Pro — the greatsword. Frontier reasoning for complex tooling."
+        }
+      ],
+      "does": [
+        "Dev server lifecycle management",
+        "Knowledge graph generation from any input",
+        "Full output enforcement",
+        "Workspace hygiene"
+      ],
+      "doesnt": [
+        "Does not design UIs",
+        "Does not plan campaigns",
+        "Does not model domains"
+      ],
+      "skills": [
+        "dev-server",
+        "graphify",
+        "full-output-enforcement",
+        "cleanup",
+        "fallen-sword-design-language"
+      ]
+    },
+    {
+      "id": "the-merchant",
+      "name": "The Merchant",
+      "role": "Investment · Trading · Market Research",
+      "model": "opus",
+      "color": "#3da155",
+      "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-merc\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#102820\"/><stop offset=\"1\" stop-color=\"#0a1812\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-merc)\"/><path d=\"M48 18 L48 62\" stroke=\"#4ec9a0\" stroke-width=\"3\"/><circle cx=\"48\" cy=\"18\" r=\"4\" fill=\"#4ec9a0\"/><path d=\"M24 42 L72 42\" stroke=\"#4ec9a0\" stroke-width=\"2\" opacity=\".3\"/><path d=\"M24 42 L24 50 L34 50 L34 42 M62 42 L62 54 L72 54 L72 42\" fill=\"none\" stroke=\"#4ec9a0\" stroke-width=\"2\"/><path d=\"M48 42 L48 36 L42 36 L42 42 M48 42 L48 48 L54 48 L54 42\" fill=\"none\" stroke=\"#4ec9a0\" stroke-width=\"2\" opacity=\".5\"/><rect x=\"28\" y=\"60\" width=\"6\" height=\"8\" rx=\"1\" fill=\"#4ec9a0\" opacity=\".3\"/><rect x=\"38\" y=\"60\" width=\"6\" height=\"12\" rx=\"1\" fill=\"#4ec9a0\" opacity=\".4\"/><rect x=\"48\" y=\"60\" width=\"6\" height=\"6\" rx=\"1\" fill=\"#4ec9a0\" opacity=\".25\"/><rect x=\"58\" y=\"60\" width=\"6\" height=\"14\" rx=\"1\" fill=\"#4ec9a0\" opacity=\".35\"/></svg>",
+      "summary": "Investment and trading specialist. Analyzes markets, builds trading strategies, assesses risk, and manages portfolios with rigor.",
+      "deploy": "Investment analysis, trading strategies, market research, portfolio management",
+      "triggers": "analyze this investment · build a trading strategy · research this market",
+      "description": "Deploy for investment analysis, trading strategies, market research, portfolio management, and financial decision-making. Triggers: 'analyze this investment', 'build a trading strategy', 'research this market', 'manage the portfolio', 'should I buy or sell', 'what's the risk on this'.",
+      "weapons": [
+        {
+          "model": "opus",
+          "desc": "Claude Opus — the heaviest blade for deep financial analysis."
+        },
+        {
+          "model": "gpt-5.5",
+          "desc": "GPT-5.5 — the enchanted blade for market reasoning."
+        },
+        {
+          "model": "glm-5.2",
+          "desc": "GLM-5.2 — the staff for data analysis."
+        },
+        {
+          "model": "sonnet",
+          "desc": "Claude Sonnet — the reliable longsword. Fast balanced daily market reads."
+        },
+        {
+          "model": "kimi-k2.7",
+          "desc": "Kimi K2.7 — the greatbow. Massive context for long market histories."
+        },
+        {
+          "model": "deepseek-v4-pro",
+          "desc": "DeepSeek V4 Pro — the greatsword. Frontier reasoning for trading strategy."
+        },
+        {
+          "model": "nemotron-3-ultra",
+          "desc": "Nemotron-3 Ultra — the lance. High-throughput for long portfolio runs."
+        }
+      ],
+      "does": [
+        "Investment analysis (fundamental and technical)",
+        "Trading strategy development and backtesting",
+        "Market research and trend analysis",
+        "Portfolio management and asset allocation",
+        "Risk assessment and position sizing"
+      ],
+      "doesnt": [
+        "Does not write application code",
+        "Does not design systems",
+        "Does not plan engineering campaigns"
+      ],
+      "skills": [
+        "fallen-sword-design-language"
+      ]
+    },
+    {
+      "id": "the-quartermaster",
+      "name": "The Quartermaster",
+      "role": "Skill Management · Syncing · Evolution",
+      "model": "sonnet",
+      "color": "#b89530",
+      "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-quart\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#2d2010\"/><stop offset=\"1\" stop-color=\"#1f1408\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-quart)\"/><path d=\"M48 14 L62 20 L62 36 C62 45 56 51 48 53 C40 51 34 45 34 36 L34 20 Z\" fill=\"none\" stroke=\"#e8b84e\" stroke-width=\"2.5\" stroke-linejoin=\"round\"/><path d=\"M40 28 L45 33 L56 22\" stroke=\"#e8b84e\" stroke-width=\"2.5\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M48 53 L48 60 M40 60 L56 60 L56 68 L40 68 Z\" fill=\"#e8b84e\" opacity=\".4\"/></svg>",
+      "summary": "Keeper of the guild's arsenal. Manages skills — versioning, syncing, upgrading, creating new ones. Runs the daily evolution routine.",
+      "deploy": "Skill management, syncing, upgrading, creating new skills, daily evolution routine",
+      "triggers": "sync my skills · upgrade a skill · create a skill · run the skill routine",
+      "description": "Deploy for skill management, syncing, upgrading, creating new skills, running the daily skill evolution routine, and enforcing the guild log. Triggers: 'sync my skills', 'upgrade a skill', 'create a skill', 'run the skill routine', 'evolve my skills', 'log this', 'guild log this', 'did you log it?', 'add a log entry', '/skillsmith', '/guild-log'.",
+      "weapons": [
+        {
+          "model": "sonnet",
+          "desc": "Claude Sonnet — the reliable longsword for daily skill management."
+        },
+        {
+          "model": "haiku",
+          "desc": "Claude Haiku — the dagger for quick syncs."
+        },
+        {
+          "model": "minimax-m3",
+          "desc": "MiniMax M3 — the crossbow for routine versioning."
+        },
+        {
+          "model": "opus",
+          "desc": "Claude Opus — the heaviest blade. Deepest reasoning for skill evolution."
+        },
+        {
+          "model": "gpt-5.5",
+          "desc": "GPT-5.5 — the enchanted blade. Analytical and creative input on skill design."
+        },
+        {
+          "model": "kimi-k2.7",
+          "desc": "Kimi K2.7 — the greatbow. Massive context to track the full arsenal inventory."
+        },
+        {
+          "model": "glm-5.2",
+          "desc": "GLM-5.2 — the staff. Coding-first for skill syncing and tooling."
+        }
+      ],
+      "does": [
+        "Skill sync (repo ↔ device)",
+        "Skill upgrades with version bumping",
+        "New skill creation via skill-creator",
+        "Daily autonomous skill evolution",
+        "Workspace hygiene"
+      ],
+      "doesnt": [
+        "Does not design UIs",
+        "Does not plan campaigns",
+        "Does not model domains"
+      ],
+      "skills": [
+        "skillsmith",
+        "cleanup",
+        "guild-log",
+        "fallen-sword-design-language"
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "id": "article-creator",
+      "name": "article-creator",
+      "version": "1.0.1",
+      "icon": "📝",
+      "art": "",
+      "blurb": "End-to-end Insights article creation pushed to production DB",
+      "level": "Foundational",
+      "ramp": "gray",
+      "tabler": "ti-article",
+      "src": "own",
+      "desc": "End-to-end procedure for creating a public Insights article and pushing it to the Lex Council production DB (public.articles + public.article_translations) in all 6 locales. Use this skill whenever the user asks to create an article, write an insights article, push an article to the DB, publish an article on the site, add a blog post, turn research/memos/findings into an article, or translate an article into all languages. Also trigger on \"new insights post\", \"add it to /insights\", \"make this an article\", \"push to the articles table\", or any request that implies writing rows into articles/article_translations. This skill exists because the insert has six landmines discovered in production: the article_locale enum cast, the uploaded_by FK to auth.users, EN-canonical fallback semantics, the draft-RLS admin-read trap, dollar-quoting for markdown bodies, and the mandatory P3 approval + P8 vault log. Load silently.",
+      "intro": "Creates one article + 6 locale translations in the Lex Council production database, following the exact pattern validated on 2026-06-10 (vat-exemptions-egypt).",
+      "sections": [
+        "1. Data model (verified against production)",
+        "2. Procedure",
+        "3. Landmines (each caused a real failure or near-miss)",
+        "4. Where it surfaces",
+        "Changelog"
+      ],
+      "triggers": "on \"new insights post\", \"add it to /insights\", \"make this an article\", \"push to the articles table\", or any request that implies writing rows into articles/articletranslations. This skill exists because the insert has six landmines discovered in production: th",
+      "modes": "",
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 111,
+        "words": 839
+      },
+      "members": [
+        "the-translator"
+      ]
+    },
+    {
+      "id": "brandkit",
+      "name": "brandkit",
+      "version": "1.0.0",
+      "icon": "🎨",
+      "art": "",
+      "blurb": "Premium brand-kit image generation: logos, decks, identity systems",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-palette",
+      "src": "own",
+      "desc": "Premium brand-kit image generation skill for creating high-end brand-guidelines boards, logo systems, identity decks, and visual-world presentations. Trained for minimalist, cinematic, editorial, dark-tech, luxury, cultural, security, gaming, developer-tool, and consumer-app brand systems. Optimized for intentional logo concepting, refined composition, sparse typography, strong symbolic meaning, premium mockups, art-directed imagery, and flexible grid layouts.",
+      "intro": "You are an elite brand identity art director, logo designer, visual-system strategist, and presentation designer.",
+      "sections": [
+        "1. Monogram + Meaning",
+        "2. Product Action",
+        "3. Metaphor Fusion",
+        "4. Negative Space",
+        "5. Construction Geometry",
+        "1. Logo Cover",
+        "2. Logo Construction",
+        "3. Digital Application",
+        "4. Brand Essence",
+        "5. Color System",
+        "6. Typography",
+        "7. Physical Application",
+        "8. Image Direction",
+        "9. System Detail",
+        "Dark Developer / Builder",
+        "Dark Product / Operator",
+        "Dark Nature / Calm System",
+        "Dark Security / Threat Intelligence",
+        "Light Editorial / Compliance",
+        "Luxury / Beauty / Fashion",
+        "Voice / Communication",
+        "Cultural / Experimental"
+      ],
+      "triggers": "",
+      "modes": "",
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 795,
+        "words": 2543
+      },
+      "members": [
+        "the-designer"
+      ]
+    },
+    {
+      "id": "bug-fix-workflow",
+      "name": "bug-fix-workflow",
+      "version": "1.1.2",
+      "icon": "🐛",
+      "art": "",
+      "blurb": "End-to-end bug triage, reproduction, and root-cause fixing",
+      "level": "Intermediate",
+      "ramp": "blue",
+      "tabler": "ti-bug",
+      "src": "own",
+      "desc": "The Lex Council end-to-end bug workflow — pull reports from the bug_reports table, triage their status, investigate + reproduce the real root cause, fix following project conventions, flip each row to Fixed once the fix is genuinely live, AND file (push) new bugs it surfaces back into the table. Use whenever the user says \"pull the bugs\", \"work the bugs\", \"fix the bugs\", \"triage bugs\", \"what bugs are open\", or any phrasing about pulling / triaging / fixing / closing reported bugs — OR to push/file bugs: \"file a bug\", \"log this as a bug\", \"push these as bugs\", \"file the bugs you find\". Loads the bug_reports schema, the status-code conventions, the status-trigger gotcha, the INSERT/push pattern (identity PK, trigger-filled names, reporter-uuid lookup, status=1, no notification fires), the \"doesn't work\" reproduction technique, and the rule for WHEN a bug may be marked Fixed (DB fixes now, frontend fixes only after deploy).",
+      "intro": "This is the canonical loop for working user-reported bugs in Lex Council. Reports live in the public.bug_reports table (admins file them from the in-app bug button; reporters often write in Arabic). The job is: pull → triage → investigate → fix → close — and push (file new bugs the work surfaces) — ",
+      "sections": [
+        "The bugreports table",
+        "Push — filing a new bug (when the work surfaces one)",
+        "Step 1 — Pull",
+        "Step 2 — Triage statuses (the \"pull and sort\" the user usually means)",
+        "Step 3 — Investigate (before any fix)",
+        "Step 4 — Fix (follow project law)",
+        "Step 5 — Mark Fixed only when the fix is genuinely live",
+        "Gotchas checklist",
+        "Changelog"
+      ],
+      "triggers": "gotcha, the INSERT/push pattern (identity PK, trigger-filled names, reporter-uuid lookup, status=1, no notification fires), the \"doesn't work\" reproduction technique, and the rule for WHEN a bug may be marked Fixed (DB fixes now, frontend fixes only after depl",
+      "modes": "",
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 219,
+        "words": 1841
+      },
+      "members": [
+        "the-developer",
+        "the-strategist"
+      ]
+    },
+    {
+      "id": "cleanup",
+      "name": "cleanup",
+      "version": "1.18.0",
+      "icon": "🧹",
+      "art": "",
+      "blurb": "Multi-mode hygiene: i18n translations, dedup, hardcoded text",
+      "level": "Intermediate",
+      "ramp": "blue",
+      "tabler": "ti-eraser",
+      "src": "own",
+      "desc": "Multi-mode hygiene skill for Lex Council. Modes — language (i18n translations); consolidate (i18n key dedup); hardcoded (extract raw UI text to next-intl keys); leaks (i18n keys used in code but missing from JSON); errors (dev log sweep); postgres (Supabase advisors + pg health); lint (ESLint --fix + tsc); consolidate-code (duplicate code detection); bundle (Cloudflare Worker size-wall hygiene); release (version bump + hygiene gate); docs (frontmatter/wikilinks/orphans); followups (deferred items); manual (in-app user manual translated in all 6 locales). Run all via scripts/run_all.py. Triggers: \"run cleanup\", \"/cleanup\", \"i18n cleanup\", \"translate untranslated\", \"find hardcoded text\", \"find leaking keys\", \"raw key paths\", \"fix dev errors\", \"check postgres\", \"run lint\", \"consolidate code\", \"check the bundle size\", \"doc cleanup\", \"finish followups\", \"update the manual\", \"bump the version\", \"release X.Y.Z\", or any hygiene sweep after a campaign. Full mode recipes in references/.",
+      "intro": "This skill packages the operational recipes for periodic cleanup passes that the app accumulates between feature builds. Each mode is independent; the skill body routes to the right workflow based on what the user asked for.",
+      "sections": [
+        "Modes",
+        "When to invoke this skill",
+        "Workflow",
+        "Lessons learned (cross-mode architecture)",
+        "Why this skill exists",
+        "Versioning",
+        "Changelog",
+        "Related"
+      ],
+      "triggers": "\\\"run cleanup\\\", \\\"/cleanup\\\", \\\"i18n cleanup\\\", \\\"translate untranslated\\\", \\\"find hardcoded text\\\", \\\"find leaking keys\\\", \\\"raw key paths\\\", \\\"fix dev errors\\\", \\\"check postgres\\\", \\\"run lint\\\", \\\"consolidate code\\\", \\\"check the bundle size\\\", \\\"doc cleanup",
+      "modes": "language (i18n translations); consolidate (i18n key dedup); hardcoded (extract raw UI text to next-intl keys); leaks (i18n keys used in code but missing from JSON); errors (dev log sweep); postgres (Supabase advisors + pg health); lint (ESLint --fix + tsc); consolidate-code (duplicate code detection",
+      "refs": [
+        "landmines.md",
+        "mode-bundle.md",
+        "mode-consolidate-code.md",
+        "mode-consolidate.md",
+        "mode-docs.md",
+        "mode-errors.md",
+        "mode-followups.md",
+        "mode-hardcoded.md",
+        "mode-language.md",
+        "mode-leaks.md",
+        "mode-lint.md",
+        "mode-manual.md",
+        "mode-postgres.md",
+        "mode-release.md",
+        "release-procedure.md"
+      ],
+      "scripts": [
+        "bump_app_patch.py",
+        "bundle_cleanup.py",
+        "commit_scope.py",
+        "consolidate_cleanup.py",
+        "consolidate_code.py",
+        "docs_cleanup.py",
+        "errors_cleanup.py",
+        "followups_cleanup.py",
+        "i18n_cleanup.py",
+        "i18n_extract.py",
+        "lint_cleanup.py",
+        "postgres_cleanup.py",
+        "rotate.py",
+        "run_all.py",
+        "watermark.py"
+      ],
+      "stats": {
+        "lines": 274,
+        "words": 4566
+      },
+      "members": [
+        "the-architect",
+        "the-butler",
+        "the-developer",
+        "the-engineer",
+        "the-quartermaster",
+        "the-strategist"
+      ]
+    },
+    {
+      "id": "codex-law-translate",
+      "name": "codex-law-translate",
+      "version": "1.1.0",
+      "icon": "⚖️",
+      "art": "",
+      "blurb": "Legal codex pipeline: load law, translate to five locales",
+      "level": "Intermediate",
+      "ramp": "blue",
+      "tabler": "ti-gavel",
+      "src": "own",
+      "desc": "End-to-end pipeline for loading a real-world law into the Lex Council legal codex, translated into all 5 non-Arabic locales (en/fr/es/ru/zh), then adversarially revised and published. Use whenever the user says \"translate the law\", \"load a law into the codex\", \"push law X to DB\", \"translate the codes\", \"add Law N/YYYY to the codex\", \"translate and publish a law\", \"do the social/labour/whatever law like we did before\", \"revise the codex translations\", or \"publish the codex law\". Covers parse → insert (source_laws + law_articles, AR canonical) → translate via Claude subagents → upsert (law_article_translations) → law-metadata translation (source_law_translations) → full adversarial QA revision (Opus reviewers) → publish (published=true on all articles + the source law). Translation is done by Claude subagents (Ollama is gone). All writes go to production via service-role REST — no DDL, idempotent.",
+      "intro": "Canonical pipeline for putting a law into the legal codex with AR + 5 translations, reviewed and published. ~12 laws loaded to date (Labour, Social Insurance, Income Tax, Civil Code, Commercial Code, Penal, Trade Union, Consumer Protection, …). The two original predecessor campaigns are 2026-05-21_e",
+      "sections": [
+        "The data model (do not change it)",
+        "Source documents",
+        "How to run it",
+        "Parser fleet + grammar triage",
+        "Large-law gotchas (>1000 articles)",
+        "QA-at-scale + domain watches (Phase 5)",
+        "Hard rules",
+        "Checklist",
+        "Changelog"
+      ],
+      "triggers": "",
+      "modes": "",
+      "refs": [
+        "REVIEW_INSTRUCTIONS.md",
+        "TRANSLATE_INSTRUCTIONS.md"
+      ],
+      "scripts": [
+        "_config.js",
+        "config.example.json",
+        "insert_articles.js",
+        "insert_source_law.js",
+        "make_batches.js",
+        "merge_validate.js",
+        "parse_law.js",
+        "parse_law_h3.js",
+        "parse_law_h3h4.js",
+        "parse_law_h4.js",
+        "parse_law_h5.js",
+        "parse_law_ordinal.js",
+        "publish.js",
+        "upsert_law_meta.js",
+        "upsert_translations.js",
+        "verify.js"
+      ],
+      "stats": {
+        "lines": 228,
+        "words": 2112
+      },
+      "members": [
+        "the-translator"
+      ]
+    },
+    {
+      "id": "conquering-campaign",
+      "name": "conquering-campaign",
+      "version": "3.8.3",
+      "icon": "🚀",
+      "art": "",
+      "blurb": "Multi-wave campaign orchestrator: audit, build, run mega-work",
+      "level": "Master",
+      "ramp": "purple",
+      "tabler": "ti-flag",
+      "src": "own",
+      "desc": "Multi-wave campaign skill for work too big for one pass. Three modes — AUDIT (reconcile docs with code/DB), BUILD (multi-phase features/refactors/migrations touching 3+ surfaces), EXTENSION (extends a recent predecessor, reusing its prescan). Gate G0 runs FIRST: work that doesn't clear the bar (3+ INDEPENDENT logical changes — one vertical slice = ONE — OR genuinely multi-phase, OR an app-wide doc↔code/DB audit) is declined and routed to a lighter pass, no campaign folder created. Triggers ONLY above that bar: 'audit my app', 'build this feature', 'ship this refactor', 'phase this migration', 'proceed in application', 'extend [campaign] to X', 'roll out [pattern] to [surface]', 'apply [v1.X] to [Z]'. Planning asks every question upfront then executes autonomously (a 15+-site rename, namespace move, or public-component rename earns a single approval gate). Enforces always-on pre-flight gates, conformity, consolidation, and self-verification (tsc+lint+preview). Full detail in references/.",
+      "intro": "Plan thoroughly. Then conquer without stopping.",
+      "sections": [
+        "Core philosophy",
+        "Pre-flight gates (always-on — these fire at the moment of action, not from memory)",
+        "Standing principles",
+        "Two modes (+ extension)",
+        "Step 0 — Resume, environment, prescan",
+        "Step 1 — Planning interrogation",
+        "Step 2 — Design the campaign plan",
+        "Step 3 — Execute the four waves",
+        "Step 4 — Synthesise (audit) / Verify (build)",
+        "Step 5 — Cleanup & close (mandatory, automatic — G5)",
+        "Step 6 — Reflection-pass (post-campaign skill upgrade)",
+        "Self-verification loop (after every build phase / audit wave — automatic, never ask)",
+        "Autonomous decision ladder",
+        "Subagent dispatch",
+        "Environment hazards",
+        "Trigger-phrase precedence (the single resolution table — earlier wins; default LATER if unclear)",
+        "Model assignment",
+        "Conformity & consolidation (the always-on disciplines — full extraction procedure in references/fe-i18n-playbook.md)",
+        "Deploy & sync (#84)",
+        "Skill self-health (run at every reflection pass — #84)",
+        "Common failure modes",
+        "Output conventions",
+        "Reference files",
+        "Version history"
+      ],
+      "triggers": "ONLY above that bar: 'audit my app', 'build this feature', 'ship this refactor', 'phase this migration', 'proceed in application', 'extend [campaign] to X', 'roll out [pattern] to [surface]', 'apply [v1.X] to [Z]'. Planning asks every question upfront then exe",
+      "modes": "AUDIT (reconcile docs with code/DB), BUILD (multi-phase features/refactors/migrations touching 3+ surfaces), EXTENSION (extends a recent predecessor, reusing its prescan). Gate G0 runs FIRST: work that doesn't clear the bar (3+ INDEPENDENT logical changes — one vertical slice = ONE — OR genuinely mu",
+      "refs": [
+        "OVERUSE-ANALYSIS-2026-06-02.md",
+        "REFLECTION-2026-06-04.md",
+        "checkpoint-pattern.md",
+        "db-playbook.md",
+        "env-hazards.md",
+        "failure-modes.md",
+        "fe-i18n-playbook.md",
+        "skill-maintenance.md",
+        "templates.md",
+        "version-history.md",
+        "wave-playbook.md"
+      ],
+      "scripts": [],
+      "stats": {
+        "lines": 466,
+        "words": 10351
+      },
+      "members": [
+        "the-butler",
+        "the-strategist"
+      ]
+    },
+    {
+      "id": "db-rename-sweep",
+      "name": "db-rename-sweep",
+      "version": "1.1.0",
+      "icon": "🏷️",
+      "art": "",
+      "blurb": "Scans database schema for safe table and column renames",
+      "level": "Foundational",
+      "ramp": "gray",
+      "tabler": "ti-database",
+      "src": "own",
+      "desc": "Loads the full surface inventory for any Lex Council table or column rename before the first migration line is written. Use this skill whenever the user asks to rename a table, rename a column, rename a view, do a naming sweep, migrate a prefix (e.g. attendance_* → atnd_*), unify naming, or fix an inconsistent name. Also trigger on \"rename\", \"rename sweep\", \"rename checklist\", \"naming cleanup\", \"change table name\", \"rename this view\", \"prefix the tables\", \"sweep the old name\", \"unify the naming\", or any request that implies a SQL `ALTER TABLE ... RENAME` / `RENAME COLUMN`. The skill exists because a rename in this codebase touches ~14 surfaces (migrations, trigger bodies, view defs, RLS policy bodies, edge functions, frontend types, markdown docs, auto-memory, scheduled tasks, etc.) and the single most common failure mode is forgetting one. Load silently — no need to announce the skill is running.",
+      "intro": "This skill's only job is to auto-trigger on rename keywords and point you at the authoritative checklist in the vault before you touch anything.",
+      "sections": [
+        "Step 1 — Load the canonical checklist",
+        "Step 2 — Follow the checklist in order",
+        "Step 3 — Build the migration after the sweep",
+        "Step 4 — Verification pass",
+        "Step 5 — Vault log",
+        "Changelog"
+      ],
+      "triggers": "on \"rename\", \"rename sweep\", \"rename checklist\", \"naming cleanup\", \"change table name\", \"rename this view\", \"prefix the tables\", \"sweep the old name\", \"unify the naming\", or any request that implies a SQL ALTER TABLE ... RENAME / RENAME COLUMN. The skill exist",
+      "modes": "",
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 48,
+        "words": 542
+      },
+      "members": [
+        "the-architect",
+        "the-developer"
+      ]
+    },
+    {
+      "id": "design-taste-frontend",
+      "name": "design-taste-frontend",
+      "version": "1.0.0",
+      "icon": "🎨",
+      "art": "",
+      "blurb": "Senior UI engineer enforcing metric-driven component architecture",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-brush",
+      "src": "own",
+      "desc": "Senior UI/UX Engineer. Architect digital interfaces overriding default LLM biases. Enforces metric-based rules, strict component architecture, CSS hardware acceleration, and balanced design engineering.",
+      "intro": "AI Instruction: The standard baseline for all generations is strictly set to these values (8, 6, 4). Do not ask the user to edit this file. Otherwise, ALWAYS listen to the user: adapt these values dynamically based on what they explicitly request in their chat prompts. Use these baseline (or user-ov",
+      "sections": [
+        "1. ACTIVE BASELINE CONFIGURATION",
+        "2. DEFAULT ARCHITECTURE & CONVENTIONS",
+        "3. DESIGN ENGINEERING DIRECTIVES (Bias Correction)",
+        "4. CREATIVE PROACTIVITY (Anti-Slop Implementation)",
+        "5. PERFORMANCE GUARDRAILS",
+        "6. TECHNICAL REFERENCE (Dial Definitions)",
+        "7. AI TELLS (Forbidden Patterns)",
+        "8. THE CREATIVE ARSENAL (High-End Inspiration)",
+        "9. THE \"MOTION-ENGINE\" BENTO PARADIGM",
+        "10. FINAL PRE-FLIGHT CHECK"
+      ],
+      "triggers": "",
+      "modes": "",
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 223,
+        "words": 2896
+      },
+      "members": [
+        "the-designer"
+      ]
+    },
+    {
+      "id": "dev-server",
+      "name": "dev-server",
+      "version": "1.1.0",
+      "icon": "🚀",
+      "art": "",
+      "blurb": "Launches, restarts, and manages your local development server",
+      "level": "Foundational",
+      "ramp": "gray",
+      "tabler": "ti-server",
+      "src": "own",
+      "desc": "Use this skill whenever the user says 'open dev server', 'run dev server', 'restart dev server', 'start the app', 'launch dev', 'open the app', or any variation of starting/restarting/viewing the local Next.js development server. Handles start and restart in one turn — no ToolSearch round-trips needed.",
+      "intro": "Manages the local Next.js dev server for the current project using the Claude Preview MCP tools. Assumes the project has a .claude/launch.json entry named web (or another configurable name — see Notes).",
+      "sections": [
+        "Step 0 — Project precedence check (do this FIRST, once per session)",
+        "Tools (pre-loaded — no ToolSearch needed)",
+        "Actions",
+        "Session State",
+        "Response Format",
+        "Notes",
+        "Changelog"
+      ],
+      "triggers": "",
+      "modes": "",
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 73,
+        "words": 645
+      },
+      "members": [
+        "the-developer",
+        "the-engineer"
+      ]
+    },
+    {
+      "id": "fallen-sword-design-language",
+      "name": "fallen-sword-design-language",
+      "version": "—",
+      "icon": "⚔️",
+      "art": "",
+      "blurb": "Vocabulary, mechanics, and lore of Fallen Sword — dark fantasy design language",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-sword",
+      "src": "own",
+      "desc": "The vocabulary, mechanics, and lore of Fallen Sword — a classic browser-based MMORPG set in the world of Erildath. Load this when working on any game project inspired by or using Fallen Sword's design language. Triggers: 'use the Fallen Sword design language', 'Fallen Sword style', 'Erildath', 'make it sound like Fallen Sword'.",
+      "intro": "A reference for the vocabulary, mechanics, and lore of Fallen Sword — a free-to-play browser MMORPG by Hunted Cow Studios, running since 2006. Use this to give any project the feel of Fallen Sword: old-school MUD roots, deep skill trees, item-driven combat, and a dark fantasy world called Erildath.",
+      "sections": [
+        "1. World & Lore",
+        "2. Core Mechanics & Vocabulary",
+        "3. Items & Equipment",
+        "4. Creatures & Bestiary",
+        "5. World Areas (naming conventions)",
+        "6. Guilds & Social Systems",
+        "7. Economy",
+        "8. Design Language Summary",
+        "9. Quick Reference: The Skill Tree (for design inspiration)"
+      ],
+      "triggers": "",
+      "modes": "",
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 285,
+        "words": 1976
+      },
+      "members": [
+        "the-architect",
+        "the-butler",
+        "the-designer",
+        "the-developer",
+        "the-engineer",
+        "the-merchant",
+        "the-quartermaster",
+        "the-strategist",
+        "the-translator"
+      ]
+    },
+    {
+      "id": "full-output-enforcement",
+      "name": "full-output-enforcement",
+      "version": "1.0.0",
+      "icon": "🛡️",
+      "art": "",
+      "blurb": "Forces complete output with no truncation or placeholders",
+      "level": "Foundational",
+      "ramp": "gray",
+      "tabler": "ti-arrows-maximize",
+      "src": "own",
+      "desc": "Overrides default LLM truncation behavior. Enforces complete code generation, bans placeholder patterns, and handles token-limit splits cleanly. Apply to any task requiring exhaustive, unabridged output.",
+      "intro": "Treat every task as production-critical. A partial output is a broken output. Do not optimize for brevity — optimize for completeness. If the user asks for a full file, deliver the full file. If the user asks for 5 components, deliver 5 components. No exceptions.",
+      "sections": [
+        "Baseline",
+        "Banned Output Patterns",
+        "Execution Process",
+        "Handling Long Outputs",
+        "Quick Check"
+      ],
+      "triggers": "",
+      "modes": "",
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 46,
+        "words": 382
+      },
+      "members": [
+        "the-developer",
+        "the-engineer"
+      ]
+    },
+    {
+      "id": "gpt-taste",
+      "name": "gpt-taste",
+      "version": "1.0.0",
+      "icon": "✨",
+      "art": "",
+      "blurb": "Elite motion engineer crafting AIDA layouts with GSAP",
+      "level": "Elite",
+      "ramp": "amber",
+      "tabler": "ti-wand",
+      "src": "own",
+      "desc": "Elite UX/UI & Advanced GSAP Motion Engineer. Enforces Python-driven true randomization for layout variance, strict AIDA page structure, wide editorial typography (bans 6-line wraps), gapless bento grids, strict GSAP ScrollTriggers (pinning, stacking, scrubbing), inline micro-images, and massive section spacing.",
+      "intro": "You are an elite, award-winning frontend design engineer. Standard LLMs possess severe statistical biases: they generate massive 6-line wrapped headings by using narrow containers, leave ugly empty gaps in bento grids, use cheap meta-labels (\"QUESTION 05\", \"SECTION 01\"), output invisible button text",
+      "sections": [
+        "1. PYTHON-DRIVEN TRUE RANDOMIZATION (BREAKING THE LOOP)",
+        "2. AIDA STRUCTURE & SPACING",
+        "3. HERO ARCHITECTURE & THE 2-LINE IRON RULE",
+        "4. THE GAPLESS BENTO GRID",
+        "5. ADVANCED GSAP MOTION & HOVER PHYSICS",
+        "6. COMPONENT ARSENAL & CREATIVITY",
+        "7. CONTENT, ASSETS & STRICT BANS",
+        "8. MANDATORY PRE-FLIGHT <designplan>"
+      ],
+      "triggers": "(pinning, stacking, scrubbing), inline micro-images, and massive section spacing.",
+      "modes": "",
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 71,
+        "words": 1090
+      },
+      "members": [
+        "the-designer"
+      ]
+    },
+    {
+      "id": "graphify",
+      "name": "graphify",
+      "version": "1.0.0",
+      "icon": "🕸️",
+      "art": "",
+      "blurb": "Transforms any input into a navigable knowledge graph",
+      "level": "Master",
+      "ramp": "purple",
+      "tabler": "ti-binary-tree",
+      "src": "own",
+      "desc": "any input (code, docs, papers, images, videos) to knowledge graph. Use when user asks any question about a codebase, documents, or project content - especially if graphify-out/ exists, treat the question as a /graphify query.",
+      "intro": "Turn any folder of files into a navigable knowledge graph with community detection, an honest audit trail, and three outputs: interactive HTML, GraphRAG-ready JSON, and a plain-language GRAPH_REPORT.md.",
+      "sections": [
+        "Usage",
+        "What graphify is for",
+        "What You Must Do When Invoked",
+        "Interpreter guard for subcommands",
+        "For --update (incremental re-extraction)",
+        "For --cluster-only",
+        "For /graphify query",
+        "For /graphify path",
+        "For /graphify explain",
+        "For /graphify add",
+        "For --watch",
+        "For git commit hook",
+        "For native CLAUDE.md integration",
+        "Honesty Rules"
+      ],
+      "triggers": "",
+      "modes": "",
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 1025,
+        "words": 5904
+      },
+      "members": [
+        "the-engineer"
+      ]
+    },
+    {
+      "id": "guild-log",
+      "name": "guild-log",
+      "version": "1.1.0",
+      "icon": "📓",
+      "art": "",
+      "blurb": "Logs non-git-visible guild changes via the two-tier pipeline",
+      "level": "Foundational",
+      "ramp": "gray",
+      "tabler": "ti-history",
+      "src": "own",
+      "desc": "Enforce logging of non-git-visible changes to the Star Alliance guild log. Use this skill whenever a session has changed dashboard markup, renamed UI strings, edited skills-meta.json or members-meta.json, modified guild-log.json directly, reorganized star-alliance-agents/ or star-alliance-skills/ folder layout, or made any visual/structural change that won't show up in a git diff as a version bump. Also use when the user says 'log this', 'guild log this', 'did you log it?', 'add a log entry', or any time work ends and it's unclear whether the change was git-visible. Skill audits what was touched, decides auto-derived vs manual logging, runs build_guild_log.py for git-visible changes and log_event.py for the rest, then rebuilds the dashboard via build.py. Ask Atta to confirm before writing.",
+      "intro": "The Star Alliance guild log (guild-log.json, surfaced through the generated guild-data.js that index.html loads as GUILD.log) is the canonical history of changes across the guild. If a change isn't logged, the Guild Log view on the dashboard silently misses it — and future readers (including the age",
+      "sections": [
+        "When this skill applies",
+        "The two-tier logging pipeline",
+        "Workflow",
+        "Common pitfalls",
+        "Verification checklist",
+        "Related",
+        "Changelog"
+      ],
+      "triggers": "'log this', 'guild log this', 'did you log it?', '/guild-log', or any dashboard/UI/folder change git can't see on its own",
+      "modes": "",
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 211,
+        "words": 2112
+      },
+      "members": [
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": "high-end-visual-design",
+      "name": "high-end-visual-design",
+      "version": "1.0.0",
+      "icon": "🎨",
+      "art": "",
+      "blurb": "Agency-grade design tokens for fonts, spacing, shadows, motion",
+      "level": "Foundational",
+      "ramp": "gray",
+      "tabler": "ti-diamond",
+      "src": "own",
+      "desc": "Teaches the AI to design like a high-end agency. Defines the exact fonts, spacing, shadows, card structures, and animations that make a website feel expensive. Blocks all the common defaults that make AI designs look cheap or generic.",
+      "intro": "If your generated code includes ANY of the following, the design instantly fails:",
+      "sections": [
+        "1. Meta Information & Core Directive",
+        "2. THE \"ABSOLUTE ZERO\" DIRECTIVE (STRICT ANTI-PATTERNS)",
+        "3. THE CREATIVE VARIANCE ENGINE",
+        "4. HAPTIC MICRO-AESTHETICS (COMPONENT MASTERY)",
+        "5. MOTION CHOREOGRAPHY (FLUID DYNAMICS)",
+        "6. PERFORMANCE GUARDRAILS",
+        "7. EXECUTION PROTOCOL",
+        "8. PRE-OUTPUT CHECKLIST"
+      ],
+      "triggers": "",
+      "modes": "",
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 95,
+        "words": 1413
+      },
+      "members": [
+        "the-designer"
+      ]
+    },
+    {
+      "id": "image-to-code",
+      "name": "image-to-code",
+      "version": "1.0.0",
+      "icon": "🖼️",
+      "art": "",
+      "blurb": "Elite pipeline that designs the image, then engineers matching code",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-code",
+      "src": "own",
+      "desc": "Elite website image-to-code skill for Codex. For visually important web tasks, it must first generate the design image(s) itself, deeply analyze them, then implement the website to match them as closely as possible. In Codex, it must prefer large, readable, section-specific images instead of tiny compressed boards, generate fresh standalone images for sections or detail views instead of cropping old ones, avoid lazy under-generation, avoid cards-inside-cards-inside-cards UI, and keep the hero clean, spacious, readable, and visible on a small laptop.",
+      "intro": "You are an elite web design art director and implementation strategist.",
+      "sections": [
+        "1. ACTIVE BASELINE CONFIGURATION",
+        "2. MANDATORY IMAGE-FIRST RULE",
+        "3. GENERATE ENOUGH IMAGES RULE",
+        "4. CODEX-SPECIFIC SECTION IMAGE RULE",
+        "5. DO NOT CROP OLD IMAGES RULE",
+        "6. FRESH RE-GENERATION RULE",
+        "7. OPTIONAL DETAIL / EXTRACTION IMAGE RULE",
+        "8. CLEAN ANALYSIS STANDARD",
+        "9. DEEP IMAGE ANALYSIS REQUIREMENT",
+        "10. IMAGE-FIRST CODEX WEBSITE WORKFLOW",
+        "11. WHEN TO TRIGGER IMAGE GENERATION FIRST",
+        "12. THE COMBINATORIAL VARIATION ENGINE",
+        "13. WEBSITE REFERENCE RULE",
+        "14. HERO MINIMALISM RULES",
+        "15. RESPONSIVE FIRST-VIEW RULE",
+        "16. ANTI-NESTED-BOX RULE",
+        "17. REDUCE MICRO-UI CLUTTER RULE",
+        "18. SECTION IMAGE GENERATION RULE",
+        "19. WEBSITE IMAGE SYSTEM RULE",
+        "20. FIXED MEDIA FRAME RULE",
+        "21. TEXT EXTRACTION RULE",
+        "22. TYPOGRAPHY EXTRACTION RULE",
+        "23. SPACING EXTRACTION RULE",
+        "24. BUTTON / COMPONENT EXTRACTION RULE",
+        "25. COLOR EXTRACTION RULE",
+        "26. DESIGN-TO-CODE COPY DISCIPLINE",
+        "27. ANTI-DRIFT IMPLEMENTATION RULE",
+        "28. MISSING DETAIL RESOLUTION",
+        "29. ANTI-AI-SLOP RULES",
+        "30. TYPOGRAPHY-FIRST DISCIPLINE",
+        "31. SECTION RHYTHM RULE",
+        "32. DENSITY & SPACING DISCIPLINE",
+        "33. DEFAULT SECTION PACKS",
+        "34. MULTI-IMAGE CONSISTENCY RULE",
+        "35. CLARITY CHECK",
+        "36. RESPONSE BEHAVIOR",
+        "37. EXAMPLE INTERPRETATIONS",
+        "38. FINAL GOAL"
+      ],
+      "triggers": "",
+      "modes": "",
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 1225,
+        "words": 5735
+      },
+      "members": [
+        "the-designer"
+      ]
+    },
+    {
+      "id": "imagegen-frontend-mobile",
+      "name": "imagegen-frontend-mobile",
+      "version": "1.0.0",
+      "icon": "📱",
+      "art": "",
+      "blurb": "Elite mobile screen concept generator for iOS and Android apps",
+      "level": "Elite",
+      "ramp": "amber",
+      "tabler": "ti-device-mobile",
+      "src": "own",
+      "desc": "Elite mobile app image-generation skill for creating premium, app-native screen concepts and flows. Designed for iOS, Android, and cross-platform mobile products. Prioritizes clean hierarchy, comfortably readable text, strong multi-screen consistency, controlled color palettes, non-generic creative direction, textured surfaces, image-led composition, tasteful custom iconography, and clean phone mockup framing. By default, screens should be shown inside a subtle premium iPhone or similar phone mockup with a visible frame, while the main focus stays on the app content itself. This skill generates images only. It does not write code.",
+      "intro": "You are an elite mobile product design art director.",
+      "sections": [
+        "1. ACTIVE BASELINE CONFIGURATION",
+        "2. PLATFORM MODE RULE",
+        "3. MANDATORY SCREEN-FIRST RULE",
+        "4. GENERATE ENOUGH SCREENS RULE",
+        "5. DO NOT CROP OLD IMAGES RULE",
+        "6. APP DESIGN BIBLE RULE",
+        "7. MULTI-SCREEN CONSISTENCY RULE",
+        "8. LOGICAL FLOW RULE",
+        "9. DEFAULT MOCKUP PRESENCE RULE",
+        "10. DEVICE MOCKUP FRAME RULE",
+        "11. ONBOARDING FLOW RULE",
+        "12. FIRST SCREEN CLEANLINESS RULE",
+        "13. SAFE AREA AND SYSTEM REGION RULE",
+        "14. NAVIGATION RULE",
+        "15. CLEAN LAYOUT RULE",
+        "16. CREATIVE IMAGE DIRECTION RULE",
+        "17. BACKGROUND TEXTURE AND SURFACE RULE",
+        "18. IMAGE-BEHIND-TEXT RULE",
+        "19. CREATIVE ASSET RULE",
+        "20. ICONOGRAPHY RULE",
+        "21. MOBILE ANTI-AI-TELLS RULE",
+        "22. STYLE VARIATION ENGINE",
+        "23. COLOR PALETTE RULE",
+        "24. NON-GENERICITY RULE",
+        "25. NOT ALWAYS SIMPLE RULE",
+        "26. IMAGE SYSTEM RULE",
+        "27. FIXED MOBILE MEDIA FRAME RULE",
+        "28. TEXT RULE",
+        "29. TEXT SIZE AND READABILITY RULE",
+        "30. TYPOGRAPHY RULE",
+        "31. SPACING AND DENSITY RULE",
+        "32. SCREEN-TO-SCREEN VARIATION RULE",
+        "33. CATEGORY-SPECIFIC BIAS",
+        "34. REGENERATION RULE",
+        "35. QUALITY CHECK",
+        "36. RESPONSE BEHAVIOR",
+        "37. EXAMPLE INTERPRETATIONS",
+        "38. FINAL GOAL"
+      ],
+      "triggers": "",
+      "modes": "",
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 1462,
+        "words": 6460
+      },
+      "members": [
+        "the-designer"
+      ]
+    },
+    {
+      "id": "imagegen-frontend-web",
+      "name": "imagegen-frontend-web",
+      "version": "1.0.0",
+      "icon": "🌐",
+      "art": "",
+      "blurb": "Elite website design image generation with conversion awareness built in",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-browser",
+      "src": "own",
+      "desc": "Elite frontend image-direction skill for generating premium, conversion-aware website design references. CRITICAL OUTPUT RULE — generate ONE separate horizontal image FOR EVERY section. A landing page with 8 sections produces 8 images. Never compress multiple sections into one image. Enforces composition variety (not always left-text / right-image), background-image freedom, varied CTAs, varied hero scales (giant / mid / mini minimalist), narrative concept spine, second-read moments, and a single consistent palette across all images. Optimized for landing pages, marketing sites, and product comps that developers or coding models can accurately recreate.",
+      "intro": "Generate one separate horizontal image PER section. Always. No exceptions.",
+      "sections": [
+        "1. ACTIVE BASELINE CONFIGURATION",
+        "2. THE COMBINATORIAL VARIATION ENGINE",
+        "3. FRONTEND REFERENCE RULE",
+        "4. HERO MINIMALISM RULES",
+        "5. IMAGE COUNT & PAGE SLICING",
+        "6. CREATIVITY ESCALATION RULE",
+        "7. IMAGE-FIRST ART DIRECTION",
+        "8. ANTI-AI-SLOP RULES",
+        "9. TYPOGRAPHY-FIRST DISCIPLINE",
+        "10. SECTION RHYTHM RULE",
+        "11. COMPONENT EXECUTION GUIDELINES",
+        "12. DENSITY & SPACING DISCIPLINE",
+        "13. COLOR & MATERIAL RULES",
+        "14. IMAGE / MEDIA DIRECTION",
+        "15. DEFAULT SITE PACKS",
+        "16. MULTI-IMAGE CONSISTENCY RULE",
+        "17. CLARITY CHECK",
+        "18. EXTRA CREATIVITY & IMPLEMENTATION EDGE",
+        "19. RESPONSE BEHAVIOR",
+        "20. EXAMPLE INTERPRETATIONS",
+        "21. FINAL GOAL"
+      ],
+      "triggers": "",
+      "modes": "",
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 984,
+        "words": 5724
+      },
+      "members": [
+        "the-designer"
+      ]
+    },
+    {
+      "id": "impeccable",
+      "name": "impeccable",
+      "version": "3.0.7",
+      "icon": "✨",
+      "art": "",
+      "blurb": "Polish, critique, distill, and harden any design with Swiss precision",
+      "level": "Intermediate",
+      "ramp": "blue",
+      "tabler": "ti-award",
+      "src": "external",
+      "desc": "Use when the user wants to design, redesign, shape, critique, audit, polish, clarify, distill, harden, optimize, adapt, animate, colorize, extract, or otherwise improve a frontend interface. Covers websites, landing pages, dashboards, product UI, app shells, components, forms, settings, onboarding, and empty states. Handles UX review, visual hierarchy, information architecture, cognitive load, accessibility, performance, responsive behavior, theming, anti-patterns, typography, fonts, spacing, layout, alignment, color, motion, micro-interactions, UX copy, error states, edge cases, i18n, and reusable design systems or tokens. Also use for bland designs that need to become bolder or more delightful, loud designs that should become quieter, live browser iteration on UI elements, or ambitious visual effects that should feel technically extraordinary. Not for backend-only or non-UI tasks.",
+      "intro": "",
+      "sections": [
+        "Setup (non-optional)",
+        "Shared design laws",
+        "Commands",
+        "Pin / Unpin"
+      ],
+      "triggers": "",
+      "modes": "",
+      "refs": [],
+      "scripts": [
+        "build-browser-detector.js",
+        "build-extension.js",
+        "build.js",
+        "cleanup-deprecated.mjs",
+        "command-metadata.json",
+        "design-parser.mjs",
+        "detect-csp.mjs",
+        "generate-extension-icons.js",
+        "generate-og-image.js",
+        "generate-promo-tile.js",
+        "impeccable-paths.mjs",
+        "is-generated.mjs",
+        "lib",
+        "live-accept.mjs",
+        "live-browser-session.js",
+        "live-browser.js",
+        "live-complete.mjs",
+        "live-completion.mjs",
+        "live-inject.mjs",
+        "live-poll.mjs",
+        "live-resume.mjs",
+        "live-server.mjs",
+        "live-session-store.mjs",
+        "live-status.mjs",
+        "live-wrap.mjs",
+        "live.mjs",
+        "load-context.mjs",
+        "modern-screenshot.umd.js",
+        "pin.mjs",
+        "release.mjs",
+        "screenshot-antipatterns.js"
+      ],
+      "stats": {
+        "lines": 172,
+        "words": 1793
+      },
+      "members": [
+        "the-designer"
+      ]
+    },
+    {
+      "id": "industrial-brutalist-ui",
+      "name": "industrial-brutalist-ui",
+      "version": "1.0.0",
+      "icon": "⚙️",
+      "art": "",
+      "blurb": "Brutalist industrial UI blending Swiss type with military terminal grit",
+      "level": "Foundational",
+      "ramp": "gray",
+      "tabler": "ti-building-factory",
+      "src": "own",
+      "desc": "Raw mechanical interfaces fusing Swiss typographic print with military terminal aesthetics. Rigid grids, extreme type scale contrast, utilitarian color, analog degradation effects. For data-heavy dashboards, portfolios, or editorial sites that need to feel like declassified blueprints.",
+      "intro": "Name: Industrial Brutalism & Tactical Telemetry Interface Engineering Description: Advanced proficiency in architecting web interfaces that synthesize mid-century Swiss Typographic design, industrial manufacturing manuals, and retro-futuristic aerospace/military terminal interfaces. This discipline ",
+      "sections": [
+        "1. Skill Meta",
+        "2. Visual Archetypes",
+        "3. Typographic Architecture",
+        "4. Color System",
+        "5. Layout and Spatial Engineering",
+        "6. UI Components and Symbology",
+        "7. Textural and Post-Processing Effects",
+        "8. Web Engineering Directives"
+      ],
+      "triggers": "",
+      "modes": "",
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 89,
+        "words": 1034
+      },
+      "members": [
+        "the-designer"
+      ]
+    },
+    {
+      "id": "minimalist-ui",
+      "name": "minimalist-ui",
+      "version": "1.0.0",
+      "icon": "🎨",
+      "art": "",
+      "blurb": "Clean editorial interfaces, warm monochrome palette",
+      "level": "Foundational",
+      "ramp": "gray",
+      "tabler": "ti-layout",
+      "src": "own",
+      "desc": "Clean editorial-style interfaces. Warm monochrome palette, typographic contrast, flat bento grids, muted pastels. No gradients, no heavy shadows.",
+      "intro": "Name: Premium Utilitarian Minimalism & Editorial UI Description: An advanced frontend engineering directive for generating highly refined, ultra-minimalist, \"document-style\" web interfaces analogous to top-tier workspace platforms. This protocol strictly enforces a high-contrast warm monochrome pale",
+      "sections": [
+        "1. Protocol Overview",
+        "2. Absolute Negative Constraints (Banned Elements)",
+        "3. Typographic Architecture",
+        "4. Color Palette (Warm Monochrome + Spot Pastels)",
+        "5. Component Specifications",
+        "6. Iconography & Imagery Directives",
+        "7. Subtle Motion & Micro-Animations",
+        "8. Execution Protocol"
+      ],
+      "triggers": "",
+      "modes": "",
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 82,
+        "words": 1066
+      },
+      "members": [
+        "the-designer"
+      ]
+    },
+    {
+      "id": "obsidian-markdown",
+      "name": "obsidian-markdown",
+      "version": "1.0.0",
+      "icon": "📝",
+      "art": "",
+      "blurb": "Edit Obsidian-flavored markdown with wikilinks and callouts",
+      "level": "Foundational",
+      "ramp": "gray",
+      "tabler": "ti-markdown",
+      "src": "own",
+      "desc": "Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, and other Obsidian-specific syntax. Use when working with .md files in Obsidian, or when the user mentions wikilinks, callouts, frontmatter, tags, embeds, or Obsidian notes.",
+      "intro": "Create and edit valid Obsidian Flavored Markdown. Obsidian extends CommonMark and GFM with wikilinks, embeds, callouts, properties, comments, and other syntax. This skill covers only Obsidian-specific extensions -- standard Markdown (headings, bold, italic, lists, quotes, code blocks, tables) is ass",
+      "sections": [
+        "Workflow: Creating an Obsidian Note",
+        "Internal Links (Wikilinks)",
+        "Embeds",
+        "Callouts",
+        "Properties (Frontmatter)",
+        "Tags",
+        "Comments",
+        "Obsidian-Specific Formatting",
+        "Math (LaTeX)",
+        "Diagrams (Mermaid)",
+        "Footnotes",
+        "Complete Example",
+        "References"
+      ],
+      "triggers": "",
+      "modes": "",
+      "refs": [
+        "CALLOUTS.md",
+        "EMBEDS.md",
+        "PROPERTIES.md"
+      ],
+      "scripts": [],
+      "stats": {
+        "lines": 163,
+        "words": 610
+      },
+      "members": [
+        "the-developer",
+        "the-translator"
+      ]
+    },
+    {
+      "id": "performance",
+      "name": "performance",
+      "version": "1.0.1",
+      "icon": "⚡",
+      "art": "",
+      "blurb": "Speed up websites with performance optimization best practices",
+      "level": "Intermediate",
+      "ramp": "blue",
+      "tabler": "ti-gauge",
+      "src": "vendored",
+      "desc": "Optimize web performance for faster loading and better user experience. Use when asked to \"speed up my site\", \"optimize performance\", \"reduce load time\", \"fix slow loading\", \"improve page speed\", or \"performance audit\".",
+      "intro": "Deep performance optimization based on Lighthouse performance audits. Focuses on loading speed, runtime efficiency, and resource optimization.",
+      "sections": [
+        "How it works",
+        "Performance budget",
+        "Critical rendering path",
+        "Image optimization",
+        "Font optimization",
+        "Caching strategy",
+        "Runtime performance",
+        "Third-party scripts",
+        "Measurement",
+        "References",
+        "Changelog"
+      ],
+      "triggers": "",
+      "modes": "",
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 363,
+        "words": 1164
+      },
+      "members": [
+        "the-strategist"
+      ]
+    },
+    {
+      "id": "redesign-existing-projects",
+      "name": "redesign-existing-projects",
+      "version": "1.0.0",
+      "icon": "✨",
+      "art": "",
+      "blurb": "Upgrade existing sites to premium, anti-generic design",
+      "level": "Intermediate",
+      "ramp": "blue",
+      "tabler": "ti-refresh",
+      "src": "own",
+      "desc": "Upgrades existing websites and apps to premium quality. Audits current design, identifies generic AI patterns, and applies high-end design standards without breaking functionality. Works with any CSS framework or vanilla CSS.",
+      "intro": "When applied to an existing project, follow this sequence:",
+      "sections": [
+        "How This Works",
+        "Design Audit",
+        "Upgrade Techniques",
+        "Fix Priority",
+        "Rules"
+      ],
+      "triggers": "",
+      "modes": "",
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 175,
+        "words": 2174
+      },
+      "members": [
+        "the-designer"
+      ]
+    },
+    {
+      "id": "skillsmith",
+      "name": "skillsmith",
+      "version": "1.1.8",
+      "icon": "🛠️",
+      "art": "",
+      "blurb": "Manage, sync, upgrade, and auto-evolve Star Alliance skills",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-tools",
+      "src": "own",
+      "desc": "Manage, sync, upgrade, create, and auto-evolve Star Alliance skills across the star-alliance repo and the on-device copies (~/.claude/skills global + per-project .claude/skills). Modes — sync: reconcile repo and device by metadata.version, honoring fork+external exceptions. upgrade: bump a skill's version, regenerate the VERSIONS.md registry, run the Cowork-compliance check, add a changelog entry. create: author a new skill via the official skill-creator, then make it upgradeable. routine: a daily, fully-autonomous self-improvement loop that mines your code, projects, and sessions with the Stanford STORM method (5 personas, contradiction map, synthesis, peer review) to find upgrade routes, new-skill ideas, and bugs, then applies the high-confidence ones (skillsmith itself included). Triggers: 'sync my skills', 'upgrade a skill', 'create a skill', 'install my skills', 'run the skill routine', 'evolve my skills', '/skillsmith'. Scripts in scripts/; procedures in references/.",
+      "intro": "The control panel for the star-alliance repo. It keeps every skill versioned, Cowork-installable, and in sync between the git repo and the on-device copies — and it authors new skills (via the official skill-creator) already wired into those conventions. As of v1.1.0 it also evolves the library on i",
+      "sections": [
+        "The three locations",
+        "Modes",
+        "When to invoke",
+        "Helper scripts (do the mechanical work; never edit frontmatter except where noted)",
+        "Workflow",
+        "Invariants (every mode)",
+        "Versioning",
+        "Changelog",
+        "Related"
+      ],
+      "triggers": "'sync my skills', 'upgrade a skill', 'create a skill', 'install my skills', 'run the skill routine', 'evolve my skills', '/skillsmith'. Scripts in scripts/; procedures in references/.",
+      "modes": "sync: reconcile repo and device by metadata.version, honoring fork+external exceptions. upgrade: bump a skill's version, regenerate the VERSIONS.md registry, run the Cowork-compliance check, add a changelog entry. create: author a new skill via the official skill-creator, then make it upgradeable. r",
+      "refs": [
+        "cowork-limits.md",
+        "create-playbook.md",
+        "routine-ledger",
+        "routine-playbook.md",
+        "storm-method.md",
+        "sync-playbook.md",
+        "upgrade-playbook.md"
+      ],
+      "scripts": [
+        "migrate_version.py",
+        "routine_scan.py",
+        "run_routine.sh",
+        "skill_registry.py",
+        "skill_sync.py"
+      ],
+      "stats": {
+        "lines": 134,
+        "words": 3078
+      },
+      "members": [
+        "the-butler",
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": "stitch-design-taste",
+      "name": "stitch-design-taste",
+      "version": "1.0.0",
+      "icon": "🧵",
+      "art": "",
+      "blurb": "Enforce premium design standards via DESIGN.md files",
+      "level": "Intermediate",
+      "ramp": "blue",
+      "tabler": "ti-needle",
+      "src": "own",
+      "desc": "Semantic Design System Skill for Google Stitch. Generates agent-friendly DESIGN.md files that enforce premium, anti-generic UI standards — strict typography, calibrated color, asymmetric layouts, perpetual micro-motion, and hardware-accelerated performance.",
+      "intro": "This skill generates DESIGN.md files optimized for Google Stitch screen generation. It translates the battle-tested anti-slop frontend engineering directives into Stitch's native semantic design language — descriptive, natural-language rules paired with precise values that Stitch's AI agent can inte",
+      "sections": [
+        "Overview",
+        "Prerequisites",
+        "The Goal",
+        "Analysis & Synthesis Instructions",
+        "Output Format (DESIGN.md Structure)",
+        "1. Visual Theme & Atmosphere",
+        "2. Color Palette & Roles",
+        "3. Typography Rules",
+        "4. Component Stylings",
+        "5. Layout Principles",
+        "6. Motion & Interaction",
+        "7. Anti-Patterns (Banned)",
+        "Best Practices",
+        "Tips for Success",
+        "Common Pitfalls to Avoid"
+      ],
+      "triggers": "",
+      "modes": "",
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 181,
+        "words": 1628
+      },
+      "members": [
+        "the-designer"
+      ]
+    },
+    {
+      "id": "strategies-review",
+      "name": "strategies-review",
+      "version": "1.0.0",
+      "icon": "📋",
+      "art": "",
+      "blurb": "Reviews pending strategies then promotes to executed and verifies",
+      "level": "Foundational",
+      "ramp": "gray",
+      "tabler": "ti-checklist",
+      "src": "own",
+      "desc": "Review pending strategies and move them to executed then check the docs.",
+      "intro": "",
+      "sections": [
+        "Step 1 — Load the resolutions log first",
+        "Step 2 — Scan all three strategy locations",
+        "Step 3 — Classify and report",
+        "Step 4 — Verify documentation",
+        "Step 5 — Flag inconsistencies",
+        "Output format"
+      ],
+      "triggers": "",
+      "modes": "",
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 44,
+        "words": 297
+      },
+      "members": [
+        "the-strategist"
+      ]
+    },
+    {
+      "id": "supabase",
+      "name": "supabase",
+      "version": "0.1.2",
+      "icon": "⚡",
+      "art": "",
+      "blurb": "All-in-one Supabase toolkit spanning database auth storage vectors",
+      "level": "Intermediate",
+      "ramp": "blue",
+      "tabler": "ti-bolt",
+      "src": "vendored",
+      "desc": "Use when doing ANY task involving Supabase. Triggers: Supabase products (Database, Auth, Edge Functions, Realtime, Storage, Vectors, Cron, Queues); client libraries and SSR integrations (supabase-js, @supabase/ssr) in Next.js, React, SvelteKit, Astro, Remix; auth issues (login, logout, sessions, JWT, cookies, getSession, getUser, getClaims, RLS); Supabase CLI or MCP server; schema changes, migrations, security audits, Postgres extensions (pg_graphql, pg_cron, pg_vector).",
+      "intro": "1. Supabase changes frequently — verify against changelog and current docs before implementing. Do not rely on training data for Supabase features. Function signatures, config.toml settings, and API conventions change between versions.",
+      "sections": [
+        "Core Principles",
+        "Supabase CLI",
+        "Supabase MCP Server",
+        "Supabase Documentation",
+        "Making and Committing Schema Changes",
+        "Reference Guides"
+      ],
+      "triggers": "Supabase products (Database, Auth, Edge Functions, Realtime, Storage, Vectors, Cron, Queues); client libraries and SSR integrations (supabase-js, @supabase/ssr) in Next.js, React, SvelteKit, Astro, Remix; auth issues (login, logout, sessions, JWT, cookies, get",
+      "modes": "",
+      "refs": [
+        "skill-feedback.md"
+      ],
+      "scripts": [],
+      "stats": {
+        "lines": 106,
+        "words": 1184
+      },
+      "members": [
+        "the-architect",
+        "the-developer"
+      ]
+    },
+    {
+      "id": "supabase-postgres-best-practices",
+      "name": "supabase-postgres-best-practices",
+      "version": "1.1.1",
+      "icon": "🐘",
+      "art": "",
+      "blurb": "Postgres performance optimization and best practices from Supabase",
+      "level": "Foundational",
+      "ramp": "gray",
+      "tabler": "ti-database",
+      "src": "vendored",
+      "desc": "Postgres performance optimization and best practices from Supabase. Use this skill when writing, reviewing, or optimizing Postgres queries, schema designs, or database configurations.",
+      "intro": "Comprehensive performance optimization guide for Postgres, maintained by Supabase. Contains rules across 8 categories, prioritized by impact to guide automated query optimization and schema design.",
+      "sections": [
+        "When to Apply",
+        "Rule Categories by Priority",
+        "How to Use",
+        "References"
+      ],
+      "triggers": "",
+      "modes": "",
+      "refs": [
+        "_contributing.md",
+        "_sections.md",
+        "_template.md",
+        "advanced-full-text-search.md",
+        "advanced-jsonb-indexing.md",
+        "conn-idle-timeout.md",
+        "conn-limits.md",
+        "conn-pooling.md",
+        "conn-prepared-statements.md",
+        "data-batch-inserts.md",
+        "data-n-plus-one.md",
+        "data-pagination.md",
+        "data-upsert.md",
+        "lock-advisory.md",
+        "lock-deadlock-prevention.md",
+        "lock-short-transactions.md",
+        "lock-skip-locked.md",
+        "monitor-explain-analyze.md",
+        "monitor-pg-stat-statements.md",
+        "monitor-vacuum-analyze.md",
+        "query-composite-indexes.md",
+        "query-covering-indexes.md",
+        "query-index-types.md",
+        "query-missing-indexes.md",
+        "query-partial-indexes.md",
+        "schema-constraints.md",
+        "schema-data-types.md",
+        "schema-foreign-key-indexes.md",
+        "schema-lowercase-identifiers.md",
+        "schema-partitioning.md",
+        "schema-primary-keys.md",
+        "security-privileges.md",
+        "security-rls-basics.md",
+        "security-rls-performance.md"
+      ],
+      "scripts": [],
+      "stats": {
+        "lines": 54,
+        "words": 242
+      },
+      "members": [
+        "the-architect",
+        "the-developer"
+      ]
+    },
+    {
+      "id": "transactions-domain-model",
+      "name": "transactions-domain-model",
+      "version": "1.2.0",
+      "icon": "💳",
+      "art": "",
+      "blurb": "Loads Lex Council transactions domain model before any work",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-credit-card",
+      "src": "own",
+      "desc": "Loads the complete Lex Council transactions domain model before any transaction-related work begins. Use this skill whenever the user mentions or asks about: transactions, transaction types, safe transactions, normal transactions, advances, deposits, withdrawals, expenses, income, transaction form, batch transactions, agree/agreement, certify/certification, action_required_user_inquestion, done_by, transaction_to, transaction views, transaction tabs (Personal, Pending, Approval, Certification, Safe, History), TransactionFormModal, BatchTransactionModal, TransactionContainerV8, TransactionActionBar, tr_on_tr_b_iu trigger, transaction templates, or any transaction-related bug, feature, or refactor. Also trigger when the user says \"work on transactions\", \"fix a transaction bug\", \"add a transaction feature\", \"transaction page\", or references any file under finances/. Load silently in the background — no need to announce the skill is running.",
+      "intro": "This skill provides the complete mental model of the Lex Council transactions subsystem. Read this before touching any transaction-related code, view, trigger, or API route. The system is non-trivial — there are 13 transaction types, a three-gate lifecycle, six tab views with permission-tier gating,",
+      "sections": [
+        "1. Transaction Types",
+        "2. Three-Gate Lifecycle",
+        "3. Key Actors in a Transaction",
+        "4. The trontrbiu Trigger",
+        "5. Six-Tab View Architecture",
+        "6. Frontend Architecture",
+        "7. Permissions Map",
+        "8. Common Pitfalls and Gotchas",
+        "9. API Routes",
+        "10. Store",
+        "11. Key Vault Logs (Chronological)",
+        "Changelog"
+      ],
+      "triggers": ", transaction templates, or any transaction-related bug, feature, or refactor. Also trigger when the user says \"work on transactions\", \"fix a transaction bug\", \"add a transaction feature\", \"transaction page\", or references any file under finances/. Load silent",
+      "modes": "",
+      "refs": [
+        "file-map.md"
+      ],
+      "scripts": [],
+      "stats": {
+        "lines": 392,
+        "words": 3017
+      },
+      "members": [
+        "the-architect"
+      ]
+    },
+    {
+      "id": "vault-log-compliance",
+      "name": "vault-log-compliance",
+      "version": "1.1.0",
+      "icon": "🛡️",
+      "art": "",
+      "blurb": "Enforces P8 vault-logging compliance across all backend code",
+      "level": "Intermediate",
+      "ramp": "blue",
+      "tabler": "ti-shield-check",
+      "src": "own",
+      "desc": "Enforces P8 vault-logging compliance for Lex Council. Use this skill whenever a session has touched backend code (migrations, views, triggers, RPC functions, RLS policies, edge functions, cron jobs), frontend code (components, pages, hooks, mutations, stores), schema changes, or bug fixes — even if the user doesn't explicitly ask for a vault log. Also use when the user says phrases like \"vault log this\", \"does this need a vault log?\", \"log what I did\", \"P8\", \"write a vault-log entry\", or when finishing up work and unsure whether it qualifies. Skill audits what was touched, checks whether a covering vault-log entry already exists, drafts one in the project's established format if missing, and updates the INDEX.md and affected docs' Last Synced footers. Ask Atta to approve the draft before writing.",
+      "intro": "Per lex_council/docs/primary_instructions.md §4 and GENERAL-GUIDELINES.md §P8, every code or backend change gets a wikilinked vault-log entry in lex_council/docs/vault-logs/ before the session ends. This is the input pipeline for the housekeeper — if a change isn't logged, the housekeeper can't find",
+      "sections": [
+        "When this skill applies",
+        "Workflow",
+        "Why the approval gate matters",
+        "Related",
+        "Changelog"
+      ],
+      "triggers": ", RPC functions, RLS policies, edge functions, cron jobs), frontend code (components, pages, hooks, mutations, stores), schema changes, or bug fixes — even if the user doesn't explicitly ask for a vault log. Also use when the user says phrases like \"vault log ",
+      "modes": "",
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 119,
+        "words": 1445
+      },
+      "members": [
+        "the-strategist"
+      ]
+    }
+  ],
+  "domains": [
+    {
+      "id": "star-alliance",
+      "name": "Star Alliance",
+      "tagline": "The guild framework itself — skill registry, agent definitions, dashboard",
+      "path": "/Users/atta/Documents/Claude/Projects/star-alliance",
+      "icon": "⭐",
+      "color": "#b89530",
+      "skills": [
+        "conquering-campaign",
+        "cleanup",
+        "skillsmith",
+        "guild-log",
+        "transactions-domain-model",
+        "db-rename-sweep",
+        "supabase",
+        "supabase-postgres-best-practices",
+        "bug-fix-workflow",
+        "dev-server",
+        "full-output-enforcement",
+        "obsidian-markdown",
+        "design-taste-frontend",
+        "high-end-visual-design",
+        "image-to-code",
+        "imagegen-frontend-web",
+        "imagegen-frontend-mobile",
+        "brandkit",
+        "minimalist-ui",
+        "industrial-brutalist-ui",
+        "impeccable",
+        "stitch-design-taste",
+        "gpt-taste",
+        "redesign-existing-projects",
+        "performance",
+        "codex-law-translate",
+        "article-creator",
+        "strategies-review",
+        "vault-log-compliance",
+        "graphify",
+        "fallen-sword-design-language"
+      ],
+      "members": [
+        "the-butler",
+        "the-architect",
+        "the-developer",
+        "the-designer",
+        "the-strategist",
+        "the-translator",
+        "the-engineer",
+        "the-merchant",
+        "the-quartermaster"
+      ],
+      "notes": "The home domain. All 9 guild members + 31 skills live here. Every other domain borrows from this skill pool."
+    },
+    {
+      "id": "lex-council-app",
+      "name": "Lex Council App",
+      "tagline": "Multi-portal app — admin, members, clients (Next.js + Supabase)",
+      "path": "/Users/atta/Documents/Claude/Projects/Lex Council App",
+      "icon": "⚖️",
+      "color": "#3b7dd8",
+      "skills": [
+        "supabase",
+        "supabase-postgres-best-practices",
+        "performance",
+        "brandkit",
+        "design-taste-frontend",
+        "full-output-enforcement",
+        "gpt-taste",
+        "high-end-visual-design",
+        "image-to-code",
+        "imagegen-frontend-mobile",
+        "imagegen-frontend-web",
+        "impeccable",
+        "industrial-brutalist-ui",
+        "minimalist-ui",
+        "redesign-existing-projects",
+        "stitch-design-taste",
+        "db-rename-sweep",
+        "bug-fix-workflow",
+        "dev-server",
+        "transactions-domain-model",
+        "vault-log-compliance",
+        "cleanup"
+      ],
+      "members": [
+        "backend-auditor",
+        "cold-doc-rotator",
+        "frontend-auditor",
+        "health-checker",
+        "heat-map-analyst",
+        "pattern-detector"
+      ],
+      "notes": "The production app. Skills installed in skills-lock.json come from external GitHub repos (Leonxlnx/taste-skill, supabase/agent-skills, etc.) and are vendored into Lex Council App/skills/. Local agents defined in .claude/agents/ handle project-specific audits."
+    },
+    {
+      "id": "lex-council-business",
+      "name": "Lex Council Business",
+      "tagline": "Business operations — marketing, BD, content drafting (Obsidian vault)",
+      "path": "/Users/atta/Documents/Claude/Projects/Lex Council Business",
+      "icon": "🏛️",
+      "color": "#7c5dc8",
+      "skills": [
+        "article-creator",
+        "brandkit",
+        "codex-law-translate",
+        "obsidian-markdown",
+        "full-output-enforcement",
+        "vault-log-compliance"
+      ],
+      "members": [
+        "bd-research-agent",
+        "marketing-agent",
+        "intake-agent"
+      ],
+      "notes": "Business-side operations vault. Currently speccing 3 revenue agents (BD research, marketing, intake) per the 60-Day Survival playbook. Skills focus on content drafting + multilingual translation + Obsidian vault structure."
+    }
+  ],
+  "log": {
+    "entries": [
+      {
+        "id": 8,
+        "date": "2026-06-26",
+        "type": "dashboard",
+        "title": "Arsenal page upgraded with summon recipes, pull badges, and MiniMax M3 backend integration",
+        "who": "the-quartermaster",
+        "detail": "Each model card now displays a How to summon block with the exact invocation recipe: Claude via the native Task tool, MiniMax M3 via direct api.minimax.io with the key at ~/.config/minimax/m3.key (not the retired Ollama route), bench models via ollama run <tag>:cloud, and GPT-5.5 via OpenAI direct. A new GET /api/arsenal endpoint in .claude/serve.cjs runs ollama list on demand, and app.js refreshes the pulled/not-pulled badges on visit and on button click. A consumption gauge was built and then removed at the user's request; while present it had a live Claude 5-hour token parser reading transcript logs and a numberless auto-estimate bar for other models, and those backend parser and estimator functions plus models-usage.json still exist but are unused. Most of the new backend code was authored by MiniMax M3 itself through its direct API and integrated by Opus, confirming the MiniMax-direct wiring works end to end.",
+        "ref": [
+          "the-quartermaster",
+          "the-butler"
+        ]
+      },
+      {
+        "id": 7,
+        "date": "2026-06-24",
+        "type": "dashboard",
+        "title": "Added Domains drawer + extracted hardcoded MEMBERS into members.json",
+        "who": "Atta",
+        "detail": "New drawer in the sidebar shows 3 project domains (Star Alliance, Lex Council App, Lex Council Business), each with linked skills + linked members. Domain cards link to a detail view that lists every skill (with 'not in guild' warnings for skills referenced but not installed) and every member (with 'external' warnings for non-guild members). Refactored the hardcoded MEMBERS array out of guild-dashboard.html into members.json, generated by extract_members.py which overlays fresh skills arrays from star-alliance-agents/*.md frontmatter (fixing the staleness bug where Quartermaster's guild-log skill was added to .md but never showed in the dashboard). build_dashboard.py now regenerates skills-data.js, guild-log.js, members.js, and the new domains.js from sources. All 5 show*() functions hide/show the new #domainsView alongside the other views.",
+        "ref": [
+          "the-butler",
+          "the-quartermaster"
+        ]
+      },
+      {
+        "id": 6,
+        "date": "2026-06-24",
+        "type": "dashboard",
+        "title": "Bug fix: Guild Log view leaked into Members view after navigation",
+        "who": "Atta",
+        "detail": "showMembers(), showSkillPool(), and showProfile() all failed to hide #logView, so once a user clicked Guild Log, switching to any other view left the log rendered below the active view (3772px of log content visible below member cards, with pageTitle showing 'Guild Members'). Fixed by adding 'document.getElementById(logView).style.display=none' to all three functions. Verified: after Guild Log → Members flow, logView is now display:none with offsetHeight 0. Root cause: logView was added to the HTML after the original three-view pattern was established, so the older show functions were never updated to hide it.",
+        "ref": [
+          "the-butler"
+        ]
+      },
+      {
+        "id": 5,
+        "date": "2026-06-24",
+        "type": "member-upgrade",
+        "title": "Assigned guild-log to the Quartermaster (was on Butler)",
+        "who": "Atta",
+        "detail": "Moved the guild-log skill from The Butler's skills list back to The Quartermaster's, since The Quartermaster owns skill management + hygiene. Updated the-quartermaster.md: added 'guild-log' to skills array, added a new 'How you work' step 6 explaining the two-tier pipeline, updated the agent description's trigger phrases ('log this', 'guild log this', 'did you log it?', '/guild-log'). Reverted the same change from the Butler's roster row in README.md. Rebuilt the dashboard.",
+        "ref": [
+          "the-quartermaster",
+          "guild-log"
+        ]
+      },
+      {
+        "id": 4,
+        "date": "2026-06-24",
+        "type": "skill-create",
+        "title": "Add skill: guild-log",
+        "who": "Atta",
+        "detail": "New skill enforces logging of non-git-visible changes (dashboard edits, UI renames, folder reorganizations) via the two-tier pipeline: build_guild_log.py for git-visible changes + log_event.py for manual entries + build_dashboard.py to regenerate the JS mirror. Codifies the workflow + 7 named pitfalls drawn from the rename work earlier this session. Registered in VERSIONS.md (v1.0.0, ✓ lean, 808 char description).",
+        "ref": [
+          "guild-log"
+        ]
+      },
+      {
+        "id": 3,
+        "date": "2026-06-24",
+        "type": "dashboard",
+        "title": "Renamed dashboard nav: Roster → Members (full internal sweep)",
+        "who": "Atta",
+        "detail": "Sidebar label, page title, page-load invocation, and JS function/variable names all renamed. Generic CSS class .roster (used on all 3 view panels: members, skill pool, log) renamed to .view-panel. data-view attribute updated from 'roster' to 'members'. Historical log entries also updated. Bug fix: log_event.py next_id() crashed on entries missing 'id' field.",
+        "ref": [
+          "the-butler"
+        ]
+      },
+      {
+        "id": 2,
+        "date": "2026-06-24",
+        "type": "dashboard",
+        "title": "Removed members list from dashboard sidebar",
+        "who": "Atta",
+        "detail": "Sidebar Guild Log nav item retained; Members list (and the Members count in the sidebar footer) removed. Members page still shows all 9 members as cards."
+      },
+      {
+        "id": 1,
+        "date": "2026-06-24",
+        "type": "structure",
+        "title": "Reorganised repo: star-alliance-skills/ + star-alliance-agents/ folders",
+        "who": "Atta",
+        "detail": "30 skills moved into star-alliance-skills/, 9 agents moved into star-alliance-agents/. build_dashboard.py updated, README + member files updated. Removed the legacy flat layout and members/ folder."
+      },
+      {
+        "date": "2026-06-24",
+        "type": "member-create",
+        "title": "Add member: the-butler",
+        "who": "Atta",
+        "ref": [
+          "the-butler"
+        ],
+        "commit": "c0926053",
+        "_derived": true,
+        "id": "g-c0926053-add-member-the-butler"
+      },
+      {
+        "date": "2026-06-24",
+        "type": "member-create",
+        "title": "Add member: the-developer",
+        "who": "Atta",
+        "ref": [
+          "the-developer"
+        ],
+        "commit": "c0926053",
+        "_derived": true,
+        "id": "g-c0926053-add-member-the-developer"
+      },
+      {
+        "date": "2026-06-24",
+        "type": "member-create",
+        "title": "Add member: the-merchant",
+        "who": "Atta",
+        "ref": [
+          "the-merchant"
+        ],
+        "commit": "c0926053",
+        "_derived": true,
+        "id": "g-c0926053-add-member-the-merchant"
+      },
+      {
+        "date": "2026-06-24",
+        "type": "member-create",
+        "title": "Bulk member additions: 6 members",
+        "who": "Atta",
+        "ref": [
+          "the-architect",
+          "the-designer",
+          "the-engineer",
+          "the-quartermaster",
+          "the-strategist",
+          "the-translator"
+        ],
+        "commit": "861e5ad0",
+        "bulk": true,
+        "_derived": true,
+        "id": "g-861e5ad0-bulk-member-additions-6-members"
+      },
+      {
+        "date": "2026-06-24",
+        "type": "skill-create",
+        "title": "Add skill: fallen-sword-design-language",
+        "who": "Atta",
+        "ref": [
+          "fallen-sword-design-language"
+        ],
+        "commit": "841be007",
+        "_derived": true,
+        "id": "g-841be007-add-skill-fallen-sword-design-language"
+      },
+      {
+        "date": "2026-06-24",
+        "type": "member-upgrade",
+        "title": "Bulk member updates: 9 members",
+        "who": "Atta",
+        "ref": [
+          "the-architect",
+          "the-butler",
+          "the-designer",
+          "the-developer",
+          "the-engineer",
+          "the-merchant",
+          "the-quartermaster",
+          "the-strategist",
+          "the-translator"
+        ],
+        "commit": "841be007",
+        "bulk": true,
+        "_derived": true,
+        "id": "g-841be007-bulk-member-updates-9-members"
+      },
+      {
+        "date": "2026-06-24",
+        "type": "dashboard",
+        "title": "Rename project: claude-skills → Star Alliance",
+        "who": "Atta",
+        "commit": "494d3cba",
+        "_derived": true,
+        "id": "g-494d3cba-rename-project-claude-skills-star-allian"
+      },
+      {
+        "date": "2026-06-22",
+        "type": "skill-upgrade",
+        "title": "Upgrade codex-law-translate: 1.0.0 → 1.1.0",
+        "who": "skillsmith",
+        "ref": [
+          "codex-law-translate"
+        ],
+        "from": "1.0.0",
+        "to": "1.1.0",
+        "commit": "0136b934",
+        "_derived": true,
+        "id": "g-0136b934-upgrade-codex-law-translate-1-0-0-1-1-0"
+      },
+      {
+        "date": "2026-06-21",
+        "type": "skill-upgrade",
+        "title": "Upgrade conquering-campaign: 3.8.2 → 3.8.3",
+        "who": "skillsmith",
+        "ref": [
+          "conquering-campaign"
+        ],
+        "from": "3.8.2",
+        "to": "3.8.3",
+        "commit": "22a3b06d",
+        "_derived": true,
+        "id": "g-22a3b06d-upgrade-conquering-campaign-3-8-2-3-8-3"
+      },
+      {
+        "date": "2026-06-20",
+        "type": "skill-upgrade",
+        "title": "Upgrade db-rename-sweep: 1.0.0 → 1.1.0",
+        "who": "skillsmith",
+        "ref": [
+          "db-rename-sweep"
+        ],
+        "from": "1.0.0",
+        "to": "1.1.0",
+        "commit": "f32957e8",
+        "_derived": true,
+        "id": "g-f32957e8-upgrade-db-rename-sweep-1-0-0-1-1-0"
+      },
+      {
+        "date": "2026-06-20",
+        "type": "skill-upgrade",
+        "title": "Upgrade skillsmith: 1.0.0 → 1.1.0",
+        "who": "Atta",
+        "ref": [
+          "skillsmith"
+        ],
+        "from": "1.0.0",
+        "to": "1.1.0",
+        "commit": "bf33c85b",
+        "_derived": true,
+        "id": "g-bf33c85b-upgrade-skillsmith-1-0-0-1-1-0"
+      },
+      {
+        "date": "2026-06-20",
+        "type": "skill-upgrade",
+        "title": "Upgrade transactions-domain-model: 1.0.0 → 1.1.0",
+        "who": "skillsmith",
+        "ref": [
+          "transactions-domain-model"
+        ],
+        "from": "1.0.0",
+        "to": "1.1.0",
+        "commit": "a7a9ea42",
+        "_derived": true,
+        "id": "g-a7a9ea42-upgrade-transactions-domain-model-1-0-0-"
+      },
+      {
+        "date": "2026-06-20",
+        "type": "skill-upgrade",
+        "title": "Upgrade vault-log-compliance: 1.0.0 → 1.1.0",
+        "who": "skillsmith",
+        "ref": [
+          "vault-log-compliance"
+        ],
+        "from": "1.0.0",
+        "to": "1.1.0",
+        "commit": "a374848c",
+        "_derived": true,
+        "id": "g-a374848c-upgrade-vault-log-compliance-1-0-0-1-1-0"
+      },
+      {
+        "date": "2026-06-20",
+        "type": "skill-upgrade",
+        "title": "Upgrade dev-server: 1.0.0 → 1.1.0",
+        "who": "skillsmith",
+        "ref": [
+          "dev-server"
+        ],
+        "from": "1.0.0",
+        "to": "1.1.0",
+        "commit": "a139a48e",
+        "_derived": true,
+        "id": "g-a139a48e-upgrade-dev-server-1-0-0-1-1-0"
+      },
+      {
+        "date": "2026-06-20",
+        "type": "skill-upgrade",
+        "title": "Upgrade bug-fix-workflow: 1.0.0 → 1.1.1",
+        "who": "skillsmith",
+        "ref": [
+          "bug-fix-workflow"
+        ],
+        "from": "1.0.0",
+        "to": "1.1.1",
+        "commit": "5c0bb977",
+        "_derived": true,
+        "id": "g-5c0bb977-upgrade-bug-fix-workflow-1-0-0-1-1-1"
+      },
+      {
+        "date": "2026-06-19",
+        "type": "skill-upgrade",
+        "title": "Upgrade cleanup: 1.14.1 → 1.17.0",
+        "who": "Atta",
+        "ref": [
+          "cleanup"
+        ],
+        "from": "1.14.1",
+        "to": "1.17.0",
+        "commit": "f0e64820",
+        "_derived": true,
+        "id": "g-f0e64820-upgrade-cleanup-1-14-1-1-17-0"
+      },
+      {
+        "date": "2026-06-15",
+        "type": "skill-upgrade",
+        "title": "Bulk skill upgrades: 28 skills",
+        "who": "Atta",
+        "ref": [
+          "article-creator",
+          "brandkit",
+          "bug-fix-workflow",
+          "cleanup",
+          "codex-law-translate",
+          "conquering-campaign",
+          "db-rename-sweep",
+          "design-taste-frontend",
+          "dev-server",
+          "full-output-enforcement",
+          "gpt-taste",
+          "graphify",
+          "high-end-visual-design",
+          "image-to-code",
+          "imagegen-frontend-mobile",
+          "imagegen-frontend-web",
+          "industrial-brutalist-ui",
+          "minimalist-ui",
+          "obsidian-markdown",
+          "performance",
+          "redesign-existing-projects",
+          "skillsmith",
+          "stitch-design-taste",
+          "strategies-review",
+          "supabase",
+          "supabase-postgres-best-practices",
+          "transactions-domain-model",
+          "vault-log-compliance"
+        ],
+        "commit": "5102cc10",
+        "bulk": true,
+        "_derived": true,
+        "id": "g-5102cc10-bulk-skill-upgrades-28-skills"
+      },
+      {
+        "date": "2026-06-15",
+        "type": "skill-upgrade",
+        "title": "Upgrade performance to \"1.0\"",
+        "who": "Atta",
+        "ref": [
+          "performance"
+        ],
+        "from": "",
+        "to": "\"1.0\"",
+        "commit": "1bdb90f3",
+        "_derived": true,
+        "id": "g-1bdb90f3-upgrade-performance-to-1-0"
+      },
+      {
+        "date": "2026-06-13",
+        "type": "skill-upgrade",
+        "title": "Upgrade supabase to \"0.1.2\"",
+        "who": "Atta",
+        "ref": [
+          "supabase"
+        ],
+        "from": "",
+        "to": "\"0.1.2\"",
+        "commit": "fbf5b2c1",
+        "_derived": true,
+        "id": "g-fbf5b2c1-upgrade-supabase-to-0-1-2"
+      },
+      {
+        "date": "2026-06-13",
+        "type": "skill-upgrade",
+        "title": "Upgrade supabase-postgres-best-practices to \"1.1.1\"",
+        "who": "Atta",
+        "ref": [
+          "supabase-postgres-best-practices"
+        ],
+        "from": "",
+        "to": "\"1.1.1\"",
+        "commit": "fbf5b2c1",
+        "_derived": true,
+        "id": "g-fbf5b2c1-upgrade-supabase-postgres-best-practices"
+      },
+      {
+        "date": "2026-06-13",
+        "type": "skill-create",
+        "title": "Bulk skill additions: 9 skills",
+        "who": "Atta",
+        "ref": [
+          "article-creator",
+          "cleanup",
+          "db-rename-sweep",
+          "impeccable",
+          "strategies-review",
+          "supabase",
+          "supabase-postgres-best-practices",
+          "transactions-domain-model",
+          "vault-log-compliance"
+        ],
+        "commit": "fbf5b2c1",
+        "bulk": true,
+        "_derived": true,
+        "id": "g-fbf5b2c1-bulk-skill-additions-9-skills"
+      },
+      {
+        "date": "2026-06-12",
+        "type": "skill-create",
+        "title": "Add skill: codex-law-translate",
+        "who": "Atta",
+        "ref": [
+          "codex-law-translate"
+        ],
+        "commit": "074dbafe",
+        "_derived": true,
+        "id": "g-074dbafe-add-skill-codex-law-translate"
+      },
+      {
+        "date": "2026-06-09",
+        "type": "skill-create",
+        "title": "Add skill: bug-fix-workflow",
+        "who": "Atta",
+        "ref": [
+          "bug-fix-workflow"
+        ],
+        "commit": "325f3a26",
+        "_derived": true,
+        "id": "g-325f3a26-add-skill-bug-fix-workflow"
+      },
+      {
+        "date": "2026-05-31",
+        "type": "skill-create",
+        "title": "Add skill: cleanup",
+        "who": "Atta",
+        "ref": [
+          "cleanup"
+        ],
+        "commit": "bcd97544",
+        "_derived": true,
+        "id": "g-bcd97544-add-skill-cleanup"
+      },
+      {
+        "date": "2026-05-29",
+        "type": "skill-create",
+        "title": "Add skill: conquering-campaign",
+        "who": "Atta",
+        "ref": [
+          "conquering-campaign"
+        ],
+        "commit": "325a46a5",
+        "_derived": true,
+        "id": "g-325a46a5-add-skill-conquering-campaign"
+      }
+    ],
+    "count": 33
+  }
+}

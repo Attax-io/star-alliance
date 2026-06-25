@@ -7,25 +7,41 @@ with specific kinds of work. Members share common skills and carry unique ones.
 
 ```
 star-alliance/
-├── members/           ← guild roster (agent definitions)
+├── star-alliance-agents/  ← guild roster (agent definitions)
 │   ├── the-architect.md
+│   ├── the-butler.md
 │   ├── the-designer.md
-│   ├── the-strategist.md
-│   ├── the-translator.md
+│   ├── the-developer.md
 │   ├── the-engineer.md
-│   └── the-quartermaster.md
-├── <skill-name>/      ← shared skill pool (29 skills, each a directory with SKILL.md)
-├── skillsmith/        ← the quartermaster's toolkit (manages skills + members)
-├── VERSIONS.md        ← skill version registry
-└── README.md          ← this file
+│   ├── the-merchant.md
+│   ├── the-quartermaster.md
+│   ├── the-strategist.md
+│   └── the-translator.md
+├── star-alliance-skills/  ← shared skill pool (31 skills, each a directory with SKILL.md)
+│   ├── article-creator/
+│   ├── brandkit/
+│   ├── ...
+│   └── skillsmith/        ← the quartermaster's toolkit (manages skills + members)
+├── build.py              ← one generator: skills + agents + *-meta.json → guild-data.js
+├── skills-meta.json      ← hand-edited per-skill icon/blurb/level/triggers
+├── members-meta.json     ← hand-edited per-member presentation (color, avatar, weapons, …)
+├── domains.json          ← hand-edited project domains (linked skills + members)
+├── guild-data.js         ← auto-generated data (const GUILD), loaded by index.html
+├── index.html · app.css · app.js  ← the cosmic "command center" dashboard (buildless)
+├── build_guild_log.py · log_event.py · guild-log.json  ← the guild-log pipeline
+├── VERSIONS.md            ← skill version registry
+└── README.md              ← this file
 ```
 
-**Skills** live at the repo root — each directory is one skill (a `SKILL.md` plus optional
-`scripts/`, `references/`, `assets/`). All skills are shared property of the guild.
+The dashboard is **buildless** — open `index.html` directly in a browser (or serve the folder).
+It loads one generated file, `guild-data.js`, which `build.py` regenerates from the sources above.
 
-**Members** live in `members/` — each `.md` file is a Claude Code agent definition with a
-system prompt and a curated `skills` list. Deploy a member by copying their file into your
-project's `.claude/agents/` and installing their skills.
+**Skills** live in `star-alliance-skills/` — each subdirectory is one skill (a `SKILL.md` plus
+optional `scripts/`, `references/`, `assets/`). All skills are shared property of the guild.
+
+**Members** live in `star-alliance-agents/` — each `.md` file is a Claude Code agent definition
+with a system prompt and a curated `skills` list. Deploy a member by copying their file into
+your project's `.claude/agents/` and installing their skills.
 
 ## The Roster
 
@@ -39,7 +55,7 @@ project's `.claude/agents/` and installing their skills.
 | **The Translator** | Legal codex, law translation, multi-locale content | codex-law-translate, article-creator, obsidian-markdown | "load this law", "translate this law", "add translations" |
 | **The Engineer** | Dev servers, knowledge graphs, tooling, output enforcement | dev-server, graphify, full-output-enforcement, cleanup | "open dev server", "generate a knowledge graph", "full output mode" |
 | **The Merchant** | Investment analysis, trading strategies, market research, portfolio management | _(skills to be recruited)_ | "analyze this investment", "build a trading strategy", "research this market" |
-| **The Quartermaster** | Skill management, syncing, upgrading, daily evolution | skillsmith, cleanup | "sync my skills", "upgrade a skill", "run the skill routine" |
+| **The Quartermaster** | Skill management, syncing, upgrading, daily evolution | skillsmith, cleanup, guild-log | "sync my skills", "upgrade a skill", "run the skill routine" |
 
 ### Shared skills
 
@@ -61,11 +77,11 @@ These skills belong to one member only — they define the member's specialty:
 
 ```sh
 # 1. Copy the member's agent file into your project
-cp members/the-architect.md ~/my-project/.claude/agents/
+cp star-alliance-agents/the-architect.md ~/my-project/.claude/agents/
 
 # 2. Install the member's skills to the device
-python3 skillsmith/scripts/skill_sync.py apply --skill transactions-domain-model
-python3 skillsmith/scripts/skill_sync.py apply --skill supabase
+python3 star-alliance-skills/skillsmith/scripts/skill_sync.py apply --skill transactions-domain-model
+python3 star-alliance-skills/skillsmith/scripts/skill_sync.py apply --skill supabase
 # ... or sync all at once
 
 # 3. Invoke in Claude Code
@@ -74,9 +90,9 @@ python3 skillsmith/scripts/skill_sync.py apply --skill supabase
 
 ## Recruiting a new member
 
-1. Create `members/<name>.md` with the agent definition (see `members/README.md` for format).
+1. Create `star-alliance-agents/<name>.md` with the agent definition (see `star-alliance-agents/README.md` for format).
 2. List the skills they should carry in the `skills` frontmatter field.
-3. Install any new skills they need via `skillsmith create`.
+3. Install any new skills they need via `skillsmith create` (from `star-alliance-skills/skillsmith/`).
 4. Update the roster table in this README.
 
 ## Skill versioning — every skill is upgradable
@@ -145,4 +161,4 @@ The authoritative gate is **`skill-creator`'s `quick_validate.py` green** on eve
 ## Registry
 
 See [`VERSIONS.md`](VERSIONS.md) for the full skill → version table with word counts and Cowork
-status (29 skills).
+status (31 skills).

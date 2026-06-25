@@ -1,6 +1,6 @@
 # Guild Members
 
-Each member is a Claude Code agent definition — a markdown file with a system prompt and a curated list of skills from the shared pool at the repo root.
+Each member is a Claude Code agent definition — a markdown file with a system prompt and a curated list of skills from the shared pool at `../star-alliance-skills/`.
 
 ## Member file format
 
@@ -39,8 +39,13 @@ You are <member-name>, a <role> in the Star Alliance.
 
 - **Shared skills** appear in multiple members' `skills` lists (e.g. `cleanup`, `supabase`)
 - **Unique skills** appear in only one member's list (e.g. `conquering-campaign` for the strategist)
-- All skills live at the repo root — members just reference them by name
+- All skills live in `../star-alliance-skills/` — members just reference them by name
 
 ## Current roster
 
 See `../README.md` for the full guild roster.
+
+## Location
+
+This directory (`star-alliance-agents/`) replaces the older `members/` folder. The files
+were moved in place on the repo-wide reorganisation — every agent definition is unchanged.

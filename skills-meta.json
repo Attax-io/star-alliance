@@ -238,5 +238,13 @@
     "tabler": "ti-sword",
     "triggers": "",
     "modes": ""
+  },
+  "guild-log": {
+    "icon": "📓",
+    "blurb": "Logs non-git-visible guild changes via the two-tier pipeline",
+    "level": "Foundational",
+    "tabler": "ti-history",
+    "triggers": "'log this', 'guild log this', 'did you log it?', '/guild-log', or any dashboard/UI/folder change git can't see on its own",
+    "modes": ""
   }
 }

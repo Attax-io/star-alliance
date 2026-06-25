@@ -1,0 +1,268 @@
+{
+  "version": 1,
+  "members": {
+    "the-butler": {
+      "name": "The Butler",
+      "role": "Orchestrator · First Point of Contact",
+      "color": "#b89530",
+      "summary": "Takes your orders and routes them to the right member. Knows the full roster, who's good at what, and how to sequence their work.",
+      "deploy": "Any request — The Butler decides who handles what",
+      "triggers": "Any request — The Butler decides who handles what",
+      "weaponsDesc": {
+        "opus": "Claude Opus — the heaviest blade. Deepest reasoning for complex routing.",
+        "sonnet": "Claude Sonnet — the reliable longsword. Fast enough for daily dispatch.",
+        "glm-5.2": "GLM-5.2 — the staff. Strong multilingual analysis.",
+        "gpt-5.5": "GPT-5.5 — the enchanted blade. Analytical second opinion for tricky routing calls.",
+        "kimi-k2.7": "Kimi K2.7 — the greatbow. Massive context to hold the whole roster and sequence state.",
+        "deepseek-v4-pro": "DeepSeek V4 Pro — the greatsword. Frontier reasoning for complex multi-step routing.",
+        "nemotron-3-ultra": "Nemotron-3 Ultra — the lance. High-throughput for long orchestration runs."
+      },
+      "does": [
+        "Receives orders and decides which member handles what",
+        "Briefs members with clear, specific tasks and context",
+        "Tracks progress across all active dispatches",
+        "Reports results back to the user",
+        "Plans multi-step requests into waves before dispatching"
+      ],
+      "doesnt": [
+        "Does not do specialist work — orchestrates only",
+        "Does not write code, design UIs, or model domains"
+      ],
+      "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-butler\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#3a3218\"/><stop offset=\"1\" stop-color=\"#1a1610\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-butler)\"/><path d=\"M48 18 C39 18 33 26 33 36 C33 42 36 47 40 50 L38 58 L43 62 L48 60 L53 62 L58 58 L56 50 C60 47 63 42 63 36 C63 26 57 18 48 18Z\" fill=\"#e8c93a\" opacity=\".85\"/><circle cx=\"42\" cy=\"34\" r=\"2.5\" fill=\"#1a1610\"/><circle cx=\"54\" cy=\"34\" r=\"2.5\" fill=\"#1a1610\"/><path d=\"M42 44 Q48 48 54 44\" stroke=\"#1a1610\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/><path d=\"M48 60 L48 66 M43 66 L53 66\" stroke=\"#e8c93a\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>"
+    },
+    "the-architect": {
+      "name": "The Architect",
+      "role": "Systems Design · Database Architecture",
+      "color": "#3b7dd8",
+      "summary": "Designs systems and database architecture. Thinks in data flow, domain boundaries, and structural integrity.",
+      "deploy": "System design, domain modeling, database architecture, structural refactoring",
+      "triggers": "design the system · model the domain · architect the database",
+      "weaponsDesc": {
+        "opus": "Claude Opus — the heaviest blade. Deepest reasoning for schema modeling.",
+        "gpt-5.5": "GPT-5.5 — the enchanted blade. Exceptional analytical reasoning.",
+        "sonnet": "Claude Sonnet — the reliable longsword for daily structural work.",
+        "glm-5.2": "GLM-5.2 — the staff. Coding-first thinking for system design and schema work.",
+        "kimi-k2.7": "Kimi K2.7 — the greatbow. Massive context for sprawling architectures.",
+        "deepseek-v4-pro": "DeepSeek V4 Pro — the greatsword. Frontier reasoning for structural integrity.",
+        "nemotron-3-ultra": "Nemotron-3 Ultra — the lance. High-throughput for long design sessions."
+      },
+      "does": [
+        "Domain modeling and transaction boundaries",
+        "Database schema design and migration",
+        "Structural refactoring with rename sweeps",
+        "Code hygiene"
+      ],
+      "doesnt": [
+        "Does not write marketing copy or design UIs",
+        "Does not run campaigns alone"
+      ],
+      "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-arch\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#102030\"/><stop offset=\"1\" stop-color=\"#0a1520\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-arch)\"/><path d=\"M48 16 L32 24 L32 42 L48 50 L64 42 L64 24 Z\" fill=\"none\" stroke=\"#5e9ef5\" stroke-width=\"2.5\" stroke-linejoin=\"round\"/><path d=\"M32 24 L48 32 L64 24 M48 32 L48 50\" stroke=\"#5e9ef5\" stroke-width=\"2\" opacity=\".6\"/><path d=\"M18 54 L78 54 L78 72 L18 72 Z\" fill=\"none\" stroke=\"#5e9ef5\" stroke-width=\"2\" opacity=\".5\"/><circle cx=\"48\" cy=\"42\" r=\"3.5\" fill=\"#5e9ef5\" opacity=\".7\"/></svg>"
+    },
+    "the-developer": {
+      "name": "The Developer",
+      "role": "Writing Code · Fixing Bugs · Implementation",
+      "color": "#3da155",
+      "summary": "Writes code, fixes bugs, implements features. Takes specs and turns them into working code. Tests before saying it's done.",
+      "deploy": "Writing code, applying changes, fixing bugs, implementing features",
+      "triggers": "write the code · fix this bug · implement this feature",
+      "weaponsDesc": {
+        "sonnet": "Claude Sonnet — the reliable longsword for daily coding.",
+        "kimi-k2.7": "Kimi K2.7 — the greatbow. Massive context for big codebases.",
+        "haiku": "Claude Haiku — the dagger. Fast for quick fixes.",
+        "opus": "Claude Opus — the heaviest blade. Deepest reasoning for the gnarliest bugs.",
+        "glm-5.2": "GLM-5.2 — the staff. Coding-first precision for implementation.",
+        "gpt-5.5": "GPT-5.5 — the enchanted blade. Analytical second opinion on tough code.",
+        "deepseek-v4-pro": "DeepSeek V4 Pro — the greatsword. Frontier MoE reasoning for complex code."
+      },
+      "does": [
+        "Writing and applying code changes",
+        "Bug fixing end-to-end",
+        "Database operations and migrations",
+        "Dev server management",
+        "Code refactoring"
+      ],
+      "doesnt": [
+        "Does not design architecture",
+        "Does not plan campaigns",
+        "Does not design UIs"
+      ],
+      "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-dev\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#102820\"/><stop offset=\"1\" stop-color=\"#0a1815\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-dev)\"/><path d=\"M30 36 L22 44 L30 52 M66 36 L74 44 L66 52\" stroke=\"#4ec985\" stroke-width=\"3\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M42 30 L38 58 M54 30 L50 58\" stroke=\"#4ec985\" stroke-width=\"2.5\" fill=\"none\" stroke-linecap=\"round\" opacity=\".7\"/></svg>"
+    },
+    "the-designer": {
+      "name": "The Designer",
+      "role": "UI/UX · Visual Quality · Brand Kits",
+      "color": "#d54d7a",
+      "summary": "Premium UI/UX designer. Turns rough sketches into polished interfaces. Design is how the product communicates.",
+      "deploy": "UI/UX design, visual quality, brand kits, image-to-code conversion",
+      "triggers": "design the UI · make it look premium · create a brand kit",
+      "weaponsDesc": {
+        "gpt-5.5": "GPT-5.5 — the enchanted blade. Exceptional visual creativity.",
+        "sonnet": "Claude Sonnet — the reliable longsword for iteration speed.",
+        "minimax-m3": "MiniMax M3 — the crossbow. Precise for structural work.",
+        "opus": "Claude Opus — the heaviest blade. Deepest reasoning for design direction.",
+        "haiku": "Claude Haiku — the dagger. Fast cheap passes for design iteration.",
+        "qwen3.5": "Qwen 3.5 — the shortsword. Versatile workhorse for day-to-day polish.",
+        "gemma4": "Gemma 4 — the throwing knife. Light quick cheap passes for visual scraps."
+      },
+      "does": [
+        "Frontend visual design (web and mobile)",
+        "Image-to-code conversion",
+        "Brand kit creation",
+        "Design systems",
+        "Redesigning existing projects"
+      ],
+      "doesnt": [
+        "Does not design database schemas",
+        "Does not run multi-wave campaigns"
+      ],
+      "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-design\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#2d1018\"/><stop offset=\"1\" stop-color=\"#1f0a10\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-design)\"/><circle cx=\"38\" cy=\"36\" r=\"7\" fill=\"#ff6b8a\" opacity=\".8\"/><circle cx=\"58\" cy=\"36\" r=\"7\" fill=\"#4ec985\" opacity=\".8\"/><circle cx=\"48\" cy=\"52\" r=\"7\" fill=\"#5e9ef5\" opacity=\".8\"/><circle cx=\"36\" cy=\"50\" r=\"5\" fill=\"#e8c93a\" opacity=\".7\"/><circle cx=\"60\" cy=\"50\" r=\"5\" fill=\"#a67cf2\" opacity=\".7\"/></svg>"
+    },
+    "the-strategist": {
+      "name": "The Strategist",
+      "role": "Multi-Wave Campaigns · Performance",
+      "color": "#7c5dc8",
+      "summary": "Campaign commander. Handles work too big for a single pass. Breaks it into waves and drives them to completion.",
+      "deploy": "Large multi-wave projects, campaign planning, bug workflows, performance",
+      "triggers": "plan the campaign · break this into waves · optimize performance",
+      "weaponsDesc": {
+        "opus": "Claude Opus — the heaviest blade for complex multi-wave planning.",
+        "kimi-k2.7": "Kimi K2.7 — the greatbow for long campaign documents.",
+        "glm-5.2": "GLM-5.2 — the staff for analytical breakdowns.",
+        "gpt-5.5": "GPT-5.5 — the enchanted blade. Analytical and creative second opinion for campaign plans.",
+        "sonnet": "Claude Sonnet — the reliable longsword. Fast balanced daily wave driver.",
+        "deepseek-v4-pro": "DeepSeek V4 Pro — the greatsword. Frontier reasoning for multi-wave strategy.",
+        "nemotron-3-ultra": "Nemotron-3 Ultra — the lance. High-throughput for long campaign runs."
+      },
+      "does": [
+        "Multi-wave campaign planning and execution",
+        "Bug triage and fix workflow",
+        "Web performance optimization",
+        "Strategy review and tracking",
+        "Vault-logging compliance"
+      ],
+      "doesnt": [
+        "Does not design UIs",
+        "Does not model domains",
+        "Does not translate legal documents"
+      ],
+      "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-strat\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#201030\"/><stop offset=\"1\" stop-color=\"#150820\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-strat)\"/><path d=\"M48 14 L40 24 L45 24 L45 34 L35 34 L40 28 L30 28 L35 22 L25 22 L48 14 Z M48 14 L56 24 L51 24 L51 34 L61 34 L56 28 L66 28 L61 22 L71 22 L48 14Z\" fill=\"#a67cf2\" opacity=\".5\"/><path d=\"M48 34 L48 68\" stroke=\"#a67cf2\" stroke-width=\"2.5\"/><path d=\"M36 68 L60 68 L57 76 L39 76 Z\" fill=\"#a67cf2\" opacity=\".4\"/></svg>"
+    },
+    "the-translator": {
+      "name": "The Translator",
+      "role": "Legal Codex · Law Translation",
+      "color": "#b89530",
+      "summary": "Legal codex specialist. Loads real-world laws, translates them across all locales, and creates published content.",
+      "deploy": "Legal codex loading, law translation, multi-locale content work",
+      "triggers": "load this law · translate this law · add translations",
+      "weaponsDesc": {
+        "gpt-5.5": "GPT-5.5 — the enchanted blade. Best multilingual.",
+        "glm-5.2": "GLM-5.2 — the staff. Strongest Chinese/multilingual.",
+        "kimi-k2.7": "Kimi K2.7 — the greatbow for long legal documents.",
+        "opus": "Claude Opus — the heaviest blade. Deepest reasoning for legal nuance.",
+        "sonnet": "Claude Sonnet — the reliable longsword. Fast balanced daily translation work.",
+        "haiku": "Claude Haiku — the dagger. Fastest cheap quick translations across locales.",
+        "deepseek-v4-pro": "DeepSeek V4 Pro — the greatsword. Frontier reasoning for complex legal analysis."
+      },
+      "does": [
+        "Loading laws into the legal codex",
+        "Multi-locale translation (6 locales)",
+        "Article creation and publishing",
+        "Obsidian-flavored markdown"
+      ],
+      "doesnt": [
+        "Does not design systems",
+        "Does not plan campaigns"
+      ],
+      "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-trans\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#2d2018\"/><stop offset=\"1\" stop-color=\"#1f1508\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-trans)\"/><path d=\"M28 20 L28 70 L68 70 L68 20 Z\" fill=\"none\" stroke=\"#d4a05a\" stroke-width=\"2\"/><path d=\"M28 20 L48 26 L68 20\" stroke=\"#d4a05a\" stroke-width=\"2\" fill=\"none\"/><path d=\"M36 32 L60 32 M36 40 L60 40 M36 48 L60 48 M36 56 L54 56\" stroke=\"#d4a05a\" stroke-width=\".8\" opacity=\".4\"/><path d=\"M42 40 L47 45 L56 36\" stroke=\"#d4a05a\" stroke-width=\"2.5\" fill=\"none\" stroke-linecap=\"round\"/></svg>"
+    },
+    "the-engineer": {
+      "name": "The Engineer",
+      "role": "Dev Servers · Knowledge Graphs · Tooling",
+      "color": "#2ba89a",
+      "summary": "Infrastructure and tooling specialist. Keeps the dev environment running, generates knowledge graphs, and enforces full output.",
+      "deploy": "Dev server management, knowledge graph generation, tooling, output enforcement",
+      "triggers": "open dev server · generate a knowledge graph · full output mode",
+      "weaponsDesc": {
+        "sonnet": "Claude Sonnet — the reliable longsword for daily server management.",
+        "haiku": "Claude Haiku — the dagger for quick server ops.",
+        "minimax-m3": "MiniMax M3 — the crossbow for repetitive tooling.",
+        "opus": "Claude Opus — the heaviest blade. Deepest reasoning for infrastructure calls.",
+        "glm-5.2": "GLM-5.2 — the staff. Coding-first precision for tooling.",
+        "kimi-k2.7": "Kimi K2.7 — the greatbow. Massive context for sprawling knowledge graphs.",
+        "deepseek-v4-pro": "DeepSeek V4 Pro — the greatsword. Frontier reasoning for complex tooling."
+      },
+      "does": [
+        "Dev server lifecycle management",
+        "Knowledge graph generation from any input",
+        "Full output enforcement",
+        "Workspace hygiene"
+      ],
+      "doesnt": [
+        "Does not design UIs",
+        "Does not plan campaigns",
+        "Does not model domains"
+      ],
+      "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-eng\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#102028\"/><stop offset=\"1\" stop-color=\"#0a1018\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-eng)\"/><circle cx=\"48\" cy=\"38\" r=\"9\" fill=\"none\" stroke=\"#3ec5b8\" stroke-width=\"2.5\"/><circle cx=\"48\" cy=\"38\" r=\"4\" fill=\"#3ec5b8\" opacity=\".5\"/><path d=\"M36 38 L31 38 M65 38 L60 38 M48 26 L48 21 M48 55 L48 50\" stroke=\"#3ec5b8\" stroke-width=\"2\" stroke-linecap=\"round\"/><path d=\"M32 60 L64 60 L64 74 L32 74 Z\" fill=\"none\" stroke=\"#3ec5b8\" stroke-width=\"2\"/><path d=\"M37 65 L59 65 M37 69 L53 69\" stroke=\"#3ec5b8\" stroke-width=\"1\" opacity=\".4\"/></svg>"
+    },
+    "the-merchant": {
+      "name": "The Merchant",
+      "role": "Investment · Trading · Market Research",
+      "color": "#3da155",
+      "summary": "Investment and trading specialist. Analyzes markets, builds trading strategies, assesses risk, and manages portfolios with rigor.",
+      "deploy": "Investment analysis, trading strategies, market research, portfolio management",
+      "triggers": "analyze this investment · build a trading strategy · research this market",
+      "weaponsDesc": {
+        "opus": "Claude Opus — the heaviest blade for deep financial analysis.",
+        "gpt-5.5": "GPT-5.5 — the enchanted blade for market reasoning.",
+        "glm-5.2": "GLM-5.2 — the staff for data analysis.",
+        "sonnet": "Claude Sonnet — the reliable longsword. Fast balanced daily market reads.",
+        "kimi-k2.7": "Kimi K2.7 — the greatbow. Massive context for long market histories.",
+        "deepseek-v4-pro": "DeepSeek V4 Pro — the greatsword. Frontier reasoning for trading strategy.",
+        "nemotron-3-ultra": "Nemotron-3 Ultra — the lance. High-throughput for long portfolio runs."
+      },
+      "does": [
+        "Investment analysis (fundamental and technical)",
+        "Trading strategy development and backtesting",
+        "Market research and trend analysis",
+        "Portfolio management and asset allocation",
+        "Risk assessment and position sizing"
+      ],
+      "doesnt": [
+        "Does not write application code",
+        "Does not design systems",
+        "Does not plan engineering campaigns"
+      ],
+      "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-merc\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#102820\"/><stop offset=\"1\" stop-color=\"#0a1812\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-merc)\"/><path d=\"M48 18 L48 62\" stroke=\"#4ec9a0\" stroke-width=\"3\"/><circle cx=\"48\" cy=\"18\" r=\"4\" fill=\"#4ec9a0\"/><path d=\"M24 42 L72 42\" stroke=\"#4ec9a0\" stroke-width=\"2\" opacity=\".3\"/><path d=\"M24 42 L24 50 L34 50 L34 42 M62 42 L62 54 L72 54 L72 42\" fill=\"none\" stroke=\"#4ec9a0\" stroke-width=\"2\"/><path d=\"M48 42 L48 36 L42 36 L42 42 M48 42 L48 48 L54 48 L54 42\" fill=\"none\" stroke=\"#4ec9a0\" stroke-width=\"2\" opacity=\".5\"/><rect x=\"28\" y=\"60\" width=\"6\" height=\"8\" rx=\"1\" fill=\"#4ec9a0\" opacity=\".3\"/><rect x=\"38\" y=\"60\" width=\"6\" height=\"12\" rx=\"1\" fill=\"#4ec9a0\" opacity=\".4\"/><rect x=\"48\" y=\"60\" width=\"6\" height=\"6\" rx=\"1\" fill=\"#4ec9a0\" opacity=\".25\"/><rect x=\"58\" y=\"60\" width=\"6\" height=\"14\" rx=\"1\" fill=\"#4ec9a0\" opacity=\".35\"/></svg>"
+    },
+    "the-quartermaster": {
+      "name": "The Quartermaster",
+      "role": "Skill Management · Syncing · Evolution",
+      "color": "#b89530",
+      "summary": "Keeper of the guild's arsenal. Manages skills — versioning, syncing, upgrading, creating new ones. Runs the daily evolution routine.",
+      "deploy": "Skill management, syncing, upgrading, creating new skills, daily evolution routine",
+      "triggers": "sync my skills · upgrade a skill · create a skill · run the skill routine",
+      "weaponsDesc": {
+        "sonnet": "Claude Sonnet — the reliable longsword for daily skill management.",
+        "haiku": "Claude Haiku — the dagger for quick syncs.",
+        "minimax-m3": "MiniMax M3 — the crossbow for routine versioning.",
+        "opus": "Claude Opus — the heaviest blade. Deepest reasoning for skill evolution.",
+        "gpt-5.5": "GPT-5.5 — the enchanted blade. Analytical and creative input on skill design.",
+        "kimi-k2.7": "Kimi K2.7 — the greatbow. Massive context to track the full arsenal inventory.",
+        "glm-5.2": "GLM-5.2 — the staff. Coding-first for skill syncing and tooling."
+      },
+      "does": [
+        "Skill sync (repo ↔ device)",
+        "Skill upgrades with version bumping",
+        "New skill creation via skill-creator",
+        "Daily autonomous skill evolution",
+        "Workspace hygiene"
+      ],
+      "doesnt": [
+        "Does not design UIs",
+        "Does not plan campaigns",
+        "Does not model domains"
+      ],
+      "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-quart\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#2d2010\"/><stop offset=\"1\" stop-color=\"#1f1408\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-quart)\"/><path d=\"M48 14 L62 20 L62 36 C62 45 56 51 48 53 C40 51 34 45 34 36 L34 20 Z\" fill=\"none\" stroke=\"#e8b84e\" stroke-width=\"2.5\" stroke-linejoin=\"round\"/><path d=\"M40 28 L45 33 L56 22\" stroke=\"#e8b84e\" stroke-width=\"2.5\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M48 53 L48 60 M40 60 L56 60 L56 68 L40 68 Z\" fill=\"#e8b84e\" opacity=\".4\"/></svg>"
+    }
+  }
+}
