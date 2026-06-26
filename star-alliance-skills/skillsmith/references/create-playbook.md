@@ -39,17 +39,46 @@ Before it lands in the repo, ensure:
 ## Step C3 — Place it in the repo
 
 ```sh
-mv <new-skill> ~/Documents/Claude/Projects/star-alliance/<name>     # one dir per skill at repo root
-python3 skillsmith/scripts/skill_registry.py check <name>           # 0 hard violations
-python3 skillsmith/scripts/skill_registry.py write                  # add it to VERSIONS.md
+SA=~/Documents/Claude/Projects/star-alliance
+mv <new-skill> "$SA/star-alliance-skills/<name>"                                      # one dir per skill UNDER star-alliance-skills/ (NOT repo root — skills migrated 2026-06-24)
+python3 "$SA/star-alliance-skills/skillsmith/scripts/skill_registry.py" check <name>  # 0 hard violations
+python3 "$SA/star-alliance-skills/skillsmith/scripts/skill_registry.py" write         # add it to VERSIONS.md
 ```
 
-## Step C4 — Install to the device (optional) + commit
+## Step C4 — Wire it into the guild dashboard (REQUIRED — don't skip)
+
+`skill_registry.py write` only touches `VERSIONS.md`. The dashboard (`guild-data.*` + the web app)
+reads **four other hand-edited sources**. A new skill is **not done** until all four are updated and
+`build.py` is re-run — skip any and the skill ships broken: no card, **no themed art** (falls back to
+the bare emoji — this is exactly the `storm-investigation` v1.0.0 miss), or no owner.
+
+1. **`skills-meta.json`** — add the presentation entry: `icon` (emoji), `blurb`, `level`
+   (Foundational/Intermediate/Advanced/Master), `tabler` (a `ti-*` class), `triggers`, `modes`.
+2. **`domains.json`** — add the skill `id` to the `star-alliance` home pool (+ any project domain that borrows it); bump the count in that domain's `notes`.
+3. **Assign to member(s)** — add the skill to the adequate guild member's `skills:` frontmatter in
+   `star-alliance-members/<member>.md`, **and** mention it in that member's body (§How you work) so the
+   deployed agent actually invokes it.
+4. **Themed art (Fallen Sword)** — every skill has a `skill-art/<id>.png`. Add a `{ id, prompt }` entry
+   to **`gen-skill-art.cjs`** using the shared `STYLE` prefix (dark parchment, gold runic border,
+   fantasy RPG icon) + a subject that depicts the skill; end the prompt with `no text, no watermarks`.
+   Then render it — MiniMax's image API is the doer:
+
+   ```sh
+   node "$SA/gen-skill-art.cjs"          # renders ONLY the missing PNG; existing art is skipped
+   ```
+
+Then regenerate the dashboard data (sets each skill's `artPng` flag + folds in meta/members/domains):
+
+```sh
+python3 "$SA/build.py"                   # writes guild-data.js + guild-data.json
+```
+
+## Step C5 — Install to the device (optional) + commit
 
 If the skill should be usable across projects right away:
 
 ```sh
-python3 skillsmith/scripts/skill_sync.py apply --skill <name> --direction install   # repo→global
+python3 "$SA/star-alliance-skills/skillsmith/scripts/skill_sync.py" apply --skill <name> --direction install   # repo→global
 ```
 
 Then commit + push the repo:

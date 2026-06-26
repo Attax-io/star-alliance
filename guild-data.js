@@ -3,7 +3,7 @@
 const GUILD = {
   "meta": {
     "name": "Star Alliance",
-    "generated": "2026-06-26T02:31:01Z",
+    "generated": "2026-06-26T07:59:06Z",
     "schemaVersion": 3,
     "counts": {
       "members": 9,
@@ -667,7 +667,7 @@ const GUILD = {
     {
       "id": "bug-fix-workflow",
       "name": "bug-fix-workflow",
-      "version": "1.1.2",
+      "version": "1.1.3",
       "icon": "🐛",
       "art": "",
       "artPng": true,
@@ -695,8 +695,8 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 219,
-        "words": 1841
+        "lines": 225,
+        "words": 1939
       },
       "members": [
         "the-developer",
@@ -1620,7 +1620,7 @@ const GUILD = {
     {
       "id": "performance",
       "name": "performance",
-      "version": "1.0.1",
+      "version": "1.0.3",
       "icon": "⚡",
       "art": "",
       "artPng": true,
@@ -1650,8 +1650,8 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 363,
-        "words": 1164
+        "lines": 371,
+        "words": 1418
       },
       "members": [
         "the-strategist"
@@ -1694,7 +1694,7 @@ const GUILD = {
     {
       "id": "skillsmith",
       "name": "skillsmith",
-      "version": "1.1.9",
+      "version": "1.1.10",
       "icon": "🛠️",
       "art": "",
       "artPng": true,
@@ -1736,8 +1736,8 @@ const GUILD = {
         "skill_sync.py"
       ],
       "stats": {
-        "lines": 135,
-        "words": 3205
+        "lines": 136,
+        "words": 3429
       },
       "members": [
         "the-butler",
@@ -1794,7 +1794,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🌀",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Multi-perspective STORM research: 5 personas, contradiction map, peer-reviewed briefing",
       "level": "Advanced",
       "ramp": "teal",
@@ -1974,7 +1974,7 @@ const GUILD = {
     {
       "id": "transactions-domain-model",
       "name": "transactions-domain-model",
-      "version": "1.2.0",
+      "version": "1.3.1",
       "icon": "💳",
       "art": "",
       "artPng": true,
@@ -2007,8 +2007,8 @@ const GUILD = {
       ],
       "scripts": [],
       "stats": {
-        "lines": 392,
-        "words": 3017
+        "lines": 399,
+        "words": 3263
       },
       "members": [
         "the-architect"

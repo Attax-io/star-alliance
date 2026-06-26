@@ -145,6 +145,10 @@ const SKILLS = [
     id: "vault-log-compliance",
     prompt: `${STYLE}. A massive circular iron vault door, heavily riveted dark steel, four thick locking bolts at cardinal points, ornate combination wheel at center, red wax compliance seal stamped on the door, NO text or watermarks, pure fantasy RPG icon, no game logos`,
   },
+  {
+    id: "storm-investigation",
+    prompt: `${STYLE}. A swirling tempest of dark arcane storm clouds encircling a central glowing crystal scrying orb set with an all-seeing eye, five ghostly spectral advisor faces emerging from the storm at the points of a pentagonal divination circle, threads of golden insight streaming from each spectre into the orb, forks of violet contradiction-lightning crackling between opposing spectres, glowing runic research sigils etched on the parchment beneath, a storm of knowledge made manifest`,
+  },
 ];
 
 function postJSON(url, headers, body) {
