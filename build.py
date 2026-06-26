@@ -39,7 +39,7 @@ from pathlib import Path
 
 SKILLS_DIR = "star-alliance-skills"
 AGENTS_DIR = "star-alliance-members"
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 3
 
 # meta fields that vary run-to-run — excluded from --check diffing (see _normalize).
 # Add any future non-deterministic meta field here or --check will report spurious changes.
@@ -341,6 +341,13 @@ def load_domains(repo: Path) -> list[dict]:
     return json.loads(p.read_text()).get("domains", [])
 
 
+def load_workflows(repo: Path) -> list[dict]:
+    p = repo / "workflows.json"
+    if not p.exists():
+        return []
+    return json.loads(p.read_text()).get("workflows", [])
+
+
 def load_log(repo: Path) -> dict:
     p = repo / "guild-log.json"
     if not p.exists():
@@ -375,9 +382,27 @@ def compute_reverse_indices(members: list[dict], skills: list[dict]) -> None:
 
 
 def validate(members: list[dict], skills: list[dict], domains: list[dict],
+             workflows: list[dict],
              errors: list[str], warnings: list[str]) -> None:
     skill_ids = {s["id"] for s in skills}
     member_ids = {m["id"] for m in members}
+
+    # Hard: workflow steps must have a known kind and resolve to known entities.
+    for wf in workflows:
+        wf_id = wf["id"]
+        for step in wf.get("steps", []):
+            kind = step.get("kind")
+            if kind not in {"member", "gate"}:
+                errors.append(f"workflow '{wf_id}' step has unknown kind '{kind}'")
+                continue
+            if kind == "member":
+                actor = step.get("actor")
+                if actor != "you" and actor not in member_ids:
+                    errors.append(f"workflow '{wf_id}' step references unknown member '{actor}'")
+            elif kind == "gate":
+                gate = step.get("gate")
+                if gate not in {"approval", "certify", "report"}:
+                    errors.append(f"workflow '{wf_id}' step has unknown gate '{gate}'")
 
     # Hard: every member skill must resolve to an installed skill.
     for m in members:
@@ -395,7 +420,7 @@ def validate(members: list[dict], skills: list[dict], domains: list[dict],
                 warnings.append(f"domain '{d['id']}' references member '{mid}' not in the guild (external)")
 
 
-def build_meta(members, skills, domains, log) -> dict:
+def build_meta(members, skills, domains, workflows, log) -> dict:
     return {
         "name": "Star Alliance",
         "generated": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
@@ -404,6 +429,7 @@ def build_meta(members, skills, domains, log) -> dict:
             "members": len(members),
             "skills": len(skills),
             "domains": len(domains),
+            "workflows": len(workflows),
             "log": log["count"],
         },
     }
@@ -420,16 +446,18 @@ def assemble(repo: Path) -> tuple[dict, list[str], list[str]]:
     skills = build_skills(repo, skills_meta, warnings)
     members = build_members(repo, members_meta, errors)
     domains = load_domains(repo)
+    workflows = load_workflows(repo)
     log = load_log(repo)
 
     compute_reverse_indices(members, skills)
-    validate(members, skills, domains, errors, warnings)
+    validate(members, skills, domains, workflows, errors, warnings)
 
     guild = {
-        "meta": build_meta(members, skills, domains, log),
+        "meta": build_meta(members, skills, domains, workflows, log),
         "members": members,
         "skills": skills,
         "domains": domains,
+        "workflows": workflows,
         "log": log,
     }
     return guild, errors, warnings

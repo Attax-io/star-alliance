@@ -1,14 +1,14 @@
 {
   "meta": {
     "name": "Star Alliance",
-    "generated": "2026-06-26T08:13:41Z",
+    "generated": "2026-06-26T08:24:15Z",
     "schemaVersion": 3,
     "counts": {
       "members": 9,
       "skills": 32,
       "domains": 3,
-      "workflows": 7,
-      "log": 54
+      "workflows": 8,
+      "log": 55
     }
   },
   "members": [
@@ -2542,10 +2542,74 @@
           "label": "The Butler reports the skill-forge outcome, version changes, and tooling status to you."
         }
       ]
+    },
+    {
+      "id": "guild-log-sync",
+      "name": "Guild Log Sync",
+      "icon": "📜",
+      "accent": "gold",
+      "tagline": "Sweep recent sessions and backfill any missing guild-log entries.",
+      "when": "Use this to reconcile the guild log after a stretch of work — loop the recent sessions, find changes that never got recorded, and log them.",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Call the Log Sweep",
+          "act": "You ask the guild to loop the recent sessions (today and yesterday) and check the guild log for any change that never got recorded.",
+          "produces": "sweep request"
+        },
+        {
+          "kind": "member",
+          "actor": "the-butler",
+          "title": "Restate the Order",
+          "act": "Before any work begins, the Butler echoes your request back in plain English — loop today and yesterday's sessions, read the guild log, and log whatever is missing — so you both agree on the quest before he moves.",
+          "produces": "plain-English brief"
+        },
+        {
+          "kind": "gate",
+          "gate": "approval",
+          "label": "You confirm the Butler understood the order correctly before the sweep begins."
+        },
+        {
+          "kind": "member",
+          "actor": "the-butler",
+          "title": "Scout the Sessions",
+          "act": "The Butler, drawing Sonnet, loops every session from today and yesterday, reads the guild log, runs build_guild_log.py --dry-run to surface git-visible gaps, and inspects non-git artifact work (art PNGs, untracked tooling) to assemble a brief of what is missing.",
+          "produces": "gap brief"
+        },
+        {
+          "kind": "gate",
+          "gate": "certify",
+          "label": "The Quartermaster certifies each candidate entry is real, non-duplicate, and correctly typed before anything is written to the log."
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Log the Missing Entries",
+          "act": "The Quartermaster, drawing MiniMax M3, runs the two-tier pipeline — build_guild_log.py to backfill git-visible commits, log_event.py for the non-git events — then build.py to regenerate the dashboard data.",
+          "produces": "synced guild log"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports what was logged — git-tier catch-up plus manual entries — and the new log total, to you."
+        }
+      ]
     }
   ],
   "log": {
     "entries": [
+      {
+        "id": 21,
+        "date": "2026-06-26",
+        "type": "dashboard",
+        "title": "Add Guild Log Sync workflow to the star map",
+        "who": "the-quartermaster",
+        "detail": "New 'guild-log-sync' workflow in workflows.json: you -> Butler restates the order in plain English -> you approve -> Butler (Sonnet) scouts today+yesterday sessions + reads the guild log + build_guild_log.py --dry-run -> Quartermaster certify gate -> Quartermaster (MiniMax M3) runs the two-tier pipeline (build_guild_log.py + log_event.py + build.py) -> Butler report. 8 workflows total on the star map.",
+        "ref": [
+          "guild-log-sync"
+        ]
+      },
       {
         "id": 20,
         "date": "2026-06-26",
@@ -3267,6 +3331,6 @@
         "id": "g-325a46a5-add-skill-conquering-campaign"
       }
     ],
-    "count": 54
+    "count": 55
   }
 }

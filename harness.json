@@ -1,0 +1,12 @@
+{
+  "harness_version": "1.0.0",
+  "name": "Star Alliance",
+  "description": "Personal AI harness — skills + members (agents) + arsenal (model offload) installed as one unit into a project's .claude/.",
+  "components": {
+    "skills": "star-alliance-skills/",
+    "members": "star-alliance-members/",
+    "arsenal": "star-alliance-arsenal/",
+    "manifest": "domains.json"
+  },
+  "_note": "Bump harness_version on any release-worthy change. install.py reads this + the git short-SHA and stamps <project>/.claude/.harness-version.json so a project knows which snapshot it runs."
+}

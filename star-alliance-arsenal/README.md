@@ -38,6 +38,24 @@ summon.py gpt-5.5          → "not provisioned" (exit 69)
 
 Token usage prints to **stderr**, content to **stdout** — pipe-friendly.
 
+## MiniMax media models (image · video · speech · music)
+
+Beyond M3 (text), the MiniMax DIRECT API — same `~/.config/minimax/m3.key` — also forges media.
+These are **not** chat models: `summon.py`/`minimax.py` are text-only and do not route them. Hit the
+media endpoints directly (or use `gen-skill-art.cjs` for image). All four are registered as Arsenal
+weapons in `../app.js` (`MODELS`, tier **Forge**), so they appear on the dashboard.
+
+| Weapon id | API model | Endpoint | Helper |
+|---|---|---|---|
+| `image-01` | `image-01` | `POST /v1/image_generation` | **`node ../gen-skill-art.cjs`** — forged every `skill-art/*.png` |
+| `minimax-video` | `MiniMax-Hailuo-02` | `POST /v1/video_generation` (async → poll `/v1/query/video_generation` → fetch `/v1/files/retrieve`) | none yet |
+| `minimax-speech` | `speech-02-hd` | `POST /v1/t2a_v2` | none yet |
+| `minimax-music` | `music-1.5` | `POST /v1/music_generation` | none yet |
+
+Auth for all: `Authorization: Bearer $(cat ~/.config/minimax/m3.key)`. **Verify the exact model tag
+before a run** — MiniMax bumps them. Only `image-01` has a helper today. Set real caps in
+`models-usage.json`.
+
 ## Re: the dashboard
 
 The Arsenal page's per-model "How to summon" recipes (in `../app.js`, the `MODELS` map)

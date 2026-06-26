@@ -4,5 +4,9 @@
   "sonnet":     { "quota": 4000, "unit": "k tok/5h" },
   "haiku":      { "quota": 8000, "unit": "k tok/5h" },
   "minimax-m3": { "spent": 0.2, "quota": 100, "unit": "M tok" },
+  "image-01":       { "spent": 0, "quota": 1000, "unit": "img" },
+  "minimax-video":  { "spent": 0, "quota": 100,  "unit": "clip" },
+  "minimax-speech": { "spent": 0, "quota": 1000, "unit": "k char" },
+  "minimax-music":  { "spent": 0, "quota": 100,  "unit": "track" },
   "glm-5.2":    { "spent": 3,   "quota": 100, "unit": "req" }
 }

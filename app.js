@@ -42,57 +42,76 @@ const pluralize = (n, w) => `${n} ${w}${n === 1 ? "" : "s"}`;
 //   ⚠ NEVER paste a raw API key here — recipes reference the keyFILE on disk.
 // ════════════════════════════════════════════════════════════════════════
 const MODELS = {
-  "opus":             { label: "Opus",            color: "#e8c93a", tier: "Master",  host: "Anthropic · native",  desc: "Claude Opus 4.8 — the master brain. Orchestrates the guild, reasons deepest, reviews everything. This IS the run.",
+  "opus":             { label: "Opus",            color: "#e8c93a", tier: "Master",  host: "Anthropic · native",  role: "thinker", desc: "Claude Opus 4.8 — the master brain. Orchestrates the guild, reasons deepest, reviews everything. This IS the run.",
     ollama_desc: "Claude Opus 4.8 · Anthropic's most powerful model. Best for complex reasoning, deep analysis, agentic orchestration, and long-horizon planning. Top-tier on MMLU, HumanEval, MATH. Use for hard problems that need the best answer, not the fastest.",
     call: "Native — no script. You ARE Opus, the orchestrator. Delegate sub-work via the Task tool: subagent_type + model:'opus'.\n(python3 star-alliance-arsenal/summon.py opus just echoes this reminder.)",
     meter: { kind: "sub", note: "Claude subscription · unmetered" } },
-  "sonnet":           { label: "Sonnet",          color: "#3df0ff", tier: "Thinker", host: "Anthropic · native",  desc: "Claude Sonnet 4.6 — the reliable longsword. Fast, balanced daily dispatch.",
+  "sonnet":           { label: "Sonnet",          color: "#3df0ff", tier: "Thinker", host: "Anthropic · native",  role: "both", desc: "Claude Sonnet 4.6 — the reliable longsword. Fast, balanced daily dispatch.",
     ollama_desc: "Claude Sonnet 4.6 · Balanced speed and intelligence. Near-Opus quality at a fraction of the latency. Excels at coding, writing, analysis, and tool use. The go-to for reliable daily dispatch — fast enough for interactive use, smart enough for hard tasks.",
     call: "Native — no script. Task tool subagent, model:'sonnet'. Or switch the main loop with /model sonnet.",
     meter: { kind: "sub", note: "Claude subscription · unmetered" } },
-  "haiku":            { label: "Haiku",           color: "#4ec985", tier: "Light",   host: "Anthropic · native",  desc: "Claude Haiku 4.5 — the stiletto. Fastest and cheapest, for precise quick strikes.",
+  "haiku":            { label: "Haiku",           color: "#4ec985", tier: "Light",   host: "Anthropic · native",  role: "doer", desc: "Claude Haiku 4.5 — the stiletto. Fastest and cheapest, for precise quick strikes.",
     ollama_desc: "Claude Haiku 4.5 · Fastest and cheapest Claude. Sub-second responses, ideal for bulk classification, routing, summarization, and mechanical transforms. Use when you need high volume at low cost — not when you need deep reasoning.",
     call: "Native — no script. Task tool subagent, model:'haiku' — cheap mechanical strikes.",
     meter: { kind: "sub", note: "Claude subscription · unmetered" } },
-  "gpt-5.5":          { label: "GPT-5.5",         color: "#9d7bff", tier: "Premium", host: "OpenAI · direct",     desc: "OpenAI GPT-5.5 — a US-hosted frontier second opinion. Premium-priced.",
+  "gpt-5.5":          { label: "GPT-5.5",         color: "#9d7bff", tier: "Premium", host: "OpenAI · direct",     role: "thinker", desc: "OpenAI GPT-5.5 — a US-hosted frontier second opinion. Premium-priced.",
     ollama_desc: "OpenAI GPT-5.5 · OpenAI's flagship frontier model. Multimodal reasoning, world-class coding, and strong creative generation. Best used as a second opinion on hard problems, cross-validation, or tasks that benefit from a different model family's perspective.",
     call: "python3 star-alliance-arsenal/summon.py gpt-5.5  → reports NOT provisioned (no key on device).\nWhen provisioned: OpenAI direct, POST api.openai.com/v1/chat/completions, Bearer $OPENAI_API_KEY, model:'gpt-5.5'.",
     meter: { kind: "off", note: "Not provisioned — no key on device yet" } },
-  "minimax-m3":       { label: "MiniMax M3",      color: "#4ec9a0", tier: "Doer",    host: "MiniMax · DIRECT",    desc: "MiniMax M3 — the crossbow. Cheap, 1M context, fires bulk delegated work at range. Use the DIRECT cloud sub — the old Ollama minimax-m3 route is RETIRED.",
+  "minimax-m3":       { label: "MiniMax M3",      color: "#4ec9a0", tier: "Doer",    host: "MiniMax · DIRECT",    role: "doer", desc: "MiniMax M3 — the crossbow. Cheap, 1M context, fires bulk delegated work at range. Use the DIRECT cloud sub — the old Ollama minimax-m3 route is RETIRED.",
     ollama_desc: "MiniMax M3 · 1M context window, very cheap per token. Strong at long-document analysis, bulk text extraction, and summarization. The guild's primary sub-agent for delegated work. Use for anything where you need to process large inputs at low cost.",
     call: "DIRECT cloud sub — NOT Ollama.\nEasiest:  python3 star-alliance-arsenal/minimax.py \"<prompt>\"\n  flags: -s <system>  --json  -f <file>  (reads stdin if no arg)\nRaw:  POST https://api.minimax.io/v1/text/chatcompletion_v2\n  Authorization: Bearer $(cat ~/.config/minimax/m3.key)\n  body { model:'MiniMax-M3', messages:[…], max_tokens:16000 }",
     meter: { kind: "used", spent: 0, quota: 100, unit: "M tok", est: true, note: "est · set your real plan cap" } },
-  "glm-5.2":          { label: "GLM-5.2",         color: "#d4a05a", tier: "Bench",   host: "Ollama Cloud",        desc: "GLM-5.2 — the longbow. Coding-first, strong multilingual analysis. Long reach, pulled & ready.",
+  "image-01":         { label: "MiniMax Image",   color: "#45c98f", tier: "Forge",   host: "MiniMax · DIRECT",    role: "doer", desc: "MiniMax image-01 — the enchanter's brush. Paints 1024² skill-sigils and battle-standards from a spell-phrase. Forged every art tile in the armory.",
+    ollama_desc: "MiniMax image-01 · Text-to-image diffusion. 1024×1024, prompt-driven, strong on stylized/illustrative art. The guild's art forge — skill-art, weapon cards, member portraits. Use for any raster icon or illustration; M3 (text) cannot make pixels.",
+    call: "DIRECT cloud · Bearer $(cat ~/.config/minimax/m3.key).\nEasiest:  node gen-skill-art.cjs            (renders skill-art/<id>.png; skips existing, --regen <id> to force)\nRaw:  POST https://api.minimax.io/v1/image_generation\n  body { model:'image-01', prompt:'…', aspect_ratio:'1:1', response_format:'url', n:1 }",
+    meter: { kind: "used", spent: 0, quota: 1000, unit: "img", est: true, note: "est · set your real plan cap" } },
+  "minimax-video":    { label: "MiniMax Hailuo",  color: "#38c9c0", tier: "Forge",   host: "MiniMax · DIRECT",    role: "doer", desc: "MiniMax Hailuo — the scrying-loom. Weaves short moving visions (text/image → video) for banners and intro stings.",
+    ollama_desc: "MiniMax Hailuo video (MiniMax-Hailuo-02 / video-01) · Text-to-video and image-to-video, ~6s 720p clips. Async API: submit → poll task → retrieve file. Use for short motion — animated banners, weapon GIFs, intros.",
+    call: "DIRECT cloud · Bearer $(cat ~/.config/minimax/m3.key).  No helper script yet.\nRaw (async):  POST https://api.minimax.io/v1/video_generation  body { model:'MiniMax-Hailuo-02', prompt:'…' } → task_id\n  Poll:  GET /v1/query/video_generation?task_id=…  → file_id\n  Fetch:  GET /v1/files/retrieve?file_id=…   (verify current model tag)",
+    meter: { kind: "used", spent: 0, quota: 100, unit: "clip", est: true, note: "est · async video gen · set real cap" } },
+  "minimax-speech":   { label: "MiniMax Speech",  color: "#6cc98a", tier: "Forge",   host: "MiniMax · DIRECT",    role: "doer", desc: "MiniMax Speech — the herald's horn. Gives any text a spoken voice (TTS), in many tongues and timbres.",
+    ollama_desc: "MiniMax Speech (speech-02-hd / -turbo, T2A v2) · Text-to-speech. Multilingual, many voices, adjustable speed/pitch/emotion. Use for narration, voiced briefings, audio versions of reports.",
+    call: "DIRECT cloud · Bearer $(cat ~/.config/minimax/m3.key).  No helper script yet.\nRaw:  POST https://api.minimax.io/v1/t2a_v2  body { model:'speech-02-hd', text:'…', voice_setting:{ voice_id:'…', speed:1 } } → audio\n  (verify current voice ids + model tag)",
+    meter: { kind: "used", spent: 0, quota: 1000, unit: "k char", est: true, note: "est · T2A billed per char · set real cap" } },
+  "minimax-music":    { label: "MiniMax Music",   color: "#8fc94e", tier: "Forge",   host: "MiniMax · DIRECT",    role: "doer", desc: "MiniMax Music — the bard's lute. Composes scored music from a brief: a mood, a verse, a length.",
+    ollama_desc: "MiniMax Music (music-1.5) · Generates instrumental or vocal music from a text brief + optional lyrics. Use for theme music, ambient loops, short scores.",
+    call: "DIRECT cloud · Bearer $(cat ~/.config/minimax/m3.key).  No helper script yet.\nRaw:  POST https://api.minimax.io/v1/music_generation  body { model:'music-1.5', prompt:'…', lyrics:'…' }\n  (verify current model tag)",
+    meter: { kind: "used", spent: 0, quota: 100, unit: "track", est: true, note: "est · set real cap" } },
+  "glm-5.2":          { label: "GLM-5.2",         color: "#d4a05a", tier: "Bench",   host: "Ollama Cloud",        role: "both", desc: "GLM-5.2 — the longbow. Coding-first, strong multilingual analysis. Long reach, pulled & ready.",
     ollama_desc: "GLM-5.2 · Zhipu AI's flagship. Coding-first with top LiveCodeBench performance. Strong multilingual capabilities — especially Chinese, Arabic, and European languages. Best for code review, multi-language tasks, and structured analytical work.",
     call: "Easiest:  python3 star-alliance-arsenal/summon.py glm-5.2 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py glm-5.2:cloud \"<prompt>\"  (-s, --json, -f, stdin)\nOllama Cloud sub · tag glm-5.2:cloud  ✓ pulled",
     meter: { kind: "used", spent: 0, quota: 100, unit: "req", est: true, pool: "Ollama Cloud", note: "est · shares the Ollama Cloud pool" } },
-  "kimi-k2.7":        { label: "Kimi K2.7",       color: "#ff6b8a", tier: "Bench",   host: "Ollama Cloud",        desc: "Kimi K2.7 — the hammer. Long-horizon coding and agentic work, blunt force done right.",
+  "kimi-k2.7":        { label: "Kimi K2.7",       color: "#ff6b8a", tier: "Bench",   host: "Ollama Cloud",        role: "doer", desc: "Kimi K2.7 — the hammer. Long-horizon coding and agentic work, blunt force done right.",
     ollama_desc: "Kimi K2.7 · Moonshot AI's agentic powerhouse. Designed for long-horizon tool use, autonomous coding, and multi-step debugging. Strong at planning, self-correction, and sustained agentic loops. Best when a task requires many tool calls across a long session.",
     call: "Easiest:  python3 star-alliance-arsenal/summon.py kimi-k2.7 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py kimi-k2:cloud \"<prompt>\"\nPull first:  ollama pull kimi-k2:cloud  (verify exact cloud tag)",
     meter: { kind: "used", spent: 0, quota: 100, unit: "req", est: true, pool: "Ollama Cloud", note: "est · not yet pulled · shares Ollama Cloud pool" } },
-  "deepseek-v4-pro":  { label: "DeepSeek V4 Pro", color: "#5b8cff", tier: "Bench",   host: "Ollama Cloud",        desc: "DeepSeek V4 Pro — the scythe. Wide-sweeping frontier MoE reasoning.",
+  "deepseek-v4-pro":  { label: "DeepSeek V4 Pro", color: "#5b8cff", tier: "Bench",   host: "Ollama Cloud",        role: "thinker", desc: "DeepSeek V4 Pro — the scythe. Wide-sweeping frontier MoE reasoning.",
     ollama_desc: "DeepSeek V4 Pro · Mixture-of-Experts frontier reasoning at low cost. Exceptional at STEM, mathematics, and logical inference. Near GPT-4 quality for a fraction of the price. Best for hard analytical problems, algorithm design, and scientific reasoning.",
     call: "Easiest:  python3 star-alliance-arsenal/summon.py deepseek-v4-pro \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py deepseek-v3.1:cloud \"<prompt>\"\nPull first:  ollama pull deepseek-v3.1:cloud  (verify exact cloud tag)",
     meter: { kind: "used", spent: 0, quota: 100, unit: "req", est: true, pool: "Ollama Cloud", note: "est · not yet pulled · shares Ollama Cloud pool" } },
-  "nemotron-3-ultra": { label: "Nemotron-3 Ultra",color: "#7fd4ff", tier: "Bench",   host: "Ollama Cloud",        desc: "Nemotron-3 Ultra — the lance. High-throughput reasoning, long agent runs.",
+  "nemotron-3-ultra": { label: "Nemotron-3 Ultra",color: "#7fd4ff", tier: "Bench",   host: "Ollama Cloud",        role: "doer", desc: "Nemotron-3 Ultra — the lance. High-throughput reasoning, long agent runs.",
     ollama_desc: "Nemotron-3 Ultra · NVIDIA's high-throughput reasoning model. Strong at structured data extraction, long-form document analysis, and sustained multi-turn agentic work. Optimized for inference efficiency — best when you need frontier reasoning at scale.",
     call: "Easiest:  python3 star-alliance-arsenal/summon.py nemotron-3-ultra \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py nemotron:cloud \"<prompt>\"\nPull first:  ollama pull nemotron:cloud  (verify the exact cloud tag)",
     meter: { kind: "used", spent: 0, quota: 100, unit: "req", est: true, pool: "Ollama Cloud", note: "est · not yet pulled · shares Ollama Cloud pool" } },
-  "qwen3.5":          { label: "Qwen 3.5",        color: "#c47fff", tier: "Bench",   host: "Ollama Cloud",        desc: "Qwen 3.5 — the shortsword. Versatile general-purpose workhorse.",
+  "qwen3.5":          { label: "Qwen 3.5",        color: "#c47fff", tier: "Bench",   host: "Ollama Cloud",        role: "both", desc: "Qwen 3.5 — the shortsword. Versatile general-purpose workhorse.",
     ollama_desc: "Qwen 3.5 · Alibaba's versatile coder. Supports 29 languages, strong structured output, function calling, and API integration. Well-rounded across coding, writing, and analysis. Best for multilingual tasks and general-purpose work where flexibility matters.",
     call: "Easiest:  python3 star-alliance-arsenal/summon.py qwen3.5 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py qwen3-coder:cloud \"<prompt>\"\nPull first:  ollama pull qwen3-coder:cloud  (verify exact cloud tag)",
     meter: { kind: "used", spent: 0, quota: 100, unit: "req", est: true, pool: "Ollama Cloud", note: "est · not yet pulled · shares Ollama Cloud pool" } },
-  "gemma4":           { label: "Gemma 4",         color: "#ffb04e", tier: "Bench",   host: "Ollama Cloud",        desc: "Gemma 4 — the ninja star. Small, fast, deadly accurate for quick cheap passes.",
+  "gemma4":           { label: "Gemma 4",         color: "#ffb04e", tier: "Bench",   host: "Ollama Cloud",        role: "doer", desc: "Gemma 4 — the ninja star. Small, fast, deadly accurate for quick cheap passes.",
     ollama_desc: "Gemma 4 · Google's lightweight open model. Fast, compact, deployable anywhere. Strong instruction following, basic reasoning, and summarization at minimal cost. Best for high-volume quick passes, preprocessing, and tasks where speed and cost trump depth.",
     call: "Easiest:  python3 star-alliance-arsenal/summon.py gemma4 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py gemma3:cloud \"<prompt>\"\nPull first:  ollama pull gemma3:cloud  (verify exact cloud tag)",
     meter: { kind: "used", spent: 0, quota: 100, unit: "req", est: true, pool: "Ollama Cloud", note: "est · not yet pulled · shares Ollama Cloud pool" } },
 };
 const modelMeta = (m) => MODELS[m] || { label: m || "—", color: "#8a93ad" };
 const modelGlyph = (m) => (modelMeta(m).label).replace(/[^A-Za-z0-9]/g, "").slice(0, 2).toUpperCase();
+const ROLE_META = {
+  thinker: { label: "Thinker", icon: "role-art/thinker.png", color: "#9d7bff", rule: "Only reasons, plans, analyzes, and orchestrates. Never executes bulk work or fires sub-tasks directly." },
+  doer:    { label: "Doer",    icon: "role-art/doer.png",    color: "#ffb04e", rule: "Only executes, produces, writes, and transforms. Never orchestrates other agents or makes high-level decisions." },
+  both:    { label: "Both",    icon: "role-art/both.png",    color: "#3df0ff", rule: "Can think and execute. Assign explicitly — don't use as a catch-all." },
+};
 // The armory display order for the Arsenal page.
-const ARSENAL = ["opus", "sonnet", "haiku", "gpt-5.5", "minimax-m3", "glm-5.2", "kimi-k2.7", "deepseek-v4-pro", "nemotron-3-ultra", "qwen3.5", "gemma4"];
-// Lower rank = closer to the core (heavier model). Drives star-map ring assignment.
-const TIER_RANK = { "opus": 0, "gpt-5.5": 1, "sonnet": 2, "glm-5.2": 3, "kimi-k2.7": 3, "minimax-m3": 3, "deepseek-v4-pro": 3, "nemotron-3-ultra": 3, "qwen3.5": 3, "gemma4": 4, "haiku": 4 };
+const ARSENAL = ["opus", "sonnet", "haiku", "gpt-5.5", "minimax-m3", "image-01", "minimax-video", "minimax-speech", "minimax-music", "glm-5.2", "kimi-k2.7", "deepseek-v4-pro", "nemotron-3-ultra", "qwen3.5", "gemma4"];
 // model id → the ollama `:cloud` tag we expect, so /api/arsenal can mark it pulled.
 const CLOUD_TAG = {
   "minimax-m3": "minimax-m3:cloud", "glm-5.2": "glm-5.2:cloud", "kimi-k2.7": "kimi-k2:cloud",
@@ -132,7 +151,6 @@ async function refreshArsenalData() {
 }
 
 /* ── 3. Data indices (built once) ─────────────────────────────────────────── */
-const N = GUILD.members.length;
 const byMember = new Map(GUILD.members.map((m) => [m.id, m]));
 const bySkill  = new Map(GUILD.skills.map((s) => [s.id, s]));
 const byDomain = new Map(GUILD.domains.map((d) => [d.id, d]));
@@ -463,30 +481,47 @@ function memberCard(m) {
 /* ── 6. Views ─────────────────────────────────────────────────────────────── */
 
 // Star Map ------------------------------------------------------------------
-function renderStarMap() {
-  const c = GUILD.meta.counts;
-  return `${viewHead("Constellation", "Star Map",
-      `${c.members} members linked by shared specializations across ${c.skills} skills.`)}
-    <div class="starmap-wrap glass" style="padding:24px">
-      ${buildStarMapSVG()}
-      <div class="map-legend">
-        <span class="lg"><span class="dot" style="background:#e8c93a"></span>Opus core</span>
-        <span class="lg"><span class="dot" style="background:#3df0ff"></span>Sonnet ring</span>
-        <span class="lg"><span class="ln"></span>shared specialization (brighter = rarer)</span>
+function renderStarMap(query) {
+  const reqId = query && query.get ? query.get("flow") : null;
+  const wf = GUILD.workflows.find(w => w.id === reqId) || GUILD.workflows[0];
+  const unknown = reqId && !GUILD.workflows.some(w => w.id === reqId);
+  if (unknown) console.warn(`[map] unknown workflow id "${reqId}" — falling back to default`);
+  const accent = ACCENT[wf.accent] || "var(--cyan)";
+  return `${viewHead("Operations", "Star Map",
+      `Hover a star to read ${esc(wf.name)}'s role. The power core flows the active workflow.`)}
+    ${flowChips(wf.id)}
+    ${unknown ? `<div class="flow-note">Unknown flow — showing the default.</div>` : ""}
+    <div class="flow-meta glass" style="--accent:${accent}">
+      <div class="fm-icon" aria-hidden="true">${esc(wf.icon || "")}</div>
+      <div class="fm-body">
+        <div class="fm-tagline">${esc(wf.tagline || "")}</div>
+        <div class="fm-when"><span class="fm-when-label">When</span> ${esc(wf.when || "")}</div>
       </div>
     </div>
-    <div class="starmap-list grid roster-grid" style="margin-top:24px">
-      ${GUILD.members.map(memberCard).join("")}
+    <div class="starmap-wrap glass" style="--accent:${accent}">
+      ${buildConstellation(wf)}
+      <div class="starmap-tip" id="starmap-tip" hidden></div>
     </div>`;
 }
 
-function buildStarMapSVG() {
+// Accent name → CSS color. There is no --blue token, so map it to a literal.
+const ACCENT = { cyan: "var(--cyan)", gold: "var(--gold)", violet: "var(--violet)", green: "var(--green)", rose: "var(--rose)", blue: "#5e9ef5" };
+
+function flowChips(activeId) {
+  return `<nav class="flow-chips" aria-label="Workflows">` + GUILD.workflows.map(w =>
+    `<a class="flow-chip" href="#/map?flow=${esc(w.id)}" style="--accent:${ACCENT[w.accent] || 'var(--cyan)'}" ${w.id === activeId ? 'aria-current="page"' : ''}><span class="fc-icon" aria-hidden="true">${esc(w.icon || '')}</span><span class="fc-name">${esc(w.name)}</span></a>`
+  ).join("") + `</nav>`;
+}
+
+const TIER_RANK = { "opus": 0, "gpt-5.5": 1, "sonnet": 2, "glm-5.2": 3, "kimi-k2.7": 3, "minimax-m3": 3, "deepseek-v4-pro": 3, "nemotron-3-ultra": 3, "qwen3.5": 3, "gemma4": 4, "haiku": 4, "image-01": 5, "minimax-video": 5, "minimax-speech": 5, "minimax-music": 5 };
+
+function buildConstellation(wf) {
   const members = GUILD.members;
+  const N = members.length;
   const models = [...new Set(members.map((m) => m.model))].sort((a, b) => (TIER_RANK[a] ?? 9) - (TIER_RANK[b] ?? 9));
   const T = models.length;
   const cx = 400, cy = 400, innerR = 150;
   const gap = T > 1 ? Math.min(120, (300 - innerR) / (T - 1)) : 0;
-
   const pos = {};
   const radii = [];
   models.forEach((model, ti) => {
@@ -499,54 +534,94 @@ function buildStarMapSVG() {
       pos[m.id] = { x: cx + R * Math.cos(a), y: cy + R * Math.sin(a) };
     });
   });
-
-  // Rarity-weighted edges over each member's EFFECTIVE skill set (override-aware).
   const eff = new Map(members.map((m) => [m.id, new Set(effectiveSkills(m))]));
   const freq = {}; GUILD.skills.forEach((s) => { freq[s.id] = liveFreq(s.id); });
-  const edges = [];
-  let maxW = 0;
+  const edges = []; let maxW = 0;
   for (let i = 0; i < N; i++) for (let j = i + 1; j < N; j++) {
     const A = members[i], B = members[j], sa = eff.get(A.id), sb = eff.get(B.id);
-    const shared = [...sa].filter((s) => sb.has(s) && freq[s] > 0 && freq[s] < N);  // skip skills on everyone
+    const shared = [...sa].filter((s) => sb.has(s) && freq[s] > 0 && freq[s] < N);
     if (!shared.length) continue;
     const w = shared.reduce((t, s) => t + Math.log(N / freq[s]), 0);
     if (w <= 0) continue;
-    edges.push({ a: A.id, b: B.id, w, shared });
-    maxW = Math.max(maxW, w);
+    edges.push({ a: A.id, b: B.id, w, shared }); maxW = Math.max(maxW, w);
   }
+  const orbits = radii.map((R, i) => `<circle class="orbit${i === radii.length - 1 ? " dashed" : ""}" cx="${cx}" cy="${cy}" r="${R.toFixed(1)}"/>`).join("");
+  const links = edges.map((e) => { const A = pos[e.a], B = pos[e.b]; const s = maxW > 0 ? (e.w / maxW).toFixed(3) : "0";
+    return `<line class="link" data-a="${esc(e.a)}" data-b="${esc(e.b)}" style="--s:${s}" x1="${A.x.toFixed(1)}" y1="${A.y.toFixed(1)}" x2="${B.x.toFixed(1)}" y2="${B.y.toFixed(1)}"></line>`; }).join("");
 
-  const orbits = radii.map((R, i) =>
-    `<circle class="orbit${i === radii.length - 1 ? " dashed" : ""}" cx="${cx}" cy="${cy}" r="${R.toFixed(1)}"/>`).join("");
+  // Members participating in this workflow (actors only)
+  const flowMemberIds = new Set();
+  wf.steps.forEach((s) => { if (s.kind === "member" && s.actor !== "you") flowMemberIds.add(s.actor); });
 
-  const links = edges.map((e) => {
-    const A = pos[e.a], B = pos[e.b];
-    const s = (e.w / maxW).toFixed(3);
-    const title = e.shared.map((x) => bySkill.get(x)?.name || x).join(", ");
-    return `<line class="link" data-a="${esc(e.a)}" data-b="${esc(e.b)}" style="--s:${s}"
-      x1="${A.x.toFixed(1)}" y1="${A.y.toFixed(1)}" x2="${B.x.toFixed(1)}" y2="${B.y.toFixed(1)}"><title>${esc(title)}</title></line>`;
-  }).join("");
+  // Per-member tooltip lines (keyed by member id)
+  const memberTipLines = new Map();
+  wf.steps.forEach((s, i) => {
+    if (s.kind !== "member" || s.actor === "you") return;
+    const seg = s.produces ? ` (produces ${esc(s.produces)})` : "";
+    const line = `Step ${i + 1} · ${esc(s.title || "")} — ${esc(s.act || "")}${seg}`;
+    if (!memberTipLines.has(s.actor)) memberTipLines.set(s.actor, []);
+    memberTipLines.get(s.actor).push(line);
+  });
 
   const nodes = members.map((m) => {
     const p = pos[m.id];
-    const carriers = effectiveSkills(m).length;
-    return `<a href="#/members/${esc(m.id)}" class="node" data-id="${esc(m.id)}" style="--c:${esc(m.color)}"
-        aria-label="${esc(m.name)} — ${esc(m.role)}, ${pluralize(carriers, "skill")}">
-      <g transform="translate(${p.x.toFixed(1)},${p.y.toFixed(1)})">
-        <circle class="halo" r="20"/><circle class="ring2" r="14"/><circle class="core" r="9"/>
-      </g>
-      <text class="node-label" x="${p.x.toFixed(1)}" y="${(p.y + 32).toFixed(1)}">${esc(m.name)}</text>
-      <text class="node-sub" x="${p.x.toFixed(1)}" y="${(p.y + 46).toFixed(1)}">${esc(modelMeta(m.model).label)}</text>
-    </a>`;
+    const inFlow = flowMemberIds.has(m.id);
+    const tipBody = inFlow
+      ? (memberTipLines.get(m.id) || []).join(" | ")
+      : `Not part of ${esc(wf.name)}.`;
+    return `<a href="#/members/${esc(m.id)}" class="node ${inFlow ? "in-flow" : "off-flow"}" data-id="${esc(m.id)}" data-name="${esc(m.name)}" data-tip="${tipBody}" style="--c:${esc(m.color)}"><g transform="translate(${p.x.toFixed(1)},${p.y.toFixed(1)})"><circle class="halo" r="20"/><circle class="ring2" r="14"/><circle class="core" r="9"/></g><text class="node-label" x="${p.x.toFixed(1)}" y="${(p.y + 32).toFixed(1)}">${esc(m.name)}</text></a>`;
   }).join("");
 
-  return `<svg class="starmap" viewBox="0 0 800 800" role="group" aria-label="Guild constellation — members linked by shared skills">
+  // Build the actor waypoint sequence (kind === "member"); "you" maps to center
+  const waypoints = [];
+  wf.steps.forEach((s) => {
+    if (s.kind !== "member") return;
+    if (s.actor === "you") waypoints.push({ x: cx, y: cy, isYou: true });
+    else waypoints.push({ x: pos[s.actor].x, y: pos[s.actor].y, isYou: false });
+  });
+  if (waypoints.length === 0 || !waypoints[waypoints.length - 1].isYou) {
+    waypoints.push({ x: cx, y: cy, isYou: true });
+  }
+  const pathD = waypoints.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(" ");
+
+  // Gate markers at midpoints between the previous and next actor waypoint
+  const gateMarkers = [];
+  let actorIdx = -1;
+  for (let i = 0; i < wf.steps.length; i++) {
+    const s = wf.steps[i];
+    if (s.kind === "gate") {
+      const prev = actorIdx >= 0 ? waypoints[actorIdx] : { x: cx, y: cy };
+      let next = null;
+      for (let j = i + 1; j < wf.steps.length; j++) {
+        if (wf.steps[j].kind === "member") {
+          let k = 0;
+          for (let m2 = 0; m2 <= j; m2++) if (wf.steps[m2].kind === "member") k++;
+          next = waypoints[k - 1];
+          break;
+        }
+      }
+      if (!next) next = { x: cx, y: cy };
+      const mx = (prev.x + next.x) / 2;
+      const my = (prev.y + next.y) / 2;
+      const gname = { approval: "Approval Gate", certify: "Certification Gate", report: "Report to You" }[s.gate] || "Gate";
+      gateMarkers.push(`<g class="cgate cgate-${esc(s.gate)}" transform="translate(${mx.toFixed(1)},${my.toFixed(1)})" tabindex="0" role="img" aria-label="${esc(gname)}" data-name="${esc(gname)}" data-tip="${esc(s.label || s.gate)}"><circle class="cgate-hit" r="16" fill="transparent"/><rect class="cgate-shape" x="-9" y="-9" width="18" height="18" transform="rotate(45)"/><title>${esc(s.label || s.gate)}</title></g>`);
+    } else if (s.kind === "member") {
+      actorIdx++;
+    }
+  }
+
+  const dur = (waypoints.length * 1.1).toFixed(1);
+  const youCore = `<g class="you-core" transform="translate(${cx},${cy})" tabindex="0" role="img" aria-label="You · Guild Master" data-name="You · Guild Master" data-tip="The Guild Master and prompter. Every mission begins with your order — the Butler turns it into a clear brief for your approval — and ends when the guild reports the finished work back to you."><circle class="halo" r="22"/><circle class="core" r="10"/><text class="you-glyph" text-anchor="middle" dominant-baseline="central">✦</text><title>You — where every mission begins and ends</title></g>`;
+
+  return `<svg class="starmap" viewBox="0 0 800 800" data-core-dur="${dur}" role="group" aria-label="${esc(wf.name)} workflow over the guild constellation">
     <g class="orbits" aria-hidden="true">${orbits}</g>
     <g class="links" aria-hidden="true">${links}</g>
-    <g class="map-core" aria-hidden="true">
-      <circle cx="${cx}" cy="${cy}" r="3" fill="#e8c93a"/>
-      <text x="${cx}" y="${cy + 5}" text-anchor="middle" font-size="15" fill="#e8c93a" opacity=".8">✦</text>
-    </g>
+    <path id="flow-path" class="flow-path" d="${pathD}" fill="none"/>
+    <g class="cgates">${gateMarkers.join("")}</g>
     <g class="nodes">${nodes}</g>
+    <g class="you-core-wrap">${youCore}</g>
+    <g class="comet-tail">${(() => { const N = 16; let s = ""; for (let k = 0; k < N; k++) { const t = k/(N-1); const r = (5.5*(1-t)+0.8).toFixed(2); const op = (0.6*(1-t)*(1-t)).toFixed(3); const fill = `color-mix(in srgb, var(--accent) ${Math.round(40+t*55)}%, #ffffff)`; s += `<circle class="spark" r="${r}" cx="${cx}" cy="${cy}" style="fill:${fill};opacity:${op}"/>`; } return s; })()}</g>
+    <circle class="power-core" r="6" cx="${cx}" cy="${cy}"/>
   </svg>`;
 }
 
@@ -571,9 +646,11 @@ function renderMemberDossier(id) {
   const weapons = eff.map((w, i) => {
     const mm = modelMeta(w.model);
     const tip = esc(mm.ollama_desc || mm.desc || "");
+    const role = mm.role ? ROLE_META[mm.role] : null;
     return `<div class="weapon-card${w.added ? " added" : ""}" draggable="true" data-model="${esc(w.model)}" data-member="${esc(m.id)}" style="--wc:${esc(mm.color)}">
       <div class="weapon-thumb-wrap">
         <img class="weapon-thumb" src="weapon-art/${esc(w.model)}.png" alt="${esc(mm.label)}" loading="lazy">
+        ${role ? `<img class="weapon-role-pip" src="${esc(role.icon)}" alt="${esc(role.label)}" title="${esc(role.label)}: ${esc(role.rule)}" style="--rc:${esc(role.color)}">` : ""}
         <div class="weapon-thumb-tip">${tip}</div>
       </div>
       <div class="weapon-name"><span class="weapon-glyph" style="--wc:${esc(mm.color)}">${esc(modelGlyph(w.model))}</span>${esc(mm.label)}
@@ -588,17 +665,23 @@ function renderMemberDossier(id) {
     const off = isDisabled(sid);
     const blk = isBlocked(m.id, sid);
     const isAdded = !m.skills.includes(sid);
+    const siArt = s
+      ? (s.artPng
+          ? `<img class="sit-img" src="skill-art/${esc(s.id)}.png" alt="${esc(s.name)}" loading="lazy">`
+          : s.art
+            ? `<span class="sit-svg">${s.art}</span>`
+            : `<span class="sit-emoji">${esc(s.icon || "📦")}</span>`)
+      : `<span class="sit-emoji">📦</span>`;
     return `<div class="skill-line${blk || off ? " blocked" : ""}" data-skill="${esc(sid)}">
-      <button class="si-toggle" type="button" data-member="${esc(m.id)}" data-skill="${esc(sid)}"
+      <button class="si-toggle sit si-sit" type="button" data-member="${esc(m.id)}" data-skill="${esc(sid)}"
+        data-tip-name="${esc(s ? s.name : sid)}" data-tip-level="${esc(s ? s.level || "" : "")}" data-tip-blurb="${esc(s ? s.blurb || "" : "")}"
         aria-pressed="${blk}" aria-label="${blk ? "Allow" : "Block"} ${esc(s ? s.name : sid)} for this agent"
-        title="${blk ? "Blocked — click to allow" : "Click to block for this agent"}">
-        <span class="si-ico">${s ? esc(s.icon) : "📦"}</span></button>
+        title="${blk ? "Blocked — click to allow" : "Click to block for this agent"}">${siArt}</button>
       <a class="sn" href="#/skills/${esc(sid)}">${esc(s ? s.name : sid)}</a>
       ${isAdded ? `<span class="tag added">added</span>` : ""}
       ${off ? `<a class="tag off" href="#/skills/${esc(sid)}" title="Deactivated guild-wide">deactivated</a>`
             : (blk ? `<span class="tag blocked">blocked</span>`
                    : (isShared(sid) ? `<span class="tag shared">shared</span>` : ""))}
-      <span class="sb">${esc(s ? s.blurb : "")}</span>
       <button class="unassign-btn" type="button" data-member="${esc(m.id)}" data-skill="${esc(sid)}"
         title="Unassign from this agent" aria-label="Unassign ${esc(s ? s.name : sid)} from this agent">✕</button>
     </div>`;
@@ -631,9 +714,11 @@ function renderMemberDossier(id) {
         <div class="dh-meta">
           <div class="dh-name-row">
             <div class="avatar lg">${m.avatar || ""}</div>
-            <h1 class="dh-name">${esc(m.name)}</h1>
+            <div class="dh-name-group">
+              <h1 class="dh-name">${esc(m.name)}</h1>
+              <div class="dh-role editable" contenteditable="true" spellcheck="false" data-medit="role" data-member="${esc(m.id)}">${esc(m.role)}</div>
+            </div>
           </div>
-          <div class="dh-role editable" contenteditable="true" spellcheck="false" data-medit="role" data-member="${esc(m.id)}">${esc(m.role)}</div>
           <div class="dh-tags">
             <span class="tag gold">${esc(modelMeta(m.model).label)}</span>
             <span class="tag">${pluralize(active.length, "skill")}</span>
@@ -654,16 +739,16 @@ function renderMemberDossier(id) {
           <div class="arsenal-grid">${weapons}</div>
         </div>
       </div>
-      <div class="section glass">
-        <div class="section-title sk-head">
-          <span>Skills carried · ${active.length}${blocked ? ` <span class="blk-note">· ${blocked} blocked</span>` : ""}${added ? ` <span class="add-note">· ${added} added</span>` : ""}</span>
-          ${memberHasOverrides(m.id) ? `<button class="reset-btn" id="reset-member" data-member="${esc(m.id)}">Reset agent</button>` : ""}
-        </div>
-        <p class="skill-hint">Tap a skill's <strong>icon</strong> to block it · <strong>✕</strong> to unassign · or assign a new one below. Edits ripple through the Star Map, carrier counts, and roster, and persist in this browser.</p>
-        ${skills}
-        ${assignPanel}
-      </div>
       <div class="panel-grid">
+        <div class="section glass">
+          <div class="section-title sk-head">
+            <span>Skills carried · ${active.length}${blocked ? ` <span class="blk-note">· ${blocked} blocked</span>` : ""}${added ? ` <span class="add-note">· ${added} added</span>` : ""}</span>
+            ${memberHasOverrides(m.id) ? `<button class="reset-btn" id="reset-member" data-member="${esc(m.id)}">Reset agent</button>` : ""}
+          </div>
+          <p class="skill-hint">Tap a skill's <strong>icon</strong> to block it · <strong>✕</strong> to unassign. Hover for details.</p>
+          <div class="skill-lines">${skills}</div>
+          ${assignPanel}
+        </div>
         <div class="section glass">
           <div class="section-title">Deployment</div>
           <div class="kv">
@@ -679,6 +764,7 @@ function renderMemberDossier(id) {
             <ul class="bullets no">${m.doesnt.map((d) => `<li>${esc(d)}</li>`).join("")}</ul>
           </div>
         </div>
+        ${renderStarmapWorkflow(m)}
         <div class="section glass" style="grid-column:1/-1">
           <div class="section-title">Workflow / system prompt</div>
           <p class="skill-hint">The agent's mandate body. Click to edit \u2014 saves to the member <code>.md</code> when the dev server runs.</p>
@@ -690,6 +776,84 @@ function renderMemberDossier(id) {
         </div>
       </div>
     </div>`;
+}
+
+function renderStarmapWorkflow(m) {
+  const flows = [];
+
+  for (const wf of GUILD.workflows) {
+    const occurrences = [];
+    wf.steps.forEach((step, i) => {
+      if (step.kind === "member" && step.actor === m.id) {
+        const labelFor = (s) => {
+          if (!s) return null;
+          if (s.kind === "member") {
+            if (s.actor === "you") return "You";
+            return byMember.get(s.actor)?.name || "a teammate";
+          }
+          if (s.kind === "gate") {
+            if (s.gate === "approval") return "your approval";
+            if (s.gate === "certify") return "the Quartermaster's certification";
+            if (s.gate === "report") return "the final report";
+            return "a gate";
+          }
+          return null;
+        };
+        const prevLabel = i > 0 ? labelFor(wf.steps[i - 1]) : null;
+        const nextLabel = i < wf.steps.length - 1 ? labelFor(wf.steps[i + 1]) : null;
+        occurrences.push({ i, step, prevLabel, nextLabel });
+      }
+    });
+    if (occurrences.length > 0) flows.push({ wf, occurrences });
+  }
+
+  if (flows.length === 0) {
+    return `
+      <div class="section glass starmap-wf" style="grid-column:1/-1">
+        <div class="section-title">Starmap Workflow</div>
+        <div class="skill-hint">${esc(m.name)} is not yet part of any charted workflow.</div>
+      </div>`;
+  }
+
+  let html = `
+    <div class="section glass starmap-wf" style="grid-column:1/-1">
+      <div class="section-title">Starmap Workflow</div>
+      <div class="skill-hint">How ${esc(m.name)} is summoned across the guild's ${flows.length} ${flows.length === 1 ? "workflow" : "workflows"}.</div>`;
+
+  if (m.triggers) {
+    html += `
+      <div class="swf-prompts">
+        <div class="k">Prompts that summon ${esc(m.name)}</div>
+        <div class="v">${esc(m.triggers)}</div>
+      </div>`;
+  }
+
+  html += `<div class="swf-grid">`;
+
+  for (const { wf, occurrences } of flows) {
+    const accent = ACCENT[wf.accent] || "var(--cyan)";
+    html += `
+      <div class="swf-card" style="--accent:${accent}">
+        <div class="swf-card-head">
+          <span class="swf-icon" aria-hidden="true">${esc(wf.icon || "✦")}</span>
+          <a href="#/map?flow=${esc(wf.id)}">${esc(wf.name)}</a>
+          <a class="swf-view" href="#/map?flow=${esc(wf.id)}">view relay →</a>
+        </div>`;
+    for (const { i, step, prevLabel, nextLabel } of occurrences) {
+      html += `
+        <div class="swf-step">
+          <div class="swf-stepnum">Step ${i + 1}</div>
+          <div class="swf-title">${esc(step.title)}</div>
+          <div class="swf-act">${esc(step.act)}</div>
+          ${step.produces ? `<div class="swf-produces">produces → ${esc(step.produces)}</div>` : ""}
+          <div class="swf-ctx">${prevLabel ? `After ${esc(prevLabel)} · ` : ""}${nextLabel ? `hands to ${esc(nextLabel)}` : "final step"}</div>
+        </div>`;
+    }
+    html += `</div>`;
+  }
+
+  html += `</div></div>`;
+  return html;
 }
 
 // Arsenal / Armory ----------------------------------------------------------
@@ -712,6 +876,7 @@ function renderArsenal() {
       </button>
       <div class="wield-drop-list">${dropItems}</div>
     </div>`;
+    const role = mm.role ? ROLE_META[mm.role] : null;
     return `<div class="model-card${off ? " deactivated" : ""}" style="--wc:${esc(mm.color)}">
       <div class="weapon-art-wrap" data-weapon-color="${esc(mm.color)}" data-weapon-off="${off}">
         <img class="weapon-art${off ? " dimmed" : ""}" src="weapon-gif/${esc(id)}.gif" onerror="this.src='weapon-art/${esc(id)}.png'" alt="${esc(mm.label)} weapon art" loading="lazy">
@@ -719,6 +884,13 @@ function renderArsenal() {
         <button class="weapon-power-btn${off ? " off" : ""}" type="button" data-weapon="${esc(id)}"
           title="${off ? "Reactivate weapon" : "Deactivate weapon"}">⏻</button>
       </div>
+      ${role ? `<div class="weapon-role" style="--rc:${esc(role.color)}">
+        <img class="role-icon" src="${esc(role.icon)}" alt="${esc(role.label)}">
+        <div class="role-info">
+          <span class="role-label">${esc(role.label)}</span>
+          <span class="role-rule">${esc(role.rule)}</span>
+        </div>
+      </div>` : ""}
       <div class="model-head">
         <span class="weapon-glyph" style="--wc:${esc(mm.color)}">${esc(modelGlyph(id))}</span>
         <div class="model-id">
@@ -959,6 +1131,7 @@ function afterRender(key, segments) {
   if (key === "log" && !segments[1]) filterLog();
   if (key === "arsenal" && !arsenalApplied) refreshArsenalData();
   if (key === "arsenal") initWeaponAuras();
+  if (key === "map") initPowerCore();
 }
 
 function initWeaponAuras() {
@@ -1136,16 +1309,64 @@ function filterAssign() {
 }
 
 /* ── 8. Star-map hover/focus highlight ────────────────────────────────────── */
-function activateNode(id) {
-  const svg = app.querySelector(".starmap"); if (!svg) return;
+function showStarTip(node, evt) {
+  const tip = document.getElementById("starmap-tip");
+  const svg = app.querySelector(".starmap");
+  const wrap = app.querySelector(".starmap-wrap");
+  if (!tip || !svg || !wrap) return;
   svg.classList.add("dim");
-  svg.querySelectorAll(".node").forEach((n) => n.classList.toggle("active", n.dataset.id === id));
-  svg.querySelectorAll(".link").forEach((l) => l.classList.toggle("active", l.dataset.a === id || l.dataset.b === id));
+  app.querySelectorAll(".starmap .node").forEach((n) => n.classList.toggle("active", n === node));
+  tip.innerHTML = `<div class="tip-name">${node.dataset.name || ""}</div><div class="tip-body">${node.dataset.tip || ""}</div>`;
+  tip.hidden = false;
+  const wr = wrap.getBoundingClientRect();
+  let x = evt.clientX - wr.left + 14;
+  let y = evt.clientY - wr.top + 14;
+  const tw = tip.offsetWidth, th = tip.offsetHeight;
+  if (x + tw > wr.width) x = wr.width - tw - 8;
+  if (y + th > wr.height) y = wr.height - th - 8;
+  if (x < 8) x = 8;
+  if (y < 8) y = 8;
+  tip.style.left = x + "px";
+  tip.style.top = y + "px";
 }
-function clearNodes() {
-  const svg = app.querySelector(".starmap"); if (!svg) return;
-  svg.classList.remove("dim");
-  svg.querySelectorAll(".active").forEach((x) => x.classList.remove("active"));
+function hideStarTip() {
+  const tip = document.getElementById("starmap-tip");
+  const svg = app.querySelector(".starmap");
+  if (svg) svg.classList.remove("dim");
+  app.querySelectorAll(".starmap .node.active").forEach((n) => n.classList.remove("active"));
+  if (tip) tip.hidden = true;
+}
+
+// Drive the power core(s) along the active-workflow path. SMIL animateMotion
+// injected via innerHTML doesn't start reliably, so we animate with rAF +
+// getPointAtLength. Cancels itself on re-render / navigation and honours
+// prefers-reduced-motion.
+function initPowerCore() {
+  if (window._coreRaf) cancelAnimationFrame(window._coreRaf);
+  const svg = app.querySelector(".starmap");
+  const path = svg && svg.querySelector("#flow-path");
+  const core = svg && svg.querySelector(".power-core");
+  const sparks = svg ? Array.from(svg.querySelectorAll(".spark")) : [];
+  if (!svg || !path || !core) return;
+  const L = path.getTotalLength();
+  if (!L) return;
+  const place = (el, frac) => { const p = path.getPointAtLength(((frac % 1) + 1) % 1 * L); el.setAttribute("cx", p.x); el.setAttribute("cy", p.y); };
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    place(core, 0); return;
+  }
+  const durMs = Math.max(9000, (L / 70) * 1000);
+  const TAIL_PX = 110;
+  const gap = (TAIL_PX / Math.max(1, sparks.length)) / L;
+  let start = null;
+  const tick = (ts) => {
+    if (!document.body.contains(core)) return;  // navigated away → stop
+    if (start === null) start = ts;
+    const frac = ((ts - start) % durMs) / durMs;
+    place(core, frac);
+    sparks.forEach((sp, k) => place(sp, frac - (k + 1) * gap));
+    window._coreRaf = requestAnimationFrame(tick);
+  };
+  window._coreRaf = requestAnimationFrame(tick);
 }
 
 /* ── 9. Command palette ───────────────────────────────────────────────────── */
@@ -1345,10 +1566,11 @@ app.addEventListener("input", debounce((e) => {
 app.addEventListener("change", (e) => { if (e.target.id === "f-level" || e.target.id === "f-sort") filterSkills(); });
 
 // star-map highlight via delegation (mouse + keyboard)
-app.addEventListener("mouseover", (e) => { const n = e.target.closest(".node"); if (n) activateNode(n.dataset.id); });
-app.addEventListener("mouseout", (e) => { if (e.target.closest(".node")) clearNodes(); });
-app.addEventListener("focusin", (e) => { const n = e.target.closest(".node"); if (n) activateNode(n.dataset.id); });
-app.addEventListener("focusout", (e) => { if (e.target.closest(".node")) clearNodes(); });
+app.addEventListener("mouseover", (e) => { const n = e.target.closest(".starmap .node, .starmap .you-core, .starmap .cgate"); if (n) showStarTip(n, e); });
+app.addEventListener("mousemove", (e) => { const n = e.target.closest(".starmap .node, .starmap .you-core, .starmap .cgate"); if (n) showStarTip(n, e); });
+app.addEventListener("mouseout", (e) => { const n = e.target.closest(".starmap .node, .starmap .you-core, .starmap .cgate"); if (n && !e.relatedTarget?.closest?.(".starmap .node, .starmap .you-core, .starmap .cgate")) hideStarTip(); });
+app.addEventListener("focusin", (e) => { const n = e.target.closest(".starmap .node, .starmap .you-core, .starmap .cgate"); if (n) { const r = n.getBoundingClientRect(); showStarTip(n, { clientX: r.left + r.width / 2, clientY: r.top + r.height / 2 }); } });
+app.addEventListener("focusout", (e) => { if (e.target.closest(".starmap .node, .starmap .you-core, .starmap .cgate")) hideStarTip(); });
 
 byId("topbar").addEventListener("click", (e) => {
   if (e.target.closest("#nav-toggle")) {
