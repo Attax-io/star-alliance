@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 49,
       "patch": 42
     },
-    "generated": "2026-06-26T17:39:09Z",
+    "generated": "2026-06-26T17:51:12Z",
     "schemaVersion": 3,
     "counts": {
       "members": 9,
@@ -1267,7 +1267,7 @@ const GUILD = {
         "lines": 97,
         "words": 2490
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-herald"
       ]
@@ -1782,7 +1782,7 @@ const GUILD = {
         "lines": 151,
         "words": 1356
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-butler"
       ]
@@ -2302,7 +2302,7 @@ const GUILD = {
         "lines": 108,
         "words": 926
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-strategist"
       ]
@@ -2375,7 +2375,7 @@ const GUILD = {
         "lines": 109,
         "words": 926
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-architect",
         "the-butler",
