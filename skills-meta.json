@@ -183,13 +183,13 @@
     "triggers": ", RPC functions, RLS policies, edge functions, cron jobs), frontend code (components, pages, hooks, mutations, stores), schema changes, or bug fixes — even if the user doesn't explicitly ask for a vault log. Also use when the user says phrases like \"vault log ",
     "modes": ""
   },
-  "fallen-sword-design-language": {
-    "icon": "⚔️",
-    "blurb": "Vocabulary, mechanics, and lore of Fallen Sword — dark fantasy design language",
-    "level": "Advanced",
-    "tabler": "ti-sword",
-    "triggers": "",
-    "modes": ""
+  "design-language": {
+    "icon": "🗣️",
+    "blurb": "The guild's multi-language voice engine — narrative vocabulary & tone, not visual",
+    "level": "Master",
+    "tabler": "ti-language",
+    "triggers": "'use the X voice', 'make it sound like Fallen Sword', 'guild voice', 'Lex Council tone', 'reskin this copy', 'Erildath'",
+    "modes": "fallen-sword; star-alliance; lex-council"
   },
   "guild-log": {
     "icon": "📓",

@@ -2,6 +2,18 @@
   "version": 1,
   "entries": [
     {
+      "id": 62,
+      "date": "2026-06-26",
+      "type": "decision",
+      "title": "Generalize fallen-sword-design-language into design-language voice engine",
+      "who": "Atta",
+      "detail": "Evolved the lone Fallen Sword lore skill into a multi-mode NARRATIVE-VOICE engine (sibling to design-taste's visual axis). Original playbook preserved verbatim as references/fallen-sword.md (mode #1), joined by star-alliance (guild-dev meta-voice: forge/sigil/quest/wave/conformity) and lex-council (legal-finance product voice: vault/codex/ledger/certify/statute). Languages now extensible by dropping a references/*.md in. fallen-sword-design-language retired; skill count held at 41. conformity_check.py ✓ FULL CONFORMITY.",
+      "ref": [
+        "design-language",
+        "fallen-sword-design-language"
+      ]
+    },
+    {
       "id": 41,
       "date": "2026-06-26",
       "type": "workflow",

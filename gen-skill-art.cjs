@@ -54,8 +54,8 @@ const SKILLS = [
     prompt: `${STYLE}. A glowing arcane server tower built of stacked magical crystals, each crystal pulsing with different colored light, ethereal cables of light connecting them, a small green power gem at top`,
   },
   {
-    id: "fallen-sword-design-language",
-    prompt: `${STYLE}. The legendary Iluthar — Sword of Light — fallen diagonally across a dark stone altar, blade radiating blinding gold-white divine light, ancient Erildath runes glowing along the fuller, shadow realm darkness surrounding it`,
+    id: "design-language",
+    prompt: `${STYLE}. Three ancient open tomes arranged in a fan, each inscribed in a different glowing script — dark-fantasy Erildath runes, the guild's star-forged glyphs, and a council's formal seal-script — a single luminous quill weaving a thread of light between all three, the art of giving each world its own tongue`,
   },
   {
     id: "full-output-enforcement",

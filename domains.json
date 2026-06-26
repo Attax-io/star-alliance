@@ -33,7 +33,7 @@
         "vault-log-compliance",
         "graphify",
         "storm-investigation",
-        "fallen-sword-design-language",
+        "design-language",
         "members-formation",
         "ultra-brainstorming",
         "weapon-utility",
@@ -113,7 +113,8 @@
         "obsidian-markdown",
         "full-output-enforcement",
         "vault-log-compliance",
-        "growth-marketing"
+        "growth-marketing",
+        "design-language"
       ],
       "members": [
         "bd-research-agent",

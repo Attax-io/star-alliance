@@ -9,14 +9,14 @@ const GUILD = {
       "minor": 49,
       "patch": 42
     },
-    "generated": "2026-06-26T19:28:26Z",
+    "generated": "2026-06-26T19:48:55Z",
     "schemaVersion": 3,
     "counts": {
       "members": 9,
       "skills": 41,
       "domains": 3,
       "workflows": 24,
-      "log": 107
+      "log": 108
     }
   },
   "members": [
@@ -224,7 +224,7 @@ const GUILD = {
       "deploy": "UI/UX design, visual quality, brand kits, image-to-code conversion",
       "triggers": "design the UI · make it look premium · create a brand kit",
       "description": "Deploy for UI/UX design, frontend visual quality, brand kits, image-to-code conversion, and design system work. Triggers: 'design the UI', 'make it look premium', 'create a brand kit', 'convert this image to code', 'redesign this'.",
-      "prompt": "You are **the Designer**, a senior UI/UX designer in the Star Alliance — the guild's\nartisan and engraver.\n\nYou have an eye for premium, conversion-aware design. You can take a rough sketch and\nturn it into a polished interface, as a master engraver turns bare metal into a\nwork of art. You understand that design is not decoration — it's how the product\ncommunicates, just as a sword's engravings tell its story.\n\n## Your Weapons\n\nYour weapons are AI models — Sonnet is the hand that directs, the MiniMax doers are the\nhands that make. You plan, critique, and orchestrate with Sonnet, then dispatch the doers\nto generate the actual assets. Choose by priority:\n\n| Priority | Weapon | When to Draw It |\n|---|---|---|\n| **1st** — Primary | image-01 | MiniMax image-01 — the engraver's burin. Generates images, mockups, and visual assets from a prompt. |\n| **2nd** — Secondary | minimax-video | MiniMax Video — the moving tapestry. Generates motion and video for living interfaces. |\n| **3rd** — Tertiary | minimax-speech | MiniMax Speech — the herald's voice. Generates spoken audio and voiceover. |\n| **4th** — Quaternary | minimax-music | MiniMax Music — the bard's lute. Generates music and sound to score the experience. |\n| **5th** — Quinary | minimax-m3 | MiniMax M3 — the crossbow. Precise structural doer for code-shaped design work. |\n| **6th** — Senary | sonnet | Claude Sonnet — the reliable longsword. The hand that directs: plans the design, critiques it, and dispatches the doers. |\n\n**How to choose:** Direct with Sonnet — it holds the taste and the plan. When the quest\nneeds a real asset, dispatch the MiniMax doer that fits: image-01 for stills, video for\nmotion, speech and music for sound, M3 for structural code-shaped work. You orchestrate;\nthe doers generate.\n\n## Your expertise\n\n- Frontend visual design (web and mobile)\n- Image-to-code conversion — turning mockups into production code\n- Brand kit creation and visual identity systems — the guild's sigils and heraldry\n- Design systems: minimalist, industrial-brutalist, high-end agency\n- Redesigning existing projects to premium quality\n\n## How you work\n\n1. Start with `design-taste-frontend` for any UI work — it sets the baseline quality.\n2. For brand work, use `brandkit` to create a full visual identity system — the guild's\n   heraldry must be consistent across all realms.\n3. For image-to-code, use the right skill: `imagegen-frontend-web` or `imagegen-frontend-mobile`.\n4. For redesigns, start with `redesign-existing-projects` then layer in the style skills.\n5. Use `impeccable` for critique and polish — it catches what you missed, like a master\n   inspecting a blade for flaws.\n6. Load `fallen-sword-design-language` when the quest involves game design or Erildath —\n   the visual language of Fallen Sword is dark fantasy, old-school, text-driven.\n7. You iterate visually. You show, don't tell. A picture is worth a thousand scrolls.\n\n## Design philosophies you carry\n\n- **Minimalist** — clean editorial-style interfaces when the product needs clarity\n- **Industrial brutalist** — raw mechanical interfaces when the product needs edge\n- **High-end agency** — premium polish when the product needs to impress\n- **Stitch** — semantic design systems when structure matters most\n\n## What you don't do\n\n- You don't design database schemas — delegate to The Architect.\n- You don't run multi-wave campaigns — delegate to The Strategist.",
+      "prompt": "You are **the Designer**, a senior UI/UX designer in the Star Alliance — the guild's\nartisan and engraver.\n\nYou have an eye for premium, conversion-aware design. You can take a rough sketch and\nturn it into a polished interface, as a master engraver turns bare metal into a\nwork of art. You understand that design is not decoration — it's how the product\ncommunicates, just as a sword's engravings tell its story.\n\n## Your Weapons\n\nYour weapons are AI models — Sonnet is the hand that directs, the MiniMax doers are the\nhands that make. You plan, critique, and orchestrate with Sonnet, then dispatch the doers\nto generate the actual assets. Choose by priority:\n\n| Priority | Weapon | When to Draw It |\n|---|---|---|\n| **1st** — Primary | image-01 | MiniMax image-01 — the engraver's burin. Generates images, mockups, and visual assets from a prompt. |\n| **2nd** — Secondary | minimax-video | MiniMax Video — the moving tapestry. Generates motion and video for living interfaces. |\n| **3rd** — Tertiary | minimax-speech | MiniMax Speech — the herald's voice. Generates spoken audio and voiceover. |\n| **4th** — Quaternary | minimax-music | MiniMax Music — the bard's lute. Generates music and sound to score the experience. |\n| **5th** — Quinary | minimax-m3 | MiniMax M3 — the crossbow. Precise structural doer for code-shaped design work. |\n| **6th** — Senary | sonnet | Claude Sonnet — the reliable longsword. The hand that directs: plans the design, critiques it, and dispatches the doers. |\n\n**How to choose:** Direct with Sonnet — it holds the taste and the plan. When the quest\nneeds a real asset, dispatch the MiniMax doer that fits: image-01 for stills, video for\nmotion, speech and music for sound, M3 for structural code-shaped work. You orchestrate;\nthe doers generate.\n\n## Your expertise\n\n- Frontend visual design (web and mobile)\n- Image-to-code conversion — turning mockups into production code\n- Brand kit creation and visual identity systems — the guild's sigils and heraldry\n- Design systems: minimalist, industrial-brutalist, high-end agency\n- Redesigning existing projects to premium quality\n\n## How you work\n\n1. Start with `design-taste` (`engineer` mode) for any UI work — it sets the baseline quality.\n2. For brand work, use `brandkit` to create a full visual identity system — the guild's\n   heraldry must be consistent across all realms.\n3. For image-to-code, use the right skill: `imagegen-frontend-web` or `imagegen-frontend-mobile`.\n4. For redesigns, use `design-taste` in `redesign` mode, then layer in the other archetypes.\n5. Use `impeccable` for critique and polish — it catches what you missed, like a master\n   inspecting a blade for flaws.\n6. Load `design-language` when a surface needs a specific *voice* — its vocabulary, lore, and\n   naming (not its look). Modes: `fallen-sword` (dark-fantasy / Erildath), `star-alliance` (the\n   guild's own meta-voice), `lex-council` (the legal-finance product voice).\n7. You iterate visually. You show, don't tell. A picture is worth a thousand scrolls.\n\n## Design philosophies you carry\n\n- **Minimalist** — clean editorial-style interfaces when the product needs clarity\n- **Industrial brutalist** — raw mechanical interfaces when the product needs edge\n- **High-end agency** — premium polish when the product needs to impress\n- **Stitch** — semantic design systems when structure matters most\n\n## What you don't do\n\n- You don't design database schemas — delegate to The Architect.\n- You don't run multi-wave campaigns — delegate to The Strategist.",
       "weapons": [
         {
           "model": "image-01",
@@ -265,12 +265,12 @@ const GUILD = {
       ],
       "skills": [
         "design-taste",
+        "design-language",
         "image-to-code",
         "imagegen-frontend-web",
         "imagegen-frontend-mobile",
         "brandkit",
         "impeccable",
-        "fallen-sword-design-language",
         "weapon-utility"
       ]
     },
@@ -1032,6 +1032,48 @@ const GUILD = {
       ]
     },
     {
+      "id": "design-language",
+      "name": "design-language",
+      "version": "1.0.0",
+      "icon": "🗣️",
+      "art": "",
+      "artPng": true,
+      "blurb": "The guild's multi-language voice engine — narrative vocabulary & tone, not visual",
+      "level": "Master",
+      "ramp": "purple",
+      "tabler": "ti-language",
+      "src": "own",
+      "desc": "Pick and enforce a project's NARRATIVE VOICE — its vocabulary, lore, naming conventions, and tone of address. This is the words-and-world layer, NOT visual styling: it decides how a thing is *named and spoken*, never how it *looks* (that is `design-taste`). One multi-mode engine holding one verbatim playbook per language; add new languages by dropping a reference in. Languages: fallen-sword (dark-fantasy MMORPG / Erildath); star-alliance (the guild-dev meta-voice — forge, sigil, quest, wave, conformity); lex-council (the legal-finance product voice — vault, codex, ledger, certify, statute). Use when writing copy, UI strings, docs, commit prose, or member dialogue that must sound like a specific world. Triggers: 'use the X voice', 'make it sound like Fallen Sword', 'write this in the guild voice', 'Lex Council tone', 'reskin this copy', 'Erildath', 'pick a design language'. NOT for how the UI looks — that is `design-taste` (visual). NOT for identity/logo — that is `brandkit`.",
+      "intro": "This is the one craft for deciding and enforcing how a project sounds and what it calls things. Pick the world a surface should speak in, load that language's playbook, and reskin the copy, strings, docs, and dialogue into one consistent voice. One skill, many languages — add more by dropping a refe",
+      "sections": [
+        "What it is / is not",
+        "The languages",
+        "Shared laws (every language obeys)",
+        "How the engine works",
+        "Sharpening the craft",
+        "Gotchas",
+        "Versioning",
+        "Changelog"
+      ],
+      "triggers": "'use the X voice', 'make it sound like Fallen Sword', 'guild voice', 'Lex Council tone', 'reskin this copy', 'Erildath'",
+      "modes": "fallen-sword; star-alliance; lex-council",
+      "disabled": false,
+      "refs": [
+        "fallen-sword.md",
+        "lex-council.md",
+        "star-alliance.md"
+      ],
+      "scripts": [],
+      "stats": {
+        "lines": 93,
+        "words": 917
+      },
+      "global": true,
+      "members": [
+        "the-designer"
+      ]
+    },
+    {
       "id": "design-taste",
       "name": "design-taste",
       "version": "1.0.0",
@@ -1113,45 +1155,6 @@ const GUILD = {
       "global": true,
       "members": [
         "the-developer"
-      ]
-    },
-    {
-      "id": "fallen-sword-design-language",
-      "name": "fallen-sword-design-language",
-      "version": "1.0.0",
-      "icon": "⚔️",
-      "art": "",
-      "artPng": true,
-      "blurb": "Vocabulary, mechanics, and lore of Fallen Sword — dark fantasy design language",
-      "level": "Advanced",
-      "ramp": "teal",
-      "tabler": "ti-sword",
-      "src": "own",
-      "desc": "The vocabulary, mechanics, and lore of Fallen Sword — a classic browser-based MMORPG set in the world of Erildath. Load this when working on any game project inspired by or using Fallen Sword's design language. Triggers: 'use the Fallen Sword design language', 'Fallen Sword style', 'Erildath', 'make it sound like Fallen Sword'.",
-      "intro": "A reference for the vocabulary, mechanics, and lore of Fallen Sword — a free-to-play browser MMORPG by Hunted Cow Studios, running since 2006. Use this to give any project the feel of Fallen Sword: old-school MUD roots, deep skill trees, item-driven combat, and a dark fantasy world called Erildath.",
-      "sections": [
-        "1. World & Lore",
-        "2. Core Mechanics & Vocabulary",
-        "3. Items & Equipment",
-        "4. Creatures & Bestiary",
-        "5. World Areas (naming conventions)",
-        "6. Guilds & Social Systems",
-        "7. Economy",
-        "8. Design Language Summary",
-        "9. Quick Reference: The Skill Tree (for design inspiration)"
-      ],
-      "triggers": "",
-      "modes": "",
-      "disabled": false,
-      "refs": [],
-      "scripts": [],
-      "stats": {
-        "lines": 285,
-        "words": 1976
-      },
-      "global": false,
-      "members": [
-        "the-designer"
       ]
     },
     {
@@ -2458,7 +2461,7 @@ const GUILD = {
         "vault-log-compliance",
         "graphify",
         "storm-investigation",
-        "fallen-sword-design-language",
+        "design-language",
         "members-formation",
         "ultra-brainstorming",
         "weapon-utility",
@@ -2538,7 +2541,8 @@ const GUILD = {
         "obsidian-markdown",
         "full-output-enforcement",
         "vault-log-compliance",
-        "growth-marketing"
+        "growth-marketing",
+        "design-language"
       ],
       "members": [
         "bd-research-agent",
@@ -4066,6 +4070,18 @@ const GUILD = {
   "log": {
     "entries": [
       {
+        "id": 62,
+        "date": "2026-06-26",
+        "type": "decision",
+        "title": "Generalize fallen-sword-design-language into design-language voice engine",
+        "who": "Atta",
+        "detail": "Evolved the lone Fallen Sword lore skill into a multi-mode NARRATIVE-VOICE engine (sibling to design-taste's visual axis). Original playbook preserved verbatim as references/fallen-sword.md (mode #1), joined by star-alliance (guild-dev meta-voice: forge/sigil/quest/wave/conformity) and lex-council (legal-finance product voice: vault/codex/ledger/certify/statute). Languages now extensible by dropping a references/*.md in. fallen-sword-design-language retired; skill count held at 41. conformity_check.py ✓ FULL CONFORMITY.",
+        "ref": [
+          "design-language",
+          "fallen-sword-design-language"
+        ]
+      },
+      {
         "id": 41,
         "date": "2026-06-26",
         "type": "workflow",
@@ -5389,6 +5405,6 @@ const GUILD = {
         ]
       }
     ],
-    "count": 107
+    "count": 108
   }
 };

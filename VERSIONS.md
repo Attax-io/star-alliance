@@ -33,7 +33,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`comms-triage`](star-alliance-skills/comms-triage/SKILL.md) | 1.0.0 | own | 151 / 945 | 1052 / 61 | ✓ lean | The Butler's one hands-on craft beside routing — sweep email, calendar, and WhatsApp into … |
 | [`conquering-campaign`](star-alliance-skills/conquering-campaign/SKILL.md) | 3.8.3 | own | 140 / 1001 | 10351 / 467 | ⚠ body>10k | Multi-wave campaign skill for work too big for one pass |
 | [`db-rename-sweep`](star-alliance-skills/db-rename-sweep/SKILL.md) | 1.1.0 | own | 146 / 910 | 542 / 49 | ✓ lean | Loads the full surface inventory for any Lex Council table or column rename before the fir… |
-| [`design-language`](star-alliance-skills/design-language/SKILL.md) | 1.0.0 | own | 150 / 989 | 910 / 94 | ✓ lean | Pick and enforce a project's NARRATIVE VOICE — its vocabulary, lore, naming conventions, a… |
+| [`design-language`](star-alliance-skills/design-language/SKILL.md) | 1.0.0 | own | 150 / 989 | 917 / 94 | ✓ lean | Pick and enforce a project's NARRATIVE VOICE — its vocabulary, lore, naming conventions, a… |
 | [`design-taste`](star-alliance-skills/design-taste/SKILL.md) | 1.0.0 | own | 134 / 1014 | 1068 / 100 | ✓ lean | The Designer's core taste engine — one multi-mode skill replacing the guild's scattered st… |
 | [`dev-server`](star-alliance-skills/dev-server/SKILL.md) | 1.1.0 | own | 46 / 303 | 645 / 74 | ✓ lean | Use this skill whenever the user says 'open dev server', 'run dev server', 'restart dev se… |
 | [`full-output-enforcement`](star-alliance-skills/full-output-enforcement/SKILL.md) | 1.0.0 | own | 25 / 203 | 382 / 47 | ✓ lean | Overrides default LLM truncation behavior |
