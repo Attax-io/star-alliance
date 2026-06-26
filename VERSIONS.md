@@ -53,7 +53,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`obsidian-markdown`](star-alliance-skills/obsidian-markdown/SKILL.md) | 1.0.0 | own | 36 / 262 | 610 / 164 | ✓ lean | Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, a… |
 | [`performance`](star-alliance-skills/performance/SKILL.md) | 1.0.3 | vendored | 32 / 219 | 1418 / 372 | ✓ lean | Optimize web performance for faster loading and better user experience |
 | [`relationship-intel`](star-alliance-skills/relationship-intel/SKILL.md) | 1.0.0 | own | 136 / 961 | 1072 / 56 | ✓ lean | The Herald's craft for turning email traffic into living relationship intelligence so the … |
-| [`release-train`](star-alliance-skills/release-train/SKILL.md) | 1.0.0 | own | 135 / 902 | 1024 / 61 | ✓ lean | The Quartermaster's craft for closing out a body of work — merge every outstanding branch … |
+| [`release-train`](star-alliance-skills/release-train/SKILL.md) | 1.0.1 | own | 135 / 902 | 1146 / 63 | ✓ lean | The Quartermaster's craft for closing out a body of work — merge every outstanding branch … |
 | [`scheduled-watch`](star-alliance-skills/scheduled-watch/SKILL.md) | 1.0.0 | own | 134 / 909 | 1030 / 49 | ✓ lean | The Strategist's craft for defining an unattended task that runs on a cron cadence and res… |
 | [`skillsmith`](star-alliance-skills/skillsmith/SKILL.md) | 1.2.0 | own | 132 / 987 | 3768 / 139 | ✓ lean | Manage, sync, upgrade, create, and auto-evolve Star Alliance skills across the star-allian… |
 | [`storm-investigation`](star-alliance-skills/storm-investigation/SKILL.md) | 1.0.0 | own | 113 / 866 | 919 / 95 | ✓ lean | Multi-perspective deep-research method (Stanford STORM, NAACL 2024) for any topic — run fi… |

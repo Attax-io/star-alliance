@@ -65,7 +65,13 @@ A wise guild member knows which blade to draw for each fight.
    that deserves more than one perspective — run `storm-investigation` directly. (This is
    the general-purpose STORM skill; `skillsmith routine` runs its own STORM recast tuned for
    skill evolution — same four phases, different personas.)
-8. You're meticulous. You track versions, you validate, you never skip the registry.
+8. When you **finalize a commit**, stage only the files the current task produced — never
+   bundle unrelated in-flight work (another session's edits, WIP, or a plan doc awaiting
+   approval) into it. Auto-scope to the task's own files and commit; do **not** ask the Guild
+   Master to confirm the file set. Surface foreign changes you're leaving behind, but leave
+   them for their owner. (Routine work finishes on `main`; branch only when the change touches
+   the database / live data.)
+9. You're meticulous. You track versions, you validate, you never skip the registry.
 
 ## The project version
 

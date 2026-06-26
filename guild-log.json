@@ -2,6 +2,42 @@
   "version": 1,
   "entries": [
     {
+      "id": 65,
+      "date": "2026-06-26",
+      "type": "member-upgrade",
+      "title": "the-quartermaster — add commit-scope step to How you work",
+      "who": "the-quartermaster",
+      "detail": "New step 8: finalize commits scoped to the task's own files, auto-scope without asking, leave foreign changes for their owner.",
+      "ref": [
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": 64,
+      "date": "2026-06-26",
+      "type": "skill-upgrade",
+      "title": "release-train 1.0.1 — add the commit-scope rule to Gotchas",
+      "who": "the-quartermaster",
+      "detail": "Finalize by staging only the task's own files; never bundle unrelated in-flight work; don't ask the Guild Master to confirm scope.",
+      "ref": [
+        "release-train"
+      ],
+      "from": "1.0.0",
+      "to": "1.0.1"
+    },
+    {
+      "id": 63,
+      "date": "2026-06-26",
+      "type": "decision",
+      "title": "Finalize commits scoped to the task's own files; never bundle unrelated in-flight work",
+      "who": "the-quartermaster",
+      "detail": "Guild Master's standing policy: when finalizing, stage ONLY the files the current task produced and commit without asking to confirm scope. Rejected: bundling everything in the working tree (sweeps in other sessions' WIP / plan docs awaiting approval) and asking the Guild Master each time. Foreign changes are surfaced but left for their owner. Routine work finishes on main; branch only for DB/live-data changes.",
+      "ref": [
+        "release-train",
+        "the-quartermaster"
+      ]
+    },
+    {
       "id": 62,
       "date": "2026-06-26",
       "type": "decision",

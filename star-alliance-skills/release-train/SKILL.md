@@ -2,7 +2,7 @@
 name: release-train
 description: "The Quartermaster's craft for closing out a body of work — merge every outstanding branch and PR into main, bump the version, write the changelog, sync every version stamp across the docs, then push. Gather and merge branches/PRs resolving conflicts; bump the version (for the Lex Council app: apps/web/config/app.config.ts, the docs/logs/X.Y.Z.md changelog, the INDEX.md row, and the stamps across ARCHITECTURE / ZUSTAND-STORES / Vault Core; for the guild itself the version is derived from the guild log, so logging the change is the bump); certify the build is clean and every stamp consistent; commit and push. Use to ship a release or merge-and-close outstanding work. Triggers: 'cut a release', 'merge all branches', 'ship it', 'bump the version and push', 'release X.Y.Z', 'close out the work', 'release train'. Differentiate from cleanup (hygiene) and guild-conformity (self-consistency proof)."
 metadata:
-  version: 1.0.0
+  version: 1.0.1
 ---
 
 # Release Train — the Quartermaster's craft
@@ -57,9 +57,11 @@ The release train is your march to the seal. You gather every loose branch and o
 - **Conflict resolution is a halt, not a hack.** Pause, pull the Architect in, and resolve with eyes open. Do not sweep it under `--force` or `--no-verify`; the next rider will find the bones.
 - **Tag after merge, never before.** A tag on a branch that has not yet reached `main` points to work that can still disappear. The tag is the seal; the seal goes on the finished document.
 - **Conventional commits keep the changelog honest.** Sloppy merge messages produce a sloppy changelog, and a sloppy changelog is a stamp that lies.
+- **Commit scope is the task's own files.** When you finalize, stage only what the current task produced. Never sweep unrelated in-flight work into the commit — another session's edits, a half-done UI change, a plan doc awaiting approval. Auto-scope to the task's files and commit; do **not** ask the Guild Master to confirm the file set (it's settled standing policy). Surface the foreign changes you're leaving behind so their owner knows, but leave them out. Routine work finishes on `main`; branch only when the change touches the database / live data.
 
 ## Versioning
 Own skill. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new mode/section · MAJOR: method contract change). Regenerate `VERSIONS.md` with `python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.
 
 ## Changelog
+- **1.0.1** — Add the commit-scope rule (Gotchas): finalize by staging only the task's own files, never bundling unrelated in-flight work, and without asking the Guild Master to confirm scope.
 - **1.0.0** — Initial release. The Quartermaster's release closeout — merge branches/PRs, bump version, stamp docs, push.
