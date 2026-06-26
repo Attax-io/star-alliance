@@ -2,7 +2,7 @@
 name: guild-log
 description: "Enforce logging of non-git-visible changes to the Star Alliance guild log. Use this skill whenever a session has changed dashboard markup, renamed UI strings, edited skills-meta.json or members-meta.json, modified guild-log.json directly, reorganized star-alliance-members/ or star-alliance-skills/ folder layout, or made any visual/structural change that won't show up in a git diff as a version bump. Also use when the user says 'log this', 'guild log this', 'did you log it?', 'add a log entry', or any time work ends and it's unclear whether the change was git-visible. Skill audits what was touched, decides auto-derived vs manual logging, runs build_guild_log.py for git-visible changes and log_event.py for the rest, then rebuilds the dashboard via build.py. Ask Atta to confirm before writing."
 metadata:
-  version: 1.2.0
+  version: 1.2.1
 ---
 
 # Guild Log Compliance
@@ -77,6 +77,7 @@ python3 log_event.py \
 | `member-upgrade` | A member's prompt or skills list was updated (prefer Tier 1) |
 | `member-create` | A new agent file was added to `star-alliance-members/` (prefer Tier 1) |
 | `member-remove` | An agent file was removed (prefer Tier 1) |
+| `workflow` | A new star-map workflow was added to `workflows.json` (bumps MINOR, like `dashboard`) |
 | `dashboard` | Visual / structural change to the dashboard |
 | `structure` | Repo reorganisation (folder moves, renames) |
 | `chore` | Anything else worth logging |
@@ -230,5 +231,7 @@ The same command also refreshes the skills, members, and domains in `guild-data.
 
 | Version | Date | Summary |
 |---|---|---|
+| **1.2.1** | 2026-06-26 | Body-consistency fix (skillsmith routine STORM): the 1.2.0 bump shipped the `workflow` log type (in `log_event.py::VALID_TYPES` + `build.py::VERSION_MINOR_TYPES`) and the `decision` type but left the SKILL.md half-documented — added the missing `workflow` row to the valid-`--type` table, and backfilled the missing **1.2.0** changelog row below. |
+| **1.2.0** | 2026-06-26 | Added the `decision` log type (record a choice + **why**, version-neutral via `VERSION_IGNORE_TYPES`) and the "Log decisions, not only changes" guidance, plus the `workflow` log type for new star-map workflows (bumps MINOR like `dashboard`). Shipped alongside the project's decision-logging + Butler report-back standard. |
 | **1.1.0** | 2026-06-25 | Repointed the pipeline to the rebuilt dashboard: the four generated globals (`skills-data.js`/`members.js`/`domains.js`/`guild-log.js`) and `guild-dashboard.html` were consolidated into a single `guild-data.js` (`const GUILD`) built by `build.py` and loaded by `index.html`/`app.css`/`app.js`. Updated every reference (Step 5 rebuild, the "editing the generated file" pitfall, the verify steps, the checklist, Related), and the trigger list (`skills-meta.json`/`members-meta.json` replace `dashboard-meta.json`; `guild-log.js` no longer exists). |
 | **1.0.0** | 2026-06-24 | Initial release. Codifies the two-tier pipeline (`build_guild_log.py` for git-visible changes, `log_event.py` for the rest) as a single enforcement skill, defines the end-to-end workflow (enumerate → classify → Tier 1 → Tier 2 → rebuild → verify), and ships seven named pitfalls drawn from real misses in the rename + dashboard work earlier this session. |
