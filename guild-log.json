@@ -455,6 +455,78 @@
     {
       "date": "2026-06-26",
       "type": "skill-upgrade",
+      "title": "Upgrade members-formation to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "members-formation"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "a05b6ab7",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-26",
+      "type": "skill-upgrade",
+      "title": "Upgrade ultra-brainstorming to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "ultra-brainstorming"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "a05b6ab7",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-26",
+      "type": "skill-upgrade",
+      "title": "Upgrade weapon-utility to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "weapon-utility"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "a05b6ab7",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: members-formation",
+      "who": "Atta",
+      "ref": [
+        "members-formation"
+      ],
+      "commit": "a05b6ab7",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: ultra-brainstorming",
+      "who": "Atta",
+      "ref": [
+        "ultra-brainstorming"
+      ],
+      "commit": "a05b6ab7",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: weapon-utility",
+      "who": "Atta",
+      "ref": [
+        "weapon-utility"
+      ],
+      "commit": "a05b6ab7",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-26",
+      "type": "skill-upgrade",
       "title": "Upgrade storm-investigation to 1.0.0",
       "who": "Atta",
       "ref": [
@@ -518,6 +590,63 @@
         "the-strategist"
       ],
       "commit": "78513bd5",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-26",
+      "type": "skill-upgrade",
+      "title": "Upgrade growth-marketing to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "growth-marketing"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "6d04195c",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: growth-marketing",
+      "who": "Atta",
+      "ref": [
+        "growth-marketing"
+      ],
+      "commit": "6d04195c",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-26",
+      "type": "member-upgrade",
+      "title": "Update member: the-developer",
+      "who": "Atta",
+      "ref": [
+        "the-developer"
+      ],
+      "commit": "6d04195c",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-26",
+      "type": "member-upgrade",
+      "title": "Update member: the-engineer",
+      "who": "Atta",
+      "ref": [
+        "the-engineer"
+      ],
+      "commit": "6d04195c",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-26",
+      "type": "member-create",
+      "title": "Add member: the-herald",
+      "who": "Atta",
+      "ref": [
+        "the-herald"
+      ],
+      "commit": "6d04195c",
       "_derived": true
     },
     {

@@ -3,20 +3,20 @@
 const GUILD = {
   "meta": {
     "name": "Star Alliance",
-    "version": "6.30.29",
+    "version": "6.35.35",
     "versionTiers": {
       "major": 6,
-      "minor": 30,
-      "patch": 29
+      "minor": 35,
+      "patch": 35
     },
-    "generated": "2026-06-26T15:33:22Z",
+    "generated": "2026-06-26T15:46:27Z",
     "schemaVersion": 3,
     "counts": {
       "members": 9,
       "skills": 36,
       "domains": 3,
       "workflows": 9,
-      "log": 74
+      "log": 85
     }
   },
   "members": [
@@ -3382,6 +3382,84 @@ const GUILD = {
       {
         "date": "2026-06-26",
         "type": "skill-upgrade",
+        "title": "Upgrade members-formation to 1.0.0",
+        "who": "Atta",
+        "ref": [
+          "members-formation"
+        ],
+        "from": "",
+        "to": "1.0.0",
+        "commit": "a05b6ab7",
+        "_derived": true,
+        "id": "g-a05b6ab7-upgrade-members-formation-to-1-0-0"
+      },
+      {
+        "date": "2026-06-26",
+        "type": "skill-upgrade",
+        "title": "Upgrade ultra-brainstorming to 1.0.0",
+        "who": "Atta",
+        "ref": [
+          "ultra-brainstorming"
+        ],
+        "from": "",
+        "to": "1.0.0",
+        "commit": "a05b6ab7",
+        "_derived": true,
+        "id": "g-a05b6ab7-upgrade-ultra-brainstorming-to-1-0-0"
+      },
+      {
+        "date": "2026-06-26",
+        "type": "skill-upgrade",
+        "title": "Upgrade weapon-utility to 1.0.0",
+        "who": "Atta",
+        "ref": [
+          "weapon-utility"
+        ],
+        "from": "",
+        "to": "1.0.0",
+        "commit": "a05b6ab7",
+        "_derived": true,
+        "id": "g-a05b6ab7-upgrade-weapon-utility-to-1-0-0"
+      },
+      {
+        "date": "2026-06-26",
+        "type": "skill-create",
+        "title": "Add skill: members-formation",
+        "who": "Atta",
+        "ref": [
+          "members-formation"
+        ],
+        "commit": "a05b6ab7",
+        "_derived": true,
+        "id": "g-a05b6ab7-add-skill-members-formation"
+      },
+      {
+        "date": "2026-06-26",
+        "type": "skill-create",
+        "title": "Add skill: ultra-brainstorming",
+        "who": "Atta",
+        "ref": [
+          "ultra-brainstorming"
+        ],
+        "commit": "a05b6ab7",
+        "_derived": true,
+        "id": "g-a05b6ab7-add-skill-ultra-brainstorming"
+      },
+      {
+        "date": "2026-06-26",
+        "type": "skill-create",
+        "title": "Add skill: weapon-utility",
+        "who": "Atta",
+        "ref": [
+          "weapon-utility"
+        ],
+        "commit": "a05b6ab7",
+        "_derived": true,
+        "id": "g-a05b6ab7-add-skill-weapon-utility"
+      },
+      {
+        "date": "2026-06-26",
+        "type": "skill-upgrade",
         "title": "Upgrade storm-investigation to 1.0.0",
         "who": "Atta",
         "ref": [
@@ -3452,6 +3530,68 @@ const GUILD = {
         "commit": "78513bd5",
         "_derived": true,
         "id": "g-78513bd5-update-member-the-strategist"
+      },
+      {
+        "date": "2026-06-26",
+        "type": "skill-upgrade",
+        "title": "Upgrade growth-marketing to 1.0.0",
+        "who": "Atta",
+        "ref": [
+          "growth-marketing"
+        ],
+        "from": "",
+        "to": "1.0.0",
+        "commit": "6d04195c",
+        "_derived": true,
+        "id": "g-6d04195c-upgrade-growth-marketing-to-1-0-0"
+      },
+      {
+        "date": "2026-06-26",
+        "type": "skill-create",
+        "title": "Add skill: growth-marketing",
+        "who": "Atta",
+        "ref": [
+          "growth-marketing"
+        ],
+        "commit": "6d04195c",
+        "_derived": true,
+        "id": "g-6d04195c-add-skill-growth-marketing"
+      },
+      {
+        "date": "2026-06-26",
+        "type": "member-upgrade",
+        "title": "Update member: the-developer",
+        "who": "Atta",
+        "ref": [
+          "the-developer"
+        ],
+        "commit": "6d04195c",
+        "_derived": true,
+        "id": "g-6d04195c-update-member-the-developer"
+      },
+      {
+        "date": "2026-06-26",
+        "type": "member-upgrade",
+        "title": "Update member: the-engineer",
+        "who": "Atta",
+        "ref": [
+          "the-engineer"
+        ],
+        "commit": "6d04195c",
+        "_derived": true,
+        "id": "g-6d04195c-update-member-the-engineer"
+      },
+      {
+        "date": "2026-06-26",
+        "type": "member-create",
+        "title": "Add member: the-herald",
+        "who": "Atta",
+        "ref": [
+          "the-herald"
+        ],
+        "commit": "6d04195c",
+        "_derived": true,
+        "id": "g-6d04195c-add-member-the-herald"
       },
       {
         "date": "2026-06-26",
@@ -3874,6 +4014,6 @@ const GUILD = {
         "id": "g-325a46a5-add-skill-conquering-campaign"
       }
     ],
-    "count": 74
+    "count": 85
   }
 };
