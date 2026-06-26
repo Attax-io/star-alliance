@@ -12,7 +12,7 @@ description: >
   "transaction page", or references any file under finances/. Load silently in the background — no need to
   announce the skill is running.
 metadata:
-  version: 1.2.0
+  version: 1.3.0
 ---
 
 # Transactions Domain Model
@@ -172,11 +172,12 @@ overrides whatever the client provides.
    - Other boolean flags as needed
 
 3. **Name lookups:**
-   - `done_by_n_name` from `council_members.n_name` where `id = NEW.done_by`
-   - `to_n_name` from `council_members.n_name` where `id = NEW.transaction_to`
-   - `created_by_n_name` from `council_members.n_name` where `id = NEW.created_by`
+   - `done_by_n_name` from the v2 member identity (`users` / the v2 member view) where `id = NEW.done_by`
+   - `to_n_name` from the v2 member identity where `id = NEW.transaction_to`
+   - `created_by_n_name` from the v2 member identity where `id = NEW.created_by`
    - `agreed_on_by_n_name` (on UPDATE when `is_agreed_on` flips to true)
    - `certified_by_n_name` (on UPDATE when `is_certified` flips to true)
+   - *Source note:* pre-v2 these read `council_members.n_name` (table + column now gone); the `*_n_name` output columns persist — verify the exact v2 source column against live schema.
 
 4. **Aggregation updates:**
    - `tr_update_counter` increment
@@ -355,8 +356,10 @@ The Approval tab is gated by `tr_agree_on_transactions` (same permission as the 
 | `/api/transactions/agree` | POST | Bulk agree (accepts `{ ids: number[] }`) — checks consent |
 | `/api/transactions/comment` | POST | Add/delete transaction comments |
 
-All routes use `requireAuth()` + `createAdminClient()` (service-role) for writes. File access is
-checked via `checkFileAccess()` on the transaction's `file_ref`.
+As of 2026-06-19, all write routes go through `callServerRpc` → `/api/rpc` (server cookie client) to
+dodge the Safari `navigator.locks` wedge; the per-route `requireAuth()` + `createAdminClient()`
+(service-role) shape is the historical pre-2026-06-19 transport. The route paths and methods in the
+table above are unchanged. File access is checked via `checkFileAccess()` on the transaction's `file_ref`.
 
 ---
 
@@ -402,6 +405,7 @@ For deep context on past decisions, read these vault logs:
 
 | Version | Change |
 |---|---|
+| 1.3.0 | §4 name-lookup source rewritten from `council_members.n_name` → v2 member identity (`users` / v2 member view); the `*_n_name` output columns persist, exact v2 source column flagged for live re-check. §9 write transport corrected to `callServerRpc` → `/api/rpc` (2026-06-19); per-route `requireAuth()` + `createAdminClient()` service-role shape marked historical. Route paths and methods unchanged. |
 | 1.2.0 | **Per-name v2 rewrite (the deferred 1.1.0 follow-up), now done — names verified live against `information_schema` 2026-06-21 (project `bqgrpnsvplvicnmzxwkm`).** Proven DEAD and corrected in-body: all six `transactions_*_js` views + `transactions_container_js` (→ `admin_finances_transactions_{approval,certification,safe,history,pending}` / `members_finances_transactions_personal` / `admin_files_transactions_detail`), `fd_access_js` (→ `folder_access`), `branches_js` (→ `branches`), `transaction_templates` table (→ generic `templates` / `admin_templates_list`). Proven STILL-LIVE (kept): `tr_on_tr_b_iu` trigger + the 5 transaction columns. Retired the false "all views = one 45-column SELECT, zero drift" claim (admin/members views diverged in v2). Column shapes + exact WHERE semantics still flagged for re-check. |
 | 1.1.0 | Added the **v2 schema-name staleness banner** at the top: the domain *concepts* remain accurate but table/view/column names (`council_members`, `n_name`, `fd_access_js`, the `_js` view suffix, `admin_perms`, `branches_js`) are pre-v2 (2026-05-24 overhaul) and GONE on `main`; lists v2 successors + the 2026-06-19 server-transport write change, and routes name-verification to V2-CONVENTIONS.md. Full per-name rewrite deferred (needs live DB read). |
 | 1.0.0 | Initial — complete pre-v2 transactions domain model. |
