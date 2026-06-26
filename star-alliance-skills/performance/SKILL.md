@@ -4,7 +4,7 @@ description: Optimize web performance for faster loading and better user experie
 license: MIT
 metadata:
   author: web-quality-skills
-  version: "1.0.2"
+  version: "1.0.3"
 ---
 
 # Performance optimization
@@ -228,7 +228,8 @@ Cache-Control: private, max-age=0, must-revalidate
 self.addEventListener('fetch', (event) => {
   if (event.request.destination === 'image' ||
       event.request.destination === 'style' ||
-      event.request.destination === 'script') {
+      event.request.destination === 'script' ||
+      event.request.destination === 'font') {
     event.respondWith(
       caches.match(event.request).then((cached) => {
         return cached || fetch(event.request).then((response) => {
@@ -306,7 +307,7 @@ requestAnimationFrame(animate);
 // ✅ Async loading
 <script async src="https://analytics.example.com/script.js"></script>
 
-// ✅ Delay until interaction
+// ✅ Lazy-load when visible (IntersectionObserver)
 <script>
 document.addEventListener('DOMContentLoaded', () => {
   const observer = new IntersectionObserver((entries) => {
@@ -371,6 +372,7 @@ definitions and field-data guidance, see [web.dev — Core Web Vitals](https://w
 
 | Version | Date | Summary |
 |---|---|---|
+| **1.0.3** | 2026-06-26 | Fixed two self-contradicting code examples (skillsmith routine, conf 8–9/10). **Service worker** cache-first handler omitted the `font` destination, so woff2 files fell through to network on every load — directly undoing the skill's own font-preload guidance; added the `font` clause. **Third-party scripts** example was labelled `Delay until interaction` but the code gates on `IntersectionObserver` (visibility/scroll, not click); relabelled to `Lazy-load when visible (IntersectionObserver)` — the genuine interaction example is the YouTube facade block below it. Content-only; no behavioral change. |
 | **1.0.2** | 2026-06-26 | Corrected the **Measurement → Key metrics** table (skillsmith routine, conf 9/10). Replaced the stale `TTI` row (deprecated — dropped by Lighthouse v10 in 2023, never a Core Web Vital) with `INP < 200ms p75` (the CWV that replaced FID in Mar 2024) and added the missing `CLS < 0.1` row (the table's own `web-vitals` snippet already imports `onCLS`). Added a Core-Web-Vitals callout and fixed the §References metric list. Content-only; no behavioral change. |
 | **1.0.1** | 2026-06-20 | Fixed a dangling cross-reference (skillsmith routine, conf 9/10). The `## References` section pointed at `../core-web-vitals/SKILL.md`, a sibling skill that was never vendored into this repo, so the link resolved nowhere. Its Core Web Vitals metrics are already covered in the in-skill **Measurement** table — repointed the reference at that section plus the canonical `web.dev/vitals` doc. Content-only; no behavioral change. |
 | **1.0** | — | Initial vendored release: Lighthouse-based web performance optimization (budgets, critical rendering path, image/font/caching strategy, runtime perf, measurement). |
