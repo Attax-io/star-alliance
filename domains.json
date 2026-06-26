@@ -113,11 +113,12 @@
         "codex-law-translate",
         "obsidian-markdown",
         "full-output-enforcement",
-        "vault-log-compliance"
+        "vault-log-compliance",
+        "growth-marketing"
       ],
       "members": [
         "bd-research-agent",
-        "marketing-agent",
+        "the-herald",
         "intake-agent"
       ],
       "notes": "Business-side operations vault. Currently speccing 3 revenue agents (BD research, marketing, intake) per the 60-Day Survival playbook. Skills focus on content drafting + multilingual translation + Obsidian vault structure."

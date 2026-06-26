@@ -58,6 +58,58 @@ const WORKFLOWS = [
     id: "conformity-sweep",
     prompt: `${STYLE}. Golden scales of perfect balance above a master guild-ledger, every glowing entry aligned in flawless rows, a polished mirror reflecting the guild crest in perfect symmetry, radiant GOLD rune-checkmarks of verification floating around the frame, the warm authoritative light of order and agreement, nothing out of place`,
   },
+  {
+    id: "bug-cycle",
+    prompt: `${STYLE}. A glowing EMERALD-GREEN rune-beetle pinned and dispelled by a precise dagger of light, a corrupted crack in the stone sealing shut behind it, a small ledger of marks beside it, the hunt-and-close of a tracked corruption`,
+  },
+  {
+    id: "security-sweep",
+    prompt: `${STYLE}. A SAPPHIRE-BLUE warded shield wall over a vault door, glowing ward-runes scanning for cracks, a few breaches sealing with blue light, a vigilant defensive sweep across a fortress gate`,
+  },
+  {
+    id: "cleanup-rotation",
+    prompt: `${STYLE}. A VIOLET enchanted broom of light sweeping glowing debris and tangled threads off an aged parchment ledger, runes snapping into clean alignment, methodical housekeeping across many small modes`,
+  },
+  {
+    id: "release-train",
+    prompt: `${STYLE}. A CYAN celestial locomotive of light hauling merged banner-branches into one bright main line, a version sigil stamped on its side, departing a station gate, a clean coordinated shipment`,
+  },
+  {
+    id: "tool-forge",
+    prompt: `${STYLE}. A GOLD ornate abacus-and-scales instrument forged on dark parchment, glowing numerals and legal glyphs orbiting it, a precise calculation device built from the letter of the law`,
+  },
+  {
+    id: "legal-draft",
+    prompt: `${STYLE}. A GOLD enchanted quill writing a bilingual legal instrument on aged vellum, twin columns of Arabic and Latin script glowing, a wax seal at the foot, formal correspondence in the firm's register`,
+  },
+  {
+    id: "comms-triage",
+    prompt: `${STYLE}. A CYAN constellation of glowing envelopes, calendar runes, and message orbs being sorted by a guiding hand into ordered task-cards, an inbox swept into clean order`,
+  },
+  {
+    id: "scheduled-routine",
+    prompt: `${STYLE}. A VIOLET astrolabe-clock of light ticking on dark parchment, a standing sentinel running an unattended watch on a cron orbit, checkpoint runes marking each safe tick`,
+  },
+  {
+    id: "marketing-audit",
+    prompt: `${STYLE}. A ROSE-PINK looking-glass sweeping over a glowing storefront banner and public square, beacon and megaphone runes, an audit of reputation, reach, and message truth`,
+  },
+  {
+    id: "art-forge",
+    prompt: `${STYLE}. A ROSE-PINK artisan's forge-anvil where a glowing portrait sigil is being struck into a gilded frame, sparks of vivid magical color, heraldic art being forged and reviewed`,
+  },
+  {
+    id: "arsenal-forge",
+    prompt: `${STYLE}. A SAPPHIRE-BLUE weapon-smith's anvil forging a glowing elemental weapon, a thinker/doer role-rune branded onto its hilt, the blade slotted into a rack of guild arms`,
+  },
+  {
+    id: "strategic-audit",
+    prompt: `${STYLE}. A VIOLET scrying orb ringed by five glowing council-flames converging into a single graded verdict-scroll, a multi-mind panel weighed and ranked into one judgement`,
+  },
+  {
+    id: "workflow-forge",
+    prompt: `${STYLE}. A CYAN celestial cartographer's table where a finished mission-route is being engraved as a new constellation onto the star map, a fresh workflow sigil set among the stars`,
+  },
 ];
 
 function postJSON(url, headers, body) {

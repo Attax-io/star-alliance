@@ -2,6 +2,14 @@
   "version": 1,
   "entries": [
     {
+      "id": 40,
+      "date": "2026-06-26",
+      "type": "workflow",
+      "title": "Expand the star map: 9 → 22 workflows (mined from archived sessions)",
+      "who": "The Strategist",
+      "detail": "The Strategist mined 1100+ archived sessions (546 Claude Code + 562 Cowork) and added 13 workflows: bug-cycle, security-sweep, cleanup-rotation, release-train, tool-forge, legal-draft, comms-triage, scheduled-routine, marketing-audit (Herald-led), art-forge, arsenal-forge, strategic-audit, workflow-forge. Added a category field to all; added matching art prompts to gen-workflow-art.cjs. See STRATEGIST-WORKFLOWS.md."
+    },
+    {
       "id": 39,
       "date": "2026-06-26",
       "type": "decision",

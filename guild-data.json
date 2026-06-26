@@ -1,20 +1,20 @@
 {
   "meta": {
     "name": "Star Alliance",
-    "version": "6.35.35",
+    "version": "6.36.35",
     "versionTiers": {
       "major": 6,
-      "minor": 35,
+      "minor": 36,
       "patch": 35
     },
-    "generated": "2026-06-26T15:46:27Z",
+    "generated": "2026-06-26T16:01:18Z",
     "schemaVersion": 3,
     "counts": {
       "members": 9,
       "skills": 36,
       "domains": 3,
-      "workflows": 9,
-      "log": 85
+      "workflows": 22,
+      "log": 86
     }
   },
   "members": [
@@ -1028,7 +1028,7 @@
     {
       "id": "fallen-sword-design-language",
       "name": "fallen-sword-design-language",
-      "version": "—",
+      "version": "1.0.0",
       "icon": "⚔️",
       "art": "",
       "artPng": true,
@@ -2351,11 +2351,12 @@
         "codex-law-translate",
         "obsidian-markdown",
         "full-output-enforcement",
-        "vault-log-compliance"
+        "vault-log-compliance",
+        "growth-marketing"
       ],
       "members": [
         "bd-research-agent",
-        "marketing-agent",
+        "the-herald",
         "intake-agent"
       ],
       "notes": "Business-side operations vault. Currently speccing 3 revenue agents (BD research, marketing, intake) per the 60-Day Survival playbook. Skills focus on content drafting + multilingual translation + Obsidian vault structure."
@@ -2367,8 +2368,9 @@
       "name": "Standard Mission",
       "icon": "🛰️",
       "accent": "cyan",
+      "category": "Build & Fix",
       "tagline": "The full guild pipeline for serious, multi-step missions.",
-      "when": "Use this when the work is large, multi-disciplinary, or needs several specialists coordinated in waves.",
+      "when": "Use this when the work is large, multi-disciplinary, or needs several specialists coordinated in waves — the guild's conquering-campaign, planned and driven to completion.",
       "steps": [
         {
           "kind": "member",
@@ -2449,8 +2451,9 @@
       "name": "Quick Fix",
       "icon": "⚡",
       "accent": "green",
+      "category": "Build & Fix",
       "tagline": "A lean path for small, well-understood changes.",
-      "when": "Use this for small bugs or tweaks where planning would only slow things down.",
+      "when": "Use this for small bugs, UI tweaks, or a pasted error to fix (and any of the same class) where planning would only slow things down.",
       "steps": [
         {
           "kind": "member",
@@ -2505,6 +2508,7 @@
       "name": "Design Sprint",
       "icon": "🎨",
       "accent": "rose",
+      "category": "Design",
       "tagline": "From visual concept to shipped UI in one tight sprint.",
       "when": "Use this when the work centers on UI, UX, brand, or visual quality.",
       "steps": [
@@ -2575,8 +2579,9 @@
       "name": "Architecture Build",
       "icon": "🏛️",
       "accent": "blue",
+      "category": "Build & Fix",
       "tagline": "Schemas, systems, and structural change, done right.",
-      "when": "Use this when the work touches the database, system design, or core architecture.",
+      "when": "Use this when the work touches the database, system design, or core architecture — including performance tuning and finance-critical data migrations (plan, dry-run with BEGIN/ROLLBACK, reconcile).",
       "steps": [
         {
           "kind": "member",
@@ -2650,8 +2655,9 @@
       "name": "Legal Codex",
       "icon": "⚖️",
       "accent": "gold",
+      "category": "Legal",
       "tagline": "Turn real laws into a clean, multilingual codex.",
-      "when": "Use this when you need real laws loaded into a codex and translated across locales.",
+      "when": "Use this to load real laws into the codex and translate them across locales — loop the source laws, load + translate each, and stop at the publish gate (you publish).",
       "steps": [
         {
           "kind": "member",
@@ -2706,8 +2712,9 @@
       "name": "Market Recon",
       "icon": "📈",
       "accent": "green",
-      "tagline": "Read-only research, risk, and market intelligence.",
-      "when": "Use this for investment, trading, or market research where no code should be written.",
+      "category": "Research & Intel",
+      "tagline": "Read-only trading, investment, and market intelligence.",
+      "when": "Use this for investment, trading, or market research where no code should be written. (For website/SEO/brand audits use Marketing Recon.)",
       "steps": [
         {
           "kind": "member",
@@ -2755,8 +2762,9 @@
       "name": "Skill Forge",
       "icon": "🛠️",
       "accent": "violet",
+      "category": "Guild Self",
       "tagline": "Keep the guild's skills sharp, synced, and current.",
-      "when": "Use this for guild self-maintenance, skill upgrades, or tooling upkeep.",
+      "when": "Use this for guild self-maintenance — skill sync, upgrades, creating a new skill, or turning a one-off task into a reusable skill.",
       "steps": [
         {
           "kind": "member",
@@ -2813,6 +2821,7 @@
       "name": "Guild Log Sync",
       "icon": "📜",
       "accent": "gold",
+      "category": "Hygiene & Release",
       "tagline": "Sweep recent sessions and backfill any missing guild-log entries.",
       "when": "Use this to reconcile the guild log after a stretch of work — loop the recent sessions, find changes that never got recorded, and log them.",
       "steps": [
@@ -2874,6 +2883,7 @@
       "name": "Conformity Sweep",
       "icon": "⚖️",
       "accent": "gold",
+      "category": "Hygiene & Release",
       "tagline": "The Quartermaster audits the whole repo and proves it agrees with itself — and with every decision on record.",
       "when": "Use after big changes, or any time you need proof the project is internally consistent and nothing contradicts a logged decision.",
       "steps": [
@@ -2922,10 +2932,828 @@
         }
       ],
       "artPng": true
+    },
+    {
+      "id": "bug-cycle",
+      "name": "Bug Cycle",
+      "icon": "🪲",
+      "accent": "green",
+      "category": "Build & Fix",
+      "tagline": "Pull a reported bug, hunt the real root cause, fix it, and close the loop.",
+      "when": "Use this for bugs filed in the bug_reports table — the daily triage-and-fix loop.",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Report or Pull the Bug",
+          "act": "You file a bug, or ask the guild to pull the open rows from the bug_reports table.",
+          "produces": "bug request"
+        },
+        {
+          "kind": "member",
+          "actor": "the-butler",
+          "title": "Frame the Bug",
+          "act": "The Butler restates the bug and the acceptance in plain English, and routes it to the Strategist.",
+          "produces": "framed bug"
+        },
+        {
+          "kind": "gate",
+          "gate": "approval",
+          "label": "You confirm the bug and its scope before the hunt begins."
+        },
+        {
+          "kind": "member",
+          "actor": "the-strategist",
+          "title": "Triage & Reproduce",
+          "act": "The Strategist pulls the row, reads primary_instructions, and reproduces the report to find the true root cause — not just the symptom.",
+          "produces": "triaged root cause"
+        },
+        {
+          "kind": "member",
+          "actor": "the-developer",
+          "title": "Fix at the Root",
+          "act": "The Developer applies the smallest correct fix following project conventions, and self-tests it locally.",
+          "produces": "applied fix"
+        },
+        {
+          "kind": "gate",
+          "gate": "certify",
+          "label": "The Quartermaster certifies the fix genuinely resolves the bug — DB fixes count now; frontend fixes only after deploy — before the status is flipped."
+        },
+        {
+          "kind": "member",
+          "actor": "the-developer",
+          "title": "Close & File Spawn",
+          "act": "The Developer flips the bug_reports row to Fixed and files any new bugs surfaced during the hunt back into the table.",
+          "produces": "closed bug + new tickets"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Guild Conformance",
+          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "produces": "conformance sign-off"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports the bug, its root cause, the fix, and any new bugs filed — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+        }
+      ],
+      "artPng": true
+    },
+    {
+      "id": "security-sweep",
+      "name": "Security Sweep",
+      "icon": "🛡️",
+      "accent": "blue",
+      "category": "Build & Fix",
+      "tagline": "Audit the database security surface and seal every leak — propose first, apply on sign-off.",
+      "when": "Use this for RLS policies, SECURITY DEFINER RPCs, anon/authenticated grants, and advisor-driven security audits.",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Call the Sweep",
+          "act": "You ask the guild to audit the app's security surface for leaks and over-broad access.",
+          "produces": "security request"
+        },
+        {
+          "kind": "member",
+          "actor": "the-butler",
+          "title": "Frame the Sweep",
+          "act": "The Butler restates the sweep as read-only — propose, do not apply — and routes it to the Strategist.",
+          "produces": "security brief"
+        },
+        {
+          "kind": "gate",
+          "gate": "approval",
+          "label": "You confirm the read-only boundary before the audit begins."
+        },
+        {
+          "kind": "member",
+          "actor": "the-strategist",
+          "title": "Scope the Surface",
+          "act": "The Strategist scopes the audit surface — RLS policies, SECURITY DEFINER RPCs, anon/authenticated grants — and keeps it propose-only.",
+          "produces": "audit scope"
+        },
+        {
+          "kind": "member",
+          "actor": "the-architect",
+          "title": "Hunt the Holes",
+          "act": "The Architect audits the security surface, pulls Supabase advisors, and maps every leak, missing policy, and over-broad grant.",
+          "produces": "vulnerability map"
+        },
+        {
+          "kind": "gate",
+          "gate": "certify",
+          "label": "You sign off on each proposed change before any security fix is applied — nothing is written without explicit approval."
+        },
+        {
+          "kind": "member",
+          "actor": "the-developer",
+          "title": "Seal the Breaches",
+          "act": "The Developer applies the approved RLS/policy/grant fixes and re-proves each gate holds.",
+          "produces": "hardened surface"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Guild Conformance",
+          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "produces": "conformance sign-off"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports what was audited, what was sealed, and any risks deferred — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+        }
+      ],
+      "artPng": true
+    },
+    {
+      "id": "cleanup-rotation",
+      "name": "Hygiene Rotation",
+      "icon": "🧹",
+      "accent": "violet",
+      "category": "Hygiene & Release",
+      "tagline": "The Quartermaster runs the full hygiene sweep across every mode.",
+      "when": "Use this for routine hygiene or post-campaign cleanup — i18n, lint, dev-errors, postgres, docs, and follow-ups.",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Call the Rotation",
+          "act": "You ask the guild to run a hygiene pass — or the post-campaign cleanup for a just-shipped build.",
+          "produces": "cleanup request"
+        },
+        {
+          "kind": "member",
+          "actor": "the-butler",
+          "title": "Frame the Rotation",
+          "act": "The Butler restates which modes to run (or 'follow-ups for the last campaign') and routes it to the Quartermaster.",
+          "produces": "cleanup brief"
+        },
+        {
+          "kind": "gate",
+          "gate": "approval",
+          "label": "You confirm the scope of the sweep before it runs."
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Run the Sweep",
+          "act": "The Quartermaster runs the cleanup skill across every mode — i18n language/hardcoded/leaks, dev-error sweep, lint, postgres advisors, docs, and campaign follow-ups — fixing what's safe and listing the rest.",
+          "produces": "hygiene report"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Guild Conformance",
+          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "produces": "conformance sign-off"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports what was swept, what was fixed, and what remains as follow-ups — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+        }
+      ],
+      "artPng": false
+    },
+    {
+      "id": "release-train",
+      "name": "Release Train",
+      "icon": "🚂",
+      "accent": "cyan",
+      "category": "Hygiene & Release",
+      "tagline": "Merge every branch and PR, bump the version, and push the release.",
+      "when": "Use this to close out work — merge all branches/PRs into main, bump the version, and push.",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Call the Release",
+          "act": "You ask the guild to clean up, merge everything outstanding, bump the version, and push.",
+          "produces": "release request"
+        },
+        {
+          "kind": "member",
+          "actor": "the-butler",
+          "title": "Frame the Release",
+          "act": "The Butler restates the release scope — which branches, which version step — and routes it to the Quartermaster.",
+          "produces": "release brief"
+        },
+        {
+          "kind": "gate",
+          "gate": "approval",
+          "label": "You confirm the version step and that all branches are safe to merge before the train leaves."
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Gather the Branches",
+          "act": "The Quartermaster merges every outstanding branch and PR into main, resolving conflicts.",
+          "produces": "unified main"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Bump & Stamp",
+          "act": "The Quartermaster bumps the version, writes the changelog, and syncs every version stamp across the docs.",
+          "produces": "stamped release"
+        },
+        {
+          "kind": "gate",
+          "gate": "certify",
+          "label": "The Quartermaster certifies the build is clean and every version stamp is consistent before the push."
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Push the Release",
+          "act": "The Quartermaster commits and pushes the release to the remote.",
+          "produces": "pushed release"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Guild Conformance",
+          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "produces": "conformance sign-off"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports the version shipped, what merged, and the push result — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+        }
+      ],
+      "artPng": false
+    },
+    {
+      "id": "tool-forge",
+      "name": "Tool Forge",
+      "icon": "🧮",
+      "accent": "gold",
+      "category": "Legal",
+      "tagline": "Build a public legal calculator or corporate tool from the governing law.",
+      "when": "Use this to build a public-panel calculator or legal tool (wages, social-insurance, severance, inheritance, customs, land).",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Request the Tool",
+          "act": "You describe the legal calculator or tool you want to offer on the public panel.",
+          "produces": "tool request"
+        },
+        {
+          "kind": "member",
+          "actor": "the-butler",
+          "title": "Frame the Tool",
+          "act": "The Butler restates the tool, its governing law, and where it lives, then routes it to the Architect.",
+          "produces": "tool brief"
+        },
+        {
+          "kind": "gate",
+          "gate": "approval",
+          "label": "You approve the tool concept and its governing law before the build begins."
+        },
+        {
+          "kind": "member",
+          "actor": "the-architect",
+          "title": "Model the Law",
+          "act": "The Architect studies the governing law and models the calculation rules and inputs the tool must honour.",
+          "produces": "rule model"
+        },
+        {
+          "kind": "member",
+          "actor": "the-designer",
+          "title": "Design the Tool",
+          "act": "The Designer shapes the calculator's UI with an inviting, trustworthy layout.",
+          "produces": "tool design"
+        },
+        {
+          "kind": "member",
+          "actor": "the-developer",
+          "title": "Build the Calculator",
+          "act": "The Developer implements the tool, wires the rules, and adds the team-review disclaimer.",
+          "produces": "working tool"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Guild Conformance",
+          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "produces": "conformance sign-off"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports the tool built, the law it honours, and where it lives — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+        }
+      ],
+      "artPng": false
+    },
+    {
+      "id": "legal-draft",
+      "name": "Legal Drafting",
+      "icon": "✒️",
+      "accent": "gold",
+      "category": "Legal",
+      "tagline": "Draft client correspondence and bilingual legal documents in the firm's register.",
+      "when": "Use this to draft client emails, contracts, declarations, or memos — bilingual (AR/FR/EN) where needed.",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Submit the Matter",
+          "act": "You describe the correspondence or legal instrument you need drafted.",
+          "produces": "drafting request"
+        },
+        {
+          "kind": "member",
+          "actor": "the-butler",
+          "title": "Frame the Matter",
+          "act": "The Butler restates the document, its audience, and its language(s), then routes it to the Translator.",
+          "produces": "drafting brief"
+        },
+        {
+          "kind": "gate",
+          "gate": "approval",
+          "label": "You confirm the matter and the target language(s) before drafting begins."
+        },
+        {
+          "kind": "member",
+          "actor": "the-translator",
+          "title": "Draft the Document",
+          "act": "The Translator drafts the correspondence or legal instrument — bilingual where needed — in the firm's register.",
+          "produces": "draft document"
+        },
+        {
+          "kind": "gate",
+          "gate": "certify",
+          "label": "You review the draft for accuracy and tone before it goes out — nothing client-facing is sent without your sign-off."
+        },
+        {
+          "kind": "member",
+          "actor": "the-translator",
+          "title": "Finalize & Format",
+          "act": "The Translator finalizes the document and formats it client-facing, with the bilingual layout in place.",
+          "produces": "final document"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Guild Conformance",
+          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "produces": "conformance sign-off"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports the document drafted, its languages, and what's ready to send — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+        }
+      ],
+      "artPng": false
+    },
+    {
+      "id": "comms-triage",
+      "name": "Comms Triage",
+      "icon": "📨",
+      "accent": "cyan",
+      "category": "Comms & Automation",
+      "tagline": "Sweep email, calendar, and WhatsApp into tasks, events, and replies.",
+      "when": "Use this to triage your inbox and messages — turn what matters into tasks and calendar entries, and prep for meetings.",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Call the Triage",
+          "act": "You ask the guild to go through your email, calendar, and WhatsApp and surface what needs you.",
+          "produces": "triage request"
+        },
+        {
+          "kind": "member",
+          "actor": "the-butler",
+          "title": "Frame the Triage",
+          "act": "The Butler restates the scope — which inboxes, which window — and confirms the read-only-until-approved boundary.",
+          "produces": "triage brief"
+        },
+        {
+          "kind": "gate",
+          "gate": "approval",
+          "label": "You confirm the scope before the Butler drafts anything or creates events."
+        },
+        {
+          "kind": "member",
+          "actor": "the-butler",
+          "title": "Sweep the Inboxes",
+          "act": "The Butler sweeps email, calendar, and WhatsApp, surfacing what needs a response, a task, or a calendar entry.",
+          "produces": "triage list"
+        },
+        {
+          "kind": "member",
+          "actor": "the-butler",
+          "title": "Sort to Tasks & Calendar",
+          "act": "The Butler turns each item into a task or calendar event with a deadline, and drafts replies where useful.",
+          "produces": "tasks + events + drafts"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Guild Conformance",
+          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "produces": "conformance sign-off"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports what needs you, what was scheduled, and the drafts awaiting your send — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+        }
+      ],
+      "artPng": false
+    },
+    {
+      "id": "scheduled-routine",
+      "name": "Standing Watch",
+      "icon": "⏱️",
+      "accent": "violet",
+      "category": "Comms & Automation",
+      "tagline": "Define and run an unattended scheduled task on a cron cadence.",
+      "when": "Use this for recurring automations — housekeeping, the stock-laws scanner, relationship-intel, mourning→calendar, daily digests.",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Define the Routine",
+          "act": "You describe the recurring job you want to run on a schedule, unattended.",
+          "produces": "routine request"
+        },
+        {
+          "kind": "member",
+          "actor": "the-butler",
+          "title": "Frame the Routine",
+          "act": "The Butler restates the job, its cadence, and what 'done' looks like, then routes it to the Strategist.",
+          "produces": "routine brief"
+        },
+        {
+          "kind": "gate",
+          "gate": "approval",
+          "label": "You approve the cadence and the unattended scope before the watch is set."
+        },
+        {
+          "kind": "member",
+          "actor": "the-strategist",
+          "title": "Define the Watch",
+          "act": "The Strategist defines the scheduled task — cron cadence, the recommended weapon per step, and the checkpoints — so it can run unattended and resume safely.",
+          "produces": "routine spec"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Stand the Watch",
+          "act": "On each tick the routine runs unattended via its assigned weapons, does the work, and ends with a plain-English summary.",
+          "produces": "routine run"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Guild Conformance",
+          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "produces": "conformance sign-off"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports what the routine does, its cadence, and the last run's summary — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+        }
+      ],
+      "artPng": false
+    },
+    {
+      "id": "marketing-audit",
+      "name": "Marketing Recon",
+      "icon": "📣",
+      "accent": "rose",
+      "category": "Research & Intel",
+      "tagline": "Audit the public site and brand from a marketing-firm perspective.",
+      "when": "Use this for website/SEO/brand audits and campaign-readiness — the public panel, messaging, reach, and conversion. Led by the Herald, the guild's marketing member.",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Call the Recon",
+          "act": "You ask the guild to audit the public panel and brand as a marketing firm would.",
+          "produces": "marketing request"
+        },
+        {
+          "kind": "member",
+          "actor": "the-butler",
+          "title": "Frame the Recon",
+          "act": "The Butler restates the audit lens — SEO, messaging, conversion — and routes it to the Strategist.",
+          "produces": "marketing brief"
+        },
+        {
+          "kind": "gate",
+          "gate": "approval",
+          "label": "You confirm the audit lens before the recon begins."
+        },
+        {
+          "kind": "member",
+          "actor": "the-herald",
+          "title": "Frame the Lens",
+          "act": "The Herald frames the audit from a marketing-firm perspective — SEO, search-catchability, messaging truth, reach, and the conversion path.",
+          "produces": "audit lens"
+        },
+        {
+          "kind": "member",
+          "actor": "the-herald",
+          "title": "Audit Reach & Message",
+          "act": "The Herald audits the public site's reach, messaging, and conversion, flagging anything off-brand, untrue, or that weakens demand.",
+          "produces": "marketing findings"
+        },
+        {
+          "kind": "member",
+          "actor": "the-designer",
+          "title": "Polish the Public Panel",
+          "act": "The Designer reviews the public site's visual polish and on-brand look — footer, hero, team, pricing — and fixes what's off.",
+          "produces": "visual findings"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Guild Conformance",
+          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "produces": "conformance sign-off"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports the findings, the off-brand/untrue flags, and the campaign-readiness call — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+        }
+      ],
+      "artPng": false
+    },
+    {
+      "id": "art-forge",
+      "name": "Art Forge",
+      "icon": "🖼️",
+      "accent": "rose",
+      "category": "Design",
+      "tagline": "Forge Fallen Sword art — sigils, portraits, weapon and workflow tiles — via MiniMax, gated by the Designer.",
+      "when": "Use this whenever a new visual asset is needed — a member portrait, skill sigil, weapon tile, or workflow sigil.",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Request the Art",
+          "act": "You describe the art you need — what it's for, the subject, and any constraints.",
+          "produces": "art request"
+        },
+        {
+          "kind": "member",
+          "actor": "the-butler",
+          "title": "Frame the Art",
+          "act": "The Butler restates the asset, its size, and where it lives, then routes it to the Designer.",
+          "produces": "art brief"
+        },
+        {
+          "kind": "gate",
+          "gate": "approval",
+          "label": "You approve the art brief before the forge is lit."
+        },
+        {
+          "kind": "member",
+          "actor": "the-designer",
+          "title": "Draft the Brief",
+          "act": "The Designer sets the art brief — subject, size, theme, palette, and what to avoid — in the Fallen Sword style.",
+          "produces": "art brief"
+        },
+        {
+          "kind": "member",
+          "actor": "the-designer",
+          "title": "Forge via MiniMax",
+          "act": "The Designer commissions the image from the MiniMax doer-weapon, reviews each result, and sends rejects back with deltas until they land.",
+          "produces": "forged art"
+        },
+        {
+          "kind": "member",
+          "actor": "the-developer",
+          "title": "Wire the Art",
+          "act": "The Developer drops the finals into the right path and rebuilds the dashboard so the art renders.",
+          "produces": "wired art"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Guild Conformance",
+          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "produces": "conformance sign-off"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports the art forged, where it lives, and how it renders — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+        }
+      ],
+      "artPng": false
+    },
+    {
+      "id": "arsenal-forge",
+      "name": "Arsenal Forge",
+      "icon": "⚔️",
+      "accent": "blue",
+      "category": "Guild Self",
+      "tagline": "Recruit or re-skin a weapon — art, thinker/doer role, and wiring into every loadout.",
+      "when": "Use this when a new AI model joins the arsenal, or an existing weapon needs re-skinning or re-roleing.",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Recruit the Weapon",
+          "act": "You name the model to add or change, and how it should look or behave.",
+          "produces": "weapon request"
+        },
+        {
+          "kind": "member",
+          "actor": "the-butler",
+          "title": "Frame the Weapon",
+          "act": "The Butler restates the weapon and the change, then routes it to the Strategist.",
+          "produces": "weapon brief"
+        },
+        {
+          "kind": "gate",
+          "gate": "approval",
+          "label": "You approve the weapon's identity and role before it's forged and wired."
+        },
+        {
+          "kind": "member",
+          "actor": "the-strategist",
+          "title": "Name the Weapon",
+          "act": "The Strategist sets the weapon's identity — model, element, colour, visual metaphor — and its role: thinker, doer, or both.",
+          "produces": "weapon identity"
+        },
+        {
+          "kind": "member",
+          "actor": "the-designer",
+          "title": "Forge the Weapon Art",
+          "act": "The Designer commissions the weapon art via MiniMax and reviews it (runs Art Forge).",
+          "produces": "weapon art"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Wire to the Arsenal",
+          "act": "The Quartermaster wires the weapon and its role-icon into the arsenal and every member's loadout, in priority order.",
+          "produces": "wired arsenal"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Guild Conformance",
+          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "produces": "conformance sign-off"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports the weapon added, its role, and the loadouts updated — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+        }
+      ],
+      "artPng": false
+    },
+    {
+      "id": "strategic-audit",
+      "name": "Strategic Audit",
+      "icon": "🔮",
+      "accent": "violet",
+      "category": "Guild Self",
+      "tagline": "Convene the multi-model panel, converge the takes, and ship a graded MD audit.",
+      "when": "Use this when you want a deep judgement that ships a document, not code — repo audits, skill-merge analysis, 'does this achieve its goal'.",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Pose the Question",
+          "act": "You pose the question to audit — the repo, the roster, a decision, or a body of work.",
+          "produces": "audit question"
+        },
+        {
+          "kind": "member",
+          "actor": "the-butler",
+          "title": "Frame the Audit",
+          "act": "The Butler restates the question and the angles to cover, then routes it to the Strategist.",
+          "produces": "audit brief"
+        },
+        {
+          "kind": "gate",
+          "gate": "approval",
+          "label": "You confirm the angles to audit before the panel convenes."
+        },
+        {
+          "kind": "member",
+          "actor": "the-strategist",
+          "title": "Convene the Panel",
+          "act": "The Strategist loads ultra-brainstorming and convenes the multi-model panel across the live thinker weapons.",
+          "produces": "panel"
+        },
+        {
+          "kind": "member",
+          "actor": "the-strategist",
+          "title": "Converge & Grade",
+          "act": "The Strategist fires the panel, converges the takes, resolves contradictions, grades the result, and writes the ranked MD audit.",
+          "produces": "graded audit"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Guild Conformance",
+          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "produces": "conformance sign-off"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports the verdict, the ranked findings, and the MD audit written — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+        }
+      ],
+      "artPng": false
+    },
+    {
+      "id": "workflow-forge",
+      "name": "Workflow Forge",
+      "icon": "🗺️",
+      "accent": "cyan",
+      "category": "Guild Self",
+      "tagline": "Capture a finished run as a reusable star-map workflow.",
+      "when": "Use this when a run is worth repeating — distil it into a named workflow, give it a sigil, and register it.",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Flag the Pattern",
+          "act": "You (or the Butler) flag that the just-finished run is worth saving as a star-map workflow.",
+          "produces": "capture request"
+        },
+        {
+          "kind": "member",
+          "actor": "the-butler",
+          "title": "Frame the Capture",
+          "act": "The Butler restates the pattern to capture and routes it to the Strategist.",
+          "produces": "capture brief"
+        },
+        {
+          "kind": "gate",
+          "gate": "approval",
+          "label": "You approve capturing this run as a reusable workflow before it's drafted."
+        },
+        {
+          "kind": "member",
+          "actor": "the-strategist",
+          "title": "Draft the Workflow",
+          "act": "The Strategist distils the run into a reusable workflow — name, trigger, members, weapons, and steps.",
+          "produces": "workflow draft"
+        },
+        {
+          "kind": "member",
+          "actor": "the-designer",
+          "title": "Forge the Sigil",
+          "act": "The Designer forges the workflow's Fallen Sword sigil (runs Art Forge).",
+          "produces": "workflow sigil"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Write to the Star Map",
+          "act": "The Quartermaster writes the new workflow into workflows.json, adds its art prompt, and rebuilds the dashboard.",
+          "produces": "registered workflow"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Guild Conformance",
+          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "produces": "conformance sign-off"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports the workflow registered, its sigil, and where it sits on the star map — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+        }
+      ],
+      "artPng": false
     }
   ],
   "log": {
     "entries": [
+      {
+        "id": 40,
+        "date": "2026-06-26",
+        "type": "workflow",
+        "title": "Expand the star map: 9 → 22 workflows (mined from archived sessions)",
+        "who": "The Strategist",
+        "detail": "The Strategist mined 1100+ archived sessions (546 Claude Code + 562 Cowork) and added 13 workflows: bug-cycle, security-sweep, cleanup-rotation, release-train, tool-forge, legal-draft, comms-triage, scheduled-routine, marketing-audit (Herald-led), art-forge, arsenal-forge, strategic-audit, workflow-forge. Added a category field to all; added matching art prompts to gen-workflow-art.cjs. See STRATEGIST-WORKFLOWS.md."
+      },
       {
         "id": 39,
         "date": "2026-06-26",
@@ -4012,6 +4840,6 @@
         "id": "g-325a46a5-add-skill-conquering-campaign"
       }
     ],
-    "count": 85
+    "count": 86
   }
 }

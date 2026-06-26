@@ -23,11 +23,11 @@ import sys
 
 CLOUD_TAG = {
     'glm-5.2': 'glm-5.2:cloud',
-    'kimi-k2.7': 'kimi-k2:cloud',
-    'deepseek-v4-pro': 'deepseek-v3.1:cloud',
-    'nemotron-3-ultra': 'nemotron:cloud',
-    'qwen3.5': 'qwen3-coder:cloud',
-    'gemma4': 'gemma3:cloud',
+    'kimi-k2.7': 'kimi-k2.7:cloud',
+    'deepseek-v4-pro': 'deepseek-v4-pro:cloud',
+    'nemotron-3-ultra': 'nemotron-3-ultra:cloud',
+    'qwen3.5': 'qwen3.5:cloud',
+    'gemma4': 'gemma4:cloud',
 }
 CLAUDE = {'opus', 'sonnet', 'haiku'}
 

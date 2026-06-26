@@ -28,6 +28,9 @@ ROLE = {
     "image-01": "doer", "minimax-video": "doer", "minimax-speech": "doer", "minimax-music": "doer",
 }
 
+CLAUDE_NATIVE = {"opus", "sonnet", "haiku"}
+MEDIA_WEAPONS = {"image-01", "minimax-video", "minimax-speech", "minimax-music"}
+
 
 def expected_order(weapons):
     """doers (best-first) + thinkers&duals minus sonnet (best-first) + sonnet."""
@@ -158,6 +161,63 @@ def main():
         if counts.get(k) != v:
             fails.append(f"N  counts.{k}={counts.get(k)} != real {v}")
 
+    # === DC — doc count claims match reality (README + domains) — audit #1 ===
+    actual_skills = len(skill_dirs)
+    readme_txt = (ROOT / "README.md").read_text()
+    for mobj in re.finditer(r'\((\d+)\s+skills', readme_txt):
+        if int(mobj.group(1)) != actual_skills:
+            fails.append(f"DC README claims {mobj.group(1)} skills, actual {actual_skills}")
+    doms = json.loads((ROOT / "domains.json").read_text())["domains"]
+    home = next((d for d in doms if d["id"] == "star-alliance"), None)
+    if home:
+        if len(home["skills"]) != actual_skills:
+            fails.append(f"DC domains star-alliance lists {len(home['skills'])} skills, actual {actual_skills}")
+        if len(home["members"]) != real["members"]:
+            fails.append(f"DC domains star-alliance lists {len(home['members'])} members, actual {real['members']}")
+        note = home.get("notes", "")
+        for mm in re.finditer(r'(\d+)\s+guild members', note):
+            if int(mm.group(1)) != real["members"]:
+                fails.append(f"DC domains notes: '{mm.group(1)} guild members' != actual {real['members']}")
+        for ss in re.finditer(r'(\d+)\s+skills', note):
+            if int(ss.group(1)) != actual_skills:
+                fails.append(f"DC domains notes: '{ss.group(1)} skills' != actual {actual_skills}")
+
+    # === V — every skill SKILL.md carries a parseable version — audit #1 ===
+    for name in sorted(skill_dirs):
+        txt = (ROOT / "star-alliance-skills" / name / "SKILL.md").read_text()
+        if not re.search(r'(?m)^[ \t]*version:\s*\S+', txt):
+            fails.append(f"V  skill '{name}' has no version in SKILL.md (metadata.version required)")
+
+    # === L — weapon routability (hard) + liveness (NOTE) — audit #1/#2 ===
+    smt = (ROOT / "star-alliance-arsenal" / "summon.py").read_text()
+    cloud_map = dict(re.findall(r"'([^']+)':\s*'([^']+:cloud)'", smt))
+    routable = set(CLAUDE_NATIVE) | set(cloud_map) | MEDIA_WEAPONS | {"minimax-m3"}
+    if "gpt-5.5" in smt:
+        routable.add("gpt-5.5")
+    all_weapons = {w for m in members.values() for w in (x["model"] for x in m["weapons"])}
+    for w in sorted(all_weapons - routable):
+        fails.append(f"L  weapon '{w}' in a loadout is not routable by summon.py or Claude-native")
+    # liveness — best-effort, NOTE only (never a hard fail; it is environment-dependent)
+    import os as _os
+    import subprocess as _sp
+    try:
+        _ol = _sp.run(["ollama", "list"], capture_output=True, text=True, timeout=10).stdout
+        pulled = {ln.split()[0] for ln in _ol.splitlines()[1:] if ln.strip()}
+    except Exception:
+        pulled = set()
+    live = set(CLAUDE_NATIVE)
+    for w, tag in cloud_map.items():
+        if tag in pulled:
+            live.add(w)
+    if (pathlib.Path.home() / ".config" / "minimax" / "m3.key").exists() or _os.environ.get("MINIMAX_API_KEY"):
+        live |= {"minimax-m3"} | MEDIA_WEAPONS
+    dead = sorted(all_weapons - live)
+    if dead:
+        notes.append(f"weapon liveness — NOT firing on this device: {', '.join(dead)}")
+        for w in dead:
+            users = sorted(mid for mid, m in members.items() if w in (x["model"] for x in m["weapons"]))
+            notes.append(f"  '{w}' declared by {len(users)} member(s): {', '.join(users)}")
+
     # report
     print("═" * 64)
     print(" CONFORMITY SWEEP — Star Alliance repo")
@@ -168,6 +228,11 @@ def main():
     print(f" members={real['members']}  skills={real['skills']}  workflows={real['workflows']}  "
           f"version={g.get('meta',{}).get('version')}")
     print("─" * 64)
+    if notes:
+        print(" NOTES (non-blocking):")
+        for n in notes:
+            print(f"   • {n}")
+        print("─" * 64)
     if fails:
         print(f" ✗ {len(fails)} CONTRADICTION(S):")
         for f in fails:

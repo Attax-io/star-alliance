@@ -1,6 +1,8 @@
 ---
 name: fallen-sword-design-language
 description: "The vocabulary, mechanics, and lore of Fallen Sword — a classic browser-based MMORPG set in the world of Erildath. Load this when working on any game project inspired by or using Fallen Sword's design language. Triggers: 'use the Fallen Sword design language', 'Fallen Sword style', 'Erildath', 'make it sound like Fallen Sword'."
+metadata:
+  version: 1.0.0
 ---
 
 # Fallen Sword Design Language
