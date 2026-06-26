@@ -5,7 +5,7 @@
       "id": "star-alliance",
       "name": "Star Alliance",
       "tagline": "The guild framework itself — skill registry, agent definitions, dashboard",
-      "path": "/Users/atta/Documents/Claude/Projects/star-alliance",
+      "path": "/Users/attaselim/Documents/Claude/Projects/star-alliance",
       "icon": "⭐",
       "color": "#b89530",
       "skills": [
@@ -19,20 +19,20 @@
         "impeccable", "stitch-design-taste", "gpt-taste", "redesign-existing-projects",
         "performance", "codex-law-translate", "article-creator",
         "strategies-review", "vault-log-compliance", "graphify",
-        "fallen-sword-design-language"
+        "storm-investigation", "fallen-sword-design-language"
       ],
       "members": [
         "the-butler", "the-architect", "the-developer", "the-designer",
         "the-strategist", "the-translator", "the-engineer", "the-merchant",
         "the-quartermaster"
       ],
-      "notes": "The home domain. All 9 guild members + 31 skills live here. Every other domain borrows from this skill pool."
+      "notes": "The home domain. All 9 guild members + 32 skills live here. Every other domain borrows from this skill pool."
     },
     {
       "id": "lex-council-app",
       "name": "Lex Council App",
       "tagline": "Multi-portal app — admin, members, clients (Next.js + Supabase)",
-      "path": "/Users/atta/Documents/Claude/Projects/Lex Council App",
+      "path": "/Users/attaselim/Documents/Claude/Projects/Lex Council App",
       "icon": "⚖️",
       "color": "#3b7dd8",
       "skills": [
@@ -55,7 +55,7 @@
       "id": "lex-council-business",
       "name": "Lex Council Business",
       "tagline": "Business operations — marketing, BD, content drafting (Obsidian vault)",
-      "path": "/Users/atta/Documents/Claude/Projects/Lex Council Business",
+      "path": "/Users/attaselim/Documents/Claude/Projects/Lex Council Business",
       "icon": "🏛️",
       "color": "#7c5dc8",
       "skills": [

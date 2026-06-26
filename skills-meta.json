@@ -191,6 +191,14 @@
     "triggers": "",
     "modes": ""
   },
+  "storm-investigation": {
+    "icon": "🌀",
+    "blurb": "Multi-perspective STORM research: 5 personas, contradiction map, peer-reviewed briefing",
+    "level": "Advanced",
+    "tabler": "ti-cyclone",
+    "triggers": "on 'research this topic', 'run STORM', 'STORM this', 'investigate X deeply', 'deep dive on X', 'multi-perspective research', '5 expert perspectives', 'contradiction map', 'give me a research briefing', 'red-team this idea', or research before a decision — writing, investing, negotiating, interviewing, presenting, learning. The Stanford OVAL Lab method (NAACL 2024): one prompt returns the majority view; five contrasting personas catch the blind spots.",
+    "modes": "Inline (default) — run the four prompts in sequence, ~5 min, one briefing; Fan-out — one doer per persona in parallel (MiniMax M3 default, Claude sub-agents/Workflow when tools or structured output needed), then synthesize. Optional source-grounding via web/MCP."
+  },
   "strategies-review": {
     "icon": "📋",
     "blurb": "Reviews pending strategies then promotes to executed and verifies",
