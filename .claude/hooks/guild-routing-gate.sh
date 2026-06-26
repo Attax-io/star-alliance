@@ -31,7 +31,7 @@ STEP 1 · FORM THE RIGHT MEMBER — match the task to ONE specialist:
   • load/translate law · legal drafting · multi-locale content                            → the-translator (sonnet)
   • pure coordination / "who handles this" / receive an order                             → the-butler (opus)
 
-STEP 2 · FOLLOW THE WORKFLOW (workflows.json) when one fits the task:
+STEP 2 · FOLLOW THE WORKFLOW (workflows.json) — MANDATORY, not optional:
   Build & Fix:        Quick Fix · Standard Mission · Architecture Build · Bug Cycle · Security Sweep
   Design:             Design Sprint · Art Forge
   Legal:              Legal Codex · Legal Drafting · Tool Forge · Law Harvest
@@ -39,6 +39,10 @@ STEP 2 · FOLLOW THE WORKFLOW (workflows.json) when one fits the task:
   Guild Self:         Skill Forge · Arsenal Forge · Strategic Audit · Workflow Forge
   Hygiene & Release:  Conformity Sweep · Hygiene Rotation · Guild Log Sync · Release Train
   Comms & Automation: Comms Triage · Standing Watch
+  ▶ If a workflow fits, FOLLOW its steps — do not improvise your own path.
+  ▶ If NO existing workflow fits the request → STOP. Tell the Guild Master and ASK
+    to create the workflow (Workflow Forge) BEFORE doing the work. Never proceed
+    past a missing workflow on your own.
 
 STEP 3 · THAT MEMBER DRAWS HIS WEAPONS (weapon-utility):
   Hand doer-grade work — bulk edits, extraction, generation, mechanical transforms, large reads/summaries —
