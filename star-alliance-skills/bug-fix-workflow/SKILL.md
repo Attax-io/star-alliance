@@ -2,7 +2,7 @@
 name: bug-fix-workflow
 description: The Lex Council end-to-end bug workflow — pull reports from the bug_reports table, triage their status, investigate + reproduce the real root cause, fix following project conventions, flip each row to Fixed once the fix is genuinely live, AND file (push) new bugs it surfaces back into the table. Use whenever the user says "pull the bugs", "work the bugs", "fix the bugs", "triage bugs", "what bugs are open", or any phrasing about pulling / triaging / fixing / closing reported bugs — OR to push/file bugs: "file a bug", "log this as a bug", "push these as bugs", "file the bugs you find". Loads the bug_reports schema, the status-code conventions, the status-trigger gotcha, the INSERT/push pattern (identity PK, trigger-filled names, reporter-uuid lookup, status=1, no notification fires), the "doesn't work" reproduction technique, and the rule for WHEN a bug may be marked Fixed (DB fixes now, frontend fixes only after deploy).
 metadata:
-  version: 1.1.2
+  version: 1.1.3
 ---
 
 # Bug-Fix Workflow (Lex Council)
@@ -188,7 +188,9 @@ This is the rule the skill exists to protect: **"Fixed" (4) means deployed, not 
 - **Frontend fix** → only takes effect after the next release/deploy → leave at **Pending (2)** until
   it ships, then flip to Fixed. Tell the user which bugs are waiting on a deploy and offer to flip them
   after release.
-- **Won't-fix / not-a-bug / duplicate** → **Rejected (3)** with a one-line reason to the user.
+- **Won't-fix / not-a-bug / duplicate** → **Rejected (3)** with a one-line reason to the user. There is
+  **no rejection-reason column** (see the schema table) — so also persist the rationale by appending a
+  `[Reject-reason] …` line to `br_text`, or a later pull of status-3 rows can't tell *why* it was rejected.
 
 ```sql
 UPDATE public.bug_reports SET br_status = 4 WHERE br_id = <id> AND br_status <> 4;  -- only once LIVE
@@ -218,6 +220,10 @@ Never mark a bug Fixed because the code is written; mark it Fixed because a user
 
 ## Changelog
 
+- **1.1.3** (2026-06-26) — Step 5 (Rejected): noted that `bug_reports` has **no rejection-reason
+  column** (skillsmith routine, conf 8/10), so a status-3 reason given only in chat is lost on the next
+  pull. Now directs the operator to also persist the rationale by appending a `[Reject-reason] …` line
+  to `br_text` — same freeform-persistence pattern the Push route already uses. Doc-only; no schema change.
 - **1.1.2** (2026-06-21) — Status-2 label corrected to the live trigger value
   **`Investigated & Pending`** (was the stale `Pending`), verified on prod
   `bqgrpnsvplvicnmzxwkm` — 7 rows carry the new label, 3 legacy rows still read `Pending`
