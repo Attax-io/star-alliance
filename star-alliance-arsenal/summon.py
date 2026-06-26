@@ -23,9 +23,9 @@ import sys
 
 CLOUD_TAG = {
     'glm-5.2': 'glm-5.2:cloud',
-    'kimi-k2.7': 'kimi-k2.7:cloud',
+    'kimi-k2.7': 'kimi-k2.7-code:cloud',
     'deepseek-v4-pro': 'deepseek-v4-pro:cloud',
-    'nemotron-3-ultra': 'nemotron-3-ultra:cloud',
+    'nemotron-3-ultra': 'nemotron-3-super:cloud',
     'qwen3.5': 'qwen3.5:cloud',
     'gemma4': 'gemma4:cloud',
 }
