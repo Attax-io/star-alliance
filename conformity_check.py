@@ -218,6 +218,20 @@ def main():
             users = sorted(mid for mid, m in members.items() if w in (x["model"] for x in m["weapons"]))
             notes.append(f"  '{w}' declared by {len(users)} member(s): {', '.join(users)}")
 
+    # member leveling — promotion queue + regression review (NOTES, never blocking).
+    # Leveling is Quartermaster-gated and human-in-the-loop, so drift belongs in the
+    # QM's queue, not the build gate. See STRATEGIST-MEMBER-LEVELING.md §3.
+    due = [(mid, m) for mid, m in members.items() if m.get("levelInfo", {}).get("dueForPromotion")]
+    over = [(mid, m) for mid, m in members.items() if m.get("levelInfo", {}).get("overConferred")]
+    if due:
+        notes.append(f"member levels — {len(due)} DUE for promotion (Quartermaster: python3 member_level.py promote):")
+        for mid, m in due:
+            notes.append(f"  ↑ {mid}: conferred {m['conferred']} → earned {m['levelInfo']['earned']}")
+    if over:
+        notes.append(f"member levels — {len(over)} OVER-conferred (arsenal regressed; review demotion, policy A):")
+        for mid, m in over:
+            notes.append(f"  ↓ {mid}: conferred {m['conferred']} > earned {m['levelInfo']['earned']}")
+
     # report
     print("═" * 64)
     print(" CONFORMITY SWEEP — Star Alliance repo")

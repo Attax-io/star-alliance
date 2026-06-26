@@ -17,7 +17,7 @@ star-alliance/
 │   ├── the-quartermaster.md
 │   ├── the-strategist.md
 │   └── the-translator.md
-├── star-alliance-skills/  ← shared skill pool (41 skills, each a directory with SKILL.md)
+├── star-alliance-skills/  ← shared skill pool (42 skills, each a directory with SKILL.md)
 │   ├── article-creator/
 │   ├── brandkit/
 │   ├── ...
@@ -56,6 +56,27 @@ your project's `.claude/agents/` and installing their skills.
 | **The Herald** | Marketing, growth, demand generation — content/SEO, brand, email, social/paid | growth-marketing, article-creator, brandkit, storm-investigation | "plan our marketing", "we need leads", "fix our positioning", "go to market" |
 | **The Merchant** | Investment analysis, trading strategies, market research, portfolio management | _(skills to be recruited)_ | "analyze this investment", "build a trading strategy", "research this market" |
 | **The Quartermaster** | Skill management, syncing, upgrading, daily evolution | skillsmith, guild-log, cleanup, storm-investigation | "sync my skills", "upgrade a skill", "run the skill routine" |
+
+### Member levels
+
+Each member carries a **craft-depth level** — a meter of arsenal depth + specialty, **decoupled
+from standing** (the Butler leads regardless of tier). It's *earned* by an objective checklist
+`build.py` computes from the repo and *conferred* by the Quartermaster, recorded in the guild log.
+The standard and the promotion procedure live in
+[`STRATEGIST-MEMBER-LEVELING.md`](STRATEGIST-MEMBER-LEVELING.md) and the Quartermaster's manual
+[`skillsmith/references/member-leveling.md`](star-alliance-skills/skillsmith/references/member-leveling.md);
+operate it with `python3 member_level.py report | promote`.
+
+| Tier | Members |
+|---|---|
+| **Master** | The Strategist |
+| **Elite** | The Designer |
+| **Advanced** | The Architect · The Developer · The Herald · The Quartermaster |
+| **Intermediate** | The Translator |
+| **Foundational** | The Butler · The Merchant |
+
+The thinnest arsenals (Butler, Merchant) sit at Foundational by design — that's the "who's lagging"
+signal. `member_level.py report` shows each member's exact gap to the next tier.
 
 ### Shared skills
 
@@ -173,4 +194,4 @@ The authoritative gate is **`skill-creator`'s `quick_validate.py` green** on eve
 ## Registry
 
 See [`VERSIONS.md`](VERSIONS.md) for the full skill → version table with word counts and Cowork
-status (41 skills).
+status (42 skills).

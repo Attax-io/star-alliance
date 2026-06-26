@@ -2,6 +2,109 @@
   "version": 1,
   "entries": [
     {
+      "id": 73,
+      "date": "2026-06-27",
+      "type": "member-upgrade",
+      "title": "Promote The Quartermaster: Foundational → Advanced",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Foundational → Advanced (craft-depth tier). Prerequisite checklist for Advanced verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-quartermaster"
+      ],
+      "from": "Foundational",
+      "to": "Advanced"
+    },
+    {
+      "id": 72,
+      "date": "2026-06-27",
+      "type": "member-upgrade",
+      "title": "Promote The Herald: Foundational → Advanced",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Foundational → Advanced (craft-depth tier). Prerequisite checklist for Advanced verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-herald"
+      ],
+      "from": "Foundational",
+      "to": "Advanced"
+    },
+    {
+      "id": 71,
+      "date": "2026-06-27",
+      "type": "member-upgrade",
+      "title": "Promote The Translator: Foundational → Intermediate",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Foundational → Intermediate (craft-depth tier). Prerequisite checklist for Intermediate verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-translator"
+      ],
+      "from": "Foundational",
+      "to": "Intermediate"
+    },
+    {
+      "id": 70,
+      "date": "2026-06-27",
+      "type": "member-upgrade",
+      "title": "Promote The Strategist: Foundational → Master",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Foundational → Master (craft-depth tier). Prerequisite checklist for Master verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-strategist"
+      ],
+      "from": "Foundational",
+      "to": "Master"
+    },
+    {
+      "id": 69,
+      "date": "2026-06-27",
+      "type": "member-upgrade",
+      "title": "Promote The Designer: Foundational → Elite",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Foundational → Elite (craft-depth tier). Prerequisite checklist for Elite verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-designer"
+      ],
+      "from": "Foundational",
+      "to": "Elite"
+    },
+    {
+      "id": 68,
+      "date": "2026-06-27",
+      "type": "member-upgrade",
+      "title": "Promote The Developer: Foundational → Advanced",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Foundational → Advanced (craft-depth tier). Prerequisite checklist for Advanced verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-developer"
+      ],
+      "from": "Foundational",
+      "to": "Advanced"
+    },
+    {
+      "id": 67,
+      "date": "2026-06-27",
+      "type": "member-upgrade",
+      "title": "Promote The Architect: Foundational → Advanced",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Foundational → Advanced (craft-depth tier). Prerequisite checklist for Advanced verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-architect"
+      ],
+      "from": "Foundational",
+      "to": "Advanced"
+    },
+    {
+      "id": 66,
+      "date": "2026-06-27",
+      "type": "decision",
+      "title": "Member leveling system: craft-depth tiers, earned-by-checklist, conferred by the Quartermaster",
+      "who": "The Strategist",
+      "detail": "Guild Master ordered per-member levels graded on skills+specialty, with the Quartermaster conferring on prerequisite. DECISION: a member's level is a CRAFT-DEPTH meter (Arsenal Depth = Σ skill-level-weights + unique/specialty + weapons), explicitly DECOUPLED from standing (the Butler leads regardless of tier). Rejected per-role rubric and leadership-floor models — both need subjective judgment the guild can't recompute identically, breaking the 'clear standard for future runs' requirement. Standard = objective per-tier prerequisite CHECKLIST (not a weighted score) computed by build.py; the five tiers reuse LEVEL_RAMP (Foundational→Master, Elite/amber was reserved+unused). Earned tier is build-derived; conferred tier is the members-meta.json 'level' field, ratified by the Quartermaster and logged as a member-upgrade entry (PATCH). Demotion policy: (A) honest meter — overConferred is a loud notice, never a build-breaker. Usage/activity metering deferred to Wave 6 as a SIBLING axis, never folded into level (gated on log member-attribution). Plan: STRATEGIST-MEMBER-LEVELING.md; QM manual: skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-strategist",
+        "the-quartermaster"
+      ]
+    },
+    {
       "id": 65,
       "date": "2026-06-26",
       "type": "member-upgrade",

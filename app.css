@@ -222,6 +222,26 @@ kbd {
 .ramp-gray { --rc:#9aa3bd; } .ramp-blue { --rc:#5e9ef5; } .ramp-teal { --rc:#2ec5b6; } .ramp-amber { --rc:#e8b84e; } .ramp-purple { --rc:#a67cf2; }
 .src-own { color: var(--green); } .src-vendored { color: var(--cyan); } .src-external { color: var(--violet); }
 
+/* ── Member craft level ─────────────────────────────────────────────────── */
+.mc-foot-spacer { flex: 1 1 auto; }
+.mc-level { font-size: var(--t-xs); letter-spacing: .02em; }
+.lvl-head { display: flex; align-items: center; gap: var(--s3); flex-wrap: wrap; margin-bottom: var(--s3); }
+.lvl-current { font-weight: 600; }
+.lvl-ad { color: var(--muted); font-size: var(--t-sm); }
+.lvl-settled { color: var(--green); font-size: var(--t-sm); }
+.lvl-next { font-size: var(--t-sm); color: var(--muted); }
+.lvl-next strong { color: var(--text); }
+.lvl-ceiling { color: var(--gold); }
+.lvl-bar { height: 6px; border-radius: 4px; background: var(--line-3); overflow: hidden; margin: var(--s2) 0 var(--s3); }
+.lvl-bar > span { display: block; height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--cyan), var(--violet)); transition: width .4s ease; }
+.lvl-reqs { display: grid; gap: 4px; }
+.lvl-req { display: flex; align-items: center; gap: var(--s2); font-size: var(--t-xs); }
+.lvl-req .lvl-box { width: 16px; text-align: center; color: var(--faint); }
+.lvl-req.ok .lvl-box { color: var(--green); }
+.lvl-req.todo .lvl-rlabel { color: var(--muted); }
+.lvl-req .lvl-rlabel { flex: 1 1 auto; }
+.lvl-req .lvl-rval { color: var(--hint); font-variant-numeric: tabular-nums; }
+
 /* ── 6. Cosmic Relay ─────────────────────────────────────────────────────── */
 
 /* flow selector — Fallen Sword art tiles (100x100 picture + name below), organised in a grid */
@@ -896,3 +916,29 @@ a.tag.off { text-decoration: none; }
   font-style: italic;
   line-height: 1.4;
 }
+
+/* ── Delegation ledger — REAL doer spend logged by the arsenal backends ─────── */
+.ledger-banner {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 18px; margin: 0 0 16px;
+  border-radius: var(--card, 14px);
+  border: 1px solid color-mix(in srgb, var(--gold) 35%, transparent);
+  background: linear-gradient(180deg, rgba(232,201,58,.07), rgba(232,201,58,.02));
+}
+.ledger-banner.empty { border-color: var(--line-2); background: none; }
+.ledger-banner .lb-icon { font-size: 22px; color: var(--gold); filter: drop-shadow(0 0 6px rgba(232,201,58,.5)); }
+.ledger-banner.empty .lb-icon { color: var(--muted); filter: none; }
+.lb-stats { display: flex; flex-direction: column; gap: 3px; }
+.lb-headline { font-size: 14px; color: var(--text); }
+.lb-headline b { color: var(--gold); font-variant-numeric: tabular-nums; }
+.lb-sub { font-size: 12px; color: var(--muted); }
+.lb-sub b { color: var(--green); font-variant-numeric: tabular-nums; }
+.lb-win { font-family: var(--mono); font-size: 9px; letter-spacing: .05em; color: var(--muted);
+  border: 1px solid var(--line-2); border-radius: var(--pill); padding: 1px 5px; margin-left: 4px; vertical-align: middle; }
+.model-usage {
+  display: flex; align-items: center; gap: 6px; margin: 6px 0 0;
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: .03em; color: var(--muted);
+}
+.model-usage .mu-dot { color: var(--green); font-size: 9px; }
+.model-usage .mu-win { font-size: 9px; color: var(--muted); border: 1px solid var(--line-2);
+  border-radius: var(--pill); padding: 0 5px; margin-left: auto; }

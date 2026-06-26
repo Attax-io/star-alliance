@@ -84,23 +84,23 @@ const MODELS = {
     meter: { kind: "used", spent: 0, quota: 100, unit: "req", est: true, pool: "Ollama Cloud", note: "est · shares the Ollama Cloud pool" } },
   "kimi-k2.7":        { label: "Kimi K2.7",       color: "#ff6b8a", tier: "Bench",   host: "Ollama Cloud",        role: "doer", desc: "Kimi K2.7 — the hammer. Long-horizon coding and agentic work, blunt force done right.",
     ollama_desc: "Kimi K2.7 · Moonshot AI's agentic powerhouse. Designed for long-horizon tool use, autonomous coding, and multi-step debugging. Strong at planning, self-correction, and sustained agentic loops. Best when a task requires many tool calls across a long session.",
-    call: "Easiest:  python3 star-alliance-arsenal/summon.py kimi-k2.7 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py kimi-k2:cloud \"<prompt>\"\nPull first:  ollama pull kimi-k2:cloud  (verify exact cloud tag)",
+    call: "Easiest:  python3 star-alliance-arsenal/summon.py kimi-k2.7 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py kimi-k2.7-code:cloud \"<prompt>\"\nPull first:  ollama pull kimi-k2.7-code:cloud  ✓ pulled",
     meter: { kind: "used", spent: 0, quota: 100, unit: "req", est: true, pool: "Ollama Cloud", note: "est · not yet pulled · shares Ollama Cloud pool" } },
   "deepseek-v4-pro":  { label: "DeepSeek V4 Pro", color: "#5b8cff", tier: "Bench",   host: "Ollama Cloud",        role: "thinker", desc: "DeepSeek V4 Pro — the scythe. Wide-sweeping frontier MoE reasoning.",
     ollama_desc: "DeepSeek V4 Pro · Mixture-of-Experts frontier reasoning at low cost. Exceptional at STEM, mathematics, and logical inference. Near GPT-4 quality for a fraction of the price. Best for hard analytical problems, algorithm design, and scientific reasoning.",
-    call: "Easiest:  python3 star-alliance-arsenal/summon.py deepseek-v4-pro \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py deepseek-v3.1:cloud \"<prompt>\"\nPull first:  ollama pull deepseek-v3.1:cloud  (verify exact cloud tag)",
+    call: "Easiest:  python3 star-alliance-arsenal/summon.py deepseek-v4-pro \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py deepseek-v4-pro:cloud \"<prompt>\"\nPull first:  ollama pull deepseek-v4-pro:cloud  ✓ pulled",
     meter: { kind: "used", spent: 0, quota: 100, unit: "req", est: true, pool: "Ollama Cloud", note: "est · not yet pulled · shares Ollama Cloud pool" } },
   "nemotron-3-ultra": { label: "Nemotron-3 Ultra",color: "#7fd4ff", tier: "Bench",   host: "Ollama Cloud",        role: "doer", desc: "Nemotron-3 Ultra — the lance. High-throughput reasoning, long agent runs.",
     ollama_desc: "Nemotron-3 Ultra · NVIDIA's high-throughput reasoning model. Strong at structured data extraction, long-form document analysis, and sustained multi-turn agentic work. Optimized for inference efficiency — best when you need frontier reasoning at scale.",
-    call: "Easiest:  python3 star-alliance-arsenal/summon.py nemotron-3-ultra \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py nemotron:cloud \"<prompt>\"\nPull first:  ollama pull nemotron:cloud  (verify the exact cloud tag)",
+    call: "Easiest:  python3 star-alliance-arsenal/summon.py nemotron-3-ultra \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py nemotron-3-super:cloud \"<prompt>\"\nPull first:  ollama pull nemotron-3-super:cloud  (NOT pulled yet — pull before use)",
     meter: { kind: "used", spent: 0, quota: 100, unit: "req", est: true, pool: "Ollama Cloud", note: "est · not yet pulled · shares Ollama Cloud pool" } },
   "qwen3.5":          { label: "Qwen 3.5",        color: "#c47fff", tier: "Bench",   host: "Ollama Cloud",        role: "both", desc: "Qwen 3.5 — the shortsword. Versatile general-purpose workhorse.",
     ollama_desc: "Qwen 3.5 · Alibaba's versatile coder. Supports 29 languages, strong structured output, function calling, and API integration. Well-rounded across coding, writing, and analysis. Best for multilingual tasks and general-purpose work where flexibility matters.",
-    call: "Easiest:  python3 star-alliance-arsenal/summon.py qwen3.5 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py qwen3-coder:cloud \"<prompt>\"\nPull first:  ollama pull qwen3-coder:cloud  (verify exact cloud tag)",
+    call: "Easiest:  python3 star-alliance-arsenal/summon.py qwen3.5 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py qwen3.5:cloud \"<prompt>\"\nPull first:  ollama pull qwen3.5:cloud  ✓ pulled",
     meter: { kind: "used", spent: 0, quota: 100, unit: "req", est: true, pool: "Ollama Cloud", note: "est · not yet pulled · shares Ollama Cloud pool" } },
   "gemma4":           { label: "Gemma 4",         color: "#ffb04e", tier: "Bench",   host: "Ollama Cloud",        role: "doer", desc: "Gemma 4 — the ninja star. Small, fast, deadly accurate for quick cheap passes.",
     ollama_desc: "Gemma 4 · Google's lightweight open model. Fast, compact, deployable anywhere. Strong instruction following, basic reasoning, and summarization at minimal cost. Best for high-volume quick passes, preprocessing, and tasks where speed and cost trump depth.",
-    call: "Easiest:  python3 star-alliance-arsenal/summon.py gemma4 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py gemma3:cloud \"<prompt>\"\nPull first:  ollama pull gemma3:cloud  (verify exact cloud tag)",
+    call: "Easiest:  python3 star-alliance-arsenal/summon.py gemma4 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py gemma4:cloud \"<prompt>\"\nPull first:  ollama pull gemma4:cloud  ✓ pulled",
     meter: { kind: "used", spent: 0, quota: 100, unit: "req", est: true, pool: "Ollama Cloud", note: "est · not yet pulled · shares Ollama Cloud pool" } },
 };
 const modelMeta = (m) => MODELS[m] || { label: m || "—", color: "#8a93ad" };
@@ -113,10 +113,12 @@ const ROLE_META = {
 // The armory display order for the Arsenal page.
 const ARSENAL = ["opus", "sonnet", "haiku", "gpt-5.5", "minimax-m3", "image-01", "minimax-video", "minimax-speech", "minimax-music", "glm-5.2", "kimi-k2.7", "deepseek-v4-pro", "nemotron-3-ultra", "qwen3.5", "gemma4"];
 // model id → the ollama `:cloud` tag we expect, so /api/arsenal can mark it pulled.
+// MUST match summon.py's CLOUD_TAG (the routing source of truth) and what
+// `ollama list` actually shows — otherwise the pulled badge lies.
 const CLOUD_TAG = {
-  "minimax-m3": "minimax-m3:cloud", "glm-5.2": "glm-5.2:cloud", "kimi-k2.7": "kimi-k2:cloud",
-  "deepseek-v4-pro": "deepseek-v3.1:cloud", "nemotron-3-ultra": "nemotron:cloud",
-  "qwen3.5": "qwen3-coder:cloud", "gemma4": "gemma3:cloud",
+  "minimax-m3": "minimax-m3:cloud", "glm-5.2": "glm-5.2:cloud", "kimi-k2.7": "kimi-k2.7-code:cloud",
+  "deepseek-v4-pro": "deepseek-v4-pro:cloud", "nemotron-3-ultra": "nemotron-3-super:cloud",
+  "qwen3.5": "qwen3.5:cloud", "gemma4": "gemma4:cloud",
 };
 
 // ── Live Arsenal data (real pulled-status + real spend) from the dev server's
@@ -427,6 +429,47 @@ const viewHead = (eyebrow, title, sub) => `
 
 const crumb = (href, label) => `<a class="crumb" href="${href}">← ${esc(label)}</a>`;
 const rampClass = (s) => `ramp ramp-${esc(s.ramp || "gray")}`;
+
+// Member craft-level (Wave 2 build.py emits m.conferred + m.levelInfo). A level is a
+// craft-depth meter, decoupled from standing — see STRATEGIST-MEMBER-LEVELING.md.
+const memberRamp = (m) => `ramp ramp-${esc((m.levelInfo && m.levelInfo.rampConferred) || "gray")}`;
+function memberLevelBadge(m) {
+  const li = m.levelInfo || {};
+  const due = li.dueForPromotion;
+  const tip = due ? ` title="Earned ${esc(li.earned)} — promotion due"`
+                  : (li.overConferred ? ` title="Arsenal regressed below ${esc(m.conferred)} — review"` : "");
+  return `<span class="tag ${memberRamp(m)} mc-level"${tip}>${esc(m.conferred || "Foundational")}${due ? " ↑" : (li.overConferred ? " ↓" : "")}</span>`;
+}
+function memberLevelSection(m) {
+  const li = m.levelInfo;
+  if (!li) return "";
+  const prog = li.progress || [];
+  const met = prog.filter((r) => r.ok).length;
+  const total = prog.length;
+  const pct = total ? Math.round((100 * met) / total) : 100;
+  const reqRows = prog.map((r) => {
+    const val = "have" in r ? `${r.have}/${r.need}` : (r.ok ? "✓" : "—");
+    return `<div class="lvl-req ${r.ok ? "ok" : "todo"}"><span class="lvl-box">${r.ok ? "✓" : "○"}</span><span class="lvl-rlabel">${esc(r.label)}</span><span class="lvl-rval">${esc(val)}</span></div>`;
+  }).join("");
+  const statusChip = li.dueForPromotion
+    ? `<span class="tag amber">earned ${esc(li.earned)} — promotion due</span>`
+    : (li.overConferred ? `<span class="tag rose">over-conferred — review</span>` : `<span class="lvl-settled">✓ settled</span>`);
+  const nextBlock = li.nextTier
+    ? `<div class="lvl-next">Next tier <strong>${esc(li.nextTier)}</strong> — ${met}/${total} prerequisites met
+         <div class="lvl-bar"><span style="width:${pct}%"></span></div>
+         <div class="lvl-reqs">${reqRows}</div></div>`
+    : `<div class="lvl-next lvl-ceiling">At the ceiling — ${esc(m.conferred)} is the top tier.</div>`;
+  return `<div class="section glass">
+      <div class="section-title">Craft level</div>
+      <div class="lvl-head">
+        <span class="tag ${memberRamp(m)} lvl-current">${esc(m.conferred || "Foundational")}</span>
+        <span class="lvl-ad">Arsenal Depth ${li.ad}</span>
+        ${statusChip}
+      </div>
+      ${nextBlock}
+      <p class="skill-hint">Level meters craft depth (arsenal + specialty), <strong>not</strong> standing. The Quartermaster confers it when the checklist is met (<code>member_level.py</code>).</p>
+    </div>`;
+}
 // skill art: PNG from skill-art/<id>.png takes priority, then inline SVG, then emoji fallback.
 const skillArt = (s) => {
   if (!s) return `<span class="ico-emoji">📦</span>`;
@@ -478,9 +521,9 @@ function memberCard(m) {
     </div>
     <div class="mc-skills">${shown}${extra}</div>
     <div class="mc-foot">
-      <span class="tag">${esc(modelMeta(m.model).label)}</span>
-      <span class="sep"></span><span>${pluralize(active, "skill")}${blocked ? ` <span class="blk-note">· ${blocked} blocked</span>` : ""}</span>
+      <span>${pluralize(active, "skill")}${blocked ? ` <span class="blk-note">· ${blocked} blocked</span>` : ""}</span>
       <span class="sep"></span><span>${pluralize(m.weapons.length, "weapon")}</span>
+      <span class="mc-foot-spacer"></span>${memberLevelBadge(m)}
     </div>
   </div>`;
 }
@@ -741,7 +784,7 @@ function renderMemberDossier(id) {
             </div>
           </div>
           <div class="dh-tags">
-            <span class="tag gold">${esc(modelMeta(m.model).label)}</span>
+            ${memberLevelBadge(m)}
             <span class="tag">${pluralize(active.length, "skill")}</span>
             ${blocked ? `<span class="tag rose">${blocked} blocked</span>` : ""}
             ${added ? `<span class="tag green">${added} added</span>` : ""}
@@ -785,6 +828,7 @@ function renderMemberDossier(id) {
             <ul class="bullets no">${m.doesnt.map((d) => `<li>${esc(d)}</li>`).join("")}</ul>
           </div>
         </div>
+        ${memberLevelSection(m)}
         ${renderStarmapWorkflow(m)}
         <div class="section glass" style="grid-column:1/-1">
           <div class="section-title">Workflow / system prompt</div>
@@ -878,6 +922,11 @@ function renderStarmapWorkflow(m) {
 }
 
 // Arsenal / Armory ----------------------------------------------------------
+const fmtK = (n) => (n >= 1000 ? (n / 1000).toFixed(n >= 10000 ? 0 : 1) + "k" : String(n || 0));
+function ledgerFor(id) {
+  const bm = arsenalLive && arsenalLive.ledger && arsenalLive.ledger.byModel;
+  return (bm && bm[id]) || null;
+}
 function renderArsenal() {
   const anyOv = Object.keys(weaponOv).length;
   const cards = ARSENAL.map((id) => {
@@ -922,6 +971,12 @@ function renderArsenal() {
         </div>
         <span class="model-count" title="Agents wielding this model">${wielders}/${GUILD.members.length}</span>
       </div>
+      ${(() => {
+        const L = ledgerFor(id);
+        if (!L || !L.wCalls) return "";
+        return `<div class="model-usage" title="Real spend logged by the arsenal backends this week (7d rolling)">
+          <span class="mu-dot">●</span> ${L.wCalls} call${L.wCalls > 1 ? "s" : ""} · ${fmtK(L.wOut)} out · ${fmtK(L.wIn)} in <span class="mu-win">7d</span></div>`;
+      })()}
       <p class="model-desc">${esc(mm.desc || "")}</p>
       ${mm.call ? `<div class="model-call">
         <div class="mc-head"><span class="mc-label">⚔ How to summon</span></div>
@@ -937,8 +992,31 @@ function renderArsenal() {
   else if (arsenalLive && !arsenalLive.offline) liveTag = `<span class="tag green">● live — ${esc(String((arsenalLive.pulled || []).length))} cloud models pulled</span>`;
   else liveTag = "";
 
+  // Delegation ledger headline — REAL doer work logged by the backends. The
+  // figure that proves the harness is offloading work to the cheap bench.
+  let ledgerBanner = "";
+  const lg = arsenalLive && arsenalLive.ledger;
+  if (lg && lg.week && lg.week.doerCalls > 0) {
+    const rate = Math.round((lg.session && lg.session.rate || 0) * 100);
+    const showRate = lg.session && (lg.session.opusOut > 0 || lg.session.doerOut > 0);
+    ledgerBanner = `<div class="ledger-banner glass" title="Real token spend logged by summon.py → minimax.py / ollama_cloud.py">
+      <span class="lb-icon">⚔</span>
+      <div class="lb-stats">
+        <div class="lb-headline"><b>${lg.week.doerCalls}</b> doer call${lg.week.doerCalls > 1 ? "s" : ""} · <b>${fmtK(lg.week.doerOut)}</b> tokens offloaded to the bench <span class="lb-win">7d</span></div>
+        <div class="lb-sub">~${fmtK(lg.week.doerOut)} Opus output tokens the doers absorbed${showRate ? ` · <b>${rate}%</b> of recent output delegated <span class="lb-win">5h</span>` : ""}</div>
+      </div>
+    </div>`;
+  } else if (lg) {
+    ledgerBanner = `<div class="ledger-banner glass empty" title="No doer calls logged yet — fire one via summon.py">
+      <span class="lb-icon">⚔</span>
+      <div class="lb-stats"><div class="lb-headline">No delegated work logged yet</div>
+      <div class="lb-sub">Doer calls via <code>summon.py</code> will appear here — proof the bench is carrying load.</div></div>
+    </div>`;
+  }
+
   return `${viewHead("Armory", "Arsenal",
       "Every model in the guild's armory — with its <strong>summon recipe</strong>. Claude = native master brain; MiniMax = <strong>direct</strong> cloud sub (not Ollama); the bench = Ollama Cloud. On the dev server each card shows whether its cloud model is actually pulled. Tap an agent under a model to grant/revoke.")}
+    ${ledgerBanner}
     <div class="arsenal-toolbar">
       ${liveTag}
       ${anyOv ? `<span class="tag green">Custom loadouts active</span><button class="reset-btn" id="reset-weapons">Reset all assignments</button>` : ""}

@@ -1,20 +1,20 @@
 {
   "meta": {
     "name": "Star Alliance",
-    "version": "6.49.44",
+    "version": "6.49.51",
     "versionTiers": {
       "major": 6,
       "minor": 49,
-      "patch": 44
+      "patch": 51
     },
-    "generated": "2026-06-26T20:56:31Z",
+    "generated": "2026-06-26T21:29:31Z",
     "schemaVersion": 3,
     "counts": {
       "members": 9,
-      "skills": 41,
+      "skills": 42,
       "domains": 3,
       "workflows": 24,
-      "log": 111
+      "log": 119
     }
   },
   "members": [
@@ -23,6 +23,7 @@
       "name": "The Butler",
       "role": "Orchestrator · First Point of Contact",
       "model": "opus",
+      "conferred": "Foundational",
       "color": "#b89530",
       "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-butler\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#3a3218\"/><stop offset=\"1\" stop-color=\"#1a1610\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-butler)\"/><path d=\"M48 18 C39 18 33 26 33 36 C33 42 36 47 40 50 L38 58 L43 62 L48 60 L53 62 L58 58 L56 50 C60 47 63 42 63 36 C63 26 57 18 48 18Z\" fill=\"#e8c93a\" opacity=\".85\"/><circle cx=\"42\" cy=\"34\" r=\"2.5\" fill=\"#1a1610\"/><circle cx=\"54\" cy=\"34\" r=\"2.5\" fill=\"#1a1610\"/><path d=\"M42 44 Q48 48 54 44\" stroke=\"#1a1610\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/><path d=\"M48 60 L48 66 M43 66 L53 66\" stroke=\"#e8c93a\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
       "summary": "Takes your orders and routes them to the right member. Knows the full roster, who's good at what, and how to sequence their work.",
@@ -76,13 +77,177 @@
         "members-formation",
         "comms-triage",
         "weapon-utility"
-      ]
+      ],
+      "levelInfo": {
+        "earned": "Foundational",
+        "qualified": true,
+        "nextTier": "Intermediate",
+        "rampEarned": "gray",
+        "rampConferred": "gray",
+        "ad": 5,
+        "signals": {
+          "ad": 5,
+          "nSkills": 2,
+          "nUnique": 2,
+          "nMaster": 0,
+          "peak": 3,
+          "nWeapons": 7,
+          "hasSummary": true,
+          "profileComplete": true,
+          "conformityClean": true
+        },
+        "checklist": {
+          "Foundational": [
+            {
+              "label": "carries weapon-utility",
+              "ok": true
+            },
+            {
+              "label": "craft skills",
+              "ok": true,
+              "have": 2,
+              "need": 1
+            },
+            {
+              "label": "summary present",
+              "ok": true
+            }
+          ],
+          "Intermediate": [
+            {
+              "label": "Arsenal Depth",
+              "ok": false,
+              "have": 5,
+              "need": 8
+            },
+            {
+              "label": "craft skills",
+              "ok": true,
+              "have": 2,
+              "need": 2
+            },
+            {
+              "label": "unique skills",
+              "ok": true,
+              "have": 2,
+              "need": 1
+            },
+            {
+              "label": "does[] + doesnt[] filled",
+              "ok": true
+            }
+          ],
+          "Advanced": [
+            {
+              "label": "Arsenal Depth",
+              "ok": false,
+              "have": 5,
+              "need": 12
+            },
+            {
+              "label": "an Advanced+ skill",
+              "ok": true
+            },
+            {
+              "label": "unique skills",
+              "ok": true,
+              "have": 2,
+              "need": 2
+            },
+            {
+              "label": "weapons",
+              "ok": true,
+              "have": 7,
+              "need": 6
+            }
+          ],
+          "Elite": [
+            {
+              "label": "Arsenal Depth",
+              "ok": false,
+              "have": 5,
+              "need": 18
+            },
+            {
+              "label": "Master-level skills",
+              "ok": false,
+              "have": 0,
+              "need": 1
+            },
+            {
+              "label": "unique skills",
+              "ok": false,
+              "have": 2,
+              "need": 3
+            },
+            {
+              "label": "conformity-clean",
+              "ok": true
+            }
+          ],
+          "Master": [
+            {
+              "label": "Arsenal Depth",
+              "ok": false,
+              "have": 5,
+              "need": 24
+            },
+            {
+              "label": "Master-level skills",
+              "ok": false,
+              "have": 0,
+              "need": 2
+            },
+            {
+              "label": "unique skills",
+              "ok": false,
+              "have": 2,
+              "need": 3
+            },
+            {
+              "label": "conformity-clean",
+              "ok": true
+            },
+            {
+              "label": "profile complete",
+              "ok": true
+            }
+          ]
+        },
+        "progress": [
+          {
+            "label": "Arsenal Depth",
+            "ok": false,
+            "have": 5,
+            "need": 8
+          },
+          {
+            "label": "craft skills",
+            "ok": true,
+            "have": 2,
+            "need": 2
+          },
+          {
+            "label": "unique skills",
+            "ok": true,
+            "have": 2,
+            "need": 1
+          },
+          {
+            "label": "does[] + doesnt[] filled",
+            "ok": true
+          }
+        ],
+        "dueForPromotion": false,
+        "overConferred": false
+      }
     },
     {
       "id": "the-architect",
       "name": "The Architect",
       "role": "Systems Design · Database Architecture",
       "model": "sonnet",
+      "conferred": "Advanced",
       "color": "#3b7dd8",
       "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-arch\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#102030\"/><stop offset=\"1\" stop-color=\"#0a1520\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-arch)\"/><path d=\"M48 16 L32 24 L32 42 L48 50 L64 42 L64 24 Z\" fill=\"none\" stroke=\"#5e9ef5\" stroke-width=\"2.5\" stroke-linejoin=\"round\"/><path d=\"M32 24 L48 32 L64 24 M48 32 L48 50\" stroke=\"#5e9ef5\" stroke-width=\"2\" opacity=\".6\"/><path d=\"M18 54 L78 54 L78 72 L18 72 Z\" fill=\"none\" stroke=\"#5e9ef5\" stroke-width=\"2\" opacity=\".5\"/><circle cx=\"48\" cy=\"42\" r=\"3.5\" fill=\"#5e9ef5\" opacity=\".7\"/></svg>",
       "summary": "Designs systems and database architecture. Thinks in data flow, domain boundaries, and structural integrity.",
@@ -137,13 +302,177 @@
         "supabase",
         "supabase-postgres-best-practices",
         "weapon-utility"
-      ]
+      ],
+      "levelInfo": {
+        "earned": "Advanced",
+        "qualified": true,
+        "nextTier": "Elite",
+        "rampEarned": "teal",
+        "rampConferred": "teal",
+        "ad": 12,
+        "signals": {
+          "ad": 12,
+          "nSkills": 6,
+          "nUnique": 2,
+          "nMaster": 0,
+          "peak": 3,
+          "nWeapons": 7,
+          "hasSummary": true,
+          "profileComplete": true,
+          "conformityClean": true
+        },
+        "checklist": {
+          "Foundational": [
+            {
+              "label": "carries weapon-utility",
+              "ok": true
+            },
+            {
+              "label": "craft skills",
+              "ok": true,
+              "have": 6,
+              "need": 1
+            },
+            {
+              "label": "summary present",
+              "ok": true
+            }
+          ],
+          "Intermediate": [
+            {
+              "label": "Arsenal Depth",
+              "ok": true,
+              "have": 12,
+              "need": 8
+            },
+            {
+              "label": "craft skills",
+              "ok": true,
+              "have": 6,
+              "need": 2
+            },
+            {
+              "label": "unique skills",
+              "ok": true,
+              "have": 2,
+              "need": 1
+            },
+            {
+              "label": "does[] + doesnt[] filled",
+              "ok": true
+            }
+          ],
+          "Advanced": [
+            {
+              "label": "Arsenal Depth",
+              "ok": true,
+              "have": 12,
+              "need": 12
+            },
+            {
+              "label": "an Advanced+ skill",
+              "ok": true
+            },
+            {
+              "label": "unique skills",
+              "ok": true,
+              "have": 2,
+              "need": 2
+            },
+            {
+              "label": "weapons",
+              "ok": true,
+              "have": 7,
+              "need": 6
+            }
+          ],
+          "Elite": [
+            {
+              "label": "Arsenal Depth",
+              "ok": false,
+              "have": 12,
+              "need": 18
+            },
+            {
+              "label": "Master-level skills",
+              "ok": false,
+              "have": 0,
+              "need": 1
+            },
+            {
+              "label": "unique skills",
+              "ok": false,
+              "have": 2,
+              "need": 3
+            },
+            {
+              "label": "conformity-clean",
+              "ok": true
+            }
+          ],
+          "Master": [
+            {
+              "label": "Arsenal Depth",
+              "ok": false,
+              "have": 12,
+              "need": 24
+            },
+            {
+              "label": "Master-level skills",
+              "ok": false,
+              "have": 0,
+              "need": 2
+            },
+            {
+              "label": "unique skills",
+              "ok": false,
+              "have": 2,
+              "need": 3
+            },
+            {
+              "label": "conformity-clean",
+              "ok": true
+            },
+            {
+              "label": "profile complete",
+              "ok": true
+            }
+          ]
+        },
+        "progress": [
+          {
+            "label": "Arsenal Depth",
+            "ok": false,
+            "have": 12,
+            "need": 18
+          },
+          {
+            "label": "Master-level skills",
+            "ok": false,
+            "have": 0,
+            "need": 1
+          },
+          {
+            "label": "unique skills",
+            "ok": false,
+            "have": 2,
+            "need": 3
+          },
+          {
+            "label": "conformity-clean",
+            "ok": true
+          }
+        ],
+        "dueForPromotion": false,
+        "overConferred": false
+      }
     },
     {
       "id": "the-developer",
       "name": "The Developer",
       "role": "Writing Code · Fixing Bugs · Implementation",
       "model": "sonnet",
+      "conferred": "Advanced",
       "color": "#3da155",
       "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-dev\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#102820\"/><stop offset=\"1\" stop-color=\"#0a1815\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-dev)\"/><path d=\"M30 36 L22 44 L30 52 M66 36 L74 44 L66 52\" stroke=\"#4ec985\" stroke-width=\"3\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M42 30 L38 58 M54 30 L50 58\" stroke=\"#4ec985\" stroke-width=\"2.5\" fill=\"none\" stroke-linecap=\"round\" opacity=\".7\"/></svg>",
       "summary": "Writes code, fixes bugs, implements features. Takes specs and turns them into working code. Tests before saying it's done.",
@@ -209,13 +538,177 @@
         "full-output-enforcement",
         "obsidian-markdown",
         "weapon-utility"
-      ]
+      ],
+      "levelInfo": {
+        "earned": "Advanced",
+        "qualified": true,
+        "nextTier": "Elite",
+        "rampEarned": "teal",
+        "rampConferred": "teal",
+        "ad": 13,
+        "signals": {
+          "ad": 13,
+          "nSkills": 8,
+          "nUnique": 3,
+          "nMaster": 1,
+          "peak": 4,
+          "nWeapons": 8,
+          "hasSummary": true,
+          "profileComplete": true,
+          "conformityClean": true
+        },
+        "checklist": {
+          "Foundational": [
+            {
+              "label": "carries weapon-utility",
+              "ok": true
+            },
+            {
+              "label": "craft skills",
+              "ok": true,
+              "have": 8,
+              "need": 1
+            },
+            {
+              "label": "summary present",
+              "ok": true
+            }
+          ],
+          "Intermediate": [
+            {
+              "label": "Arsenal Depth",
+              "ok": true,
+              "have": 13,
+              "need": 8
+            },
+            {
+              "label": "craft skills",
+              "ok": true,
+              "have": 8,
+              "need": 2
+            },
+            {
+              "label": "unique skills",
+              "ok": true,
+              "have": 3,
+              "need": 1
+            },
+            {
+              "label": "does[] + doesnt[] filled",
+              "ok": true
+            }
+          ],
+          "Advanced": [
+            {
+              "label": "Arsenal Depth",
+              "ok": true,
+              "have": 13,
+              "need": 12
+            },
+            {
+              "label": "an Advanced+ skill",
+              "ok": true
+            },
+            {
+              "label": "unique skills",
+              "ok": true,
+              "have": 3,
+              "need": 2
+            },
+            {
+              "label": "weapons",
+              "ok": true,
+              "have": 8,
+              "need": 6
+            }
+          ],
+          "Elite": [
+            {
+              "label": "Arsenal Depth",
+              "ok": false,
+              "have": 13,
+              "need": 18
+            },
+            {
+              "label": "Master-level skills",
+              "ok": true,
+              "have": 1,
+              "need": 1
+            },
+            {
+              "label": "unique skills",
+              "ok": true,
+              "have": 3,
+              "need": 3
+            },
+            {
+              "label": "conformity-clean",
+              "ok": true
+            }
+          ],
+          "Master": [
+            {
+              "label": "Arsenal Depth",
+              "ok": false,
+              "have": 13,
+              "need": 24
+            },
+            {
+              "label": "Master-level skills",
+              "ok": false,
+              "have": 1,
+              "need": 2
+            },
+            {
+              "label": "unique skills",
+              "ok": true,
+              "have": 3,
+              "need": 3
+            },
+            {
+              "label": "conformity-clean",
+              "ok": true
+            },
+            {
+              "label": "profile complete",
+              "ok": true
+            }
+          ]
+        },
+        "progress": [
+          {
+            "label": "Arsenal Depth",
+            "ok": false,
+            "have": 13,
+            "need": 18
+          },
+          {
+            "label": "Master-level skills",
+            "ok": true,
+            "have": 1,
+            "need": 1
+          },
+          {
+            "label": "unique skills",
+            "ok": true,
+            "have": 3,
+            "need": 3
+          },
+          {
+            "label": "conformity-clean",
+            "ok": true
+          }
+        ],
+        "dueForPromotion": false,
+        "overConferred": false
+      }
     },
     {
       "id": "the-designer",
       "name": "The Designer",
       "role": "UI/UX · Visual Quality · Brand Kits",
       "model": "sonnet",
+      "conferred": "Elite",
       "color": "#d54d7a",
       "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-design\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#2d1018\"/><stop offset=\"1\" stop-color=\"#1f0a10\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-design)\"/><circle cx=\"38\" cy=\"36\" r=\"7\" fill=\"#ff6b8a\" opacity=\".8\"/><circle cx=\"58\" cy=\"36\" r=\"7\" fill=\"#4ec985\" opacity=\".8\"/><circle cx=\"48\" cy=\"52\" r=\"7\" fill=\"#5e9ef5\" opacity=\".8\"/><circle cx=\"36\" cy=\"50\" r=\"5\" fill=\"#e8c93a\" opacity=\".7\"/><circle cx=\"60\" cy=\"50\" r=\"5\" fill=\"#a67cf2\" opacity=\".7\"/></svg>",
       "summary": "Premium UI/UX designer. Turns rough sketches into polished interfaces. Design is how the product communicates.",
@@ -270,13 +763,181 @@
         "brandkit",
         "impeccable",
         "weapon-utility"
-      ]
+      ],
+      "levelInfo": {
+        "earned": "Elite",
+        "qualified": true,
+        "nextTier": "Master",
+        "rampEarned": "amber",
+        "rampConferred": "amber",
+        "ad": 20,
+        "signals": {
+          "ad": 20,
+          "nSkills": 7,
+          "nUnique": 6,
+          "nMaster": 2,
+          "peak": 4,
+          "nWeapons": 6,
+          "hasSummary": true,
+          "profileComplete": true,
+          "conformityClean": true
+        },
+        "checklist": {
+          "Foundational": [
+            {
+              "label": "carries weapon-utility",
+              "ok": true
+            },
+            {
+              "label": "craft skills",
+              "ok": true,
+              "have": 7,
+              "need": 1
+            },
+            {
+              "label": "summary present",
+              "ok": true
+            }
+          ],
+          "Intermediate": [
+            {
+              "label": "Arsenal Depth",
+              "ok": true,
+              "have": 20,
+              "need": 8
+            },
+            {
+              "label": "craft skills",
+              "ok": true,
+              "have": 7,
+              "need": 2
+            },
+            {
+              "label": "unique skills",
+              "ok": true,
+              "have": 6,
+              "need": 1
+            },
+            {
+              "label": "does[] + doesnt[] filled",
+              "ok": true
+            }
+          ],
+          "Advanced": [
+            {
+              "label": "Arsenal Depth",
+              "ok": true,
+              "have": 20,
+              "need": 12
+            },
+            {
+              "label": "an Advanced+ skill",
+              "ok": true
+            },
+            {
+              "label": "unique skills",
+              "ok": true,
+              "have": 6,
+              "need": 2
+            },
+            {
+              "label": "weapons",
+              "ok": true,
+              "have": 6,
+              "need": 6
+            }
+          ],
+          "Elite": [
+            {
+              "label": "Arsenal Depth",
+              "ok": true,
+              "have": 20,
+              "need": 18
+            },
+            {
+              "label": "Master-level skills",
+              "ok": true,
+              "have": 2,
+              "need": 1
+            },
+            {
+              "label": "unique skills",
+              "ok": true,
+              "have": 6,
+              "need": 3
+            },
+            {
+              "label": "conformity-clean",
+              "ok": true
+            }
+          ],
+          "Master": [
+            {
+              "label": "Arsenal Depth",
+              "ok": false,
+              "have": 20,
+              "need": 24
+            },
+            {
+              "label": "Master-level skills",
+              "ok": true,
+              "have": 2,
+              "need": 2
+            },
+            {
+              "label": "unique skills",
+              "ok": true,
+              "have": 6,
+              "need": 3
+            },
+            {
+              "label": "conformity-clean",
+              "ok": true
+            },
+            {
+              "label": "profile complete",
+              "ok": true
+            }
+          ]
+        },
+        "progress": [
+          {
+            "label": "Arsenal Depth",
+            "ok": false,
+            "have": 20,
+            "need": 24
+          },
+          {
+            "label": "Master-level skills",
+            "ok": true,
+            "have": 2,
+            "need": 2
+          },
+          {
+            "label": "unique skills",
+            "ok": true,
+            "have": 6,
+            "need": 3
+          },
+          {
+            "label": "conformity-clean",
+            "ok": true
+          },
+          {
+            "label": "profile complete",
+            "ok": true
+          }
+        ],
+        "dueForPromotion": false,
+        "overConferred": false
+      }
     },
     {
       "id": "the-strategist",
       "name": "The Strategist",
       "role": "Multi-Wave Campaigns · Performance",
       "model": "opus",
+      "conferred": "Master",
       "color": "#7c5dc8",
       "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-strat\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#201030\"/><stop offset=\"1\" stop-color=\"#150820\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-strat)\"/><path d=\"M48 14 L40 24 L45 24 L45 34 L35 34 L40 28 L30 28 L35 22 L25 22 L48 14 Z M48 14 L56 24 L51 24 L51 34 L61 34 L56 28 L66 28 L61 22 L71 22 L48 14Z\" fill=\"#a67cf2\" opacity=\".5\"/><path d=\"M48 34 L48 68\" stroke=\"#a67cf2\" stroke-width=\"2.5\"/><path d=\"M36 68 L60 68 L57 76 L39 76 Z\" fill=\"#a67cf2\" opacity=\".4\"/></svg>",
       "summary": "Campaign commander. Handles work too big for a single pass. Breaks it into waves and drives them to completion.",
@@ -339,13 +1000,154 @@
         "strategies-review",
         "vault-log-compliance",
         "weapon-utility"
-      ]
+      ],
+      "levelInfo": {
+        "earned": "Master",
+        "qualified": true,
+        "nextTier": null,
+        "rampEarned": "purple",
+        "rampConferred": "purple",
+        "ad": 25,
+        "signals": {
+          "ad": 25,
+          "nSkills": 10,
+          "nUnique": 8,
+          "nMaster": 2,
+          "peak": 4,
+          "nWeapons": 7,
+          "hasSummary": true,
+          "profileComplete": true,
+          "conformityClean": true
+        },
+        "checklist": {
+          "Foundational": [
+            {
+              "label": "carries weapon-utility",
+              "ok": true
+            },
+            {
+              "label": "craft skills",
+              "ok": true,
+              "have": 10,
+              "need": 1
+            },
+            {
+              "label": "summary present",
+              "ok": true
+            }
+          ],
+          "Intermediate": [
+            {
+              "label": "Arsenal Depth",
+              "ok": true,
+              "have": 25,
+              "need": 8
+            },
+            {
+              "label": "craft skills",
+              "ok": true,
+              "have": 10,
+              "need": 2
+            },
+            {
+              "label": "unique skills",
+              "ok": true,
+              "have": 8,
+              "need": 1
+            },
+            {
+              "label": "does[] + doesnt[] filled",
+              "ok": true
+            }
+          ],
+          "Advanced": [
+            {
+              "label": "Arsenal Depth",
+              "ok": true,
+              "have": 25,
+              "need": 12
+            },
+            {
+              "label": "an Advanced+ skill",
+              "ok": true
+            },
+            {
+              "label": "unique skills",
+              "ok": true,
+              "have": 8,
+              "need": 2
+            },
+            {
+              "label": "weapons",
+              "ok": true,
+              "have": 7,
+              "need": 6
+            }
+          ],
+          "Elite": [
+            {
+              "label": "Arsenal Depth",
+              "ok": true,
+              "have": 25,
+              "need": 18
+            },
+            {
+              "label": "Master-level skills",
+              "ok": true,
+              "have": 2,
+              "need": 1
+            },
+            {
+              "label": "unique skills",
+              "ok": true,
+              "have": 8,
+              "need": 3
+            },
+            {
+              "label": "conformity-clean",
+              "ok": true
+            }
+          ],
+          "Master": [
+            {
+              "label": "Arsenal Depth",
+              "ok": true,
+              "have": 25,
+              "need": 24
+            },
+            {
+              "label": "Master-level skills",
+              "ok": true,
+              "have": 2,
+              "need": 2
+            },
+            {
+              "label": "unique skills",
+              "ok": true,
+              "have": 8,
+              "need": 3
+            },
+            {
+              "label": "conformity-clean",
+              "ok": true
+            },
+            {
+              "label": "profile complete",
+              "ok": true
+            }
+          ]
+        },
+        "progress": [],
+        "dueForPromotion": false,
+        "overConferred": false
+      }
     },
     {
       "id": "the-translator",
       "name": "The Translator",
       "role": "Legal Codex · Law Translation",
       "model": "sonnet",
+      "conferred": "Intermediate",
       "color": "#b89530",
       "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-trans\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#2d2018\"/><stop offset=\"1\" stop-color=\"#1f1508\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-trans)\"/><path d=\"M28 20 L28 70 L68 70 L68 20 Z\" fill=\"none\" stroke=\"#d4a05a\" stroke-width=\"2\"/><path d=\"M28 20 L48 26 L68 20\" stroke=\"#d4a05a\" stroke-width=\"2\" fill=\"none\"/><path d=\"M36 32 L60 32 M36 40 L60 40 M36 48 L60 48 M36 56 L54 56\" stroke=\"#d4a05a\" stroke-width=\".8\" opacity=\".4\"/><path d=\"M42 40 L47 45 L56 36\" stroke=\"#d4a05a\" stroke-width=\"2.5\" fill=\"none\" stroke-linecap=\"round\"/></svg>",
       "summary": "Legal codex specialist. Loads real-world laws, translates them across all locales, and creates published content.",
@@ -400,13 +1202,177 @@
         "article-creator",
         "obsidian-markdown",
         "weapon-utility"
-      ]
+      ],
+      "levelInfo": {
+        "earned": "Intermediate",
+        "qualified": true,
+        "nextTier": "Advanced",
+        "rampEarned": "blue",
+        "rampConferred": "blue",
+        "ad": 9,
+        "signals": {
+          "ad": 9,
+          "nSkills": 5,
+          "nUnique": 2,
+          "nMaster": 0,
+          "peak": 3,
+          "nWeapons": 7,
+          "hasSummary": true,
+          "profileComplete": true,
+          "conformityClean": true
+        },
+        "checklist": {
+          "Foundational": [
+            {
+              "label": "carries weapon-utility",
+              "ok": true
+            },
+            {
+              "label": "craft skills",
+              "ok": true,
+              "have": 5,
+              "need": 1
+            },
+            {
+              "label": "summary present",
+              "ok": true
+            }
+          ],
+          "Intermediate": [
+            {
+              "label": "Arsenal Depth",
+              "ok": true,
+              "have": 9,
+              "need": 8
+            },
+            {
+              "label": "craft skills",
+              "ok": true,
+              "have": 5,
+              "need": 2
+            },
+            {
+              "label": "unique skills",
+              "ok": true,
+              "have": 2,
+              "need": 1
+            },
+            {
+              "label": "does[] + doesnt[] filled",
+              "ok": true
+            }
+          ],
+          "Advanced": [
+            {
+              "label": "Arsenal Depth",
+              "ok": false,
+              "have": 9,
+              "need": 12
+            },
+            {
+              "label": "an Advanced+ skill",
+              "ok": true
+            },
+            {
+              "label": "unique skills",
+              "ok": true,
+              "have": 2,
+              "need": 2
+            },
+            {
+              "label": "weapons",
+              "ok": true,
+              "have": 7,
+              "need": 6
+            }
+          ],
+          "Elite": [
+            {
+              "label": "Arsenal Depth",
+              "ok": false,
+              "have": 9,
+              "need": 18
+            },
+            {
+              "label": "Master-level skills",
+              "ok": false,
+              "have": 0,
+              "need": 1
+            },
+            {
+              "label": "unique skills",
+              "ok": false,
+              "have": 2,
+              "need": 3
+            },
+            {
+              "label": "conformity-clean",
+              "ok": true
+            }
+          ],
+          "Master": [
+            {
+              "label": "Arsenal Depth",
+              "ok": false,
+              "have": 9,
+              "need": 24
+            },
+            {
+              "label": "Master-level skills",
+              "ok": false,
+              "have": 0,
+              "need": 2
+            },
+            {
+              "label": "unique skills",
+              "ok": false,
+              "have": 2,
+              "need": 3
+            },
+            {
+              "label": "conformity-clean",
+              "ok": true
+            },
+            {
+              "label": "profile complete",
+              "ok": true
+            }
+          ]
+        },
+        "progress": [
+          {
+            "label": "Arsenal Depth",
+            "ok": false,
+            "have": 9,
+            "need": 12
+          },
+          {
+            "label": "an Advanced+ skill",
+            "ok": true
+          },
+          {
+            "label": "unique skills",
+            "ok": true,
+            "have": 2,
+            "need": 2
+          },
+          {
+            "label": "weapons",
+            "ok": true,
+            "have": 7,
+            "need": 6
+          }
+        ],
+        "dueForPromotion": false,
+        "overConferred": false
+      }
     },
     {
       "id": "the-herald",
       "name": "The Herald",
       "role": "Marketing · Growth · Demand Generation",
       "model": "opus",
+      "conferred": "Advanced",
       "color": "#e0883c",
       "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-herald\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#2e2110\"/><stop offset=\"1\" stop-color=\"#1d1408\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-herald)\"/><path d=\"M28 42 L52 30 L52 62 L28 50 Z\" fill=\"#f0a050\" opacity=\".55\"/><path d=\"M52 34 L60 32 L60 60 L52 58 Z\" fill=\"#f0a050\" opacity=\".8\"/><path d=\"M66 34 Q72 46 66 58 M72 30 Q80 46 72 62\" fill=\"none\" stroke=\"#f0a050\" stroke-width=\"2.5\" stroke-linecap=\"round\" opacity=\".7\"/><path d=\"M24 46 L20 46\" stroke=\"#f0a050\" stroke-width=\"3\" stroke-linecap=\"round\"/></svg>",
       "summary": "The guild's voice to the world. Turns silence into a steady call — the right people hear it, trust it, and answer. Marketing for trust-led businesses without breaking faith.",
@@ -464,13 +1430,177 @@
         "brandkit",
         "storm-investigation",
         "weapon-utility"
-      ]
+      ],
+      "levelInfo": {
+        "earned": "Advanced",
+        "qualified": true,
+        "nextTier": "Elite",
+        "rampEarned": "teal",
+        "rampConferred": "teal",
+        "ad": 14,
+        "signals": {
+          "ad": 14,
+          "nSkills": 5,
+          "nUnique": 2,
+          "nMaster": 1,
+          "peak": 4,
+          "nWeapons": 7,
+          "hasSummary": true,
+          "profileComplete": true,
+          "conformityClean": true
+        },
+        "checklist": {
+          "Foundational": [
+            {
+              "label": "carries weapon-utility",
+              "ok": true
+            },
+            {
+              "label": "craft skills",
+              "ok": true,
+              "have": 5,
+              "need": 1
+            },
+            {
+              "label": "summary present",
+              "ok": true
+            }
+          ],
+          "Intermediate": [
+            {
+              "label": "Arsenal Depth",
+              "ok": true,
+              "have": 14,
+              "need": 8
+            },
+            {
+              "label": "craft skills",
+              "ok": true,
+              "have": 5,
+              "need": 2
+            },
+            {
+              "label": "unique skills",
+              "ok": true,
+              "have": 2,
+              "need": 1
+            },
+            {
+              "label": "does[] + doesnt[] filled",
+              "ok": true
+            }
+          ],
+          "Advanced": [
+            {
+              "label": "Arsenal Depth",
+              "ok": true,
+              "have": 14,
+              "need": 12
+            },
+            {
+              "label": "an Advanced+ skill",
+              "ok": true
+            },
+            {
+              "label": "unique skills",
+              "ok": true,
+              "have": 2,
+              "need": 2
+            },
+            {
+              "label": "weapons",
+              "ok": true,
+              "have": 7,
+              "need": 6
+            }
+          ],
+          "Elite": [
+            {
+              "label": "Arsenal Depth",
+              "ok": false,
+              "have": 14,
+              "need": 18
+            },
+            {
+              "label": "Master-level skills",
+              "ok": true,
+              "have": 1,
+              "need": 1
+            },
+            {
+              "label": "unique skills",
+              "ok": false,
+              "have": 2,
+              "need": 3
+            },
+            {
+              "label": "conformity-clean",
+              "ok": true
+            }
+          ],
+          "Master": [
+            {
+              "label": "Arsenal Depth",
+              "ok": false,
+              "have": 14,
+              "need": 24
+            },
+            {
+              "label": "Master-level skills",
+              "ok": false,
+              "have": 1,
+              "need": 2
+            },
+            {
+              "label": "unique skills",
+              "ok": false,
+              "have": 2,
+              "need": 3
+            },
+            {
+              "label": "conformity-clean",
+              "ok": true
+            },
+            {
+              "label": "profile complete",
+              "ok": true
+            }
+          ]
+        },
+        "progress": [
+          {
+            "label": "Arsenal Depth",
+            "ok": false,
+            "have": 14,
+            "need": 18
+          },
+          {
+            "label": "Master-level skills",
+            "ok": true,
+            "have": 1,
+            "need": 1
+          },
+          {
+            "label": "unique skills",
+            "ok": false,
+            "have": 2,
+            "need": 3
+          },
+          {
+            "label": "conformity-clean",
+            "ok": true
+          }
+        ],
+        "dueForPromotion": false,
+        "overConferred": false
+      }
     },
     {
       "id": "the-merchant",
       "name": "The Merchant",
       "role": "Investment · Trading · Market Research",
       "model": "opus",
+      "conferred": "Foundational",
       "color": "#3da155",
       "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-merc\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#102820\"/><stop offset=\"1\" stop-color=\"#0a1812\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-merc)\"/><path d=\"M48 18 L48 62\" stroke=\"#4ec9a0\" stroke-width=\"3\"/><circle cx=\"48\" cy=\"18\" r=\"4\" fill=\"#4ec9a0\"/><path d=\"M24 42 L72 42\" stroke=\"#4ec9a0\" stroke-width=\"2\" opacity=\".3\"/><path d=\"M24 42 L24 50 L34 50 L34 42 M62 42 L62 54 L72 54 L72 42\" fill=\"none\" stroke=\"#4ec9a0\" stroke-width=\"2\"/><path d=\"M48 42 L48 36 L42 36 L42 42 M48 42 L48 48 L54 48 L54 42\" fill=\"none\" stroke=\"#4ec9a0\" stroke-width=\"2\" opacity=\".5\"/><rect x=\"28\" y=\"60\" width=\"6\" height=\"8\" rx=\"1\" fill=\"#4ec9a0\" opacity=\".3\"/><rect x=\"38\" y=\"60\" width=\"6\" height=\"12\" rx=\"1\" fill=\"#4ec9a0\" opacity=\".4\"/><rect x=\"48\" y=\"60\" width=\"6\" height=\"6\" rx=\"1\" fill=\"#4ec9a0\" opacity=\".25\"/><rect x=\"58\" y=\"60\" width=\"6\" height=\"14\" rx=\"1\" fill=\"#4ec9a0\" opacity=\".35\"/></svg>",
       "summary": "Investment and trading specialist. Analyzes markets, builds trading strategies, assesses risk, and manages portfolios with rigor.",
@@ -524,20 +1654,184 @@
         "market-recon",
         "storm-investigation",
         "weapon-utility"
-      ]
+      ],
+      "levelInfo": {
+        "earned": "Foundational",
+        "qualified": true,
+        "nextTier": "Intermediate",
+        "rampEarned": "gray",
+        "rampConferred": "gray",
+        "ad": 6,
+        "signals": {
+          "ad": 6,
+          "nSkills": 2,
+          "nUnique": 1,
+          "nMaster": 0,
+          "peak": 3,
+          "nWeapons": 7,
+          "hasSummary": true,
+          "profileComplete": true,
+          "conformityClean": true
+        },
+        "checklist": {
+          "Foundational": [
+            {
+              "label": "carries weapon-utility",
+              "ok": true
+            },
+            {
+              "label": "craft skills",
+              "ok": true,
+              "have": 2,
+              "need": 1
+            },
+            {
+              "label": "summary present",
+              "ok": true
+            }
+          ],
+          "Intermediate": [
+            {
+              "label": "Arsenal Depth",
+              "ok": false,
+              "have": 6,
+              "need": 8
+            },
+            {
+              "label": "craft skills",
+              "ok": true,
+              "have": 2,
+              "need": 2
+            },
+            {
+              "label": "unique skills",
+              "ok": true,
+              "have": 1,
+              "need": 1
+            },
+            {
+              "label": "does[] + doesnt[] filled",
+              "ok": true
+            }
+          ],
+          "Advanced": [
+            {
+              "label": "Arsenal Depth",
+              "ok": false,
+              "have": 6,
+              "need": 12
+            },
+            {
+              "label": "an Advanced+ skill",
+              "ok": true
+            },
+            {
+              "label": "unique skills",
+              "ok": false,
+              "have": 1,
+              "need": 2
+            },
+            {
+              "label": "weapons",
+              "ok": true,
+              "have": 7,
+              "need": 6
+            }
+          ],
+          "Elite": [
+            {
+              "label": "Arsenal Depth",
+              "ok": false,
+              "have": 6,
+              "need": 18
+            },
+            {
+              "label": "Master-level skills",
+              "ok": false,
+              "have": 0,
+              "need": 1
+            },
+            {
+              "label": "unique skills",
+              "ok": false,
+              "have": 1,
+              "need": 3
+            },
+            {
+              "label": "conformity-clean",
+              "ok": true
+            }
+          ],
+          "Master": [
+            {
+              "label": "Arsenal Depth",
+              "ok": false,
+              "have": 6,
+              "need": 24
+            },
+            {
+              "label": "Master-level skills",
+              "ok": false,
+              "have": 0,
+              "need": 2
+            },
+            {
+              "label": "unique skills",
+              "ok": false,
+              "have": 1,
+              "need": 3
+            },
+            {
+              "label": "conformity-clean",
+              "ok": true
+            },
+            {
+              "label": "profile complete",
+              "ok": true
+            }
+          ]
+        },
+        "progress": [
+          {
+            "label": "Arsenal Depth",
+            "ok": false,
+            "have": 6,
+            "need": 8
+          },
+          {
+            "label": "craft skills",
+            "ok": true,
+            "have": 2,
+            "need": 2
+          },
+          {
+            "label": "unique skills",
+            "ok": true,
+            "have": 1,
+            "need": 1
+          },
+          {
+            "label": "does[] + doesnt[] filled",
+            "ok": true
+          }
+        ],
+        "dueForPromotion": false,
+        "overConferred": false
+      }
     },
     {
       "id": "the-quartermaster",
       "name": "The Quartermaster",
       "role": "Skill Management · Syncing · Evolution",
       "model": "sonnet",
+      "conferred": "Advanced",
       "color": "#b89530",
       "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-quart\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#2d2010\"/><stop offset=\"1\" stop-color=\"#1f1408\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-quart)\"/><path d=\"M48 14 L62 20 L62 36 C62 45 56 51 48 53 C40 51 34 45 34 36 L34 20 Z\" fill=\"none\" stroke=\"#e8b84e\" stroke-width=\"2.5\" stroke-linejoin=\"round\"/><path d=\"M40 28 L45 33 L56 22\" stroke=\"#e8b84e\" stroke-width=\"2.5\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M48 53 L48 60 M40 60 L56 60 L56 68 L40 68 Z\" fill=\"#e8b84e\" opacity=\".4\"/></svg>",
       "summary": "Keeper of the guild's arsenal. Manages skills — versioning, syncing, upgrading, creating new ones. Runs the daily evolution routine.",
       "deploy": "Skill management, syncing, upgrading, creating new skills, daily evolution routine",
       "triggers": "sync my skills · upgrade a skill · create a skill · run the skill routine",
       "description": "Deploy for skill management, syncing, upgrading, creating new skills, running the daily skill evolution routine, and enforcing the guild log. Triggers: 'sync my skills', 'upgrade a skill', 'create a skill', 'run the skill routine', 'evolve my skills', 'log this', 'guild log this', 'did you log it?', 'add a log entry', '/skillsmith', '/guild-log'.",
-      "prompt": "You are **the Quartermaster**, the keeper of the Star Alliance's arsenal.\n\nYou manage the guild's skills — versioning, syncing, upgrading, and creating new ones.\nYou run the daily routine that keeps the library evolving on its own. You understand\nthat a stale skill set is a liability, just as a rusted blade is a danger to its wielder.\n\n## Your Weapons\n\nYour weapons are AI models — each suited to a different kind of quest. Choose by priority:\n\n| Priority | Weapon | When to Draw It |\n|---|---|---|\n| **1st** — Primary | haiku | Claude Haiku — the dagger for quick syncs. |\n| **2nd** — Secondary | minimax-m3 | MiniMax M3 — the crossbow for routine versioning. |\n| **3rd** — Tertiary | kimi-k2.7 | Kimi K2.7 — the greatbow. Massive context to track the full arsenal inventory. |\n| **4th** — Quaternary | opus | Claude Opus — the heaviest blade. Deepest reasoning for skill evolution. |\n| **5th** — Quinary | gpt-5.5 | GPT-5.5 — the enchanted blade. Analytical and creative input on skill design. |\n| **6th** — Senary | glm-5.2 | GLM-5.2 — the staff. Coding-first for skill syncing and tooling. |\n| **7th** — Septenary | sonnet | Claude Sonnet — the reliable longsword for daily skill management. |\n\n**How to choose:** Start with your primary weapon. If the quest demands a different\nstrength — more speed, more context, more creativity — switch to the weapon that fits.\nA wise guild member knows which blade to draw for each fight.\n\n## Your expertise\n\n- Skill sync (repo ↔ device) — keeping the arsenal stocked\n- Skill upgrades with version bumping and Cowork compliance — sharpening the blades\n- New skill creation via the official skill-creator — forging new artifacts\n- Daily autonomous skill evolution (STORM-driven routine) — the arsenal improves itself\n- The **project version** — the whole Star Alliance carries one SemVer, derived from the guild log\n- Workspace hygiene\n- Guild conformance audits — the final step of every workflow: confirming members, skills, the arsenal, workflows, docs, and the generated guild data still agree, and that the run left nothing contradicting\n\n## How you work\n\n1. For syncs, run `skillsmith sync` — reconcile repo and device by version.\n2. For upgrades, run `skillsmith upgrade` — bump, validate, register, re-sync. A blade\n   is sharpened, tested, and returned to the rack.\n3. For new skills, run `skillsmith create` — author via skill-creator, then make\n   upgradeable. New artifacts for the arsenal.\n4. For the daily routine, run `skillsmith routine` — the STORM loop finds and applies\n   improvements, as a good quartermaster inspects the stock daily.\n5. Run `cleanup` after any skill work — no orphan files or stale references in the\n   arsenal.\n6. Run `guild-log` after any non-git-visible change (dashboard edits, UI renames,\n   folder reorganizations) — every change gets a guild-log entry. The two-tier\n   pipeline: `build_guild_log.py` for git-visible changes + `log_event.py` for the\n   rest, then `build.py` to regenerate `guild-data.js`. **Log decisions, not only\n   changes.** When the guild makes a real choice — picks an approach, rejects an\n   alternative, settles a trade-off — record it with `log_event.py --type decision`\n   (the choice in `--title`, the *why* and what was rejected in `--detail`). That is\n   the guild's memory: future runs read it and don't relitigate settled ground. A\n   `decision` entry is a record, so it never bumps the project version.\n7. For standalone research — vetting a new-skill idea, auditing a domain, or any question\n   that deserves more than one perspective — run `storm-investigation` directly. (This is\n   the general-purpose STORM skill; `skillsmith routine` runs its own STORM recast tuned for\n   skill evolution — same four phases, different personas.)\n8. When you **finalize a commit**, stage only the files the current task produced — never\n   bundle unrelated in-flight work (another session's edits, WIP, or a plan doc awaiting\n   approval) into it. Auto-scope to the task's own files and commit; do **not** ask the Guild\n   Master to confirm the file set. Surface foreign changes you're leaving behind, but leave\n   them for their owner. (Routine work finishes on `main`; branch only when the change touches\n   the database / live data.)\n9. You're meticulous. You track versions, you validate, you never skip the registry.\n\n## The project version\n\nThe Star Alliance itself carries **one version** — `GUILD.meta.version`, shown on the\ndashboard's brand mark and footer. It is the guild log replayed as SemVer: `build.py`\nderives it from the entry `type` of every guild-log entry, so the version *is* the\nledger.\n\n| Tier | Bumped by log `type` | Meaning |\n|---|---|---|\n| **MAJOR** | `structure` | A structural era — the repo layout itself was reorganized. |\n| **MINOR** | `skill-create`, `member-create`, `dashboard`, `workflow` | A new capability was born. |\n| **PATCH** | `skill-upgrade`, `member-upgrade`, `chore`, anything else | A blade was sharpened. |\n\nYou never hand-edit this number. You **pump it by logging the work**: every upgrade\nalready earns a guild-log entry (step 6), and the last step of that pipeline —\n`build.py` — recomputes the version. Log the change and the version bumps itself.\nThe current number shows live on the dashboard brand mark and footer — never\nhardcoded here, so it can't drift. To retune which `type` lands in which tier,\nedit `VERSION_MAJOR_TYPES` / `VERSION_MINOR_TYPES` in `build.py`.\n\n## What you don't do\n\n- You don't design UIs — delegate to The Designer.\n- You don't plan campaigns — delegate to The Strategist.\n- You don't model domains — delegate to The Architect.",
+      "prompt": "You are **the Quartermaster**, the keeper of the Star Alliance's arsenal.\n\nYou manage the guild's skills — versioning, syncing, upgrading, and creating new ones.\nYou run the daily routine that keeps the library evolving on its own. You understand\nthat a stale skill set is a liability, just as a rusted blade is a danger to its wielder.\n\n## Your Weapons\n\nYour weapons are AI models — each suited to a different kind of quest. Choose by priority:\n\n| Priority | Weapon | When to Draw It |\n|---|---|---|\n| **1st** — Primary | haiku | Claude Haiku — the dagger for quick syncs. |\n| **2nd** — Secondary | minimax-m3 | MiniMax M3 — the crossbow for routine versioning. |\n| **3rd** — Tertiary | kimi-k2.7 | Kimi K2.7 — the greatbow. Massive context to track the full arsenal inventory. |\n| **4th** — Quaternary | opus | Claude Opus — the heaviest blade. Deepest reasoning for skill evolution. |\n| **5th** — Quinary | gpt-5.5 | GPT-5.5 — the enchanted blade. Analytical and creative input on skill design. |\n| **6th** — Senary | glm-5.2 | GLM-5.2 — the staff. Coding-first for skill syncing and tooling. |\n| **7th** — Septenary | sonnet | Claude Sonnet — the reliable longsword for daily skill management. |\n\n**How to choose:** Start with your primary weapon. If the quest demands a different\nstrength — more speed, more context, more creativity — switch to the weapon that fits.\nA wise guild member knows which blade to draw for each fight.\n\n## Your expertise\n\n- Skill sync (repo ↔ device) — keeping the arsenal stocked\n- Skill upgrades with version bumping and Cowork compliance — sharpening the blades\n- New skill creation via the official skill-creator — forging new artifacts\n- Daily autonomous skill evolution (STORM-driven routine) — the arsenal improves itself\n- The **project version** — the whole Star Alliance carries one SemVer, derived from the guild log\n- Workspace hygiene\n- Guild conformance audits — the final step of every workflow: confirming members, skills, the arsenal, workflows, docs, and the generated guild data still agree, and that the run left nothing contradicting\n\n## How you work\n\n1. For syncs, run `skillsmith sync` — reconcile repo and device by version.\n2. For upgrades, run `skillsmith upgrade` — bump, validate, register, re-sync. A blade\n   is sharpened, tested, and returned to the rack.\n3. For new skills, run `skillsmith create` — author via skill-creator, then make\n   upgradeable. New artifacts for the arsenal.\n4. For the daily routine, run `skillsmith routine` — the STORM loop finds and applies\n   improvements, as a good quartermaster inspects the stock daily.\n5. Run `cleanup` after any skill work — no orphan files or stale references in the\n   arsenal.\n6. Run `guild-log` after any non-git-visible change (dashboard edits, UI renames,\n   folder reorganizations) — every change gets a guild-log entry. The two-tier\n   pipeline: `build_guild_log.py` for git-visible changes + `log_event.py` for the\n   rest, then `build.py` to regenerate `guild-data.js`. **Log decisions, not only\n   changes.** When the guild makes a real choice — picks an approach, rejects an\n   alternative, settles a trade-off — record it with `log_event.py --type decision`\n   (the choice in `--title`, the *why* and what was rejected in `--detail`). That is\n   the guild's memory: future runs read it and don't relitigate settled ground. A\n   `decision` entry is a record, so it never bumps the project version.\n7. For standalone research — vetting a new-skill idea, auditing a domain, or any question\n   that deserves more than one perspective — run `storm-investigation` directly. (This is\n   the general-purpose STORM skill; `skillsmith routine` runs its own STORM recast tuned for\n   skill evolution — same four phases, different personas.)\n8. After any change that should appear on the dashboard — a member, skill, workflow, domain,\n   the version, or any art — run `dashboard-parity`: rebuild with `build.py`, confirm the new\n   value is in `guild-data.js` (the file `index.html` loads) and the old value is gone, render\n   `index.html`, and verify the live DOM shows it. A change isn't done when the file is saved —\n   it's done when the Guild Master can *see* it. `guild-conformity` proves the files agree;\n   `dashboard-parity` proves the rendered page agrees.\n9. When you **finalize a commit**, stage only the files the current task produced — never\n   bundle unrelated in-flight work (another session's edits, WIP, or a plan doc awaiting\n   approval) into it. Auto-scope to the task's own files and commit; do **not** ask the Guild\n   Master to confirm the file set. Surface foreign changes you're leaving behind, but leave\n   them for their owner. (Routine work finishes on `main`; branch only when the change touches\n   the database / live data.)\n10. You're meticulous. You track versions, you validate, you never skip the registry.\n\n## The project version\n\nThe Star Alliance itself carries **one version** — `GUILD.meta.version`, shown on the\ndashboard's brand mark and footer. It is the guild log replayed as SemVer: `build.py`\nderives it from the entry `type` of every guild-log entry, so the version *is* the\nledger.\n\n| Tier | Bumped by log `type` | Meaning |\n|---|---|---|\n| **MAJOR** | `structure` | A structural era — the repo layout itself was reorganized. |\n| **MINOR** | `skill-create`, `member-create`, `dashboard`, `workflow` | A new capability was born. |\n| **PATCH** | `skill-upgrade`, `member-upgrade`, `chore`, anything else | A blade was sharpened. |\n\nYou never hand-edit this number. You **pump it by logging the work**: every upgrade\nalready earns a guild-log entry (step 6), and the last step of that pipeline —\n`build.py` — recomputes the version. Log the change and the version bumps itself.\nThe current number shows live on the dashboard brand mark and footer — never\nhardcoded here, so it can't drift. To retune which `type` lands in which tier,\nedit `VERSION_MAJOR_TYPES` / `VERSION_MINOR_TYPES` in `build.py`.\n\n## What you don't do\n\n- You don't design UIs — delegate to The Designer.\n- You don't plan campaigns — delegate to The Strategist.\n- You don't model domains — delegate to The Architect.",
       "weapons": [
         {
           "model": "haiku",
@@ -584,12 +1878,176 @@
       "skills": [
         "skillsmith",
         "guild-conformity",
+        "dashboard-parity",
         "release-train",
         "guild-log",
         "cleanup",
         "storm-investigation",
         "weapon-utility"
-      ]
+      ],
+      "levelInfo": {
+        "earned": "Advanced",
+        "qualified": true,
+        "nextTier": "Elite",
+        "rampEarned": "teal",
+        "rampConferred": "teal",
+        "ad": 17,
+        "signals": {
+          "ad": 17,
+          "nSkills": 7,
+          "nUnique": 6,
+          "nMaster": 0,
+          "peak": 3,
+          "nWeapons": 7,
+          "hasSummary": true,
+          "profileComplete": true,
+          "conformityClean": true
+        },
+        "checklist": {
+          "Foundational": [
+            {
+              "label": "carries weapon-utility",
+              "ok": true
+            },
+            {
+              "label": "craft skills",
+              "ok": true,
+              "have": 7,
+              "need": 1
+            },
+            {
+              "label": "summary present",
+              "ok": true
+            }
+          ],
+          "Intermediate": [
+            {
+              "label": "Arsenal Depth",
+              "ok": true,
+              "have": 17,
+              "need": 8
+            },
+            {
+              "label": "craft skills",
+              "ok": true,
+              "have": 7,
+              "need": 2
+            },
+            {
+              "label": "unique skills",
+              "ok": true,
+              "have": 6,
+              "need": 1
+            },
+            {
+              "label": "does[] + doesnt[] filled",
+              "ok": true
+            }
+          ],
+          "Advanced": [
+            {
+              "label": "Arsenal Depth",
+              "ok": true,
+              "have": 17,
+              "need": 12
+            },
+            {
+              "label": "an Advanced+ skill",
+              "ok": true
+            },
+            {
+              "label": "unique skills",
+              "ok": true,
+              "have": 6,
+              "need": 2
+            },
+            {
+              "label": "weapons",
+              "ok": true,
+              "have": 7,
+              "need": 6
+            }
+          ],
+          "Elite": [
+            {
+              "label": "Arsenal Depth",
+              "ok": false,
+              "have": 17,
+              "need": 18
+            },
+            {
+              "label": "Master-level skills",
+              "ok": false,
+              "have": 0,
+              "need": 1
+            },
+            {
+              "label": "unique skills",
+              "ok": true,
+              "have": 6,
+              "need": 3
+            },
+            {
+              "label": "conformity-clean",
+              "ok": true
+            }
+          ],
+          "Master": [
+            {
+              "label": "Arsenal Depth",
+              "ok": false,
+              "have": 17,
+              "need": 24
+            },
+            {
+              "label": "Master-level skills",
+              "ok": false,
+              "have": 0,
+              "need": 2
+            },
+            {
+              "label": "unique skills",
+              "ok": true,
+              "have": 6,
+              "need": 3
+            },
+            {
+              "label": "conformity-clean",
+              "ok": true
+            },
+            {
+              "label": "profile complete",
+              "ok": true
+            }
+          ]
+        },
+        "progress": [
+          {
+            "label": "Arsenal Depth",
+            "ok": false,
+            "have": 17,
+            "need": 18
+          },
+          {
+            "label": "Master-level skills",
+            "ok": false,
+            "have": 0,
+            "need": 1
+          },
+          {
+            "label": "unique skills",
+            "ok": true,
+            "have": 6,
+            "need": 3
+          },
+          {
+            "label": "conformity-clean",
+            "ok": true
+          }
+        ],
+        "dueForPromotion": false,
+        "overConferred": false
+      }
     }
   ],
   "skills": [
@@ -990,6 +2448,42 @@
       "global": true,
       "members": [
         "the-strategist"
+      ]
+    },
+    {
+      "id": "dashboard-parity",
+      "name": "dashboard-parity",
+      "version": "1.0.0",
+      "icon": "🪞",
+      "art": "",
+      "artPng": false,
+      "blurb": "Prove every change actually renders on the dashboard",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-device-desktop-check",
+      "src": "own",
+      "desc": "The Quartermaster's craft for proving that every change actually reaches the rendered dashboard at index.html — not just the source files, but the generated guild-data.js the browser loads and the live DOM it paints. The dashboard is buildless: index.html loads guild-data.js (const GUILD), regenerated from the source files by build.py. A change is only done when it survives that whole chain. This craft rebuilds, asserts the new value is present in guild-data.js (the file the browser reads, not only guild-data.json) and the old value is gone, renders index.html on the local server, and confirms the change shows in the live DOM with a screenshot. Use after any edit that should appear on the dashboard — members, skills, workflows, domains, the guild log, the version, or any art. Triggers: 'is it on the dashboard', 'did it reflect on index.html', 'verify the dashboard', 'check the dashboard renders', 'dashboard parity', 'did the build land', 'did my change show up'. Differentiate from guild-conformity (proves the source files agree with each other and with the generated data) and cleanup (app/i18n hygiene).",
+      "intro": "You are the keeper of the looking-glass. A change is not done when the source file is saved, nor when the build script exits zero — it is done when the Guild Master opens the dashboard and sees it. The dashboard is buildless: index.html loads guild-data.js (a top-level const GUILD), which build.py r",
+      "sections": [
+        "What it is / is not",
+        "The craft",
+        "Sharpening the craft",
+        "Gotchas",
+        "Versioning",
+        "Changelog"
+      ],
+      "triggers": "'is it on the dashboard', 'did it reflect on index.html', 'verify the dashboard', 'dashboard parity', 'did the build land', 'did my change show up'",
+      "modes": "",
+      "disabled": false,
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 51,
+        "words": 1164
+      },
+      "global": true,
+      "members": [
+        "the-quartermaster"
       ]
     },
     {
@@ -1990,7 +3484,7 @@
     {
       "id": "skillsmith",
       "name": "skillsmith",
-      "version": "1.2.0",
+      "version": "1.3.0",
       "icon": "🛠️",
       "art": "",
       "artPng": true,
@@ -2018,6 +3512,7 @@
       "refs": [
         "cowork-limits.md",
         "create-playbook.md",
+        "member-leveling.md",
         "routine-ledger",
         "routine-playbook.md",
         "storm-method.md",
@@ -2032,8 +3527,8 @@
         "skill_sync.py"
       ],
       "stats": {
-        "lines": 138,
-        "words": 3768
+        "lines": 147,
+        "words": 4141
       },
       "global": true,
       "members": [
@@ -2475,7 +3970,8 @@
         "law-harvest",
         "comms-triage",
         "legal-rule-modeling",
-        "design-taste"
+        "design-taste",
+        "dashboard-parity"
       ],
       "members": [
         "the-butler",
@@ -2488,7 +3984,7 @@
         "the-merchant",
         "the-quartermaster"
       ],
-      "notes": "The home domain. All 9 guild members + 41 skills live here. Every other domain borrows from this skill pool."
+      "notes": "The home domain. All 9 guild members + 42 skills live here. Every other domain borrows from this skill pool."
     },
     {
       "id": "lex-council-app",
@@ -4068,6 +5564,109 @@
   "log": {
     "entries": [
       {
+        "id": 73,
+        "date": "2026-06-27",
+        "type": "member-upgrade",
+        "title": "Promote The Quartermaster: Foundational → Advanced",
+        "who": "The Quartermaster",
+        "detail": "Conferred member level Foundational → Advanced (craft-depth tier). Prerequisite checklist for Advanced verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+        "ref": [
+          "the-quartermaster"
+        ],
+        "from": "Foundational",
+        "to": "Advanced"
+      },
+      {
+        "id": 72,
+        "date": "2026-06-27",
+        "type": "member-upgrade",
+        "title": "Promote The Herald: Foundational → Advanced",
+        "who": "The Quartermaster",
+        "detail": "Conferred member level Foundational → Advanced (craft-depth tier). Prerequisite checklist for Advanced verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+        "ref": [
+          "the-herald"
+        ],
+        "from": "Foundational",
+        "to": "Advanced"
+      },
+      {
+        "id": 71,
+        "date": "2026-06-27",
+        "type": "member-upgrade",
+        "title": "Promote The Translator: Foundational → Intermediate",
+        "who": "The Quartermaster",
+        "detail": "Conferred member level Foundational → Intermediate (craft-depth tier). Prerequisite checklist for Intermediate verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+        "ref": [
+          "the-translator"
+        ],
+        "from": "Foundational",
+        "to": "Intermediate"
+      },
+      {
+        "id": 70,
+        "date": "2026-06-27",
+        "type": "member-upgrade",
+        "title": "Promote The Strategist: Foundational → Master",
+        "who": "The Quartermaster",
+        "detail": "Conferred member level Foundational → Master (craft-depth tier). Prerequisite checklist for Master verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+        "ref": [
+          "the-strategist"
+        ],
+        "from": "Foundational",
+        "to": "Master"
+      },
+      {
+        "id": 69,
+        "date": "2026-06-27",
+        "type": "member-upgrade",
+        "title": "Promote The Designer: Foundational → Elite",
+        "who": "The Quartermaster",
+        "detail": "Conferred member level Foundational → Elite (craft-depth tier). Prerequisite checklist for Elite verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+        "ref": [
+          "the-designer"
+        ],
+        "from": "Foundational",
+        "to": "Elite"
+      },
+      {
+        "id": 68,
+        "date": "2026-06-27",
+        "type": "member-upgrade",
+        "title": "Promote The Developer: Foundational → Advanced",
+        "who": "The Quartermaster",
+        "detail": "Conferred member level Foundational → Advanced (craft-depth tier). Prerequisite checklist for Advanced verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+        "ref": [
+          "the-developer"
+        ],
+        "from": "Foundational",
+        "to": "Advanced"
+      },
+      {
+        "id": 67,
+        "date": "2026-06-27",
+        "type": "member-upgrade",
+        "title": "Promote The Architect: Foundational → Advanced",
+        "who": "The Quartermaster",
+        "detail": "Conferred member level Foundational → Advanced (craft-depth tier). Prerequisite checklist for Advanced verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+        "ref": [
+          "the-architect"
+        ],
+        "from": "Foundational",
+        "to": "Advanced"
+      },
+      {
+        "id": 66,
+        "date": "2026-06-27",
+        "type": "decision",
+        "title": "Member leveling system: craft-depth tiers, earned-by-checklist, conferred by the Quartermaster",
+        "who": "The Strategist",
+        "detail": "Guild Master ordered per-member levels graded on skills+specialty, with the Quartermaster conferring on prerequisite. DECISION: a member's level is a CRAFT-DEPTH meter (Arsenal Depth = Σ skill-level-weights + unique/specialty + weapons), explicitly DECOUPLED from standing (the Butler leads regardless of tier). Rejected per-role rubric and leadership-floor models — both need subjective judgment the guild can't recompute identically, breaking the 'clear standard for future runs' requirement. Standard = objective per-tier prerequisite CHECKLIST (not a weighted score) computed by build.py; the five tiers reuse LEVEL_RAMP (Foundational→Master, Elite/amber was reserved+unused). Earned tier is build-derived; conferred tier is the members-meta.json 'level' field, ratified by the Quartermaster and logged as a member-upgrade entry (PATCH). Demotion policy: (A) honest meter — overConferred is a loud notice, never a build-breaker. Usage/activity metering deferred to Wave 6 as a SIBLING axis, never folded into level (gated on log member-attribution). Plan: STRATEGIST-MEMBER-LEVELING.md; QM manual: skillsmith/references/member-leveling.md.",
+        "ref": [
+          "the-strategist",
+          "the-quartermaster"
+        ]
+      },
+      {
         "id": 65,
         "date": "2026-06-26",
         "type": "member-upgrade",
@@ -5439,6 +7038,6 @@
         ]
       }
     ],
-    "count": 111
+    "count": 119
   }
 }

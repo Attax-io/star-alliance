@@ -60,6 +60,27 @@ LEVEL_RAMP = {
     "Master": "purple",
 }
 
+# ── Member leveling ───────────────────────────────────────────────────────────
+# A member's level is a CRAFT-DEPTH meter (arsenal + specialty), decoupled from
+# standing — see STRATEGIST-MEMBER-LEVELING.md and skillsmith/references/
+# member-leveling.md. It is EARNED by an objective, repo-derived checklist
+# (computed here) and CONFERRED by the Quartermaster (the `level` field in
+# members-meta.json), recorded in the guild log as a `member-upgrade` entry.
+# Tune the whole standard in this one block.
+MEMBER_TIER_ORDER = ["Foundational", "Intermediate", "Advanced", "Elite", "Master"]
+
+# Each carried craft skill contributes its own level-weight to Arsenal Depth (AD).
+SKILL_LEVEL_WEIGHT = {"Foundational": 1, "Intermediate": 2, "Advanced": 3, "Master": 4}
+
+# Per-tier numeric thresholds. A tier is earned only when its whole checklist —
+# AND every lower tier's — passes (cumulative). Foundational is the entry floor.
+MEMBER_TIER_THRESHOLDS = {
+    "Intermediate": {"ad": 8,  "nSkills": 2, "nUnique": 1},
+    "Advanced":     {"ad": 12, "nUnique": 2, "nWeapons": 6, "peak": 3},
+    "Elite":        {"ad": 18, "nUnique": 3, "nMaster": 1},
+    "Master":       {"ad": 24, "nUnique": 3, "nMaster": 2},
+}
+
 # ── Project version ───────────────────────────────────────────────────────────
 # The Star Alliance project carries ONE version — owned by the Quartermaster and
 # derived entirely from the guild log. Every logged change is an upgrade, so the
@@ -320,6 +341,7 @@ def build_member(agent: dict, meta: dict, errors: list[str]) -> dict:
         "name": meta.get("name", mid),
         "role": meta.get("role", ""),
         "model": agent["model"],
+        "conferred": meta.get("level", "Foundational"),  # ratified tier (Quartermaster-owned)
         "color": meta.get("color", "#888888"),
         "avatar": meta.get("avatar", ""),
         "summary": meta.get("summary", ""),
@@ -404,6 +426,113 @@ def compute_reverse_indices(members: list[dict], skills: list[dict]) -> None:
                 by_id[sid]["members"].append(m["id"])
     for s in skills:
         s["members"].sort()
+
+
+def _tier_checklist(tier: str, sig: dict) -> list[dict]:
+    """The prerequisite rows for `tier` given a member's signals.
+
+    Each row is {label, ok[, have, need]} — `have`/`need` present on numeric
+    gates so the dashboard can render progress ("AD 6/8"). Thresholds come from
+    MEMBER_TIER_THRESHOLDS so the standard tunes in one place.
+    """
+    T = MEMBER_TIER_THRESHOLDS
+    if tier == "Foundational":
+        return [
+            {"label": "carries weapon-utility", "ok": sig["hasWeaponUtility"]},
+            {"label": "craft skills", "ok": sig["nSkills"] >= 1, "have": sig["nSkills"], "need": 1},
+            {"label": "summary present", "ok": sig["hasSummary"]},
+        ]
+    if tier == "Intermediate":
+        t = T["Intermediate"]
+        return [
+            {"label": "Arsenal Depth", "ok": sig["ad"] >= t["ad"], "have": sig["ad"], "need": t["ad"]},
+            {"label": "craft skills", "ok": sig["nSkills"] >= t["nSkills"], "have": sig["nSkills"], "need": t["nSkills"]},
+            {"label": "unique skills", "ok": sig["nUnique"] >= t["nUnique"], "have": sig["nUnique"], "need": t["nUnique"]},
+            {"label": "does[] + doesnt[] filled", "ok": sig["profileComplete"]},
+        ]
+    if tier == "Advanced":
+        t = T["Advanced"]
+        return [
+            {"label": "Arsenal Depth", "ok": sig["ad"] >= t["ad"], "have": sig["ad"], "need": t["ad"]},
+            {"label": "an Advanced+ skill", "ok": sig["peak"] >= t["peak"]},
+            {"label": "unique skills", "ok": sig["nUnique"] >= t["nUnique"], "have": sig["nUnique"], "need": t["nUnique"]},
+            {"label": "weapons", "ok": sig["nWeapons"] >= t["nWeapons"], "have": sig["nWeapons"], "need": t["nWeapons"]},
+        ]
+    if tier == "Elite":
+        t = T["Elite"]
+        return [
+            {"label": "Arsenal Depth", "ok": sig["ad"] >= t["ad"], "have": sig["ad"], "need": t["ad"]},
+            {"label": "Master-level skills", "ok": sig["nMaster"] >= t["nMaster"], "have": sig["nMaster"], "need": t["nMaster"]},
+            {"label": "unique skills", "ok": sig["nUnique"] >= t["nUnique"], "have": sig["nUnique"], "need": t["nUnique"]},
+            {"label": "conformity-clean", "ok": sig["conformityClean"]},
+        ]
+    if tier == "Master":
+        t = T["Master"]
+        return [
+            {"label": "Arsenal Depth", "ok": sig["ad"] >= t["ad"], "have": sig["ad"], "need": t["ad"]},
+            {"label": "Master-level skills", "ok": sig["nMaster"] >= t["nMaster"], "have": sig["nMaster"], "need": t["nMaster"]},
+            {"label": "unique skills", "ok": sig["nUnique"] >= t["nUnique"], "have": sig["nUnique"], "need": t["nUnique"]},
+            {"label": "conformity-clean", "ok": sig["conformityClean"]},
+            {"label": "profile complete", "ok": sig["profileComplete"] and sig["hasSummary"]},
+        ]
+    return []
+
+
+def _tier_rank(tier: str) -> int:
+    return MEMBER_TIER_ORDER.index(tier) if tier in MEMBER_TIER_ORDER else 0
+
+
+def compute_member_levels(members: list[dict], skills: list[dict],
+                          errors: list[str], warnings: list[str]) -> None:
+    """Compute each member's EARNED craft tier from objective, repo-derived
+    signals, and reconcile it with their CONFERRED tier. Attaches `levelInfo`
+    (earned, nextTier, signals, full per-tier checklist, progress, and the
+    dueForPromotion / overConferred notices). Runs after compute_reverse_indices
+    (needs skill.members) and validate (needs errors/warnings for conformity)."""
+    by_id = {s["id"]: s for s in skills}
+    flagged = errors + warnings
+    for m in members:
+        craft = [sid for sid in m["skills"] if sid != "weapon-utility" and sid in by_id]
+        levels = [by_id[sid]["level"] for sid in craft]
+        ad = sum(SKILL_LEVEL_WEIGHT.get(lv, 1) for lv in levels)
+        sig = {
+            "ad": ad,
+            "nSkills": len(craft),
+            "nUnique": sum(1 for sid in craft if len(by_id[sid]["members"]) == 1),
+            "nMaster": sum(1 for lv in levels if lv == "Master"),
+            "peak": max((SKILL_LEVEL_WEIGHT.get(lv, 1) for lv in levels), default=0),
+            "nWeapons": len(m["weapons"]),
+            "hasWeaponUtility": "weapon-utility" in m["skills"],
+            "hasSummary": bool(m.get("summary")),
+            "profileComplete": bool(m.get("does")) and bool(m.get("doesnt")),
+            "conformityClean": not any(m["id"] in msg for msg in flagged),
+        }
+        checklist = {tier: _tier_checklist(tier, sig) for tier in MEMBER_TIER_ORDER}
+        # Earned = highest tier passing cumulatively from the floor up.
+        earned_idx = -1
+        for i, tier in enumerate(MEMBER_TIER_ORDER):
+            if i == earned_idx + 1 and all(r["ok"] for r in checklist[tier]):
+                earned_idx = i
+        qualified = earned_idx >= 0
+        earned = MEMBER_TIER_ORDER[earned_idx] if qualified else "Foundational"
+        next_tier = MEMBER_TIER_ORDER[earned_idx + 1] if earned_idx + 1 < len(MEMBER_TIER_ORDER) else None
+        conferred = m.get("conferred", "Foundational")
+
+        m["levelInfo"] = {
+            "earned": earned,
+            "qualified": qualified,          # False only if even Foundational is unmet
+            "nextTier": next_tier,
+            "rampEarned": LEVEL_RAMP.get(earned, "gray"),
+            "rampConferred": LEVEL_RAMP.get(conferred, "gray"),
+            "ad": ad,
+            "signals": {k: sig[k] for k in
+                        ("ad", "nSkills", "nUnique", "nMaster", "peak", "nWeapons",
+                         "hasSummary", "profileComplete", "conformityClean")},
+            "checklist": checklist,
+            "progress": checklist.get(next_tier, []),
+            "dueForPromotion": _tier_rank(earned) > _tier_rank(conferred),
+            "overConferred": _tier_rank(conferred) > _tier_rank(earned),
+        }
 
 
 def mark_global_skills(skills: list[dict], warnings: list[str]) -> None:
@@ -524,6 +653,7 @@ def assemble(repo: Path) -> tuple[dict, list[str], list[str]]:
     compute_reverse_indices(members, skills)
     mark_global_skills(skills, warnings)
     validate(members, skills, domains, workflows, errors, warnings)
+    compute_member_levels(members, skills, errors, warnings)
 
     guild = {
         "meta": build_meta(members, skills, domains, workflows, log),
@@ -589,10 +719,13 @@ def report(guild: dict) -> None:
     for s in guild["skills"]:
         print(f"{s['id']:34} {s['version']:>8} {s['level']:13} {s['src']:>9} "
               f"{s['stats']['lines']:>6} {s['stats']['words']:>6} {len(s['members']):>8}  {s['icon']}")
-    print(f"\n{'MEMBER':20} {'model':>8} {'skills':>7} {'weapons':>8}  role")
+    print(f"\n{'MEMBER':20} {'model':>8} {'skills':>7} {'AD':>4} {'conferred':>13} {'earned':>13}  flag")
     print("-" * 100)
     for m in guild["members"]:
-        print(f"{m['id']:20} {m['model']:>8} {len(m['skills']):>7} {len(m['weapons']):>8}  {m['role']}")
+        li = m.get("levelInfo", {})
+        flag = "DUE ↑" if li.get("dueForPromotion") else ("OVER ↓" if li.get("overConferred") else "")
+        print(f"{m['id']:20} {m['model']:>8} {len(m['skills']):>7} {li.get('ad', 0):>4} "
+              f"{m.get('conferred', ''):>13} {li.get('earned', ''):>13}  {flag}")
 
 
 def emit_findings(errors: list[str], warnings: list[str]) -> None:

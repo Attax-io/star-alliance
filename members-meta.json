@@ -4,6 +4,7 @@
     "the-butler": {
       "name": "The Butler",
       "role": "Orchestrator · First Point of Contact",
+      "level": "Foundational",
       "color": "#b89530",
       "summary": "Takes your orders and routes them to the right member. Knows the full roster, who's good at what, and how to sequence their work.",
       "deploy": "Any request — The Butler decides who handles what",
@@ -34,6 +35,7 @@
     "the-architect": {
       "name": "The Architect",
       "role": "Systems Design · Database Architecture",
+      "level": "Advanced",
       "color": "#3b7dd8",
       "summary": "Designs systems and database architecture. Thinks in data flow, domain boundaries, and structural integrity.",
       "deploy": "System design, domain modeling, database architecture, structural refactoring",
@@ -61,6 +63,7 @@
     "the-developer": {
       "name": "The Developer",
       "role": "Writing Code · Fixing Bugs · Implementation",
+      "level": "Advanced",
       "color": "#3da155",
       "summary": "Writes code, fixes bugs, implements features. Takes specs and turns them into working code. Tests before saying it's done.",
       "deploy": "Writing code, applying changes, fixing bugs, implementing features",
@@ -94,6 +97,7 @@
     "the-designer": {
       "name": "The Designer",
       "role": "UI/UX · Visual Quality · Brand Kits",
+      "level": "Elite",
       "color": "#d54d7a",
       "summary": "Premium UI/UX designer. Turns rough sketches into polished interfaces. Design is how the product communicates.",
       "deploy": "UI/UX design, visual quality, brand kits, image-to-code conversion",
@@ -123,6 +127,7 @@
     "the-strategist": {
       "name": "The Strategist",
       "role": "Multi-Wave Campaigns · Performance",
+      "level": "Master",
       "color": "#7c5dc8",
       "summary": "Campaign commander. Handles work too big for a single pass. Breaks it into waves and drives them to completion.",
       "deploy": "Large multi-wave projects, campaign planning, bug workflows, performance",
@@ -154,6 +159,7 @@
     "the-translator": {
       "name": "The Translator",
       "role": "Legal Codex · Law Translation",
+      "level": "Intermediate",
       "color": "#b89530",
       "summary": "Legal codex specialist. Loads real-world laws, translates them across all locales, and creates published content.",
       "deploy": "Legal codex loading, law translation, multi-locale content work",
@@ -182,6 +188,7 @@
     "the-herald": {
       "name": "The Herald",
       "role": "Marketing · Growth · Demand Generation",
+      "level": "Advanced",
       "color": "#e0883c",
       "summary": "The guild's voice to the world. Turns silence into a steady call — the right people hear it, trust it, and answer. Marketing for trust-led businesses without breaking faith.",
       "deploy": "Marketing, growth, demand generation, content/SEO, brand positioning, email nurture, social/paid",
@@ -213,6 +220,7 @@
     "the-merchant": {
       "name": "The Merchant",
       "role": "Investment · Trading · Market Research",
+      "level": "Foundational",
       "color": "#3da155",
       "summary": "Investment and trading specialist. Analyzes markets, builds trading strategies, assesses risk, and manages portfolios with rigor.",
       "deploy": "Investment analysis, trading strategies, market research, portfolio management",
@@ -243,6 +251,7 @@
     "the-quartermaster": {
       "name": "The Quartermaster",
       "role": "Skill Management · Syncing · Evolution",
+      "level": "Advanced",
       "color": "#b89530",
       "summary": "Keeper of the guild's arsenal. Manages skills — versioning, syncing, upgrading, creating new ones. Runs the daily evolution routine.",
       "deploy": "Skill management, syncing, upgrading, creating new skills, daily evolution routine",
