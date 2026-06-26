@@ -44,12 +44,15 @@ python3 skillsmith/scripts/skill_registry.py write   # regenerate VERSIONS.md fr
 
 The registry row updates automatically from the new `version:` + measured counts.
 
-## Step U5 — Re-sync the device + commit
+## Step U5 — Re-sync the device, conformity-close, commit
 
 ```sh
 python3 skillsmith/scripts/skill_sync.py apply --skill NAME --dry   # preview
 python3 skillsmith/scripts/skill_sync.py apply --skill NAME         # install repo→global
-git -C <repo> add -A && git -C <repo> commit && git -C <repo> push origin main
+# Conformity-close (Invariant #8) — the Quartermaster's final gate. MUST report FULL CONFORMITY before commit.
+python3 build.py                                                    # regenerate guild-data.*
+python3 conformity_check.py                                         # exit 0, or fix the contradiction + re-run
+git -C <repo> commit <scoped paths> && git -C <repo> push origin main   # scope to the skill + its regen; never blind `add -A` a co-mingled tree (§L27)
 ```
 
 For a **fork** skill, the device copy is intentionally different — re-sync only the parts that should

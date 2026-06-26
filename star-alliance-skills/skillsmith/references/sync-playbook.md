@@ -50,13 +50,18 @@ The `EXCEPTIONS` set in `skill_sync.py` (kept in step with this list):
 
 When adding a new fork/external, add it to `EXCEPTIONS` in the script **and** this table.
 
-## Step S4 — Refresh the registry + commit
+## Step S4 — Refresh the registry, conformity-close, commit
 
 ```sh
 python3 skillsmith/scripts/skill_registry.py write   # regenerate VERSIONS.md
 python3 skillsmith/scripts/skill_registry.py check   # confirm 0 hard violations
-git -C <repo> add -A && git -C <repo> commit && git -C <repo> push origin main
+# Conformity-close (Invariant #8) — the Quartermaster's final gate. MUST pass before commit.
+python3 build.py                                     # regenerate guild-data.* from all sources
+python3 conformity_check.py                          # FULL CONFORMITY (exit 0) or fix + re-run
+git -C <repo> commit <scoped paths> && git -C <repo> push origin main   # scope to the skill + its regen; never blind `add -A` a co-mingled tree (§L27)
 ```
+
+**Conformity-close (Invariant #8).** `conformity_check.py` is read-only; it audits the whole repo for internal agreement + conformity with every logged `decision` (guild-data↔json parity, `meta.counts`, workflow gates/actors, member arsenal order, and the **K-invariant** skill dirs == `skills-meta.json` == generated skill ids). A sync that **added a skill to the repo** (ADD-TO-REPO) MUST also add its `skills-meta.json` entry + run `build.py`, or the K-check FAILS. Fix any contradiction before committing — never ship one.
 
 ## Notes / landmines
 

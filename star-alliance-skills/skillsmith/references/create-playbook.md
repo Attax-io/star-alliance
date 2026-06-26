@@ -73,7 +73,7 @@ Then regenerate the dashboard data (sets each skill's `artPng` flag + folds in m
 python3 "$SA/build.py"                   # writes guild-data.js + guild-data.json
 ```
 
-## Step C5 — Install to the device (optional) + commit
+## Step C5 — Install to the device (optional) + conformity-close + commit
 
 If the skill should be usable across projects right away:
 
@@ -81,10 +81,16 @@ If the skill should be usable across projects right away:
 python3 "$SA/star-alliance-skills/skillsmith/scripts/skill_sync.py" apply --skill <name> --direction install   # repo→global
 ```
 
-Then commit + push the repo:
+**Conformity-close (Invariant #8) — the Quartermaster's final gate.** C4 already ran `build.py`; now prove the new skill is reflected everywhere:
 
 ```sh
-git -C <repo> add -A && git -C <repo> commit && git -C <repo> push origin main
+python3 "$SA/conformity_check.py"     # FULL CONFORMITY (exit 0) — the K-invariant catches a skill dir not yet in skills-meta / guild-data
+```
+
+If it FAILS (e.g. K-check reports `only-dir=[<name>]`), the C4 wiring is incomplete — add the missing `skills-meta.json` / `domains.json` / member / art entry, re-run `build.py`, re-check. Then commit + push (scope to the new skill + its dashboard regen; avoid a blind `add -A` of a co-mingled tree, §L27):
+
+```sh
+git -C <repo> commit <scoped paths> && git -C <repo> push origin main
 ```
 
 ## Notes

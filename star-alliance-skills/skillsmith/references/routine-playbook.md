@@ -114,6 +114,7 @@ or a future run.
 
 ### Stage E — Report
 
+- **Conformity-close first (Invariant #8) — the Quartermaster's final gate.** Before committing, rebuild the guild data and run the Conformity Sweep: `python3 build.py && python3 conformity_check.py`. It must report **FULL CONFORMITY** (exit 0) — guild-data↔json parity, `meta.counts`, workflow gates/actors, member arsenal order, decision-conformity, and the **K-invariant** (skill dirs == `skills-meta.json` == generated skill ids) all hold. If it FAILS, fix the contradiction **before** the commit — a created / removed skill not yet in `skills-meta.json` + `build.py` output, a stale count, a broken ref — never ship a contradiction. Stage the regenerated `guild-data.*` (+ `skills-meta.json`/`domains.json` on a create/remove) in the **same** commit as the skill change.
 - Commit each applied change separately, message:
   `skillsmith routine YYYY-MM-DD: <verb> <skill> — <one-line> [conf N/10]`.
 - `git push origin main`.
