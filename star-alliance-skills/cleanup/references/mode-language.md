@@ -1,5 +1,17 @@
 # Mode: language — full recipe
 
+> ✅ **#303 DB-native (done 2026-06-21):** `public.app_translations` (DB, prod
+> `bqgrpnsvplvicnmzxwkm`) is the i18n source of truth; the web build dumps DB →
+> `public/messages/*.json` (`dump-translations.mjs --soft`). **This mode now
+> READS and WRITES the DB directly** — `detect`/`verify` read `app_translations`
+> (auto-falling back to the committed JSON when no creds are present, so
+> `run_all`/rotation never break), and `apply` UPSERTs each translation into the
+> DB (service-role REST) and mirrors it into the JSON so the working-tree diff
+> stays reviewable. No more `push-translations.mjs` bridge step. The transport is
+> the shared `scripts/_db_translations.py` helper (the same REST path
+> push/dump use); the prod project ref is asserted before any write. See
+> `docs/build-campaigns/2026-06-20_i18n-db-source-of-truth/`.
+
 The end-to-end recipe. The companion script
 `scripts/i18n_cleanup.py` owns the mechanical detect/apply/verify steps;
 this section owns the agent orchestration that sits between them.
@@ -12,10 +24,19 @@ Run from the repo root:
 python3 ~/.claude/skills/cleanup/scripts/i18n_cleanup.py detect
 ```
 
-This writes 5 files to `/tmp/translation_targets_{loc}.json` (one per
-non-EN locale) — each is a JSON array of `{ns, key, en}` triples where
-the locale's value still equals the EN value (the
-`isRowUntranslated` heuristic the Languages dev-tools panel uses).
+This reads `app_translations` (the DB) and writes 5 files to
+`/tmp/translation_targets_{loc}.json` (one per non-EN locale) — each is a
+JSON array of `{ns, key, en}` triples where the locale's value still
+equals the EN value (the `isRowUntranslated` heuristic the Languages
+dev-tools panel uses).
+
+> **Source:** `detect` reads the DB by default and prints
+> `source: app_translations (DB)`. With no `NEXT_PUBLIC_SUPABASE_URL` /
+> `SUPABASE_SERVICE_ROLE_KEY` (env or `apps/web/.env.local`) it falls back to
+> the committed JSON and prints `source: committed JSON (files)` — it never
+> crashes (so the unattended `run_all`/rotation are safe). Force the JSON with
+> `--files`. The DB source is more accurate: it reflects edits made in the admin
+> Languages panel that haven't been re-dumped to JSON yet.
 
 Default behavior translates ALL flagged strings. To skip ES/FR
 single-word-no-placeholder cognates (e.g. "Finances", "Documents"),
@@ -69,9 +90,23 @@ translations) **before** touching any messages file. If any locale
 fails pre-flight, the script aborts unless `--force` is set. Surface
 the failure to the user and ask before forcing.
 
-On pass, the script writes each translation into
-`messages/{loc}/{ns}.json` via a dotted-key nested-dict walker. JSON
-structure + indentation + trailing newlines preserved.
+On pass, the script **UPSERTs every translation into `app_translations`**
+(the source of truth) via chunked service-role REST, then mirrors each
+value into `messages/{loc}/{ns}.json` via a dotted-key nested-dict
+walker (JSON structure + indentation + trailing newlines preserved) so
+the working-tree diff is reviewable now. The prod project ref is
+asserted before the write; `--allow-other-project` overrides.
+
+- **No creds?** `apply` refuses (exit 2) — a JSON-only write would be silently
+  overwritten by the next build dump. Pass `--files-only` to deliberately write
+  JSON only (rare; e.g. a throwaway preview), knowing it won't survive a build.
+- **Unattended / rotation:** the hourly rotation can run `language` full-auto, so
+  `apply` writes prod `app_translations` directly (idempotent upsert; the DB has
+  no local/push split — for this mode, apply *is* the publish). The values only
+  fill non-EN cells that were equal to EN, so the write is purely additive.
+- **Concurrent actor:** the message JSON tree is contended. Stage only the locale
+  files you changed; never `git checkout`/restore a message file you didn't write
+  (it may carry another session's uncommitted edits — §L41).
 
 #### Step L4 — Verify
 
@@ -80,9 +115,10 @@ python3 ~/.claude/skills/cleanup/scripts/i18n_cleanup.py verify
 cd lex_council && npx turbo run check-types --filter=web
 ```
 
-The verify step re-runs the detector and prints the new untranslated
-counts per locale. Expect the number to drop sharply but **NOT** reach
-zero — the floor is brand acronyms + form placeholders
+The verify step re-runs the detector **against the DB** (prints the
+`source:` line; `--files` for the committed JSON) and prints the new
+untranslated counts per locale. Expect the number to drop sharply but
+**NOT** reach zero — the floor is brand acronyms + form placeholders
 (`email@example.com`, `0.00`, etc.) + ES/FR cognates that are
 correctly identical to English. Report the delta (before → after) to
 the user.

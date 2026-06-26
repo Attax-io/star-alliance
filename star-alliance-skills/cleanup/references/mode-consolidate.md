@@ -1,5 +1,22 @@
 # Mode: consolidate — full recipe
 
+> ✅ **#303 DB-native (done 2026-06-21):** `public.app_translations` (DB) is the
+> i18n source of truth. This mode now deletes the doomed keys from the **DB and
+> the JSON** in the same `apply` (new **Phase C** — direct service-role REST
+> DELETE on `app_translations`, all 6 locales, prod-ref asserted), so a merged
+> key does NOT reappear on the next build dump. `detect`/`verify` read the DB
+> (auto-fallback to the committed JSON; `--files` to force). The TSX/TS callsite
+> rewrites are unchanged (code isn't in the DB). No `push-translations.mjs`
+> bridge. `--no-db` skips Phase C (JSON-only; the keys reappear on the next dump
+> — for offline/testing only).
+>
+> **Why direct REST DELETE, not the `delete_translation` RPC:** that RPC is
+> programmer-gated (a service-role caller has a NULL `auth.uid()` → rejected) and
+> id-based (`p_id bigint`, no addressing by key). Direct table DELETE on the
+> `(locale, namespace, key_path)` unique key is the headless-safe path — the
+> symmetric counterpart to how `push-translations.mjs` upserts the table directly
+> rather than via `upsert_translation`. See `scripts/_db_translations.py`.
+
 Fold safe-to-merge i18n keys (groups where N>1 keys share the SAME English
 value AND the SAME translation in every locale) into shared `common.*`
 keys. AST-aware callsite rewrites + two-phase apply (dead keys first;
@@ -90,7 +107,7 @@ HALF the components do. `tsc` will catch this with `Cannot find name
 'tc'` — fix by adding `const tc = useTranslations('common')` to the
 other component(s) manually.
 
-#### Step C5 — Apply (two-phase)
+#### Step C5 — Apply (three-phase)
 
 ```bash
 python3 ~/.claude/skills/cleanup/scripts/consolidate_cleanup.py apply
@@ -98,17 +115,30 @@ python3 ~/.claude/skills/cleanup/scripts/consolidate_cleanup.py apply
 
 Internally runs:
 
-1. **Phase A — dead-key deletion** (zero-risk JSON-only): delete every
-   key in `dead_keys` from every locale's JSON. No code touched.
-2. **Phase B — callsite rewrites + live-key deletion**: for each
-   file in `plan`, add the `tc` binding if needed, then replace
+1. **Phase A — dead-key deletion** (JSON): delete every key in
+   `dead_keys` from every locale's JSON. No code touched.
+2. **Phase B — callsite rewrites + live-key deletion** (TSX + JSON): for
+   each file in `plan`, add the `tc` binding if needed, then replace
    `var('key_arg')` → `tc('new_suffix')` for each callsite. After all
    files written, delete the live keys from every locale's JSON.
+3. **Phase C — DB deletion** (`app_translations`): delete every doomed
+   key (dead + live) from the DB across all 6 locales via service-role
+   REST. **This is what makes the merge stick** — without it the next
+   build dump re-materializes the keys you just removed from the JSON.
+   The prod project ref is asserted first; `--allow-other-project`
+   overrides. No creds / `--no-db` → Phase C is skipped with a loud
+   warning (the keys WILL reappear on the next dump — finish by re-running
+   `apply` with credentials).
 
 The `replace()` is global per `old_call` string, so duplicate callsites
 on the same line/file get rewritten together. The "could not find" skip
 messages on the second occurrence of identical callsites are benign
 (already replaced).
+
+> Phase C strips the namespace prefix before deleting (`admin.foo.bar` →
+> DELETE where `namespace=admin` AND `key_path=foo.bar`). It never issues
+> a DELETE without a `key_path` filter, so an empty doomed-set is a no-op
+> (it can't wipe a namespace).
 
 #### Step C6 — Verify
 

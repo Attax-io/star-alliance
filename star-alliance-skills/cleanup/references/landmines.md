@@ -821,3 +821,30 @@ Corollary: each mode's own guardrails still hold under the routine — `postgres
 stays additive-only and verifies the prod `project_id` before any write; detect-only
 modes (`bundle`, `leaks`) just report. The routine doesn't relax them; it inherits
 them. Mechanized in `scripts/rotate.py`; full per-run recipe in SKILL.md §Step RT.
+
+### L41 — Never `git checkout`/restore a message JSON during a live concurrent-actor session; test i18n write-paths with throwaway keys or `--out-dir /tmp`
+
+The `public/messages/{locale}/*.json` tree is the single most contended set of
+files in this repo — a concurrent actor (and the build dump) both rewrite it
+live. During the v1.18.0 DB-native rewrite, a "belt-and-suspenders"
+`git checkout -- public/messages/fr/clients.json` (cleaning up after an idempotent
+`apply` test) **silently discarded the concurrent actor's uncommitted edit** to
+that file — a nav relabel (`Calculateurs`→`Outils` + a new `nav.tabs` subtree) that
+was present in all 6 locales and committed nowhere. It was recoverable only because
+the actor had applied the identical change to the 5 sibling locales (still dirty),
+so the fr file could be reconstructed to match (`+9 -2`, same structure). Lessons:
+
+1. **Uncommitted ≠ recoverable.** `git checkout` on a never-staged working-tree
+   change is unrecoverable from git — there is no reflog entry. Treat every dirty
+   message file as potentially another session's in-flight work (§L27 commit-scope
+   is the sibling rule for *staging*; this is the rule for *destroying*).
+2. **Test write-paths in isolation.** Validate `apply` / delete logic with a
+   throwaway key (`settings.__cleanup_selftest__`) you insert and remove, or point
+   `--msg-root` / `--out-dir` at `/tmp`. Never round-trip a real tracked message
+   file through a write + `git checkout` cleanup.
+3. **The DB is the recovery oracle when the actor pushed.** Check whether the lost
+   edit is in `app_translations` (`leaks --db` / a direct read): if the actor
+   pushed, `dump-translations.mjs --namespace <ns> --locale <loc>` regenerates it.
+   Here the actor's relabel was JSON-only (DB still matched HEAD), so the dump
+   couldn't help — reconstruct from the sibling locales' pattern and flag it to
+   Atta. Always disclose a clobber; never paper over it.

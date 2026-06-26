@@ -13,11 +13,22 @@ the agent/recipe layer — see SKILL.md §Mode: hardcoded):
              agent briefs.  (the W0 grounding + W1 discovery, made deterministic)
   merge      single-writer merge of agent-returned key-map sidecars into
              en/<ns>.json; conflict-detect; reuse-existence check (catches keys an
-             agent mislabeled as reuse → would be runtime MISSING_MESSAGE).
+             agent mislabeled as reuse → would be runtime MISSING_MESSAGE); then
+             UPSERT the newly-minted EN keys into app_translations (DB-native, #303).
   propagate  set the newly-merged keys into all 6 locales (EN value as placeholder
-             for non-EN) → parity + makes them visible to `language` mode.
+             for non-EN) → parity + makes them visible to `language` mode; then
+             UPSERT the propagated locale rows into app_translations (DB-native, #303).
   verify     for every t()-key in the touched .tsx, assert it resolves in en/<ns>.json
              (MISSING_MESSAGE guard) + scan for smart-quote t() calls (TS1127).
+
+Source of truth (Bug #303): `public.app_translations` (DB). The web build dumps
+DB → messages/{locale}/{ns}.json, so a key that lands ONLY in the JSON is silently
+wiped by the next build. `merge` and `propagate` therefore UPSERT their new rows
+into the DB (via the shared _db_translations helper) and keep the JSON as a mirror;
+`detect`, `verify`, and `leaks` stay read-only (leaks adds an opt-in `--db`
+deploy-truth check). Pass `--files-only` to a write command to skip the DB (the
+JSON-only write WILL be overwritten by the next build dump — recover with
+`apps/web/scripts/push-translations.mjs --namespace <ns>`).
 
 Default messages root: lex_council/apps/web/public/messages (walk-up auto-detect).
 Override with --root or CLEANUP_MESSAGES_ROOT.  stdlib-only; git via subprocess.
@@ -26,8 +37,12 @@ from __future__ import annotations
 import argparse, glob, json, os, re, sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import _db_translations as db  # noqa: E402  (leaks --db source; remediation targets app_translations)
+
+# The live 12 namespaces (i18n/request.ts). `tools` is the 12th (added during #303).
 NAMESPACES = ['admin', 'auth', 'clients', 'common', 'errors', 'members',
-              'pageIntros', 'portal', 'public', 'settings', 'toasts']
+              'pageIntros', 'portal', 'public', 'settings', 'toasts', 'tools']
 NON_EN_LOCALES = ['ar', 'es', 'fr', 'ru', 'zh']
 ALL_LOCALES = ['en', *NON_EN_LOCALES]
 
@@ -294,6 +309,36 @@ def _write_json(fp: Path, d):
     fp.write_text(json.dumps(d, indent=2, ensure_ascii=False) + "\n", encoding='utf-8')
 
 
+def _upsert_rows_or_skip(rows, files_only, allow_other, label):
+    """UPSERT freshly-minted EN / propagated-locale rows into app_translations so
+    they survive the build dump (#303 — a key that lands only in the JSON is wiped
+    DB→JSON on the next build). Mirrors the `language apply` write contract:
+      • no rows           → no-op (never touches the DB / never needs creds).
+      • --files-only      → deliberately skip (JSON-only; WILL be overwritten).
+      • no DB credentials → FATAL (a real i18n write that lands only in the JSON is
+                            silently lost; exit 2, same as i18n_cleanup.py apply).
+    The JSON + report are already written by the caller, so a FATAL here loses only
+    the DB rows — recover with `push-translations.mjs --namespace <ns>`. Returns the
+    number of rows written."""
+    if not rows:
+        return 0
+    if files_only:
+        print(f"  [db] --files-only: skipped {len(rows)} {label} row(s) "
+              f"(JSON-only — overwritten by the next build dump).")
+        return 0
+    env = db.load_env(allow_other=allow_other)
+    if env is None:
+        print(f"  [db] FATAL: no DB credentials (env / apps/web/.env.local). "
+              f"app_translations is the source of truth — a JSON-only {label} write is "
+              f"silently overwritten by the next build dump. Set NEXT_PUBLIC_SUPABASE_URL "
+              f"+ SUPABASE_SERVICE_ROLE_KEY, or pass --files-only to write JSON only.")
+        sys.exit(2)
+    written = db.upsert_rows(env, rows)
+    print(f"  [db] upserted {written} {label} row(s) → app_translations "
+          f"(prod {env['ref']}, service-role REST).")
+    return written
+
+
 def cmd_merge(args):
     """Merge agent key-map sidecars (b*.json with namespace_keys + reused_keys) into en/<ns>.json."""
     root = Path(args.root).resolve() if args.root else default_root()
@@ -318,6 +363,8 @@ def cmd_merge(args):
             if len(seg) == 2:
                 reused.setdefault(seg[0], set()).add(seg[1])
     report = {}
+    en_rows = []   # newly-added EN keys → UPSERT into app_translations (#303); added-only
+                   # (value == sidecar v), so a pre-existing EN value is never clobbered.
     for ns, keys in sorted(agg.items()):
         fp = root / 'en' / f'{ns}.json'
         if not fp.exists():
@@ -327,6 +374,7 @@ def cmd_merge(args):
         for k, v in keys.items():
             if _set_dotted(d, k, v, conflicts, ns):
                 added += 1
+                en_rows.append({'locale': 'en', 'namespace': ns, 'key_path': k, 'value': v})
         _write_json(fp, d)
         report[ns] = sorted(keys.keys())
         print(f"en/{ns}.json: +{added} new ({len(keys)} proposed, {len(conflicts)} conflicts)")
@@ -342,6 +390,9 @@ def cmd_merge(args):
     out = {'merge_report': report, 'missing_reuse': missing, 'notes': notes}
     Path(args.out).write_text(json.dumps(out, indent=2, ensure_ascii=False), encoding='utf-8')
     print(f"\nmerged {sum(len(v) for v in report.values())} keys across {len(report)} namespaces → report {args.out}")
+    # DB-native (#303): the minted EN keys must reach app_translations or the next
+    # build dump (DB→JSON) silently wipes this merge. JSON above is the mirror.
+    _upsert_rows_or_skip(en_rows, args.files_only, args.allow_other, 'new EN key')
     if missing:
         print(f"!! {len(missing)} reuse keys DO NOT EXIST (agent mislabeled — recover the literal + add, else runtime MISSING_MESSAGE):")
         for m in missing:
@@ -355,6 +406,9 @@ def cmd_propagate(args):
     root = Path(args.root).resolve() if args.root else default_root()
     report = json.load(open(args.report, encoding='utf-8')).get('merge_report', {})
     totals = {l: 0 for l in NON_EN_LOCALES}
+    loc_rows = []   # newly-set EN-placeholder rows → UPSERT into app_translations (#303);
+                    # added-only, so an existing non-EN value (a real translation) is
+                    # never clobbered with the placeholder.
     for ns, keys in report.items():
         en = json.load((root / 'en' / f'{ns}.json').open(encoding='utf-8'))
         flat_en = flatten(en)
@@ -369,10 +423,14 @@ def cmd_propagate(args):
                     continue
                 if _set_dotted(d, k, v, conflicts, f'{loc}/{ns}'):
                     added += 1
+                    loc_rows.append({'locale': loc, 'namespace': ns, 'key_path': k, 'value': v})
             if added:
                 _write_json(fp, d)
             totals[loc] += added
     print(f"propagated (EN placeholder) per locale: {totals}")
+    # DB-native (#303): the propagated placeholder rows must reach app_translations or
+    # the next build dump silently wipes them, leaving them invisible to `language`.
+    _upsert_rows_or_skip(loc_rows, args.files_only, args.allow_other, 'propagated locale')
     print("next: run `i18n_cleanup.py detect/apply/verify` (the `language` mode) to translate the now-present-but-EN keys.")
 
 
@@ -513,12 +571,28 @@ def load_all_locales(root: Path):
     return per
 
 
+def _leaks_loc_maps(args, root):
+    """{loc: {ns: {key: value}}} for the leak check. Default source: the committed
+    JSON — offline-safe for run_all / rotation, no in-flight noise. `--db` reads
+    app_translations directly: this is the DEPLOY-TRUTH check (the deploy dumps
+    DB → JSON, so a t()-key absent from the DB renders as a raw key-path live),
+    and it also flags keys that sit in the committed JSON but were never pushed to
+    the DB — those vanish on the next dump."""
+    if getattr(args, 'db', False):
+        src, env = db.resolve_source(False, getattr(args, 'allow_other', False))
+        if src == 'db':
+            flat = db.fetch_flat(env, NAMESPACES, ALL_LOCALES)
+            return {loc: {ns: flat.get((loc, ns), {}) for ns in NAMESPACES}
+                    for loc in ALL_LOCALES}, 'db'
+    return load_all_locales(root), 'files'
+
+
 def cmd_leaks(args):
     """Scan every t()-call app-wide; report keys absent from EN (raw-path leak)
     and keys present in EN but absent from a non-EN locale (per-locale leak)."""
     root = Path(args.root).resolve() if args.root else default_root()
     wr = web_root(root)
-    loc_maps = load_all_locales(root)
+    loc_maps, source = _leaks_loc_maps(args, root)
     en = loc_maps['en']
     en_absent, locale_absent = [], {loc: [] for loc in NON_EN_LOCALES}
     files_scanned = keys_checked = 0
@@ -574,7 +648,8 @@ def cmd_leaks(args):
                      'en_absent': len(en_uniq),
                      'locale_absent_total': sum(len(v) for v in locale_absent.values())}}
     Path(args.out).write_text(json.dumps(out, indent=2, ensure_ascii=False), encoding='utf-8')
-    print(f"i18n leaks — scanned {files_scanned} files, {keys_checked} static t()-keys")
+    print(f"i18n leaks ({db.source_label(source)}) — scanned {files_scanned} files, "
+          f"{keys_checked} static t()-keys")
     if en_uniq:
         print(f"\n🔴 {len(en_uniq)} key(s) ABSENT from EN (render as raw key-path — MISSING_MESSAGE):")
         for e in en_uniq[:40]:
@@ -589,6 +664,15 @@ def cmd_leaks(args):
             print(f"   {loc}: {len({x['key'] for x in v})} key(s)  e.g. {ex}")
     if not en_uniq and not parity:
         print("✓ no leaking keys — every static t()-key resolves in all 6 locales.")
+    elif en_uniq or parity:
+        # Bug #303: app_translations (DB) is the source of truth. Hand-adding a key
+        # to the JSON is overwritten by the next build dump — REMEDIATE in the DB.
+        print("\n→ Fix (DB is the source of truth — a JSON-only add is overwritten by the build dump):")
+        print("   • EN-absent: mint the EN value, then add it to app_translations —")
+        print("     the admin Languages panel (→ upsert_translation), or seed it into")
+        print("     the JSON and `node apps/web/scripts/push-translations.mjs --namespace <ns>`,")
+        print("     then run the `language` mode to translate the new non-EN cells.")
+        print("   • locale-absent: it exists in EN — run the `language` mode (writes the DB).")
     print(f"\n→ {args.out}")
 
 
@@ -602,13 +686,21 @@ def main():
     d.add_argument('--briefs', action='store_true', help='also emit per-file agent brief JSONs')
     d.set_defaults(func=cmd_detect)
 
-    m = sub.add_parser('merge', help='merge agent key-map sidecars into en/<ns>.json (single writer) + reuse-existence check')
+    m = sub.add_parser('merge', help='merge agent key-map sidecars into en/<ns>.json + UPSERT new EN keys into app_translations + reuse-existence check')
     m.add_argument('--root'); m.add_argument('--keys-dir', required=True, help='dir of agent b*.json sidecars')
     m.add_argument('--out', default='/tmp/i18n_extract/merge_report.json')
+    m.add_argument('--files-only', action='store_true',
+                   help='write en/<ns>.json only, SKIP the app_translations upsert (DANGER: overwritten by the next build dump)')
+    m.add_argument('--allow-other-project', dest='allow_other', action='store_true',
+                   help='permit a non-prod Supabase project ref for the DB upsert (default: refuse)')
     m.set_defaults(func=cmd_merge)
 
-    p = sub.add_parser('propagate', help='set merged keys into all 6 locales (EN placeholder for non-EN)')
+    p = sub.add_parser('propagate', help='set merged keys into all 6 locales (EN placeholder) + UPSERT the propagated rows into app_translations')
     p.add_argument('--root'); p.add_argument('--report', default='/tmp/i18n_extract/merge_report.json')
+    p.add_argument('--files-only', action='store_true',
+                   help='write the locale JSON only, SKIP the app_translations upsert (DANGER: overwritten by the next build dump)')
+    p.add_argument('--allow-other-project', dest='allow_other', action='store_true',
+                   help='permit a non-prod Supabase project ref for the DB upsert (default: refuse)')
     p.set_defaults(func=cmd_propagate)
 
     v = sub.add_parser('verify', help='assert t()-keys resolve in en/*.json + flag smart-quote calls')
@@ -618,6 +710,12 @@ def main():
     lk = sub.add_parser('leaks', help='app-wide: keys used in t() but ABSENT from EN (raw-path leak) or a non-EN locale')
     lk.add_argument('--root'); lk.add_argument('--scope', nargs='+', help='paths under apps/web (default: app components lib hooks store)')
     lk.add_argument('--out', default='/tmp/i18n_leaks.json')
+    lk.add_argument('--db', action='store_true',
+                    help='check against app_translations (DB) — deploy-truth: flags t()-keys '
+                         'that would render as raw paths after the next build dump (incl. JSON '
+                         'keys not yet pushed to the DB). May surface in-flight WIP.')
+    lk.add_argument('--allow-other-project', dest='allow_other', action='store_true',
+                    help='with --db: permit a non-prod Supabase project ref (default: refuse)')
     lk.set_defaults(func=cmd_leaks)
 
     args = ap.parse_args()

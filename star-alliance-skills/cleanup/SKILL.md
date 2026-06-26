@@ -2,10 +2,63 @@
 name: cleanup
 description: "Multi-mode hygiene skill for Lex Council. Modes — language (i18n translations); consolidate (i18n key dedup); hardcoded (extract raw UI text to next-intl keys); leaks (i18n keys used in code but missing from JSON); errors (dev log sweep); postgres (Supabase advisors + pg health); lint (ESLint --fix + tsc); consolidate-code (duplicate code detection); bundle (Cloudflare Worker size-wall hygiene); release (version bump + hygiene gate); docs (frontmatter/wikilinks/orphans); followups (deferred items); manual (in-app user manual translated in all 6 locales). Run all via scripts/run_all.py. Triggers: \"run cleanup\", \"/cleanup\", \"i18n cleanup\", \"translate untranslated\", \"find hardcoded text\", \"find leaking keys\", \"raw key paths\", \"fix dev errors\", \"check postgres\", \"run lint\", \"consolidate code\", \"check the bundle size\", \"doc cleanup\", \"finish followups\", \"update the manual\", \"bump the version\", \"release X.Y.Z\", or any hygiene sweep after a campaign. Full mode recipes in references/."
 metadata:
-  version: 1.18.0
+  version: 1.20.0
 ---
 
-# Cleanup — Lex Council hygiene sweeps (v1.18.0)
+# Cleanup — Lex Council hygiene sweeps (v1.20.0)
+
+<!-- v1.20.0 (2026-06-26) — repo↔device fork reconciliation (skillsmith sync).
+  The repo distribution copy and the device copy (developed in Lex Council App,
+  symlinked into ~/.claude/skills) had DIVERGED on a colliding 1.18.0:
+  • repo 1.18.0 (skillsmith routine, 2026-06-20) = the `docs` D4+D5 systemic-
+    threshold escape — RETAINED here (references/mode-docs.md unchanged).
+  • device 1.18.0 + 1.19.0 (2026-06-21) = the i18n DB-native rewrite — GRAFTED
+    in this sync. The device lineage takes the canonical 1.18.0/1.19.0 changelog
+    slots; the repo's docs escape is credited in this 1.20.0 row.
+  Grafted from device: scripts/_db_translations.py (new) + i18n_cleanup.py +
+  consolidate_cleanup.py + i18n_extract.py (DB-native); references/mode-language,
+  mode-consolidate, mode-hardcoded, mode-leaks + landmines L41; the §Modes table
+  rows + the comment blocks + §Related below. The Cowork-trimmed 991-char
+  description is preserved (do NOT replace with the device's richer one — it
+  exceeds the ≤1024 installer limit). Device stays the canonical fork; this is
+  the distribution mirror. -->
+
+<!-- v1.19.0 (2026-06-21) — the `hardcoded` mode goes DB-native too (Bug #303
+  follow-up, completing v1.18.0). `i18n_extract.py merge` + `propagate` were the
+  last i18n write-paths still JSON-only — silently wiped by the build dump like
+  everything #303 already fixed, AND (since v1.18.0's `language` detect reads the
+  DB) a JSON-only propagate left the new keys invisible to the translator, so they
+  were never filled before being wiped.
+  • merge now UPSERTs each newly-minted EN key into public.app_translations
+    (added-only — never clobbers a pre-existing EN value).
+  • propagate now UPSERTs the propagated placeholder rows (added-only — never
+    overwrites a real non-EN translation with the EN placeholder).
+  • both reuse scripts/_db_translations.upsert_rows; JSON kept as a mirror; new
+    --files-only (skip DB) + --allow-other-project flags; no-creds + real rows =
+    FATAL exit 2 (same contract as `language apply`). detect/verify/leaks unchanged.
+  • Write-path self-tested with the §L41 throwaway key (settings.__cleanup_selftest__)
+    against an isolated /tmp root, DB row deleted after — no tracked JSON touched.
+  See vault log 2026-06-21_cleanup-hardcoded-db-native.md. -->
+
+<!-- v1.18.0 (2026-06-21) — i18n modes go DB-native (Bug #303 follow-up).
+  language / consolidate / leaks now read/write public.app_translations (the
+  source of truth) instead of the JSON the build dump overwrites:
+  • NEW scripts/_db_translations.py — shared service-role REST transport (stdlib
+    urllib): env-load + prod-ref guard, paginated read, chunked upsert, safe
+    per-key DELETE, DB-or-JSON source resolver. Mirrors push/dump-translations.mjs.
+  • language: detect/verify read the DB (auto-fallback to committed JSON when no
+    creds → run_all/rotation never break); apply UPSERTs to app_translations +
+    mirrors the JSON. --files / --files-only / --allow-other-project.
+  • consolidate: new Phase C deletes the doomed keys from the DB (direct REST
+    DELETE, all locales, prod-guarded) so a merge isn't undone by the next dump;
+    detect/verify DB-source; --no-db / --allow-other-project.
+  • leaks: detection still defaults to JSON (offline-safe) + new --db deploy-truth
+    check; remediation guidance now targets the DB. All three add the 12th
+    namespace `tools` (was stale at 11).
+  • NEW §L41 — never git-checkout/restore a message JSON during a live
+    concurrent-actor session (clobbers uncommitted edits); test write-paths with
+    throwaway keys / --out-dir /tmp only. See vault log
+    2026-06-21_cleanup-i18n-db-native-rewrite.md. -->
 
 <!-- v1.17.0 (2026-06-19) — detector + scheduled-context + watermark upgrade.
   See UPGRADE-NOTES.md for the full session-mined rationale.
@@ -38,8 +91,8 @@ skill body routes to the right workflow based on what the user asked for.
 
 | Mode | Status | What it does |
 |---|---|---|
-| **language** | LIVE | Sweep every non-EN locale (ar/es/fr/ru/zh), find keys still equal to the English value, translate them in parallel via 5 subagents, write back, verify. |
-| **consolidate** | LIVE | Detect cross-locale safe-to-merge i18n groups, pick surgical universal labels (Status / Type / Yes / etc.), AST-aware callsite mapping, two-phase apply (dead keys first then live rewrites), delete now-orphan keys. Script: `scripts/consolidate_cleanup.py`. |
+| **language** | LIVE | Sweep every non-EN locale (ar/es/fr/ru/zh), find keys still equal to the English value, translate them in parallel via 5 subagents, **UPSERT them into `app_translations` (DB, the source of truth)** + mirror the JSON, verify. DB-native since v1.18.0 (#303) — detect/verify read the DB with a committed-JSON fallback. Script: `scripts/i18n_cleanup.py`. |
+| **consolidate** | LIVE | Detect cross-locale safe-to-merge i18n groups, pick surgical universal labels (Status / Type / Yes / etc.), AST-aware callsite mapping, **three-phase apply** (dead-key JSON delete → callsite rewrites + live-key JSON delete → **Phase C: delete the doomed keys from `app_translations` (DB)** so the merge survives the build dump). Script: `scripts/consolidate_cleanup.py`. |
 | **errors** | LIVE | Parse `/tmp/lex-dev.log` (tee'd `npx turbo dev` stdout + DevErrorSink browser payloads), dedupe by error-signature, classify each unique entry as code-bug / framework-noise / external / unknown. Surface a per-error triage list; auto-fix unambiguous code-bugs. Script: `scripts/errors_cleanup.py`. |
 | **postgres** | LIVE | Run Supabase `get_advisors` MCP + pg health queries; classify as advisory-auto-fix / advisory-surface / schema-campaign / noise. Auto-apply additive migrations for missing FK indexes. Flag RLS/schema issues as requiring a campaign. Script: `scripts/postgres_cleanup.py`. |
 | **lint** | LIVE | Run ESLint, classify as auto-fixable / architectural / wip-noise. Auto-run `eslint --fix` for safe rules, run `tsc`, surface architectural violations as campaign candidates. Script: `scripts/lint_cleanup.py`. |
@@ -47,8 +100,8 @@ skill body routes to the right workflow based on what the user asked for.
 | **release** | LIVE | App-upgrade gate + version bump. Phase 1 — hygiene gate: lint + errors + postgres + Cloudflare/OpenNext bundle wall + Next.js 16 hazard probes → green/red verdict. Phase 2 (only if green) — full bump: `app.config.ts` + changelog + doc-stamp sync + git block. Full recipe in `references/release-procedure.md`. Gate-only via `/cleanup release --gate`. |
 | **docs** | LIVE | Sync stale frontmatter dates + counts on planet hubs; flag broken wikilinks + archived-pointers; find orphan vault-logs; bump app version stamp in Vault Core; grep for retired-primitive names; detect post-rename narrative artifacts. Script: `scripts/docs_cleanup.py`. |
 | **followups** | LIVE | After a campaign closes, sweep vault-logs + risk-sweep files for deferred items. Classify as doable-autonomously / needs-user-hands / accepted-permanent-exception. Execute doable ones in parallel; surface the rest. Script: `scripts/followups_cleanup.py`. |
-| **hardcoded** | LIVE | Find raw hardcoded user-facing English text still in components (.tsx/.ts) and extract it to next-intl `t()` keys — the gap `language` (translates existing keys) / `consolidate` (dedups keys) never covered. Script: `scripts/i18n_extract.py` (detect/merge/propagate/verify); recipe `references/mode-hardcoded.md`. Scales 1-file → one-agent-per-file fan-out → `/conquering-campaign`. |
-| **leaks** | LIVE | The INVERSE of `hardcoded`: keys USED in code (`t('ns.key')`) but ABSENT from the locale JSON → render as the raw uppercased key-path (next-intl `getMessageFallback`) in the UI. `scripts/i18n_extract.py leaks` resolves every static `t()` key app-wide (matches `useTranslations` **and** `getTranslations`/`{namespace:}`), flags EN-absent (HIGH) + locale-parity (MED). Detect+surface only. The class that leaked the public Codex page twice. Recipe `references/mode-leaks.md`. |
+| **hardcoded** | LIVE | Find raw hardcoded user-facing English text still in components (.tsx/.ts) and extract it to next-intl `t()` keys — the gap `language` (translates existing keys) / `consolidate` (dedups keys) never covered. `merge` UPSERTs the minted EN keys + `propagate` UPSERTs the placeholder rows into `app_translations` (DB, the source of truth) + mirror the JSON — **DB-native since v1.19.0 (#303)** so they survive the build dump and the `language` handoff sees them. Script: `scripts/i18n_extract.py` (detect/merge/propagate/verify); recipe `references/mode-hardcoded.md`. Scales 1-file → one-agent-per-file fan-out → `/conquering-campaign`. |
+| **leaks** | LIVE | The INVERSE of `hardcoded`: keys USED in code (`t('ns.key')`) but ABSENT from the locale source → render as the raw uppercased key-path (next-intl `getMessageFallback`) in the UI. `scripts/i18n_extract.py leaks` resolves every static `t()` key app-wide (matches `useTranslations` **and** `getTranslations`/`{namespace:}`), flags EN-absent (HIGH) + locale-parity (MED). Default source = committed JSON; **`--db` = deploy-truth check against `app_translations`** (flags keys not yet pushed to the DB that vanish on the next dump). Detect+surface only; remediation targets the DB (#303). The class that leaked the public Codex page twice. Recipe `references/mode-leaks.md`. |
 | **bundle** | LIVE | Cloudflare/OpenNext **Worker size-wall** hygiene. `detect` (static, build-free) flags heavy client-only libs (`recharts`) imported OUTSIDE the `.body`+`dynamic({ssr:false})` convention so they leak into the SSR/Worker bundle (the class that failed the 1.7.60 deploy); `measure` (build-gated) gzips the built worker vs the 3 MiB free / 10 MiB paid wall. Feeds the `release` gate + `run_all`. Script: `scripts/bundle_cleanup.py`. Recipe `references/mode-bundle.md`. |
 | **manual** | LIVE | Keep the DB-backed in-app user manual translated + fresh (like `docs` does for the planet hubs). Detects Parts whose EN `body_md` hash ≠ stored `source_md_hash` per locale (**stale**) or have no row (**missing**); re-translates the gaps and **auto-publishes** via a per-Part translation workflow (routes / backticked code / `§` numbers / heading anchors kept verbatim); also flags Parts whose EN may be drifted by recent app changes (surface-only). MCP + workflow driven (no static script). Recipe `references/mode-manual.md`. |
 
@@ -196,7 +249,7 @@ Read `references/mode-release.md` for the full gate recipe (Steps PR1–PR4: hyg
 
 ## Lessons learned (cross-mode architecture)
 
-40 codified landmine lessons (L1–L40) covering MCP reachability taxonomy, behavior-parity verification, post-rename artifacts, look-alike-but-different trap, PostToolUse race conditions, continuation markers, vault-log size thresholds, `security_invoker` silent-drop, postgres multi-pass discipline, lint baseline noise, `no-unused-expressions` architectural status, hex literal grep, ThemeToggle/StrictMode noise, stale trigger bodies, i18n namespace scope trap, release-time failure cluster, byte-compare before merge, dev-server session survival, skill version-sync drift, language count-semantics (verify vs detect + absent-key blindness), exact-JSON-writer churn, concurrent-actor commit scoping, offline-MCP degrade-with-receipts, zero-edit no-bump, scanner self-reference, advisor accepted-by-convention netting, mutation-module error-codes-not-strings (L32), ternary/nullish-fallback literal escape (L33), campaign locale-parity gaps (L34), single-word-label domain specificity (L35), orphaned-INDEX vault-logs (L36), followups over-tagging environmental items (L37), used-but-absent key leaks (L38), heavy-lib Worker-wall busting (L39), and unattended rotation-routine discipline (L40).
+41 codified landmine lessons (L1–L41) covering MCP reachability taxonomy, behavior-parity verification, post-rename artifacts, look-alike-but-different trap, PostToolUse race conditions, continuation markers, vault-log size thresholds, `security_invoker` silent-drop, postgres multi-pass discipline, lint baseline noise, `no-unused-expressions` architectural status, hex literal grep, ThemeToggle/StrictMode noise, stale trigger bodies, i18n namespace scope trap, release-time failure cluster, byte-compare before merge, dev-server session survival, skill version-sync drift, language count-semantics (verify vs detect + absent-key blindness), exact-JSON-writer churn, concurrent-actor commit scoping, offline-MCP degrade-with-receipts, zero-edit no-bump, scanner self-reference, advisor accepted-by-convention netting, mutation-module error-codes-not-strings (L32), ternary/nullish-fallback literal escape (L33), campaign locale-parity gaps (L34), single-word-label domain specificity (L35), orphaned-INDEX vault-logs (L36), followups over-tagging environmental items (L37), used-but-absent key leaks (L38), heavy-lib Worker-wall busting (L39), unattended rotation-routine discipline (L40), and concurrent-actor message-file clobber (L41 — never `git checkout` a contended message JSON; test i18n write-paths with throwaway keys / `--out-dir /tmp`).
 
 > **Read `references/landmines.md`** before any cleanup pass that touches DB schema, consolidation, or release.
 
@@ -226,7 +279,9 @@ This skill carries a semantic version in its frontmatter (`version: X.Y.Z`) and 
 
 | Version | Date | Summary |
 |---|---|---|
-| **1.18.0** | 2026-06-20 | **`docs` mode systemic-threshold escape (D4 + D5).** When orphan vault-logs exceed **25 files OR 20% of the corpus**, or broken wikilinks exceed **50**, the INDEX is structurally unmaintained — the mode now emits ONE systemic finding recommending a *wholesale* decision (regenerate INDEX, or accept+watermark) instead of enumerating hundreds of per-file flags. D9 summary collapses to a single corpus-level systemic line. Session-mined: a real `/cleanup docs` run hit ~540 orphans + ~1299 broken links and the per-file walls were pure noise; the wholesale decision is the only actionable output. Flag-only recipe addition, no destructive-path change → MINOR. (skillsmith routine 2026-06-20, conf 8/10.) |
+| **1.20.0** | 2026-06-26 | **Repo↔device fork reconciliation (skillsmith sync).** The repo distribution copy and the canonical device copy (developed in Lex Council App, symlinked into `~/.claude/skills`) had diverged on a colliding `1.18.0`: the skillsmith routine shipped a repo-only `1.18.0` (the `docs` D4+D5 systemic-threshold escape) on 2026-06-20, the same week the device shipped its own `1.18.0` (the i18n DB-native rewrite) + `1.19.0` (hardcoded DB-native) on 2026-06-21. Back-synced the device lineage into the repo: `scripts/_db_translations.py` (new), `i18n_cleanup.py`, `consolidate_cleanup.py`, `i18n_extract.py` (DB-native); `references/mode-language`, `mode-consolidate`, `mode-hardcoded`, `mode-leaks` + `landmines.md` (L41); the §Modes table rows + the v1.18.0/v1.19.0 comment blocks + §Related. The device lineage takes the canonical 1.18.0/1.19.0 changelog slots below; the repo-only `docs` D4+D5 escape is **retained** (`references/mode-docs.md` unchanged) and credited here. The Cowork-trimmed 991-char description is preserved (the device's richer one exceeds the ≤1024 installer limit). Device stays the canonical fork; this is the distribution mirror. Sync-only reconciliation, no new behavior → MINOR (supersedes the 1.18.0 collision). |
+| **1.19.0** | 2026-06-21 | **`hardcoded` mode goes DB-native too (#303, completes v1.18.0).** `i18n_extract.py merge` + `propagate` were the last i18n write-paths still JSON-only — wiped by the build dump, and (since v1.18.0's `language` detect reads the DB) a JSON-only propagate left the minted keys invisible to the translator → never filled, then wiped. Now `merge` UPSERTs each newly-added EN key and `propagate` UPSERTs the propagated placeholder rows into `public.app_translations` (both **added-only** — never clobber a pre-existing EN value or a real non-EN translation), reusing `scripts/_db_translations.upsert_rows`; JSON kept as a mirror. New `--files-only` (skip DB) + `--allow-other-project` flags; no-creds + real rows = FATAL exit 2 (same contract as `language apply`). `detect`/`verify`/`leaks` unchanged. Write-paths self-tested with the §L41 throwaway key against an isolated `/tmp` root (no tracked JSON touched), DB row deleted after. New optional flags + write-target change, same invocations → MINOR. Vault log `2026-06-21_cleanup-hardcoded-db-native.md`. |
+| **1.18.0** | 2026-06-21 | **i18n modes go DB-native (Bug #303 follow-up).** `language` / `consolidate` / `leaks` now read/write `public.app_translations` (the source of truth) instead of the JSON the build dump overwrites. NEW `scripts/_db_translations.py` — shared service-role REST transport (stdlib `urllib`): prod-ref-guarded env-load, paginated read, chunked upsert, safe per-key DELETE (empty-set = no-op), DB-or-JSON source resolver; mirrors push/dump-translations.mjs. `language` apply UPSERTs + mirrors JSON (detect/verify DB-source w/ committed-JSON fallback). `consolidate` apply gains **Phase C** (REST DELETE of doomed keys from the DB, all locales) so a merge survives the next dump. `leaks` keeps the JSON default + adds `--db` deploy-truth; remediation guidance → DB. All three add the 12th namespace `tools` (was stale at 11). NEW §L41 (concurrent message-file clobber). Behavior change to where writes land, same invocations → MINOR. Vault log `2026-06-21_cleanup-i18n-db-native-rewrite.md`. _(Device lineage; the repo's independently-numbered 1.18.0 `docs` systemic-threshold escape is folded into 1.20.0 above.)_ |
 | **1.17.1** | 2026-06-20 | **Cowork packaging (stub copy).** Trimmed the frontmatter description 1087 → 991 chars to satisfy the ≤1024-char hard limit (condensed the per-mode parenthetical hints on `leaks`/`consolidate-code`/`bundle`/`manual`; full mode list + every trigger phrase preserved — they are the triggering mechanism). No behavioral/mode change → PATCH. (Repo stub copy only; the device monolith keeps its richer description.) |
 | **1.16.0** | 2026-06-17 | **New `rotate.py` rotation driver (R15) — accommodates the hourly `lex-cleanup-rotation` routine.** A local scheduled task runs ONE mode per hour, cycling the rotation so each hour works the next spot; it applies + commits each run but **NEVER pushes** (push stays the user's call). New `scripts/rotate.py` (`next` / `advance [--noop]` / `show` / `sync-order`) owns the on-disk cursor `<workspace>/.claude/cleanup-routine-state.json`; `sync-order` auto-folds any newly-LIVE mode into the rotation **from now** and filters out `release`. New §Step RT + Step-0 router row + §L40 + `.claude/commands/cleanup-routine.md`. New entry-point, backward-compatible → MINOR. |
 | **1.15.0** | 2026-06-17 | **New `manual` mode — keep the DB-backed in-app user manual translated + fresh in all 6 locales** (like `docs` does for the planet hubs). Detects Parts whose EN `body_md` hash ≠ stored `source_md_hash` (**stale**) or have no row (**missing**), re-translates the gaps and auto-publishes via a per-Part workflow (routes / backticked code / `§` numbers / heading anchors kept verbatim); also surfaces EN Parts possibly drifted by recent app changes. MCP + workflow driven (no static script). Recipe `references/mode-manual.md`. New mode → MINOR. _(Changelog row backfilled 2026-06-17.)_ |
@@ -266,11 +321,12 @@ This skill carries a semantic version in its frontmatter (`version: X.Y.Z`) and 
 - `references/mode-leaks.md` — leaks mode recipe (used-but-absent i18n keys → raw key-paths).
 - `references/mode-bundle.md` — bundle mode recipe (Cloudflare/OpenNext Worker size-wall hygiene).
 - `references/mode-manual.md` — manual mode recipe (DB-backed in-app user manual i18n freshness).
-- `scripts/i18n_extract.py` — hardcoded + leaks mode machinery (detect/merge/propagate/verify/leaks).
+- `scripts/i18n_extract.py` — hardcoded + leaks mode machinery (detect/merge/propagate/verify/leaks). `merge`/`propagate` are DB-native since v1.19.0 (#303): they UPSERT the minted EN keys + propagated placeholder rows into `app_translations` via `_db_translations.upsert_rows` and mirror the JSON (`--files-only` to skip).
+- `scripts/_db_translations.py` — shared DB transport for the i18n modes (#303, v1.18.0): service-role REST against `public.app_translations` (env-load + prod-ref guard, paginated read, chunked upsert, safe per-key DELETE, DB-or-JSON source resolver). Python counterpart to `apps/web/scripts/{push,dump}-translations.mjs`.
 - `scripts/bundle_cleanup.py` — bundle mode machinery (detect/measure).
 - `scripts/rotate.py` — hourly rotation driver (R15, §L40): next/advance/show/sync-order over the routine cursor; never commits or pushes.
 - `.claude/commands/cleanup-routine.md` — one-spot-per-run rotation command (the `lex-cleanup-rotation` routine + manual `/cleanup-routine`).
-- `references/landmines.md` — L1–L40 cross-mode lessons.
+- `references/landmines.md` — L1–L41 cross-mode lessons.
 - `scripts/commit_scope.py` — concurrent-actor commit-scoper (R10, §L27): scan/buildcheck/emit; never commits.
 - [[2026-06-02_cleanup-skill-lessons-l25-l31]] — vault log for the L25–L31 + R10 (v1.10.0) upgrade.
 - `vault-log-compliance` skill — delegated to in every mode's vault log step.

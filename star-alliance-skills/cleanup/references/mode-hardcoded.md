@@ -2,6 +2,19 @@
 
 > **Script:** `python3 ~/.claude/skills/cleanup/scripts/i18n_extract.py <detect|merge|propagate|verify>` — the deterministic machinery (candidate harvest + reuse-map + single-writer key merge + 6-locale propagate + MISSING_MESSAGE verify). The `.tsx` edits + the translation are the agent/recipe layer.
 
+> **DB-native since v1.19.0 (Bug #303).** `public.app_translations` (prod
+> `bqgrpnsvplvicnmzxwkm`) is the source of truth; the web build dumps DB →
+> `messages/{locale}/{ns}.json`, so a key that lands ONLY in the JSON is silently
+> wiped by the next build. `merge` therefore **UPSERTs the minted EN keys** and
+> `propagate` **UPSERTs the propagated placeholder rows** into the DB (shared
+> `_db_translations` service-role REST, prod-ref guarded) and keep the JSON as a
+> mirror. This also closes a handoff hole: `language` detect reads the DB, so a
+> JSON-only propagate would leave the new keys invisible to it — never translated,
+> then wiped. Pass `--files-only` to skip the DB on either command (JSON-only —
+> recover with `apps/web/scripts/push-translations.mjs --namespace <ns>`);
+> `--allow-other-project` to point the upsert at a non-prod ref. No creds + real
+> rows = FATAL (exit 2), same contract as `language apply`.
+
 Find raw hardcoded user-facing English text still living in components and turn
 it into next-intl `t()` keys. This is the capability the other i18n modes do NOT
 have: `language` only translates JSON keys that already exist (it never reads
@@ -81,12 +94,14 @@ python3 ~/.claude/skills/cleanup/scripts/i18n_extract.py merge --keys-dir <agent
 ```
 
 Merges every agent's `namespace_keys` into `en/<ns>.json` (split dotted,
-conflict-detect, kept-first) and runs the **reuse-existence check**: every
-`reused_keys` entry MUST already exist in EN — any that don't are keys the agent
-MISLABELED as reuse (they'd be runtime `MISSING_MESSAGE`, invisible to `tsc`
-because the browser client is untyped). For each missing one, recover the literal
-from that file's brief and add it as a new key. Writes
-`/tmp/i18n_extract/merge_report.json`.
+conflict-detect, kept-first), **UPSERTs each newly-added EN key into
+`app_translations`** (DB-native, #303 — added-only, so a pre-existing EN value is
+never clobbered), and runs the **reuse-existence check**: every `reused_keys`
+entry MUST already exist in EN — any that don't are keys the agent MISLABELED as
+reuse (they'd be runtime `MISSING_MESSAGE`, invisible to `tsc` because the browser
+client is untyped). For each missing one, recover the literal from that file's
+brief and add it as a new key. Writes `/tmp/i18n_extract/merge_report.json`. (DB
+write hits **prod** — needs `apps/web/.env.local` creds; `--files-only` to skip.)
 
 #### Step H4 — Propagate to all 6 locales
 
@@ -94,10 +109,13 @@ from that file's brief and add it as a new key. Writes
 python3 ~/.claude/skills/cleanup/scripts/i18n_extract.py propagate
 ```
 
-Sets every merged key into ar/fr/ru/zh/es with the EN value as placeholder.
-Absent keys are invisible to `language` detect (§L25) — propagation is what makes
-them present-but-EN and therefore translatable. After this the app renders in
-every locale (no `MISSING_MESSAGE`), just showing English until H5.
+Sets every merged key into ar/fr/ru/zh/es with the EN value as placeholder **and
+UPSERTs those placeholder rows into `app_translations`** (DB-native, #303 —
+added-only, so an existing real translation is never overwritten with EN). Absent
+keys are invisible to `language` detect (§L25) — and since that detect reads the
+DB, propagation must reach the DB, not just the JSON, or the keys never become
+translatable. After this the app renders in every locale (no `MISSING_MESSAGE`),
+just showing English until H5. (DB write hits **prod**; `--files-only` to skip.)
 
 #### Step H5 — Translate (hand off to the `language` mode)
 
@@ -128,6 +146,7 @@ The 2026-06-03 fan-out surfaced exactly these — auto-fix all before closing:
 | `react-hooks/exhaustive-deps` "missing 't' / 'tCommon'" | the added `t` var is a new hook dependency → add it to the `useMemo`/`useCallback`/`useEffect` dep array |
 | dead-code file got i18n'd (rules-of-hooks on a 0-caller fn) | revert that file (don't carry dead i18n); prune its now-orphan keys |
 | concurrent actor editing the same tree | stage with exact NUL-literal pathspecs (`commit_scope.py` / §F5.5); never `git add -A` |
+| testing the merge/propagate DB write-path | use a throwaway key (`settings.__cleanup_selftest__`) + an isolated `--root /tmp/...` tree; clean up via a DB delete, **never `git checkout` a tracked `messages/*.json`** (§L41 — it silently destroys a concurrent actor's uncommitted edit) |
 
 #### Step H8 — Vault log + patch bump
 

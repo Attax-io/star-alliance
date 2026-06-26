@@ -1,13 +1,21 @@
 #!/usr/bin/env python3
-"""i18n consolidation utility for Lex Council.
+"""i18n consolidation utility for Lex Council — the `consolidate` cleanup mode.
+
+Source of truth (Bug #303): `public.app_translations` (DB). The web build dumps
+DB → messages/{locale}/{ns}.json, so a key deleted ONLY from the JSON
+reappears on the next build. This tool therefore deletes the doomed keys from
+the DB *and* the JSON; the TSX/TS callsite rewrites are unchanged (code is not
+in the DB).
 
 Four subcommands:
-  detect        — find cross-locale safe-to-merge groups + suggest common.* targets.
+  detect        — read app_translations (DB; --files for the committed JSON) and
+                  find cross-locale safe-to-merge groups + suggest common.* targets.
   map-callsites — AST-aware resolution of every t-call referencing the doomed keys.
                   Output: /tmp/consolidation_callsites_final.json with verified
-                  (file, line, var, key_arg → old_key → new_key) tuples.
+                  (file, line, var, key_arg → old_key → new_key) tuples. (code-only)
   apply         — execute callsite rewrites (two strategies: var-swap, or
-                  add-binding+swap) + delete the now-orphan keys from all locales.
+                  add-binding+swap) + delete the now-orphan keys from app_translations
+                  (DB) AND every locale's JSON.
   verify        — re-run safe-to-merge detector + validate every JSON parses.
 
 Workflow:
@@ -15,8 +23,15 @@ Workflow:
   2. write the target set to /tmp/consolidation_keys.json as [{old, new}, ...]
   3. map-callsites → produce verified rewrite plan
   4. review the plan with the user
-  5. apply         → execute rewrites + key deletions
+  5. apply         → execute rewrites + key deletions (DB + JSON)
   6. verify        → confirm no regressions
+
+Transport: service-role REST via the shared _db_translations helper (the same
+path push/dump-translations.mjs use). Direct REST DELETE rather than the
+`delete_translation` RPC — that RPC is programmer-gated (a service-role caller
+has no auth.uid()) and id-based; direct table DELETE on the unique key is the
+headless-safe, symmetric path. The prod project ref (bqgrpnsvplvicnmzxwkm) is
+asserted before any delete (override: --allow-other-project).
 
 Default messages root: lex_council/apps/web/public/messages
 Default code root:     lex_council/apps/web
@@ -26,8 +41,12 @@ from __future__ import annotations
 import argparse, collections, json, os, re, subprocess, sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import _db_translations as db  # noqa: E402
+
+# The live 12 namespaces (i18n/request.ts). `tools` is the 12th (added during #303).
 NAMESPACES = ['admin', 'auth', 'clients', 'common', 'errors', 'members',
-              'pageIntros', 'portal', 'public', 'settings', 'toasts']
+              'pageIntros', 'portal', 'public', 'settings', 'toasts', 'tools']
 LOCALES = ['en', 'ar', 'fr', 'ru', 'zh', 'es']
 
 
@@ -57,20 +76,14 @@ def default_code_root() -> Path:
     raise SystemExit("Could not locate code root.")
 
 
-def flatten(obj, prefix=''):
-    out = {}
-    if isinstance(obj, dict):
-        for k, v in obj.items():
-            p = f"{prefix}.{k}" if prefix else k
-            out.update(flatten(v, p))
-    elif isinstance(obj, str):
-        out[prefix] = obj
-    return out
-
-
-def load_ns(root: Path, loc: str, ns: str):
-    with (root / loc / f'{ns}.json').open('r', encoding='utf-8') as f:
-        return flatten(json.load(f))
+def load_msgs(args, root: Path):
+    """Read every (namespace, locale) flat key→value map from the DB (default) or
+    the committed JSON (--files / no creds). Returns (source_label, msgs) where
+    msgs is keyed {(ns, loc): {key: value}} (the convention the detector uses)."""
+    src, flat = db.flat_map(getattr(args, 'files', False), getattr(args, 'allow_other', False),
+                            root, NAMESPACES, LOCALES)
+    msgs = {(ns, loc): flat.get((loc, ns), {}) for ns in NAMESPACES for loc in LOCALES}
+    return src, msgs
 
 
 def get_str(d, k):
@@ -82,7 +95,7 @@ def get_str(d, k):
 
 def cmd_detect(args):
     root = Path(args.root) if args.root else default_msg_root()
-    msgs = {(ns, l): load_ns(root, l, ns) for ns in NAMESPACES for l in LOCALES}
+    source, msgs = load_msgs(args, root)
 
     # Build global EN-value index
     by_en = collections.defaultdict(list)
@@ -121,6 +134,7 @@ def cmd_detect(args):
     cross_ns = [g for g in safe_groups if len(g['namespaces']) > 1]
     same_ns = [g for g in safe_groups if len(g['namespaces']) == 1]
 
+    print(f"source: {db.source_label(source)}")
     print(f"Total safe-to-merge groups: {len(safe_groups)}")
     print(f"  cross-namespace (high lift): {len(cross_ns)}")
     print(f"  same-namespace (low lift):   {len(same_ns)}")
@@ -153,7 +167,7 @@ def cmd_detect(args):
     print(f"\nFull detector output → {out_path}")
 
 
-# ── map-callsites ──────────────────────────────────────────────────────────
+# ── map-callsites (code-only; unchanged by #303) ─────────────────────────────
 
 # Matches BOTH client (`const t = useTranslations('ns')`) and server-component
 # (`const t = await getTranslations('ns')` / `getTranslations({ namespace:'ns' })`)
@@ -275,9 +289,9 @@ def cmd_apply(args):
     code_root = Path(args.code_root) if args.code_root else default_code_root()
     plan_data = json.loads(Path(args.plan_file).read_text())
 
-    # Phase A — delete dead keys (zero-risk, JSON-only)
+    # Phase A — delete dead keys from JSON (zero-risk, JSON-only)
     dead_keys = plan_data.get('dead_keys', [])
-    print(f"Phase A: deleting {len(dead_keys)} dead keys × {len(LOCALES)} locales")
+    print(f"Phase A: deleting {len(dead_keys)} dead keys × {len(LOCALES)} locales (JSON)")
     by_ns_dead = collections.defaultdict(list)
     for k in dead_keys:
         top, _, _ = k.partition('.')
@@ -297,9 +311,9 @@ def cmd_apply(args):
                     f.write('\n')
     print(f"  removed {deleted_a} JSON entries")
 
-    # Phase B — callsite rewrites + delete live keys
+    # Phase B — callsite rewrites + delete live keys from JSON
     plan = plan_data.get('plan', [])
-    print(f"\nPhase B: rewriting callsites in {len(plan)} files + deleting live keys")
+    print(f"\nPhase B: rewriting callsites in {len(plan)} files + deleting live keys (JSON)")
     bindings_added = 0
     rewrites = 0
     skipped = []
@@ -367,6 +381,45 @@ def cmd_apply(args):
 
     print(f"\nTotal JSON entries removed: {deleted_a + deleted_b} ({deleted_a} dead + {deleted_b} live)")
 
+    # ── Phase C — delete the doomed keys from app_translations (the DB) ──
+    # Without this, the next build dump (DB → JSON) re-materializes every key the
+    # phases above just removed from the JSON. The DB is the source of truth.
+    all_doomed = sorted(set(dead_keys) | set(live_keys))
+    if args.no_db:
+        print(f"\n[apply] --no-db: skipping the {len(all_doomed)} DB deletion(s) "
+              "(JSON-only; the keys REAPPEAR on the next build dump).")
+        return
+    if not all_doomed:
+        print("\n[apply] no doomed keys → no DB deletions needed.")
+        return
+    try:
+        env = db.load_env(allow_other=args.allow_other)
+    except SystemExit as e:
+        print(e); env = None
+    if env is None:
+        print("\n[apply] WARNING: no DB credentials (env / apps/web/.env.local) — DB deletions SKIPPED.")
+        print(f"  The {len(all_doomed)} deleted key(s) will REAPPEAR on the next build dump (DB → JSON).")
+        print("  Set NEXT_PUBLIC_SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY and re-run apply to finish.")
+        return
+    by_ns_db = collections.defaultdict(list)
+    for k in all_doomed:
+        top, _, rest = k.partition('.')
+        if rest:
+            by_ns_db[top].append(rest)   # DB key_path excludes the namespace prefix
+    print(f"\nPhase C: deleting {len(all_doomed)} doomed key(s) from app_translations "
+          f"(prod {env['ref']}, all locales)…")
+    db_total = 0
+    for ns, kps in sorted(by_ns_db.items()):
+        try:
+            n = db.delete_keys(env, ns, kps)
+        except RuntimeError as e:
+            print(f"  FAIL {ns}: {e}\n    → re-run apply to finish DB deletions.")
+            continue
+        db_total += n
+        print(f"  {ns:<12} removed {n} row(s) for {len(kps)} key(s)")
+    print(f"  DB rows deleted: {db_total}")
+    print("DB + JSON are now consistent; the build re-dumps the remaining keys.")
+
 
 def _del_nested(d, dotted_key):
     parts = dotted_key.split('.', 1)
@@ -386,7 +439,7 @@ def _del_nested(d, dotted_key):
 
 def cmd_verify(args):
     msg_root = Path(args.msg_root) if args.msg_root else default_msg_root()
-    msgs = {(ns, l): load_ns(msg_root, l, ns) for ns in NAMESPACES for l in LOCALES}
+    source, msgs = load_msgs(args, msg_root)
     by_en = collections.defaultdict(list)
     for ns in NAMESPACES:
         for k in msgs[(ns, 'en')]:
@@ -395,6 +448,7 @@ def cmd_verify(args):
             by_en[en].append((ns, k))
     safe = sum(1 for v in by_en.values()
                if len(v) > 1 and _all_locales_agree(msgs, v))
+    print(f"source: {db.source_label(source)}")
     print(f"Safe-to-merge groups remaining: {safe}")
 
     bad = []
@@ -420,6 +474,13 @@ def _all_locales_agree(msgs, locs):
 
 # ── CLI ────────────────────────────────────────────────────────────────────
 
+def _add_source_flags(p):
+    p.add_argument('--files', action='store_true',
+                   help='read the committed JSON instead of the DB (offline / CI)')
+    p.add_argument('--allow-other-project', dest='allow_other', action='store_true',
+                   help='permit a non-prod Supabase project ref (default: refuse)')
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     sub = ap.add_subparsers(dest='cmd', required=True)
@@ -427,6 +488,7 @@ def main():
     p_d = sub.add_parser('detect')
     p_d.add_argument('--root', help='messages root (auto-detected)')
     p_d.add_argument('--out-dir', default='/tmp')
+    _add_source_flags(p_d)
     p_d.set_defaults(func=cmd_detect)
 
     p_m = sub.add_parser('map-callsites')
@@ -440,10 +502,15 @@ def main():
     p_a.add_argument('--msg-root', help='messages root (auto-detected)')
     p_a.add_argument('--code-root', help='apps/web root (auto-detected)')
     p_a.add_argument('--plan-file', default='/tmp/consolidation_callsites_final.json')
+    p_a.add_argument('--no-db', action='store_true',
+                     help='skip the DB deletions (JSON-only; keys reappear on the next build dump)')
+    p_a.add_argument('--allow-other-project', dest='allow_other', action='store_true',
+                     help='permit a non-prod Supabase project ref (default: refuse)')
     p_a.set_defaults(func=cmd_apply)
 
     p_v = sub.add_parser('verify')
     p_v.add_argument('--msg-root', help='messages root (auto-detected)')
+    _add_source_flags(p_v)
     p_v.set_defaults(func=cmd_verify)
 
     args = ap.parse_args()
