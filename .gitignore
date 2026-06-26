@@ -3,3 +3,7 @@ __pycache__/
 
 # runtime safety backups from the control-panel write-through
 *.bak
+
+# macOS Finder metadata — per-device, never sync
+.DS_Store
+**/.DS_Store
