@@ -18,20 +18,22 @@ export PATH="/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 cd "$REPO" || { echo "skillsmith routine: repo not found at $REPO" >&2; exit 1; }
 
 DATE="$(date +%F)"
-LOGDIR="$REPO/skillsmith/routine-logs"
+LOGDIR="$REPO/star-alliance-skills/skillsmith/routine-logs"
 mkdir -p "$LOGDIR"
 LOG="$LOGDIR/$DATE.log"
 
 read -r -d '' PROMPT <<'EOF'
 Run the skillsmith `routine` mode now, fully autonomously, end to end.
 
-Invoke the skillsmith skill and follow references/routine-playbook.md exactly:
-Stage A harvest (scripts/routine_scan.py) → Stage B STORM research per active skill
-(references/storm-method.md) → Stage C write today's ledger entry incrementally as you
-go → Stage D execute every finding with peer-review confidence >= 8/10 that clears the
-§R4 guards (upgrade existing skills, create genuinely new ones, fix bugs — skillsmith
-itself last, per §R6) → Stage E commit each change separately and `git push origin main`,
-then write the Run Summary at the top of today's ledger entry.
+Invoke the skillsmith skill and follow star-alliance-skills/skillsmith/references/routine-playbook.md
+exactly (all skill paths are under star-alliance-skills/ after the 2026-06 restructure):
+Stage A harvest (star-alliance-skills/skillsmith/scripts/routine_scan.py) → Stage B STORM research
+per active skill (star-alliance-skills/skillsmith/references/storm-method.md) → Stage C write today's
+ledger entry incrementally as you go → Stage D execute every finding with peer-review confidence
+>= 8/10 that clears the §R4 guards (upgrade existing skills, create genuinely new ones, fix bugs —
+skillsmith itself last, per §R6) → Stage E conformity-close (build.py ONLY if a skill changed, then
+conformity_check.py must pass), commit each change separately and `git push origin main`, then write
+the Run Summary at the top of today's ledger entry.
 
 You are unattended. Do not ask questions; apply the autonomy contract as written (fully
 autonomous, >=8/10 gate, forks/externals never auto-edited, everything a revertible
