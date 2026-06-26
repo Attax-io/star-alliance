@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 49,
       "patch": 42
     },
-    "generated": "2026-06-26T19:48:55Z",
+    "generated": "2026-06-26T20:38:20Z",
     "schemaVersion": 3,
     "counts": {
       "members": 9,
@@ -627,7 +627,7 @@ const GUILD = {
         "lines": 58,
         "words": 1106
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-strategist"
       ]
@@ -662,7 +662,7 @@ const GUILD = {
         "lines": 111,
         "words": 839
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-herald",
         "the-translator"
@@ -923,7 +923,7 @@ const GUILD = {
         "lines": 60,
         "words": 1052
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-butler"
       ]
@@ -1115,7 +1115,7 @@ const GUILD = {
         "lines": 99,
         "words": 1068
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-designer"
       ]
@@ -1270,7 +1270,7 @@ const GUILD = {
         "lines": 97,
         "words": 2490
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-herald"
       ]
@@ -1306,7 +1306,7 @@ const GUILD = {
         "lines": 52,
         "words": 997
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-quartermaster"
       ]
@@ -1343,7 +1343,7 @@ const GUILD = {
         "lines": 231,
         "words": 2454
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-quartermaster"
       ]
@@ -1632,7 +1632,7 @@ const GUILD = {
         "lines": 63,
         "words": 1152
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-architect",
         "the-translator"
@@ -1670,7 +1670,7 @@ const GUILD = {
         "lines": 54,
         "words": 1156
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-translator"
       ]
@@ -1706,7 +1706,7 @@ const GUILD = {
         "lines": 64,
         "words": 1447
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-architect"
       ]
@@ -1743,7 +1743,7 @@ const GUILD = {
         "lines": 55,
         "words": 1115
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-merchant"
       ]
@@ -1785,7 +1785,7 @@ const GUILD = {
         "lines": 151,
         "words": 1356
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-butler"
       ]
@@ -1911,7 +1911,7 @@ const GUILD = {
         "lines": 55,
         "words": 1072
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-herald"
       ]
@@ -1948,7 +1948,7 @@ const GUILD = {
         "lines": 60,
         "words": 1024
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-quartermaster"
       ]
@@ -1984,7 +1984,7 @@ const GUILD = {
         "lines": 48,
         "words": 1030
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-strategist"
       ]
@@ -2076,7 +2076,7 @@ const GUILD = {
         "lines": 94,
         "words": 919
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-herald",
         "the-merchant",
@@ -2305,7 +2305,7 @@ const GUILD = {
         "lines": 108,
         "words": 926
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-strategist"
       ]
@@ -2378,7 +2378,7 @@ const GUILD = {
         "lines": 109,
         "words": 926
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-architect",
         "the-butler",
@@ -2422,7 +2422,7 @@ const GUILD = {
         "lines": 59,
         "words": 1078
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-strategist"
       ]
@@ -2847,7 +2847,7 @@ const GUILD = {
       "accent": "gold",
       "category": "Legal",
       "tagline": "Turn real laws into a clean, multilingual codex.",
-      "when": "Use this to load real laws into the codex and translate them across locales — loop the source laws, load + translate each, and stop at the publish gate (you publish).",
+      "when": "Use this to load real laws into the codex and translate them across locales — loop the source laws, load + translate each, and stop at the publish gate (you publish). Fed by Law Harvest — run that first to build the verified source-law library.",
       "steps": [
         {
           "kind": "member",
@@ -2904,7 +2904,7 @@ const GUILD = {
       "accent": "green",
       "category": "Research & Intel",
       "tagline": "Read-only trading, investment, and market intelligence.",
-      "when": "Use this for investment, trading, or market research where no code should be written. (For website/SEO/brand audits use Marketing Recon.)",
+      "when": "Use this for investment, trading, or market research where no code should be written. (For website/SEO/brand audits use Brand Audit.)",
       "steps": [
         {
           "kind": "member",
@@ -3013,7 +3013,7 @@ const GUILD = {
       "accent": "gold",
       "category": "Hygiene & Release",
       "tagline": "Sweep recent sessions and backfill any missing guild-log entries.",
-      "when": "Use this to reconcile the guild log after a stretch of work — loop the recent sessions, find changes that never got recorded, and log them.",
+      "when": "Use this to reconcile the guild log after a stretch of work — loop the recent sessions, find changes that never got recorded, and log them. First stage of the release-closeout chain: Guild Log Sync → Hygiene Rotation → Release Train.",
       "steps": [
         {
           "kind": "member",
@@ -3268,7 +3268,7 @@ const GUILD = {
       "accent": "violet",
       "category": "Hygiene & Release",
       "tagline": "The Quartermaster runs the full hygiene sweep across every mode.",
-      "when": "Use this for routine hygiene or post-campaign cleanup — i18n, lint, dev-errors, postgres, docs, follow-ups, and consolidating duplicated search/filter/action UI across pages and panels.",
+      "when": "Use this for routine hygiene or post-campaign cleanup — i18n, lint, dev-errors, postgres, docs, follow-ups, and consolidating duplicated search/filter/action UI across pages and panels. Middle stage of the release-closeout chain: Guild Log Sync → Hygiene Rotation → Release Train.",
       "steps": [
         {
           "kind": "member",
@@ -3318,7 +3318,7 @@ const GUILD = {
       "accent": "cyan",
       "category": "Hygiene & Release",
       "tagline": "Merge every branch and PR, bump the version, and push the release.",
-      "when": "Use this to close out work — merge all branches/PRs into main, bump the version, and push.",
+      "when": "Use this to close out work — merge all branches/PRs into main, bump the version, and push. Final stage of the release-closeout chain: Guild Log Sync → Hygiene Rotation → Release Train.",
       "steps": [
         {
           "kind": "member",
@@ -3622,7 +3622,7 @@ const GUILD = {
     },
     {
       "id": "marketing-audit",
-      "name": "Marketing Recon",
+      "name": "Brand Audit",
       "icon": "📣",
       "accent": "rose",
       "category": "Research & Intel",

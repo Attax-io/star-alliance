@@ -291,7 +291,7 @@
       "accent": "gold",
       "category": "Legal",
       "tagline": "Turn real laws into a clean, multilingual codex.",
-      "when": "Use this to load real laws into the codex and translate them across locales — loop the source laws, load + translate each, and stop at the publish gate (you publish).",
+      "when": "Use this to load real laws into the codex and translate them across locales — loop the source laws, load + translate each, and stop at the publish gate (you publish). Fed by Law Harvest — run that first to build the verified source-law library.",
       "steps": [
         {
           "kind": "member",
@@ -347,7 +347,7 @@
       "accent": "green",
       "category": "Research & Intel",
       "tagline": "Read-only trading, investment, and market intelligence.",
-      "when": "Use this for investment, trading, or market research where no code should be written. (For website/SEO/brand audits use Marketing Recon.)",
+      "when": "Use this for investment, trading, or market research where no code should be written. (For website/SEO/brand audits use Brand Audit.)",
       "steps": [
         {
           "kind": "member",
@@ -454,7 +454,7 @@
       "accent": "gold",
       "category": "Hygiene & Release",
       "tagline": "Sweep recent sessions and backfill any missing guild-log entries.",
-      "when": "Use this to reconcile the guild log after a stretch of work — loop the recent sessions, find changes that never got recorded, and log them.",
+      "when": "Use this to reconcile the guild log after a stretch of work — loop the recent sessions, find changes that never got recorded, and log them. First stage of the release-closeout chain: Guild Log Sync → Hygiene Rotation → Release Train.",
       "steps": [
         {
           "kind": "member",
@@ -705,7 +705,7 @@
       "accent": "violet",
       "category": "Hygiene & Release",
       "tagline": "The Quartermaster runs the full hygiene sweep across every mode.",
-      "when": "Use this for routine hygiene or post-campaign cleanup — i18n, lint, dev-errors, postgres, docs, follow-ups, and consolidating duplicated search/filter/action UI across pages and panels.",
+      "when": "Use this for routine hygiene or post-campaign cleanup — i18n, lint, dev-errors, postgres, docs, follow-ups, and consolidating duplicated search/filter/action UI across pages and panels. Middle stage of the release-closeout chain: Guild Log Sync → Hygiene Rotation → Release Train.",
       "steps": [
         {
           "kind": "member",
@@ -754,7 +754,7 @@
       "accent": "cyan",
       "category": "Hygiene & Release",
       "tagline": "Merge every branch and PR, bump the version, and push the release.",
-      "when": "Use this to close out work — merge all branches/PRs into main, bump the version, and push.",
+      "when": "Use this to close out work — merge all branches/PRs into main, bump the version, and push. Final stage of the release-closeout chain: Guild Log Sync → Hygiene Rotation → Release Train.",
       "steps": [
         {
           "kind": "member",
@@ -1053,7 +1053,7 @@
     },
     {
       "id": "marketing-audit",
-      "name": "Marketing Recon",
+      "name": "Brand Audit",
       "icon": "📣",
       "accent": "rose",
       "category": "Research & Intel",
