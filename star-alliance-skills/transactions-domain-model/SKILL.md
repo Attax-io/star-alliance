@@ -12,7 +12,7 @@ description: >
   "transaction page", or references any file under finances/. Load silently in the background — no need to
   announce the skill is running.
 metadata:
-  version: 1.3.0
+  version: 1.3.1
 ---
 
 # Transactions Domain Model
@@ -98,7 +98,9 @@ Every transaction passes through three gates in order: **Create → Agree → Ce
 
 ### Gate 1: Create
 - Any user with file access can create a transaction via `TransactionFormModal` or `BatchTransactionModal`.
-- Payload goes to `POST /api/transactions/create` which uses `createAdminClient()` (service-role) because
+- The create write routes through `callServerRpc → /api/rpc` (server cookie client, the app-wide
+  transport since 2026-06-19 — see §0 banner + §9). *Historical (pre-2026-06-19):* the payload went to
+  `POST /api/transactions/create` using `createAdminClient()` (service-role), which was needed because
   the `transactions` table has no INSERT RLS policy for `authenticated`.
 - The API validates `transactionType`, `amount`, `fileRef`, and checks file access via `checkFileAccess()`.
 - `is_agreed_on` defaults to `true` on INSERT (legacy Flutter behavior). The only exception is admin-created
@@ -113,7 +115,7 @@ Every transaction passes through three gates in order: **Create → Agree → Ce
 - `action_required_user_inquestion` identifies who must agree. Enforced by the DB trigger (see §4).
 - **Self-agree:** The action-required user agrees on their own transaction.
 - **Admin agree on behalf:** An admin with `cmAp.tr_agree_on_transactions` can agree for another member.
-  The bulk-agree route (`/api/transactions/agree`) additionally checks `council_members.allow_admin_conscent`.
+  The bulk-agree route (`/api/transactions/agree`) additionally checks `allow_admin_conscent` on the approval view (pre-v2 this lived on `council_members`; v2 member identity is `users` — see §0 banner).
   The single-transaction agree path (`agreeOnTransaction` → `/api/transactions/update`) does NOT check
   consent (Model A from Phase 0 vault log). This inconsistency is documented and deliberate.
 - One-way only — once agreed, cannot be un-agreed.
@@ -405,6 +407,7 @@ For deep context on past decisions, read these vault logs:
 
 | Version | Change |
 |---|---|
+| 1.3.1 | §2 Gate 1: rewrote write transport to `callServerRpc` → `/api/rpc` (the app-wide transport since 2026-06-19, matching the §0 banner + §9); the pre-2026-06-19 `POST /api/transactions/create` + `createAdminClient()` shape is now marked historical (no-INSERT-RLS-for-`authenticated` rationale preserved). §2 Gate 2: dropped the stale `council_members.` prefix on `allow_admin_conscent` (column lives on the approval view; v2 member identity is `users`). Closes the load-bearing §2↔§0/§9 contradiction the 1.3.0 pass left in place. |
 | 1.3.0 | §4 name-lookup source rewritten from `council_members.n_name` → v2 member identity (`users` / v2 member view); the `*_n_name` output columns persist, exact v2 source column flagged for live re-check. §9 write transport corrected to `callServerRpc` → `/api/rpc` (2026-06-19); per-route `requireAuth()` + `createAdminClient()` service-role shape marked historical. Route paths and methods unchanged. |
 | 1.2.0 | **Per-name v2 rewrite (the deferred 1.1.0 follow-up), now done — names verified live against `information_schema` 2026-06-21 (project `bqgrpnsvplvicnmzxwkm`).** Proven DEAD and corrected in-body: all six `transactions_*_js` views + `transactions_container_js` (→ `admin_finances_transactions_{approval,certification,safe,history,pending}` / `members_finances_transactions_personal` / `admin_files_transactions_detail`), `fd_access_js` (→ `folder_access`), `branches_js` (→ `branches`), `transaction_templates` table (→ generic `templates` / `admin_templates_list`). Proven STILL-LIVE (kept): `tr_on_tr_b_iu` trigger + the 5 transaction columns. Retired the false "all views = one 45-column SELECT, zero drift" claim (admin/members views diverged in v2). Column shapes + exact WHERE semantics still flagged for re-check. |
 | 1.1.0 | Added the **v2 schema-name staleness banner** at the top: the domain *concepts* remain accurate but table/view/column names (`council_members`, `n_name`, `fd_access_js`, the `_js` view suffix, `admin_perms`, `branches_js`) are pre-v2 (2026-05-24 overhaul) and GONE on `main`; lists v2 successors + the 2026-06-19 server-transport write change, and routes name-verification to V2-CONVENTIONS.md. Full per-name rewrite deferred (needs live DB read). |
