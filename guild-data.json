@@ -1,14 +1,14 @@
 {
   "meta": {
     "name": "Star Alliance",
-    "generated": "2026-06-26T07:59:06Z",
+    "generated": "2026-06-26T08:13:41Z",
     "schemaVersion": 3,
     "counts": {
       "members": 9,
       "skills": 32,
       "domains": 3,
       "workflows": 7,
-      "log": 43
+      "log": 54
     }
   },
   "members": [
@@ -2547,6 +2547,71 @@
   "log": {
     "entries": [
       {
+        "id": 20,
+        "date": "2026-06-26",
+        "type": "chore",
+        "title": "Generated storm-investigation skill art + fixed Fallen Sword art size in gen-skill-art.cjs",
+        "who": "the-quartermaster",
+        "detail": "skill-art/storm-investigation.png backfilled; gen-skill-art.cjs size fix; create-playbook.md updated to require dashboard wiring (commit b02f830 — art/script parts non-derivable).",
+        "ref": [
+          "storm-investigation",
+          "fallen-sword-design-language"
+        ]
+      },
+      {
+        "id": 19,
+        "date": "2026-06-26",
+        "type": "chore",
+        "title": "Generated 11 weapon card art PNGs (weapon-art/)",
+        "who": "the-quartermaster",
+        "detail": "First-ever weapon art for all 11 arsenal weapons, committed in 13983c2 via gen-weapon-art.cjs. Binary blobs, non-derivable.",
+        "ref": [
+          "deepseek-v4-pro",
+          "gemma4",
+          "glm-5.2",
+          "gpt-5.5",
+          "haiku",
+          "kimi-k2.7",
+          "minimax-m3",
+          "nemotron-3-ultra",
+          "opus",
+          "qwen3.5",
+          "sonnet"
+        ]
+      },
+      {
+        "id": 18,
+        "date": "2026-06-26",
+        "type": "chore",
+        "title": "Regenerated all 9 member portrait PNGs (member-art/)",
+        "who": "the-quartermaster",
+        "detail": "All 9 member profile pictures regenerated in the 'Member profile pictures' session, committed as binary blobs in 13983c2. Script derives from .md diffs, not PNG blobs.",
+        "ref": [
+          "the-architect",
+          "the-butler",
+          "the-designer",
+          "the-developer",
+          "the-engineer",
+          "the-merchant",
+          "the-quartermaster",
+          "the-strategist",
+          "the-translator"
+        ]
+      },
+      {
+        "id": 17,
+        "date": "2026-06-26",
+        "type": "structure",
+        "title": "Add harness installer: harness.json + install.py + workflows.json",
+        "who": "the-quartermaster",
+        "detail": "Three NEW untracked files (?? in git status, not in any commit). harness.json = harness manifest v1.0.0. install.py = full guild installer (--to/--domain/--all/--dev/--global/status/uninstall). workflows.json = 3 guild workflows (standard-mission, quick-task, solo-sprint). build_guild_log.py cannot see uncommitted files.",
+        "ref": [
+          "harness.json",
+          "install.py",
+          "workflows.json"
+        ]
+      },
+      {
         "id": 16,
         "date": "2026-06-26",
         "type": "dashboard",
@@ -2718,6 +2783,80 @@
       },
       {
         "date": "2026-06-26",
+        "type": "skill-upgrade",
+        "title": "Upgrade storm-investigation to 1.0.0",
+        "who": "Atta",
+        "ref": [
+          "storm-investigation"
+        ],
+        "from": "",
+        "to": "1.0.0",
+        "commit": "78513bd5",
+        "_derived": true,
+        "id": "g-78513bd5-upgrade-storm-investigation-to-1-0-0"
+      },
+      {
+        "date": "2026-06-26",
+        "type": "skill-create",
+        "title": "Add skill: storm-investigation",
+        "who": "Atta",
+        "ref": [
+          "storm-investigation"
+        ],
+        "commit": "78513bd5",
+        "_derived": true,
+        "id": "g-78513bd5-add-skill-storm-investigation"
+      },
+      {
+        "date": "2026-06-26",
+        "type": "member-upgrade",
+        "title": "Update member: the-butler",
+        "who": "Atta",
+        "ref": [
+          "the-butler"
+        ],
+        "commit": "78513bd5",
+        "_derived": true,
+        "id": "g-78513bd5-update-member-the-butler"
+      },
+      {
+        "date": "2026-06-26",
+        "type": "member-upgrade",
+        "title": "Update member: the-merchant",
+        "who": "Atta",
+        "ref": [
+          "the-merchant"
+        ],
+        "commit": "78513bd5",
+        "_derived": true,
+        "id": "g-78513bd5-update-member-the-merchant"
+      },
+      {
+        "date": "2026-06-26",
+        "type": "member-upgrade",
+        "title": "Update member: the-quartermaster",
+        "who": "Atta",
+        "ref": [
+          "the-quartermaster"
+        ],
+        "commit": "78513bd5",
+        "_derived": true,
+        "id": "g-78513bd5-update-member-the-quartermaster"
+      },
+      {
+        "date": "2026-06-26",
+        "type": "member-upgrade",
+        "title": "Update member: the-strategist",
+        "who": "Atta",
+        "ref": [
+          "the-strategist"
+        ],
+        "commit": "78513bd5",
+        "_derived": true,
+        "id": "g-78513bd5-update-member-the-strategist"
+      },
+      {
+        "date": "2026-06-26",
         "type": "skill-create",
         "title": "Add skill: guild-log",
         "who": "Atta",
@@ -2739,6 +2878,20 @@
         "commit": "650b7781",
         "_derived": true,
         "id": "g-650b7781-add-skill-impeccable"
+      },
+      {
+        "date": "2026-06-26",
+        "type": "skill-upgrade",
+        "title": "Upgrade guild-log to 1.1.0",
+        "who": "Atta",
+        "ref": [
+          "guild-log"
+        ],
+        "from": "",
+        "to": "1.1.0",
+        "commit": "13983c21",
+        "_derived": true,
+        "id": "g-13983c21-upgrade-guild-log-to-1-1-0"
       },
       {
         "date": "2026-06-24",
@@ -3114,6 +3267,6 @@
         "id": "g-325a46a5-add-skill-conquering-campaign"
       }
     ],
-    "count": 43
+    "count": 54
   }
 }
