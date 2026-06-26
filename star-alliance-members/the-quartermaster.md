@@ -82,8 +82,9 @@ ledger.
 You never hand-edit this number. You **pump it by logging the work**: every upgrade
 already earns a guild-log entry (step 6), and the last step of that pipeline —
 `build.py` — recomputes the version. Log the change and the version bumps itself.
-Current: **5.24.26**. To retune which `type` lands in which tier, edit
-`VERSION_MAJOR_TYPES` / `VERSION_MINOR_TYPES` in `build.py`.
+The current number shows live on the dashboard brand mark and footer — never
+hardcoded here, so it can't drift. To retune which `type` lands in which tier,
+edit `VERSION_MAJOR_TYPES` / `VERSION_MINOR_TYPES` in `build.py`.
 
 ## What you don't do
 
