@@ -205,7 +205,10 @@ The Guild Master reviewed this audit and ruled on the two open calls:
 
 - **the-herald — RECRUITED (new marketing member).** Marketing was a total gap implied by the audit's "general guild vs. reality" finding — the pool had **zero** marketing skills and no marketing member (the Merchant is trading; the lex-council-business `marketing-agent` was an unbuilt stub reference). Created `the-herald` (opus) with a new **unique** skill **`growth-marketing`** (4 modes: content-seo · brand-positioning · email-nurture · social-paid, tuned for legal-services) + assembled `article-creator`, `brandkit`, `storm-investigation`. Deliberately *not* a stub — it carries a real unique craft, the lesson the Merchant taught. Skill body drafted by **MiniMax M3** (doer), curated + Cowork-validated by the guild (thinker) — **0 hard violations**. Roster **8 → 9**, skills **35 → 36**. Logged as decision **#39**; `conformity_check.py` → ✓ FULL CONFORMITY (members=9, skills=36).
 
-Still pending from the plan: **#1** (make the conformity check real), **#2** (provision/strip the phantom weapons), and the lone remaining drift — `fallen-sword-design-language` missing its `metadata.version`.
+**Update (2026-06-26) — the plan's hardening items are now done:**
+- **#1 done** — `conformity_check.py` hardened with the assertions it was blind to: skill/member count parity (README + domains vs actual), `metadata.version` presence on every skill, weapon routability (hard) + weapon liveness (NOTE). It now *catches* the drift that used to ship green.
+- **#2 done (bar one)** — weapons provisioned: `kimi-k2.7` → `kimi-k2.7-code:cloud` and `nemotron-3-ultra` → `nemotron-3-super:cloud` now fire (verified end-to-end via `summon`). `summon.py`'s stale cloud tags were corrected. **Only `gpt-5.5` remains dead** (no API key) — supply a key or strip it from the 8 loadouts. The liveness NOTE surfaces it so it no longer ships silently.
+- **Drift closed** — `fallen-sword-design-language` now carries `metadata.version 1.0.0`.
 
 ---
 
