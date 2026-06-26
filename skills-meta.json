@@ -278,5 +278,13 @@
     "tabler": "ti-swords",
     "triggers": "automatic — every member consults it before drawing a weapon. 'which weapon', 'which model should X use', 'pick the weapon', 'thinker or doer', 'draw a weapon', 'run the weapon loop', 'how does the member choose its model'. The atomic layer beneath members-formation (which member) and ultra-brainstorming (fuse across models).",
     "modes": "solo (default) — one weapon at a time: the highest-priority available thinker plans and prompts, the highest-priority available doer executes and returns, the thinker reviews against the plan and re-prompts until it conforms; ultra — when ultra-brainstorming is active, all available thinker weapons fire at once and the top thinker consolidates them into one plan before the doer runs"
+  },
+  "growth-marketing": {
+    "icon": "📣",
+    "blurb": "Four-mode marketing engine: content/SEO, brand, email, social/paid",
+    "level": "Master",
+    "tabler": "ti-speakerphone",
+    "triggers": "'plan our marketing', 'we need leads', 'fix our positioning', 'content plan', 'SEO plan', 'build an email sequence', 'social plan', 'ad plan', 'go to market', 'growth marketing'. The Herald's craft; composes with article-creator, brandkit, storm-investigation.",
+    "modes": "content-seo (ICP + pain keywords, topic clusters, local SEO, on-page, publish via article-creator); brand-positioning (positioning statement, ICP, value prop, voice, proof bank, brandkit handoff); email-nurture (lead magnets, capture, 4-6 email sequence, re-engagement, bar-compliance); social-paid (channel mix, organic cadence, paid-ads starter, retargeting, tracking)"
   }
 }

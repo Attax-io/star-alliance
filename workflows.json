@@ -421,9 +421,9 @@
         },
         {
           "kind": "member",
-          "actor": "the-engineer",
+          "actor": "the-developer",
           "title": "Provide Tooling Support",
-          "act": "The Engineer provides any tooling or dev-environment support the skill changes require.",
+          "act": "The Developer provides any tooling, dev-environment, or knowledge-graph support the skill changes require.",
           "produces": "ready tooling"
         },
         {

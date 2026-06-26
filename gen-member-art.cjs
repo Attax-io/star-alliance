@@ -46,9 +46,9 @@ const MEMBERS = [
     prompt: "Legendary divine portrait, an older Middle Eastern man with a long silver-streaked beard, golden scholar robes, surrounded by swirling ancient scripts and language runes of many civilizations, golden divine light, wise serene expression, ultra detailed epic fantasy art, no religious symbols",
   },
   {
-    id: "the-engineer",
-    color: "#2ba89a",
-    prompt: "Legendary divine portrait, a stocky Latino man with dark stubble and grease-marked face, teal mechanical engineer robes with tool belts, holding a glowing teal knowledge-graph orb with pulsing nodes, fire of invention behind, ultra detailed epic fantasy art, dark background, no religious symbols",
+    id: "the-herald",
+    color: "#e0883c",
+    prompt: "Legendary divine portrait, a charismatic herald with a great golden horn raised to the sky, amber-gold and bronze robes, radiant sound waves and unfurling banners behind, confident outward gaze, warm divine light, ultra detailed epic fantasy art, dark background, no religious symbols",
   },
   {
     id: "the-merchant",

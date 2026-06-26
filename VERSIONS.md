@@ -37,6 +37,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`full-output-enforcement`](star-alliance-skills/full-output-enforcement/SKILL.md) | 1.0.0 | own | 25 / 203 | 382 / 47 | ✓ lean | Overrides default LLM truncation behavior |
 | [`gpt-taste`](star-alliance-skills/gpt-taste/SKILL.md) | 1.0.0 | own | 39 / 312 | 1090 / 72 | ✓ lean | Elite UX/UI & Advanced GSAP Motion Engineer |
 | [`graphify`](star-alliance-skills/graphify/SKILL.md) | 1.0.0 | own | 35 / 225 | 5904 / 1026 | ○ large | any input (code, docs, papers, images, videos) to knowledge graph |
+| [`growth-marketing`](star-alliance-skills/growth-marketing/SKILL.md) | 1.0.0 | own | 108 / 829 | 2490 / 98 | ✓ lean | The Herald's marketing craft — turn a business's invisibility into a repeatable demand eng… |
 | [`guild-log`](star-alliance-skills/guild-log/SKILL.md) | 1.2.1 | own | 118 / 801 | 2454 / 232 | ✓ lean | Enforce logging of non-git-visible changes to the Star Alliance guild log |
 | [`high-end-visual-design`](star-alliance-skills/high-end-visual-design/SKILL.md) | 1.0.0 | own | 38 / 234 | 1413 / 96 | ✓ lean | Teaches the AI to design like a high-end agency |
 | [`image-to-code`](star-alliance-skills/image-to-code/SKILL.md) | 1.0.0 | own | 80 / 555 | 5735 / 1226 | ○ large | Elite website image-to-code skill for Codex |
@@ -44,7 +45,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`imagegen-frontend-web`](star-alliance-skills/imagegen-frontend-web/SKILL.md) | 1.0.0 | own | 90 / 661 | 5724 / 985 | ○ large | Elite frontend image-direction skill for generating premium, conversion-aware website desi… |
 | [`impeccable`](star-alliance-skills/impeccable/SKILL.md) | 3.0.7 | external | 118 / 895 | 1793 / 173 | ✓ lean | Use when the user wants to design, redesign, shape, critique, audit, polish, clarify, dist… |
 | [`industrial-brutalist-ui`](star-alliance-skills/industrial-brutalist-ui/SKILL.md) | 1.0.0 | own | 36 / 286 | 1034 / 90 | ✓ lean | Raw mechanical interfaces fusing Swiss typographic print with military terminal aesthetics |
-| [`members-formation`](star-alliance-skills/members-formation/SKILL.md) | 1.0.0 | own | 132 / 825 | 1296 / 150 | ✓ lean | The Butler's routing method — turn any mission into a formation: which member owns each sl… |
+| [`members-formation`](star-alliance-skills/members-formation/SKILL.md) | 1.0.2 | own | 132 / 825 | 1356 / 152 | ✓ lean | The Butler's routing method — turn any mission into a formation: which member owns each sl… |
 | [`minimalist-ui`](star-alliance-skills/minimalist-ui/SKILL.md) | 1.0.0 | own | 18 / 145 | 1066 / 83 | ✓ lean | Clean editorial-style interfaces |
 | [`obsidian-markdown`](star-alliance-skills/obsidian-markdown/SKILL.md) | 1.0.0 | own | 36 / 262 | 610 / 164 | ✓ lean | Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, a… |
 | [`performance`](star-alliance-skills/performance/SKILL.md) | 1.0.3 | vendored | 32 / 219 | 1418 / 372 | ✓ lean | Optimize web performance for faster loading and better user experience |
@@ -60,4 +61,4 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`vault-log-compliance`](star-alliance-skills/vault-log-compliance/SKILL.md) | 1.1.0 | own | 128 / 807 | 1445 / 120 | ✓ lean | Enforces P8 vault-logging compliance for Lex Council |
 | [`weapon-utility`](star-alliance-skills/weapon-utility/SKILL.md) | 1.0.0 | own | 152 / 922 | 926 / 110 | ✓ lean | Every member's rule for which weapon (model) to draw and how thinker and doer weapons work… |
 
-_35 skills — 28 lean · 6 large (installable, over the 500-line ideal) · 1 near the word ceiling · 0 hard violations._
+_36 skills — 29 lean · 6 large (installable, over the 500-line ideal) · 1 near the word ceiling · 0 hard violations._

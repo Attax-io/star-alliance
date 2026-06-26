@@ -2,7 +2,7 @@
 name: members-formation
 description: "The Butler's routing method — turn any mission into a formation: which member owns each slice, whether members work simultaneously or step by step, and where the gates fall. Use when the Butler receives an order and must decide who handles what and in what arrangement. Triggers: 'route this', 'who should handle this', 'form the team', 'distribute the work', 'can these run in parallel', 'coordinate the members', 'plan the dispatch', or any request touching more than one craft. Produces a formation (members + arrangement + gates) that, when the same sequence is worth repeating, the Quartermaster crystallizes into a star-map workflow in workflows.json. Skills are how each member works; workflows are how members work together; this skill is how the Butler decides the arrangement — it produces workflows, it is not one."
 metadata:
-  version: 1.0.0
+  version: 1.0.2
 ---
 
 # Members Formation — the Butler's routing method
@@ -39,11 +39,11 @@ slice doesn't match a craft below, it's the Butler's own (decompose it further o
 | Member | Dedicated craft | Route a slice here when… |
 |---|---|---|
 | **The Architect** | System & database architecture, domain modeling | it shapes schema, data flow, or structure — the foundations |
-| **The Developer** | Writing code, fixing bugs, hands-on implementation | code must be written, changed, or debugged |
+| **The Developer** | Writing code, fixing bugs, implementation, dev servers, tooling, knowledge graphs | code must be written/changed/debugged, the environment or tooling run, or a graph built |
 | **The Designer** | UI/UX, visual quality, brand, skill/heraldry art | anything user-facing or visual — the guild's only artisan |
 | **The Strategist** | Multi-wave campaign planning & deep synthesis | the mission is too big for one pass, or needs heavy up-front planning |
 | **The Translator** | Legal codex, law translation, multi-locale content | laws or multilingual content must be loaded or translated |
-| **The Engineer** | Dev servers, tooling, knowledge graphs | the environment, tooling, or a graph needs building or running |
+| **The Herald** | Marketing, growth, demand gen — content/SEO, brand, email, social/paid | the firm needs leads, positioning, content, or distribution |
 | **The Merchant** | Investment & market research (read-only) | a market/investment question — analysis only, no code |
 | **The Quartermaster** | Skills, guild upkeep, conformance, crystallization | skills need managing, the repo needs verifying, or a formation must be saved |
 
@@ -149,6 +149,8 @@ MAJOR: method contract change). Regenerate `VERSIONS.md` with
 `python3 skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.
 
 ## Changelog
+- **1.0.2** — Recruited the-herald (marketing): added the Herald to the roster table — leads, positioning, content, and distribution route to him.
+- **1.0.1** — Folded the-engineer into the-developer in the roster table: dev servers, tooling, and knowledge graphs now route to the Developer; removed the Engineer row.
 - **1.0.0** — Initial release. Five-step routing method, parallel-vs-sequential rule, five formation
   patterns, the three gates + Quartermaster-close baked in, and the hand-off that crystallizes a
   repeatable formation into a conformant `workflows.json` star map.

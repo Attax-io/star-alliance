@@ -2,6 +2,31 @@
   "version": 1,
   "entries": [
     {
+      "id": 39,
+      "date": "2026-06-26",
+      "type": "decision",
+      "title": "Recruit the-herald — the guild's marketing member",
+      "who": "the-quartermaster",
+      "detail": "Marketing was a total gap: zero marketing skills in the pool and no marketing member (Merchant is trading; the lex-council-business 'marketing-agent' was an unbuilt stub reference). Recruited the-herald (opus) with a NEW unique skill growth-marketing (4 modes: content-seo, brand-positioning, email-nurture, social-paid; tuned for legal-services + trust-led businesses) plus assembled article-creator, brandkit, storm-investigation. Avoids the hollow-member trap the Strategist audit flagged on the Merchant. Roster 8->9, skills 35->36. Skill body drafted by MiniMax M3 (doer), curated + Cowork-checked by the guild (thinker).",
+      "ref": [
+        "the-herald",
+        "growth-marketing"
+      ]
+    },
+    {
+      "id": 38,
+      "date": "2026-06-26",
+      "type": "decision",
+      "title": "Fold the-engineer into the-developer; keep the-merchant for a coming trading project",
+      "who": "the-strategist",
+      "detail": "Strategist audit (ultra-brainstorm, 4-model panel): the-engineer was a strict subset of the-developer (only graphify unique) and the-developer had zero unique skills. Folded — the-developer absorbs graphify + the minimax-m3 weapon and the dev-server/tooling/knowledge-graph craft; the-engineer retired. Roster 9->8. the-merchant kept despite 0 unique skills because a separate trading project (incoming) will recruit its tools.",
+      "ref": [
+        "the-developer",
+        "the-engineer",
+        "the-merchant"
+      ]
+    },
+    {
       "id": 37,
       "date": "2026-06-26",
       "type": "decision",

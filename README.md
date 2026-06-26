@@ -12,12 +12,12 @@ star-alliance/
 │   ├── the-butler.md
 │   ├── the-designer.md
 │   ├── the-developer.md
-│   ├── the-engineer.md
+│   ├── the-herald.md
 │   ├── the-merchant.md
 │   ├── the-quartermaster.md
 │   ├── the-strategist.md
 │   └── the-translator.md
-├── star-alliance-skills/  ← shared skill pool (34 skills, each a directory with SKILL.md)
+├── star-alliance-skills/  ← shared skill pool (36 skills, each a directory with SKILL.md)
 │   ├── article-creator/
 │   ├── brandkit/
 │   ├── ...
@@ -49,11 +49,11 @@ your project's `.claude/agents/` and installing their skills.
 |---|---|---|---|
 | **The Butler** | Orchestrator — takes orders, routes work to other members | members-formation | Any request — The Butler decides who handles what |
 | **The Architect** | Systems design, domain modeling, database architecture | transactions-domain-model, db-rename-sweep, supabase, supabase-postgres-best-practices | "design the system", "model the domain", "architect the database" |
-| **The Developer** | Writing code, fixing bugs, hands-on implementation | bug-fix-workflow, db-rename-sweep, dev-server, supabase, supabase-postgres-best-practices, full-output-enforcement, obsidian-markdown | "write the code", "fix this bug", "implement this feature" |
+| **The Developer** | Writing code, fixing bugs, implementation, dev servers, tooling, knowledge graphs | bug-fix-workflow, db-rename-sweep, dev-server, graphify, supabase, supabase-postgres-best-practices, full-output-enforcement, obsidian-markdown | "write the code", "fix this bug", "implement this feature", "open dev server", "generate a knowledge graph" |
 | **The Designer** | UI/UX design, visual quality, brand kits, image-to-code | design-taste-frontend, high-end-visual-design, image-to-code, imagegen-frontend-web, imagegen-frontend-mobile, brandkit, minimalist-ui, industrial-brutalist-ui, impeccable, stitch-design-taste, gpt-taste, redesign-existing-projects | "design the UI", "make it look premium", "create a brand kit" |
 | **The Strategist** | Multi-wave campaigns, deep multi-model planning, bug workflows, performance | ultra-brainstorming, conquering-campaign, storm-investigation, bug-fix-workflow, performance, strategies-review, vault-log-compliance | "plan the campaign", "break this into waves", "ultra-brainstorm this", "run the bug workflow" |
 | **The Translator** | Legal codex, law translation, multi-locale content | codex-law-translate, article-creator, obsidian-markdown | "load this law", "translate this law", "add translations" |
-| **The Engineer** | Dev servers, knowledge graphs, tooling, output enforcement | dev-server, graphify, full-output-enforcement | "open dev server", "generate a knowledge graph", "full output mode" |
+| **The Herald** | Marketing, growth, demand generation — content/SEO, brand, email, social/paid | growth-marketing, article-creator, brandkit, storm-investigation | "plan our marketing", "we need leads", "fix our positioning", "go to market" |
 | **The Merchant** | Investment analysis, trading strategies, market research, portfolio management | _(skills to be recruited)_ | "analyze this investment", "build a trading strategy", "research this market" |
 | **The Quartermaster** | Skill management, syncing, upgrading, daily evolution | skillsmith, guild-log, cleanup, storm-investigation | "sync my skills", "upgrade a skill", "run the skill routine" |
 
@@ -63,8 +63,11 @@ These skills appear across multiple members — they're the guild's common toolk
 
 - `weapon-utility` — carried by **every** member; teaches each how to wield their weapons (the AI models)
 - `supabase`, `supabase-postgres-best-practices`, `db-rename-sweep` — The Architect and The Developer
-- `dev-server`, `full-output-enforcement` — The Developer and The Engineer
-- `storm-investigation` — The Strategist, The Merchant, and The Quartermaster
+- `bug-fix-workflow` — The Developer and The Strategist
+- `obsidian-markdown` — The Developer and The Translator
+- `article-creator` — The Translator and The Herald
+- `brandkit` — The Designer and The Herald
+- `storm-investigation` — The Strategist, The Merchant, The Quartermaster, and The Herald
 
 > `cleanup` is no longer shared — hygiene is the Quartermaster's alone. A skill rides on a member
 > only when it builds that member's craft; the universal `weapon-utility` is the one exception.
@@ -77,9 +80,10 @@ These skills belong to one member only — they define the member's specialty:
 - `ultra-brainstorming` — The Strategist's multi-model super-planning hub: many minds in, one plan out
 - `conquering-campaign` — The Strategist's campaign framework
 - `codex-law-translate` — The Translator's legal pipeline
-- `graphify` — The Engineer's knowledge graph engine
+- `graphify` — The Developer's knowledge graph engine (folded in from the retired Engineer)
 - `skillsmith` — The Quartermaster's management toolkit
-- `brandkit`, `image-to-code`, `imagegen-*`, `impeccable`, etc. — The Designer's design arsenal
+- `growth-marketing` — The Herald's four-mode marketing engine (content/SEO, brand, email, social/paid)
+- `image-to-code`, `imagegen-*`, `impeccable`, etc. — The Designer's design arsenal (`brandkit` now shared with The Herald)
 
 ## Deploying a member
 
@@ -169,4 +173,4 @@ The authoritative gate is **`skill-creator`'s `quick_validate.py` green** on eve
 ## Registry
 
 See [`VERSIONS.md`](VERSIONS.md) for the full skill → version table with word counts and Cowork
-status (34 skills).
+status (36 skills).

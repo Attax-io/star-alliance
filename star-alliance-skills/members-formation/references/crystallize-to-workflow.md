@@ -48,7 +48,7 @@ A **gate** step:
 ```
 
 - `actor` ∈ the roster (`the-architect`, `the-developer`, `the-designer`, `the-strategist`,
-  `the-translator`, `the-engineer`, `the-merchant`, `the-quartermaster`, `the-butler`) **or**
+  `the-translator`, `the-herald`, `the-merchant`, `the-quartermaster`, `the-butler`) **or**
   `you` (the Guild Master).
 - `gate` ∈ `approval` · `certify` · `report`.
 
