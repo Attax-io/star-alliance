@@ -111,11 +111,13 @@ def main():
         )
         sys.exit(0)
 
-    # 4. gpt-5.5 is OpenAI-direct and not provisioned on this device.
+    # 4. gpt-5.5 — DEACTIVATED pending an OpenAI API key (Atta's call, 2026-06-26).
+    #    Kept in member loadouts ON PURPOSE; do NOT strip. Reactivate by setting the
+    #    OpenAI key on the device and wiring the OpenAI-direct backend here.
     if args.model_id == 'gpt-5.5':
         print(
-            "summon: gpt-5.5 is OpenAI-direct and NOT provisioned "
-            "(no key on device).",
+            "summon: gpt-5.5 is DEACTIVATED — awaiting an OpenAI API key "
+            "(OpenAI-direct, no key on device). Reactivate once the key is set.",
             file=sys.stderr,
         )
         sys.exit(69)
