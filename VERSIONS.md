@@ -46,14 +46,15 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`industrial-brutalist-ui`](star-alliance-skills/industrial-brutalist-ui/SKILL.md) | 1.0.0 | own | 36 / 286 | 1034 / 90 | ✓ lean | Raw mechanical interfaces fusing Swiss typographic print with military terminal aesthetics |
 | [`minimalist-ui`](star-alliance-skills/minimalist-ui/SKILL.md) | 1.0.0 | own | 18 / 145 | 1066 / 83 | ✓ lean | Clean editorial-style interfaces |
 | [`obsidian-markdown`](star-alliance-skills/obsidian-markdown/SKILL.md) | 1.0.0 | own | 36 / 262 | 610 / 164 | ✓ lean | Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, a… |
-| [`performance`](star-alliance-skills/performance/SKILL.md) | 1.0.1 | vendored | 32 / 219 | 1164 / 364 | ✓ lean | Optimize web performance for faster loading and better user experience |
+| [`performance`](star-alliance-skills/performance/SKILL.md) | 1.0.2 | vendored | 32 / 219 | 1329 / 370 | ✓ lean | Optimize web performance for faster loading and better user experience |
 | [`redesign-existing-projects`](star-alliance-skills/redesign-existing-projects/SKILL.md) | 1.0.0 | own | 31 / 225 | 2174 / 176 | ✓ lean | Upgrades existing websites and apps to premium quality |
 | [`skillsmith`](star-alliance-skills/skillsmith/SKILL.md) | 1.1.9 | own | 132 / 987 | 3205 / 136 | ✓ lean | Manage, sync, upgrade, create, and auto-evolve Star Alliance skills across the star-allian… |
 | [`stitch-design-taste`](star-alliance-skills/stitch-design-taste/SKILL.md) | 1.0.0 | own | 29 / 257 | 1628 / 182 | ✓ lean | Semantic Design System Skill for Google Stitch |
+| [`storm-investigation`](star-alliance-skills/storm-investigation/SKILL.md) | 1.0.0 | own | 113 / 866 | 919 / 95 | ✓ lean | Multi-perspective deep-research method (Stanford STORM, NAACL 2024) for any topic — run fi… |
 | [`strategies-review`](star-alliance-skills/strategies-review/SKILL.md) | 1.0.0 | own | 12 / 72 | 297 / 45 | ✓ lean | Review pending strategies and move them to executed then check the docs. |
 | [`supabase`](star-alliance-skills/supabase/SKILL.md) | 0.1.2 | vendored | 58 / 475 | 1184 / 107 | ✓ lean | Use when doing ANY task involving Supabase |
 | [`supabase-postgres-best-practices`](star-alliance-skills/supabase-postgres-best-practices/SKILL.md) | 1.1.1 | vendored | 23 / 183 | 242 / 55 | ✓ lean | Postgres performance optimization and best practices from Supabase |
-| [`transactions-domain-model`](star-alliance-skills/transactions-domain-model/SKILL.md) | 1.2.0 | own | 108 / 951 | 3017 / 393 | ✓ lean | Loads the complete Lex Council transactions domain model before any transaction-related wo… |
+| [`transactions-domain-model`](star-alliance-skills/transactions-domain-model/SKILL.md) | 1.3.0 | own | 108 / 951 | 3147 / 397 | ✓ lean | Loads the complete Lex Council transactions domain model before any transaction-related wo… |
 | [`vault-log-compliance`](star-alliance-skills/vault-log-compliance/SKILL.md) | 1.1.0 | own | 128 / 807 | 1445 / 120 | ✓ lean | Enforces P8 vault-logging compliance for Lex Council |
 
-_31 skills — 25 lean · 5 large (installable, over the 500-line ideal) · 1 near the word ceiling · 0 hard violations._
+_32 skills — 26 lean · 5 large (installable, over the 500-line ideal) · 1 near the word ceiling · 0 hard violations._
