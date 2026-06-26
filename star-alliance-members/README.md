@@ -37,8 +37,11 @@ You are <member-name>, a <role> in the Star Alliance.
 
 ## Shared vs unique skills
 
-- **Shared skills** appear in multiple members' `skills` lists (e.g. `cleanup`, `supabase`)
-- **Unique skills** appear in only one member's list (e.g. `conquering-campaign` for the strategist)
+- **Shared skills** appear in multiple members' `skills` lists (e.g. `supabase`, `dev-server`) —
+  allowed only when the skill builds that member's craft
+- **`weapon-utility`** is the one universal skill — every member carries it (how to wield the weapons)
+- **Unique skills** appear in only one member's list (e.g. `conquering-campaign` for the strategist,
+  `cleanup` for the quartermaster — hygiene is his alone)
 - All skills live in `../star-alliance-skills/` — members just reference them by name
 
 ## Current roster

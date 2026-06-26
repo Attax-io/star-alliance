@@ -54,6 +54,10 @@ const WORKFLOWS = [
     id: "guild-log-sync",
     prompt: `${STYLE}. A long unfurled GOLDEN guild scroll-ledger, an enchanted quill auto-writing rows of glowing entries to backfill blank lines, the guild crest seal at the top, missing records filling in with warm gold light, meticulous record-keeping`,
   },
+  {
+    id: "conformity-sweep",
+    prompt: `${STYLE}. Golden scales of perfect balance above a master guild-ledger, every glowing entry aligned in flawless rows, a polished mirror reflecting the guild crest in perfect symmetry, radiant GOLD rune-checkmarks of verification floating around the frame, the warm authoritative light of order and agreement, nothing out of place`,
+  },
 ];
 
 function postJSON(url, headers, body) {

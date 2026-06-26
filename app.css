@@ -224,32 +224,54 @@ kbd {
 
 /* ── 6. Cosmic Relay ─────────────────────────────────────────────────────── */
 
-/* flow selector chips */
-.flow-chips {
-  display: flex; flex-wrap: wrap; gap: var(--s2);
+/* flow selector — Fallen Sword art tiles (100x100 picture + name below), organised in a grid */
+.flow-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(124px, 1fr));
+  gap: var(--s3);
   margin-bottom: var(--s5);
 }
-.flow-chip {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 6px 14px;
-  border-radius: var(--pill);
-  background: rgba(255,255,255,.03);
+.flow-tile {
+  display: flex; flex-direction: column; align-items: center; gap: 9px;
+  padding: 11px 8px 13px;
+  border-radius: var(--r2);
+  background: rgba(255,255,255,.02);
   border: 1px solid var(--line-2);
   color: var(--muted);
-  font-size: var(--t-sm);
   text-decoration: none;
   transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease),
-              background var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+              background var(--dur) var(--ease), transform var(--dur) var(--ease),
+              box-shadow var(--dur) var(--ease);
 }
-.flow-chip:hover {
+.flow-tile:hover {
   border-color: color-mix(in srgb, var(--accent) 60%, var(--line-2));
+  color: var(--starlight);
+  transform: translateY(-2px);
 }
-.flow-chip[aria-current="page"] {
+.flow-tile[aria-current="page"] {
   border-color: var(--accent);
   color: var(--starlight);
-  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent),
-              0 0 12px color-mix(in srgb, var(--accent) 25%, transparent);
+              0 0 16px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+.ft-pic {
+  width: 100px; height: 100px;
+  display: grid; place-items: center;
+  border-radius: var(--r1);
+  overflow: hidden;
+  background: #0a0a0c;
+  border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--line-2));
+}
+.flow-tile:hover .ft-pic,
+.flow-tile[aria-current="page"] .ft-pic {
+  border-color: color-mix(in srgb, var(--accent) 65%, transparent);
+}
+.ft-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.ft-emoji { font-size: 44px; line-height: 1; }
+.ft-name {
+  font-size: var(--t-sm); text-align: center; line-height: 1.2;
+  max-width: 112px;
 }
 
 .flow-note {
@@ -643,7 +665,8 @@ a.tag.off { text-decoration: none; }
 
 .skill-panel { display: grid; gap: var(--s5); }
 .sp-hero { display: flex; gap: var(--s5); align-items: flex-start; padding: var(--s6); }
-.sp-icon { font-size: 40px; width: 76px; height: 76px; display: grid; place-items: center; border-radius: var(--r3); background: rgba(255,255,255,.04); border: 1px solid var(--line-2); flex: none; overflow: hidden; }
+.sp-icon { font-size: 72px; width: 160px; height: 160px; display: grid; place-items: center; border-radius: var(--r4); background: rgba(255,255,255,.04); border: 1px solid var(--line-2); flex: none; overflow: hidden; box-shadow: inset 0 1px 0 rgba(255,255,255,.04), 0 10px 30px -12px rgba(0,0,0,.6), 0 0 24px -6px rgba(61,240,255,.18); }
+.sp-icon.art { box-shadow: 0 0 0 1px var(--line-3), 0 12px 34px -12px rgba(0,0,0,.6), 0 0 32px -8px rgba(61,240,255,.18); }
 .sp-title { font-size: var(--t-2xl); }
 .sp-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: var(--s3); }
 .sp-blurb { color: var(--starlight); opacity: .92; margin-top: var(--s4); max-width: 64ch; line-height: 1.65; }
@@ -729,11 +752,14 @@ a.tag.off { text-decoration: none; }
   #app { padding: var(--s5) var(--s4) var(--s7); }
   .view-title { font-size: var(--t-xl); }
   .dossier-hero, .sp-hero { flex-direction: column; text-align: left; }
+  .sp-icon { width: 128px; height: 128px; font-size: 56px; border-radius: var(--r3); }
+  .sp-icon.art { box-shadow: 0 0 0 1px var(--line-3), 0 8px 24px -10px rgba(0,0,0,.6), 0 0 22px -8px rgba(61,240,255,.16); }
   .duo { grid-template-columns: 1fr; }
 }
 @media (max-width: 720px) {
   .starmap-wrap { padding: var(--s3); }   /* constellation scales down; it is the whole map now */
-  .flow-chips { flex-wrap: wrap; }
+  .flow-gallery { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: var(--s2); }
+  .ft-pic { width: 80px; height: 80px; }
 }
 
 /* ── Control-panel inline editing ── */

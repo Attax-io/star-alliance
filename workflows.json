@@ -69,6 +69,13 @@
           "produces": "verified build"
         },
         {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Guild Conformance",
+          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "produces": "conformance sign-off"
+        },
+        {
           "kind": "gate",
           "gate": "report",
           "label": "The Butler reports the finished mission — what was built and any follow-ups — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
@@ -115,6 +122,13 @@
           "title": "Verify the Fix",
           "act": "The Quartermaster double-checks the change and confirms nothing else broke in the process.",
           "produces": "verified fix"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Guild Conformance",
+          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "produces": "conformance sign-off"
         },
         {
           "kind": "gate",
@@ -177,6 +191,13 @@
           "title": "Clean Up and Verify",
           "act": "The Quartermaster polishes the build and verifies the design holds up in real interactions.",
           "produces": "polished UI"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Guild Conformance",
+          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "produces": "conformance sign-off"
         },
         {
           "kind": "gate",
@@ -246,6 +267,13 @@
           "produces": "verified system"
         },
         {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Guild Conformance",
+          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "produces": "conformance sign-off"
+        },
+        {
           "kind": "gate",
           "gate": "report",
           "label": "The Butler reports the architecture build, its verification, and any caveats — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
@@ -294,6 +322,13 @@
           "produces": "ready codex"
         },
         {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Guild Conformance",
+          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "produces": "conformance sign-off"
+        },
+        {
           "kind": "gate",
           "gate": "report",
           "label": "The Butler reports the codex summary — locales covered and publication status — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
@@ -333,6 +368,13 @@
           "title": "Analyze Market and Risk",
           "act": "The Merchant investigates the market, prices, and risk in a read-only analysis pass and writes a report.",
           "produces": "market report"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Guild Conformance",
+          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "produces": "conformance sign-off"
         },
         {
           "kind": "gate",
@@ -383,6 +425,13 @@
           "title": "Provide Tooling Support",
           "act": "The Engineer provides any tooling or dev-environment support the skill changes require.",
           "produces": "ready tooling"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Guild Conformance",
+          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "produces": "conformance sign-off"
         },
         {
           "kind": "gate",
@@ -438,9 +487,69 @@
           "produces": "synced guild log"
         },
         {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Guild Conformance",
+          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "produces": "conformance sign-off"
+        },
+        {
           "kind": "gate",
           "gate": "report",
           "label": "The Butler reports what was logged — git-tier catch-up plus manual entries — and the new log total — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+        }
+      ]
+    },
+    {
+      "id": "conformity-sweep",
+      "name": "Conformity Sweep",
+      "icon": "⚖️",
+      "accent": "gold",
+      "tagline": "The Quartermaster audits the whole repo and proves it agrees with itself — and with every decision on record.",
+      "when": "Use after big changes, or any time you need proof the project is internally consistent and nothing contradicts a logged decision.",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Call the Conformity Sweep",
+          "act": "You ask the guild to audit the entire repo for internal conformity and conformity with every decision on record.",
+          "produces": "sweep request"
+        },
+        {
+          "kind": "member",
+          "actor": "the-butler",
+          "title": "Restate the Order",
+          "act": "The Butler echoes the order back in plain English — audit every source and generated artifact, reconcile them against each other and against the logged decisions, and surface anything that contradicts — so you both agree on the quest before he moves.",
+          "produces": "plain-English brief"
+        },
+        {
+          "kind": "gate",
+          "gate": "approval",
+          "label": "You confirm the Butler understood the sweep correctly before it begins."
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Audit the Whole Repo",
+          "act": "The Quartermaster, drawing MiniMax M3, runs conformity_check.py — reading every source (members, skills, the arsenal, workflows, docs, the guild log) plus the generated guild data, cross-checking every reference and testing each against the logged decisions — to assemble a contradiction map.",
+          "produces": "contradiction map"
+        },
+        {
+          "kind": "gate",
+          "gate": "certify",
+          "label": "The Quartermaster certifies each flagged contradiction is real and not a false positive before any source is touched."
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Reconcile to Conformity",
+          "act": "The Quartermaster fixes each real contradiction at its source of truth, then runs build.py so the generated guild data matches the sources again — leaving the repo in full conformity with itself and with every decision, and re-runs conformity_check.py until it passes clean.",
+          "produces": "conformed repo"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports what was audited, what conformed, and what was reconciled — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ]
     }

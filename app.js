@@ -514,10 +514,19 @@ function renderStarMap(query) {
 // Accent name → CSS color. There is no --blue token, so map it to a literal.
 const ACCENT = { cyan: "var(--cyan)", gold: "var(--gold)", violet: "var(--violet)", green: "var(--green)", rose: "var(--rose)", blue: "#5e9ef5" };
 
+// Star Map workflow gallery — each workflow is a 100x100 Fallen Sword art tile
+// (workflow-art/<id>.png, mirrors skill art) with its name below.
 function flowChips(activeId) {
-  return `<nav class="flow-chips" aria-label="Workflows">` + GUILD.workflows.map(w =>
-    `<a class="flow-chip" href="#/map?flow=${esc(w.id)}" style="--accent:${ACCENT[w.accent] || 'var(--cyan)'}" ${w.id === activeId ? 'aria-current="page"' : ''}><span class="fc-icon" aria-hidden="true">${esc(w.icon || '')}</span><span class="fc-name">${esc(w.name)}</span></a>`
-  ).join("") + `</nav>`;
+  return `<nav class="flow-gallery" aria-label="Workflows">` + GUILD.workflows.map(w => {
+    const accent = ACCENT[w.accent] || 'var(--cyan)';
+    const pic = w.artPng
+      ? `<img class="ft-img" src="workflow-art/${esc(w.id)}.png" alt="${esc(w.name)}" loading="lazy">`
+      : `<span class="ft-emoji" aria-hidden="true">${esc(w.icon || '⚔')}</span>`;
+    return `<a class="flow-tile" href="#/map?flow=${esc(w.id)}" style="--accent:${accent}"${w.id === activeId ? ' aria-current="page"' : ''} title="${esc(w.tagline || w.name)}">
+      <span class="ft-pic">${pic}</span>
+      <span class="ft-name">${esc(w.name)}</span>
+    </a>`;
+  }).join("") + `</nav>`;
 }
 
 const TIER_RANK = { "opus": 0, "gpt-5.5": 1, "sonnet": 2, "glm-5.2": 3, "kimi-k2.7": 3, "minimax-m3": 3, "deepseek-v4-pro": 3, "nemotron-3-ultra": 3, "qwen3.5": 3, "gemma4": 4, "haiku": 4, "image-01": 5, "minimax-video": 5, "minimax-speech": 5, "minimax-music": 5 };

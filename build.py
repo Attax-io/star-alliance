@@ -366,7 +366,11 @@ def load_workflows(repo: Path) -> list[dict]:
     p = repo / "workflows.json"
     if not p.exists():
         return []
-    return json.loads(p.read_text()).get("workflows", [])
+    workflows = json.loads(p.read_text()).get("workflows", [])
+    for wf in workflows:
+        # Fallen Sword art tile for the Star Map, mirrors skill artPng → workflow-art/<id>.png
+        wf["artPng"] = bool((repo / "workflow-art" / f"{wf.get('id', '')}.png").exists())
+    return workflows
 
 
 def load_log(repo: Path) -> dict:

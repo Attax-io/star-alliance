@@ -254,5 +254,29 @@
     "tabler": "ti-history",
     "triggers": "'log this', 'guild log this', 'did you log it?', '/guild-log', or any dashboard/UI/folder change git can't see on its own",
     "modes": ""
+  },
+  "members-formation": {
+    "icon": "🧭",
+    "blurb": "The Butler's routing method: who works, in what arrangement, then crystallize",
+    "level": "Advanced",
+    "tabler": "ti-route",
+    "triggers": "'route this', 'who should handle this', 'form the team', 'distribute the work', 'can these run in parallel', 'coordinate the members', 'plan the dispatch', or any request touching more than one craft. The Butler's one dedicated craft — he is the router, not a specialist.",
+    "modes": ""
+  },
+  "ultra-brainstorming": {
+    "icon": "🧠",
+    "blurb": "The Strategist's super-planning: fuse members' outputs into one plan across many models",
+    "level": "Master",
+    "tabler": "ti-brain",
+    "triggers": "'ultra-brainstorm this', 'super-plan this', 'synthesize the members' work', 'brainstorm this across models', 'merge these proposals into one plan', 'plan this deeply before we build', or any fan-in where several specialists feed one build. A MODEL ensemble (several thinking models), distinct from storm-investigation's persona ensemble.",
+    "modes": ""
+  },
+  "weapon-utility": {
+    "icon": "🗡️",
+    "blurb": "Each member's rule for drawing a weapon: thinkers plan & review, doers execute",
+    "level": "Foundational",
+    "tabler": "ti-swords",
+    "triggers": "automatic — every member consults it before drawing a weapon. 'which weapon', 'which model should X use', 'pick the weapon', 'thinker or doer', 'draw a weapon', 'run the weapon loop', 'how does the member choose its model'. The atomic layer beneath members-formation (which member) and ultra-brainstorming (fuse across models).",
+    "modes": "solo (default) — one weapon at a time: the highest-priority available thinker plans and prompts, the highest-priority available doer executes and returns, the thinker reviews against the plan and re-prompts until it conforms; ultra — when ultra-brainstorming is active, all available thinker weapons fire at once and the top thinker consolidates them into one plan before the doer runs"
   }
 }

@@ -9,20 +9,20 @@
       "deploy": "Any request — The Butler decides who handles what",
       "triggers": "Any request — The Butler decides who handles what",
       "weaponsDesc": {
+        "kimi-k2.7": "Kimi K2.7 — the greatbow. Massive context to hold the whole roster and sequence state.",
+        "nemotron-3-ultra": "Nemotron-3 Ultra — the lance. High-throughput for long orchestration runs.",
         "opus": "Claude Opus — the heaviest blade. Deepest reasoning for complex routing.",
-        "sonnet": "Claude Sonnet — the reliable longsword. Fast enough for daily dispatch.",
         "glm-5.2": "GLM-5.2 — the staff. Strong multilingual analysis.",
         "gpt-5.5": "GPT-5.5 — the enchanted blade. Analytical second opinion for tricky routing calls.",
-        "kimi-k2.7": "Kimi K2.7 — the greatbow. Massive context to hold the whole roster and sequence state.",
         "deepseek-v4-pro": "DeepSeek V4 Pro — the greatsword. Frontier reasoning for complex multi-step routing.",
-        "nemotron-3-ultra": "Nemotron-3 Ultra — the lance. High-throughput for long orchestration runs."
+        "sonnet": "Claude Sonnet — the reliable longsword. Fast enough for daily dispatch."
       },
       "does": [
         "Receives orders and decides which member handles what",
+        "Forms the team — decides who works simultaneously vs. step by step",
         "Briefs members with clear, specific tasks and context",
         "Tracks progress across all active dispatches",
-        "Reports results back to the user",
-        "Plans multi-step requests into waves before dispatching"
+        "Reports results back to the user, and flags reusable formations to crystallize"
       ],
       "doesnt": [
         "Does not do specialist work — orchestrates only",
@@ -38,19 +38,18 @@
       "deploy": "System design, domain modeling, database architecture, structural refactoring",
       "triggers": "design the system · model the domain · architect the database",
       "weaponsDesc": {
+        "kimi-k2.7": "Kimi K2.7 — the greatbow. Massive context for sprawling architectures.",
+        "nemotron-3-ultra": "Nemotron-3 Ultra — the lance. High-throughput for long design sessions.",
         "opus": "Claude Opus — the heaviest blade. Deepest reasoning for schema modeling.",
         "gpt-5.5": "GPT-5.5 — the enchanted blade. Exceptional analytical reasoning.",
-        "sonnet": "Claude Sonnet — the reliable longsword for daily structural work.",
         "glm-5.2": "GLM-5.2 — the staff. Coding-first thinking for system design and schema work.",
-        "kimi-k2.7": "Kimi K2.7 — the greatbow. Massive context for sprawling architectures.",
         "deepseek-v4-pro": "DeepSeek V4 Pro — the greatsword. Frontier reasoning for structural integrity.",
-        "nemotron-3-ultra": "Nemotron-3 Ultra — the lance. High-throughput for long design sessions."
+        "sonnet": "Claude Sonnet — the reliable longsword for daily structural work."
       },
       "does": [
         "Domain modeling and transaction boundaries",
         "Database schema design and migration",
-        "Structural refactoring with rename sweeps",
-        "Code hygiene"
+        "Structural refactoring with rename sweeps"
       ],
       "doesnt": [
         "Does not write marketing copy or design UIs",
@@ -66,13 +65,13 @@
       "deploy": "Writing code, applying changes, fixing bugs, implementing features",
       "triggers": "write the code · fix this bug · implement this feature",
       "weaponsDesc": {
-        "sonnet": "Claude Sonnet — the reliable longsword for daily coding.",
         "kimi-k2.7": "Kimi K2.7 — the greatbow. Massive context for big codebases.",
         "haiku": "Claude Haiku — the dagger. Fast for quick fixes.",
         "opus": "Claude Opus — the heaviest blade. Deepest reasoning for the gnarliest bugs.",
         "glm-5.2": "GLM-5.2 — the staff. Coding-first precision for implementation.",
         "gpt-5.5": "GPT-5.5 — the enchanted blade. Analytical second opinion on tough code.",
-        "deepseek-v4-pro": "DeepSeek V4 Pro — the greatsword. Frontier MoE reasoning for complex code."
+        "deepseek-v4-pro": "DeepSeek V4 Pro — the greatsword. Frontier MoE reasoning for complex code.",
+        "sonnet": "Claude Sonnet — the reliable longsword for daily coding."
       },
       "does": [
         "Writing and applying code changes",
@@ -96,12 +95,12 @@
       "deploy": "UI/UX design, visual quality, brand kits, image-to-code conversion",
       "triggers": "design the UI · make it look premium · create a brand kit",
       "weaponsDesc": {
-        "sonnet": "Claude Sonnet — the reliable longsword. The hand that directs: plans the design, critiques it, and dispatches the doers.",
         "image-01": "MiniMax image-01 — the engraver's burin. Generates images, mockups, and visual assets from a prompt.",
         "minimax-video": "MiniMax Video — the moving tapestry. Generates motion and video for living interfaces.",
         "minimax-speech": "MiniMax Speech — the herald's voice. Generates spoken audio and voiceover.",
         "minimax-music": "MiniMax Music — the bard's lute. Generates music and sound to score the experience.",
-        "minimax-m3": "MiniMax M3 — the crossbow. Precise structural doer for code-shaped design work."
+        "minimax-m3": "MiniMax M3 — the crossbow. Precise structural doer for code-shaped design work.",
+        "sonnet": "Claude Sonnet — the reliable longsword. The hand that directs: plans the design, critiques it, and dispatches the doers."
       },
       "does": [
         "Frontend visual design (web and mobile)",
@@ -125,15 +124,16 @@
       "deploy": "Large multi-wave projects, campaign planning, bug workflows, performance",
       "triggers": "plan the campaign · break this into waves · optimize performance",
       "weaponsDesc": {
-        "opus": "Claude Opus — the heaviest blade for complex multi-wave planning.",
         "kimi-k2.7": "Kimi K2.7 — the greatbow for long campaign documents.",
+        "nemotron-3-ultra": "Nemotron-3 Ultra — the lance. High-throughput for long campaign runs.",
+        "opus": "Claude Opus — the heaviest blade for complex multi-wave planning.",
         "glm-5.2": "GLM-5.2 — the staff for analytical breakdowns.",
         "gpt-5.5": "GPT-5.5 — the enchanted blade. Analytical and creative second opinion for campaign plans.",
-        "sonnet": "Claude Sonnet — the reliable longsword. Fast balanced daily wave driver.",
         "deepseek-v4-pro": "DeepSeek V4 Pro — the greatsword. Frontier reasoning for multi-wave strategy.",
-        "nemotron-3-ultra": "Nemotron-3 Ultra — the lance. High-throughput for long campaign runs."
+        "sonnet": "Claude Sonnet — the reliable longsword. Fast balanced daily wave driver."
       },
       "does": [
+        "Deep multi-model planning — fuses several members' outputs into one plan (ultra-brainstorm)",
         "Multi-wave campaign planning and execution",
         "Bug triage and fix workflow",
         "Web performance optimization",
@@ -155,13 +155,13 @@
       "deploy": "Legal codex loading, law translation, multi-locale content work",
       "triggers": "load this law · translate this law · add translations",
       "weaponsDesc": {
+        "kimi-k2.7": "Kimi K2.7 — the greatbow for long legal documents.",
+        "haiku": "Claude Haiku — the dagger. Fastest cheap quick translations across locales.",
         "gpt-5.5": "GPT-5.5 — the enchanted blade. Best multilingual.",
         "glm-5.2": "GLM-5.2 — the staff. Strongest Chinese/multilingual.",
-        "kimi-k2.7": "Kimi K2.7 — the greatbow for long legal documents.",
         "opus": "Claude Opus — the heaviest blade. Deepest reasoning for legal nuance.",
-        "sonnet": "Claude Sonnet — the reliable longsword. Fast balanced daily translation work.",
-        "haiku": "Claude Haiku — the dagger. Fastest cheap quick translations across locales.",
-        "deepseek-v4-pro": "DeepSeek V4 Pro — the greatsword. Frontier reasoning for complex legal analysis."
+        "deepseek-v4-pro": "DeepSeek V4 Pro — the greatsword. Frontier reasoning for complex legal analysis.",
+        "sonnet": "Claude Sonnet — the reliable longsword. Fast balanced daily translation work."
       },
       "does": [
         "Loading laws into the legal codex",
@@ -183,19 +183,18 @@
       "deploy": "Dev server management, knowledge graph generation, tooling, output enforcement",
       "triggers": "open dev server · generate a knowledge graph · full output mode",
       "weaponsDesc": {
-        "sonnet": "Claude Sonnet — the reliable longsword for daily server management.",
         "haiku": "Claude Haiku — the dagger for quick server ops.",
         "minimax-m3": "MiniMax M3 — the crossbow for repetitive tooling.",
+        "kimi-k2.7": "Kimi K2.7 — the greatbow. Massive context for sprawling knowledge graphs.",
         "opus": "Claude Opus — the heaviest blade. Deepest reasoning for infrastructure calls.",
         "glm-5.2": "GLM-5.2 — the staff. Coding-first precision for tooling.",
-        "kimi-k2.7": "Kimi K2.7 — the greatbow. Massive context for sprawling knowledge graphs.",
-        "deepseek-v4-pro": "DeepSeek V4 Pro — the greatsword. Frontier reasoning for complex tooling."
+        "deepseek-v4-pro": "DeepSeek V4 Pro — the greatsword. Frontier reasoning for complex tooling.",
+        "sonnet": "Claude Sonnet — the reliable longsword for daily server management."
       },
       "does": [
         "Dev server lifecycle management",
         "Knowledge graph generation from any input",
-        "Full output enforcement",
-        "Workspace hygiene"
+        "Full output enforcement"
       ],
       "doesnt": [
         "Does not design UIs",
@@ -212,13 +211,13 @@
       "deploy": "Investment analysis, trading strategies, market research, portfolio management",
       "triggers": "analyze this investment · build a trading strategy · research this market",
       "weaponsDesc": {
+        "kimi-k2.7": "Kimi K2.7 — the greatbow. Massive context for long market histories.",
+        "nemotron-3-ultra": "Nemotron-3 Ultra — the lance. High-throughput for long portfolio runs.",
         "opus": "Claude Opus — the heaviest blade for deep financial analysis.",
         "gpt-5.5": "GPT-5.5 — the enchanted blade for market reasoning.",
         "glm-5.2": "GLM-5.2 — the staff for data analysis.",
-        "sonnet": "Claude Sonnet — the reliable longsword. Fast balanced daily market reads.",
-        "kimi-k2.7": "Kimi K2.7 — the greatbow. Massive context for long market histories.",
         "deepseek-v4-pro": "DeepSeek V4 Pro — the greatsword. Frontier reasoning for trading strategy.",
-        "nemotron-3-ultra": "Nemotron-3 Ultra — the lance. High-throughput for long portfolio runs."
+        "sonnet": "Claude Sonnet — the reliable longsword. Fast balanced daily market reads."
       },
       "does": [
         "Investment analysis (fundamental and technical)",
@@ -242,20 +241,21 @@
       "deploy": "Skill management, syncing, upgrading, creating new skills, daily evolution routine",
       "triggers": "sync my skills · upgrade a skill · create a skill · run the skill routine",
       "weaponsDesc": {
-        "sonnet": "Claude Sonnet — the reliable longsword for daily skill management.",
         "haiku": "Claude Haiku — the dagger for quick syncs.",
         "minimax-m3": "MiniMax M3 — the crossbow for routine versioning.",
+        "kimi-k2.7": "Kimi K2.7 — the greatbow. Massive context to track the full arsenal inventory.",
         "opus": "Claude Opus — the heaviest blade. Deepest reasoning for skill evolution.",
         "gpt-5.5": "GPT-5.5 — the enchanted blade. Analytical and creative input on skill design.",
-        "kimi-k2.7": "Kimi K2.7 — the greatbow. Massive context to track the full arsenal inventory.",
-        "glm-5.2": "GLM-5.2 — the staff. Coding-first for skill syncing and tooling."
+        "glm-5.2": "GLM-5.2 — the staff. Coding-first for skill syncing and tooling.",
+        "sonnet": "Claude Sonnet — the reliable longsword for daily skill management."
       },
       "does": [
         "Skill sync (repo ↔ device)",
         "Skill upgrades with version bumping",
         "New skill creation via skill-creator",
         "Daily autonomous skill evolution",
-        "Workspace hygiene"
+        "Workspace hygiene",
+        "Guild conformance audits (the closing step of every workflow)"
       ],
       "doesnt": [
         "Does not design UIs",

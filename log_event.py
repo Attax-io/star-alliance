@@ -16,6 +16,7 @@ Types:
     member-upgrade   a member's prompt or skills list was updated
     member-create    a new agent file was added to star-alliance-members/
     member-remove    an agent file was removed
+    workflow         a new star-map workflow was added to workflows.json
     dashboard        visual / structural change to the dashboard
     structure        repo reorganisation (folder moves, renames)
     chore            anything else worth logging
@@ -38,7 +39,7 @@ from pathlib import Path
 VALID_TYPES = {
     "skill-upgrade", "skill-create", "skill-remove",
     "member-upgrade", "member-create", "member-remove",
-    "dashboard", "structure", "chore", "decision",
+    "workflow", "dashboard", "structure", "chore", "decision",
 }
 
 

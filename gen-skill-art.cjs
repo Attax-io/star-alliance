@@ -149,6 +149,18 @@ const SKILLS = [
     id: "storm-investigation",
     prompt: `${STYLE}. A swirling tempest of dark arcane storm clouds encircling a central glowing crystal scrying orb set with an all-seeing eye, five ghostly spectral advisor faces emerging from the storm at the points of a pentagonal divination circle, threads of golden insight streaming from each spectre into the orb, forks of violet contradiction-lightning crackling between opposing spectres, glowing runic research sigils etched on the parchment beneath, a storm of knowledge made manifest`,
   },
+  {
+    id: "weapon-utility",
+    prompt: `${STYLE}. An ornate weapon rack mounted on dark stone, a row of distinct enchanted blades arranged by priority from left to right, the leftmost blades glowing AMBER-GOLD as the chosen doers, a tall glowing VIOLET runed staff at the right as the thinker directing them, a thread of light running from the staff to the drawn blade as the mind commanding the hand, a small balanced selection-rune hovering before the rack, disciplined armory order`,
+  },
+  {
+    id: "members-formation",
+    prompt: `${STYLE}. A grand commander's war table seen from above, an aged parchment battle map with a glowing golden compass rose at its center, carved chess-like guild pieces arranged in a deliberate formation, branching routes of light splitting into two parallel columns on one side and a single-file relay column on the other, ornate runic gate-arches marking checkpoints along the routes, a gloved hand poised to set a piece into place, command and disciplined order made manifest`,
+  },
+  {
+    id: "ultra-brainstorming",
+    prompt: `${STYLE}. Five glowing orbs of arcane thought arranged in a council circle, each a different burning color holding its own mind, brilliant threads of insight streaming from all five and weaving together into one radiant master-plan scroll at the center, scattered contradiction-sparks resolving into harmony where the threads converge, a constellation of merging ideas hovering above an open strategist's planning table, many minds fused into a single design`,
+  },
 ];
 
 function postJSON(url, headers, body) {

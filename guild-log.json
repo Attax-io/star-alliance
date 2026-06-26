@@ -2,6 +2,150 @@
   "version": 1,
   "entries": [
     {
+      "id": 37,
+      "date": "2026-06-26",
+      "type": "decision",
+      "title": "skillsmith modes close with the Conformity Sweep (Invariant #8)",
+      "who": "the-quartermaster",
+      "detail": "From now on every skillsmith skill-changing mode (sync/upgrade/create/routine) runs the Conformity Sweep (build.py + conformity_check.py) as the Quartermaster's final gate before commit — it must report FULL CONFORMITY (parity, counts, workflow gates/actors, arsenal order, decision-conformity, and the K-invariant skill-dirs==skills-meta==guild-data). Extends decisions #26/#27 (conformance-close on workflows) to skillsmith's own operations so a synced/merged/created/removed skill can never silently drift from the dashboard arsenal. conformity_check.py committed as the skillsmith dependency (skillsmith 1.2.0, ce1d5df).",
+      "ref": [
+        "skillsmith",
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": 36,
+      "date": "2026-06-26",
+      "type": "decision",
+      "title": "weapon-utility is a foundational skill carried by every member",
+      "who": "the-quartermaster",
+      "detail": "Every member loads weapon-utility — the standing rule for which weapon (model) to draw and how thinker and doer weapons cooperate (thinker plans+reviews, doer executes; leftmost-available by decision #25 priority; one weapon at a time unless ultra-brainstorming fans the thinkers out). It is the atomic layer beneath members-formation and ultra-brainstorming. Enforced by conformity_check.py check U.",
+      "ref": [
+        "weapon-utility"
+      ]
+    },
+    {
+      "id": 35,
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "ultra-brainstorming skill created — the Strategist's cross-model fan-in",
+      "who": "the-quartermaster",
+      "detail": "The Strategist's craft skill: fans a problem across several members/models in parallel, then converges their outputs into one plan. The fan-in layer that weapon-utility defers to when active (all thinkers fire, top thinker consolidates). Created earlier, logged now for ledger conformity.",
+      "ref": [
+        "ultra-brainstorming",
+        "the-strategist"
+      ]
+    },
+    {
+      "id": 34,
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "members-formation skill created — the Butler's roster-routing protocol",
+      "who": "the-quartermaster",
+      "detail": "The Butler's craft skill: decides which member(s) work a request and in what arrangement (solo, relay, parallel). The 'which member' layer above weapon-utility's 'which weapon'. Created in an earlier session, logged now to bring the ledger into conformity.",
+      "ref": [
+        "members-formation",
+        "the-butler"
+      ]
+    },
+    {
+      "id": 33,
+      "date": "2026-06-26",
+      "type": "decision",
+      "title": "cleanup skill — reconciled repo/device 1.18.0 fork collision at 1.20.0",
+      "who": "the-quartermaster",
+      "detail": "Repo and device each shipped a different 1.18.0 — repo = docs D4+D5 systemic-threshold escape (skillsmith routine 06-20); device = DB-native i18n rewrite (Lex Council App 06-21). Rejected blind device->repo overwrite (erases the repo-only docs escape) and rejected renumbering the device lineage. Chose: graft the device DB-native guts into the repo, give the device lineage the canonical 1.18.0/1.19.0 changelog slots, fold the repo docs-escape credit into a new 1.20.0, keep the repo's Cowork-trimmed 991-char description (device's busts the 1024 limit). Device stays the canonical fork (symlinked from Lex Council App); repo is the distribution mirror.",
+      "ref": [
+        "cleanup",
+        "skillsmith"
+      ]
+    },
+    {
+      "id": 32,
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "weapon-utility skill created — every member's weapon-selection protocol",
+      "who": "the-quartermaster",
+      "detail": "New foundational skill used by all 9 members: defines thinker vs doer weapons, the plan→do→review loop, left-to-right priority selection with doer-fallback + availability rules, one-weapon-at-a-time default, and the ultra-brainstorming exception (all thinkers fan out, top thinker consolidates before the doer). Wired into all member .md skills lists; MiniMax image-01 sigil forged. Atomic layer beneath members-formation and ultra-brainstorming; reads arsenal order from decision #25.",
+      "ref": [
+        "weapon-utility"
+      ]
+    },
+    {
+      "id": 31,
+      "date": "2026-06-26",
+      "type": "chore",
+      "title": "Fixed log_event.py — 'workflow' type now loggable (matched build.py)",
+      "who": "the-quartermaster",
+      "detail": "First conformity sweep found build.py classified 'workflow' as a MINOR version type but log_event.py could not log it (dead config). Added 'workflow' to VALID_TYPES + doc line; added auditor check T to prevent regression."
+    },
+    {
+      "id": 30,
+      "date": "2026-06-26",
+      "type": "chore",
+      "title": "Conformity Sweep enforcement added",
+      "who": "the-quartermaster",
+      "detail": "New conformity_check.py auditor (9 check classes); Quartermaster conformance step appended to all prior workflows; the-quartermaster dossier updated; gen-workflow-art.cjs + MiniMax image-01 tile for conformity-sweep. Enacts decisions #26/#27.",
+      "ref": [
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": 29,
+      "date": "2026-06-26",
+      "type": "chore",
+      "title": "Arsenal reordered roster-wide — doers → thinkers/duals → Sonnet last",
+      "who": "the-quartermaster",
+      "detail": "All 9 members' weapon loadouts reordered in star-alliance-members/*.md and members-meta.json, guild-data rebuilt. Enacts decision #25.",
+      "ref": [
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": 28,
+      "date": "2026-06-26",
+      "type": "workflow",
+      "title": "Conformity Sweep workflow created",
+      "who": "the-quartermaster",
+      "detail": "New star-map workflow 'conformity-sweep': you → Butler restate → approval → Quartermaster audit (conformity_check.py) → certify → Quartermaster reconcile (build.py) → Butler report. Audits the whole repo for internal conformity and conformity with logged decisions.",
+      "ref": [
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": 27,
+      "date": "2026-06-26",
+      "type": "decision",
+      "title": "Repo conformity with logged decisions is enforced by the Conformity Sweep",
+      "who": "the-quartermaster",
+      "detail": "The conformity-sweep workflow runs conformity_check.py over the whole repo to prove it agrees with itself and with every type:decision entry on record. Decisions are the durable WHY; the sweep is the structural enforcement. Rationale: decisions must not silently rot out of conformity with the code/data.",
+      "ref": [
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": 26,
+      "date": "2026-06-26",
+      "type": "decision",
+      "title": "Every workflow closes with a Quartermaster conformance step before the Butler's report",
+      "who": "the-quartermaster",
+      "detail": "The last member step of every star-map workflow is the-quartermaster, confirming repo-wide conformity, immediately before the closing Butler 'report' gate. Rationale: no run ends without proving it left the project internally consistent. Machine-enforced by conformity_check.py check C.",
+      "ref": [
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": 25,
+      "date": "2026-06-26",
+      "type": "decision",
+      "title": "Arsenal loadouts ordered doers → thinkers/duals → Sonnet last",
+      "who": "the-quartermaster",
+      "detail": "Every member's weapon list is ordered: pure doers first (best-first), then thinkers and dual thinker/doer models (best-first), then Sonnet pinned last. Sonnet is role 'both' but is always the tail. Rationale: the Guild Master wanted doers prioritised for execution, thinkers held in reserve, and Sonnet as the universal fallback. Machine-enforced by conformity_check.py check A.",
+      "ref": [
+        "the-quartermaster"
+      ]
+    },
+    {
       "id": 24,
       "date": "2026-06-26",
       "type": "dashboard",
@@ -349,6 +493,14 @@
         "the-strategist"
       ],
       "commit": "78513bd5",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-26",
+      "type": "structure",
+      "title": "Commit guild-log.json — session log entries embedded in guild-data",
+      "who": "Atta",
+      "commit": "69026695",
       "_derived": true
     },
     {
