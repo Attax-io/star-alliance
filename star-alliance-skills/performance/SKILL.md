@@ -4,7 +4,7 @@ description: Optimize web performance for faster loading and better user experie
 license: MIT
 metadata:
   author: web-quality-skills
-  version: "1.0.1"
+  version: "1.0.2"
 ---
 
 # Performance optimization
@@ -338,11 +338,16 @@ document.addEventListener('DOMContentLoaded', () => {
 ### Key metrics
 | Metric | Target | Tool |
 |--------|--------|------|
-| LCP | < 2.5s | Lighthouse, CrUX |
+| LCP | < 2.5s (p75) | Lighthouse, CrUX | <!-- Core Web Vital -->
+| INP | < 200ms (p75) | CrUX, web-vitals | <!-- Core Web Vital (replaced FID Mar 2024) -->
+| CLS | < 0.1 (p75) | Lighthouse, CrUX | <!-- Core Web Vital -->
 | FCP | < 1.8s | Lighthouse |
 | Speed Index | < 3.4s | Lighthouse |
-| TBT | < 200ms | Lighthouse |
-| TTI | < 3.8s | Lighthouse |
+| TBT | < 200ms | Lighthouse | <!-- lab proxy for INP -->
+
+> The three **Core Web Vitals** are LCP, INP, CLS (measured at the 75th percentile of field data).
+> TTI is deprecated — Lighthouse dropped it in v10 (2023) and it was never a Core Web Vital; use INP
+> (field) / TBT (lab) for interactivity instead.
 
 ### Testing commands
 ```bash
@@ -359,12 +364,13 @@ onCLS(console.log);
 ## References
 
 Core Web Vitals targets and how to read them live in the **Measurement** section above
-(LCP / FCP / Speed Index / TBT / TTI + the `web-vitals` library snippet). For the canonical
+(LCP / INP / CLS / FCP / Speed Index / TBT + the `web-vitals` library snippet). For the canonical
 definitions and field-data guidance, see [web.dev — Core Web Vitals](https://web.dev/articles/vitals).
 
 ## Changelog
 
 | Version | Date | Summary |
 |---|---|---|
+| **1.0.2** | 2026-06-26 | Corrected the **Measurement → Key metrics** table (skillsmith routine, conf 9/10). Replaced the stale `TTI` row (deprecated — dropped by Lighthouse v10 in 2023, never a Core Web Vital) with `INP < 200ms p75` (the CWV that replaced FID in Mar 2024) and added the missing `CLS < 0.1` row (the table's own `web-vitals` snippet already imports `onCLS`). Added a Core-Web-Vitals callout and fixed the §References metric list. Content-only; no behavioral change. |
 | **1.0.1** | 2026-06-20 | Fixed a dangling cross-reference (skillsmith routine, conf 9/10). The `## References` section pointed at `../core-web-vitals/SKILL.md`, a sibling skill that was never vendored into this repo, so the link resolved nowhere. Its Core Web Vitals metrics are already covered in the in-skill **Measurement** table — repointed the reference at that section plus the canonical `web.dev/vitals` doc. Content-only; no behavioral change. |
 | **1.0** | — | Initial vendored release: Lighthouse-based web performance optimization (budgets, critical rendering path, image/font/caching strategy, runtime perf, measurement). |
