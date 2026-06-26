@@ -47,6 +47,14 @@
     "triggers": "ONLY above that bar: 'audit my app', 'build this feature', 'ship this refactor', 'phase this migration', 'proceed in application', 'extend [campaign] to X', 'roll out [pattern] to [surface]', 'apply [v1.X] to [Z]'. Planning asks every question upfront then exe",
     "modes": "AUDIT (reconcile docs with code/DB), BUILD (multi-phase features/refactors/migrations touching 3+ surfaces), EXTENSION (extends a recent predecessor, reusing its prescan). Gate G0 runs FIRST: work that doesn't clear the bar (3+ INDEPENDENT logical changes — one vertical slice = ONE — OR genuinely mu"
   },
+  "dashboard-parity": {
+    "icon": "🪞",
+    "blurb": "Prove every change actually renders on the dashboard",
+    "level": "Advanced",
+    "tabler": "ti-device-desktop-check",
+    "triggers": "'is it on the dashboard', 'did it reflect on index.html', 'verify the dashboard', 'dashboard parity', 'did the build land', 'did my change show up'",
+    "modes": ""
+  },
   "db-rename-sweep": {
     "icon": "🏷️",
     "blurb": "Scans database schema for safe table and column renames",
