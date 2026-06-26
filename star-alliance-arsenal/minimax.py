@@ -145,6 +145,18 @@ def main():
     if total is not None:
         print('minimax: {0} tokens'.format(total), file=sys.stderr)
 
+    # Record real spend to the shared delegation ledger (best-effort).
+    try:
+        from arsenal_usage import log_usage
+        p_tok = usage.get('prompt_tokens')
+        c_tok = usage.get('completion_tokens')
+        if c_tok is None and total is not None:
+            c_tok = total - (p_tok or 0)
+        model_id = os.environ.get('SA_MODEL_ID') or 'minimax-m3'
+        log_usage(model_id, 'minimax', p_tok or 0, c_tok or 0)
+    except Exception:
+        pass
+
     try:
         message = data['choices'][0]['message']
     except (KeyError, IndexError, TypeError):

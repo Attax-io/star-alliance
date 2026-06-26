@@ -14,6 +14,11 @@ const readline = require('readline');
 const { execFile } = require('child_process');
 
 const ROOT = path.resolve(__dirname, '..');
+// This project's Claude transcript dir (cwd path with /and. → -, the Claude Code
+// convention). Used to scope the delegation rate to THIS project's Opus output.
+const PROJECT_TRANSCRIPT_DIR = path.join(
+  os.homedir(), '.claude', 'projects', ROOT.replace(/[/.]/g, '-')
+);
 const PORT = 4178;
 const TYPES = {
   '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css',
@@ -39,10 +44,13 @@ function fetchOllama(cb) {
 // Real Claude consumption — drafted by MiniMax M3. Scans the last 6h of
 // transcript .jsonl files, buckets usage.{input,output}_tokens by model family,
 // and tracks a 5-hour rolling window (win_out = output tokens this window).
-function claudeUsage(cb) {
+// scopeDir (optional): restrict the walk to one project's transcript dir, so the
+// delegation rate compares THIS project's doer output against THIS project's Opus
+// output — not Opus across every project on the machine.
+function claudeUsage(cb, scopeDir) {
   const WINDOW_MS = 5 * 60 * 60 * 1000;
   const SIX_HOURS_MS = 6 * 60 * 60 * 1000;
-  const root = path.join(os.homedir(), '.claude', 'projects');
+  const root = scopeDir || path.join(os.homedir(), '.claude', 'projects');
   const result = {
     opus:   { in: 0, out: 0, total: 0, win_out: 0, win_total: 0 },
     sonnet: { in: 0, out: 0, total: 0, win_out: 0, win_total: 0 },
@@ -158,6 +166,70 @@ function estimateUsage(claude, caps) {
     }
   }
   return result;
+}
+
+// ── Delegation ledger — REAL per-weapon spend from the backends' usage log.
+// Each arsenal backend (summon.py → minimax.py / ollama_cloud.py) appends one
+// JSON line per call to star-alliance-arsenal/usage-log.jsonl. We aggregate it
+// per guild model id, with lifetime + 7d (week) + 5h (session) windows. This is
+// the figure that proves the harness is offloading work to the cheap bench
+// instead of burning Opus. Never throws — missing/garbage log → empty ledger.
+function benchUsage() {
+  const file = path.join(ROOT, 'star-alliance-arsenal', 'usage-log.jsonl');
+  // Direct callers (no SA_MODEL_ID) may log a tag-derived id; normalize the two
+  // that don't strip cleanly to their guild id.
+  const NORM = { 'kimi-k2.7-code': 'kimi-k2.7', 'nemotron-3-super': 'nemotron-3-ultra' };
+  const WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+  const SESSION_MS = 5 * 60 * 60 * 1000;
+  const now = Date.now();
+  const byModel = {};
+  let raw;
+  try { raw = fs.readFileSync(file, 'utf8'); } catch (e) { return byModel; }
+  raw.split(/\r?\n/).forEach((line) => {
+    line = line.trim();
+    if (!line) return;
+    let r; try { r = JSON.parse(line); } catch (e) { return; }
+    let id = String(r.model || ''); id = NORM[id] || id;
+    if (!id || id === 'unknown') return;
+    const tin = Number(r.in) || 0, tout = Number(r.out) || 0;
+    const ts = typeof r.ts === 'string' ? Date.parse(r.ts) : NaN;
+    const m = byModel[id] || (byModel[id] = {
+      calls: 0, in: 0, out: 0,
+      wCalls: 0, wIn: 0, wOut: 0,
+      sCalls: 0, sIn: 0, sOut: 0,
+    });
+    m.calls++; m.in += tin; m.out += tout;
+    if (!isNaN(ts)) {
+      if (now - ts <= WEEK_MS) { m.wCalls++; m.wIn += tin; m.wOut += tout; }
+      if (now - ts <= SESSION_MS) { m.sCalls++; m.sIn += tin; m.sOut += tout; }
+    }
+  });
+  return byModel;
+}
+
+// Combine bench spend with the live Claude window to produce the headline the
+// dashboard shows: how much work the doers absorbed, and a directional
+// delegation rate (doer output vs Opus output over the same 5h session window).
+function buildLedger(claude, bench) {
+  const sum = (sel) => Object.keys(bench).reduce((a, k) => a + (bench[k][sel] || 0), 0);
+  const weekDoerOut = sum('wOut'), weekDoerCalls = sum('wCalls'), weekDoerIn = sum('wIn');
+  const sessDoerOut = sum('sOut'), sessDoerCalls = sum('sCalls');
+  const opusWinOut = ((claude.opus || {}).win_out) || 0;
+  const denom = sessDoerOut + opusWinOut;
+  return {
+    week: {
+      doerCalls: weekDoerCalls,
+      doerOut: weekDoerOut,
+      doerIn: weekDoerIn,
+    },
+    session: {
+      doerCalls: sessDoerCalls,
+      doerOut: sessDoerOut,
+      opusOut: opusWinOut,
+      rate: denom > 0 ? sessDoerOut / denom : 0,  // directional: doer share of recent output
+    },
+    byModel: bench,
+  };
 }
 
 // ── Control-panel write-through (MiniMax-authored). Safely set an inline array
@@ -358,11 +430,15 @@ http.createServer((req, res) => {
   if (req.method === 'GET' && (req.url === '/api/arsenal' || req.url.startsWith('/api/arsenal?'))) {
     fetchOllama((o) => {
       claudeUsage((claude) => {
+        // Project-scoped second pass: the ledger rate must weigh THIS project's
+        // doer output against THIS project's Opus output, not all-projects Opus.
+        claudeUsage((claudeScoped) => {
         const body = JSON.stringify({
           pulled: o.pulled,
           ollamaUp: o.ollamaUp,
           usage: mergeUsage(claude),
           estimate: estimateUsage(claude, loadUsage()),
+          ledger: buildLedger(claudeScoped, benchUsage()),
           claudeRaw: claude,
           ts: Date.now(),
         });
@@ -372,6 +448,7 @@ http.createServer((req, res) => {
           'Cache-Control': 'no-store',
         });
         res.end(body);
+        }, PROJECT_TRANSCRIPT_DIR);
       });
     });
     return;

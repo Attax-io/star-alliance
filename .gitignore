@@ -7,3 +7,6 @@ __pycache__/
 # macOS Finder metadata — per-device, never sync
 .DS_Store
 **/.DS_Store
+
+# Runtime delegation-ledger data (real token spend per doer call)
+star-alliance-arsenal/usage-log.jsonl

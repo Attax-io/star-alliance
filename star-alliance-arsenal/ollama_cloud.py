@@ -143,16 +143,24 @@ def main():
         content = ""
     content = strip_think(content)
 
-    # Token usage to stderr if present
+    # Token usage to stderr if present, and to the shared delegation ledger.
     pec = data.get("prompt_eval_count")
     ec = data.get("eval_count")
+    pec_s = pec if pec is not None else 0
+    ec_s = ec if ec is not None else 0
     if pec is not None or ec is not None:
-        pec_s = pec if pec is not None else 0
-        ec_s = ec if ec is not None else 0
         print(
             "ollama_cloud: {}+{} tokens".format(pec_s, ec_s),
             file=sys.stderr,
         )
+    # Log under the guild model id (summon.py sets SA_MODEL_ID); direct callers
+    # fall back to stripping the ":cloud" suffix off the tag.
+    try:
+        from arsenal_usage import log_usage
+        model_id = os.environ.get("SA_MODEL_ID") or args.model.replace(":cloud", "")
+        log_usage(model_id, "ollama", pec_s, ec_s)
+    except Exception:
+        pass
 
     if not content:
         print(

@@ -84,11 +84,15 @@ def main():
     )
     args = parser.parse_args()
 
+    # The backends log real token spend to the delegation ledger keyed by the
+    # guild model id — pass it through so the dashboard sees canonical names.
+    env = dict(os.environ, SA_MODEL_ID=args.model_id)
+
     # 1. minimax-m3 -> local minimax.py (prompt is trailing positional).
     if args.model_id == 'minimax-m3':
         cmd = [sys.executable, os.path.join(HERE, 'minimax.py')]
         cmd += _passthrough(args)
-        sys.exit(subprocess.run(cmd).returncode)
+        sys.exit(subprocess.run(cmd, env=env).returncode)
 
     # 2. CLOUD_TAG models -> ollama_cloud.py with the cloud tag FIRST,
     #    then the standard passthrough (prompt trailing).
@@ -99,7 +103,7 @@ def main():
             CLOUD_TAG[args.model_id],
         ]
         cmd += _passthrough(args)
-        sys.exit(subprocess.run(cmd).returncode)
+        sys.exit(subprocess.run(cmd, env=env).returncode)
 
     # 3. Claude models are native to the orchestrator; no backend script.
     if args.model_id in CLAUDE:
