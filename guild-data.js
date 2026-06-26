@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 49,
       "patch": 42
     },
-    "generated": "2026-06-26T17:51:12Z",
+    "generated": "2026-06-26T19:28:26Z",
     "schemaVersion": 3,
     "counts": {
       "members": 9,
@@ -627,7 +627,7 @@ const GUILD = {
         "lines": 58,
         "words": 1106
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-strategist"
       ]
@@ -662,7 +662,7 @@ const GUILD = {
         "lines": 111,
         "words": 839
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-herald",
         "the-translator"
@@ -724,7 +724,7 @@ const GUILD = {
     {
       "id": "bug-fix-workflow",
       "name": "bug-fix-workflow",
-      "version": "1.1.3",
+      "version": "1.1.4",
       "icon": "🐛",
       "art": "",
       "artPng": true,
@@ -752,8 +752,8 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 225,
-        "words": 1939
+        "lines": 236,
+        "words": 2145
       },
       "global": true,
       "members": [
@@ -923,7 +923,7 @@ const GUILD = {
         "lines": 60,
         "words": 1052
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-butler"
       ]
@@ -989,7 +989,7 @@ const GUILD = {
         "lines": 466,
         "words": 10351
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-strategist"
       ]
@@ -1073,7 +1073,7 @@ const GUILD = {
         "lines": 99,
         "words": 1068
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-designer"
       ]
@@ -1149,7 +1149,7 @@ const GUILD = {
         "lines": 285,
         "words": 1976
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-designer"
       ]
@@ -1267,7 +1267,7 @@ const GUILD = {
         "lines": 97,
         "words": 2490
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-herald"
       ]
@@ -1303,7 +1303,7 @@ const GUILD = {
         "lines": 52,
         "words": 997
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-quartermaster"
       ]
@@ -1340,7 +1340,7 @@ const GUILD = {
         "lines": 231,
         "words": 2454
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-quartermaster"
       ]
@@ -1593,7 +1593,7 @@ const GUILD = {
         "lines": 172,
         "words": 1793
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-designer"
       ]
@@ -1629,7 +1629,7 @@ const GUILD = {
         "lines": 63,
         "words": 1152
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-architect",
         "the-translator"
@@ -1667,7 +1667,7 @@ const GUILD = {
         "lines": 54,
         "words": 1156
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-translator"
       ]
@@ -1703,7 +1703,7 @@ const GUILD = {
         "lines": 64,
         "words": 1447
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-architect"
       ]
@@ -1740,7 +1740,7 @@ const GUILD = {
         "lines": 55,
         "words": 1115
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-merchant"
       ]
@@ -1782,7 +1782,7 @@ const GUILD = {
         "lines": 151,
         "words": 1356
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-butler"
       ]
@@ -1908,7 +1908,7 @@ const GUILD = {
         "lines": 55,
         "words": 1072
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-herald"
       ]
@@ -1945,7 +1945,7 @@ const GUILD = {
         "lines": 60,
         "words": 1024
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-quartermaster"
       ]
@@ -1981,7 +1981,7 @@ const GUILD = {
         "lines": 48,
         "words": 1030
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-strategist"
       ]
@@ -2073,7 +2073,7 @@ const GUILD = {
         "lines": 94,
         "words": 919
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-herald",
         "the-merchant",
@@ -2302,7 +2302,7 @@ const GUILD = {
         "lines": 108,
         "words": 926
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-strategist"
       ]
@@ -2375,7 +2375,7 @@ const GUILD = {
         "lines": 109,
         "words": 926
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-architect",
         "the-butler",
@@ -2419,7 +2419,7 @@ const GUILD = {
         "lines": 59,
         "words": 1078
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-strategist"
       ]
@@ -2696,7 +2696,7 @@ const GUILD = {
       "accent": "rose",
       "category": "Design",
       "tagline": "From visual concept to shipped UI in one tight sprint.",
-      "when": "Use this when the work centers on UI, UX, brand, or visual quality.",
+      "when": "Use this when the work centers on UI, UX, brand, or visual quality — including admin/members panel layout redesigns and card/panel consolidation, the most frequent visual work on the app.",
       "steps": [
         {
           "kind": "member",
@@ -3126,7 +3126,7 @@ const GUILD = {
       "accent": "green",
       "category": "Build & Fix",
       "tagline": "Pull a reported bug, hunt the real root cause, fix it, and close the loop.",
-      "when": "Use this for bugs filed in the bug_reports table — the daily triage-and-fix loop.",
+      "when": "Use this for bugs filed in the bug_reports table — the daily triage-and-fix loop. The recurring Lex signatures that belong here: a missing i18n message key rendering raw in the UI, a missing DB column, or an RLS / permission-denied error on a view or RPC.",
       "steps": [
         {
           "kind": "member",
@@ -3264,7 +3264,7 @@ const GUILD = {
       "accent": "violet",
       "category": "Hygiene & Release",
       "tagline": "The Quartermaster runs the full hygiene sweep across every mode.",
-      "when": "Use this for routine hygiene or post-campaign cleanup — i18n, lint, dev-errors, postgres, docs, and follow-ups.",
+      "when": "Use this for routine hygiene or post-campaign cleanup — i18n, lint, dev-errors, postgres, docs, follow-ups, and consolidating duplicated search/filter/action UI across pages and panels.",
       "steps": [
         {
           "kind": "member",

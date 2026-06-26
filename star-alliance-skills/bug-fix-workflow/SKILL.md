@@ -2,7 +2,7 @@
 name: bug-fix-workflow
 description: The Lex Council end-to-end bug workflow — pull reports from the bug_reports table, triage their status, investigate + reproduce the real root cause, fix following project conventions, flip each row to Fixed once the fix is genuinely live, AND file (push) new bugs it surfaces back into the table. Use whenever the user says "pull the bugs", "work the bugs", "fix the bugs", "triage bugs", "what bugs are open", or any phrasing about pulling / triaging / fixing / closing reported bugs — OR to push/file bugs: "file a bug", "log this as a bug", "push these as bugs", "file the bugs you find". Loads the bug_reports schema, the status-code conventions, the status-trigger gotcha, the INSERT/push pattern (identity PK, trigger-filled names, reporter-uuid lookup, status=1, no notification fires), the "doesn't work" reproduction technique, and the rule for WHEN a bug may be marked Fixed (DB fixes now, frontend fixes only after deploy).
 metadata:
-  version: 1.1.3
+  version: 1.1.4
 ---
 
 # Bug-Fix Workflow (Lex Council)
@@ -13,6 +13,14 @@ This is the canonical loop for working user-reported bugs in Lex Council. Report
 work surfaces) — without lying about "Fixed".
 
 **Production project_id = `bqgrpnsvplvicnmzxwkm`.** Every MCP `execute_sql` / `apply_migration` runs there.
+
+### Common Lex bug signatures
+
+A mine of this machine's sessions shows three signatures recur more than any other — recognise them on sight and reach straight for the matching probe:
+
+- **Missing i18n message key rendering raw** — the UI shows an un-translated key path (e.g. `admin.Yesterday`, `admin.finances.advances`) or an Arabic/locale string fails to resolve. The key is *used in code* but *absent from the locale JSON*; confirm with the `cleanup` skill's `leaks` mode, then add the key (and its translation) rather than hunting a logic bug.
+- **Missing DB column** — a query/RPC/view errors on a column that was never added or was renamed (e.g. `section_num`, `bar_number`, a `*_vap` flag). Check the live schema before the frontend; the fix is usually a migration, not a component edit.
+- **RLS / permission-denied** — `permission denied for <relation>` on a view or RPC, or a missing privilege/function (`pg_advisory_xact_lock`). Trace the RLS policy / grant on prod; do not assume an app-layer auth bug.
 
 ---
 
@@ -220,6 +228,9 @@ Never mark a bug Fixed because the code is written; mark it Fixed because a user
 
 ## Changelog
 
+- **1.1.4** (2026-06-26) — Added a **Common Lex bug signatures** callout (missing i18n message key
+  rendering raw, missing DB column, RLS/permission-denied) — the three signatures that recurred most
+  across the MacBook-Air session mine, each pointed at its matching probe. Doc-only; no schema change.
 - **1.1.3** (2026-06-26) — Step 5 (Rejected): noted that `bug_reports` has **no rejection-reason
   column** (skillsmith routine, conf 8/10), so a status-3 reason given only in chat is lost on the next
   pull. Now directs the operator to also persist the rationale by appending a `[Reject-reason] …` line

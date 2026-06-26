@@ -146,7 +146,7 @@
       "accent": "rose",
       "category": "Design",
       "tagline": "From visual concept to shipped UI in one tight sprint.",
-      "when": "Use this when the work centers on UI, UX, brand, or visual quality.",
+      "when": "Use this when the work centers on UI, UX, brand, or visual quality — including admin/members panel layout redesigns and card/panel consolidation, the most frequent visual work on the app.",
       "steps": [
         {
           "kind": "member",
@@ -569,7 +569,7 @@
       "accent": "green",
       "category": "Build & Fix",
       "tagline": "Pull a reported bug, hunt the real root cause, fix it, and close the loop.",
-      "when": "Use this for bugs filed in the bug_reports table — the daily triage-and-fix loop.",
+      "when": "Use this for bugs filed in the bug_reports table — the daily triage-and-fix loop. The recurring Lex signatures that belong here: a missing i18n message key rendering raw in the UI, a missing DB column, or an RLS / permission-denied error on a view or RPC.",
       "steps": [
         {
           "kind": "member",
@@ -705,7 +705,7 @@
       "accent": "violet",
       "category": "Hygiene & Release",
       "tagline": "The Quartermaster runs the full hygiene sweep across every mode.",
-      "when": "Use this for routine hygiene or post-campaign cleanup — i18n, lint, dev-errors, postgres, docs, and follow-ups.",
+      "when": "Use this for routine hygiene or post-campaign cleanup — i18n, lint, dev-errors, postgres, docs, follow-ups, and consolidating duplicated search/filter/action UI across pages and panels.",
       "steps": [
         {
           "kind": "member",
