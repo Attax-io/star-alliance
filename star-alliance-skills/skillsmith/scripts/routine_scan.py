@@ -199,8 +199,27 @@ def read_fm_version_status(skill_md: Path):
     return ver, status, dc, bw, bl
 
 
-def iter_skill_dirs(repo: Path):
-    for d in sorted(repo.iterdir()):
+def discover_skills_root(anchor: Path) -> Path:
+    """Layout-aware skills-root discovery (decoupled from the git/exclude anchor).
+
+    The repo was restructured (2026-06): skill dirs moved from the repo TOP LEVEL
+    into a `star-alliance-skills/` subdir. `anchor` is the stable git root (used as
+    the corpus-exclude anchor); the skills may live at `anchor` OR `anchor/<subdir>`.
+    Probe the known layouts in order and return the first dir that actually holds
+    at least one `*/SKILL.md`. Falls back to `anchor` so behaviour is unchanged on
+    a layout this probe doesn't yet know about."""
+    candidates = [anchor, anchor / "star-alliance-skills", anchor / "claude-skills"]
+    for c in candidates:
+        if c.is_dir() and any(
+            d.is_dir() and not d.name.startswith(".") and (d / "SKILL.md").exists()
+            for d in c.iterdir()
+        ):
+            return c
+    return anchor
+
+
+def iter_skill_dirs(skills_root: Path):
+    for d in sorted(skills_root.iterdir()):
         if d.is_dir() and not d.name.startswith(".") and (d / "SKILL.md").exists():
             yield d
 
@@ -392,12 +411,15 @@ def main():
     ap.add_argument("--repo", type=Path, default=default_repo())
     a = ap.parse_args()
 
-    repo = a.repo.expanduser().resolve()
+    repo = a.repo.expanduser().resolve()      # anchor: stable git root, the corpus-exclude anchor
+    skills_root = discover_skills_root(repo)   # layout-aware: repo top-level OR star-alliance-skills/
     now = time.time()
     cutoff = now - a.days * 86400
 
     # The repo itself is the skill INVENTORY source, not a usage corpus — exclude it from the
-    # mention/friction scan (a skill described in its own SKILL.md is not usage signal).
+    # mention/friction scan (a skill described in its own SKILL.md is not usage signal). Always
+    # exclude on `repo` (the git anchor), never on skills_root — else the repo leaks in as a
+    # corpus root and SKILL.md bodies inflate mention counts as self-mentions.
     roots = []
     proj_root = Path.home() / "Documents" / "Claude" / "Projects"
     if proj_root.exists():
@@ -411,7 +433,7 @@ def main():
 
     skills = []
     names = []
-    for d in iter_skill_dirs(repo):
+    for d in iter_skill_dirs(skills_root):
         ver, status, dc, bw, bl = read_fm_version_status(d / "SKILL.md")
         mt = newest_mtime(d)
         skills.append({

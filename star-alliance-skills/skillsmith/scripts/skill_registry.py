@@ -58,6 +58,22 @@ def default_repo() -> Path:
     return here.parents[2]
 
 
+def discover_skills_root(anchor: Path) -> Path:
+    """Layout-aware skills-root discovery, decoupled from the git/VERSIONS.md anchor.
+
+    The repo was restructured (2026-06): skill dirs moved from the repo TOP LEVEL into a
+    `star-alliance-skills/` subdir. `anchor` is the stable git root (where VERSIONS.md lives);
+    the skills may sit at `anchor` OR `anchor/<subdir>`. Probe known layouts and return the
+    first dir holding >=1 `*/SKILL.md`; fall back to `anchor` for unknown layouts."""
+    for c in (anchor, anchor / "star-alliance-skills", anchor / "claude-skills"):
+        if c.is_dir() and any(
+            d.is_dir() and not d.name.startswith(".") and (d / "SKILL.md").exists()
+            for d in c.iterdir()
+        ):
+            return c
+    return anchor
+
+
 def split_frontmatter(text: str):
     if not text.startswith("---"):
         return "", text
@@ -154,17 +170,19 @@ def iter_skills(repo: Path):
 
 
 def cmd_report(repo: Path):
+    skills_root = discover_skills_root(repo)
     print(f"{'SKILL':32} {'ver':>8} {'src':>9} {'descC':>6} {'bodyW':>7} {'bodyL':>6}  status")
     print("-" * 80)
-    for name, f in iter_skills(repo):
+    for name, f in iter_skills(skills_root):
         m = measure(f)
         print(f"{name:32} {m['version']:>8} {m['src']:>9} {m['desc_chars']:>6} "
               f"{m['body_words']:>7} {m['body_lines']:>6}  {m['status']}")
 
 
 def cmd_check(repo: Path, only: str | None):
+    skills_root = discover_skills_root(repo)
     bad = 0
-    for name, f in iter_skills(repo):
+    for name, f in iter_skills(skills_root):
         if only and name != only:
             continue
         m = measure(f)
@@ -186,7 +204,13 @@ def cmd_check(repo: Path, only: str | None):
 
 
 def cmd_write(repo: Path):
-    rows = [(name, measure(f)) for name, f in iter_skills(repo)]
+    skills_root = discover_skills_root(repo)
+    # Link paths in VERSIONS.md are relative to the repo root (where the file lives), so prefix
+    # each `{name}/SKILL.md` with the skills_root's path under the anchor (empty if skills sit at
+    # the top level — preserves the pre-restructure link format).
+    rel = skills_root.relative_to(repo).as_posix() if skills_root != repo else ""
+    prefix = f"{rel}/" if rel else ""
+    rows = [(name, measure(f)) for name, f in iter_skills(skills_root)]
     out = []
     out.append("# Skill Version Registry\n")
     out.append("Canonical version + Cowork-compliance status of every skill. **Source of truth is\n"
@@ -211,7 +235,7 @@ def cmd_write(repo: Path):
     out.append("| Skill | Ver | Src | Desc (words / chars) | Body (words / lines) | Cowork | What it does |")
     out.append("|---|---|---|---|---|---|---|---|")
     for name, m in rows:
-        out.append(f"| [`{name}`]({name}/SKILL.md) | {m['version']} | {m['src']} | "
+        out.append(f"| [`{name}`]({prefix}{name}/SKILL.md) | {m['version']} | {m['src']} | "
                    f"{m['desc_words']} / {m['desc_chars']} | {m['body_words']} / {m['body_lines']} | "
                    f"{m['status']} | {m['short']} |")
     lean = sum(1 for _, m in rows if m["status"].startswith("✓"))

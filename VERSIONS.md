@@ -4,7 +4,7 @@ Canonical version + Cowork-compliance status of every skill. **Source of truth i
 `metadata.version`** in each skill's `SKILL.md` frontmatter (a top-level `version:` is rejected by
 the Agent Skills frontmatter validator — only `name, description, license, allowed-tools, metadata,
 compatibility` are allowed). This table mirrors it. Regenerate with
-`python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write --repo star-alliance-skills`.
+`python3 skillsmith/scripts/skill_registry.py write`.
 
 ## Cowork limits
 
@@ -37,7 +37,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`full-output-enforcement`](star-alliance-skills/full-output-enforcement/SKILL.md) | 1.0.0 | own | 25 / 203 | 382 / 47 | ✓ lean | Overrides default LLM truncation behavior |
 | [`gpt-taste`](star-alliance-skills/gpt-taste/SKILL.md) | 1.0.0 | own | 39 / 312 | 1090 / 72 | ✓ lean | Elite UX/UI & Advanced GSAP Motion Engineer |
 | [`graphify`](star-alliance-skills/graphify/SKILL.md) | 1.0.0 | own | 35 / 225 | 5904 / 1026 | ○ large | any input (code, docs, papers, images, videos) to knowledge graph |
-| [`guild-log`](star-alliance-skills/guild-log/SKILL.md) | 1.1.0 | own | 118 / 800 | 2112 / 212 | ✓ lean | Enforce logging of non-git-visible changes to the Star Alliance guild log |
+| [`guild-log`](star-alliance-skills/guild-log/SKILL.md) | 1.1.0 | own | 118 / 801 | 2112 / 212 | ✓ lean | Enforce logging of non-git-visible changes to the Star Alliance guild log |
 | [`high-end-visual-design`](star-alliance-skills/high-end-visual-design/SKILL.md) | 1.0.0 | own | 38 / 234 | 1413 / 96 | ✓ lean | Teaches the AI to design like a high-end agency |
 | [`image-to-code`](star-alliance-skills/image-to-code/SKILL.md) | 1.0.0 | own | 80 / 555 | 5735 / 1226 | ○ large | Elite website image-to-code skill for Codex |
 | [`imagegen-frontend-mobile`](star-alliance-skills/imagegen-frontend-mobile/SKILL.md) | 1.0.0 | own | 87 / 638 | 6460 / 1463 | ○ large | Elite mobile app image-generation skill for creating premium, app-native screen concepts a… |
@@ -48,7 +48,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`obsidian-markdown`](star-alliance-skills/obsidian-markdown/SKILL.md) | 1.0.0 | own | 36 / 262 | 610 / 164 | ✓ lean | Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, a… |
 | [`performance`](star-alliance-skills/performance/SKILL.md) | 1.0.1 | vendored | 32 / 219 | 1164 / 364 | ✓ lean | Optimize web performance for faster loading and better user experience |
 | [`redesign-existing-projects`](star-alliance-skills/redesign-existing-projects/SKILL.md) | 1.0.0 | own | 31 / 225 | 2174 / 176 | ✓ lean | Upgrades existing websites and apps to premium quality |
-| [`skillsmith`](star-alliance-skills/skillsmith/SKILL.md) | 1.1.8 | own | 132 / 987 | 3078 / 135 | ✓ lean | Manage, sync, upgrade, create, and auto-evolve Star Alliance skills across the star-allian… |
+| [`skillsmith`](star-alliance-skills/skillsmith/SKILL.md) | 1.1.9 | own | 132 / 987 | 3205 / 136 | ✓ lean | Manage, sync, upgrade, create, and auto-evolve Star Alliance skills across the star-allian… |
 | [`stitch-design-taste`](star-alliance-skills/stitch-design-taste/SKILL.md) | 1.0.0 | own | 29 / 257 | 1628 / 182 | ✓ lean | Semantic Design System Skill for Google Stitch |
 | [`strategies-review`](star-alliance-skills/strategies-review/SKILL.md) | 1.0.0 | own | 12 / 72 | 297 / 45 | ✓ lean | Review pending strategies and move them to executed then check the docs. |
 | [`supabase`](star-alliance-skills/supabase/SKILL.md) | 0.1.2 | vendored | 58 / 475 | 1184 / 107 | ✓ lean | Use when doing ANY task involving Supabase |

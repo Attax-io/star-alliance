@@ -56,6 +56,20 @@ def default_repo() -> Path:
     return here.parents[2]
 
 
+def discover_skills_root(anchor: Path) -> Path:
+    """Layout-aware skills-root discovery. The repo restructure (2026-06) moved skill dirs from
+    the repo TOP LEVEL into `star-alliance-skills/`. The "repo" side of the sync is a skills base
+    (`repo/<name>/SKILL.md`), so it must point at wherever the skills actually live — probe known
+    layouts and return the first dir holding >=1 `*/SKILL.md`; fall back to `anchor`."""
+    for c in (anchor, anchor / "star-alliance-skills", anchor / "claude-skills"):
+        if c.is_dir() and any(
+            d.is_dir() and not d.name.startswith(".") and (d / "SKILL.md").exists()
+            for d in c.iterdir()
+        ):
+            return c
+    return anchor
+
+
 def ver_of(skill_md: Path) -> str | None:
     """Canonical version = metadata.version (spec-clean); top-level version: is the
     fallback for un-migrated externals (e.g. impeccable)."""
@@ -206,6 +220,7 @@ def main():
     ap.add_argument("--dry", action="store_true")
     a = ap.parse_args()
     repo, glob = a.repo.expanduser().resolve(), a.glob.expanduser().resolve()
+    repo = discover_skills_root(repo)   # repo side is a skills base; point it at where skills live
     locs = locations(repo, glob, a.project.expanduser())
     if a.cmd == "status":
         cmd_status(locs)
