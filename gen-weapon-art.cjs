@@ -35,8 +35,24 @@ const WEAPONS = [
     prompt: "VIBRANT GLOWING fantasy weapon art. A heavy siege crossbow, wide powerful limbs made of dark metal and bone, a glowing TEAL-GREEN bolt loaded on the track, intricate circuit rune engravings across the stock, mechanical cocking mechanism visible, VIVID neon teal string and bolt tip radiating energy, INTENSE saturated teal glow, pure black background, ultra sharp ultra detailed",
   },
   {
+    id: "image-01",
+    prompt: "VIBRANT GLOWING fantasy weapon art. An enchanter's magic paintbrush wielded like a wand, long ornate handle, bristles of pure liquid JADE-EMERALD light dripping glowing paint, a ring of luminous color-swatches and arcane sigils orbiting the tip, INTENSE saturated emerald-green radiance, pure black background, ultra sharp ultra detailed",
+  },
+  {
+    id: "minimax-video",
+    prompt: "VIBRANT GLOWING fantasy weapon art. A mystical scrying-loom, an ornate circular frame strung with shimmering threads of pure TEAL-CYAN light, a glowing woven tapestry of a moving vision rippling in the center, a luminous shuttle trailing streams of light, INTENSE saturated teal-cyan radiance, pure black background, ultra sharp ultra detailed",
+  },
+  {
+    id: "minimax-speech",
+    prompt: "VIBRANT GLOWING fantasy weapon art. A herald's great war horn, a long curved brass-and-bone horn with ornate engraved bands, GLOWING SPRING-GREEN sound waves blasting outward from its bell, luminous runes along the curve, INTENSE saturated green radiance rippling outward, pure black background, ultra sharp ultra detailed",
+  },
+  {
+    id: "minimax-music",
+    prompt: "VIBRANT GLOWING fantasy weapon art. A bard's enchanted lute, elegant rounded body with ornate inlay along the neck, strings of pure LIME-CHARTREUSE light, glowing musical notes and sound-glyphs drifting off the strings, INTENSE saturated lime-green radiance, pure black background, ultra sharp ultra detailed",
+  },
+  {
     id: "glm-5.2",
-    prompt: "VIBRANT GLOWING fantasy weapon art. A tall elegant longbow, BLAZING AMBER-ORANGE wood, ancient multilingual inscriptions glowing gold along the limbs, bowstring made of pure golden light, a nocked glowing arrow ready to fire, INTENSE warm orange-gold radiance, pure black background, ultra sharp ultra detailed",
+    prompt: "VIBRANT GLOWING fantasy weapon art. A tall elegant LONGBOW shown full length, BLAZING AMBER-ORANGE wood, ancient multilingual inscriptions glowing gold along the limbs, bowstring made of pure golden light, and THREE glowing arrows standing point-down in the ground beside the bow, their amber arrowheads and fletching radiating light, clearly a bow-and-arrow weapon, INTENSE warm orange-gold radiance, pure black background, ultra sharp ultra detailed",
   },
   {
     id: "kimi-k2.7",

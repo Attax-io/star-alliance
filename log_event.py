@@ -19,6 +19,8 @@ Types:
     dashboard        visual / structural change to the dashboard
     structure        repo reorganisation (folder moves, renames)
     chore            anything else worth logging
+    decision         a choice made + WHY — kept as a record for future runs,
+                     not a change to the project (does not bump the version)
 
 The script auto-stamps `date` to today (YYYY-MM-DD), assigns the next `id`,
 and preserves all existing entries — never overwrites.
@@ -36,7 +38,7 @@ from pathlib import Path
 VALID_TYPES = {
     "skill-upgrade", "skill-create", "skill-remove",
     "member-upgrade", "member-create", "member-remove",
-    "dashboard", "structure", "chore",
+    "dashboard", "structure", "chore", "decision",
 }
 
 

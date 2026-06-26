@@ -2,7 +2,7 @@
 name: guild-log
 description: "Enforce logging of non-git-visible changes to the Star Alliance guild log. Use this skill whenever a session has changed dashboard markup, renamed UI strings, edited skills-meta.json or members-meta.json, modified guild-log.json directly, reorganized star-alliance-members/ or star-alliance-skills/ folder layout, or made any visual/structural change that won't show up in a git diff as a version bump. Also use when the user says 'log this', 'guild log this', 'did you log it?', 'add a log entry', or any time work ends and it's unclear whether the change was git-visible. Skill audits what was touched, decides auto-derived vs manual logging, runs build_guild_log.py for git-visible changes and log_event.py for the rest, then rebuilds the dashboard via build.py. Ask Atta to confirm before writing."
 metadata:
-  version: 1.1.0
+  version: 1.2.0
 ---
 
 # Guild Log Compliance
@@ -80,6 +80,21 @@ python3 log_event.py \
 | `dashboard` | Visual / structural change to the dashboard |
 | `structure` | Repo reorganisation (folder moves, renames) |
 | `chore` | Anything else worth logging |
+| `decision` | A choice made + **why** — kept as a record for future runs, not a change to the project. Use `--title` for the decision, `--detail` for the rationale and the alternative(s) rejected. Does **not** bump the project version. |
+
+**Log decisions, not only changes.** When the guild settles a real choice — picks an
+approach, rejects an alternative, fixes a trade-off, sets a convention — record it as a
+`decision` so the next run reads it instead of relitigating settled ground. It is the
+guild's memory. Example:
+
+```bash
+python3 log_event.py \
+  --type decision \
+  --who the-quartermaster \
+  --title "Project version derives from the guild log, not a hand-edited field" \
+  --detail "Considered a manual version field in guild-log.json; rejected — it drifts and gets forgotten. Deriving from log entry types in build.py means logging any change pumps the version automatically. Cumulative + order-independent so builds are reproducible." \
+  --ref guild-log
+```
 
 The script auto-stamps `date` to today (YYYY-MM-DD), assigns the next `id` (via `next_id()`), and preserves all existing entries — never overwrites.
 
@@ -156,6 +171,8 @@ python3 build.py
 ```
 
 The same command also refreshes the skills, members, and domains in `guild-data.js`. Safe to run any time; `build.py --check` reports whether content actually changed.
+
+**This is also how the project version bumps.** `build.py` derives `GUILD.meta.version` (the one SemVer for the whole Star Alliance, shown on the dashboard brand + footer) from the guild log: each entry's `type` bumps a tier — `structure`→MAJOR, `skill-create`/`member-create`/`dashboard`/`workflow`→MINOR, everything else→PATCH. So logging the change in Step 3/4 and rebuilding here *is* the version pump — there is no separate number to hand-edit. (The tier map lives in `VERSION_MAJOR_TYPES` / `VERSION_MINOR_TYPES` in `build.py`.)
 
 ### Step 6 — Verify
 

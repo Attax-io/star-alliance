@@ -154,6 +154,13 @@ async function refreshArsenalData() {
 const byMember = new Map(GUILD.members.map((m) => [m.id, m]));
 const bySkill  = new Map(GUILD.skills.map((s) => [s.id, s]));
 const byDomain = new Map(GUILD.domains.map((d) => [d.id, d]));
+// Sectors (project domains) whose config lists this skill. The home domain lists
+// the whole pool, so membership alone can't say global vs sector-specific — the
+// skill's own `global` flag (installed at ~/.claude/skills) is the real signal.
+const skillSectors = (id) => GUILD.domains.filter((d) => (d.skills || []).includes(id));
+const skillScopeTip = (s) => s.global
+  ? "Global skill — installed at ~/.claude/skills, available in every sector"
+  : `Sector-specific — ${skillSectors(s.id).map((d) => d.name).join(", ") || "not deployed to any sector yet"}`;
 const logEntries = (GUILD.log && GUILD.log.entries) || [];
 // ── Per-agent overrides — "what-if" edits, persisted per browser in localStorage.
 // overrides = { "<memberId>": { add:[skillId…], remove:[skillId…], block:[skillId…] } }
@@ -488,7 +495,7 @@ function renderStarMap(query) {
   if (unknown) console.warn(`[map] unknown workflow id "${reqId}" — falling back to default`);
   const accent = ACCENT[wf.accent] || "var(--cyan)";
   return `${viewHead("Operations", "Star Map",
-      `Hover a star to read ${esc(wf.name)}'s role. The power core flows the active workflow.`)}
+      `A workflow is just a set of repeated steps the Star Alliance follow to get a job done. Hover a star to read ${esc(wf.name)}'s role — the power core traces the active workflow.`)}
     ${flowChips(wf.id)}
     ${unknown ? `<div class="flow-note">Unknown flow — showing the default.</div>` : ""}
     <div class="flow-meta glass" style="--accent:${accent}">
@@ -645,13 +652,18 @@ function renderMemberDossier(id) {
   const eff = effectiveWeapons(m);
   const weapons = eff.map((w, i) => {
     const mm = modelMeta(w.model);
-    const tip = esc(mm.ollama_desc || mm.desc || "");
     const role = mm.role ? ROLE_META[mm.role] : null;
     return `<div class="weapon-card${w.added ? " added" : ""}" draggable="true" data-model="${esc(w.model)}" data-member="${esc(m.id)}" style="--wc:${esc(mm.color)}">
       <div class="weapon-thumb-wrap">
         <img class="weapon-thumb" src="weapon-art/${esc(w.model)}.png" alt="${esc(mm.label)}" loading="lazy">
         ${role ? `<img class="weapon-role-pip" src="${esc(role.icon)}" alt="${esc(role.label)}" title="${esc(role.label)}: ${esc(role.rule)}" style="--rc:${esc(role.color)}">` : ""}
-        <div class="weapon-thumb-tip">${tip}</div>
+        <div class="weapon-thumb-tip">
+          <div class="wtt-header">
+            <div class="wtt-name">${esc(mm.label)}</div>
+            ${role ? `<div class="wtt-role">${esc(role.label)}</div>` : ""}
+          </div>
+          <div class="wtt-body">${esc(mm.ollama_desc || mm.desc || "")}</div>
+        </div>
       </div>
       <div class="weapon-name"><span class="weapon-glyph" style="--wc:${esc(mm.color)}">${esc(modelGlyph(w.model))}</span>${esc(mm.label)}
         <button class="wc-revoke" type="button" data-member="${esc(m.id)}" data-model="${esc(w.model)}"
@@ -955,7 +967,7 @@ function renderSkills(query) {
 
 function skillCard(s) {
   const off = isDisabled(s.id);
-  return `<a class="skill-card glass${off ? " deactivated" : ""}" href="#/skills/${esc(s.id)}" data-id="${esc(s.id)}">
+  return `<a class="skill-card glass${off ? " deactivated" : ""}" href="#/skills/${esc(s.id)}" data-id="${esc(s.id)}" title="${esc(skillScopeTip(s))}">
     <div class="sc-top">
       <div class="sc-icon${(s.art || s.artPng) ? " art" : ""}">${skillArt(s)}</div>
       <div><div class="sc-name">${esc(s.name)}</div><div class="sc-ver">v${esc(s.version)}</div></div>
@@ -963,6 +975,7 @@ function skillCard(s) {
     <div class="sc-blurb">${esc(s.blurb)}</div>
     <div class="sc-foot">
       ${off ? `<span class="tag off">deactivated</span>` : ""}
+      <span class="tag ${s.global ? "scope-global" : "scope-sector"}" title="${esc(skillScopeTip(s))}">${s.global ? "🌐 Global" : "⬡ Sector"}</span>
       <span class="tag ${rampClass(s)}">${esc(s.level)}</span>
       <span class="tag src-${esc(s.src)}">${esc(s.src)}</span>
       <span class="sc-carriers">${pluralize(liveFreq(s.id), "carrier")}</span>
@@ -988,6 +1001,17 @@ function renderSkillPanel(id) {
     ? `<div class="section glass"><div class="section-title">Bundled files</div>
        <div class="chips">${[...s.scripts, ...s.refs].map((f) => `<span class="tag">${esc(f)}</span>`).join("")}</div></div>` : "";
 
+  const secs = skillSectors(s.id);
+  const sectorChip = (d) => `<a class="ref-pill" href="#/domains/${esc(d.id)}" style="--mc:${esc(d.color || "#888")}">
+      <span class="avatar" style="width:26px;height:26px;border-radius:7px;display:grid;place-items:center;font-size:14px">${esc(d.icon || "")}</span>${esc(d.name)}</a>`;
+  const sectorsBlock = `<div class="section glass">
+      <div class="section-title">${s.global ? "Availability" : "Sector"}</div>
+      <p class="scope-note">${s.global
+        ? `<span class="scope-flag is-global">🌐 Global</span> Installed at <code>~/.claude/skills</code> — every sector can load it. Listed in:`
+        : `<span class="scope-flag is-sector">⬡ Sector-specific</span> Lives only in a project's <code>.claude/skills</code>, not on the global load path. Found in:`}</p>
+      ${secs.length ? `<div class="ref-grid">${secs.map(sectorChip).join("")}</div>`
+                    : `<span class="empty">Not listed in any sector yet.</span>`}</div>`;
+
   return `${crumb("#/skills", "All skills")}
     <div class="skill-panel">
       <div class="sp-hero glass${off ? " deactivated" : ""}">
@@ -998,6 +1022,7 @@ function renderSkillPanel(id) {
             <span class="tag">v${esc(s.version)}</span>
             <span class="tag ${rampClass(s)}">${esc(s.level)}</span>
             <span class="tag src-${esc(s.src)}">${esc(s.src)}</span>
+            <span class="tag ${s.global ? "scope-global" : "scope-sector"}" title="${esc(skillScopeTip(s))}">${s.global ? "🌐 Global" : "⬡ Sector-specific"}</span>
             ${off ? `<span class="tag off">deactivated guild-wide</span>` : ""}
           </div>
           <p class="sp-blurb">${esc(s.desc || s.blurb)}</p>
@@ -1016,6 +1041,7 @@ function renderSkillPanel(id) {
         <div class="stat"><b class="count">${s.scripts.length + s.refs.length}</b><span>Files</span></div>
       </div>
       ${s.intro ? `<div class="section glass"><div class="section-title">Overview</div><p style="color:var(--muted);line-height:1.7">${esc(s.intro)}</p></div>` : ""}
+      ${sectorsBlock}
       <div class="section glass"><div class="section-title">Carried by · ${carrierIds.length}</div><div class="ref-grid">${carriers}</div></div>
       ${sections}
       ${files}
@@ -1599,9 +1625,12 @@ document.addEventListener("keydown", (e) => {
 function setFooter() {
   const c = GUILD.meta.counts;
   const oc = totalOverrides();
+  const ver = GUILD.meta.version || "0.0.0";
+  const brandVer = byId("brand-ver");
+  if (brandVer) brandVer.textContent = `v${ver}`;
   byId("footer-meta").innerHTML =
     `${esc(GUILD.meta.name)} · ${c.members} members · ${c.skills} skills · ${c.domains} sectors · ` +
-    `schema v${GUILD.meta.schemaVersion} · generated ${esc(GUILD.meta.generated)}` +
+    `release v${esc(ver)} · schema v${GUILD.meta.schemaVersion} · generated ${esc(GUILD.meta.generated)}` +
     (oc ? ` · <button id="reset-overrides" class="footer-btn">${oc} unsaved edit${oc > 1 ? "s" : ""} · reset all</button>` : "");
 }
 

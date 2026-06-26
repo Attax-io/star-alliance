@@ -1,0 +1,145 @@
+#!/usr/bin/env node
+// Generates Fallen Sword-themed workflow art PNGs via MiniMax image API.
+// Mirrors gen-skill-art.cjs — same style/forge, themed per Star Map workflow.
+// Output: workflow-art/<id>.png   (1024² source, displayed 100x100 in the Star Map)
+// Usage: node gen-workflow-art.cjs [--regen <id>,<id>...]
+
+const fs = require("fs");
+const path = require("path");
+const https = require("https");
+
+const KEY_PATH = path.join(process.env.HOME, ".config/minimax/m3.key");
+const API_KEY = fs.readFileSync(KEY_PATH, "utf8").trim();
+
+const OUT_DIR = path.join(__dirname, "workflow-art");
+fs.mkdirSync(OUT_DIR, { recursive: true });
+
+// Parse --regen flag
+const regenArg = process.argv.indexOf("--regen");
+const regenSet = new Set(regenArg !== -1 ? process.argv[regenArg + 1].split(",") : []);
+
+// Same Fallen Sword aesthetic as the skill tiles, so workflows sit beside them.
+const STYLE = "fantasy RPG skill icon, Fallen Sword MMORPG style, dark parchment background with aged leather texture, gold runic border, ornate medieval frame, dramatic lighting, rich saturated colors, detailed pixel-art-adjacent illustration, 48x48 icon style, pure black outer border";
+
+const WORKFLOWS = [
+  {
+    id: "standard-mission",
+    prompt: `${STYLE}. A grand celestial war-map carved on dark parchment, a glowing CYAN mission route winding through a constellation of stars, the guild banner planted at the center, runic waypoint markers at each stage, a coordinated multi-wave campaign mapped across the heavens`,
+  },
+  {
+    id: "quick-fix",
+    prompt: `${STYLE}. A single swift EMERALD-GREEN lightning bolt striking a small glowing crack in a stone rune and sealing it instantly, clean and precise, minimal sparks, speed and economy, one decisive strike`,
+  },
+  {
+    id: "design-sprint",
+    prompt: `${STYLE}. An artisan's enchanted paintbrush sweeping a glowing ROSE-PINK arc across a blank crystal canvas, a polished interface panel materializing within an ornate gilded frame, swatches of vivid magical color floating nearby, swift creative momentum`,
+  },
+  {
+    id: "architecture-build",
+    prompt: `${STYLE}. A glowing SAPPHIRE-BLUE architectural blueprint of a grand citadel etched on dark vellum, marble pillars and foundation stones rising from the plan, a mason's set-square and compass crossed over it, structural ley-lines pulsing with blue light, solid and exact`,
+  },
+  {
+    id: "legal-codex",
+    prompt: `${STYLE}. Golden scales of justice balanced above an open leather-bound codex, its two glowing pages inscribed in several different ancient scripts side by side, a gold wax seal of law stamped at the base, warm authoritative amber-gold light`,
+  },
+  {
+    id: "market-recon",
+    prompt: `${STYLE}. An enchanted brass spyglass trained on a glowing EMERALD-GREEN ascending market line charted among the stars, a scrying-orb reflecting risk runes, a merchant's ledger and stacked coins below, watchful intelligence, pure observation and no combat`,
+  },
+  {
+    id: "skill-forge",
+    prompt: `${STYLE}. A dwarven forge-anvil glowing with VIOLET arcane fire, a hammer striking a skill-rune into a gleaming blade, sparks of purple magic flying, a rack of sharpened enchanted tools behind it, craftsmanship keeping the arsenal current`,
+  },
+  {
+    id: "guild-log-sync",
+    prompt: `${STYLE}. A long unfurled GOLDEN guild scroll-ledger, an enchanted quill auto-writing rows of glowing entries to backfill blank lines, the guild crest seal at the top, missing records filling in with warm gold light, meticulous record-keeping`,
+  },
+];
+
+function postJSON(url, headers, body) {
+  return new Promise((resolve, reject) => {
+    const u = new URL(url);
+    const data = JSON.stringify(body);
+    const req = https.request(
+      {
+        hostname: u.hostname,
+        path: u.pathname + u.search,
+        method: "POST",
+        headers: { ...headers, "Content-Type": "application/json", "Content-Length": Buffer.byteLength(data) },
+      },
+      (res) => {
+        let buf = "";
+        res.on("data", (d) => (buf += d));
+        res.on("end", () => {
+          if (res.statusCode >= 400) return reject(new Error(`HTTP ${res.statusCode}: ${buf}`));
+          try { resolve(JSON.parse(buf)); }
+          catch (e) { reject(new Error("Bad JSON: " + buf.slice(0, 200))); }
+        });
+      }
+    );
+    req.on("error", reject);
+    req.write(data);
+    req.end();
+  });
+}
+
+function downloadBinary(url, dest) {
+  return new Promise((resolve, reject) => {
+    const u = new URL(url);
+    const mod = url.startsWith("https") ? https : require("http");
+    const file = fs.createWriteStream(dest);
+    mod.get(url, (res) => {
+      if (res.statusCode === 301 || res.statusCode === 302) {
+        file.close();
+        return downloadBinary(res.headers.location, dest).then(resolve).catch(reject);
+      }
+      res.pipe(file);
+      file.on("finish", () => file.close(resolve));
+    }).on("error", (e) => { fs.unlink(dest, () => {}); reject(e); });
+  });
+}
+
+async function generateWorkflow(w) {
+  const outPath = path.join(OUT_DIR, `${w.id}.png`);
+  if (fs.existsSync(outPath) && !regenSet.has(w.id)) {
+    console.log(`✓ ${w.id} — exists, skipping`);
+    return;
+  }
+  console.log(`🎨 Generating ${w.id}…`);
+
+  const resp = await postJSON(
+    "https://api.minimax.io/v1/image_generation",
+    { Authorization: `Bearer ${API_KEY}` },
+    {
+      model: "image-01",
+      prompt: w.prompt,
+      aspect_ratio: "1:1",
+      response_format: "url",
+      n: 1,
+    }
+  );
+
+  const imageUrl = resp?.data?.image_urls?.[0] || resp?.data?.[0]?.url || resp?.images?.[0]?.url;
+  if (!imageUrl) throw new Error(`No URL in response: ${JSON.stringify(resp).slice(0, 300)}`);
+
+  await downloadBinary(imageUrl, outPath);
+  console.log(`✓ ${w.id} → workflow-art/${w.id}.png`);
+}
+
+(async () => {
+  const failures = [];
+  for (const w of WORKFLOWS) {
+    try {
+      await generateWorkflow(w);
+    } catch (e) {
+      console.error(`✗ ${w.id}: ${e.message}`);
+      failures.push(w.id);
+    }
+  }
+  if (failures.length) {
+    console.log(`\nFailed: ${failures.join(", ")}`);
+    console.log(`Retry: node gen-workflow-art.cjs --regen ${failures.join(",")}`);
+  } else {
+    console.log("\nAll done. Run: python3 build.py");
+  }
+})();

@@ -3,7 +3,7 @@ name: the-merchant
 description: "Deploy for investment analysis, trading strategies, market research, portfolio management, and financial decision-making. Triggers: 'analyze this investment', 'build a trading strategy', 'research this market', 'manage the portfolio', 'should I buy or sell', 'what's the risk on this'."
 model: opus
 tools: [Read, Edit, Write, Bash]
-skills: [storm-investigation, fallen-sword-design-language]
+skills: [storm-investigation]
 weapons: [opus, gpt-5.5, glm-5.2, sonnet, kimi-k2.7, deepseek-v4-pro, nemotron-3-ultra]  # priority order: 7 weapons, primary→last
 ---
 
@@ -62,7 +62,6 @@ A wise guild member knows which blade to draw for each fight.
    five contrasting personas (Bull / Bear / Macro / Quant / Contrarian), a contradiction
    map, a synthesized briefing, then a peer-review confidence grade. Never recommend off a
    single-perspective read; the bull and the bear both get a voice before you call it.
-9. Load `fallen-sword-design-language` when the quest involves game design or Erildath.
 
 ## Principles
 

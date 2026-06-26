@@ -37,7 +37,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`full-output-enforcement`](star-alliance-skills/full-output-enforcement/SKILL.md) | 1.0.0 | own | 25 / 203 | 382 / 47 | ✓ lean | Overrides default LLM truncation behavior |
 | [`gpt-taste`](star-alliance-skills/gpt-taste/SKILL.md) | 1.0.0 | own | 39 / 312 | 1090 / 72 | ✓ lean | Elite UX/UI & Advanced GSAP Motion Engineer |
 | [`graphify`](star-alliance-skills/graphify/SKILL.md) | 1.0.0 | own | 35 / 225 | 5904 / 1026 | ○ large | any input (code, docs, papers, images, videos) to knowledge graph |
-| [`guild-log`](star-alliance-skills/guild-log/SKILL.md) | 1.1.0 | own | 118 / 801 | 2112 / 212 | ✓ lean | Enforce logging of non-git-visible changes to the Star Alliance guild log |
+| [`guild-log`](star-alliance-skills/guild-log/SKILL.md) | 1.2.0 | own | 118 / 801 | 2339 / 229 | ✓ lean | Enforce logging of non-git-visible changes to the Star Alliance guild log |
 | [`high-end-visual-design`](star-alliance-skills/high-end-visual-design/SKILL.md) | 1.0.0 | own | 38 / 234 | 1413 / 96 | ✓ lean | Teaches the AI to design like a high-end agency |
 | [`image-to-code`](star-alliance-skills/image-to-code/SKILL.md) | 1.0.0 | own | 80 / 555 | 5735 / 1226 | ○ large | Elite website image-to-code skill for Codex |
 | [`imagegen-frontend-mobile`](star-alliance-skills/imagegen-frontend-mobile/SKILL.md) | 1.0.0 | own | 87 / 638 | 6460 / 1463 | ○ large | Elite mobile app image-generation skill for creating premium, app-native screen concepts a… |

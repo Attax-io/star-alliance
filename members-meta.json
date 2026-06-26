@@ -96,20 +96,20 @@
       "deploy": "UI/UX design, visual quality, brand kits, image-to-code conversion",
       "triggers": "design the UI · make it look premium · create a brand kit",
       "weaponsDesc": {
-        "gpt-5.5": "GPT-5.5 — the enchanted blade. Exceptional visual creativity.",
-        "sonnet": "Claude Sonnet — the reliable longsword for iteration speed.",
-        "minimax-m3": "MiniMax M3 — the crossbow. Precise for structural work.",
-        "opus": "Claude Opus — the heaviest blade. Deepest reasoning for design direction.",
-        "haiku": "Claude Haiku — the dagger. Fast cheap passes for design iteration.",
-        "qwen3.5": "Qwen 3.5 — the shortsword. Versatile workhorse for day-to-day polish.",
-        "gemma4": "Gemma 4 — the throwing knife. Light quick cheap passes for visual scraps."
+        "sonnet": "Claude Sonnet — the reliable longsword. The hand that directs: plans the design, critiques it, and dispatches the doers.",
+        "image-01": "MiniMax image-01 — the engraver's burin. Generates images, mockups, and visual assets from a prompt.",
+        "minimax-video": "MiniMax Video — the moving tapestry. Generates motion and video for living interfaces.",
+        "minimax-speech": "MiniMax Speech — the herald's voice. Generates spoken audio and voiceover.",
+        "minimax-music": "MiniMax Music — the bard's lute. Generates music and sound to score the experience.",
+        "minimax-m3": "MiniMax M3 — the crossbow. Precise structural doer for code-shaped design work."
       },
       "does": [
         "Frontend visual design (web and mobile)",
         "Image-to-code conversion",
         "Brand kit creation",
         "Design systems",
-        "Redesigning existing projects"
+        "Redesigning existing projects",
+        "Generative assets — image, motion, and audio via the MiniMax doers"
       ],
       "doesnt": [
         "Does not design database schemas",

@@ -60,6 +60,26 @@ LEVEL_RAMP = {
     "Master": "purple",
 }
 
+# ── Project version ───────────────────────────────────────────────────────────
+# The Star Alliance project carries ONE version — owned by the Quartermaster and
+# derived entirely from the guild log. Every logged change is an upgrade, so the
+# version is just the log replayed as SemVer: each entry bumps exactly one tier
+# by its `type`. It is cumulative and order-independent, so the same log always
+# yields the same version (reproducible builds — no manual bump to forget).
+#
+#   MAJOR  ← structural eras   (repo-layout reorganizations — breaking changes)
+#   MINOR  ← new capabilities  (a skill / member / workflow / dashboard view is born)
+#   PATCH  ← refinements       (upgrades, chores, fixes — everything else)
+#
+# Unknown / future `type`s count as a refinement (PATCH) so no logged change is
+# ever silently uncounted. To retune, move a type between these sets.
+#
+# `decision` (and any IGNORE type) is a RECORD kept for future runs — a choice
+# and its rationale — not a change to the project, so it never bumps the version.
+VERSION_MAJOR_TYPES = {"structure"}
+VERSION_MINOR_TYPES = {"skill-create", "member-create", "dashboard", "workflow"}
+VERSION_IGNORE_TYPES = {"decision"}
+
 
 def default_repo() -> Path:
     """Find the star-alliance repo regardless of cwd."""
@@ -245,6 +265,7 @@ def build_skill(name: str, skill_dir: Path, skill_md: Path, meta: dict, repo: Pa
         "refs": list_files(skill_dir, "references"),
         "scripts": list_files(skill_dir, "scripts"),
         "stats": {"lines": body.count("\n"), "words": len(body.split())},
+        "global": False,  # set by mark_global_skills() — installed at the global load path?
         "members": [],  # reverse index — filled by compute_reverse_indices()
     }
 
@@ -381,6 +402,26 @@ def compute_reverse_indices(members: list[dict], skills: list[dict]) -> None:
         s["members"].sort()
 
 
+def mark_global_skills(skills: list[dict], warnings: list[str]) -> None:
+    """Flag each skill as global vs sector-specific.
+
+    A skill is *global* when it's installed at Claude's global load path
+    (~/.claude/skills) — every project/sector can use it. A skill that lives
+    only inside a project's own .claude/skills is *sector-specific*. The home
+    'star-alliance' domain lists the whole pool, so domain membership alone
+    can't tell the two apart; the global load path is the real signal.
+    """
+    global_dir = Path.home() / ".claude" / "skills"
+    if not global_dir.is_dir():
+        warnings.append(
+            f"global skills dir not found ({global_dir}) — every skill marked sector-specific"
+        )
+        return
+    installed = {p.name for p in global_dir.iterdir() if p.is_dir()}
+    for s in skills:
+        s["global"] = s["id"] in installed
+
+
 def validate(members: list[dict], skills: list[dict], domains: list[dict],
              workflows: list[dict],
              errors: list[str], warnings: list[str]) -> None:
@@ -403,6 +444,14 @@ def validate(members: list[dict], skills: list[dict], domains: list[dict],
                 gate = step.get("gate")
                 if gate not in {"approval", "certify", "report"}:
                     errors.append(f"workflow '{wf_id}' step has unknown gate '{gate}'")
+        # Hard standard: every workflow ENDS with the Butler's report-back gate —
+        # a plain-English completion report to the Guild Master (which also flags
+        # whether the run could be saved as a reusable star-map workflow).
+        _steps = wf.get("steps", [])
+        _last = _steps[-1] if _steps else {}
+        if _last.get("kind") != "gate" or _last.get("gate") != "report":
+            errors.append(f"workflow '{wf_id}' must END with a 'report' gate — the Butler "
+                          f"reports back in plain English when the workflow is done (the guild standard)")
 
     # Hard: every member skill must resolve to an installed skill.
     for m in members:
@@ -420,9 +469,28 @@ def validate(members: list[dict], skills: list[dict], domains: list[dict],
                 warnings.append(f"domain '{d['id']}' references member '{mid}' not in the guild (external)")
 
 
+def derive_version(log: dict) -> tuple[str, dict]:
+    """Replay the guild log into the project's SemVer string + tier breakdown."""
+    major = minor = patch = 0
+    for e in log.get("entries", []):
+        t = e.get("type", "")
+        if t in VERSION_IGNORE_TYPES:
+            continue
+        if t in VERSION_MAJOR_TYPES:
+            major += 1
+        elif t in VERSION_MINOR_TYPES:
+            minor += 1
+        else:
+            patch += 1
+    return f"{major}.{minor}.{patch}", {"major": major, "minor": minor, "patch": patch}
+
+
 def build_meta(members, skills, domains, workflows, log) -> dict:
+    version, version_tiers = derive_version(log)
     return {
         "name": "Star Alliance",
+        "version": version,
+        "versionTiers": version_tiers,
         "generated": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
         "schemaVersion": SCHEMA_VERSION,
         "counts": {
@@ -450,6 +518,7 @@ def assemble(repo: Path) -> tuple[dict, list[str], list[str]]:
     log = load_log(repo)
 
     compute_reverse_indices(members, skills)
+    mark_global_skills(skills, warnings)
     validate(members, skills, domains, workflows, errors, warnings)
 
     guild = {
@@ -507,7 +576,8 @@ def write_outputs(repo: Path, guild: dict, check: bool) -> bool:
 
 
 def report(guild: dict) -> None:
-    print(f"\n{guild['meta']['name']} — schema v{guild['meta']['schemaVersion']} — "
+    print(f"\n{guild['meta']['name']} v{guild['meta']['version']} — "
+          f"schema v{guild['meta']['schemaVersion']} — "
           f"generated {guild['meta']['generated']}")
     print("counts:", guild["meta"]["counts"])
     print(f"\n{'SKILL':34} {'ver':>8} {'level':13} {'src':>9} {'lines':>6} {'words':>6} {'carriers':>8}  icon")

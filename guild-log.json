@@ -2,6 +2,42 @@
   "version": 1,
   "entries": [
     {
+      "id": 24,
+      "date": "2026-06-26",
+      "type": "dashboard",
+      "title": "Guild log gains decision entries; Butler report-back standard enforced across all workflows",
+      "who": "the-quartermaster",
+      "detail": "log_event.py: new 'decision' type — records a choice + its rationale for future runs, rendered with its own chip on the Guild Log view; excluded from the project version (VERSION_IGNORE_TYPES in build.py) since a record is not an upgrade. workflows.json: all 8 report gates restated to the standard — Butler reports back in plain English and flags whether the run could be saved as a reusable star-map workflow. build.py: validate() now hard-rejects any workflow that does not end with a 'report' gate. Docs updated: the-butler.md (Closing every workflow), the-quartermaster.md (log decisions), guild-log SKILL.md 1.1.1->1.2.0.",
+      "ref": [
+        "guild-log",
+        "the-butler",
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": 23,
+      "date": "2026-06-26",
+      "type": "decision",
+      "title": "Butler's plain-English report-back is a hard standard on every star-map workflow",
+      "who": "the-butler",
+      "detail": "Every workflow must end with the Butler reporting to the Guild Master in plain English — what was done, what was decided, what's left — and flagging whether the run could be saved as a reusable star-map workflow. Enforced structurally: build.py validate() rejects any workflow whose last step is not a 'report' gate. Rationale: the Guild Master should never have to dig through the transcript to learn the outcome, and repeatable sequences should be captured as workflows instead of re-improvised.",
+      "ref": [
+        "the-butler"
+      ]
+    },
+    {
+      "id": 22,
+      "date": "2026-06-26",
+      "type": "dashboard",
+      "title": "Project version: Star Alliance now carries one SemVer, derived from the guild log",
+      "who": "the-quartermaster",
+      "detail": "build.py derives GUILD.meta.version by replaying the guild log as SemVer — structure→MAJOR, skill-create/member-create/dashboard/workflow→MINOR, everything else→PATCH. Shown as a chip on the dashboard brand mark and in the footer (release vX.Y.Z). No hand-edited number: logging any change and rebuilding pumps the version. Tier map = VERSION_MAJOR_TYPES/VERSION_MINOR_TYPES in build.py. The Quartermaster owns it.",
+      "ref": [
+        "guild-log"
+      ],
+      "to": "5.25.26"
+    },
+    {
       "id": 21,
       "date": "2026-06-26",
       "type": "dashboard",

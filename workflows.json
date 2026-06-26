@@ -43,9 +43,16 @@
           "produces": "routed assignments"
         },
         {
+          "kind": "member",
+          "actor": "the-designer",
+          "title": "Design the Interface",
+          "act": "The Designer shapes the visual design and UI for any user-facing part of the mission, so the build has a clear visual target to hit. The guild's only designer — no one else touches the look.",
+          "produces": "design spec"
+        },
+        {
           "kind": "gate",
           "gate": "certify",
-          "label": "The Quartermaster certifies the plan is buildable, complete, and safe to start construction."
+          "label": "The Quartermaster certifies the plan and design are buildable, complete, and safe to start construction."
         },
         {
           "kind": "member",
@@ -64,7 +71,7 @@
         {
           "kind": "gate",
           "gate": "report",
-          "label": "The Butler delivers a plain-English completion report to you with what was built and any follow-ups."
+          "label": "The Butler reports the finished mission — what was built and any follow-ups — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ]
     },
@@ -112,7 +119,7 @@
         {
           "kind": "gate",
           "gate": "report",
-          "label": "The Butler reports the fix and its verification back to you."
+          "label": "The Butler reports the fix and its verification — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ]
     },
@@ -174,7 +181,7 @@
         {
           "kind": "gate",
           "gate": "report",
-          "label": "The Butler summarizes the design sprint outcome, with screenshots and notes, for you."
+          "label": "The Butler reports the design-sprint outcome, with screenshots and notes — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ]
     },
@@ -203,7 +210,7 @@
         {
           "kind": "gate",
           "gate": "approval",
-          "label": "You approve the architecture brief before scoping and design begin."
+          "label": "You approve the architecture brief before scoping and structural work begin."
         },
         {
           "kind": "member",
@@ -215,14 +222,14 @@
         {
           "kind": "member",
           "actor": "the-architect",
-          "title": "Design the System",
-          "act": "The Architect drafts the system design and database schema to satisfy the scope.",
-          "produces": "system design"
+          "title": "Architect the System",
+          "act": "The Architect drafts the system architecture and database schema to satisfy the scope.",
+          "produces": "system blueprint"
         },
         {
           "kind": "gate",
           "gate": "certify",
-          "label": "The Quartermaster certifies the design is sound, consistent, and safe to implement."
+          "label": "The Quartermaster certifies the architecture is sound, consistent, and safe to implement."
         },
         {
           "kind": "member",
@@ -235,13 +242,13 @@
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Clean Up and Verify",
-          "act": "The Quartermaster runs final checks and confirms the architecture works as designed in production-like conditions.",
+          "act": "The Quartermaster runs final checks and confirms the architecture works as intended in production-like conditions.",
           "produces": "verified system"
         },
         {
           "kind": "gate",
           "gate": "report",
-          "label": "The Butler reports the architecture build, its verification, and any caveats to you."
+          "label": "The Butler reports the architecture build, its verification, and any caveats — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ]
     },
@@ -289,7 +296,7 @@
         {
           "kind": "gate",
           "gate": "report",
-          "label": "The Butler delivers the codex summary, locales covered, and publication status to you."
+          "label": "The Butler reports the codex summary — locales covered and publication status — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ]
     },
@@ -330,7 +337,7 @@
         {
           "kind": "gate",
           "gate": "report",
-          "label": "The Butler delivers the Merchant's market and risk report, with caveats, to you."
+          "label": "The Butler reports the Merchant's market and risk report, with caveats — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ]
     },
@@ -359,9 +366,16 @@
         {
           "kind": "member",
           "actor": "the-quartermaster",
-          "title": "Sync Upgrade Skills",
-          "act": "The Quartermaster syncs, upgrades, or authors the skills that were requested.",
+          "title": "Sync and Upgrade Skills",
+          "act": "The Quartermaster syncs, upgrades, or authors the logic and content of the skills that were requested.",
           "produces": "updated skills"
+        },
+        {
+          "kind": "member",
+          "actor": "the-designer",
+          "title": "Forge the Sigil",
+          "act": "The Designer forges each new or changed skill's sigil and art, keeping the guild's heraldry consistent across the roster. Skill art is design — it runs through the Designer, no one else.",
+          "produces": "skill sigils"
         },
         {
           "kind": "member",
@@ -373,7 +387,7 @@
         {
           "kind": "gate",
           "gate": "report",
-          "label": "The Butler reports the skill-forge outcome, version changes, and tooling status to you."
+          "label": "The Butler reports the skill-forge outcome — version changes and tooling status — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ]
     },
@@ -426,7 +440,7 @@
         {
           "kind": "gate",
           "gate": "report",
-          "label": "The Butler reports what was logged — git-tier catch-up plus manual entries — and the new log total, to you."
+          "label": "The Butler reports what was logged — git-tier catch-up plus manual entries — and the new log total — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ]
     }
