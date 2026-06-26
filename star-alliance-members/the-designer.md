@@ -3,7 +3,7 @@ name: the-designer
 description: "Deploy for UI/UX design, frontend visual quality, brand kits, image-to-code conversion, and design system work. Triggers: 'design the UI', 'make it look premium', 'create a brand kit', 'convert this image to code', 'redesign this'."
 model: sonnet
 tools: [Read, Edit, Write, Bash]
-skills: [design-taste-frontend, high-end-visual-design, image-to-code, imagegen-frontend-web, imagegen-frontend-mobile, brandkit, minimalist-ui, industrial-brutalist-ui, impeccable, stitch-design-taste, gpt-taste, redesign-existing-projects, fallen-sword-design-language, weapon-utility]
+skills: [design-taste, image-to-code, imagegen-frontend-web, imagegen-frontend-mobile, brandkit, impeccable, fallen-sword-design-language, weapon-utility]
 weapons: [image-01, minimax-video, minimax-speech, minimax-music, minimax-m3, sonnet]  # priority order: doers→thinkers→sonnet
 ---
 

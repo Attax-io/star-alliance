@@ -55,14 +55,6 @@
     "triggers": "on \"rename\", \"rename sweep\", \"rename checklist\", \"naming cleanup\", \"change table name\", \"rename this view\", \"prefix the tables\", \"sweep the old name\", \"unify the naming\", or any request that implies a SQL ALTER TABLE ... RENAME / RENAME COLUMN. The skill exist",
     "modes": ""
   },
-  "design-taste-frontend": {
-    "icon": "🎨",
-    "blurb": "Senior UI engineer enforcing metric-driven component architecture",
-    "level": "Advanced",
-    "tabler": "ti-brush",
-    "triggers": "",
-    "modes": ""
-  },
   "dev-server": {
     "icon": "🚀",
     "blurb": "Launches, restarts, and manages your local development server",
@@ -79,27 +71,11 @@
     "triggers": "",
     "modes": ""
   },
-  "gpt-taste": {
-    "icon": "✨",
-    "blurb": "Elite motion engineer crafting AIDA layouts with GSAP",
-    "level": "Elite",
-    "tabler": "ti-wand",
-    "triggers": "(pinning, stacking, scrubbing), inline micro-images, and massive section spacing.",
-    "modes": ""
-  },
   "graphify": {
     "icon": "🕸️",
     "blurb": "Transforms any input into a navigable knowledge graph",
     "level": "Master",
     "tabler": "ti-binary-tree",
-    "triggers": "",
-    "modes": ""
-  },
-  "high-end-visual-design": {
-    "icon": "🎨",
-    "blurb": "Agency-grade design tokens for fonts, spacing, shadows, motion",
-    "level": "Foundational",
-    "tabler": "ti-diamond",
     "triggers": "",
     "modes": ""
   },
@@ -135,22 +111,6 @@
     "triggers": "",
     "modes": ""
   },
-  "industrial-brutalist-ui": {
-    "icon": "⚙️",
-    "blurb": "Brutalist industrial UI blending Swiss type with military terminal grit",
-    "level": "Foundational",
-    "tabler": "ti-building-factory",
-    "triggers": "",
-    "modes": ""
-  },
-  "minimalist-ui": {
-    "icon": "🎨",
-    "blurb": "Clean editorial interfaces, warm monochrome palette",
-    "level": "Foundational",
-    "tabler": "ti-layout",
-    "triggers": "",
-    "modes": ""
-  },
   "obsidian-markdown": {
     "icon": "📝",
     "blurb": "Edit Obsidian-flavored markdown with wikilinks and callouts",
@@ -167,14 +127,6 @@
     "triggers": "",
     "modes": ""
   },
-  "redesign-existing-projects": {
-    "icon": "✨",
-    "blurb": "Upgrade existing sites to premium, anti-generic design",
-    "level": "Intermediate",
-    "tabler": "ti-refresh",
-    "triggers": "",
-    "modes": ""
-  },
   "skillsmith": {
     "icon": "🛠️",
     "blurb": "Manage, sync, upgrade, and auto-evolve Star Alliance skills",
@@ -182,14 +134,6 @@
     "tabler": "ti-tools",
     "triggers": "'sync my skills', 'upgrade a skill', 'create a skill', 'install my skills', 'run the skill routine', 'evolve my skills', '/skillsmith'. Scripts in scripts/; procedures in references/.",
     "modes": "sync: reconcile repo and device by metadata.version, honoring fork+external exceptions. upgrade: bump a skill's version, regenerate the VERSIONS.md registry, run the Cowork-compliance check, add a changelog entry. create: author a new skill via the official skill-creator, then make it upgradeable. r"
-  },
-  "stitch-design-taste": {
-    "icon": "🧵",
-    "blurb": "Enforce premium design standards via DESIGN.md files",
-    "level": "Intermediate",
-    "tabler": "ti-needle",
-    "triggers": "",
-    "modes": ""
   },
   "storm-investigation": {
     "icon": "🌀",
@@ -286,5 +230,101 @@
     "tabler": "ti-speakerphone",
     "triggers": "'plan our marketing', 'we need leads', 'fix our positioning', 'content plan', 'SEO plan', 'build an email sequence', 'social plan', 'ad plan', 'go to market', 'growth marketing'. The Herald's craft; composes with article-creator, brandkit, storm-investigation.",
     "modes": "content-seo (ICP + pain keywords, topic clusters, local SEO, on-page, publish via article-creator); brand-positioning (positioning statement, ICP, value prop, voice, proof bank, brandkit handoff); email-nurture (lead magnets, capture, 4-6 email sequence, re-engagement, bar-compliance); social-paid (channel mix, organic cadence, paid-ads starter, retargeting, tracking)"
+  },
+  "guild-conformity": {
+    "icon": "🔎",
+    "blurb": "Prove the guild repo agrees with itself, then reconcile",
+    "level": "Advanced",
+    "tabler": "ti-checkup-list",
+    "triggers": "'confirm guild conformance', 'run the conformity check', 'reconcile the guild data', 'conformity sweep', 'is everything consistent'",
+    "modes": ""
+  },
+  "market-recon": {
+    "icon": "📈",
+    "blurb": "Read-only market, investment, and risk analysis that ships a report",
+    "level": "Advanced",
+    "tabler": "ti-chart-candle",
+    "triggers": "'analyze this investment', 'research this market', 'is this a buy', 'review my portfolio', 'macro read'",
+    "modes": "asset/equity research; single trade-idea; portfolio review; macro/rates read"
+  },
+  "legal-drafting": {
+    "icon": "✒️",
+    "blurb": "Client correspondence and bilingual legal instruments in the firm's register",
+    "level": "Advanced",
+    "tabler": "ti-file-pencil",
+    "triggers": "'draft a client email', 'write this contract', 'draft a declaration', 'write a legal memo', 'bilingual letter'",
+    "modes": ""
+  },
+  "relationship-intel": {
+    "icon": "🤝",
+    "blurb": "Turn email traffic into living client relationship intelligence",
+    "level": "Advanced",
+    "tabler": "ti-heart-handshake",
+    "triggers": "'profile my contacts', 'who is at risk of leaving', 'retention tasks', 'update the relationship intelligence'",
+    "modes": "harvest; profile; strategise"
+  },
+  "release-train": {
+    "icon": "🚂",
+    "blurb": "Merge every branch and PR, bump the version, stamp the docs, push",
+    "level": "Intermediate",
+    "tabler": "ti-git-merge",
+    "triggers": "'cut a release', 'merge all branches', 'release X.Y.Z', 'ship it', 'bump the version and push'",
+    "modes": "Lex Council app release; guild self-release"
+  },
+  "workflow-forge": {
+    "icon": "🗺️",
+    "blurb": "Distil a finished run into a reusable star-map workflow",
+    "level": "Advanced",
+    "tabler": "ti-map-2",
+    "triggers": "'save this as a workflow', 'add this to the star map', 'register a workflow', 'crystallize this formation'",
+    "modes": ""
+  },
+  "arsenal-forge": {
+    "icon": "⚔️",
+    "blurb": "Recruit or re-role a weapon — identity, role, wire to loadouts",
+    "level": "Intermediate",
+    "tabler": "ti-swords",
+    "triggers": "'add a weapon', 'recruit a model', 're-skin this weapon', 'change a weapon role', 'arsenal forge'",
+    "modes": ""
+  },
+  "scheduled-watch": {
+    "icon": "⏱️",
+    "blurb": "Define a safe-to-resume unattended task on a cron cadence",
+    "level": "Intermediate",
+    "tabler": "ti-clock-play",
+    "triggers": "'schedule this', 'run this daily', 'set up a cron task', 'make this a routine', 'standing watch'",
+    "modes": ""
+  },
+  "law-harvest": {
+    "icon": "📚",
+    "blurb": "Ingest law PDFs verbatim into the verified Source-Law library",
+    "level": "Intermediate",
+    "tabler": "ti-files",
+    "triggers": "'harvest the laws', 'extract this law', 'process the stock laws', 'identify these law PDFs', 'law harvest'",
+    "modes": ""
+  },
+  "comms-triage": {
+    "icon": "📨",
+    "blurb": "Sweep email, calendar, and WhatsApp into tasks, events, and replies",
+    "level": "Intermediate",
+    "tabler": "ti-inbox",
+    "triggers": "'triage my inbox', 'what needs me today', 'turn my email into tasks', 'sweep my WhatsApp', 'comms triage'",
+    "modes": ""
+  },
+  "legal-rule-modeling": {
+    "icon": "🧮",
+    "blurb": "Model a governing law into deterministic calculator rules",
+    "level": "Advanced",
+    "tabler": "ti-calculator",
+    "triggers": "'model the law for this calculator', 'extract the calculation rules', 'what are the brackets for X', 'rule model'",
+    "modes": ""
+  },
+  "design-taste": {
+    "icon": "🎨",
+    "blurb": "The Designer's seven-mode premium taste engine, anti-AI-slop",
+    "level": "Master",
+    "tabler": "ti-brush",
+    "triggers": "'design the UI', 'make it premium', 'pick a style', 'minimalist', 'brutalist', 'add motion', 'write a DESIGN.md', 'redesign this', 'anti-slop'",
+    "modes": "engineer; agency; minimal; brutalist; motion; encode; redesign"
   }
 }

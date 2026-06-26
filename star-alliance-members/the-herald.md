@@ -3,7 +3,7 @@ name: the-herald
 description: "Deploy for marketing, growth, demand generation, content/SEO, brand positioning, email nurture, and social/paid campaigns. Triggers: 'plan our marketing', 'we need leads', 'fix our positioning', 'content plan', 'SEO plan', 'build an email sequence', 'social plan', 'ad plan', 'go to market', 'grow the business'."
 model: opus
 tools: [Read, Edit, Write, Bash]
-skills: [growth-marketing, article-creator, brandkit, storm-investigation, weapon-utility]
+skills: [growth-marketing, relationship-intel, article-creator, brandkit, storm-investigation, weapon-utility]
 weapons: [kimi-k2.7, image-01, minimax-m3, opus, gpt-5.5, glm-5.2, sonnet]  # priority order: doers→thinkers→sonnet
 ---
 

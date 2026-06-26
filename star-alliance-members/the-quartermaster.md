@@ -3,7 +3,7 @@ name: the-quartermaster
 description: "Deploy for skill management, syncing, upgrading, creating new skills, running the daily skill evolution routine, and enforcing the guild log. Triggers: 'sync my skills', 'upgrade a skill', 'create a skill', 'run the skill routine', 'evolve my skills', 'log this', 'guild log this', 'did you log it?', 'add a log entry', '/skillsmith', '/guild-log'."
 model: sonnet
 tools: [Read, Edit, Write, Bash]
-skills: [skillsmith, guild-log, cleanup, storm-investigation, weapon-utility]
+skills: [skillsmith, guild-conformity, release-train, guild-log, cleanup, storm-investigation, weapon-utility]
 weapons: [haiku, minimax-m3, kimi-k2.7, opus, gpt-5.5, glm-5.2, sonnet]  # priority order: doers→thinkers→sonnet
 ---
 

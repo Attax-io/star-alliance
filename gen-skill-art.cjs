@@ -50,10 +50,6 @@ const SKILLS = [
     prompt: `${STYLE}. A stone tablet with old runes being chiseled away and replaced with new gleaming golden inscriptions, mason's hammer and chisel glowing with arcane energy, dust of old names dissolving`,
   },
   {
-    id: "design-taste-frontend",
-    prompt: `${STYLE}. A painter's wooden palette with pools of vivid magical paint glowing in different arcane colors, fine paintbrush with gold-tipped bristles, floating runes forming elegant patterns`,
-  },
-  {
     id: "dev-server",
     prompt: `${STYLE}. A glowing arcane server tower built of stacked magical crystals, each crystal pulsing with different colored light, ethereal cables of light connecting them, a small green power gem at top`,
   },
@@ -66,20 +62,12 @@ const SKILLS = [
     prompt: `${STYLE}. A massive tower shield of impenetrable dark steel, embossed with three vertical roman numerals in gold, a large central boss radiating authority, shield wall aura of silver force energy`,
   },
   {
-    id: "gpt-taste",
-    prompt: `${STYLE}. A crystal tasting goblet filled with swirling violet arcane essence, a refined silver fork hovering beside it, magical sparkles of competing flavors dancing around, alchemist's comparison ritual`,
-  },
-  {
     id: "graphify",
     prompt: `${STYLE}. An arcane ley-line map with glowing teal nodes connected by pulsing energy threads, small crystals at each node junction, the web pattern forming a constellation on aged parchment`,
   },
   {
     id: "guild-log",
     prompt: `${STYLE}. A massive guild tome open flat, guild crest seal embossed in gold on the cover, crossed swords watermark visible on the pages, neat rows of quest records and member deeds written in glowing ink`,
-  },
-  {
-    id: "high-end-visual-design",
-    prompt: `${STYLE}. A flawless diamond gemstone catching light into rainbow prismatic rays, surrounded by floating gold filigree ornaments, resting on velvet cushion, masterwork jeweler's icon of perfection`,
   },
   {
     id: "image-to-code",
@@ -98,14 +86,6 @@ const SKILLS = [
     prompt: `${STYLE}. A radiant 8-pointed star of pure divine light, each point a different precious gemstone color, central white core of absolute perfection, gold filigree rays extending outward, flawless`,
   },
   {
-    id: "industrial-brutalist-ui",
-    prompt: `${STYLE}. A brutal iron fortress gate with exposed bolts and rivets, raw dark steel aesthetic, minimal harsh geometric angles, heavy chains, no decoration — pure function and power, grim determination`,
-  },
-  {
-    id: "minimalist-ui",
-    prompt: `${STYLE}. A single perfect enso circle brushed in silver on dark stone, one glowing dot at center, four minimal accent marks at cardinal points, zen balance and negative space, elegant restraint`,
-  },
-  {
     id: "obsidian-markdown",
     prompt: `${STYLE}. A razor-sharp obsidian crystal shard, black volcanic glass with purple arcane veins glowing within, a glowing hash rune carved into its face, floating above a dark altar`,
   },
@@ -114,16 +94,8 @@ const SKILLS = [
     prompt: `${STYLE}. A golden lightning bolt crackling with pure electric speed energy, motion blur streaks behind it, small thunderclouds parting, the bolt etched with acceleration runes, pure kinetic power`,
   },
   {
-    id: "redesign-existing-projects",
-    prompt: `${STYLE}. A phoenix rising from the ashes of an old crumbling structure, vivid orange and gold flames of rebirth, new gleaming architecture emerging from the fire, transformation and renewal`,
-  },
-  {
     id: "skillsmith",
     prompt: `${STYLE}. A dwarven anvil with a glowing skill rune being hammered into a weapon, forge sparks of orange arcane fire flying, the hammer embossed with a gear symbol, craftsmanship and creation`,
-  },
-  {
-    id: "stitch-design-taste",
-    prompt: `${STYLE}. An enchanted needle trailing a thread of liquid gold light, stitching together two pieces of magical fabric with glowing patterns, the thread forming elegant runes as it weaves`,
   },
   {
     id: "strategies-review",
@@ -160,6 +132,54 @@ const SKILLS = [
   {
     id: "ultra-brainstorming",
     prompt: `${STYLE}. Five glowing orbs of arcane thought arranged in a council circle, each a different burning color holding its own mind, brilliant threads of insight streaming from all five and weaving together into one radiant master-plan scroll at the center, scattered contradiction-sparks resolving into harmony where the threads converge, a constellation of merging ideas hovering above an open strategist's planning table, many minds fused into a single design`,
+  },
+  {
+    id: "design-taste",
+    prompt: `${STYLE}. A master engraver's palette with seven glowing wells of arcane paint each a distinct archetype hue, a gold-tipped brush selecting one, a ward of white light burning away cheap generic patterns, elegant runic layout-grids forming behind it, premium anti-slop taste engine`,
+  },
+  {
+    id: "guild-conformity",
+    prompt: `${STYLE}. A great golden scale of justice each pan bearing a glowing guild seal, a crystal magnifying lens hovering over an open parchment ledger, threads of light cross-checking matching runes between two tomes, a blazing green checkmark sigil where all aligns, audit made harmony`,
+  },
+  {
+    id: "market-recon",
+    prompt: `${STYLE}. A brass-and-crystal merchant's spyglass over an arcane market chart, glowing green and crimson candlestick bars rising across aged parchment, floating risk-runes and a balanced coin-scale, eyes-only reconnaissance of fortunes, observation not execution`,
+  },
+  {
+    id: "legal-drafting",
+    prompt: `${STYLE}. An ornate golden quill writing flowing bilingual script across twin parchment columns, right-to-left arcane Arabic runes on one side and Latin legal script on the other, a red wax seal and ribbon at the foot, ink glowing with the firm's authority, the scribe's craft of the law`,
+  },
+  {
+    id: "relationship-intel",
+    prompt: `${STYLE}. Two clasped gauntleted hands sealing a pact over a glowing web of letter-scrolls, threads of golden light linking portrait-lockets of contacts in a constellation, a scrying eye reading sentiment from each thread, intelligence woven from correspondence`,
+  },
+  {
+    id: "release-train",
+    prompt: `${STYLE}. An armored war-train of riveted dark steel forging down glowing rails into a unified citadel gate, many branch-tracks merging into one main line, a golden version-seal stamped on the lead car, banner of a shipped release whipping in the wind, the closing march`,
+  },
+  {
+    id: "workflow-forge",
+    prompt: `${STYLE}. A glowing star-map constellation on aged parchment with nodes of light linked into a named route, a cartographer's compass beside a smith's stamp pressing a finished pattern into the map, a single mythic workflow-sigil crystallizing from a remembered run`,
+  },
+  {
+    id: "arsenal-forge",
+    prompt: `${STYLE}. A dwarven forge-anvil arraying enchanted weapons by priority, amber-gold crossbow and blades as doers on the left and a tall violet runed staff as the thinker on the right, a new blade quenched in glowing rune-fire with a role-sigil branded on its pommel, the weaponsmith's recruitment`,
+  },
+  {
+    id: "scheduled-watch",
+    prompt: `${STYLE}. A sentinel's hourglass fused with a clockwork gear-tower standing watch on a dark rampart, glowing cron-runes orbiting the dial, a checkpoint-rune marking a safe resume point, a small lantern that relights itself each tick, the unattended vigil`,
+  },
+  {
+    id: "law-harvest",
+    prompt: `${STYLE}. A great shelf of ancient law-scrolls being gathered, a sickle of golden light reaping verbatim text from a glowing codex into a clean indexed tome, Arabic runes preserved intact on the canonical page, a verified seal stamped on the harvest, the gathering of statutes`,
+  },
+  {
+    id: "comms-triage",
+    prompt: `${STYLE}. A butler's silver salver bearing sorted glowing envelopes beneath a calendar-rune and a chat-glyph, three sorting portals labelled task event and draft drawing each message into its place, a held wax seal awaiting the master's approval, the orderly triage of the desk`,
+  },
+  {
+    id: "legal-rule-modeling",
+    prompt: `${STYLE}. An arcane abacus beside a chiseled stone tablet of law transmuting into a glowing deterministic formula, brackets rates and caps etched as runic gates, a calculator-crystal computing inputs into outputs, an article-citation sigil beside each rule, the law made arithmetic`,
   },
 ];
 

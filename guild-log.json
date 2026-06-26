@@ -1055,6 +1055,228 @@
       ],
       "commit": "325a46a5",
       "_derived": true
+    },
+    {
+      "id": 42,
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: guild-conformity",
+      "who": "the-quartermaster",
+      "detail": "The Quartermaster's repo-wide conformity audit + reconcile loop (the close of every workflow).",
+      "ref": [
+        "guild-conformity"
+      ]
+    },
+    {
+      "id": 43,
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: market-recon",
+      "who": "the-quartermaster",
+      "detail": "The Merchant's read-only market/investment/risk analysis — ships a graded report, never trades.",
+      "ref": [
+        "market-recon"
+      ]
+    },
+    {
+      "id": 44,
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: legal-drafting",
+      "who": "the-quartermaster",
+      "detail": "The Translator's client-correspondence + bilingual legal-instrument drafting craft.",
+      "ref": [
+        "legal-drafting"
+      ]
+    },
+    {
+      "id": 45,
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: relationship-intel",
+      "who": "the-quartermaster",
+      "detail": "The Herald's email-to-relationship-intelligence pipeline (harvest→profile→strategise).",
+      "ref": [
+        "relationship-intel"
+      ]
+    },
+    {
+      "id": 46,
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: release-train",
+      "who": "the-quartermaster",
+      "detail": "The Quartermaster's release closeout — merge branches/PRs, bump version, stamp, push.",
+      "ref": [
+        "release-train"
+      ]
+    },
+    {
+      "id": 47,
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: workflow-forge",
+      "who": "the-quartermaster",
+      "detail": "The Strategist's craft for distilling a finished run into a registered star-map workflow.",
+      "ref": [
+        "workflow-forge"
+      ]
+    },
+    {
+      "id": 48,
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: arsenal-forge",
+      "who": "the-quartermaster",
+      "detail": "The Strategist's craft for recruiting/re-roleing a weapon and wiring it into every loadout.",
+      "ref": [
+        "arsenal-forge"
+      ]
+    },
+    {
+      "id": 49,
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: scheduled-watch",
+      "who": "the-quartermaster",
+      "detail": "The Strategist's craft for defining a safe-to-resume unattended cron routine.",
+      "ref": [
+        "scheduled-watch"
+      ]
+    },
+    {
+      "id": 50,
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: law-harvest",
+      "who": "the-quartermaster",
+      "detail": "The Architect+Translator craft for ingesting law PDFs verbatim into the Source-Law library.",
+      "ref": [
+        "law-harvest"
+      ]
+    },
+    {
+      "id": 51,
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: comms-triage",
+      "who": "the-quartermaster",
+      "detail": "The Butler's one doer craft — sweep email/calendar/WhatsApp into tasks, events, drafts.",
+      "ref": [
+        "comms-triage"
+      ]
+    },
+    {
+      "id": 52,
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: legal-rule-modeling",
+      "who": "the-quartermaster",
+      "detail": "The Architect's craft for modelling a law into deterministic calculator rules.",
+      "ref": [
+        "legal-rule-modeling"
+      ]
+    },
+    {
+      "id": 53,
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: design-taste",
+      "who": "the-quartermaster",
+      "detail": "Consolidates 7 Designer style skills into one 7-mode taste engine (playbooks in references/).",
+      "ref": [
+        "design-taste"
+      ]
+    },
+    {
+      "id": 54,
+      "date": "2026-06-26",
+      "type": "skill-remove",
+      "title": "Remove skill: design-taste-frontend",
+      "who": "the-quartermaster",
+      "detail": "Merged into design-taste (mode/reference). Playbook preserved under design-taste/references/.",
+      "ref": [
+        "design-taste-frontend"
+      ]
+    },
+    {
+      "id": 55,
+      "date": "2026-06-26",
+      "type": "skill-remove",
+      "title": "Remove skill: high-end-visual-design",
+      "who": "the-quartermaster",
+      "detail": "Merged into design-taste (mode/reference). Playbook preserved under design-taste/references/.",
+      "ref": [
+        "high-end-visual-design"
+      ]
+    },
+    {
+      "id": 56,
+      "date": "2026-06-26",
+      "type": "skill-remove",
+      "title": "Remove skill: minimalist-ui",
+      "who": "the-quartermaster",
+      "detail": "Merged into design-taste (mode/reference). Playbook preserved under design-taste/references/.",
+      "ref": [
+        "minimalist-ui"
+      ]
+    },
+    {
+      "id": 57,
+      "date": "2026-06-26",
+      "type": "skill-remove",
+      "title": "Remove skill: industrial-brutalist-ui",
+      "who": "the-quartermaster",
+      "detail": "Merged into design-taste (mode/reference). Playbook preserved under design-taste/references/.",
+      "ref": [
+        "industrial-brutalist-ui"
+      ]
+    },
+    {
+      "id": 58,
+      "date": "2026-06-26",
+      "type": "skill-remove",
+      "title": "Remove skill: gpt-taste",
+      "who": "the-quartermaster",
+      "detail": "Merged into design-taste (mode/reference). Playbook preserved under design-taste/references/.",
+      "ref": [
+        "gpt-taste"
+      ]
+    },
+    {
+      "id": 59,
+      "date": "2026-06-26",
+      "type": "skill-remove",
+      "title": "Remove skill: stitch-design-taste",
+      "who": "the-quartermaster",
+      "detail": "Merged into design-taste (mode/reference). Playbook preserved under design-taste/references/.",
+      "ref": [
+        "stitch-design-taste"
+      ]
+    },
+    {
+      "id": 60,
+      "date": "2026-06-26",
+      "type": "skill-remove",
+      "title": "Remove skill: redesign-existing-projects",
+      "who": "the-quartermaster",
+      "detail": "Merged into design-taste (mode/reference). Playbook preserved under design-taste/references/.",
+      "ref": [
+        "redesign-existing-projects"
+      ]
+    },
+    {
+      "id": 61,
+      "date": "2026-06-26",
+      "type": "decision",
+      "title": "Member skill-gap forge: 11 new craft skills, Designer style-cluster merged, Butler gains comms-triage",
+      "who": "the-quartermaster",
+      "detail": "The Quartermaster looped every member against their role in the 24 star-map workflows and forged an upgradeable skill for each craft a member performed with no covering skill: guild-conformity + release-train (Quartermaster), market-recon (Merchant), legal-drafting + law-harvest (Translator; law-harvest shared with Architect), relationship-intel (Herald), workflow-forge + arsenal-forge + scheduled-watch (Strategist), legal-rule-modeling (Architect), comms-triage (Butler). The Designer's 14-skill loadout was investigated for bloat: 7 overlapping style-taste skills (design-taste-frontend, high-end-visual-design, minimalist-ui, industrial-brutalist-ui, gpt-taste, stitch-design-taste, redesign-existing-projects) were consolidated into one 7-mode design-taste engine with each playbook preserved verbatim under references/; impeccable kept separate (external/npx). Butler exception: comms-triage makes the Butler a doer for inbox/calendar/WhatsApp triage — his one hands-on craft beside routing; his prompt was updated to carve this single exception. Every new skill carries metadata.version 1.0.0 and a Sharpening-the-craft progression so members can perfect their trade.",
+      "ref": [
+        "the-quartermaster",
+        "the-designer",
+        "the-butler"
+      ]
     }
   ]
 }

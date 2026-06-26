@@ -22,10 +22,11 @@
         "Forms the team — decides who works simultaneously vs. step by step",
         "Briefs members with clear, specific tasks and context",
         "Tracks progress across all active dispatches",
+        "Triages his own desk — email, calendar, and WhatsApp — into tasks, events, and drafts (comms-triage, his one hands-on craft)",
         "Reports results back to the user, and flags reusable formations to crystallize"
       ],
       "doesnt": [
-        "Does not do specialist work — orchestrates only",
+        "Does not do specialist guild work — routes it (his one hands-on exception is comms-triage)",
         "Does not write code, design UIs, or model domains"
       ],
       "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-butler\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#3a3218\"/><stop offset=\"1\" stop-color=\"#1a1610\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-butler)\"/><path d=\"M48 18 C39 18 33 26 33 36 C33 42 36 47 40 50 L38 58 L43 62 L48 60 L53 62 L58 58 L56 50 C60 47 63 42 63 36 C63 26 57 18 48 18Z\" fill=\"#e8c93a\" opacity=\".85\"/><circle cx=\"42\" cy=\"34\" r=\"2.5\" fill=\"#1a1610\"/><circle cx=\"54\" cy=\"34\" r=\"2.5\" fill=\"#1a1610\"/><path d=\"M42 44 Q48 48 54 44\" stroke=\"#1a1610\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/><path d=\"M48 60 L48 66 M43 66 L53 66\" stroke=\"#e8c93a\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>"

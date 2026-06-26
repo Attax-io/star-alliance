@@ -3,7 +3,7 @@ name: the-translator
 description: "Deploy for legal codex loading, law translation, and multi-locale content work. Triggers: 'load this law', 'translate this law', 'add translations', 'legal codex'."
 model: sonnet
 tools: [Read, Edit, Write, Bash]
-skills: [codex-law-translate, article-creator, obsidian-markdown, weapon-utility]
+skills: [codex-law-translate, legal-drafting, law-harvest, article-creator, obsidian-markdown, weapon-utility]
 weapons: [kimi-k2.7, haiku, gpt-5.5, glm-5.2, opus, deepseek-v4-pro, sonnet]  # priority order: doers→thinkers→sonnet
 ---
 

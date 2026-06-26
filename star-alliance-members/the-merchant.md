@@ -3,7 +3,7 @@ name: the-merchant
 description: "Deploy for investment analysis, trading strategies, market research, portfolio management, and financial decision-making. Triggers: 'analyze this investment', 'build a trading strategy', 'research this market', 'manage the portfolio', 'should I buy or sell', 'what's the risk on this'."
 model: opus
 tools: [Read, Edit, Write, Bash]
-skills: [storm-investigation, weapon-utility]
+skills: [market-recon, storm-investigation, weapon-utility]
 weapons: [kimi-k2.7, nemotron-3-ultra, opus, gpt-5.5, glm-5.2, deepseek-v4-pro, sonnet]  # priority order: doers→thinkers→sonnet
 ---
 

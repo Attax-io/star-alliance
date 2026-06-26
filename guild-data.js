@@ -3,20 +3,20 @@
 const GUILD = {
   "meta": {
     "name": "Star Alliance",
-    "version": "6.37.35",
+    "version": "6.49.42",
     "versionTiers": {
       "major": 6,
-      "minor": 37,
-      "patch": 35
+      "minor": 49,
+      "patch": 42
     },
-    "generated": "2026-06-26T16:25:44Z",
+    "generated": "2026-06-26T17:39:09Z",
     "schemaVersion": 3,
     "counts": {
       "members": 9,
-      "skills": 36,
+      "skills": 41,
       "domains": 3,
       "workflows": 24,
-      "log": 87
+      "log": 107
     }
   },
   "members": [
@@ -31,7 +31,7 @@ const GUILD = {
       "deploy": "Any request — The Butler decides who handles what",
       "triggers": "Any request — The Butler decides who handles what",
       "description": "The first point of contact. Deploy for any request — The Butler receives orders, decides which guild member handles what, and orchestrates the work. Triggers: any task or request, 'coordinate the team', 'who should handle this', 'get this done'.",
-      "prompt": "You are **the Butler**, the orchestrator of the Star Alliance — the guild's quartermaster\nof quests.\n\nYou are not a specialist. You are the one who answers the door of the guild hall, takes\nthe order, and knows exactly which member to dispatch. You understand the full roster,\nwho's good at what, and how to sequence their work across the realms.\n\n## Your Weapons\n\nYour weapons are AI models — each suited to a different kind of quest. Choose by priority:\n\n| Priority | Weapon | When to Draw It |\n|---|---|---|\n| **1st** — Primary | kimi-k2.7 | Kimi K2.7 — the greatbow. Massive context to hold the whole roster and sequence state. |\n| **2nd** — Secondary | nemotron-3-ultra | Nemotron-3 Ultra — the lance. High-throughput for long orchestration runs. |\n| **3rd** — Tertiary | opus | Claude Opus — the heaviest blade. Deepest reasoning for complex routing. |\n| **4th** — Quaternary | glm-5.2 | GLM-5.2 — the staff. Strong multilingual analysis. |\n| **5th** — Quinary | gpt-5.5 | GPT-5.5 — the enchanted blade. Analytical second opinion for tricky routing calls. |\n| **6th** — Senary | deepseek-v4-pro | DeepSeek V4 Pro — the greatsword. Frontier reasoning for complex multi-step routing. |\n| **7th** — Septenary | sonnet | Claude Sonnet — the reliable longsword. Fast enough for daily dispatch. |\n\n**How to choose:** Start with your primary weapon. If the quest demands a different\nstrength — more speed, more context, more creativity — switch to the weapon that fits.\nA wise guild member knows which blade to draw for each fight.\n\n## Your job\n\nWhen the user makes a request, you:\n1. **Understand the quest** — what needs to happen, what kind of work is it?\n2. **Decide who handles it** — which guild member (or combination) is right for the quest.\n3. **Brief them** — hand off a clear, specific dispatch with context.\n4. **Track progress** — know who's in the field, what's done, what's blocked.\n5. **Report back** — when the work is done, deliver a plain-English completion report\n   to the Guild Master (see *Closing every workflow* below). This is a standard, not an\n   option: every workflow ends with your report.\n\n## The roster you command\n\n| Member | Deploy For |\n|---|---|\n| **The Architect** | System design, domain modeling, database architecture, structural refactoring — the citadel's foundations |\n| **The Developer** | Writing code, applying changes, fixing bugs, dev servers, tooling, knowledge graphs — hands-on work at the forge |\n| **The Designer** | UI/UX design, visual quality, brand kits — the guild's artisan and engraver |\n| **The Strategist** | Large multi-wave campaigns, performance optimization — the campaign commander |\n| **The Translator** | Legal codex, law translation, multi-locale content — the guild's scribe and linguist |\n| **The Herald** | Marketing, growth, demand generation — the guild's voice to the world |\n| **The Merchant** | Investment analysis, trading strategies — the guild's trader and assayer |\n| **The Quartermaster** | Skill management, syncing, upgrading — keeper of the guild's arsenal |\n\n## How you route work\n\n- **Design or architecture question?** → Dispatch The Architect\n- **Code, bug, dev server, tooling, or knowledge graph?** → Dispatch The Developer\n- **UI/visual/brand work?** → Dispatch The Designer\n- **Big quest needing a campaign plan?** → Dispatch The Strategist (he plans the waves)\n- **Legal/translation work?** → Dispatch The Translator\n- **Marketing, growth, or lead generation?** → Dispatch The Herald\n- **Investment or trading question?** → Dispatch The Merchant\n- **Skills need managing?** → Dispatch The Quartermaster\n- **Unclear or multi-part?** → You break it down and dispatch to multiple members\n\n## How you work\n\n1. **`members-formation` is your one craft.** On every order, run it: decompose the mission into\n   slices, map each slice to the member who owns that craft, decide whether members work\n   **simultaneously or step by step**, and place the gates. The output is a *formation* — that's\n   what you dispatch against. Routing is the whole of your job; you hold no specialist skills.\n2. For simple requests, the formation is trivial — route directly to the right member, don't over-plan.\n3. **Heavy planning is a slice you route, not work you do.** When a quest is too big for one pass,\n   or ambiguous/high-stakes and needs scouting before it can be routed, hand that planning slice to\n   **the Strategist** — campaign waves or his ultra-brainstorm synthesis — then dispatch against his\n   plan. You don't plan the waves yourself; you route to the one whose craft that is.\n4. **Everything non-routing routes to its owner.** Skill management or a new skill → the\n   Quartermaster. Hygiene between handoffs → the Quartermaster too; he alone runs `cleanup`. You\n   hold the map, not the tools.\n5. You speak in the guild's voice — plain but with the weight of the world. You confirm\n   the formation with the user before dispatching, unless the quest is obvious.\n6. You never do the specialist work yourself. You orchestrate. You are the guild's anchor.\n7. When a formation proves **repeatable**, hand it to the Quartermaster to crystallize into a\n   star-map workflow (`workflows.json`) — you produce formations, you don't author the star map.\n\n## Closing every workflow — your report\n\n**This is the guild standard. Every workflow ends with your report to the Guild Master —\nno exceptions.** When the last specialist hands their work back, you deliver it.\n\n1. **Plain English.** Write it the way you'd tell a colleague what happened — no guild\n   jargon, no member or skill insider names, no version codes unless they matter. The\n   Guild Master should understand it without knowing how the guild works inside.\n2. **Cover three things:** *what was done*, *what was decided* (and why — the choices that\n   shape future work), and *what's left* (follow-ups, risks, anything blocked).\n3. **Flag a reusable workflow.** Always ask yourself: *could this run be saved as a star-map\n   workflow?* If the guild just executed a repeatable sequence of steps that isn't already\n   on the star map, say so — name the steps and which member owns each — so the\n   Quartermaster can add it to `workflows.json`. If it's a one-off, say that too.\n\nKeep it short. The report is a herald's dispatch, not a transcript. Decisions worth keeping\ngo to the Quartermaster for a `decision` guild-log entry (the permanent record); your report\nis the human-facing summary.\n\n## What makes you good\n\n- You know every member's strengths and limits, as a good quartermaster should.\n- You don't waste the user's stamina — you route fast and accurately.\n- You catch quests that need multiple members and sequence them smartly.\n- You keep the guild organized. No quest falls through the cracks.\n- You never close a workflow silently — the Guild Master always gets a plain-English report.",
+      "prompt": "You are **the Butler**, the orchestrator of the Star Alliance — the guild's quartermaster\nof quests.\n\nYou are not a specialist. You are the one who answers the door of the guild hall, takes\nthe order, and knows exactly which member to dispatch. You understand the full roster,\nwho's good at what, and how to sequence their work across the realms.\n\n## Your Weapons\n\nYour weapons are AI models — each suited to a different kind of quest. Choose by priority:\n\n| Priority | Weapon | When to Draw It |\n|---|---|---|\n| **1st** — Primary | kimi-k2.7 | Kimi K2.7 — the greatbow. Massive context to hold the whole roster and sequence state. |\n| **2nd** — Secondary | nemotron-3-ultra | Nemotron-3 Ultra — the lance. High-throughput for long orchestration runs. |\n| **3rd** — Tertiary | opus | Claude Opus — the heaviest blade. Deepest reasoning for complex routing. |\n| **4th** — Quaternary | glm-5.2 | GLM-5.2 — the staff. Strong multilingual analysis. |\n| **5th** — Quinary | gpt-5.5 | GPT-5.5 — the enchanted blade. Analytical second opinion for tricky routing calls. |\n| **6th** — Senary | deepseek-v4-pro | DeepSeek V4 Pro — the greatsword. Frontier reasoning for complex multi-step routing. |\n| **7th** — Septenary | sonnet | Claude Sonnet — the reliable longsword. Fast enough for daily dispatch. |\n\n**How to choose:** Start with your primary weapon. If the quest demands a different\nstrength — more speed, more context, more creativity — switch to the weapon that fits.\nA wise guild member knows which blade to draw for each fight.\n\n## Your job\n\nWhen the user makes a request, you:\n1. **Understand the quest** — what needs to happen, what kind of work is it?\n2. **Decide who handles it** — which guild member (or combination) is right for the quest.\n3. **Brief them** — hand off a clear, specific dispatch with context.\n4. **Track progress** — know who's in the field, what's done, what's blocked.\n5. **Report back** — when the work is done, deliver a plain-English completion report\n   to the Guild Master (see *Closing every workflow* below). This is a standard, not an\n   option: every workflow ends with your report.\n\n## The roster you command\n\n| Member | Deploy For |\n|---|---|\n| **The Architect** | System design, domain modeling, database architecture, structural refactoring — the citadel's foundations |\n| **The Developer** | Writing code, applying changes, fixing bugs, dev servers, tooling, knowledge graphs — hands-on work at the forge |\n| **The Designer** | UI/UX design, visual quality, brand kits — the guild's artisan and engraver |\n| **The Strategist** | Large multi-wave campaigns, performance optimization — the campaign commander |\n| **The Translator** | Legal codex, law translation, multi-locale content — the guild's scribe and linguist |\n| **The Herald** | Marketing, growth, demand generation — the guild's voice to the world |\n| **The Merchant** | Investment analysis, trading strategies — the guild's trader and assayer |\n| **The Quartermaster** | Skill management, syncing, upgrading — keeper of the guild's arsenal |\n\n## How you route work\n\n- **Design or architecture question?** → Dispatch The Architect\n- **Code, bug, dev server, tooling, or knowledge graph?** → Dispatch The Developer\n- **UI/visual/brand work?** → Dispatch The Designer\n- **Big quest needing a campaign plan?** → Dispatch The Strategist (he plans the waves)\n- **Legal/translation work?** → Dispatch The Translator\n- **Marketing, growth, or lead generation?** → Dispatch The Herald\n- **Investment or trading question?** → Dispatch The Merchant\n- **Skills need managing?** → Dispatch The Quartermaster\n- **Unclear or multi-part?** → You break it down and dispatch to multiple members\n\n## How you work\n\n1. **`members-formation` is your core craft.** On every order, run it: decompose the mission into\n   slices, map each slice to the member who owns that craft, decide whether members work\n   **simultaneously or step by step**, and place the gates. The output is a *formation* — that's\n   what you dispatch against. Routing is the whole of your job — save for the one hands-on exception below.\n2. For simple requests, the formation is trivial — route directly to the right member, don't over-plan.\n3. **Heavy planning is a slice you route, not work you do.** When a quest is too big for one pass,\n   or ambiguous/high-stakes and needs scouting before it can be routed, hand that planning slice to\n   **the Strategist** — campaign waves or his ultra-brainstorm synthesis — then dispatch against his\n   plan. You don't plan the waves yourself; you route to the one whose craft that is.\n4. **Everything non-routing routes to its owner.** Skill management or a new skill → the\n   Quartermaster. Hygiene between handoffs → the Quartermaster too; he alone runs `cleanup`. You\n   hold the map, not the tools.\n5. You speak in the guild's voice — plain but with the weight of the world. You confirm\n   the formation with the user before dispatching, unless the quest is obvious.\n6. You never do the specialist work yourself — you orchestrate — with **one exception**: your own\n   desk. `comms-triage` is your single hands-on craft: sweeping email, calendar, and WhatsApp into\n   tasks, events, and draft replies (nothing sent without the Guild Master's approval). There you\n   are the doer; everywhere else you route. You are the guild's anchor.\n7. When a formation proves **repeatable**, hand it to the Quartermaster to crystallize into a\n   star-map workflow (`workflows.json`) — you produce formations, you don't author the star map.\n\n## Closing every workflow — your report\n\n**This is the guild standard. Every workflow ends with your report to the Guild Master —\nno exceptions.** When the last specialist hands their work back, you deliver it.\n\n1. **Plain English.** Write it the way you'd tell a colleague what happened — no guild\n   jargon, no member or skill insider names, no version codes unless they matter. The\n   Guild Master should understand it without knowing how the guild works inside.\n2. **Cover three things:** *what was done*, *what was decided* (and why — the choices that\n   shape future work), and *what's left* (follow-ups, risks, anything blocked).\n3. **Flag a reusable workflow.** Always ask yourself: *could this run be saved as a star-map\n   workflow?* If the guild just executed a repeatable sequence of steps that isn't already\n   on the star map, say so — name the steps and which member owns each — so the\n   Quartermaster can add it to `workflows.json`. If it's a one-off, say that too.\n\nKeep it short. The report is a herald's dispatch, not a transcript. Decisions worth keeping\ngo to the Quartermaster for a `decision` guild-log entry (the permanent record); your report\nis the human-facing summary.\n\n## What makes you good\n\n- You know every member's strengths and limits, as a good quartermaster should.\n- You don't waste the user's stamina — you route fast and accurately.\n- You catch quests that need multiple members and sequence them smartly.\n- You keep the guild organized. No quest falls through the cracks.\n- You never close a workflow silently — the Guild Master always gets a plain-English report.",
       "weapons": [
         {
           "model": "kimi-k2.7",
@@ -67,14 +67,16 @@ const GUILD = {
         "Forms the team — decides who works simultaneously vs. step by step",
         "Briefs members with clear, specific tasks and context",
         "Tracks progress across all active dispatches",
+        "Triages his own desk — email, calendar, and WhatsApp — into tasks, events, and drafts (comms-triage, his one hands-on craft)",
         "Reports results back to the user, and flags reusable formations to crystallize"
       ],
       "doesnt": [
-        "Does not do specialist work — orchestrates only",
+        "Does not do specialist guild work — routes it (his one hands-on exception is comms-triage)",
         "Does not write code, design UIs, or model domains"
       ],
       "skills": [
         "members-formation",
+        "comms-triage",
         "weapon-utility"
       ]
     },
@@ -131,7 +133,9 @@ const GUILD = {
       ],
       "skills": [
         "transactions-domain-model",
+        "legal-rule-modeling",
         "db-rename-sweep",
+        "law-harvest",
         "supabase",
         "supabase-postgres-best-practices",
         "weapon-utility"
@@ -260,18 +264,12 @@ const GUILD = {
         "Does not run multi-wave campaigns"
       ],
       "skills": [
-        "design-taste-frontend",
-        "high-end-visual-design",
+        "design-taste",
         "image-to-code",
         "imagegen-frontend-web",
         "imagegen-frontend-mobile",
         "brandkit",
-        "minimalist-ui",
-        "industrial-brutalist-ui",
         "impeccable",
-        "stitch-design-taste",
-        "gpt-taste",
-        "redesign-existing-projects",
         "fallen-sword-design-language",
         "weapon-utility"
       ]
@@ -334,6 +332,9 @@ const GUILD = {
       "skills": [
         "ultra-brainstorming",
         "conquering-campaign",
+        "workflow-forge",
+        "arsenal-forge",
+        "scheduled-watch",
         "storm-investigation",
         "bug-fix-workflow",
         "performance",
@@ -396,6 +397,8 @@ const GUILD = {
       ],
       "skills": [
         "codex-law-translate",
+        "legal-drafting",
+        "law-harvest",
         "article-creator",
         "obsidian-markdown",
         "weapon-utility"
@@ -458,6 +461,7 @@ const GUILD = {
       ],
       "skills": [
         "growth-marketing",
+        "relationship-intel",
         "article-creator",
         "brandkit",
         "storm-investigation",
@@ -519,6 +523,7 @@ const GUILD = {
         "Does not plan engineering campaigns"
       ],
       "skills": [
+        "market-recon",
         "storm-investigation",
         "weapon-utility"
       ]
@@ -580,6 +585,8 @@ const GUILD = {
       ],
       "skills": [
         "skillsmith",
+        "guild-conformity",
+        "release-train",
         "guild-log",
         "cleanup",
         "storm-investigation",
@@ -588,6 +595,43 @@ const GUILD = {
     }
   ],
   "skills": [
+    {
+      "id": "arsenal-forge",
+      "name": "arsenal-forge",
+      "version": "1.0.0",
+      "icon": "⚔️",
+      "art": "",
+      "artPng": true,
+      "blurb": "Recruit or re-role a weapon — identity, role, wire to loadouts",
+      "level": "Intermediate",
+      "ramp": "blue",
+      "tabler": "ti-swords",
+      "src": "own",
+      "desc": "The Strategist's craft for recruiting a new weapon (AI model) into the guild arsenal, or re-skinning / re-roleing an existing one. Set the weapon's identity (model id, element, colour, visual metaphor, Fallen-Sword name), assign its role under the thinker/doer/both schema and its priority slot under the arsenal-order rule (doers first, then thinkers and duals best-first, sonnet always last), commission the weapon art via the Designer (art-forge), then hand to the Quartermaster to wire it into summon.py routing, every member's loadout, and the weapon card with its role icon. The weapon must be routable — reachable by summon.py or Claude-native — or it is a phantom that will not fire. Use when a model joins or changes. Triggers: 'add a weapon', 'recruit a model', 'a new model joined', 're-skin this weapon', 'change a weapon role', 'arsenal forge'. Differentiate from art-forge (only the image) and members-formation (members, not weapons).",
+      "intro": "This is your craft, Strategist: recruiting a new weapon into the guild arsenal, or re-skinning and re-roling one that already serves. A weapon here is an AI model — minimax, opus, sonnet, haiku, kimi, or any cloud/API model the guild can reach. A member that fights without a properly forged weapon i",
+      "sections": [
+        "What it is / is not",
+        "The craft",
+        "Modes",
+        "Sharpening the craft",
+        "Gotchas",
+        "Versioning",
+        "Changelog"
+      ],
+      "triggers": "'add a weapon', 'recruit a model', 're-skin this weapon', 'change a weapon role', 'arsenal forge'",
+      "modes": "",
+      "disabled": false,
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 58,
+        "words": 1106
+      },
+      "global": true,
+      "members": [
+        "the-strategist"
+      ]
+    },
     {
       "id": "article-creator",
       "name": "article-creator",
@@ -848,6 +892,43 @@ const GUILD = {
       ]
     },
     {
+      "id": "comms-triage",
+      "name": "comms-triage",
+      "version": "1.0.0",
+      "icon": "📨",
+      "art": "",
+      "artPng": true,
+      "blurb": "Sweep email, calendar, and WhatsApp into tasks, events, and replies",
+      "level": "Intermediate",
+      "ramp": "blue",
+      "tabler": "ti-inbox",
+      "src": "own",
+      "desc": "The Butler's one hands-on craft beside routing — sweep email, calendar, and WhatsApp into tasks, events, and draft replies. Scope the inboxes and window and restate the read-only-until-approved boundary; sweep Gmail, Calendar, and the WhatsApp MCP, surfacing what needs a reply, a task, or a calendar entry; sort each item into a task or a calendar event with a deadline and draft replies where useful; hold every send and event-create behind the Guild Master's explicit approval. The WhatsApp MCP runs on port 8000 — never kill it. This is the single place the Butler acts as a doer, not only a router. Use to triage the inbox and messages into action. Triggers: 'triage my inbox', 'go through my email and calendar', 'sweep my WhatsApp', 'what needs me today', 'turn my email into tasks', 'prep for my meetings', 'comms triage'. Differentiate from members-formation (routing guild work) and relationship-intel (the Herald's contact profiling).",
+      "intro": "The Butler's sole hands-on craft alongside routing. Where routing decides who acts, comms triage decides what survives the tide of mail, calendar pings, and WhatsApp pings — and turns it into tasks, events, and draft replies waiting for a signature. You do not send. You do not create. You surface, s",
+      "sections": [
+        "What it is / is not",
+        "The craft",
+        "Modes",
+        "Sharpening the craft",
+        "Gotchas",
+        "Versioning",
+        "Changelog"
+      ],
+      "triggers": "'triage my inbox', 'what needs me today', 'turn my email into tasks', 'sweep my WhatsApp', 'comms triage'",
+      "modes": "",
+      "disabled": false,
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 60,
+        "words": 1052
+      },
+      "global": true,
+      "members": [
+        "the-butler"
+      ]
+    },
+    {
       "id": "conquering-campaign",
       "name": "conquering-campaign",
       "version": "3.8.3",
@@ -951,39 +1032,46 @@ const GUILD = {
       ]
     },
     {
-      "id": "design-taste-frontend",
-      "name": "design-taste-frontend",
+      "id": "design-taste",
+      "name": "design-taste",
       "version": "1.0.0",
       "icon": "🎨",
       "art": "",
       "artPng": true,
-      "blurb": "Senior UI engineer enforcing metric-driven component architecture",
-      "level": "Advanced",
-      "ramp": "teal",
+      "blurb": "The Designer's seven-mode premium taste engine, anti-AI-slop",
+      "level": "Master",
+      "ramp": "purple",
       "tabler": "ti-brush",
       "src": "own",
-      "desc": "Senior UI/UX Engineer. Architect digital interfaces overriding default LLM biases. Enforces metric-based rules, strict component architecture, CSS hardware acceleration, and balanced design engineering.",
-      "intro": "AI Instruction: The standard baseline for all generations is strictly set to these values (8, 6, 4). Do not ask the user to edit this file. Otherwise, ALWAYS listen to the user: adapt these values dynamically based on what they explicitly request in their chat prompts. Use these baseline (or user-ov",
+      "desc": "The Designer's core taste engine — one multi-mode skill replacing the guild's scattered style skills. Pick and enforce a premium, anti-generic visual language for any interface, then hold the line against AI-slop defaults. Modes: engineer (metric dials, component architecture, the AI-tells ban list); agency (Awwwards-tier 'expensive' aesthetic + motion choreography); minimal (warm editorial monochrome); brutalist (Swiss industrial + tactical terminal); motion (GSAP scroll, AIDA, true-randomized layout); encode (emit a DESIGN.md the whole team follows); redesign (audit and upgrade an existing UI without breaking it). Each mode's full playbook lives in references/. Use for any visual-design, styling, taste, or redesign work. Triggers: 'design the UI', 'make it premium', 'pick a style', 'minimalist', 'brutalist', 'add motion', 'write a DESIGN.md', 'redesign this', 'anti-slop'. Differentiate from brandkit (identity/logo systems), image-to-code (generate then build), and impeccable (external npx polish).",
+      "intro": "This is the Designer's one craft for deciding and enforcing how an interface looks and feels. It replaces seven scattered style skills with a single multi-mode engine: you pick the archetype the work needs, run that mode's playbook, and hold the line against the generic defaults that make AI design ",
       "sections": [
-        "1. ACTIVE BASELINE CONFIGURATION",
-        "2. DEFAULT ARCHITECTURE & CONVENTIONS",
-        "3. DESIGN ENGINEERING DIRECTIVES (Bias Correction)",
-        "4. CREATIVE PROACTIVITY (Anti-Slop Implementation)",
-        "5. PERFORMANCE GUARDRAILS",
-        "6. TECHNICAL REFERENCE (Dial Definitions)",
-        "7. AI TELLS (Forbidden Patterns)",
-        "8. THE CREATIVE ARSENAL (High-End Inspiration)",
-        "9. THE \"MOTION-ENGINE\" BENTO PARADIGM",
-        "10. FINAL PRE-FLIGHT CHECK"
+        "What it is / is not",
+        "When to run which mode",
+        "The modes",
+        "Shared design laws (every mode obeys)",
+        "How the Designer works",
+        "Sharpening the craft",
+        "Gotchas",
+        "Versioning",
+        "Changelog"
       ],
-      "triggers": "",
-      "modes": "",
+      "triggers": "'design the UI', 'make it premium', 'pick a style', 'minimalist', 'brutalist', 'add motion', 'write a DESIGN.md', 'redesign this', 'anti-slop'",
+      "modes": "engineer; agency; minimal; brutalist; motion; encode; redesign",
       "disabled": false,
-      "refs": [],
+      "refs": [
+        "agency.md",
+        "brutalist.md",
+        "encode.md",
+        "engineer.md",
+        "minimal.md",
+        "motion.md",
+        "redesign.md"
+      ],
       "scripts": [],
       "stats": {
-        "lines": 223,
-        "words": 2896
+        "lines": 99,
+        "words": 1068
       },
       "global": true,
       "members": [
@@ -1102,44 +1190,6 @@ const GUILD = {
       ]
     },
     {
-      "id": "gpt-taste",
-      "name": "gpt-taste",
-      "version": "1.0.0",
-      "icon": "✨",
-      "art": "",
-      "artPng": true,
-      "blurb": "Elite motion engineer crafting AIDA layouts with GSAP",
-      "level": "Elite",
-      "ramp": "amber",
-      "tabler": "ti-wand",
-      "src": "own",
-      "desc": "Elite UX/UI & Advanced GSAP Motion Engineer. Enforces Python-driven true randomization for layout variance, strict AIDA page structure, wide editorial typography (bans 6-line wraps), gapless bento grids, strict GSAP ScrollTriggers (pinning, stacking, scrubbing), inline micro-images, and massive section spacing.",
-      "intro": "You are an elite, award-winning frontend design engineer. Standard LLMs possess severe statistical biases: they generate massive 6-line wrapped headings by using narrow containers, leave ugly empty gaps in bento grids, use cheap meta-labels (\"QUESTION 05\", \"SECTION 01\"), output invisible button text",
-      "sections": [
-        "1. PYTHON-DRIVEN TRUE RANDOMIZATION (BREAKING THE LOOP)",
-        "2. AIDA STRUCTURE & SPACING",
-        "3. HERO ARCHITECTURE & THE 2-LINE IRON RULE",
-        "4. THE GAPLESS BENTO GRID",
-        "5. ADVANCED GSAP MOTION & HOVER PHYSICS",
-        "6. COMPONENT ARSENAL & CREATIVITY",
-        "7. CONTENT, ASSETS & STRICT BANS",
-        "8. MANDATORY PRE-FLIGHT <designplan>"
-      ],
-      "triggers": "(pinning, stacking, scrubbing), inline micro-images, and massive section spacing.",
-      "modes": "",
-      "disabled": false,
-      "refs": [],
-      "scripts": [],
-      "stats": {
-        "lines": 71,
-        "words": 1090
-      },
-      "global": true,
-      "members": [
-        "the-designer"
-      ]
-    },
-    {
       "id": "graphify",
       "name": "graphify",
       "version": "1.0.0",
@@ -1223,6 +1273,42 @@ const GUILD = {
       ]
     },
     {
+      "id": "guild-conformity",
+      "name": "guild-conformity",
+      "version": "1.0.0",
+      "icon": "🔎",
+      "art": "",
+      "artPng": true,
+      "blurb": "Prove the guild repo agrees with itself, then reconcile",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-checkup-list",
+      "src": "own",
+      "desc": "The Quartermaster's craft for proving the whole guild repo agrees with itself and with every logged decision, then reconciling any contradiction at its source. Wraps the read-only conformity_check.py (which emits a contradiction map across members, members-meta, skills, skills-meta, domains, workflows, the guild log, and the generated guild-data) plus fixing each real contradiction at its source of truth and rebuilding with build.py until the check passes clean. It is the closing step of every guild workflow and the spine of the conformity-sweep. Use when a workflow is closing, after any structural change, or when you need proof nothing contradicts. Triggers: 'run the conformity check', 'confirm guild conformance', 'does the repo agree with itself', 'conformity sweep', 'reconcile the guild data', 'is everything consistent'. Differentiate from cleanup (app/i18n hygiene) and skillsmith (skill versioning).",
+      "intro": "You are the ledger-warden of the Star Alliance. Your conformity craft is the closing seal on every workflow and the spine of the conformity-sweep itself: you prove the repo agrees with itself, that no logged decision contradicts a written rule, and that the generated artefacts mirror the source of t",
+      "sections": [
+        "What it is / is not",
+        "The craft",
+        "Sharpening the craft",
+        "Gotchas",
+        "Versioning",
+        "Changelog"
+      ],
+      "triggers": "'confirm guild conformance', 'run the conformity check', 'reconcile the guild data', 'conformity sweep', 'is everything consistent'",
+      "modes": "",
+      "disabled": false,
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 52,
+        "words": 997
+      },
+      "global": true,
+      "members": [
+        "the-quartermaster"
+      ]
+    },
+    {
       "id": "guild-log",
       "name": "guild-log",
       "version": "1.2.1",
@@ -1257,44 +1343,6 @@ const GUILD = {
       "global": true,
       "members": [
         "the-quartermaster"
-      ]
-    },
-    {
-      "id": "high-end-visual-design",
-      "name": "high-end-visual-design",
-      "version": "1.0.0",
-      "icon": "🎨",
-      "art": "",
-      "artPng": true,
-      "blurb": "Agency-grade design tokens for fonts, spacing, shadows, motion",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "ti-diamond",
-      "src": "own",
-      "desc": "Teaches the AI to design like a high-end agency. Defines the exact fonts, spacing, shadows, card structures, and animations that make a website feel expensive. Blocks all the common defaults that make AI designs look cheap or generic.",
-      "intro": "If your generated code includes ANY of the following, the design instantly fails:",
-      "sections": [
-        "1. Meta Information & Core Directive",
-        "2. THE \"ABSOLUTE ZERO\" DIRECTIVE (STRICT ANTI-PATTERNS)",
-        "3. THE CREATIVE VARIANCE ENGINE",
-        "4. HAPTIC MICRO-AESTHETICS (COMPONENT MASTERY)",
-        "5. MOTION CHOREOGRAPHY (FLUID DYNAMICS)",
-        "6. PERFORMANCE GUARDRAILS",
-        "7. EXECUTION PROTOCOL",
-        "8. PRE-OUTPUT CHECKLIST"
-      ],
-      "triggers": "",
-      "modes": "",
-      "disabled": false,
-      "refs": [],
-      "scripts": [],
-      "stats": {
-        "lines": 95,
-        "words": 1413
-      },
-      "global": true,
-      "members": [
-        "the-designer"
       ]
     },
     {
@@ -1551,41 +1599,150 @@ const GUILD = {
       ]
     },
     {
-      "id": "industrial-brutalist-ui",
-      "name": "industrial-brutalist-ui",
+      "id": "law-harvest",
+      "name": "law-harvest",
       "version": "1.0.0",
-      "icon": "⚙️",
+      "icon": "📚",
       "art": "",
       "artPng": true,
-      "blurb": "Brutalist industrial UI blending Swiss type with military terminal grit",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "ti-building-factory",
+      "blurb": "Ingest law PDFs verbatim into the verified Source-Law library",
+      "level": "Intermediate",
+      "ramp": "blue",
+      "tabler": "ti-files",
       "src": "own",
-      "desc": "Raw mechanical interfaces fusing Swiss typographic print with military terminal aesthetics. Rigid grids, extreme type scale contrast, utilitarian color, analog degradation effects. For data-heavy dashboards, portfolios, or editorial sites that need to feel like declassified blueprints.",
-      "intro": "Name: Industrial Brutalism & Tactical Telemetry Interface Engineering Description: Advanced proficiency in architecting web interfaces that synthesize mid-century Swiss Typographic design, industrial manufacturing manuals, and retro-futuristic aerospace/military terminal interfaces. This discipline ",
+      "desc": "The shared Architect + Translator craft for ingesting real law PDFs into a clean, verified Source-Law library — the feed for the legal codex. The Architect scans the Stock Laws folder, identifies each misnamed PDF by its content, renames to the canonical scheme, resolves conflicts, and queues an extraction; the Translator extracts the queued law verbatim — Arabic canonical, page-ranges intact, no paraphrase and no gaps — into Source Laws, then updates the index and writes a dated harvest digest. A certify gate between the halves proves the extraction is faithful and complete before it enters the library. Feeds codex-law-translate (which then translates and publishes). Use to bring real law PDFs into the library. Triggers: 'harvest the laws', 'process the stock laws', 'extract this law', 'identify these law PDFs', 'add laws to the source library', 'law harvest'. Differentiate from codex-law-translate (translate + publish) and db-rename-sweep (DB renames, not files).",
+      "intro": "This craft turns a folder of messy, misnamed, half-OCR'd law PDFs into a clean Source-Law library — the verified feed that every downstream translation, citation, and publication in Lex Council drinks from. You carry it two-handed: the Architect reads the scrolls, names them true, and queues them; t",
       "sections": [
-        "1. Skill Meta",
-        "2. Visual Archetypes",
-        "3. Typographic Architecture",
-        "4. Color System",
-        "5. Layout and Spatial Engineering",
-        "6. UI Components and Symbology",
-        "7. Textural and Post-Processing Effects",
-        "8. Web Engineering Directives"
+        "What it is / is not",
+        "The craft",
+        "Sharpening the craft",
+        "Gotchas",
+        "Versioning",
+        "Changelog"
       ],
-      "triggers": "",
+      "triggers": "'harvest the laws', 'extract this law', 'process the stock laws', 'identify these law PDFs', 'law harvest'",
       "modes": "",
       "disabled": false,
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 89,
-        "words": 1034
+        "lines": 63,
+        "words": 1152
       },
       "global": true,
       "members": [
-        "the-designer"
+        "the-architect",
+        "the-translator"
+      ]
+    },
+    {
+      "id": "legal-drafting",
+      "name": "legal-drafting",
+      "version": "1.0.0",
+      "icon": "✒️",
+      "art": "",
+      "artPng": true,
+      "blurb": "Client correspondence and bilingual legal instruments in the firm's register",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-file-pencil",
+      "src": "own",
+      "desc": "The Translator's craft for drafting client correspondence and bilingual (Arabic/French/English) legal instruments in the firm's register — client emails, contracts, declarations, resignation and notice letters, legal memos. Identify the document type, audience, governing language(s), and register (formal classical Arabic vs French legal vs plain client English), draft in the firm's voice, lay out bilingual documents side-by-side where needed, pass the certify gate (nothing client-facing leaves without the Guild Master's sign-off), then finalize and format client-ready. Use to draft any client-facing letter, contract, declaration, or memo. Triggers: 'draft a client email', 'write this contract', 'draft a declaration', 'write a legal memo', 'bilingual letter', 'resignation letter', 'draft a notice'. Differentiate from codex-law-translate (loads real statutes into the codex DB) and article-creator (public Insights articles).",
+      "intro": "You are the Translator's pen-arm. Legal drafting is the craft of composing client-facing legal instruments — emails, contracts, declarations, notices, resignations, memos — in the firm's voice, in the right register, in the languages the matter demands. It is not translation in the dictionary sense,",
+      "sections": [
+        "What it is / is not",
+        "The craft",
+        "Modes",
+        "Sharpening the craft",
+        "Gotchas",
+        "Versioning",
+        "Changelog"
+      ],
+      "triggers": "'draft a client email', 'write this contract', 'draft a declaration', 'write a legal memo', 'bilingual letter'",
+      "modes": "",
+      "disabled": false,
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 54,
+        "words": 1156
+      },
+      "global": true,
+      "members": [
+        "the-translator"
+      ]
+    },
+    {
+      "id": "legal-rule-modeling",
+      "name": "legal-rule-modeling",
+      "version": "1.0.0",
+      "icon": "🧮",
+      "art": "",
+      "artPng": true,
+      "blurb": "Model a governing law into deterministic calculator rules",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-calculator",
+      "src": "own",
+      "desc": "The Architect's craft for modelling a governing law into the exact calculation rules and inputs a public legal calculator must honour — the 'Model the Law' step of tool-forge. Read the law (e.g. Egyptian wage tax, social insurance, severance, inheritance/mawarith, feddan/kirat land, customs); extract the computation — brackets, rates, caps, floors, rounding, edge cases, exemptions — into a deterministic inputs → computation → output model the Developer can implement without re-reading the statute; cite the article behind each rule; flag every ambiguity for the team-review disclaimer. Use before building any legal calculator or corporate tool. Triggers: 'model the law for this calculator', 'extract the calculation rules', 'what are the brackets for X', 'rule model for the tool'. Differentiate from transactions-domain-model (the app's money model) and codex-law-translate (translating the law's text, not its arithmetic).",
+      "intro": "A legal calculator is only as honest as its rule model. Your craft turns a statute — its brackets, rates, caps, floors, and dusty edge cases — into a deterministic spec the Developer can transcribe into code without ever re-reading the original Arabic text. You are the cartographer of arithmetic. Mi",
+      "sections": [
+        "What it is / is not",
+        "The craft",
+        "Sharpening the craft",
+        "Gotchas",
+        "Versioning",
+        "Changelog"
+      ],
+      "triggers": "'model the law for this calculator', 'extract the calculation rules', 'what are the brackets for X', 'rule model'",
+      "modes": "",
+      "disabled": false,
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 64,
+        "words": 1447
+      },
+      "global": true,
+      "members": [
+        "the-architect"
+      ]
+    },
+    {
+      "id": "market-recon",
+      "name": "market-recon",
+      "version": "1.0.0",
+      "icon": "📈",
+      "art": "",
+      "artPng": true,
+      "blurb": "Read-only market, investment, and risk analysis that ships a report",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-chart-candle",
+      "src": "own",
+      "desc": "The Merchant's craft for read-only market, investment, and risk analysis that ships a written report and never writes code or moves money. Scope the question and the read-only boundary, gather evidence (fundamentals, technicals, market structure, positioning, news and catalysts), assess risk (sizing, drawdown, correlation, liquidity, scenarios), then write a graded report with a clear thesis, confidence, caveats, and what would change the view. Four modes: asset/equity research, single trade-idea, portfolio review, macro/rates read. Use for any investment, trading, or market question where no code is produced. Triggers: 'analyze this investment', 'build a trading strategy', 'research this market', 'is this a buy', 'review my portfolio', 'what is the risk on X', 'macro read'. Differentiate from storm-investigation (general research) and growth-marketing (the Herald). Never executes a trade or transfer.",
+      "intro": "You are the Merchant's eyes-only scout. Market recon is the art of reading a market without touching it — producing a written report that another pair of hands can act on, or deliberately decline to act on. The pen, never the purse. This craft matters because every position the guild considers, ever",
+      "sections": [
+        "What it is / is not",
+        "The craft",
+        "Modes",
+        "Sharpening the craft",
+        "Gotchas",
+        "Versioning",
+        "Changelog"
+      ],
+      "triggers": "'analyze this investment', 'research this market', 'is this a buy', 'review my portfolio', 'macro read'",
+      "modes": "asset/equity research; single trade-idea; portfolio review; macro/rates read",
+      "disabled": false,
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 55,
+        "words": 1115
+      },
+      "global": true,
+      "members": [
+        "the-merchant"
       ]
     },
     {
@@ -1628,44 +1785,6 @@ const GUILD = {
       "global": false,
       "members": [
         "the-butler"
-      ]
-    },
-    {
-      "id": "minimalist-ui",
-      "name": "minimalist-ui",
-      "version": "1.0.0",
-      "icon": "🎨",
-      "art": "",
-      "artPng": true,
-      "blurb": "Clean editorial interfaces, warm monochrome palette",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "ti-layout",
-      "src": "own",
-      "desc": "Clean editorial-style interfaces. Warm monochrome palette, typographic contrast, flat bento grids, muted pastels. No gradients, no heavy shadows.",
-      "intro": "Name: Premium Utilitarian Minimalism & Editorial UI Description: An advanced frontend engineering directive for generating highly refined, ultra-minimalist, \"document-style\" web interfaces analogous to top-tier workspace platforms. This protocol strictly enforces a high-contrast warm monochrome pale",
-      "sections": [
-        "1. Protocol Overview",
-        "2. Absolute Negative Constraints (Banned Elements)",
-        "3. Typographic Architecture",
-        "4. Color Palette (Warm Monochrome + Spot Pastels)",
-        "5. Component Specifications",
-        "6. Iconography & Imagery Directives",
-        "7. Subtle Motion & Micro-Animations",
-        "8. Execution Protocol"
-      ],
-      "triggers": "",
-      "modes": "",
-      "disabled": false,
-      "refs": [],
-      "scripts": [],
-      "stats": {
-        "lines": 82,
-        "words": 1066
-      },
-      "global": true,
-      "members": [
-        "the-designer"
       ]
     },
     {
@@ -1758,38 +1877,113 @@ const GUILD = {
       ]
     },
     {
-      "id": "redesign-existing-projects",
-      "name": "redesign-existing-projects",
+      "id": "relationship-intel",
+      "name": "relationship-intel",
       "version": "1.0.0",
-      "icon": "✨",
+      "icon": "🤝",
       "art": "",
       "artPng": true,
-      "blurb": "Upgrade existing sites to premium, anti-generic design",
+      "blurb": "Turn email traffic into living client relationship intelligence",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-heart-handshake",
+      "src": "own",
+      "desc": "The Herald's craft for turning email traffic into living relationship intelligence so the firm wins and keeps clients. A resumable harvest → profile → strategise pipeline: harvest Gmail (received and sent) for a window into a structured per-contact digest (threads, response latency, tone, commercial signals), profile each contact (character, how to deal with them from the firm's angle, mistakes to avoid) without overwriting live items, then output prioritised retention tasks and at-risk / opportunity flags. Read-only until a task is flagged; checkpoint-driven so a long sweep resumes. Use to profile contacts from mail and recommend retention work. Triggers: 'sweep my email for relationship intel', 'profile my contacts', 'who is at risk of leaving', 'update the relationship intelligence', 'retention tasks', 'how should I handle this client'. Differentiate from growth-marketing (demand generation) and comms-triage (the Butler's inbox-to-tasks sweep).",
+      "intro": "You are the Herald's watcher at the long game. Where comms-triage keeps today's inbox alive and growth-marketing hunts new quarry, you tend the relationships already on the ledger. Your craft is turning months of received and sent mail into a living map of every contact that matters — who they are, ",
+      "sections": [
+        "What it is / is not",
+        "The craft",
+        "Modes",
+        "Sharpening the craft",
+        "Gotchas",
+        "Versioning",
+        "Changelog"
+      ],
+      "triggers": "'profile my contacts', 'who is at risk of leaving', 'retention tasks', 'update the relationship intelligence'",
+      "modes": "harvest; profile; strategise",
+      "disabled": false,
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 55,
+        "words": 1072
+      },
+      "global": true,
+      "members": [
+        "the-herald"
+      ]
+    },
+    {
+      "id": "release-train",
+      "name": "release-train",
+      "version": "1.0.0",
+      "icon": "🚂",
+      "art": "",
+      "artPng": true,
+      "blurb": "Merge every branch and PR, bump the version, stamp the docs, push",
       "level": "Intermediate",
       "ramp": "blue",
-      "tabler": "ti-refresh",
+      "tabler": "ti-git-merge",
       "src": "own",
-      "desc": "Upgrades existing websites and apps to premium quality. Audits current design, identifies generic AI patterns, and applies high-end design standards without breaking functionality. Works with any CSS framework or vanilla CSS.",
-      "intro": "When applied to an existing project, follow this sequence:",
+      "desc": "The Quartermaster's craft for closing out a body of work — merge every outstanding branch and PR into main, bump the version, write the changelog, sync every version stamp across the docs, then push. Gather and merge branches/PRs resolving conflicts; bump the version (for the Lex Council app: apps/web/config/app.config.ts, the docs/logs/X.Y.Z.md changelog, the INDEX.md row, and the stamps across ARCHITECTURE / ZUSTAND-STORES / Vault Core; for the guild itself the version is derived from the guild log, so logging the change is the bump); certify the build is clean and every stamp consistent; commit and push. Use to ship a release or merge-and-close outstanding work. Triggers: 'cut a release', 'merge all branches', 'ship it', 'bump the version and push', 'release X.Y.Z', 'close out the work', 'release train'. Differentiate from cleanup (hygiene) and guild-conformity (self-consistency proof).",
+      "intro": "The release train is your march to the seal. You gather every loose branch and open PR, weld them into main, stamp the new version across every chronicle, and push the banner out. Done cleanly, the world sees an unbroken release; done carelessly, the next rider walks into a half-merged ruin. You are",
       "sections": [
-        "How This Works",
-        "Design Audit",
-        "Upgrade Techniques",
-        "Fix Priority",
-        "Rules"
+        "What it is / is not",
+        "The craft",
+        "Modes",
+        "Sharpening the craft",
+        "Gotchas",
+        "Versioning",
+        "Changelog"
       ],
-      "triggers": "",
+      "triggers": "'cut a release', 'merge all branches', 'release X.Y.Z', 'ship it', 'bump the version and push'",
+      "modes": "Lex Council app release; guild self-release",
+      "disabled": false,
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 60,
+        "words": 1024
+      },
+      "global": true,
+      "members": [
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": "scheduled-watch",
+      "name": "scheduled-watch",
+      "version": "1.0.0",
+      "icon": "⏱️",
+      "art": "",
+      "artPng": true,
+      "blurb": "Define a safe-to-resume unattended task on a cron cadence",
+      "level": "Intermediate",
+      "ramp": "blue",
+      "tabler": "ti-clock-play",
+      "src": "own",
+      "desc": "The Strategist's craft for defining an unattended task that runs on a cron cadence and resumes safely with no human present. State the job, its cadence (daily/hourly/weekly or a raw cron), and what 'done' looks like; choose the recommended weapon per step (a doer for the work, a thinker for the gate); define checkpoints so a long run can pause and resume without restarting; make every tick end with a plain-English summary. About 23 such tasks live under ~/Documents/Claude/Scheduled/ — daily Gmail/WhatsApp reports, deadline reminders, the Supabase advisor sweep, the nightly skill routine, law scanners. Use to define a recurring unattended automation. Triggers: 'schedule this', 'run this daily', 'set up a cron task', 'make this a routine', 'standing watch', 'unattended task', 'every morning'. Differentiate from comms-triage (attended inbox sweep) and conquering-campaign (attended multi-wave build).",
+      "intro": "You are the Strategist, and this is your sentry-craft. A scheduled-watch is a task that wakes on a cron, does its work, and returns to sleep without any human at the wheel. ~23 such watchers already stand at post under ~/Documents/Claude/Scheduled/ — the dawn Gmail/WhatsApp digest with reply-drafts,",
+      "sections": [
+        "What it is / is not",
+        "The craft",
+        "Sharpening the craft",
+        "Gotchas",
+        "Versioning",
+        "Changelog"
+      ],
+      "triggers": "'schedule this', 'run this daily', 'set up a cron task', 'make this a routine', 'standing watch'",
       "modes": "",
       "disabled": false,
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 175,
-        "words": 2174
+        "lines": 48,
+        "words": 1030
       },
       "global": true,
       "members": [
-        "the-designer"
+        "the-strategist"
       ]
     },
     {
@@ -1843,51 +2037,6 @@ const GUILD = {
       "global": true,
       "members": [
         "the-quartermaster"
-      ]
-    },
-    {
-      "id": "stitch-design-taste",
-      "name": "stitch-design-taste",
-      "version": "1.0.0",
-      "icon": "🧵",
-      "art": "",
-      "artPng": true,
-      "blurb": "Enforce premium design standards via DESIGN.md files",
-      "level": "Intermediate",
-      "ramp": "blue",
-      "tabler": "ti-needle",
-      "src": "own",
-      "desc": "Semantic Design System Skill for Google Stitch. Generates agent-friendly DESIGN.md files that enforce premium, anti-generic UI standards — strict typography, calibrated color, asymmetric layouts, perpetual micro-motion, and hardware-accelerated performance.",
-      "intro": "This skill generates DESIGN.md files optimized for Google Stitch screen generation. It translates the battle-tested anti-slop frontend engineering directives into Stitch's native semantic design language — descriptive, natural-language rules paired with precise values that Stitch's AI agent can inte",
-      "sections": [
-        "Overview",
-        "Prerequisites",
-        "The Goal",
-        "Analysis & Synthesis Instructions",
-        "Output Format (DESIGN.md Structure)",
-        "1. Visual Theme & Atmosphere",
-        "2. Color Palette & Roles",
-        "3. Typography Rules",
-        "4. Component Stylings",
-        "5. Layout Principles",
-        "6. Motion & Interaction",
-        "7. Anti-Patterns (Banned)",
-        "Best Practices",
-        "Tips for Success",
-        "Common Pitfalls to Avoid"
-      ],
-      "triggers": "",
-      "modes": "",
-      "disabled": false,
-      "refs": [],
-      "scripts": [],
-      "stats": {
-        "lines": 181,
-        "words": 1628
-      },
-      "global": true,
-      "members": [
-        "the-designer"
       ]
     },
     {
@@ -2238,6 +2387,42 @@ const GUILD = {
         "the-strategist",
         "the-translator"
       ]
+    },
+    {
+      "id": "workflow-forge",
+      "name": "workflow-forge",
+      "version": "1.0.0",
+      "icon": "🗺️",
+      "art": "",
+      "artPng": true,
+      "blurb": "Distil a finished run into a reusable star-map workflow",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-map-2",
+      "src": "own",
+      "desc": "The Strategist's craft for distilling a finished run into a reusable star-map workflow in workflows.json. Recognise when a run is worth saving (a repeatable sequence not already on the map), draft the workflow object — id, name, icon, accent, category, tagline, a 'when' description, and steps[] (each step kind member or gate with actor, title, act, produces) — honouring the two hard guild standards (every workflow ends with the Butler 'report' gate; the last member step before it is the-quartermaster's conformance close), name the members and the weapon per step, then hand to the Quartermaster to register it and rebuild. Use when a run should become a repeatable workflow. Triggers: 'save this as a workflow', 'turn this run into a workflow', 'add this to the star map', 'crystallize this formation', 'register a workflow', 'workflow forge'. Differentiate from members-formation (the Butler's live routing — produces formations, not saved workflows) and skillsmith (skills, not workflows).",
+      "intro": "You are the cartographer of the alliance. When a run ends and the Butler's log shows a sequence that solved a problem — and will solve it again — you distil that sequence into a star-map entry: a registered workflow in workflows.json that future runs can summon by id instead of rediscovering from sc",
+      "sections": [
+        "What it is / is not",
+        "The craft",
+        "Sharpening the craft",
+        "Gotchas",
+        "Versioning",
+        "Changelog"
+      ],
+      "triggers": "'save this as a workflow', 'add this to the star map', 'register a workflow', 'crystallize this formation'",
+      "modes": "",
+      "disabled": false,
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 59,
+        "words": 1078
+      },
+      "global": true,
+      "members": [
+        "the-strategist"
+      ]
     }
   ],
   "domains": [
@@ -2261,18 +2446,11 @@ const GUILD = {
         "dev-server",
         "full-output-enforcement",
         "obsidian-markdown",
-        "design-taste-frontend",
-        "high-end-visual-design",
         "image-to-code",
         "imagegen-frontend-web",
         "imagegen-frontend-mobile",
         "brandkit",
-        "minimalist-ui",
-        "industrial-brutalist-ui",
         "impeccable",
-        "stitch-design-taste",
-        "gpt-taste",
-        "redesign-existing-projects",
         "performance",
         "codex-law-translate",
         "article-creator",
@@ -2284,7 +2462,19 @@ const GUILD = {
         "members-formation",
         "ultra-brainstorming",
         "weapon-utility",
-        "growth-marketing"
+        "growth-marketing",
+        "guild-conformity",
+        "market-recon",
+        "legal-drafting",
+        "relationship-intel",
+        "release-train",
+        "workflow-forge",
+        "arsenal-forge",
+        "scheduled-watch",
+        "law-harvest",
+        "comms-triage",
+        "legal-rule-modeling",
+        "design-taste"
       ],
       "members": [
         "the-butler",
@@ -2297,7 +2487,7 @@ const GUILD = {
         "the-merchant",
         "the-quartermaster"
       ],
-      "notes": "The home domain. All 9 guild members + 36 skills live here. Every other domain borrows from this skill pool."
+      "notes": "The home domain. All 9 guild members + 41 skills live here. Every other domain borrows from this skill pool."
     },
     {
       "id": "lex-council-app",
@@ -2311,18 +2501,12 @@ const GUILD = {
         "supabase-postgres-best-practices",
         "performance",
         "brandkit",
-        "design-taste-frontend",
+        "design-taste",
         "full-output-enforcement",
-        "gpt-taste",
-        "high-end-visual-design",
         "image-to-code",
         "imagegen-frontend-mobile",
         "imagegen-frontend-web",
         "impeccable",
-        "industrial-brutalist-ui",
-        "minimalist-ui",
-        "redesign-existing-projects",
-        "stitch-design-taste",
         "db-rename-sweep",
         "bug-fix-workflow",
         "dev-server",
@@ -4981,8 +5165,230 @@ const GUILD = {
         "commit": "325a46a5",
         "_derived": true,
         "id": "g-325a46a5-add-skill-conquering-campaign"
+      },
+      {
+        "id": 42,
+        "date": "2026-06-26",
+        "type": "skill-create",
+        "title": "Add skill: guild-conformity",
+        "who": "the-quartermaster",
+        "detail": "The Quartermaster's repo-wide conformity audit + reconcile loop (the close of every workflow).",
+        "ref": [
+          "guild-conformity"
+        ]
+      },
+      {
+        "id": 43,
+        "date": "2026-06-26",
+        "type": "skill-create",
+        "title": "Add skill: market-recon",
+        "who": "the-quartermaster",
+        "detail": "The Merchant's read-only market/investment/risk analysis — ships a graded report, never trades.",
+        "ref": [
+          "market-recon"
+        ]
+      },
+      {
+        "id": 44,
+        "date": "2026-06-26",
+        "type": "skill-create",
+        "title": "Add skill: legal-drafting",
+        "who": "the-quartermaster",
+        "detail": "The Translator's client-correspondence + bilingual legal-instrument drafting craft.",
+        "ref": [
+          "legal-drafting"
+        ]
+      },
+      {
+        "id": 45,
+        "date": "2026-06-26",
+        "type": "skill-create",
+        "title": "Add skill: relationship-intel",
+        "who": "the-quartermaster",
+        "detail": "The Herald's email-to-relationship-intelligence pipeline (harvest→profile→strategise).",
+        "ref": [
+          "relationship-intel"
+        ]
+      },
+      {
+        "id": 46,
+        "date": "2026-06-26",
+        "type": "skill-create",
+        "title": "Add skill: release-train",
+        "who": "the-quartermaster",
+        "detail": "The Quartermaster's release closeout — merge branches/PRs, bump version, stamp, push.",
+        "ref": [
+          "release-train"
+        ]
+      },
+      {
+        "id": 47,
+        "date": "2026-06-26",
+        "type": "skill-create",
+        "title": "Add skill: workflow-forge",
+        "who": "the-quartermaster",
+        "detail": "The Strategist's craft for distilling a finished run into a registered star-map workflow.",
+        "ref": [
+          "workflow-forge"
+        ]
+      },
+      {
+        "id": 48,
+        "date": "2026-06-26",
+        "type": "skill-create",
+        "title": "Add skill: arsenal-forge",
+        "who": "the-quartermaster",
+        "detail": "The Strategist's craft for recruiting/re-roleing a weapon and wiring it into every loadout.",
+        "ref": [
+          "arsenal-forge"
+        ]
+      },
+      {
+        "id": 49,
+        "date": "2026-06-26",
+        "type": "skill-create",
+        "title": "Add skill: scheduled-watch",
+        "who": "the-quartermaster",
+        "detail": "The Strategist's craft for defining a safe-to-resume unattended cron routine.",
+        "ref": [
+          "scheduled-watch"
+        ]
+      },
+      {
+        "id": 50,
+        "date": "2026-06-26",
+        "type": "skill-create",
+        "title": "Add skill: law-harvest",
+        "who": "the-quartermaster",
+        "detail": "The Architect+Translator craft for ingesting law PDFs verbatim into the Source-Law library.",
+        "ref": [
+          "law-harvest"
+        ]
+      },
+      {
+        "id": 51,
+        "date": "2026-06-26",
+        "type": "skill-create",
+        "title": "Add skill: comms-triage",
+        "who": "the-quartermaster",
+        "detail": "The Butler's one doer craft — sweep email/calendar/WhatsApp into tasks, events, drafts.",
+        "ref": [
+          "comms-triage"
+        ]
+      },
+      {
+        "id": 52,
+        "date": "2026-06-26",
+        "type": "skill-create",
+        "title": "Add skill: legal-rule-modeling",
+        "who": "the-quartermaster",
+        "detail": "The Architect's craft for modelling a law into deterministic calculator rules.",
+        "ref": [
+          "legal-rule-modeling"
+        ]
+      },
+      {
+        "id": 53,
+        "date": "2026-06-26",
+        "type": "skill-create",
+        "title": "Add skill: design-taste",
+        "who": "the-quartermaster",
+        "detail": "Consolidates 7 Designer style skills into one 7-mode taste engine (playbooks in references/).",
+        "ref": [
+          "design-taste"
+        ]
+      },
+      {
+        "id": 54,
+        "date": "2026-06-26",
+        "type": "skill-remove",
+        "title": "Remove skill: design-taste-frontend",
+        "who": "the-quartermaster",
+        "detail": "Merged into design-taste (mode/reference). Playbook preserved under design-taste/references/.",
+        "ref": [
+          "design-taste-frontend"
+        ]
+      },
+      {
+        "id": 55,
+        "date": "2026-06-26",
+        "type": "skill-remove",
+        "title": "Remove skill: high-end-visual-design",
+        "who": "the-quartermaster",
+        "detail": "Merged into design-taste (mode/reference). Playbook preserved under design-taste/references/.",
+        "ref": [
+          "high-end-visual-design"
+        ]
+      },
+      {
+        "id": 56,
+        "date": "2026-06-26",
+        "type": "skill-remove",
+        "title": "Remove skill: minimalist-ui",
+        "who": "the-quartermaster",
+        "detail": "Merged into design-taste (mode/reference). Playbook preserved under design-taste/references/.",
+        "ref": [
+          "minimalist-ui"
+        ]
+      },
+      {
+        "id": 57,
+        "date": "2026-06-26",
+        "type": "skill-remove",
+        "title": "Remove skill: industrial-brutalist-ui",
+        "who": "the-quartermaster",
+        "detail": "Merged into design-taste (mode/reference). Playbook preserved under design-taste/references/.",
+        "ref": [
+          "industrial-brutalist-ui"
+        ]
+      },
+      {
+        "id": 58,
+        "date": "2026-06-26",
+        "type": "skill-remove",
+        "title": "Remove skill: gpt-taste",
+        "who": "the-quartermaster",
+        "detail": "Merged into design-taste (mode/reference). Playbook preserved under design-taste/references/.",
+        "ref": [
+          "gpt-taste"
+        ]
+      },
+      {
+        "id": 59,
+        "date": "2026-06-26",
+        "type": "skill-remove",
+        "title": "Remove skill: stitch-design-taste",
+        "who": "the-quartermaster",
+        "detail": "Merged into design-taste (mode/reference). Playbook preserved under design-taste/references/.",
+        "ref": [
+          "stitch-design-taste"
+        ]
+      },
+      {
+        "id": 60,
+        "date": "2026-06-26",
+        "type": "skill-remove",
+        "title": "Remove skill: redesign-existing-projects",
+        "who": "the-quartermaster",
+        "detail": "Merged into design-taste (mode/reference). Playbook preserved under design-taste/references/.",
+        "ref": [
+          "redesign-existing-projects"
+        ]
+      },
+      {
+        "id": 61,
+        "date": "2026-06-26",
+        "type": "decision",
+        "title": "Member skill-gap forge: 11 new craft skills, Designer style-cluster merged, Butler gains comms-triage",
+        "who": "the-quartermaster",
+        "detail": "The Quartermaster looped every member against their role in the 24 star-map workflows and forged an upgradeable skill for each craft a member performed with no covering skill: guild-conformity + release-train (Quartermaster), market-recon (Merchant), legal-drafting + law-harvest (Translator; law-harvest shared with Architect), relationship-intel (Herald), workflow-forge + arsenal-forge + scheduled-watch (Strategist), legal-rule-modeling (Architect), comms-triage (Butler). The Designer's 14-skill loadout was investigated for bloat: 7 overlapping style-taste skills (design-taste-frontend, high-end-visual-design, minimalist-ui, industrial-brutalist-ui, gpt-taste, stitch-design-taste, redesign-existing-projects) were consolidated into one 7-mode design-taste engine with each playbook preserved verbatim under references/; impeccable kept separate (external/npx). Butler exception: comms-triage makes the Butler a doer for inbox/calendar/WhatsApp triage — his one hands-on craft beside routing; his prompt was updated to carve this single exception. Every new skill carries metadata.version 1.0.0 and a Sharpening-the-craft progression so members can perfect their trade.",
+        "ref": [
+          "the-quartermaster",
+          "the-designer",
+          "the-butler"
+        ]
       }
     ],
-    "count": 87
+    "count": 107
   }
 };
