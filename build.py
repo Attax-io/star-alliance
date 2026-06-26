@@ -9,7 +9,7 @@ Reads every source of truth and emits ONE data file the dashboard loads:
 Sources
   star-alliance-skills/<id>/SKILL.md   skill frontmatter (version) + body (intro/sections)
   skills-meta.json                     per-skill presentation: icon, blurb, level, tabler, triggers, modes
-  star-alliance-agents/<id>.md         member structure: model, weapons[], skills[], description
+  star-alliance-members/<id>.md         member structure: model, weapons[], skills[], description
   members-meta.json                    per-member presentation: name, role, color, avatar, summary, …
   domains.json                         project domains (hand-edited)
   guild-log.json                       change log (owned by build_guild_log.py + log_event.py)
@@ -38,7 +38,7 @@ from pathlib import Path
 # ── Constants ────────────────────────────────────────────────────────────────
 
 SKILLS_DIR = "star-alliance-skills"
-AGENTS_DIR = "star-alliance-agents"
+AGENTS_DIR = "star-alliance-members"
 SCHEMA_VERSION = 2
 
 # meta fields that vary run-to-run — excluded from --check diffing (see _normalize).
@@ -216,7 +216,7 @@ def iter_skills(repo: Path):
             yield d.name, d, f
 
 
-def build_skill(name: str, skill_dir: Path, skill_md: Path, meta: dict) -> dict:
+def build_skill(name: str, skill_dir: Path, skill_md: Path, meta: dict, repo: Path = None) -> dict:
     text = skill_md.read_text()
     fm, body = split_frontmatter(text)
     desc = get_description(fm)
@@ -229,7 +229,8 @@ def build_skill(name: str, skill_dir: Path, skill_md: Path, meta: dict) -> dict:
         "name": fm_field(fm, "name") or name,
         "version": version,
         "icon": m.get("icon", "📦"),
-        "art": m.get("art", ""),  # optional inline-SVG sigil (Fallen-Sword style); falls back to icon
+        "art": m.get("art", ""),  # optional inline-SVG sigil; falls back to icon
+        "artPng": bool(repo and (repo / "skill-art" / f"{name}.png").exists()),
         "blurb": blurb,
         "level": level,
         "ramp": LEVEL_RAMP.get(level, "gray"),
@@ -240,6 +241,7 @@ def build_skill(name: str, skill_dir: Path, skill_md: Path, meta: dict) -> dict:
         "sections": extract_sections(body),
         "triggers": m.get("triggers", ""),
         "modes": m.get("modes", ""),
+        "disabled": bool(m.get("disabled", False)),
         "refs": list_files(skill_dir, "references"),
         "scripts": list_files(skill_dir, "scripts"),
         "stats": {"lines": body.count("\n"), "words": len(body.split())},
@@ -252,7 +254,7 @@ def build_skills(repo: Path, skills_meta: dict, warnings: list[str]) -> list[dic
     for name, skill_dir, skill_md in iter_skills(repo):
         if name not in skills_meta:
             warnings.append(f"skill '{name}' has no skills-meta.json entry — using defaults")
-        skills.append(build_skill(name, skill_dir, skill_md, skills_meta))
+        skills.append(build_skill(name, skill_dir, skill_md, skills_meta, repo))
     return skills
 
 
@@ -260,13 +262,14 @@ def build_skills(repo: Path, skills_meta: dict, warnings: list[str]) -> list[dic
 
 def parse_agent(md_path: Path) -> dict:
     """Extract member structure from an agent .md frontmatter."""
-    fm, _ = split_frontmatter(md_path.read_text())
+    fm, body = split_frontmatter(md_path.read_text())
     return {
         "id": md_path.stem,
         "model": fm_field(fm, "model"),
         "weapons": parse_list_field(fm, "weapons"),
         "skills": parse_list_field(fm, "skills"),
         "description": get_description(fm),
+        "prompt": body.strip(),
     }
 
 
@@ -302,6 +305,7 @@ def build_member(agent: dict, meta: dict, errors: list[str]) -> dict:
         "deploy": meta.get("deploy", ""),
         "triggers": meta.get("triggers", ""),
         "description": agent["description"],
+        "prompt": agent.get("prompt", ""),
         "weapons": weapons,
         "does": meta.get("does", []),
         "doesnt": meta.get("doesnt", []),

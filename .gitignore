@@ -1,2 +1,5 @@
 __pycache__/
 *.pyc
+
+# runtime safety backups from the control-panel write-through
+*.bak

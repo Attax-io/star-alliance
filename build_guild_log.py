@@ -74,10 +74,10 @@ def is_member_md(path: str) -> str | None:
     """Return the member name if path is an agent .md file.
 
     Recognises both layouts:
-      star-alliance-agents/<name>.md  (current)
+      star-alliance-members/<name>.md  (current)
       members/<name>.md               (legacy)
     """
-    m = re.match(r"^(?:star-alliance-agents/|members/)([^/]+)\.md$", path)
+    m = re.match(r"^(?:star-alliance-members/|members/)([^/]+)\.md$", path)
     if not m:
         return None
     name = m.group(1)
@@ -130,7 +130,7 @@ def classify(repo: Path, ref: str, subject: str, files: list[str]) -> list[dict]
         elif f in {"README.md", "VERSIONS.md"}:
             # Repo-meta changes; only log as structural if no skills/members changed
             pass
-        elif f in {"members", "star-alliance-skills", "star-alliance-agents",
+        elif f in {"members", "star-alliance-skills", "star-alliance-members",
                    "log_event.py", "build_guild_log.py", "guild-log.json"}:
             structural = True
 
@@ -202,7 +202,7 @@ def classify(repo: Path, ref: str, subject: str, files: list[str]) -> list[dict]
         except subprocess.CalledProcessError:
             parent_log = []
         for prev_ref in parent_log[1:]:
-            for rel in (f"star-alliance-agents/{m}.md", f"members/{m}.md"):
+            for rel in (f"star-alliance-members/{m}.md", f"members/{m}.md"):
                 try:
                     git(repo, "show", f"{prev_ref.strip()}:{rel}")
                     existed_before = True

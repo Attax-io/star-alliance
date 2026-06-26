@@ -14,7 +14,7 @@ Types:
     skill-create     a new skill was added to star-alliance-skills/
     skill-remove     a skill was removed
     member-upgrade   a member's prompt or skills list was updated
-    member-create    a new agent file was added to star-alliance-agents/
+    member-create    a new agent file was added to star-alliance-members/
     member-remove    an agent file was removed
     dashboard        visual / structural change to the dashboard
     structure        repo reorganisation (folder moves, renames)

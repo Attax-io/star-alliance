@@ -2,6 +2,69 @@
   "version": 1,
   "entries": [
     {
+      "id": 16,
+      "date": "2026-06-26",
+      "type": "dashboard",
+      "title": "Phase 2 control panel: edit descriptions/workflow, enable/disable skills, create/delete members",
+      "who": "the-quartermaster",
+      "detail": "Completed the control-panel write-through. The member dossier is now fully editable: role, summary, deploy-when, triggers, mandate (.md description) and the full workflow/system-prompt body are click-to-edit fields that save to source on blur. Added a Danger zone with delete-member and a Recruit-a-member button on the roster. Skill enable/disable now persists to skills-meta.json (build.py carries a disabled flag into guild-data, seeded on load). serve.cjs gained six MiniMax-authored writers (setSkillFlag, setMemberMeta, setMemberDescription, setMemberBody, createMember, deleteMember) behind a /api/save dispatcher, each with .bak backups and a build.py regen; build.py now emits the member prompt body and the skill disabled flag. Offline (file://) everything falls back to the browser overlay. All six write kinds were tested end-to-end (create/meta/description/body/skill-flag/delete) and self-cleaned.",
+      "ref": [
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": 15,
+      "date": "2026-06-26",
+      "type": "dashboard",
+      "title": "Dashboard is now a control panel: loadout edits write through to source .md (+ removed Arsenal Refresh button)",
+      "who": "the-quartermaster",
+      "detail": "Removed the manual Arsenal Refresh button (pulled-status auto-loads on page visit). Bigger change: editing a member's skills or models in the dashboard now persists to the source files automatically, instead of browser-only localStorage. A new POST /api/save endpoint in serve.cjs rewrites the member .md frontmatter (skills[] / weapons[] inline arrays, with a .bak backup and round-trip verify), and for weapons it also re-syncs members-meta.json weaponsDesc (build.py requires the two to match exactly), then re-runs build.py so guild-data regenerates. app.js saveMemberField() fires on every grant/revoke/assign/unassign and folds the change into the in-memory base. With no dev server (file://) it silently falls back to the old localStorage overlay. The save endpoint and its frontmatter writer were authored by MiniMax M3 via minimax.py. PHASE 1 covers skills + models; editing descriptions/workflow text and member create/delete are deferred to a later phase (need new inline-edit UI).",
+      "ref": [
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": 14,
+      "date": "2026-06-26",
+      "type": "structure",
+      "title": "Renamed star-alliance-agents/ → star-alliance-members/",
+      "who": "the-quartermaster",
+      "detail": "The guild roster folder was renamed from star-alliance-agents to star-alliance-members. build.py, build_guild_log.py, log_event.py, both READMEs, and the guild-log skill were updated to the new path; guild-data.js/json regenerated. Historical guild-log entries keep the old name (accurate to when they happened)."
+    },
+    {
+      "id": 13,
+      "date": "2026-06-26",
+      "type": "structure",
+      "title": "Moved model callers into star-alliance-arsenal/ folder",
+      "who": "the-quartermaster",
+      "detail": "minimax.py, ollama_cloud.py, summon.py and models-usage.json relocated from repo root into a new star-alliance-arsenal/ folder with its own README. summon.py still finds its siblings (same-dir resolution). serve.cjs loadUsage path and all Arsenal how-to-summon recipes in app.js updated to the new star-alliance-arsenal/ prefix.",
+      "ref": [
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": 12,
+      "date": "2026-06-26",
+      "type": "chore",
+      "title": "Added ollama_cloud.py + summon.py; Arsenal recipes now route through the offload scripts",
+      "who": "the-quartermaster",
+      "detail": "Two new stdlib-only callers join minimax.py at repo root. ollama_cloud.py runs any Ollama Cloud model (python3 ollama_cloud.py <tag>:cloud \"<prompt>\") with the same flags as minimax.py (-s, --json, -f, stdin) plus num_predict>=4096 and <think> stripping. summon.py is a single dispatcher: python3 summon.py <model-id> \"<prompt>\" routes minimax-m3 to minimax.py, the six bench models to ollama_cloud.py with the right cloud tag, prints a native-Task-tool note for opus/sonnet/haiku, and reports gpt-5.5 as not provisioned. Every model card's How to summon recipe was rewritten to lead with the script command. Both scripts were authored by MiniMax M3 through the new minimax.py tool itself (dogfooding) and smoke-tested end to end (GLM ONLINE via real glm-5.2:cloud).",
+      "ref": [
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": 11,
+      "date": "2026-06-26",
+      "type": "chore",
+      "title": "Added minimax.py — reusable CLI to offload text generation to MiniMax direct",
+      "who": "the-quartermaster",
+      "detail": "New stdlib-only script at repo root wraps the MiniMax direct API so future sessions stop hand-rolling curl and save Opus tokens. Usage: python3 minimax.py \"<prompt>\" (or stdin); flags -s system, --json (strips code fences and validates), -f file, --model, --max-tokens (default 16000 so reasoning never starves the output), --timeout. Key comes from $MINIMAX_API_KEY or ~/.config/minimax/m3.key; content prints to stdout, token usage to stderr. The Arsenal 'how to summon' recipe for MiniMax now points at this script. MiniMax M3 wrote the script itself.",
+      "ref": [
+        "the-quartermaster"
+      ]
+    },
+    {
       "id": 10,
       "date": "2026-06-26",
       "type": "dashboard",

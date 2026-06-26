@@ -252,6 +252,9 @@ kbd {
 .grid { display: grid; gap: var(--s4); }
 .roster-grid { grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); }
 
+.mc-portrait-wrap { width: 100%; height: 200px; border-radius: var(--r2); overflow: hidden; border: 2px solid color-mix(in srgb, var(--mc) 40%, transparent); box-shadow: 0 0 20px color-mix(in srgb, var(--mc) 25%, transparent); flex: none; }
+.mc-portrait { width: 100%; height: 200px; object-fit: cover; object-position: top center; display: block; transition: transform .3s ease; }
+.member-card:hover .mc-portrait { transform: scale(1.05); }
 .member-card { position: relative; padding: var(--s5); display: flex; flex-direction: column; gap: var(--s4); overflow: hidden; transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease); }
 .member-card::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 3px; background: var(--mc, var(--cyan)); opacity: .9; box-shadow: 0 0 18px var(--mc, var(--cyan)); }
 .member-card:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--mc) 55%, var(--line-2)); box-shadow: var(--shadow-panel), 0 0 0 1px color-mix(in srgb, var(--mc) 30%, transparent); }
@@ -261,7 +264,48 @@ kbd {
 .avatar.lg { width: 96px; height: 96px; border-radius: var(--r3); }
 .mc-name { font-size: var(--t-lg); }
 .mc-role { color: var(--muted); font-size: var(--t-sm); margin-top: 2px; }
-.mc-skills { display: flex; flex-wrap: wrap; gap: 6px; }
+.mc-skills { display: flex; flex-wrap: wrap; gap: 5px; }
+
+/* skill icon tiles on member cards */
+.sit {
+  display: block; width: 34px; height: 34px; border-radius: var(--r1);
+  border: 1px solid rgba(255,255,255,.14); overflow: hidden; flex: none;
+  background: rgba(255,255,255,.04); position: relative;
+  transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.sit:hover { border-color: var(--gold); transform: scale(1.18); box-shadow: 0 0 10px rgba(232,201,58,.5); z-index: 10; }
+.sit.sit-blocked { filter: grayscale(1); opacity: .45; }
+.sit-img, .sit-svg, .sit-svg svg { width: 100%; height: 100%; display: block; object-fit: cover; image-rendering: pixelated; }
+.sit-emoji { display: grid; place-items: center; width: 100%; height: 100%; font-size: 18px; }
+.sit-extra { display: grid; place-items: center; width: 34px; height: 34px; border-radius: var(--r1);
+  border: 1px solid var(--line-2); color: var(--muted); font-size: var(--t-xs); font-weight: 600; background: rgba(255,255,255,.04); }
+
+/* Fallen Sword-style skill tooltip */
+#fs-tip {
+  position: fixed; z-index: 9999; pointer-events: none;
+  width: 210px; padding: 0;
+  border: 2px solid #8a6a20;
+  border-radius: 4px;
+  background: linear-gradient(180deg, #1a1200 0%, #0e0900 60%, #000 100%);
+  box-shadow: 0 0 0 1px #3a2800, 0 6px 24px rgba(0,0,0,.9), inset 0 1px 0 rgba(232,201,58,.12);
+  font-family: var(--font); font-size: 12px; color: #e0c870;
+  opacity: 0; transition: opacity 80ms;
+}
+#fs-tip.visible { opacity: 1; }
+.fst-header {
+  padding: 6px 8px 5px;
+  border-bottom: 1px solid #3a2800;
+  background: linear-gradient(180deg, #2a1c00, #1a1200);
+}
+.fst-name {
+  font-size: 13px; font-weight: 700; color: #f0d878; letter-spacing: .02em;
+  text-shadow: 0 0 8px rgba(240,216,120,.4);
+}
+.fst-level {
+  font-size: 10px; color: #a08840; margin-top: 1px; text-transform: uppercase; letter-spacing: .06em;
+}
+.fst-body { padding: 7px 8px 8px; }
+.fst-blurb { color: #c8a84b; line-height: 1.45; font-size: 11px; }
 .mc-foot { display: flex; align-items: center; gap: var(--s3); margin-top: auto; color: var(--hint); font-size: var(--t-xs); padding-top: var(--s3); border-top: 1px solid var(--line-3); }
 .mc-foot .sep { width: 3px; height: 3px; border-radius: 50%; background: var(--faint); }
 
@@ -270,10 +314,13 @@ kbd {
 .dossier-hero { display: flex; gap: var(--s5); align-items: center; padding: var(--s6); position: relative; overflow: hidden; }
 .dossier-hero::before { content: ""; position: absolute; inset: 0; background: radial-gradient(60% 120% at 12% 0%, color-mix(in srgb, var(--mc) 22%, transparent), transparent 70%); pointer-events: none; }
 .dh-meta { position: relative; }
+.dh-name-row { display: flex; align-items: center; gap: var(--s4); }
 .dh-name { font-size: var(--t-3xl); }
 .dh-role { color: var(--muted); margin-top: 4px; font-size: var(--t-lg); }
 .dh-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: var(--s4); }
 .dh-summary { color: var(--starlight); opacity: .92; margin-top: var(--s4); max-width: 62ch; line-height: 1.65; }
+.dh-portrait-wrap { width: 160px; height: 220px; border-radius: var(--r3); overflow: hidden; flex: none; border: 2px solid color-mix(in srgb, var(--mc) 40%, transparent); box-shadow: 0 0 24px color-mix(in srgb, var(--mc) 30%, transparent); position: relative; z-index: 1; }
+.dh-portrait { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
 
 .panel-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap: var(--s5); }
 .section { padding: var(--s5); }
@@ -284,6 +331,12 @@ kbd {
 .weapon-card:hover { border-color: color-mix(in srgb, var(--wc) 55%, var(--line-2)); }
 .weapon-rank { font-family: var(--mono); font-size: 10px; color: var(--hint); letter-spacing: .1em; }
 .weapon-name { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+
+/* Weapon thumbnail in member dossier */
+.weapon-thumb-wrap { position: relative; width: 100%; height: 120px; border-radius: var(--r2); overflow: visible; }
+.weapon-thumb { width: 100%; height: 120px; object-fit: contain; object-position: center; display: block; border-radius: var(--r2); background: #000; border: 1px solid color-mix(in srgb, var(--wc) 35%, var(--line-2)); box-shadow: 0 0 12px color-mix(in srgb, var(--wc) 25%, transparent); cursor: default; }
+.weapon-thumb-tip { position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%); width: 240px; background: var(--depth-2); border: 1px solid var(--line-2); border-radius: var(--r2); padding: 10px 12px; font-size: 12px; line-height: 1.5; color: var(--muted); pointer-events: none; opacity: 0; transition: opacity .15s ease; z-index: 100; box-shadow: 0 4px 20px rgba(0,0,0,.5); }
+.weapon-thumb-wrap:hover .weapon-thumb-tip { opacity: 1; }
 .weapon-glyph { width: 22px; height: 22px; border-radius: 6px; display: grid; place-items: center; font-size: 11px; font-weight: 700; color: var(--ink); background: var(--wc, var(--cyan)); flex: none; }
 .weapon-desc { color: var(--muted); font-size: var(--t-sm); line-height: 1.5; }
 .weapon-card.added { border-style: dashed; }
@@ -300,10 +353,32 @@ kbd {
 .model-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px,1fr)); gap: var(--s4); }
 .model-card { padding: var(--s5); border-radius: var(--r3); background: rgba(255,255,255,.03); border: 1px solid var(--line-2); display: flex; flex-direction: column; gap: var(--s3); transition: border-color var(--dur) var(--ease); }
 .model-card:hover { border-color: color-mix(in srgb, var(--wc) 50%, var(--line-2)); }
+.weapon-art-wrap { position: relative; width: 100%; height: 200px; border-radius: var(--r3); overflow: hidden; border: 2px solid color-mix(in srgb, var(--wc) 40%, transparent); flex: none; background: #000;
+  animation: weapon-border-pulse 3s ease-in-out infinite alternate;
+  box-shadow: 0 0 18px color-mix(in srgb, var(--wc) 35%, transparent), 0 0 48px color-mix(in srgb, var(--wc) 15%, transparent); }
+@keyframes weapon-border-pulse {
+  from { box-shadow: 0 0 14px color-mix(in srgb, var(--wc) 30%, transparent), 0 0 36px color-mix(in srgb, var(--wc) 10%, transparent); border-color: color-mix(in srgb, var(--wc) 30%, transparent); }
+  to   { box-shadow: 0 0 32px color-mix(in srgb, var(--wc) 70%, transparent), 0 0 72px color-mix(in srgb, var(--wc) 30%, transparent); border-color: color-mix(in srgb, var(--wc) 80%, transparent); }
+}
+.weapon-art { width: 100%; height: 200px; object-fit: contain; object-position: center; display: block; padding: 8px; box-sizing: border-box; transition: filter .3s ease, opacity .3s ease; }
+.weapon-art.dimmed { filter: grayscale(1) brightness(0.35) !important; opacity: 0.5; }
+.model-card.deactivated .weapon-art-wrap { animation: none; box-shadow: none; border-color: var(--line-2); }
+.weapon-aura-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; }
+.weapon-art { position: relative; z-index: 1; }
+.weapon-power-btn { z-index: 3 !important; }
+.weapon-power-btn { position: absolute; top: 8px; right: 8px; width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(255,255,255,.2); background: rgba(0,0,0,.65); color: rgba(255,255,255,.6); font-size: 14px; cursor: pointer; display: grid; place-items: center; transition: background .2s, color .2s, border-color .2s; z-index: 2; }
+.weapon-power-btn:hover { background: rgba(255,255,255,.15); color: #fff; border-color: rgba(255,255,255,.5); }
+.weapon-power-btn.off { background: rgba(180,40,40,.5); color: #ff8888; border-color: rgba(255,100,100,.5); }
+.weapon-power-btn.off:hover { background: rgba(180,40,40,.75); }
+.model-card .model-head { width: 100%; }
+.model-card .model-desc { width: 100%; }
+.model-card .model-call { width: 100%; }
+.model-card .wield-row { width: 100%; }
 .model-head { display: flex; align-items: center; gap: 10px; }
 .model-head .weapon-glyph { width: 30px; height: 30px; font-size: 12px; border-radius: 8px; }
 .model-id { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-.model-label { font-weight: 700; font-size: var(--t-lg); }
+.model-label { font-weight: 700; font-size: var(--t-lg); transition: opacity .3s, color .3s; }
+.model-card.deactivated .model-label { opacity: .35; color: var(--muted); }
 .model-badges { display: flex; gap: 6px; flex-wrap: wrap; }
 .mb { font-family: var(--mono); font-size: 10px; letter-spacing: .04em; padding: 2px 7px; border-radius: var(--pill); border: 1px solid var(--line-2); color: var(--muted); }
 .mb.tier { color: var(--wc); border-color: color-mix(in srgb, var(--wc) 45%, transparent); }
@@ -319,6 +394,26 @@ kbd {
 .mc-recipe { margin: 0; padding: 9px 11px; font-family: var(--mono); font-size: 11.5px; line-height: 1.5; color: #f4f7ff; white-space: pre-wrap; word-break: break-word; }
 
 .wield-row { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 2px; }
+
+/* Wield multi-select dropdown */
+.wield-dropdown { position: relative; width: 100%; }
+.wield-drop-btn { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 7px 12px; border-radius: var(--r2); font-size: var(--t-sm); cursor: pointer; background: rgba(255,255,255,.04); border: 1px solid var(--line-2); color: var(--muted); transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease); }
+.wield-drop-btn:hover, .wield-dropdown.open .wield-drop-btn { border-color: color-mix(in srgb, var(--wc) 55%, var(--line-2)); color: var(--starlight); }
+.wield-drop-arrow { font-size: 10px; transition: transform .15s ease; }
+.wield-dropdown.open .wield-drop-arrow { transform: rotate(180deg); }
+.wield-drop-list { display: none; position: absolute; bottom: calc(100% + 4px); left: 0; right: 0; background: var(--depth-2, #1a1d2e); border: 1px solid var(--line-2); border-radius: var(--r2); padding: 4px; z-index: 200; box-shadow: 0 4px 24px rgba(0,0,0,.6); max-height: 220px; overflow-y: auto; }
+.wield-dropdown.open .wield-drop-list { display: block; }
+.wield-drop-item { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: var(--r1); font-size: var(--t-sm); color: var(--muted); cursor: pointer; transition: background var(--dur) var(--ease), color var(--dur) var(--ease); user-select: none; }
+.wield-drop-item:hover { background: rgba(255,255,255,.06); color: var(--starlight); }
+.wield-drop-item.on { color: var(--ink); font-weight: 600; }
+.wield-drop-item .wield-chip { position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none; }
+.wield-drop-item .wc-dot { font-size: 11px; opacity: .5; flex: none; color: var(--muted); }
+.wield-drop-item.on .wc-dot { opacity: 1; color: var(--wc); }
+
+/* Ollama-style model description on Arsenal cards */
+.model-ollama-desc { color: var(--muted); font-size: 12px; line-height: 1.6; margin: 0; border-top: 1px solid var(--line-2); padding-top: var(--s3); }
+
+/* Legacy chip styles kept for any remaining uses */
 .wield-chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: var(--pill); font-size: var(--t-sm); cursor: pointer;
   background: rgba(255,255,255,.03); border: 1px solid var(--line-2); color: var(--muted); transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease); }
 .wield-chip:hover { border-color: color-mix(in srgb, var(--wc) 55%, var(--line-2)); color: var(--starlight); }
@@ -431,6 +526,7 @@ a.tag.off { text-decoration: none; }
 /* when an SVG sigil is present, let it fill the plaque (it carries its own engraved background) */
 .sc-icon.art, .sp-icon.art { background: none; border-color: var(--line-3); padding: 0; }
 .sc-icon.art svg, .sp-icon.art svg { width: 100%; height: 100%; display: block; }
+.skill-art-img { width: 100%; height: 100%; display: block; object-fit: cover; image-rendering: pixelated; }
 .skill-card .sc-name { font-size: var(--t-lg); font-weight: 600; }
 .skill-card .sc-ver { font-family: var(--mono); font-size: var(--t-xs); color: var(--hint); }
 .skill-card .sc-blurb { color: var(--muted); font-size: var(--t-sm); line-height: 1.5; flex: 1; }
@@ -533,3 +629,12 @@ a.tag.off { text-decoration: none; }
   .starmap-list .member-card { min-height: auto; }
   .map-legend { display: none; }
 }
+
+/* ── Control-panel inline editing ── */
+.editable { cursor: text; border-radius: var(--r1); transition: background var(--dur) var(--ease), box-shadow var(--dur) var(--ease); }
+.editable:hover { background: rgba(255,255,255,.04); box-shadow: inset 0 0 0 1px var(--line-2); }
+.editable:focus { outline: none; background: rgba(61,240,255,.06); box-shadow: inset 0 0 0 1px var(--cyan); }
+.editable.edit-unsaved { box-shadow: inset 0 0 0 1px var(--rose); }
+.prompt-edit { white-space: pre-wrap; font-family: var(--mono); font-size: var(--t-sm); line-height: 1.6; color: var(--starlight); margin: 0; padding: 12px; background: rgba(0,0,0,.22); border: 1px solid var(--line-2); border-radius: var(--r2); max-height: 360px; overflow: auto; }
+.reset-btn.danger { color: #ff8a8a; border-color: color-mix(in srgb, #ff6b6b 40%, transparent); }
+.reset-btn.danger:hover { background: rgba(255,107,107,.12); }

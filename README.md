@@ -7,7 +7,7 @@ with specific kinds of work. Members share common skills and carry unique ones.
 
 ```
 star-alliance/
-├── star-alliance-agents/  ← guild roster (agent definitions)
+├── star-alliance-members/  ← guild roster (agent definitions)
 │   ├── the-architect.md
 │   ├── the-butler.md
 │   ├── the-designer.md
@@ -39,7 +39,7 @@ It loads one generated file, `guild-data.js`, which `build.py` regenerates from 
 **Skills** live in `star-alliance-skills/` — each subdirectory is one skill (a `SKILL.md` plus
 optional `scripts/`, `references/`, `assets/`). All skills are shared property of the guild.
 
-**Members** live in `star-alliance-agents/` — each `.md` file is a Claude Code agent definition
+**Members** live in `star-alliance-members/` — each `.md` file is a Claude Code agent definition
 with a system prompt and a curated `skills` list. Deploy a member by copying their file into
 your project's `.claude/agents/` and installing their skills.
 
@@ -77,7 +77,7 @@ These skills belong to one member only — they define the member's specialty:
 
 ```sh
 # 1. Copy the member's agent file into your project
-cp star-alliance-agents/the-architect.md ~/my-project/.claude/agents/
+cp star-alliance-members/the-architect.md ~/my-project/.claude/agents/
 
 # 2. Install the member's skills to the device
 python3 star-alliance-skills/skillsmith/scripts/skill_sync.py apply --skill transactions-domain-model
@@ -90,7 +90,7 @@ python3 star-alliance-skills/skillsmith/scripts/skill_sync.py apply --skill supa
 
 ## Recruiting a new member
 
-1. Create `star-alliance-agents/<name>.md` with the agent definition (see `star-alliance-agents/README.md` for format).
+1. Create `star-alliance-members/<name>.md` with the agent definition (see `star-alliance-members/README.md` for format).
 2. List the skills they should carry in the `skills` frontmatter field.
 3. Install any new skills they need via `skillsmith create` (from `star-alliance-skills/skillsmith/`).
 4. Update the roster table in this README.

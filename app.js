@@ -43,37 +43,48 @@ const pluralize = (n, w) => `${n} ${w}${n === 1 ? "" : "s"}`;
 // ════════════════════════════════════════════════════════════════════════
 const MODELS = {
   "opus":             { label: "Opus",            color: "#e8c93a", tier: "Master",  host: "Anthropic · native",  desc: "Claude Opus 4.8 — the master brain. Orchestrates the guild, reasons deepest, reviews everything. This IS the run.",
-    call: "You ARE Opus — the orchestrator. Delegate sub-work via the Task tool: subagent_type + model:'opus' for heavy sub-reasoning.",
+    ollama_desc: "Claude Opus 4.8 · Anthropic's most powerful model. Best for complex reasoning, deep analysis, agentic orchestration, and long-horizon planning. Top-tier on MMLU, HumanEval, MATH. Use for hard problems that need the best answer, not the fastest.",
+    call: "Native — no script. You ARE Opus, the orchestrator. Delegate sub-work via the Task tool: subagent_type + model:'opus'.\n(python3 star-alliance-arsenal/summon.py opus just echoes this reminder.)",
     meter: { kind: "sub", note: "Claude subscription · unmetered" } },
   "sonnet":           { label: "Sonnet",          color: "#3df0ff", tier: "Thinker", host: "Anthropic · native",  desc: "Claude Sonnet 4.6 — the reliable longsword. Fast, balanced daily dispatch.",
-    call: "Task tool subagent, model:'sonnet'. Or switch the main loop with /model sonnet.",
+    ollama_desc: "Claude Sonnet 4.6 · Balanced speed and intelligence. Near-Opus quality at a fraction of the latency. Excels at coding, writing, analysis, and tool use. The go-to for reliable daily dispatch — fast enough for interactive use, smart enough for hard tasks.",
+    call: "Native — no script. Task tool subagent, model:'sonnet'. Or switch the main loop with /model sonnet.",
     meter: { kind: "sub", note: "Claude subscription · unmetered" } },
-  "haiku":            { label: "Haiku",           color: "#4ec985", tier: "Light",   host: "Anthropic · native",  desc: "Claude Haiku 4.5 — the dagger. Fastest and cheapest, for simple strikes.",
-    call: "Task tool subagent, model:'haiku' — cheap mechanical strikes.",
+  "haiku":            { label: "Haiku",           color: "#4ec985", tier: "Light",   host: "Anthropic · native",  desc: "Claude Haiku 4.5 — the stiletto. Fastest and cheapest, for precise quick strikes.",
+    ollama_desc: "Claude Haiku 4.5 · Fastest and cheapest Claude. Sub-second responses, ideal for bulk classification, routing, summarization, and mechanical transforms. Use when you need high volume at low cost — not when you need deep reasoning.",
+    call: "Native — no script. Task tool subagent, model:'haiku' — cheap mechanical strikes.",
     meter: { kind: "sub", note: "Claude subscription · unmetered" } },
   "gpt-5.5":          { label: "GPT-5.5",         color: "#9d7bff", tier: "Premium", host: "OpenAI · direct",     desc: "OpenAI GPT-5.5 — a US-hosted frontier second opinion. Premium-priced.",
-    call: "OpenAI direct (provision pending). POST https://api.openai.com/v1/chat/completions, Bearer $OPENAI_API_KEY, model:'gpt-5.5'.",
+    ollama_desc: "OpenAI GPT-5.5 · OpenAI's flagship frontier model. Multimodal reasoning, world-class coding, and strong creative generation. Best used as a second opinion on hard problems, cross-validation, or tasks that benefit from a different model family's perspective.",
+    call: "python3 star-alliance-arsenal/summon.py gpt-5.5  → reports NOT provisioned (no key on device).\nWhen provisioned: OpenAI direct, POST api.openai.com/v1/chat/completions, Bearer $OPENAI_API_KEY, model:'gpt-5.5'.",
     meter: { kind: "off", note: "Not provisioned — no key on device yet" } },
-  "minimax-m3":       { label: "MiniMax M3",      color: "#4ec9a0", tier: "Doer",    host: "MiniMax · DIRECT",    desc: "MiniMax M3 — the primary doer. Cheap, 1M context, for bulk delegated work. Use the DIRECT cloud sub — the old Ollama minimax-m3 route is RETIRED.",
-    call: "DIRECT cloud sub — NOT Ollama.\nPOST https://api.minimax.io/v1/text/chatcompletion_v2\nAuthorization: Bearer $(cat ~/.config/minimax/m3.key)\nbody: { model:'MiniMax-M3', messages:[…] }",
+  "minimax-m3":       { label: "MiniMax M3",      color: "#4ec9a0", tier: "Doer",    host: "MiniMax · DIRECT",    desc: "MiniMax M3 — the crossbow. Cheap, 1M context, fires bulk delegated work at range. Use the DIRECT cloud sub — the old Ollama minimax-m3 route is RETIRED.",
+    ollama_desc: "MiniMax M3 · 1M context window, very cheap per token. Strong at long-document analysis, bulk text extraction, and summarization. The guild's primary sub-agent for delegated work. Use for anything where you need to process large inputs at low cost.",
+    call: "DIRECT cloud sub — NOT Ollama.\nEasiest:  python3 star-alliance-arsenal/minimax.py \"<prompt>\"\n  flags: -s <system>  --json  -f <file>  (reads stdin if no arg)\nRaw:  POST https://api.minimax.io/v1/text/chatcompletion_v2\n  Authorization: Bearer $(cat ~/.config/minimax/m3.key)\n  body { model:'MiniMax-M3', messages:[…], max_tokens:16000 }",
     meter: { kind: "used", spent: 0, quota: 100, unit: "M tok", est: true, note: "est · set your real plan cap" } },
-  "glm-5.2":          { label: "GLM-5.2",         color: "#d4a05a", tier: "Bench",   host: "Ollama Cloud",        desc: "GLM-5.2 — the staff. Coding-first, strong multilingual analysis. Pulled & ready.",
-    call: "Ollama Cloud sub:  ollama run glm-5.2:cloud \"…\"\nor POST localhost:11434/api/generate { model:'glm-5.2:cloud', prompt:'…' }   ✓ pulled",
+  "glm-5.2":          { label: "GLM-5.2",         color: "#d4a05a", tier: "Bench",   host: "Ollama Cloud",        desc: "GLM-5.2 — the longbow. Coding-first, strong multilingual analysis. Long reach, pulled & ready.",
+    ollama_desc: "GLM-5.2 · Zhipu AI's flagship. Coding-first with top LiveCodeBench performance. Strong multilingual capabilities — especially Chinese, Arabic, and European languages. Best for code review, multi-language tasks, and structured analytical work.",
+    call: "Easiest:  python3 star-alliance-arsenal/summon.py glm-5.2 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py glm-5.2:cloud \"<prompt>\"  (-s, --json, -f, stdin)\nOllama Cloud sub · tag glm-5.2:cloud  ✓ pulled",
     meter: { kind: "used", spent: 0, quota: 100, unit: "req", est: true, pool: "Ollama Cloud", note: "est · shares the Ollama Cloud pool" } },
-  "kimi-k2.7":        { label: "Kimi K2.7",       color: "#ff6b8a", tier: "Bench",   host: "Ollama Cloud",        desc: "Kimi K2.7 — the warhammer. Long-horizon coding and agentic work.",
-    call: "Ollama Cloud sub:  ollama pull kimi-k2:cloud  then  ollama run kimi-k2:cloud \"…\"  (verify exact cloud tag).",
+  "kimi-k2.7":        { label: "Kimi K2.7",       color: "#ff6b8a", tier: "Bench",   host: "Ollama Cloud",        desc: "Kimi K2.7 — the hammer. Long-horizon coding and agentic work, blunt force done right.",
+    ollama_desc: "Kimi K2.7 · Moonshot AI's agentic powerhouse. Designed for long-horizon tool use, autonomous coding, and multi-step debugging. Strong at planning, self-correction, and sustained agentic loops. Best when a task requires many tool calls across a long session.",
+    call: "Easiest:  python3 star-alliance-arsenal/summon.py kimi-k2.7 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py kimi-k2:cloud \"<prompt>\"\nPull first:  ollama pull kimi-k2:cloud  (verify exact cloud tag)",
     meter: { kind: "used", spent: 0, quota: 100, unit: "req", est: true, pool: "Ollama Cloud", note: "est · not yet pulled · shares Ollama Cloud pool" } },
-  "deepseek-v4-pro":  { label: "DeepSeek V4 Pro", color: "#5b8cff", tier: "Bench",   host: "Ollama Cloud",        desc: "DeepSeek V4 Pro — the greatsword. Frontier MoE reasoning.",
-    call: "Ollama Cloud sub:  ollama pull deepseek-v3.1:cloud  then  ollama run deepseek-v3.1:cloud \"…\"  (verify exact cloud tag).",
+  "deepseek-v4-pro":  { label: "DeepSeek V4 Pro", color: "#5b8cff", tier: "Bench",   host: "Ollama Cloud",        desc: "DeepSeek V4 Pro — the scythe. Wide-sweeping frontier MoE reasoning.",
+    ollama_desc: "DeepSeek V4 Pro · Mixture-of-Experts frontier reasoning at low cost. Exceptional at STEM, mathematics, and logical inference. Near GPT-4 quality for a fraction of the price. Best for hard analytical problems, algorithm design, and scientific reasoning.",
+    call: "Easiest:  python3 star-alliance-arsenal/summon.py deepseek-v4-pro \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py deepseek-v3.1:cloud \"<prompt>\"\nPull first:  ollama pull deepseek-v3.1:cloud  (verify exact cloud tag)",
     meter: { kind: "used", spent: 0, quota: 100, unit: "req", est: true, pool: "Ollama Cloud", note: "est · not yet pulled · shares Ollama Cloud pool" } },
   "nemotron-3-ultra": { label: "Nemotron-3 Ultra",color: "#7fd4ff", tier: "Bench",   host: "Ollama Cloud",        desc: "Nemotron-3 Ultra — the lance. High-throughput reasoning, long agent runs.",
-    call: "Ollama Cloud sub:  ollama pull <nemotron-cloud-tag>  then  ollama run <tag> \"…\"  (verify the exact cloud tag first).",
+    ollama_desc: "Nemotron-3 Ultra · NVIDIA's high-throughput reasoning model. Strong at structured data extraction, long-form document analysis, and sustained multi-turn agentic work. Optimized for inference efficiency — best when you need frontier reasoning at scale.",
+    call: "Easiest:  python3 star-alliance-arsenal/summon.py nemotron-3-ultra \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py nemotron:cloud \"<prompt>\"\nPull first:  ollama pull nemotron:cloud  (verify the exact cloud tag)",
     meter: { kind: "used", spent: 0, quota: 100, unit: "req", est: true, pool: "Ollama Cloud", note: "est · not yet pulled · shares Ollama Cloud pool" } },
   "qwen3.5":          { label: "Qwen 3.5",        color: "#c47fff", tier: "Bench",   host: "Ollama Cloud",        desc: "Qwen 3.5 — the shortsword. Versatile general-purpose workhorse.",
-    call: "Ollama Cloud sub:  ollama pull qwen3-coder:cloud  then  ollama run qwen3-coder:cloud \"…\"  (verify exact cloud tag).",
+    ollama_desc: "Qwen 3.5 · Alibaba's versatile coder. Supports 29 languages, strong structured output, function calling, and API integration. Well-rounded across coding, writing, and analysis. Best for multilingual tasks and general-purpose work where flexibility matters.",
+    call: "Easiest:  python3 star-alliance-arsenal/summon.py qwen3.5 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py qwen3-coder:cloud \"<prompt>\"\nPull first:  ollama pull qwen3-coder:cloud  (verify exact cloud tag)",
     meter: { kind: "used", spent: 0, quota: 100, unit: "req", est: true, pool: "Ollama Cloud", note: "est · not yet pulled · shares Ollama Cloud pool" } },
-  "gemma4":           { label: "Gemma 4",         color: "#ffb04e", tier: "Bench",   host: "Ollama Cloud",        desc: "Gemma 4 — the throwing knife. Small and light, for quick cheap passes.",
-    call: "Ollama Cloud sub:  ollama pull gemma3:cloud  then  ollama run gemma3:cloud \"…\"  (verify exact cloud tag).",
+  "gemma4":           { label: "Gemma 4",         color: "#ffb04e", tier: "Bench",   host: "Ollama Cloud",        desc: "Gemma 4 — the ninja star. Small, fast, deadly accurate for quick cheap passes.",
+    ollama_desc: "Gemma 4 · Google's lightweight open model. Fast, compact, deployable anywhere. Strong instruction following, basic reasoning, and summarization at minimal cost. Best for high-volume quick passes, preprocessing, and tasks where speed and cost trump depth.",
+    call: "Easiest:  python3 star-alliance-arsenal/summon.py gemma4 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py gemma3:cloud \"<prompt>\"\nPull first:  ollama pull gemma3:cloud  (verify exact cloud tag)",
     meter: { kind: "used", spent: 0, quota: 100, unit: "req", est: true, pool: "Ollama Cloud", note: "est · not yet pulled · shares Ollama Cloud pool" } },
 };
 const modelMeta = (m) => MODELS[m] || { label: m || "—", color: "#8a93ad" };
@@ -154,14 +165,14 @@ function unassign(mid, sid) {
   const o = ensureOv(mid), base = byMember.get(mid).skills;
   pull(o.block, sid);                                  // an unassigned skill can't stay blocked
   if (base.includes(sid)) { if (!o.remove.includes(sid)) o.remove.push(sid); } else pull(o.add, sid);
-  cleanOv(mid); saveOverrides();
+  cleanOv(mid); saveOverrides(); saveMemberField(mid, "skills");
 }
 function assign(mid, sid) {
   const o = ensureOv(mid), base = byMember.get(mid).skills;
   pull(o.block, sid);                                  // (re)assigning clears any stale block
   if (base.includes(sid)) pull(o.remove, sid);         // re-assign a previously removed base skill
   else if (!o.add.includes(sid)) o.add.push(sid);
-  cleanOv(mid); saveOverrides();
+  cleanOv(mid); saveOverrides(); saveMemberField(mid, "skills");
 }
 const resetMember = (mid) => { delete overrides[mid]; saveOverrides(); };
 const resetAll = () => { overrides = {}; disabled = []; saveOverrides(); saveDisabled(); };
@@ -179,9 +190,53 @@ function assignedSkills(m) {
 // Guild-wide kill switch — a deactivated skill is inert for EVERY agent at once.
 let disabled = [];
 try { disabled = JSON.parse(localStorage.getItem("sa-disabled") || "[]") || []; } catch (_) { disabled = []; }
+GUILD.skills.forEach((s) => { if (s.disabled && !disabled.includes(s.id)) disabled.push(s.id); });  // seed from source
 const saveDisabled = () => { try { localStorage.setItem("sa-disabled", JSON.stringify(disabled)); } catch (_) {} };
 const isDisabled = (sid) => disabled.includes(sid);
-const toggleDisabled = (sid) => { isDisabled(sid) ? pull(disabled, sid) : disabled.push(sid); saveDisabled(); };
+const toggleDisabled = (sid) => { isDisabled(sid) ? pull(disabled, sid) : disabled.push(sid); saveDisabled(); postSave({ kind: "skill-flag", skill: sid, disabled: isDisabled(sid) }); };
+
+// ── Generic source write-through (control panel). True on server-confirmed save. Offline → false (overlay keeps it).
+async function postSave(payload) {
+  try {
+    const r = await fetch("/api/save", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+    const d = await r.json();
+    return !!(d && d.ok);
+  } catch (_) { return false; }
+}
+async function saveMemberEdit(el) {
+  const field = el.dataset.medit, mid = el.dataset.member; if (!field || !mid) return;
+  const text = (el.innerText || el.textContent || "").trim();
+  const m = byMember.get(mid) || {};
+  const cur = field === "prompt" ? (m.prompt || "") : (m[field] || "");
+  if (cur === text) return;                                   // no change → no write/rebuild
+  let payload;
+  if (field === "description") payload = { kind: "member-description", member: mid, text };
+  else if (field === "prompt") payload = { kind: "member-body", member: mid, text };
+  else payload = { kind: "member-meta", member: mid, fields: { [field]: text } };
+  const ok = await postSave(payload);
+  el.classList.toggle("edit-unsaved", !ok);
+  if (ok) { if (field === "prompt") m.prompt = text; else m[field] = text; }
+}
+async function deleteMemberUI(mid) {
+  if (!confirm("Delete member \u201c" + mid + "\u201d? Removes its .md file and roster entry.")) return;
+  if (await postSave({ kind: "member-delete", member: mid })) { location.hash = "#/members"; location.reload(); }
+  else alert("Delete failed \u2014 is the dev server running?");
+}
+async function createMemberUI() {
+  const id = (prompt("New member id (kebab-case, e.g. the-scribe):") || "").trim(); if (!id) return;
+  if (!/^[a-z0-9-]+$/.test(id)) { alert("id must be kebab-case [a-z0-9-]"); return; }
+  const name = (prompt("Display name:", id) || id).trim();
+  const role = (prompt("Role / one-line description:", "") || "").trim();
+  if (await postSave({ kind: "member-create", member: id, opts: { name, role, model: "sonnet", skills: [], weapons: [] } })) { location.hash = "#/members/" + id; location.reload(); }
+  else alert("Create failed \u2014 member may exist, or the dev server is off.");
+}
+
+// Guild-wide weapon kill switch — a deactivated weapon is hidden from all agent loadouts.
+let disabledWeapons = [];
+try { disabledWeapons = JSON.parse(localStorage.getItem("sa-disabled-weapons") || "[]") || []; } catch (_) { disabledWeapons = []; }
+const saveDisabledWeapons = () => { try { localStorage.setItem("sa-disabled-weapons", JSON.stringify(disabledWeapons)); } catch (_) {} };
+const isWeaponDisabled = (mid) => disabledWeapons.includes(mid);
+const toggleWeaponDisabled = (mid) => { isWeaponDisabled(mid) ? pull(disabledWeapons, mid) : disabledWeapons.push(mid); saveDisabledWeapons(); };
 
 const effectiveSkills = (m) => assignedSkills(m).filter((s) => !isBlocked(m.id, s) && !isDisabled(s));
 const liveCarriers = (sid) => GUILD.members.filter((m) => effectiveSkills(m).includes(sid)).map((m) => m.id);
@@ -225,16 +280,41 @@ function grantModel(mid, model) {
   const o = ensureWov(mid), m = byMember.get(mid);
   pull(o.remove, model);
   if (!baseWeapons(m).includes(model) && !o.add.includes(model)) o.add.push(model);
-  cleanWov(mid); saveWeapons();
+  cleanWov(mid); saveWeapons(); saveMemberField(mid, "weapons");
 }
 function revokeModel(mid, model) {
   const o = ensureWov(mid), m = byMember.get(mid);
   pull(o.add, model);
   if (baseWeapons(m).includes(model) && !o.remove.includes(model)) o.remove.push(model);
-  cleanWov(mid); saveWeapons();
+  cleanWov(mid); saveWeapons(); saveMemberField(mid, "weapons");
 }
 const toggleWield = (mid, model) => { const m = byMember.get(mid); wields(m, model) ? revokeModel(mid, model) : grantModel(mid, model); };
 const resetAllWeapons = () => { weaponOv = {}; saveWeapons(); };
+
+// ── Control-panel write-through: persist a member's loadout to its source .md
+//    via the dev server, then fold the change into the in-memory base so the
+//    overlay == source. No server (file://) → keep the localStorage overlay (fallback).
+async function saveMemberField(mid, field) {
+  const m = byMember.get(mid); if (!m) return;
+  const values = field === 'skills' ? assignedSkills(m) : effectiveWeapons(m).map((w) => w.model);
+  const payload = { kind: 'member-field', member: mid, field, values };
+  if (field === 'weapons') { payload.desc = {}; values.forEach((mdl) => { payload.desc[mdl] = (MODELS[mdl] && MODELS[mdl].desc) || ''; }); }
+  let d;
+  try {
+    const r = await fetch('/api/save', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload) });
+    d = await r.json();
+  } catch (_) { return; }                 // offline → overlay is the fallback
+  if (!d || !d.ok) return;                // server rejected → keep overlay
+  if (field === 'skills') {
+    m.skills = values.slice();
+    const o = overrides[mid]; if (o) { o.add = []; o.remove = []; } cleanOv(mid); saveOverrides();
+  } else {
+    m.weapons = effectiveWeapons(m).map((w) => ({ model: w.model, desc: w.desc }));
+    delete weaponOv[mid]; saveWeapons();
+  }
+  refreshView();
+}
 function reorderWeapons(mid, orderedModels) { ensureWov(mid).order = orderedModels.slice(); cleanWov(mid); saveWeapons(); }
 function resetWeaponOrder(mid) { const o = weaponOv[mid]; if (o) delete o.order; cleanWov(mid); saveWeapons(); }
 
@@ -322,9 +402,13 @@ const viewHead = (eyebrow, title, sub) => `
 
 const crumb = (href, label) => `<a class="crumb" href="${href}">← ${esc(label)}</a>`;
 const rampClass = (s) => `ramp ramp-${esc(s.ramp || "gray")}`;
-// s.art is a build-time-vetted inline SVG sigil (sanitized in gen, sourced from skills-meta.json) —
-// injected raw like avatars; falls back to the emoji icon when absent.
-const skillArt = (s) => (s && s.art) ? s.art : `<span class="ico-emoji">${esc(s ? s.icon : "📦")}</span>`;
+// skill art: PNG from skill-art/<id>.png takes priority, then inline SVG, then emoji fallback.
+const skillArt = (s) => {
+  if (!s) return `<span class="ico-emoji">📦</span>`;
+  if (s.artPng) return `<img class="skill-art-img" src="skill-art/${esc(s.id)}.png" alt="${esc(s.name)}" loading="lazy">`;
+  if (s.art) return s.art;
+  return `<span class="ico-emoji">${esc(s.icon || "📦")}</span>`;
+};
 
 function skillChip(id, mid) {
   const s = bySkill.get(id);
@@ -334,15 +418,35 @@ function skillChip(id, mid) {
   return `<a class="${cls}" href="#/skills/${esc(id)}">${s ? esc(s.icon) + " " : ""}${esc(name)}</a>`;
 }
 
+function skillIconTile(sid, mid) {
+  const s = bySkill.get(sid);
+  if (!s) return "";
+  const blocked = mid && isBlocked(mid, sid);
+  const img = s.artPng
+    ? `<img class="sit-img" src="skill-art/${esc(s.id)}.png" alt="${esc(s.name)}" loading="lazy">`
+    : s.art
+      ? `<span class="sit-svg">${s.art}</span>`
+      : `<span class="sit-emoji">${esc(s.icon || "📦")}</span>`;
+  const lvl = esc(s.level || "");
+  const blurb = esc(s.blurb || "");
+  return `<a class="sit${blocked ? " sit-blocked" : ""}" href="#/skills/${esc(sid)}"
+      data-tip-name="${esc(s.name)}" data-tip-level="${lvl}" data-tip-blurb="${blurb}"
+      aria-label="${esc(s.name)}${blocked ? " (blocked)" : ""}">${img}</a>`;
+}
+
 function memberCard(m) {
   const assigned = assignedSkills(m);
-  const shown = assigned.slice(0, 5).map((s) => skillChip(s, m.id)).join("");
-  const extra = assigned.length > 5 ? `<span class="tag">+${assigned.length - 5}</span>` : "";
+  const MAX = 8;
+  const shown = assigned.slice(0, MAX).map((s) => skillIconTile(s, m.id)).join("");
+  const extra = assigned.length > MAX ? `<span class="sit-extra">+${assigned.length - MAX}</span>` : "";
   const active = effectiveSkills(m).length;
   const blocked = assigned.length - active;
-  // role=link (not <a>): skill chips inside are real anchors, and nesting <a> in <a> is invalid HTML.
+  // role=link (not <a>): skill icon tiles inside are real anchors — no nesting <a> in <a>.
   return `<div class="member-card glass" role="link" tabindex="0" data-href="#/members/${esc(m.id)}"
        aria-label="${esc(m.name)} — ${esc(m.role)}" style="--mc:${esc(m.color)}" data-id="${esc(m.id)}">
+    <div class="mc-portrait-wrap">
+      <img class="mc-portrait" src="member-art/${esc(m.id)}.png" alt="${esc(m.name)} portrait" loading="lazy">
+    </div>
     <div class="mc-top">
       <div class="avatar">${m.avatar || ""}</div>
       <div><div class="mc-name">${esc(m.name)}</div><div class="mc-role">${esc(m.role)}</div></div>
@@ -450,6 +554,7 @@ function buildStarMapSVG() {
 function renderMembers() {
   return `${viewHead("Roster", "Guild Members",
       `${GUILD.members.length} specialists, each carrying a curated skill set.`)}
+    <div class="arsenal-toolbar"><button class="reset-btn" id="member-new" type="button">\uff0b Recruit a member</button></div>
     <div class="grid roster-grid">${GUILD.members.map(memberCard).join("")}</div>`;
 }
 
@@ -465,13 +570,16 @@ function renderMemberDossier(id) {
   const eff = effectiveWeapons(m);
   const weapons = eff.map((w, i) => {
     const mm = modelMeta(w.model);
+    const tip = esc(mm.ollama_desc || mm.desc || "");
     return `<div class="weapon-card${w.added ? " added" : ""}" draggable="true" data-model="${esc(w.model)}" data-member="${esc(m.id)}" style="--wc:${esc(mm.color)}">
-      <div class="weapon-rank">${["PRIMARY", "SECONDARY", "TERTIARY"][i] || "RESERVE"}${w.added ? ` · <span class="wc-added">granted</span>` : ""}</div>
+      <div class="weapon-thumb-wrap">
+        <img class="weapon-thumb" src="weapon-art/${esc(w.model)}.png" alt="${esc(mm.label)}" loading="lazy">
+        <div class="weapon-thumb-tip">${tip}</div>
+      </div>
       <div class="weapon-name"><span class="weapon-glyph" style="--wc:${esc(mm.color)}">${esc(modelGlyph(w.model))}</span>${esc(mm.label)}
         <button class="wc-revoke" type="button" data-member="${esc(m.id)}" data-model="${esc(w.model)}"
           title="Revoke from this agent" aria-label="Revoke ${esc(mm.label)} from this agent">✕</button>
       </div>
-      <div class="weapon-desc">${esc(w.desc || mm.desc || "")}</div>
     </div>`;
   }).join("");
 
@@ -517,10 +625,15 @@ function renderMemberDossier(id) {
   return `${crumb("#/members", "All members")}
     <div class="dossier" style="--mc:${esc(m.color)}">
       <div class="dossier-hero glass">
-        <div class="avatar lg">${m.avatar || ""}</div>
+        <div class="dh-portrait-wrap">
+          <img class="dh-portrait" src="member-art/${esc(m.id)}.png" alt="${esc(m.name)} portrait" loading="lazy">
+        </div>
         <div class="dh-meta">
-          <h1 class="dh-name">${esc(m.name)}</h1>
-          <div class="dh-role">${esc(m.role)}</div>
+          <div class="dh-name-row">
+            <div class="avatar lg">${m.avatar || ""}</div>
+            <h1 class="dh-name">${esc(m.name)}</h1>
+          </div>
+          <div class="dh-role editable" contenteditable="true" spellcheck="false" data-medit="role" data-member="${esc(m.id)}">${esc(m.role)}</div>
           <div class="dh-tags">
             <span class="tag gold">${esc(modelMeta(m.model).label)}</span>
             <span class="tag">${pluralize(active.length, "skill")}</span>
@@ -528,7 +641,7 @@ function renderMemberDossier(id) {
             ${added ? `<span class="tag green">${added} added</span>` : ""}
             <span class="tag cyan">${sharedN} shared</span>
           </div>
-          <p class="dh-summary">${esc(m.summary)}</p>
+          <p class="dh-summary editable" contenteditable="true" spellcheck="false" data-medit="summary" data-member="${esc(m.id)}">${esc(m.summary)}</p>
         </div>
       </div>
       <div class="panel-grid">
@@ -554,9 +667,9 @@ function renderMemberDossier(id) {
         <div class="section glass">
           <div class="section-title">Deployment</div>
           <div class="kv">
-            <div><div class="k">Deploy when</div><div class="v">${esc(m.deploy)}</div></div>
-            <div><div class="k">Triggers</div><div class="v">${esc(m.triggers)}</div></div>
-            ${m.description ? `<div><div class="k">Mandate</div><div class="v">${esc(m.description)}</div></div>` : ""}
+            <div><div class="k">Deploy when</div><div class="v editable" contenteditable="true" spellcheck="false" data-medit="deploy" data-member="${esc(m.id)}">${esc(m.deploy)}</div></div>
+            <div><div class="k">Triggers</div><div class="v editable" contenteditable="true" spellcheck="false" data-medit="triggers" data-member="${esc(m.id)}">${esc(m.triggers)}</div></div>
+            <div><div class="k">Mandate</div><div class="v editable" contenteditable="true" spellcheck="false" data-medit="description" data-member="${esc(m.id)}">${esc(m.description || "")}</div></div>
           </div>
         </div>
         <div class="section glass">
@@ -565,6 +678,15 @@ function renderMemberDossier(id) {
             <ul class="bullets yes">${m.does.map((d) => `<li>${esc(d)}</li>`).join("")}</ul>
             <ul class="bullets no">${m.doesnt.map((d) => `<li>${esc(d)}</li>`).join("")}</ul>
           </div>
+        </div>
+        <div class="section glass" style="grid-column:1/-1">
+          <div class="section-title">Workflow / system prompt</div>
+          <p class="skill-hint">The agent's mandate body. Click to edit \u2014 saves to the member <code>.md</code> when the dev server runs.</p>
+          <pre class="prompt-edit editable" contenteditable="true" spellcheck="false" data-medit="prompt" data-member="${esc(m.id)}">${esc(m.prompt || "")}</pre>
+        </div>
+        <div class="section glass" style="grid-column:1/-1">
+          <div class="section-title">Danger zone</div>
+          <button class="reset-btn danger" id="member-delete" data-member="${esc(m.id)}">Delete this member</button>
         </div>
       </div>
     </div>`;
@@ -575,14 +697,28 @@ function renderArsenal() {
   const anyOv = Object.keys(weaponOv).length;
   const cards = ARSENAL.map((id) => {
     const mm = modelMeta(id);
+    const off = isWeaponDisabled(id);
     const wielders = GUILD.members.filter((m) => wields(m, id)).length;
-    const chips = GUILD.members.map((m) => {
+    const wieldCount = GUILD.members.filter((m) => wields(m, id)).length;
+    const dropItems = GUILD.members.map((m) => {
       const on = wields(m, id);
-      return `<button class="wield-chip${on ? " on" : ""}" type="button" data-member="${esc(m.id)}" data-model="${esc(id)}"
-        aria-pressed="${on}" title="${on ? "Revoke from" : "Assign to"} ${esc(m.name)}">
-        <span class="wc-dot" aria-hidden="true">${on ? "✓" : "＋"}</span>${esc(m.name)}</button>`;
+      return `<label class="wield-drop-item${on ? " on" : ""}">
+        <input type="checkbox" class="wield-chip" data-member="${esc(m.id)}" data-model="${esc(id)}"${on ? " checked" : ""}>
+        <span class="wc-dot" aria-hidden="true">${on ? "✓" : "＋"}</span>${esc(m.name)}</label>`;
     }).join("");
-    return `<div class="model-card" style="--wc:${esc(mm.color)}">
+    const chips = `<div class="wield-dropdown">
+      <button class="wield-drop-btn" type="button" data-weapon="${esc(id)}">
+        ${wieldCount > 0 ? `${wieldCount} agent${wieldCount > 1 ? "s" : ""}` : "Assign agents"} <span class="wield-drop-arrow">▾</span>
+      </button>
+      <div class="wield-drop-list">${dropItems}</div>
+    </div>`;
+    return `<div class="model-card${off ? " deactivated" : ""}" style="--wc:${esc(mm.color)}">
+      <div class="weapon-art-wrap" data-weapon-color="${esc(mm.color)}" data-weapon-off="${off}">
+        <img class="weapon-art${off ? " dimmed" : ""}" src="weapon-gif/${esc(id)}.gif" onerror="this.src='weapon-art/${esc(id)}.png'" alt="${esc(mm.label)} weapon art" loading="lazy">
+        <canvas class="weapon-aura-canvas" aria-hidden="true"></canvas>
+        <button class="weapon-power-btn${off ? " off" : ""}" type="button" data-weapon="${esc(id)}"
+          title="${off ? "Reactivate weapon" : "Deactivate weapon"}">⏻</button>
+      </div>
       <div class="model-head">
         <span class="weapon-glyph" style="--wc:${esc(mm.color)}">${esc(modelGlyph(id))}</span>
         <div class="model-id">
@@ -599,20 +735,19 @@ function renderArsenal() {
         <pre class="mc-recipe">${esc(mm.call)}</pre>
       </div>` : ""}
       <div class="wield-row">${chips}</div>
+      <p class="model-ollama-desc">${esc(mm.ollama_desc || mm.desc || "")}</p>
     </div>`;
   }).join("");
 
   let liveTag;
   if (arsenalFetching && !arsenalLive) liveTag = `<span class="tag">⟳ syncing…</span>`;
   else if (arsenalLive && !arsenalLive.offline) liveTag = `<span class="tag green">● live — ${esc(String((arsenalLive.pulled || []).length))} cloud models pulled</span>`;
-  else if (arsenalLive && arsenalLive.offline) liveTag = `<span class="tag">○ static estimates (start serve.cjs for live data)</span>`;
   else liveTag = "";
 
   return `${viewHead("Armory", "Arsenal",
       "Every model in the guild's armory — with its <strong>summon recipe</strong>. Claude = native master brain; MiniMax = <strong>direct</strong> cloud sub (not Ollama); the bench = Ollama Cloud. On the dev server each card shows whether its cloud model is actually pulled. Tap an agent under a model to grant/revoke.")}
     <div class="arsenal-toolbar">
       ${liveTag}
-      <button class="reset-btn" id="refresh-arsenal" type="button">⟳ Refresh</button>
       ${anyOv ? `<span class="tag green">Custom loadouts active</span><button class="reset-btn" id="reset-weapons">Reset all assignments</button>` : ""}
     </div>
     <div class="model-grid">${cards}</div>`;
@@ -650,7 +785,7 @@ function skillCard(s) {
   const off = isDisabled(s.id);
   return `<a class="skill-card glass${off ? " deactivated" : ""}" href="#/skills/${esc(s.id)}" data-id="${esc(s.id)}">
     <div class="sc-top">
-      <div class="sc-icon${s.art ? " art" : ""}">${skillArt(s)}</div>
+      <div class="sc-icon${(s.art || s.artPng) ? " art" : ""}">${skillArt(s)}</div>
       <div><div class="sc-name">${esc(s.name)}</div><div class="sc-ver">v${esc(s.version)}</div></div>
     </div>
     <div class="sc-blurb">${esc(s.blurb)}</div>
@@ -684,7 +819,7 @@ function renderSkillPanel(id) {
   return `${crumb("#/skills", "All skills")}
     <div class="skill-panel">
       <div class="sp-hero glass${off ? " deactivated" : ""}">
-        <div class="sp-icon${s.art ? " art" : ""}">${skillArt(s)}</div>
+        <div class="sp-icon${(s.art || s.artPng) ? " art" : ""}">${skillArt(s)}</div>
         <div class="sp-meta">
           <h1 class="sp-title">${esc(s.name)}</h1>
           <div class="sp-tags">
@@ -822,8 +957,119 @@ function renderNotFound(msg) {
 function afterRender(key, segments) {
   if (key === "skills" && !segments[1]) filterSkills();
   if (key === "log" && !segments[1]) filterLog();
-  // Pull real Arsenal data (pulled-status) once per page visit; skipped on in-place re-renders.
   if (key === "arsenal" && !arsenalApplied) refreshArsenalData();
+  if (key === "arsenal") initWeaponAuras();
+}
+
+function initWeaponAuras() {
+  // Cancel any existing loops
+  if (window._auraRafs) window._auraRafs.forEach(id => cancelAnimationFrame(id));
+  window._auraRafs = [];
+
+  document.querySelectorAll(".weapon-art-wrap[data-weapon-color]").forEach(wrap => {
+    const canvas = wrap.querySelector(".weapon-aura-canvas");
+    if (!canvas) return;
+    const color = wrap.dataset.weaponColor || "#ffffff";
+    const off   = wrap.dataset.weaponOff === "true";
+    if (off) { canvas.style.opacity = "0"; return; }
+    canvas.style.opacity = "1";
+
+    // parse hex to rgb
+    const r = parseInt(color.slice(1,3),16);
+    const g = parseInt(color.slice(3,5),16);
+    const b = parseInt(color.slice(5,7),16);
+
+    const W = wrap.offsetWidth  || 300;
+    const H = wrap.offsetHeight || 200;
+    canvas.width  = W;
+    canvas.height = H;
+    const ctx = canvas.getContext("2d");
+
+    // Particle pool
+    const MAX = 55;
+    const particles = [];
+
+    function spawnParticle() {
+      // spawn from edges or bottom, drift upward with elemental variation
+      const edge = Math.random();
+      let x, y, vx, vy, size, life, maxLife, type;
+      if (edge < 0.5) {
+        // sides
+        x  = edge < 0.25 ? Math.random() * W * 0.3 : W - Math.random() * W * 0.3;
+        y  = Math.random() * H;
+        vx = (x < W/2 ? 1 : -1) * (0.2 + Math.random() * 0.5);
+        vy = -(0.4 + Math.random() * 1.2);
+      } else {
+        // bottom spread
+        x  = W * 0.2 + Math.random() * W * 0.6;
+        y  = H - Math.random() * H * 0.15;
+        vx = (Math.random() - 0.5) * 1.2;
+        vy = -(0.6 + Math.random() * 1.4);
+      }
+      size    = 1.5 + Math.random() * 3.5;
+      maxLife = 60 + Math.random() * 80;
+      life    = maxLife;
+      type    = Math.random() < 0.3 ? "spark" : "orb";
+      particles.push({ x, y, vx, vy, size, life, maxLife, type });
+    }
+
+    for (let i = 0; i < MAX * 0.6; i++) spawnParticle();
+
+    function frame() {
+      ctx.clearRect(0, 0, W, H);
+
+      // ambient edge glow sweep
+      const t = Date.now() / 1000;
+      const glow = ctx.createRadialGradient(W/2, H/2, H*0.1, W/2, H/2, H*0.85);
+      const pulse = 0.04 + 0.03 * Math.sin(t * 1.4);
+      glow.addColorStop(0,   `rgba(${r},${g},${b},0)`);
+      glow.addColorStop(0.7, `rgba(${r},${g},${b},0)`);
+      glow.addColorStop(1,   `rgba(${r},${g},${b},${pulse})`);
+      ctx.fillStyle = glow;
+      ctx.fillRect(0, 0, W, H);
+
+      if (particles.length < MAX && Math.random() < 0.55) spawnParticle();
+
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x  += p.vx + Math.sin(t * 2 + i) * 0.3;
+        p.y  += p.vy;
+        p.vy -= 0.012; // slight acceleration upward
+        p.life--;
+        if (p.life <= 0) { particles.splice(i, 1); continue; }
+
+        const alpha = (p.life / p.maxLife) * 0.85;
+        const s     = p.size * (p.life / p.maxLife);
+
+        if (p.type === "spark") {
+          // elongated spark line
+          ctx.save();
+          ctx.strokeStyle = `rgba(${r},${g},${b},${alpha})`;
+          ctx.lineWidth   = s * 0.5;
+          ctx.shadowColor = `rgba(${r},${g},${b},${alpha * 0.8})`;
+          ctx.shadowBlur  = 6;
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(p.x - p.vx * 4, p.y - p.vy * 4);
+          ctx.stroke();
+          ctx.restore();
+        } else {
+          // glowing orb
+          const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, s * 2.5);
+          grad.addColorStop(0,   `rgba(255,255,255,${alpha * 0.9})`);
+          grad.addColorStop(0.3, `rgba(${r},${g},${b},${alpha * 0.8})`);
+          grad.addColorStop(1,   `rgba(${r},${g},${b},0)`);
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, s * 2.5, 0, Math.PI * 2);
+          ctx.fillStyle = grad;
+          ctx.fill();
+        }
+      }
+
+      window._auraRafs.push(requestAnimationFrame(frame));
+    }
+    window._auraRafs.push(requestAnimationFrame(frame));
+  });
 }
 
 function syncQuery(params) {
@@ -947,7 +1193,13 @@ function paletteGo(i) {
 }
 
 /* ── 10. Delegated listeners + init ───────────────────────────────────────── */
+app.addEventListener("focusout", (e) => {
+  const el = e.target && e.target.closest && e.target.closest("[data-medit]");
+  if (el) saveMemberEdit(el);
+});
 app.addEventListener("click", (e) => {
+  const mdel = e.target.closest("#member-delete"); if (mdel) { e.preventDefault(); deleteMemberUI(mdel.dataset.member); return; }
+  const mnew = e.target.closest("#member-new"); if (mnew) { e.preventDefault(); createMemberUI(); return; }
   const srcBtn = e.target.closest("#f-src button");
   if (srcBtn) { pressSeg(byId("f-src"), srcBtn); filterSkills(); return; }
   const logBtn = e.target.closest("#f-logtype button");
@@ -971,16 +1223,22 @@ app.addEventListener("click", (e) => {
   // Assign a skill to the agent (panel stays open + filter preserved).
   const ac = e.target.closest(".assign-chip");
   if (ac) { e.preventDefault(); assign(ac.dataset.member, ac.dataset.skill); refreshView(); filterAssign(); byId("assign-q")?.focus(); return; }
-  // Arsenal page: force a live data re-pull.
-  const ra = e.target.closest("#refresh-arsenal");
-  if (ra) { e.preventDefault(); arsenalApplied = false; refreshArsenalData(); return; }
-  // Arsenal page: grant/revoke a model for an agent (re-render in place, restore focus to the chip).
+  // Arsenal page: toggle the wield dropdown open/closed.
+  const db = e.target.closest(".wield-drop-btn");
+  if (db) {
+    e.preventDefault();
+    const dropdown = db.closest(".wield-dropdown");
+    const isOpen = dropdown.classList.contains("open");
+    document.querySelectorAll(".wield-dropdown.open").forEach(d => d.classList.remove("open"));
+    if (!isOpen) dropdown.classList.add("open");
+    return;
+  }
+  // Arsenal page: grant/revoke a model for an agent via checkbox.
   const wc = e.target.closest(".wield-chip");
   if (wc) {
     e.preventDefault();
     toggleWield(wc.dataset.member, wc.dataset.model);
     refreshView();
-    app.querySelector(`.wield-chip[data-member="${cssEsc(wc.dataset.member)}"][data-model="${cssEsc(wc.dataset.model)}"]`)?.focus();
     return;
   }
   // Dossier: revoke a model from this agent.
@@ -992,6 +1250,36 @@ app.addEventListener("click", (e) => {
   // Deactivate / reactivate a skill for the whole guild.
   const dt = e.target.closest("#deactivate-toggle");
   if (dt) { e.preventDefault(); toggleDisabled(dt.dataset.skill); refreshView(); byId("deactivate-toggle")?.focus(); return; }
+  // Deactivate / reactivate a weapon (model) guild-wide from Arsenal page.
+  const dw = e.target.closest("[data-weapon]");
+  const pw = e.target.closest(".weapon-power-btn");
+  if (pw) {
+    e.preventDefault();
+    const mid = pw.dataset.weapon;
+    const wasOff = isWeaponDisabled(mid);
+    toggleWeaponDisabled(mid);
+    if (!wasOff) {
+      // Deactivating — force-remove from every member
+      GUILD.members.forEach((m) => {
+        if (baseWeapons(m).includes(mid)) {
+          ensureWov(m.id).remove.push(mid);
+          const addIdx = weaponOv[m.id]?.add?.indexOf(mid);
+          if (addIdx > -1) weaponOv[m.id].add.splice(addIdx, 1);
+          cleanWov(m.id);
+        } else {
+          const o = getWov(m.id);
+          if (o.add.includes(mid)) {
+            ensureWov(m.id).add.splice(ensureWov(m.id).add.indexOf(mid), 1);
+            cleanWov(m.id);
+          }
+        }
+      });
+      saveWeapons();
+    }
+    refreshView();
+    return;
+  }
+  if (dw && dw.classList.contains("deactivate-toggle")) { e.preventDefault(); toggleWeaponDisabled(dw.dataset.weapon); refreshView(); return; }
   // Reset every override on this agent.
   const rm = e.target.closest("#reset-member");
   if (rm) { resetMember(rm.dataset.member); refreshView(); return; }
@@ -1103,5 +1391,66 @@ window.addEventListener("hashchange", onRoute);
 if (!location.hash) location.replace("#/map");
 onRoute();
 setFooter();
+
+// ── Fallen Sword skill tooltip ──────────────────────────────────────────────
+const fsTip = document.createElement("div");
+fsTip.id = "fs-tip";
+fsTip.setAttribute("role", "tooltip");
+fsTip.setAttribute("aria-hidden", "true");
+document.body.appendChild(fsTip);
+
+let tipTarget = null;
+const MARGIN = 12;
+
+function showTip(el, x, y) {
+  const name  = el.dataset.tipName  || "";
+  const level = el.dataset.tipLevel || "";
+  const blurb = el.dataset.tipBlurb || "";
+  fsTip.innerHTML = `
+    <div class="fst-header">
+      <div class="fst-name">${esc(name)}</div>
+      ${level ? `<div class="fst-level">${esc(level)}</div>` : ""}
+    </div>
+    <div class="fst-body"><div class="fst-blurb">${esc(blurb)}</div></div>`;
+  positionTip(x, y);
+  fsTip.classList.add("visible");
+}
+
+function positionTip(x, y) {
+  const tw = fsTip.offsetWidth || 210;
+  const th = fsTip.offsetHeight || 80;
+  const vw = window.innerWidth, vh = window.innerHeight;
+  let left = x + MARGIN;
+  let top  = y + MARGIN;
+  if (left + tw > vw - 8) left = x - tw - MARGIN;
+  if (top  + th > vh - 8) top  = y - th - MARGIN;
+  fsTip.style.left = `${Math.max(8, left)}px`;
+  fsTip.style.top  = `${Math.max(8, top)}px`;
+}
+
+function hideTip() {
+  fsTip.classList.remove("visible");
+  tipTarget = null;
+}
+
+document.addEventListener("mousemove", (e) => {
+  const sit = e.target.closest(".sit[data-tip-name]");
+  if (sit) {
+    if (tipTarget !== sit) { tipTarget = sit; showTip(sit, e.clientX, e.clientY); }
+    else positionTip(e.clientX, e.clientY);
+  } else if (tipTarget) {
+    hideTip();
+  }
+});
+
+document.addEventListener("mouseleave", hideTip);
+document.addEventListener("scroll", hideTip, true);
+
+// Close wield dropdowns when clicking outside.
+document.addEventListener("click", (e) => {
+  if (!e.target.closest(".wield-dropdown")) {
+    document.querySelectorAll(".wield-dropdown.open").forEach(d => d.classList.remove("open"));
+  }
+});
 
 })();

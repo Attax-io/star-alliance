@@ -47,5 +47,6 @@ See `../README.md` for the full guild roster.
 
 ## Location
 
-This directory (`star-alliance-agents/`) replaces the older `members/` folder. The files
-were moved in place on the repo-wide reorganisation — every agent definition is unchanged.
+This directory (`star-alliance-members/`) holds the guild roster. It was previously
+`members/`, then `star-alliance-agents/`, and renamed to `star-alliance-members/` on
+2026-06-26 — every agent definition is unchanged across the renames.

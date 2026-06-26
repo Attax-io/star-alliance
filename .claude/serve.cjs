@@ -107,7 +107,7 @@ function claudeUsage(cb) {
 // Hand-edited caps + non-Claude spend. { "<modelId>": { spent, quota, unit } }
 function loadUsage() {
   try {
-    const parsed = JSON.parse(fs.readFileSync(path.join(ROOT, 'models-usage.json'), 'utf8'));
+    const parsed = JSON.parse(fs.readFileSync(path.join(ROOT, 'star-alliance-arsenal', 'models-usage.json'), 'utf8'));
     if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) return parsed;
   } catch (e) {}
   return {};
@@ -160,7 +160,201 @@ function estimateUsage(claude, caps) {
   return result;
 }
 
+// ── Control-panel write-through (MiniMax-authored). Safely set an inline array
+//    field (skills / weapons) in a member's .md frontmatter, with a .bak backup
+//    and a round-trip verify, then regenerate guild-data so the edit sticks.
+function setMemberField(member, field, values, cb) {
+  if (!/^[a-z0-9-]+$/.test(member)) return cb(new Error('bad member'));
+  if (field !== 'skills' && field !== 'weapons') return cb(new Error('bad field'));
+  if (!Array.isArray(values) || !values.every((v) => /^[A-Za-z0-9._-]+$/.test(String(v)))) return cb(new Error('bad values'));
+  const file = path.join(ROOT, 'star-alliance-members', member + '.md');
+  const newBracket = '[' + values.join(', ') + ']';
+  const re = new RegExp('^(\\s*' + field + ':\\s*)\\[[^\\]]*\\](.*)$', 'm');
+  fs.readFile(file, 'utf8', (err, original) => {
+    if (err) return cb(err);
+    const m = re.exec(original);
+    if (!m) return cb(new Error('field line not found'));
+    const updated = original.replace(re, (full, g1, g2) => g1 + newBracket + g2);
+    try { fs.writeFileSync(file + '.bak', original); } catch (e) { return cb(e); }
+    fs.writeFile(file, updated, (werr) => {
+      if (werr) return cb(werr);
+      fs.readFile(file, 'utf8', (rerr, content) => {
+        if (rerr) { try { fs.writeFileSync(file, original); } catch (_) {} return cb(rerr); }
+        if (content.indexOf(m[1] + newBracket) === -1) {
+          try { fs.writeFileSync(file, original); } catch (_) {}
+          return cb(new Error('verify failed, restored'));
+        }
+        cb(null, { file: file });
+      });
+    });
+  });
+}
+
+// build.py requires members-meta.json weaponsDesc keys to match the .md weapons
+// EXACTLY (both directions). So a weapons edit must re-sync weaponsDesc or the
+// rebuild aborts. descMap (from the dashboard's MODELS) supplies text for new models.
+function syncWeaponsMeta(member, values, descMap, cb) {
+  if (!/^[a-z0-9-]+$/.test(member)) return cb(new Error('bad member'));
+  const file = path.join(ROOT, 'members-meta.json');
+  fs.readFile(file, 'utf8', (err, raw) => {
+    if (err) return cb(err);
+    let doc; try { doc = JSON.parse(raw); } catch (e) { return cb(e); }
+    const mem = doc.members && doc.members[member];
+    if (!mem) return cb(new Error('member not in members-meta.json'));
+    const prev = mem.weaponsDesc || {};
+    const next = {};
+    values.forEach((mdl) => {
+      let d = (descMap && typeof descMap[mdl] === 'string') ? descMap[mdl] : (prev[mdl] || '');
+      next[mdl] = String(d).slice(0, 500);
+    });
+    mem.weaponsDesc = next;
+    try { fs.writeFileSync(file + '.bak', raw); fs.writeFileSync(file, JSON.stringify(doc, null, 2) + '\n'); }
+    catch (e) { return cb(e); }
+    cb(null);
+  });
+}
+
+function regenGuildData(cb) {
+  execFile('python3', [path.join(ROOT, 'build.py')], { cwd: ROOT, timeout: 20000 }, (err) => cb(err));
+}
+
+// ── Phase-2 control-panel writers (MiniMax-authored). Each .bak's before write.
+const MEMBERS_DIR = path.join(ROOT, 'star-alliance-members');
+const META = path.join(ROOT, 'members-meta.json');
+const SKILLS_META = path.join(ROOT, 'skills-meta.json');
+
+function setSkillFlag(skill, disabled, cb) {
+  if (!/^[a-z0-9-]+$/.test(skill)) return cb(new Error('invalid skill id'));
+  let raw, obj;
+  try { raw = fs.readFileSync(SKILLS_META); obj = JSON.parse(raw); } catch (e) { return cb(e); }
+  if (!obj[skill]) return cb(new Error('unknown skill'));
+  if (disabled) obj[skill].disabled = true; else delete obj[skill].disabled;
+  try { fs.writeFileSync(SKILLS_META + '.bak', raw); fs.writeFileSync(SKILLS_META, JSON.stringify(obj, null, 2) + '\n'); } catch (e) { return cb(e); }
+  cb(null);
+}
+
+function setMemberMeta(member, fields, cb) {
+  if (!/^[a-z0-9-]+$/.test(member)) return cb(new Error('invalid member id'));
+  const allowed = ['role', 'summary', 'deploy', 'triggers'];
+  let raw, meta;
+  try { raw = fs.readFileSync(META); meta = JSON.parse(raw); } catch (e) { return cb(e); }
+  if (!meta.members || !meta.members[member]) return cb(new Error('unknown member'));
+  fields = fields || {};
+  for (const k of allowed) {
+    if (Object.prototype.hasOwnProperty.call(fields, k)) {
+      let v = fields[k]; if (typeof v !== 'string') v = String(v); if (v.length > 800) v = v.slice(0, 800);
+      meta.members[member][k] = v;
+    }
+  }
+  try { fs.writeFileSync(META + '.bak', raw); fs.writeFileSync(META, JSON.stringify(meta, null, 2) + '\n'); } catch (e) { return cb(e); }
+  cb(null);
+}
+
+function setMemberDescription(member, text, cb) {
+  if (!/^[a-z0-9-]+$/.test(member)) return cb(new Error('invalid member id'));
+  if (typeof text !== 'string') text = String(text); if (text.length > 1000) text = text.slice(0, 1000);
+  const file = path.join(MEMBERS_DIR, member + '.md');
+  let content; try { content = fs.readFileSync(file, 'utf8'); } catch (e) { return cb(e); }
+  if (!/^description:.*$/m.test(content)) return cb(new Error('no description line'));
+  const updated = content.replace(/^description:.*$/m, 'description: ' + JSON.stringify(text));
+  try { fs.writeFileSync(file + '.bak', content); fs.writeFileSync(file, updated); } catch (e) { return cb(e); }
+  cb(null);
+}
+
+function setMemberBody(member, text, cb) {
+  if (!/^[a-z0-9-]+$/.test(member)) return cb(new Error('invalid member id'));
+  const file = path.join(MEMBERS_DIR, member + '.md');
+  let content; try { content = fs.readFileSync(file, 'utf8'); } catch (e) { return cb(e); }
+  const lines = content.split('\n');
+  if (lines[0] !== '---') return cb(new Error('no frontmatter'));
+  let secondDelim = -1;
+  for (let i = 1; i < lines.length; i++) { if (lines[i] === '---') { secondDelim = i; break; } }
+  if (secondDelim === -1) return cb(new Error('no frontmatter'));
+  const frontmatter = lines.slice(0, secondDelim + 1).join('\n') + '\n';
+  const cleanText = String(text == null ? '' : text).replace(/^\n+|\n+$/g, '');
+  const updated = frontmatter + '\n' + cleanText + '\n';
+  try { fs.writeFileSync(file + '.bak', content); fs.writeFileSync(file, updated); } catch (e) { return cb(e); }
+  cb(null);
+}
+
+function deleteMember(member, cb) {
+  if (!/^[a-z0-9-]+$/.test(member)) return cb(new Error('invalid member id'));
+  const file = path.join(MEMBERS_DIR, member + '.md');
+  if (!fs.existsSync(file)) return cb(new Error('no such member'));
+  try { fs.writeFileSync(file + '.bak', fs.readFileSync(file)); fs.unlinkSync(file); } catch (e) { return cb(e); }
+  let raw, meta;
+  try { raw = fs.readFileSync(META); meta = JSON.parse(raw); } catch (e) { return cb(e); }
+  if (meta.members && meta.members[member]) {
+    delete meta.members[member];
+    try { fs.writeFileSync(META + '.bak', raw); fs.writeFileSync(META, JSON.stringify(meta, null, 2) + '\n'); } catch (e) { return cb(e); }
+  }
+  cb(null);
+}
+
+function createMember(member, opts, cb) {
+  if (!/^[a-z0-9-]+$/.test(member)) return cb(new Error('invalid member id'));
+  opts = opts || {};
+  const file = path.join(MEMBERS_DIR, member + '.md');
+  if (fs.existsSync(file)) return cb(new Error('member exists'));
+  const name = opts.name || member;
+  const model = opts.model || 'sonnet';
+  const skills = Array.isArray(opts.skills) ? opts.skills : [];
+  const weapons = Array.isArray(opts.weapons) ? opts.weapons : [];
+  const idRe = /^[A-Za-z0-9._-]+$/;
+  for (const s of skills) if (!idRe.test(s)) return cb(new Error('invalid skill id: ' + s));
+  for (const w of weapons) if (!idRe.test(w)) return cb(new Error('invalid weapon id: ' + w));
+  const frontmatter = ['---', 'name: ' + member, 'description: ' + JSON.stringify(opts.role || name),
+    'model: ' + model, 'tools: [Read, Edit, Write, Bash]', 'skills: [' + skills.join(', ') + ']',
+    'weapons: [' + weapons.join(', ') + ']', '---'].join('\n');
+  const content = frontmatter + '\n\nYou are ' + name + ', a member of the Star Alliance.\n\n';
+  try { fs.writeFileSync(file, content); } catch (e) { return cb(e); }
+  const descMap = opts.descMap || {};
+  const weaponsDesc = {}; for (const w of weapons) weaponsDesc[w] = String(descMap[w] || '').slice(0, 500);
+  const entry = { name: name, role: opts.role || '', color: opts.color || '#888888', summary: '', deploy: '', triggers: '', weaponsDesc: weaponsDesc, does: [], doesnt: [] };
+  let raw, meta;
+  try { raw = fs.readFileSync(META); meta = JSON.parse(raw); } catch (e) { return cb(e); }
+  if (!meta.members) meta.members = {};
+  meta.members[member] = entry;
+  try { fs.writeFileSync(META + '.bak', raw); fs.writeFileSync(META, JSON.stringify(meta, null, 2) + '\n'); } catch (e) { return cb(e); }
+  cb(null);
+}
+
+// Dispatch a parsed save body to the right writer; returns true if handled.
+function dispatchSave(body, done) {
+  switch (body.kind) {
+    case 'member-field':
+      return setMemberField(body.member, body.field, body.values, (e, info) => {
+        if (e) return done(e);
+        if (body.field === 'weapons') return syncWeaponsMeta(body.member, body.values, body.desc, done);
+        done(null);
+      });
+    case 'skill-flag':       return setSkillFlag(body.skill, body.disabled, done);
+    case 'member-meta':      return setMemberMeta(body.member, body.fields, done);
+    case 'member-description':return setMemberDescription(body.member, body.text, done);
+    case 'member-body':      return setMemberBody(body.member, body.text, done);
+    case 'member-create':    return createMember(body.member, body.opts, done);
+    case 'member-delete':    return deleteMember(body.member, done);
+    default:                 return done(new Error('unknown kind'));
+  }
+}
+
 http.createServer((req, res) => {
+  if (req.method === 'POST' && req.url === '/api/save') {
+    let raw = '';
+    req.on('data', (c) => { raw += c; if (raw.length > 1e6) req.destroy(); });
+    req.on('end', () => {
+      let body;
+      try { body = JSON.parse(raw); } catch (e) { res.writeHead(400, {'Content-Type':'application/json'}); return res.end('{"ok":false,"error":"bad json"}'); }
+      dispatchSave(body, (werr) => {
+        if (werr) { res.writeHead(400, {'Content-Type':'application/json','Access-Control-Allow-Origin':'*'}); return res.end(JSON.stringify({ ok:false, error:String(werr.message||werr) })); }
+        regenGuildData((rgerr) => {
+          res.writeHead(rgerr ? 500 : 200, {'Content-Type':'application/json','Access-Control-Allow-Origin':'*'});
+          res.end(JSON.stringify({ ok: !rgerr, error: rgerr ? String(rgerr.message||rgerr) : undefined, regen: rgerr ? 'failed' : 'ok' }));
+        });
+      });
+    });
+    return;
+  }
   if (req.method === 'GET' && (req.url === '/api/arsenal' || req.url.startsWith('/api/arsenal?'))) {
     fetchOllama((o) => {
       claudeUsage((claude) => {

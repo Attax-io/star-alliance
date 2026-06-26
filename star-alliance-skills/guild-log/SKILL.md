@@ -1,6 +1,6 @@
 ---
 name: guild-log
-description: "Enforce logging of non-git-visible changes to the Star Alliance guild log. Use this skill whenever a session has changed dashboard markup, renamed UI strings, edited skills-meta.json or members-meta.json, modified guild-log.json directly, reorganized star-alliance-agents/ or star-alliance-skills/ folder layout, or made any visual/structural change that won't show up in a git diff as a version bump. Also use when the user says 'log this', 'guild log this', 'did you log it?', 'add a log entry', or any time work ends and it's unclear whether the change was git-visible. Skill audits what was touched, decides auto-derived vs manual logging, runs build_guild_log.py for git-visible changes and log_event.py for the rest, then rebuilds the dashboard via build.py. Ask Atta to confirm before writing."
+description: "Enforce logging of non-git-visible changes to the Star Alliance guild log. Use this skill whenever a session has changed dashboard markup, renamed UI strings, edited skills-meta.json or members-meta.json, modified guild-log.json directly, reorganized star-alliance-members/ or star-alliance-skills/ folder layout, or made any visual/structural change that won't show up in a git diff as a version bump. Also use when the user says 'log this', 'guild log this', 'did you log it?', 'add a log entry', or any time work ends and it's unclear whether the change was git-visible. Skill audits what was touched, decides auto-derived vs manual logging, runs build_guild_log.py for git-visible changes and log_event.py for the rest, then rebuilds the dashboard via build.py. Ask Atta to confirm before writing."
 metadata:
   version: 1.1.0
 ---
@@ -22,7 +22,7 @@ Applies when **any** of the following happened in the current session:
 
 - A dashboard file was edited (`index.html`, `app.css`, `app.js`, `skills-meta.json`, `members-meta.json`, `guild-data.js`).
 - A UI string was renamed (sidebar nav, page title, button label, class/id names — anything user-visible).
-- The repo layout changed (folder moves, file renames inside `star-alliance-agents/` or `star-alliance-skills/`).
+- The repo layout changed (folder moves, file renames inside `star-alliance-members/` or `star-alliance-skills/`).
 - `guild-log.json` was edited directly without going through `log_event.py` or `build_guild_log.py`.
 - A skill was created or removed **without** a version bump (rare — most skill changes are version bumps and auto-logged).
 - The user explicitly requested logging ("log this", "guild log this", "did you log it?", "add a log entry").
@@ -75,7 +75,7 @@ python3 log_event.py \
 | `skill-create` | A new skill was added to `star-alliance-skills/` (prefer Tier 1) |
 | `skill-remove` | A skill was removed (prefer Tier 1) |
 | `member-upgrade` | A member's prompt or skills list was updated (prefer Tier 1) |
-| `member-create` | A new agent file was added to `star-alliance-agents/` (prefer Tier 1) |
+| `member-create` | A new agent file was added to `star-alliance-members/` (prefer Tier 1) |
 | `member-remove` | An agent file was removed (prefer Tier 1) |
 | `dashboard` | Visual / structural change to the dashboard |
 | `structure` | Repo reorganisation (folder moves, renames) |
@@ -92,7 +92,7 @@ Compile a list of the work done in this session:
 1. Run `git status` and `git diff --stat` to see modified/new files.
 2. Note which dashboard files were touched (HTML, meta, data, log files).
 3. Note any renames (UI strings, file paths, identifiers).
-4. Note any folder reorganization (moves inside `star-alliance-agents/` or `star-alliance-skills/`).
+4. Note any folder reorganization (moves inside `star-alliance-members/` or `star-alliance-skills/`).
 
 Produce a short structured list: what was created, modified, renamed, or removed, with file paths / surface names and a one-line reason.
 
