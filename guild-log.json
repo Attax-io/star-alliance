@@ -2,6 +2,14 @@
   "version": 1,
   "entries": [
     {
+      "id": 41,
+      "date": "2026-06-26",
+      "type": "workflow",
+      "title": "Deep Cowork dive: +2 workflows (relationship-intel, law-harvest); document 23 crons",
+      "who": "The Strategist",
+      "detail": "Second Cowork pass read the nested session sandboxes (2856 jsonl transcripts/audits + outputs/ + ~/Documents/Claude/Scheduled). Added relationship-intel (Gmail→profiles→retention, Herald+Strategist) and law-harvest (PDF→rename→verbatim extract→verify→index, Architect+Translator, feeds legal-codex). Enriched scheduled-routine to cover all 23 cron automations. Star map 22 → 24."
+    },
+    {
       "id": 40,
       "date": "2026-06-26",
       "type": "workflow",

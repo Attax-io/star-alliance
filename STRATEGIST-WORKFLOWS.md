@@ -41,7 +41,7 @@ Architect, Developer, Translator, Merchant.
 | **Lex interactive workflow families** | **14** |
 | **Cowork sessions scanned** (separate store) | **562** (back to 2026-03-15 — a whole pre-May era the Claude Code store didn't hold) |
 | **Biggest gap (at audit time)** | Marketing/public-panel work recurred ~10× with no owning member — **now RESOLVED:** `the-herald` was recruited (decision #39) and `marketing-audit` routes to it |
-| **Outcome** | `workflows.json` rebuilt **9 → 22**; conformity ✓; version → 6.36.35 (see §10) |
+| **Outcome** | `workflows.json` rebuilt **9 → 24**; conformity ✓; version → 6.37.35 (see §10) |
 
 ---
 
@@ -275,7 +275,30 @@ Guild Master enforces by hand every time. Formalize them so the protocol is stru
 
 **G. Marketing/BD, a THIRD time** — capabilities sheet, PDF partnership proposals for law firms, pricing pages, "target law firms" strategy. Three independent eras all demanded marketing → vindicates the recruitment of **`the-herald`**.
 
-## 9. The rebuilt star map — 22 workflows
+### 8b. Deep dive — the nested sandboxes (second Cowork pass)
+
+The first Cowork pass read only session **metadata** (`local_<uuid>.json`). Each session is actually a full
+**sandbox**: `2,856 .jsonl` transcripts + per-session `audit.jsonl`, `outputs/` deliverable folders, and copies of
+scheduled-task definitions. The deliverables confirm the new workflows are real — shipped
+`Contrat_…_SWAT_AR-FR.pdf` and `Notification_non-renouvellement_FR-AR.docx` (→ `legal-draft`),
+`Lex_Council_Translation_Report.pdf` (→ `legal-codex`), `Y1959 L57.md` / `harvest-digest-*.md` (→ `law-harvest`).
+
+**The 23 cron automations** (`~/Documents/Claude/Scheduled/` + 3 in `~/.claude/scheduled-tasks/`) — the first pass saw 8. Each maps to a workflow:
+
+| Cron family | Tasks | Maps to |
+|---|---|---|
+| Housekeeping | `housekeeping-daily/-hourly/-weekly`, `lex-council-app-housekeeping`, `lex-cleanup-rotation` | `cleanup-rotation` |
+| Bug / skills | `lex-daily-bug-triage`, `skillsmith-routine`, `auto-improvement` | `bug-cycle` / `skill-forge` |
+| Email & WhatsApp | `gmail-report`, `daily-whatsapp-summary`, `whatsapp-summary`, `whatsapp-daily-draft-agent`, `send-email-responses-reminder` | `comms-triage` |
+| Deadlines & nudges | `deadline-*` (×6 matters), `contact-colleagues-progress-check`, `jeddah-hmco-thank-you` | `scheduled-routine` |
+| Relationship/BD | `lex-relationship-intel` | **`relationship-intel`** (new) |
+| Law library | `stock-and-extract`, `stock-laws-scanner`, `pdf-to-markdown-extractor` | **`law-harvest`** (new) |
+| DB health | `supabase-advisor` | `security-sweep` |
+| Strategy | `auto_strategizing`, `strategies-review` | `strategic-audit` / `skill-forge` |
+
+These crons are sophisticated multi-agent pipelines (relationship-intel runs Harvester=haiku → Profiler=sonnet → Strategist=opus, resumable via `_state.md` checkpoints) — the MiniMax-doer/Claude-gate shape, generalized and scheduled.
+
+## 9. The rebuilt star map — 24 workflows
 
 | Workflow | Category | Lead | Status |
 |---|---|---|---|
@@ -289,6 +312,7 @@ Guild Master enforces by hand every time. Formalize them so the protocol is stru
 | legal-codex | Legal | Translator | kept (improved) |
 | **tool-forge** | Legal | Architect→Developer | **new** |
 | **legal-draft** | Legal | Translator | **new** |
+| **law-harvest** | Legal | Architect→Translator | **new** |
 | **comms-triage** | Comms & Automation | Butler | **new** |
 | **scheduled-routine** | Comms & Automation | Strategist→QM | **new** |
 | cleanup-rotation *(was implicit)* | Hygiene & Release | Quartermaster | **new** |
@@ -297,6 +321,7 @@ Guild Master enforces by hand every time. Formalize them so the protocol is stru
 | guild-log-sync | Hygiene & Release | Butler→QM | kept |
 | market-recon | Research & Intel | Merchant | kept (scoped to trading) |
 | **marketing-audit** | Research & Intel | **Herald** | **new** |
+| **relationship-intel** | Research & Intel | Herald→Strategist | **new** |
 | **strategic-audit** | Guild Self | Strategist | **new** |
 | skill-forge | Guild Self | Quartermaster | kept (improved) |
 | **arsenal-forge** | Guild Self | Strategist→QM | **new** |
@@ -306,14 +331,15 @@ Merged-not-split (folded into a broader workflow rather than given their own ent
 
 ## 10. Action taken (2026-06-26)
 
-- **`workflows.json` rebuilt 9 → 22** — 13 added, 6 existing improved, all categorized (new `category` field). Every workflow keeps the QM-conformance close + Butler plain-English report gate.
-- **`gen-workflow-art.cjs`** — added a Fallen Sword art prompt for each of the 13 new ids; sigils forged via MiniMax into `workflow-art/`.
+- **`workflows.json` rebuilt 9 → 24** — 15 added (13 first pass + `relationship-intel`, `law-harvest` from the deep dive), 6 improved, all categorized (new `category` field). Every workflow keeps the QM-conformance close + Butler plain-English report gate.
+- **`gen-workflow-art.cjs`** — added a Fallen Sword art prompt for each of the 15 new ids; all 24 sigils forged via MiniMax into `workflow-art/` (artPng ✓ ×24).
 - **`marketing-audit` wired to `the-herald`** (the marketing member recruited in decision #39) — the audit's "biggest gap" is closed in the live repo.
-- **Logged** as guild-log decision **#40** (type: workflow); `build.py` regenerated `guild-data.*`; **version 6.30.29 → 6.36.35**.
-- **`conformity_check.py` → ✓ FULL CONFORMITY** (members=9, skills=36, workflows=22).
+- **`scheduled-routine` documents all 23 cron automations**; `relationship-intel` and `law-harvest` capture the two cron families distinct in kind.
+- **Logged** as guild-log decisions **#40 and #41** (type: workflow); `build.py` regenerated `guild-data.*`; **version 6.30.29 → 6.37.35**.
+- **`conformity_check.py` → ✓ FULL CONFORMITY** (members=9, skills=36, workflows=24).
 
 > Note (weapon liveness, carried from `STRATEGIST-AUDIT.md`): the new workflows lean on `minimax` (doer, live) and the thinker panel (gate). `conformity_check.py` still flags `gpt-5.5`, `kimi-k2.7`, `nemotron-3-ultra` as **not firing on this device** — `art-forge`, `arsenal-forge`, `strategic-audit` are only as strong as those weapons once provisioned.
 
 ---
 
-*Cowork addendum by the Strategist — 562 Cowork sessions mined from the local-agent-mode store; workflows rebuilt, wired, logged, and conformity-verified.*
+*Cowork addendum by the Strategist — 562 Cowork sessions + their nested sandboxes (2,856 transcripts, outputs, 23 cron skills) mined from the local-agent-mode store; star map rebuilt 9 → 24, wired, logged, and conformity-verified.*

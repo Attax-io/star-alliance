@@ -110,6 +110,14 @@ const WORKFLOWS = [
     id: "workflow-forge",
     prompt: `${STYLE}. A CYAN celestial cartographer's table where a finished mission-route is being engraved as a new constellation onto the star map, a fresh workflow sigil set among the stars`,
   },
+  {
+    id: "relationship-intel",
+    prompt: `${STYLE}. A GOLD web of glowing relationship-threads linking portrait medallions of contacts across dark parchment, a quill annotating character notes, a guardian eye watching for fraying bonds, commercial intelligence woven from correspondence`,
+  },
+  {
+    id: "law-harvest",
+    prompt: `${STYLE}. A GOLD harvest of scroll-laws gathered from a field of stacked tomes into an ordered library shelf, a sickle of light separating named from unnamed scrolls, verbatim glyphs extracted onto clean pages`,
+  },
 ];
 
 function postJSON(url, headers, body) {

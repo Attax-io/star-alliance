@@ -3,20 +3,20 @@
 const GUILD = {
   "meta": {
     "name": "Star Alliance",
-    "version": "6.36.35",
+    "version": "6.37.35",
     "versionTiers": {
       "major": 6,
-      "minor": 36,
+      "minor": 37,
       "patch": 35
     },
-    "generated": "2026-06-26T16:01:18Z",
+    "generated": "2026-06-26T16:25:44Z",
     "schemaVersion": 3,
     "counts": {
       "members": 9,
       "skills": 36,
       "domains": 3,
-      "workflows": 22,
-      "log": 86
+      "workflows": 24,
+      "log": 87
     }
   },
   "members": [
@@ -3121,7 +3121,7 @@ const GUILD = {
           "label": "The Butler reports what was swept, what was fixed, and what remains as follow-ups — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "release-train",
@@ -3190,7 +3190,7 @@ const GUILD = {
           "label": "The Butler reports the version shipped, what merged, and the push result — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "tool-forge",
@@ -3254,7 +3254,7 @@ const GUILD = {
           "label": "The Butler reports the tool built, the law it honours, and where it lives — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "legal-draft",
@@ -3316,7 +3316,7 @@ const GUILD = {
           "label": "The Butler reports the document drafted, its languages, and what's ready to send — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "comms-triage",
@@ -3373,7 +3373,7 @@ const GUILD = {
           "label": "The Butler reports what needs you, what was scheduled, and the drafts awaiting your send — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "scheduled-routine",
@@ -3382,7 +3382,7 @@ const GUILD = {
       "accent": "violet",
       "category": "Comms & Automation",
       "tagline": "Define and run an unattended scheduled task on a cron cadence.",
-      "when": "Use this for recurring automations — housekeeping, the stock-laws scanner, relationship-intel, mourning→calendar, daily digests.",
+      "when": "Use this for recurring automations that run unattended on a cron — housekeeping (daily/hourly/weekly), the daily Gmail/WhatsApp reports and reply-drafts, per-matter deadline reminders, colleague-progress nudges, the Supabase advisor, auto-improvement/auto-strategizing, and the law scanners. ~23 such tasks live under ~/Documents/Claude/Scheduled/; this is their shape.",
       "steps": [
         {
           "kind": "member",
@@ -3430,7 +3430,7 @@ const GUILD = {
           "label": "The Butler reports what the routine does, its cadence, and the last run's summary — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "marketing-audit",
@@ -3494,7 +3494,7 @@ const GUILD = {
           "label": "The Butler reports the findings, the off-brand/untrue flags, and the campaign-readiness call — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "art-forge",
@@ -3558,7 +3558,7 @@ const GUILD = {
           "label": "The Butler reports the art forged, where it lives, and how it renders — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "arsenal-forge",
@@ -3622,7 +3622,7 @@ const GUILD = {
           "label": "The Butler reports the weapon added, its role, and the loadouts updated — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "strategic-audit",
@@ -3679,7 +3679,7 @@ const GUILD = {
           "label": "The Butler reports the verdict, the ranked findings, and the MD audit written — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "workflow-forge",
@@ -3743,11 +3743,152 @@ const GUILD = {
           "label": "The Butler reports the workflow registered, its sigil, and where it sits on the star map — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ],
-      "artPng": false
+      "artPng": true
+    },
+    {
+      "id": "relationship-intel",
+      "name": "Relationship Intel",
+      "icon": "🤝",
+      "accent": "gold",
+      "category": "Research & Intel",
+      "tagline": "Turn email traffic into living relationship intelligence — win and keep clients.",
+      "when": "Use this to profile contacts from Gmail, log mistakes to avoid, and recommend retention tasks. Resumable and checkpoint-driven; runs as a multi-agent harvest→profile→strategise pipeline.",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Call the Sweep",
+          "act": "You ask the guild to sweep your email and update the relationship intelligence.",
+          "produces": "intel request"
+        },
+        {
+          "kind": "member",
+          "actor": "the-butler",
+          "title": "Frame the Sweep",
+          "act": "The Butler restates the window and scope (received + sent, all contacts) and confirms the read-only-until-flagged boundary.",
+          "produces": "intel brief"
+        },
+        {
+          "kind": "gate",
+          "gate": "approval",
+          "label": "You confirm the window and the commercial scope before the sweep begins."
+        },
+        {
+          "kind": "member",
+          "actor": "the-herald",
+          "title": "Harvest the Threads",
+          "act": "The Herald sweeps Gmail (received and sent) for the window, returning a structured digest per contact — threads, response latency, tone, and commercial signals — saved as a dated harvest digest.",
+          "produces": "relationship digest"
+        },
+        {
+          "kind": "member",
+          "actor": "the-herald",
+          "title": "Profile the Contacts",
+          "act": "The Herald enriches each contact profile — character, how to deal with them from the firm's angle, and mistakes to avoid — without overwriting their live items.",
+          "produces": "contact profiles"
+        },
+        {
+          "kind": "member",
+          "actor": "the-strategist",
+          "title": "Flag Risk & Opportunity",
+          "act": "The Strategist logs the mistakes to avoid, updates the recommended-tasks list, and flags at-risk relationships and opportunities to protect the firm's commercial interest.",
+          "produces": "risk/opportunity flags"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Guild Conformance",
+          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "produces": "conformance sign-off"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports the contacts profiled, the mistakes logged, and the prioritised retention tasks — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+        }
+      ],
+      "artPng": true
+    },
+    {
+      "id": "law-harvest",
+      "name": "Law Harvest",
+      "icon": "📚",
+      "accent": "gold",
+      "category": "Legal",
+      "tagline": "Ingest law PDFs into a clean, verified source-law library — the feed for the codex.",
+      "when": "Use this to bring real law PDFs into the library — identify, rename, extract verbatim, verify, and index. Feeds Legal Codex (which then translates and publishes).",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Drop the Laws",
+          "act": "You add law PDFs to the Stock Laws folder, or ask the guild to process what's queued.",
+          "produces": "law PDFs"
+        },
+        {
+          "kind": "member",
+          "actor": "the-butler",
+          "title": "Frame the Harvest",
+          "act": "The Butler restates the harvest — which folder, identify-or-extract — and routes it to the Architect.",
+          "produces": "harvest brief"
+        },
+        {
+          "kind": "gate",
+          "gate": "approval",
+          "label": "You confirm the source folder and scope before the harvest runs."
+        },
+        {
+          "kind": "member",
+          "actor": "the-architect",
+          "title": "Scan & Queue the Stock",
+          "act": "The Architect scans the Stock Laws folder, identifies and renames each misnamed law PDF, resolves conflicts, and queues an extraction task.",
+          "produces": "queued laws"
+        },
+        {
+          "kind": "member",
+          "actor": "the-translator",
+          "title": "Extract Verbatim",
+          "act": "The Translator extracts the queued law verbatim — Arabic canonical, page-ranges intact — into Source Laws.",
+          "produces": "extracted law"
+        },
+        {
+          "kind": "gate",
+          "gate": "certify",
+          "label": "The Quartermaster certifies the extraction is faithful and complete — verbatim, no gaps — before it enters the Source Laws library."
+        },
+        {
+          "kind": "member",
+          "actor": "the-translator",
+          "title": "Index the Harvest",
+          "act": "The Translator updates the Source Laws index and writes the dated harvest digest.",
+          "produces": "indexed harvest"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Guild Conformance",
+          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "produces": "conformance sign-off"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports the laws harvested, verified, and indexed — and what's ready for the codex — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+        }
+      ],
+      "artPng": true
     }
   ],
   "log": {
     "entries": [
+      {
+        "id": 41,
+        "date": "2026-06-26",
+        "type": "workflow",
+        "title": "Deep Cowork dive: +2 workflows (relationship-intel, law-harvest); document 23 crons",
+        "who": "The Strategist",
+        "detail": "Second Cowork pass read the nested session sandboxes (2856 jsonl transcripts/audits + outputs/ + ~/Documents/Claude/Scheduled). Added relationship-intel (Gmail→profiles→retention, Herald+Strategist) and law-harvest (PDF→rename→verbatim extract→verify→index, Architect+Translator, feeds legal-codex). Enriched scheduled-routine to cover all 23 cron automations. Star map 22 → 24."
+      },
       {
         "id": 40,
         "date": "2026-06-26",
@@ -4842,6 +4983,6 @@ const GUILD = {
         "id": "g-325a46a5-add-skill-conquering-campaign"
       }
     ],
-    "count": 86
+    "count": 87
   }
 };
