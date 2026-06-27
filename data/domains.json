@@ -49,6 +49,7 @@
         "comms-triage",
         "legal-rule-modeling",
         "design-taste",
+        "design-unity",
         "dashboard-parity",
         "trading-strategy",
         "portfolio-risk",
@@ -78,7 +79,7 @@
         "the-merchant",
         "the-quartermaster"
       ],
-      "notes": "The home domain. All 9 guild members + 57 skills live here. Every other domain borrows from this skill pool."
+      "notes": "The home domain. All 9 guild members + 58 skills live here. Every other domain borrows from this skill pool."
     },
     {
       "id": "lex-council-app",
@@ -92,6 +93,7 @@
         "supabase-postgres-best-practices",
         "performance",
         "design-taste",
+        "design-unity",
         "full-output-enforcement",
         "image-to-code",
         "imagegen-frontend",

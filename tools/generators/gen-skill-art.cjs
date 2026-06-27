@@ -78,6 +78,10 @@ const SKILLS = [
     prompt: `${STYLE}. Three ancient open tomes arranged in a fan, each inscribed in a different glowing script — dark-fantasy Erildath runes, the guild's star-forged glyphs, and a council's formal seal-script — a single luminous quill weaving a thread of light between all three, the art of giving each world its own tongue`,
   },
   {
+    id: "design-unity",
+    prompt: `${STYLE}. A single luminous master seal-stone at the center radiating golden threads of light to many smaller surface-panels arranged in a perfect grid around it, every panel snapping into alignment and glowing the same hue as the central seal, one canonical rune-tablet beneath casting its law upward — the art of one source of truth holding every surface in one language`,
+  },
+  {
     id: "motion-design",
     prompt: `${STYLE}. An enchanted pendulum of polished brass swinging in a long arcing trail of golden light, its motion-curve traced as a glowing ease-out spline across dark parchment, sand-timer grains streaming in measured cadence beside it, faint after-images marking the rhythm of perfect timing — the art of giving movement its exact curve and beat`,
   },

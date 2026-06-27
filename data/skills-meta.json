@@ -103,6 +103,14 @@
     "triggers": "'design the UI', 'make it premium', 'pick a style', 'minimalist', 'brutalist', 'add motion', 'write a DESIGN.md', 'redesign this', 'anti-slop'",
     "modes": "engineer; agency; minimal; brutalist; motion; encode; redesign"
   },
+  "design-unity": {
+    "icon": "🧬",
+    "blurb": "UI conformity engine — one source of truth, every surface in one design language",
+    "level": "Advanced",
+    "tabler": "ti-color-swatch",
+    "triggers": "'make the UI consistent', 'one source of truth for the UI', 'enforce the design system', 'kill the design drift', 'unify the look', 'audit UI conformity', 'design tokens'",
+    "modes": "establish; audit; reconcile"
+  },
   "dev-server": {
     "icon": "🚀",
     "blurb": "Launches, restarts, and manages your local development server",
