@@ -109,7 +109,7 @@ def main():
             os.path.join(HERE, 'ollama_cloud.py'),
             CLOUD_TAG[args.model_id],
         ]
-        cmd += _passthrough(args)
+        cmd += _passthrough(args, token_flag='--num-predict')
         sys.exit(subprocess.run(cmd, env=env).returncode)
 
     # 3. Claude models are native to the orchestrator; no backend script.
