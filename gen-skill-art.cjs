@@ -22,6 +22,14 @@ const STYLE = "fantasy RPG skill icon, Fallen Sword MMORPG style, dark parchment
 
 const SKILLS = [
   {
+    id: "claude-code-hooks",
+    prompt: `${STYLE}. A glowing arcane gate-rune carved into a stone archway, an enchanted iron hook hanging from a chain across the threshold, a stream of magical sigils flowing toward the gate where the hook catches and judges each one — some passing through in green light, one halted in red — the warden-rune that inspects all who pass`,
+  },
+  {
+    id: "schema-evolution",
+    prompt: `${STYLE}. An ancient blueprint scroll of a citadel growing a new wing, golden architectural lines extending the existing structure without disturbing the old stone, a glowing branching crystal lattice adding a new facet while every existing facet stays intact, the art of growing a foundation without cracking it`,
+  },
+  {
     id: "article-creator",
     prompt: `${STYLE}. A glowing scroll unfurling with golden runic script, quill pen with ink dripping arcane light, parchment page covered in illuminated manuscript text, scribe's candlelight casting warm amber glow`,
   },
