@@ -29,7 +29,7 @@ import sys, os, json, re
 WRITE_TOOLS = {"Write", "Edit", "MultiEdit"}
 
 EXCLUDE_DIR_PARTS = {
-    ".git", "node_modules", "__pycache__", ".venv", "venv",
+    ".git", ".claude", "worktrees", "node_modules", "__pycache__", ".venv", "venv",
     "scratchpad", "routine-logs", "routine-ledger",
 }
 EXCLUDE_PATH_SUBSTR = ("/impeccable/",)
