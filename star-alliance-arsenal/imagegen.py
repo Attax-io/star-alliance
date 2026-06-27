@@ -41,6 +41,11 @@ def read_key() -> str:
 
 def generate(prompt: str, key: str) -> str:
     """Call image-01 and return the image URL."""
+    if len(prompt) >= PROMPT_LIMIT:
+        raise ValueError(
+            f"prompt is {len(prompt)} chars; image-01 limit is {PROMPT_LIMIT} "
+            "(API error 2013) — shorten the brief"
+        )
     payload = json.dumps({
         "model": MODEL,
         "prompt": prompt,
@@ -141,6 +146,14 @@ def main():
                         help="JPEG quality 1-100 (default: 92)")
     args = parser.parse_args()
 
+    if len(args.prompt) >= PROMPT_LIMIT:
+        print(
+            f"ERROR: prompt is {len(args.prompt)} chars; image-01 limit is "
+            f"{PROMPT_LIMIT} (API error 2013) — shorten the brief.",
+            file=sys.stderr,
+        )
+        return 1
+
     if args.dry_run:
         print(f"[dry-run] Prompt: {args.prompt}")
         print(f"[dry-run] Output: {args.out}")
@@ -168,4 +181,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main() or 0)

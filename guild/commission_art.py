@@ -90,8 +90,8 @@ def commission(brief: Path, out: Path, max_iter: int) -> int:
         if proc.returncode == 0 and out.exists() and out.stat().st_size > 0:
             print(f"commission_art: iteration {i} forged -> {out}")
             return 0
-        err = (proc.stderr or proc.stdout or "").strip()[:200]
-        print(f"  iteration {i}: no asset (exit {proc.returncode}) {err}")
+        err = (proc.stderr or proc.stdout or "").strip()
+        print(f"  iteration {i}: no asset (exit {proc.returncode})\n{err}")
     print("commission_art: image backend reachable but produced no asset.", file=sys.stderr)
     return 1
 
