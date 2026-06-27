@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 66
     },
-    "generated": "2026-06-27T19:47:25Z",
+    "generated": "2026-06-27T19:48:47Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -3216,7 +3216,7 @@ const GUILD = {
       "ramp": "teal",
       "tabler": "ti-binary-tree",
       "src": "own",
-      "desc": "The Architect's craft for data-driven invariant and rule synthesis, distilled from LoopInvGen (SyGuS-Comp Inv-track winner). Learn a logical rule that holds on 'good' cases and fails on 'bad' ones, prove it against an oracle, refine on counterexamples — the CEGIS skeleton: sample → learn (synthesizing predicates on demand, no fixed feature set) → check → refine → stop only when the oracle cannot break it. Transfers beyond loops: data-model / state-machine invariants, CHECK constraints, RLS predicates, regression oracles for migrations, and (with the-translator) pinning fuzzy statute boundaries for legal-rule-modeling. Use when you must infer a rule over a large/unbounded domain you can sample or check but not enumerate. Triggers: 'infer the invariant', 'what must always hold here', 'learn the rule that separates these cases', 'CEGIS this', 'derive a CHECK/RLS constraint from examples', 'pin down this ambiguous boundary'. Differentiate from legal-rule-modeling (models a KNOWN statute's arithmetic; this infers an UNKNOWN rule) and schema-evolution (changes the schema; this finds what must stay true across it).",
+      "desc": "The Architect's craft for data-driven invariant and rule synthesis, distilled from LoopInvGen (SyGuS-Comp Inv-track winner). Learn a logical rule that holds on 'good' cases and fails on 'bad' ones, prove it against an oracle, refine on counterexamples — the CEGIS skeleton: sample → learn (predicates synthesized on demand) → check → refine → stop only when the oracle cannot break it. Transfers beyond loops: data-model / state-machine invariants, CHECK constraints, RLS predicates, regression oracles for migrations, and (with the-translator) pinning fuzzy statute boundaries. Use when you must infer a rule over a domain you can sample or check but not enumerate. Triggers: 'infer the invariant', 'what must always hold here', 'learn the rule that separates these cases', 'CEGIS this', 'derive a CHECK/RLS constraint from examples'. Differentiate from legal-rule-modeling (models a KNOWN statute's arithmetic; this infers an UNKNOWN rule) and schema-evolution (changes the schema; this finds what must stay true across it).",
       "intro": "Some rules are written down; you model those with legal-rule-modeling. Other rules are latent — true of a working system but never stated, or hiding at a boundary the statute left fuzzy. This craft recovers them. It is distilled from LoopInvGen, the data-driven loop-invariant generator that won the ",
       "sections": [
         "What it is / is not",

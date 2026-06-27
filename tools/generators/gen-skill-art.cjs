@@ -22,6 +22,10 @@ const STYLE = "fantasy RPG skill icon, Fallen Sword MMORPG style, dark parchment
 
 const SKILLS = [
   {
+    id: "invariant-inference",
+    prompt: `${STYLE}. A master diviner's rule-forging ritual on dark parchment: two sorted heaps of glowing gemstones — emerald-green "good" examples on the left, ember-red "bad" examples on the right — and a single luminous golden boundary-line being conjured between them that perfectly separates the two, an oracle's all-seeing eye floating above casting a probing beam that finds one stray counterexample (a red gem on the wrong side) which a feedback-arc loops back to redraw the line tighter, arcane logic-glyphs and a brass set-square framing the law being learned — the craft of inferring the rule that must always hold`,
+  },
+  {
     id: "spec-driven-development",
     prompt: `${STYLE}. A master architect's grand glowing blueprint-scroll unfurled on dark parchment, the scroll itself transforming left-to-right into a built stone fortress as the eye travels along it (a sealed spec-scroll → a drafting compass and plan → a checklist of stacked task-tablets → a finished citadel tower), four ornate golden gate-arches spaced along the path each sealed with a runic checkmark seal that the work must pass through, a quill and a brass set-square crossed at the base over a foundation stone — the discipline of building from the spec, never from the gut`,
   },
