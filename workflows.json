@@ -2187,6 +2187,65 @@
       ]
     },
     {
+      "id": "local-session",
+      "name": "Local Session",
+      "icon": "🦅",
+      "accent": "indigo",
+      "category": "Research & Intel",
+      "tagline": "Spawn an isolated Claude subagent to scout or work, then verify what it brings back.",
+      "when": "Use this when the task should run in a fresh, isolated local session — 'start a new local session to investigate X', 'spawn a subagent', 'delegate this to a local Claude'. The routed member scopes the brief, spawns a CLAUDE session-doer via the Agent tool (a spawned session must be Claude — MiniMax doers run via summon.py and have NO tool access, so they cannot BE a session), gives it a disjoint scoped task, then verifies its findings against source before reporting. Pick the cheapest Claude doer the member carries: haiku where held (the-developer, the-translator, the-quartermaster), else sonnet.",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Pose the Session Task",
+          "act": "You ask for work to run in a fresh, isolated local session — an investigation or a scoped job.",
+          "produces": "session task"
+        },
+        {
+          "kind": "member",
+          "actor": "the-developer",
+          "title": "Scope & Spawn",
+          "act": "The routed member scopes a disjoint brief and spawns a CLAUDE session-doer via the Agent tool — haiku if the member carries it (dev/translator/quartermaster), else sonnet; NEVER MiniMax, whose summon.py doers have no tool access and cannot be a session. The subagent runs its scoped task in isolation and returns structured findings.",
+          "produces": "session findings",
+          "inputs": [
+            "session task"
+          ]
+        },
+        {
+          "kind": "member",
+          "actor": "the-developer",
+          "title": "Review & Synthesize",
+          "act": "The routed member verifies the subagent's findings against source — nothing trusted unverified — and synthesizes the answer.",
+          "produces": "verified result"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Conformance",
+          "act": "Runs guild/conformance.py if anything was mutated; for a read-only scout, confirms the session touched nothing and closes clean.",
+          "produces": "conformance sign-off"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports the verified findings and their sources back to you in plain English, and flags whether the run is worth saving as a reusable workflow."
+        }
+      ],
+      "trigger_phrases": [
+        "start a new local session",
+        "new local session",
+        "start a local session",
+        "spawn a subagent",
+        "spawn a local session",
+        "investigate in a separate session",
+        "delegate to a local claude",
+        "run this in a subagent",
+        "local claude doer",
+        "isolated session"
+      ]
+    },
+    {
       "id": "conversation",
       "name": "Conversation",
       "icon": "💬",
