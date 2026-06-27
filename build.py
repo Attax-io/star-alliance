@@ -784,6 +784,7 @@ def assemble(repo: Path) -> tuple[dict, list[str], list[str]]:
     members = build_members(repo, members_meta, errors)
     domains = load_domains(repo)
     workflows = load_workflows(repo)
+    hooks = load_hooks(repo)
     model_roles = load_model_roles(repo)
     log = load_log(repo)
 
