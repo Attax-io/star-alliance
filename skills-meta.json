@@ -375,6 +375,22 @@
     "triggers": "'save this as a workflow', 'add this to the star map', 'register a workflow', 'crystallize this formation'",
     "modes": ""
   },
+  "claude-code-hooks": {
+    "icon": "🪝",
+    "blurb": "Author Claude Code hooks the right way — fail-open gates and banners",
+    "level": "Advanced",
+    "tabler": "ti-webhook",
+    "triggers": "'write a hook', 'add a PreToolUse hook', 'gate this tool', 'block this command', 'fire a banner on', 'why is my hook blocking', 'fail-open hook', 'test my hook', 'claude code hooks'",
+    "modes": ""
+  },
+  "schema-evolution": {
+    "icon": "🧬",
+    "blurb": "Add an optional field to a data model without breaking any reader",
+    "level": "Advanced",
+    "tabler": "ti-binary-tree-2",
+    "triggers": "'add a field to', 'extend the schema', 'add an optional field', 'evolve the data model', 'thread this through every consumer', 'backward-compatible migration', 'version this record shape', 'add a column without breaking'",
+    "modes": ""
+  },
   "japanese-candlesticks": {
     "icon": "🕯️",
     "blurb": "Read & interpret Japanese candlestick charts (Nison) — every reversal, continuation & doji pattern",
