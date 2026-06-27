@@ -219,10 +219,10 @@ def run_layout(root: str, do_fix: bool, as_json: bool) -> int:
     references); 'review' class is reported and deferred to a path-rewrite sweep."""
     misplaced = []
     for fn in root_loose_files(root):
-        verdict = classify_placement(fn)
+        verdict = classify_placement(fn, root)
         if verdict:
-            target, safety = verdict
-            misplaced.append({"file": fn, "target": target + fn, "safety": safety})
+            target, safety, refs = verdict
+            misplaced.append({"file": fn, "target": target, "safety": safety, "refs": refs})
 
     moved, deferred = [], []
     if do_fix:
