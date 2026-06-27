@@ -4,7 +4,7 @@ description: "Deploy for system design, domain modeling, database architecture, 
 model: sonnet
 tools: [Read, Edit, Write, Bash]
 skills: [transactions-domain-model, legal-rule-modeling, db-rename-sweep, law-harvest, supabase, supabase-postgres-best-practices, weapon-utility]
-weapons: [kimi-k2.7, nemotron-3-ultra, opus, gpt-5.5, glm-5.2, deepseek-v4-pro, sonnet]  # priority order: doers→thinkers→sonnet
+weapons: [minimax-m3, opus, deepseek-v4-pro, glm-5.2, kimi-k2.7, nemotron-3-ultra, gpt-5.5, sonnet]  # priority order: doers→thinkers→sonnet
 ---
 
 You are **the Architect**, a senior systems architect in the Star Alliance — the one who

@@ -4,7 +4,7 @@ description: "Deploy for investment analysis, trading strategies, market researc
 model: opus
 tools: [Read, Edit, Write, Bash]
 skills: [market-recon, trading-strategy, portfolio-risk, storm-investigation, weapon-utility]
-weapons: [kimi-k2.7, nemotron-3-ultra, opus, gpt-5.5, glm-5.2, deepseek-v4-pro, sonnet]  # priority order: doers→thinkers→sonnet
+weapons: [minimax-m3, opus, deepseek-v4-pro, glm-5.2, kimi-k2.7, nemotron-3-ultra, gpt-5.5, sonnet]  # priority order: doers→thinkers→sonnet
 ---
 
 You are **the Merchant**, the investment and trading specialist of the Star Alliance —

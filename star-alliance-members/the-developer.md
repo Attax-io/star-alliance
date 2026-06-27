@@ -4,7 +4,7 @@ description: "Deploy for writing code, applying changes, fixing bugs, implementi
 model: sonnet
 tools: [Read, Edit, Write, Bash]
 skills: [bug-fix-workflow, db-rename-sweep, dev-server, graphify, supabase, supabase-postgres-best-practices, full-output-enforcement, obsidian-markdown, weapon-utility]
-weapons: [kimi-k2.7, haiku, minimax-m3, opus, glm-5.2, gpt-5.5, deepseek-v4-pro, sonnet]  # priority order: doers→thinkers→sonnet
+weapons: [minimax-m3, haiku, opus, deepseek-v4-pro, glm-5.2, kimi-k2.7, gpt-5.5, sonnet]  # priority order: doers→thinkers→sonnet
 ---
 
 You are **the Developer**, the hands-on coder of the Star Alliance — the guild's smith

@@ -4,7 +4,7 @@ description: "Deploy for legal codex loading, law translation, and multi-locale 
 model: sonnet
 tools: [Read, Edit, Write, Bash]
 skills: [codex-law-translate, legal-drafting, law-harvest, article-creator, obsidian-markdown, weapon-utility]
-weapons: [kimi-k2.7, haiku, gpt-5.5, glm-5.2, opus, deepseek-v4-pro, sonnet]  # priority order: doers→thinkers→sonnet
+weapons: [minimax-m3, haiku, opus, deepseek-v4-pro, glm-5.2, kimi-k2.7, gpt-5.5, sonnet]  # priority order: doers→thinkers→sonnet
 ---
 
 You are **the Translator**, the legal codex specialist of the Star Alliance — the

@@ -2,7 +2,7 @@
 name: weapon-utility
 description: "Every member's rule for which weapon (model) to draw and how thinker and doer weapons work together. Thinker weapons read, plan, and prompt the doers; doer weapons do the job and return it; the thinker then reviews the result against the plan and re-prompts the doer until it conforms. A member draws the highest-priority AVAILABLE weapon of the kind the job needs — scanning its arsenal left to right — and wields one weapon at a time, unless ultra-brainstorming is active. Use whenever a member must pick a model, decide thinker-vs-doer, or run the plan → do → review loop. Triggers: 'which weapon', 'which model should X use', 'pick the weapon', 'thinker or doer', 'draw a weapon', 'run the weapon loop', 'how does the member choose its model'. Every member consults this before acting — it is the atomic layer beneath members-formation (which member works) and ultra-brainstorming (fuse several members across models)."
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 ---
 
 # Weapon Utility — how a member draws and wields its weapons
@@ -27,13 +27,14 @@ Every weapon has a **role** (set in `MODELS`, app.js): `doer`, `thinker`, or `bo
 
 - **Thinker weapons** — the **mind**. They *read, plan, and prompt the doer on what to do*,
   then *review what comes back*. A thinker never does the bulk work itself; it directs.
-  (`opus`, `gpt-5.5`, `deepseek-v4-pro`. Duals `glm-5.2`/`qwen3.5` and `sonnet` can think too.)
+  (`opus`, `gpt-5.5`, `deepseek-v4-pro`, `glm-5.2`, `kimi-k2.7`, `nemotron-3-ultra`, `qwen3.5`.
+  `sonnet` can think too.)
 - **Doer weapons** — the **hands**. They *take the thinker's prompt, do the job, and return it*.
-  A doer never decides strategy; it executes. (`minimax-m3`, `kimi-k2.7`, `haiku`,
-  `nemotron-3-ultra`, `gemma4`, and the MiniMax forge doers `image-01`/`video`/`speech`/`music`.)
-- **Dual weapons** (`both`) can serve **either** role. They sit in the thinker group of the
-  arsenal, so they default to **thinker**, but may stand in as a doer when the pure doers are
-  spent. `sonnet` is the universal dual — the last-resort weapon for **either** role.
+  A doer never decides strategy; it executes. `minimax-m3` is the **prime doer** — every member's
+  first-drawn hand. (`minimax-m3`, `haiku`, `gemma4`, and the MiniMax forge doers
+  `image-01`/`video`/`speech`/`music`.)
+- **Dual weapons** (`both`) — only `sonnet` remains dual: the universal last-resort weapon for
+  **either** role. It sits at the tail of every arsenal.
 
 ## The thinker ↔ doer loop
 
@@ -108,6 +109,10 @@ Own skill. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: 
 rule or mode · MAJOR: a change to the loop or selection contract). Then `python3 build.py`.
 
 ## Changelog
+- **1.1.0** — Thinker-bench reclass. `glm-5.2`, `kimi-k2.7`, `nemotron-3-ultra`, `qwen3.5` moved
+  from doer/dual → **thinker** (join `opus`, `gpt-5.5`, `deepseek-v4-pro`). `minimax-m3` named the
+  **prime doer** — every member's first-drawn hand. Doer pool now `minimax-m3`, `haiku`, `gemma4` +
+  forge doers; `sonnet` the sole remaining dual. All 9 member arsenals reordered minimax-first.
 - **1.0.0** — Initial release. Defines thinker vs doer weapons, the plan → do → review loop,
   left-to-right priority selection with doer-fallback and availability rules, one-weapon-at-a-time
   default, and the ultra-brainstorming exception (all thinkers fan out, top thinker consolidates

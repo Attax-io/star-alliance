@@ -22,9 +22,10 @@ ROOT = pathlib.Path(__file__).parent
 # role per model id, mirrored from MODELS in app.js. sonnet is "both" but forced last.
 ROLE = {
     "opus": "thinker", "gpt-5.5": "thinker", "deepseek-v4-pro": "thinker",
-    "glm-5.2": "both", "qwen3.5": "both", "sonnet": "both",
-    "haiku": "doer", "minimax-m3": "doer", "kimi-k2.7": "doer",
-    "nemotron-3-ultra": "doer", "gemma4": "doer",
+    "glm-5.2": "thinker", "kimi-k2.7": "thinker", "nemotron-3-ultra": "thinker",
+    "qwen3.5": "thinker", "qwen-3.5": "thinker",
+    "sonnet": "both",
+    "haiku": "doer", "minimax-m3": "doer", "gemma4": "doer",
     "image-01": "doer", "minimax-video": "doer", "minimax-speech": "doer", "minimax-music": "doer",
 }
 

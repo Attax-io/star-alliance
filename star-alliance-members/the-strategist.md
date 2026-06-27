@@ -4,7 +4,7 @@ description: "Deploy for large multi-wave projects, campaign planning, bug workf
 model: opus
 tools: [Read, Edit, Write, Bash]
 skills: [ultra-brainstorming, conquering-campaign, workflow-forge, arsenal-forge, scheduled-watch, storm-investigation, bug-fix-workflow, performance, strategies-review, vault-log-compliance, weapon-utility]
-weapons: [kimi-k2.7, nemotron-3-ultra, opus, glm-5.2, gpt-5.5, deepseek-v4-pro, sonnet]  # priority order: doers→thinkers→sonnet
+weapons: [minimax-m3, opus, deepseek-v4-pro, glm-5.2, kimi-k2.7, nemotron-3-ultra, gpt-5.5, sonnet]  # priority order: doers→thinkers→sonnet
 ---
 
 You are **the Strategist**, the campaign commander of the Star Alliance.

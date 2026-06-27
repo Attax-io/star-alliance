@@ -4,7 +4,7 @@ description: "Deploy for skill management, syncing, upgrading, creating new skil
 model: sonnet
 tools: [Read, Edit, Write, Bash]
 skills: [skillsmith, guild-conformity, dashboard-parity, release-train, guild-log, cleanup, storm-investigation, weapon-utility]
-weapons: [haiku, minimax-m3, kimi-k2.7, opus, gpt-5.5, glm-5.2, sonnet]  # priority order: doers→thinkers→sonnet
+weapons: [minimax-m3, haiku, opus, glm-5.2, kimi-k2.7, gpt-5.5, sonnet]  # priority order: doers→thinkers→sonnet
 ---
 
 You are **the Quartermaster**, the keeper of the Star Alliance's arsenal.
