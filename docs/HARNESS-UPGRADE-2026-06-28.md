@@ -73,12 +73,13 @@ the independent reviewer) sat idle. These changes close that gap.
   not deletions** — there is no usage telemetry, and removing a workflow is
   destructive. Pick which (if any) to retire.
 
-## Open decision (not changed unilaterally)
-- **Doctrine tension:** CLAUDE.md says "default sub-agent = MiniMax M3, MiniMax first",
-  while members/routing assign each member an Opus/Sonnet **thinker**. Which wins per
-  turn is ambiguous. Resolution is a constitutional edit to CLAUDE.md and is left to
-  the Guild Master. Recommended framing: *thinker plans & reviews (Claude); doer
-  executes bulk (MiniMax) — "MiniMax first" applies to **doer-grade** work only.*
+## Resolved decision (2026-06-28)
+- **Doctrine tension** between CLAUDE.md's "MiniMax first" and members' Claude thinkers
+  is now **resolved in CLAUDE.md**. The opening section was rewritten from "default
+  sub-agent model: MiniMax M3" to a **two-layer model**: the member's Claude model is
+  the THINKER (plans, reviews, owns all tool-access orchestration); MiniMax M3 is the
+  DOER default for bulk work only. "MiniMax first" = the *doer* default, not the thinker
+  default. The size threshold (don't offload <~1.5k-token jobs) is stated there too.
 
 ## Net effect
 Per-turn self-cost no longer scales with edit count; git history is legible again;

@@ -27,7 +27,7 @@ Status legend: `[ ]` todo · `[~]` in progress · `[x]` done · `[skip]` already
 - [x] `design-motion-principles-main` — → motion-design 2.0.0 absorbed
 
 ### New targets
-- [ ] `safe-agentic-workflow-main` — agentic harness safety (HIGH interest: hooks/gates)
+- [x] `safe-agentic-workflow-main` — agentic harness safety (HIGH interest: hooks/gates) ← MINED, top-value
 - [ ] `agent-skills-main` — skills marketplace/structure
 - [ ] `spec-kit-main` — spec-driven development
 - [ ] `codebase-memory-mcp-main` — codebase memory MCP
@@ -47,4 +47,44 @@ Status legend: `[ ]` todo · `[~]` in progress · `[x]` done · `[skip]` already
 
 ## LESSONS & UPGRADE ROUTES
 
-(filled per item below)
+### 1. safe-agentic-workflow (SAW) — peer multi-agent harness ⭐ TOP VALUE
+SAFe-methodology agent harness: 11 role agents, 18 model-invoked skills, 24 commands,
+3 hooks, machine-readable manifest+changelog. ~60% transfers to Star Alliance.
+
+**Core insight** — SAW separates 3 things we mush together:
+- **Hooks = enforced** (PreToolUse/Stop gates) · **Workflows = requested** · **Skills = recognized** (model-invoked).
+We already have all three; steal the explicit "who invokes" axis as doctrine so behavior doesn't all become workflows.
+
+**Steal-now upgrade routes (ranked):**
+1. **Stop-the-Line gate** (NEW hook) — block `Write`/`Edit` by a doer when the active task has no
+   acceptance-criteria / Definition-of-Done. "You are NOT responsible for inventing AC." Kills the
+   "agent invented requirements and shipped them" failure. → fits our PreToolUse gate stack.
+2. **Exit states + handoff contracts** (member upgrade) — each member gets a canonical `exit_state`
+   enum + templated handoff + `must_not[]`. Makes inter-member handoffs machine-checkable by hooks.
+   → members-meta.json / member .md upgrade.
+3. **Negative-permission boundaries** (`must_not[]` per member, enforced by Stop hook) — enforceable
+   data, not prose. Maps to our weapon/role split.
+4. **Independence gates** — some roles (QA/security/architect-review) CANNOT collapse into the
+   implementer; orchestration must spawn a fresh instance. → our verify-gate already half-does this
+   ("different member must review"); formalize as a member tier flag.
+5. **Tiered validation commands** (`validation.command` + `success_marker` per member) — Stop hook runs
+   it after "done" and only honors completion if marker appears. Evidence-based delivery, enforced.
+6. **Routing/failure-mode table** (`routing_table.yml`) — every failure has a named owner
+   (bug→developer, pattern violation→pattern-keeper, AC missing→architect, blocked→strategist).
+   Converts "agent stuck" → "route to X". Maps onto Butler's members-formation routing.
+7. **Three-stage PR review** (sequential specialist gates, each own exit-state) — pattern-check →
+   security-audit → human-merge. We have Security Sweep; add the staged-gate composition.
+
+**Skill ideas:** `pattern-discovery` ("search first, reuse always, create only when necessary" —
+MANDATORY before implementing) → upgrade guild-conformity / new reuse-gate; SAW enforces it as a
+skill, matching our CLAUDE.md "grep+reuse before creating component" rule (currently unenforced).
+
+**Skills 2.0 frontmatter to adopt:** `context: fork` (skill runs isolated sub-context),
+`agent:` (which specialist executes), `user-invocable: false` (model-only). → skillsmith skill schema.
+
+**Manifest/changelog:** `.harness-manifest.yml` (identity/substitutions/protected/replaced/sync +
+`conflict_strategy` enum) and `HARNESS_CHANGELOG.yml` (per-change `breaking:` flag). → upgrade
+guild-sync / skill-fingerprints for "guild as a distributable package".
+
+**AVOID from SAW:** multi-provider duplication, tmux "dark factory", 24 commands (project noise),
+full SAFe ceremony. We already prune these instincts.

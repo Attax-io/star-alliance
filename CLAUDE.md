@@ -5,9 +5,20 @@ timestamp: 2026-06-27T10:27:03Z
 
 # Star Alliance — Claude Instructions
 
-## Default sub-agent model: MiniMax M3
+## Two layers: Claude thinker plans & reviews · MiniMax doer executes bulk
 
-For all delegated sub-work, default to MiniMax M3 via `python3 "$STAR_ALLIANCE_ROOT/star-alliance-arsenal/minimax.py"`.
+There is **no single "default model"** — there are two roles, and "MiniMax first"
+governs only one of them. Don't read it as "route everything to MiniMax."
+
+- **THINKER (the mind).** Each member's session model — a Claude model (Opus/Sonnet
+  per the member's `model:`) — is the thinker. It owns the loop: plan → prompt the
+  doer → review the return against the plan → re-prompt until it conforms. All
+  tool-access orchestration (file edits, bash, git, MCP) stays with the thinker;
+  doers cannot run it. The thinker need NOT be Opus.
+- **DOER (the hands).** **Doer-grade work — bulk edits, extraction, generation,
+  mechanical transforms, large reads/summaries — goes to MiniMax M3 first** (then the
+  rest of the member's arsenal, cheapest doer first). This is what "MiniMax first"
+  means: it is the **doer default**, not the thinker default.
 
 ```
 python3 "$STAR_ALLIANCE_ROOT/star-alliance-arsenal/minimax.py" "<prompt>"
@@ -16,12 +27,20 @@ python3 "$STAR_ALLIANCE_ROOT/star-alliance-arsenal/minimax.py" "<prompt>"
 # STAR_ALLIANCE_ROOT set in .claude/settings.json env block
 ```
 
-Use Claude models (Opus/Sonnet/Haiku via Task tool) only when:
-- Orchestration logic requires tool access (file edits, bash, MCP)
-- Deep multi-step reasoning that MiniMax can't return structured output for
-- The task requires native Claude Code capabilities
+**Size threshold (don't offload small jobs).** A MiniMax/Ollama summon costs ~80–100s
+wall-time. Only offload doer-grade **bulk** (≳1.5k tokens of output, or many
+repetitive transforms). A small job — a few lines, one quick edit — the thinker does
+inline; offloading it is net-negative. The weapon-gate reminder restates this on every
+summon.
 
-Otherwise: **MiniMax first.**
+**The thinker keeps the work (does NOT offload to a doer) when:**
+- Orchestration logic requires tool access (file edits, bash, MCP)
+- Deep multi-step reasoning / judgment the doer can't return structured output for
+- The task requires native Claude Code capabilities
+- The job is below the size threshold
+
+So: **doer-grade bulk → MiniMax first; thinking, judgment, tool-orchestration, and
+small jobs → the member's Claude thinker.**
 
 ## Reading discipline (every member)
 
