@@ -65,6 +65,22 @@ def main():
     if cur in ("CLEAN", "NOREPO", ""):
         sys.exit(0)
 
+    # Baseline-aware: turn-start.py snapshots the source fingerprint at the start
+    # of every REAL turn. If the fingerprint is unchanged since then, nothing was
+    # implemented THIS turn — stand aside even when the tree carries pre-existing
+    # uncommitted source. Without this the gate fired on ANY dirty tree and
+    # re-prompted the model every turn (the "triple response" loop). When the
+    # baseline is absent (rare), fall back to the verify-pass comparison below.
+    bfile = os.path.join(state, "verify-baseline")
+    baseline = ""
+    if os.path.exists(bfile):
+        try:
+            baseline = open(bfile).read().strip()
+        except OSError:
+            baseline = ""
+    if baseline and cur == baseline:
+        sys.exit(0)
+
     passfile = os.path.join(state, "verify-pass")
     prev = ""
     if os.path.exists(passfile):

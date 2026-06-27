@@ -38,6 +38,23 @@ def project_dir():
     return os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
 
 
+def _first_reminder_this_turn():
+    """True only on the FIRST valid summon of a turn. turn-start.py clears the
+    sentinel on every new UserPromptSubmit, so the ~130-token weapon-doctrine
+    reminder fires once per turn instead of on every single draw (it used to
+    re-inject on each summon — pure repeated tax on multi-summon turns)."""
+    state = os.path.join(project_dir(), ".claude", "state")
+    sentinel = os.path.join(state, "weapon-reminded")
+    if os.path.exists(sentinel):
+        return False
+    try:
+        os.makedirs(state, exist_ok=True)
+        open(sentinel, "w").close()
+    except OSError:
+        pass
+    return True
+
+
 def known_weapons():
     """Every valid weapon id: the canonical registry (star-alliance-arsenal/
     models.json) UNION every member's loadout (guild-data.json). The registry
@@ -123,8 +140,11 @@ def check(data):
                 "A member can only wield weapons in its loadout — see weapon-utility.\n"
             )}
 
-    # Valid summon → non-blocking doctrine reminder (+ doer size-threshold).
-    return {"exit": 0, "systemMessage": REMINDER}
+    # Valid summon → non-blocking doctrine reminder (+ doer size-threshold),
+    # emitted ONCE per turn (not on every draw).
+    if _first_reminder_this_turn():
+        return {"exit": 0, "systemMessage": REMINDER}
+    return {"exit": 0}
 
 
 def main():

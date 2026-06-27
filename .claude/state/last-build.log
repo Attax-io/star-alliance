@@ -1,0 +1,11 @@
+
+BUILD WARNINGS (8):
+  ⚠ domain 'lex-council-app' references member 'backend-auditor' not in the guild (external)
+  ⚠ domain 'lex-council-app' references member 'cold-doc-rotator' not in the guild (external)
+  ⚠ domain 'lex-council-app' references member 'frontend-auditor' not in the guild (external)
+  ⚠ domain 'lex-council-app' references member 'health-checker' not in the guild (external)
+  ⚠ domain 'lex-council-app' references member 'heat-map-analyst' not in the guild (external)
+  ⚠ domain 'lex-council-app' references member 'pattern-detector' not in the guild (external)
+  ⚠ domain 'lex-council-business' references member 'bd-research-agent' not in the guild (external)
+  ⚠ domain 'lex-council-business' references member 'intake-agent' not in the guild (external)
+Wrote guild-data.js (519,510 bytes) + guild-data.json + skill-md.js (755,177 bytes, 69 skills) + workflow-md.js (70,369 bytes, 33 workflows)

@@ -23,8 +23,7 @@ Your weapons are AI models — each suited to a different kind of quest. Choose 
 | **3rd** — Tertiary | deepseek-v4-pro | DeepSeek V4 Pro — the greatsword. Frontier reasoning for multi-wave strategy. |
 | **4th** — Quaternary | glm-5.2 | GLM-5.2 — the staff for analytical breakdowns. |
 | **5th** — Quinary | kimi-k2.7 | Kimi K2.7 — the greatbow for long campaign documents. |
-| **6th** — Senary | gpt-5.5 | GPT-5.5 — the enchanted blade. Analytical and creative second opinion for campaign plans. |
-| **7th** — Septenary | sonnet | Claude Sonnet — the reliable longsword. Fast balanced daily wave driver. |
+| **6th** — Senary | sonnet | Claude Sonnet — the reliable longsword. Fast balanced daily wave driver. |
 
 **How to choose:** Start with your primary weapon. If the quest demands a different
 strength — more speed, more context, more creativity — switch to the weapon that fits.

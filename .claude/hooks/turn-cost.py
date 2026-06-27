@@ -61,6 +61,14 @@ def main():
     except Exception:
         sys.exit(0)
 
+    # Once-per-turn dedup: turn-start (written by UserPromptSubmit) is the
+    # sentinel. A BLOCKING Stop hook re-invokes the model → Stop fires again;
+    # without this we'd append a duplicate record (tier=unknown, no wall_ms) per
+    # re-prompt. If the sentinel is already gone, we logged this turn → skip.
+    start_sentinel = pathlib.Path(project_dir()) / ".claude" / "state" / "turn-start"
+    if not start_sentinel.exists():
+        sys.exit(0)
+
     transcript = data.get("transcript_path")
     if not transcript or not os.path.exists(transcript):
         sys.exit(0)
@@ -96,12 +104,16 @@ def main():
     # (.claude/state/last-tier) because the SA-GATE marker lands in hook stdout
     # (system-reminder context), not in user-turn text — so the regex below never
     # matched and 90% of turns logged tier=unknown. Sidecar is consumed once.
+    # NOTE: do NOT delete last-tier here. A blocking Stop hook re-fires Stop
+    # several times per turn; deleting on the first read made every later record
+    # log tier=unknown (the 45%-unknown bug). The dedup above means we only log
+    # once per turn anyway, and guild-routing-gate.sh overwrites last-tier on the
+    # next real UserPromptSubmit — so a stale read can never cross turns.
     tier = "unknown"
     tier_file = pathlib.Path(project_dir()) / ".claude" / "state" / "last-tier"
     if tier_file.exists():
         try:
             tier = tier_file.read_text().strip().lower()
-            tier_file.unlink()
         except Exception:
             pass
     if tier == "unknown":

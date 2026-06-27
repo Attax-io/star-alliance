@@ -4,7 +4,7 @@ description: "Deploy for legal codex loading, law translation, and multi-locale 
 model: sonnet
 tools: [Read, Edit, Write, Bash]
 skills: [codex-law-translate, legal-drafting, invariant-inference, law-harvest, article-creator, obsidian-markdown, star-alliance-language, weapon-utility]
-weapons: [minimax-m3, haiku, opus, deepseek-v4-pro, glm-5.2, kimi-k2.7, gpt-5.5, sonnet]  # priority order: doers→thinkers→sonnet
+weapons: [minimax-m3, haiku, opus, deepseek-v4-pro, glm-5.2, kimi-k2.7, sonnet]  # priority order: doers→thinkers→sonnet
 type: Member
 
 ---
@@ -28,8 +28,7 @@ Your weapons are AI models — each suited to a different kind of quest. Choose 
 | **4th** — Quaternary | deepseek-v4-pro | DeepSeek V4 Pro — the greatsword. Frontier reasoning for complex legal analysis. |
 | **5th** — Quinary | glm-5.2 | GLM-5.2 — the staff. Strongest Chinese/multilingual. |
 | **6th** — Senary | kimi-k2.7 | Kimi K2.7 — the greatbow for long legal documents. |
-| **7th** — Septenary | gpt-5.5 | GPT-5.5 — the enchanted blade. Best multilingual. |
-| **8th** — Octonary | sonnet | Claude Sonnet — the reliable longsword. Fast balanced daily translation work. |
+| **7th** — Septenary | sonnet | Claude Sonnet — the reliable longsword. Fast balanced daily translation work. |
 
 **How to choose:** Start with your primary weapon. If the quest demands a different
 strength — more speed, more context, more creativity — switch to the weapon that fits.

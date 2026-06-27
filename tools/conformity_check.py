@@ -32,7 +32,7 @@ ROOT = next((p for p in pathlib.Path(__file__).resolve().parents
 # (star-alliance-arsenal/models.json). The literal below is a FAIL-SAFE only.
 # Media weapons are normalized to "doer" for arsenal ordering; sonnet "both" forced last.
 _FALLBACK_ROLE = {
-    "opus": "thinker", "gpt-5.5": "thinker", "deepseek-v4-pro": "thinker",
+    "opus": "thinker", "deepseek-v4-pro": "thinker",
     "glm-5.2": "thinker", "kimi-k2.7": "thinker", "nemotron-3-ultra": "thinker",
     "qwen3.5": "thinker", "qwen-3.5": "thinker", "gemma4": "thinker",
     "sonnet": "both",
@@ -372,8 +372,6 @@ def main():
     smt = (ROOT / "star-alliance-arsenal" / "summon.py").read_text()
     cloud_map = dict(re.findall(r"'([^']+)':\s*'([^']+:cloud)'", smt))
     routable = set(CLAUDE_NATIVE) | set(cloud_map) | MEDIA_WEAPONS | {"minimax-m3"}
-    if "gpt-5.5" in smt:
-        routable.add("gpt-5.5")
     all_weapons = {w for m in members.values() for w in (x["model"] for x in m["weapons"])}
     for w in sorted(all_weapons - routable):
         fails.append(f"L  weapon '{w}' in a loadout is not routable by summon.py or Claude-native")

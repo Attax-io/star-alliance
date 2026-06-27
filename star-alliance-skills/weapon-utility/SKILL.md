@@ -2,7 +2,7 @@
 name: weapon-utility
 description: "Every member's rule for which weapon (model) to draw and how thinker and doer weapons work together. Thinker weapons read, plan, and prompt the doers; doer weapons do the job and return it; the thinker then reviews the result against the plan and re-prompts the doer until it conforms. A member draws the highest-priority AVAILABLE weapon of the kind the job needs — scanning its arsenal left to right. One thinker plans and reviews and may dispatch several doers in parallel (many of one model or a mix); only ultra-brainstorming runs several thinkers at once. Use whenever a member must pick a model, decide thinker-vs-doer, or run the plan → do → review loop. Triggers: 'which weapon', 'which model should X use', 'pick the weapon', 'thinker or doer', 'draw a weapon', 'run the weapon loop', 'how does the member choose its model'. Every member consults this before acting — it is the atomic layer beneath members-formation (which member works) and ultra-brainstorming (fuse several members across models)."
 metadata:
-  version: 2.1.0
+  version: 2.1.1
 type: Skill
 
 ---
@@ -35,7 +35,7 @@ Edit the registry, never hand-list. The lists below are a human-readable mirror.
   a session. **Brain = personality:** the model it runs as IS the model that thinks. (The dashboard
   marks it with a purple **BRAIN** flag.)
 - **Escalation thinkers — a bigger mind the brain delegates to.** The *other* thinker weapons in the
-  arsenal (`opus`, `gpt-5.5`, `deepseek-v4-pro`, `glm-5.2`, `kimi-k2.7`, `nemotron-3-ultra`, `qwen3.5`,
+  arsenal (`opus`, `deepseek-v4-pro`, `glm-5.2`, `kimi-k2.7`, `nemotron-3-ultra`, `qwen3.5`,
   `gemma4`) are **not** the member's identity — they are weapons the brain *reaches for* on a hard
   problem (one at a time, or all at once under [[ultra-brainstorming]]). `opus` is the strongest
   escalation thinker and **leads the thinker block** in arsenal order; `gemma4` is a light, fast one
@@ -192,8 +192,8 @@ A weapon is **available** only if all hold:
 
 - it is **in the member's loadout** (and not revoked for that member);
 - it is **not globally disabled** (the Arsenal kill-switch / `sa-disabled-weapons`);
-- it is **actually reachable** — provisioned and pulled. `gpt-5.5` reports *not provisioned*
-  and is skipped; Ollama bench weapons must be pulled first or they are skipped.
+- it is **actually reachable** — provisioned and pulled. Ollama bench weapons must be
+  pulled first or they are skipped.
 
 An unavailable weapon is passed over silently — the scan simply continues to the next weapon of
 the same kind.
@@ -233,6 +233,7 @@ python3 tools/efficiency_report.py   # shows median in/out tokens split by lite 
 **The safety check always wins:** before adjusting any `size_small_signals`, verify zero high-stakes turns in the LITE column (a migration, git push, deploy in a LITE-tagged turn is the hard failure). Stakes keyword list in `data/harness.json` is immutable until safety is confirmed.
 
 ## Changelog
+- **2.1.1** — Removed the dead `gpt-5.5` reference from the escalation-thinker list and the availability example (model retired from the arsenal — Strategic Audit 2026-06-28). Refs → PATCH.
 - **2.1.0** — **Swarm dispatch (mined from SWARM Parallelism, `yandex-research/swarm`).** New §Swarm dispatch maps three ideas from training over unreliable/heterogeneous/preemptible nodes onto the doer fan-out: **(1) throughput-weighted fan-out** — split a mixed doer pool ∝ each doer's measured speed/reliability (give `minimax-m3` the bulk), not round-robin; heterogeneity self-balances. **(2) mid-flight slice reroute** — a `None` in the `delegate_many` result is a *preempted peer, not a dead job*: re-dispatch that one slice to the next doer right (same plan/prompt), the left→right doer-fallback applied at SLICE granularity mid-flight instead of whole-job; only an exhausted pool for that slice fails up to the thinker. Closes the prior gap where the skill cited `delegate_many`'s `None` contract (1.5.0) but gave no doctrine for handling it. **(3) stable-coordinator / swappable-workers** — names the *why* behind reroute: the thinker (Claude brain) is SWARM's stable cheap monitor (always reachable, holds plan + tool buttons); doers are the preemptible GPU peers — never put the plan or tool calls on a weapon that can vanish. New dispatch doctrine → MINOR.
 - **2.0.0** — **Brain = personality (the model the member runs as).** Redefines the member's mind: the **brain is its session model** (`model:`) — the live model that actually thinks and orchestrates in a session — NOT "whichever thinker leads the arsenal." `opus` and the other thinkers are reframed as **escalation weapons** the brain delegates to, not the member's identity. The dashboard now flags the **BRAIN** (session-model weapon) and the **DOER** (prime doer, `minimax-m3`) on each member's cards; `conformity_check.py` replaces the `PT` (prime-thinker==opus) check with **`BR`** (the session model is a carried, thinking weapon) + **`PD`** (prime doer leads). Supersedes the §5 "prime thinker = first thinker weapon = opus" decision. Selection-contract change → MAJOR.
 - **1.8.0** — **Draw no weapon — script it.** New lead rule in §Drawing the right weapon: before picking a thinker or doer, ask whether the job needs a *model* at all. An exact, mechanical transform (field-preserving JSON merge, literal extraction, deterministic rename) is a **script**, not a summon — an LLM doer *or* thinker silently drops a field or rewords a value on a precision-critical merge, where a `node -e` eval + Python merge will not. Draw a model only for generative/judgemental work. Mined from the model-armory consolidation, where the 15×16-field registry merge was done by script (not minimax) precisely to avoid transcription loss. New selection rule → MINOR.

@@ -85,6 +85,15 @@ def post_chat(api_key, model, messages, max_tokens, timeout):
             detail = e.read().decode('utf-8', errors='replace')
         except Exception:
             detail = str(e)
+        if e.code in (401, 403):
+            # Auth failure is unrecoverable in-script (no Claude CLI to fall back
+            # to). Surface it loudly with a distinct exit so the THINKER catches it
+            # and does the job inline / via a Claude doer instead of stalling.
+            print('minimax: HTTP {0} AUTH FAILED — bad/missing key. Check '
+                  '~/.config/minimax/m3.key or $MINIMAX_API_KEY. Thinker: fall back '
+                  '(do it inline or draw a Claude doer); do not retry this key.'
+                  .format(e.code), file=sys.stderr)
+            sys.exit(7)
         print('minimax: HTTP {0}: {1}'.format(e.code, detail), file=sys.stderr)
         sys.exit(4)
     except urllib.error.URLError as e:

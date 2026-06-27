@@ -21,7 +21,6 @@ One file per weapon, **generated from [models.json](../models.json)** — the ca
 | [nemotron-3-ultra](nemotron-3-ultra.md) | thinker | ollama-cloud | reserve |
 | [qwen3.5](qwen3.5.md) | thinker | ollama-cloud | reserve |
 | [gemma4](gemma4.md) | thinker | ollama-cloud | reserve |
-| [gpt-5.5](gpt-5.5.md) | thinker | openai-direct | deactivated |
 | [image-01](image-01.md) | media | minimax-media | live |
 | [minimax-video](minimax-video.md) | media | minimax-media | live |
 | [minimax-speech](minimax-speech.md) | media | minimax-media | live |

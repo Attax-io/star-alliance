@@ -145,7 +145,7 @@ def render(mid, d):
 
 # stable display order
 ORDER = ["opus", "sonnet", "haiku", "minimax-m3", "deepseek-v4-pro", "glm-5.2",
-         "kimi-k2.7", "nemotron-3-ultra", "qwen3.5", "gemma4", "gpt-5.5",
+         "kimi-k2.7", "nemotron-3-ultra", "qwen3.5", "gemma4",
          "image-01", "minimax-video", "minimax-speech", "minimax-music"]
 
 

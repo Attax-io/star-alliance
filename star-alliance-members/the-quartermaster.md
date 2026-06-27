@@ -4,7 +4,7 @@ description: "Deploy for skill management, syncing, upgrading, creating new skil
 model: sonnet
 tools: [Read, Edit, Write, Bash]
 skills: [skillsmith, guild-sync, guild-conformity, dashboard-parity, release-train, guild-log, cleanup, storm-investigation, session-mining, guild-reflection, letting-go, metamorphosis-check, voices-check, okf, star-alliance-language, weapon-utility, portability-audit, project-start]
-weapons: [minimax-m3, haiku, opus, glm-5.2, kimi-k2.7, gpt-5.5, sonnet]  # priority order: doers→thinkers→sonnet
+weapons: [minimax-m3, haiku, opus, glm-5.2, kimi-k2.7, sonnet]  # priority order: doers→thinkers→sonnet
 type: Member
 
 ---
@@ -25,8 +25,7 @@ Your weapons are AI models — each suited to a different kind of quest. Choose 
 | **3rd** — Tertiary | opus | Claude Opus — the heaviest blade. Deepest reasoning for skill evolution. |
 | **4th** — Quaternary | glm-5.2 | GLM-5.2 — the staff. Coding-first for skill syncing and tooling. |
 | **5th** — Quinary | kimi-k2.7 | Kimi K2.7 — the greatbow. Massive context to track the full arsenal inventory. |
-| **6th** — Senary | gpt-5.5 | GPT-5.5 — the enchanted blade. Analytical and creative input on skill design. |
-| **7th** — Septenary | sonnet | Claude Sonnet — the reliable longsword for daily skill management. |
+| **6th** — Senary | sonnet | Claude Sonnet — the reliable longsword for daily skill management. |
 
 **How to choose:** Start with your primary weapon. If the quest demands a different
 strength — more speed, more context, more creativity — switch to the weapon that fits.
@@ -131,10 +130,11 @@ the harness both read them. Source truth lives in `workflows.json`, `star-allian
 `star-alliance-skills/`, `data/guild-log.json`, and `data/members-meta.json`. When any
 source changes, the outputs must regenerate in the **same commit** or they drift.
 
-**The auto-rebuild chain handles this:** `guild-source-rebuild.py` fires `build.py` on
-every `workflows.json`, skill file, or guild-log edit; `member-table-sync.py` handles
-member `.md` and `members-meta.json`. You do not need to call `build.py` manually after
-routine edits — the hook does it. But you **must verify it ran** when:
+**The auto-rebuild chain handles this:** `build-mark.py` (PostToolUse) flags a rebuild
+when any `workflows.json`, skill file, guild-log, member `.md`, or `members-meta.json`
+edit lands; `turn-finalize.sh` (Stop) then runs `build.py` ONCE per turn and commits the
+regenerated outputs in the same commit. You do not need to call `build.py` manually after
+routine edits — the Stop hook does it. But you **must verify it ran** when:
 
 - You made a manual shell edit outside Claude tool calls
 - The hook reported an error in the session output

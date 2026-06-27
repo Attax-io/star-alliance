@@ -26,8 +26,7 @@ Your weapons are AI models — each suited to a different kind of quest. Choose 
 | **4th** — Quaternary | deepseek-v4-pro | DeepSeek V4 Pro — the greatsword. Frontier MoE reasoning for complex code. |
 | **5th** — Quinary | glm-5.2 | GLM-5.2 — the staff. Coding-first precision for implementation. |
 | **6th** — Senary | kimi-k2.7 | Kimi K2.7 — the greatbow. Massive context for big codebases. |
-| **7th** — Septenary | gpt-5.5 | GPT-5.5 — the enchanted blade. Analytical second opinion on tough code. |
-| **8th** — Octonary | sonnet | Claude Sonnet — the reliable longsword for daily coding. |
+| **7th** — Septenary | sonnet | Claude Sonnet — the reliable longsword for daily coding. |
 
 **How to choose:** Start with your primary weapon. If the quest demands a different
 strength — more speed, more context, more creativity — switch to the weapon that fits.

@@ -2,7 +2,7 @@
 name: guild-conformity
 description: "The Quartermaster's craft for proving the whole guild repo agrees with itself and with every logged decision, then reconciling any contradiction at its source. Wraps the read-only conformity_check.py (which emits a contradiction map across members, members-meta, skills, skills-meta, domains, workflows, the guild log, and the generated guild-data) plus fixing each real contradiction at its source of truth and rebuilding with build.py until the check passes clean. It is the closing step of every guild workflow and the spine of the Compliance Audit. Use when a workflow is closing, after any structural change, or when you need proof nothing contradicts. Triggers: 'run the conformity check', 'confirm guild conformance', 'does the repo agree with itself', 'conformity sweep', 'reconcile the guild data', 'is everything consistent'. Differentiate from cleanup (app/i18n hygiene) and skillsmith (skill versioning)."
 metadata:
-  version: 1.4.1
+  version: 1.4.2
 type: Skill
 
 ---
@@ -117,26 +117,29 @@ the harness-efficiency session, where a skill landed in two loadouts with no dri
 sweep-time SD flag caught it.)
 
 ## Versioning
-Own skill. Current: **1.4.1**. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new mode/section · MAJOR: method contract change). Regenerate `VERSIONS.md` with `python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.
+Own skill. Current: **1.4.2**. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new mode/section · MAJOR: method contract change). Regenerate `VERSIONS.md` with `python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.
 
 ## Member-table consistency check (1.3.0)
 
-`member-table-sync.py` (PostToolUse hook) keeps each member's `## Your Weapons` prose table in sync with its frontmatter `weapons:` loadout. If the hook is unwired or `build.py` fails silently, the table can drift while the frontmatter is correct — conformity_check.py would not catch it because it reads frontmatter, not rendered prose.
+The `## Your Weapons` prose table in each member `.md` is GENERATED from its frontmatter `weapons:` loadout + `members-meta.json` weaponsDesc (build.py self-heals it). If `build.py` doesn't run, the table can drift while the frontmatter is correct — conformity_check.py would not catch it because it reads frontmatter, not rendered prose.
+
+**The rebuild chain (current):** `build-mark.py` (PostToolUse) drops `.claude/state/build-pending` when any build-source is edited; `turn-finalize.sh` (Stop) runs `build.py` ONCE at turn end if the flag is set, then coalesces the turn into one commit — so the table re-syncs and commits in the same turn, no per-edit rebuild. (This replaced the old per-edit `member-table-sync.py` + `autocommit.sh` chain, now archived under `.claude/hooks/.deprecated/`.)
 
 **Add to every conformity close:**
 
 ```sh
 # Spot-check: does each member's prose table match its frontmatter weapons: list?
 python3 conformity_check.py --member <name>   # existing flag checks skill↔drill
-# If member-table-sync.py is wired, it runs build.py automatically on every edit.
-# If you suspect drift, re-run build.py explicitly:
+# A manual shell edit outside Claude's tool path won't trip build-mark.py, so if you
+# suspect drift, re-run build.py explicitly — it is idempotent:
 python3 build.py
 python3 conformity_check.py
 ```
 
-**New invariant to watch:** after any member `.md` edit, confirm `build.py` ran (check the PostToolUse chain in `settings.json` — `member-table-sync.py` must appear before `autocommit.sh` so the table is committed with the change, not separately). If `member-table-sync.py` is missing from PostToolUse, flag it as a harness gap and add it before closing.
+**Invariant to watch:** after any member `.md` edit, confirm `build.py` ran this turn (check `.claude/state/last-build.log`, or that `build-mark.py` (PostToolUse) + `turn-finalize.sh` (Stop) are wired in `settings.json`). If they are missing, flag it as a harness gap before closing.
 
 ## Changelog
+- **1.4.2** — Updated §Member-table consistency check to the current build chain (`build-mark.py` PostToolUse → `turn-finalize.sh` Stop); the old `member-table-sync.py` + `autocommit.sh` invariant was stale (those hooks are archived under `.claude/hooks/.deprecated/`). Refs → PATCH.
 - **1.4.1** — Reconciled the workflow rename: live references to the old "Conformity Sweep" workflow now read **Compliance Audit** (the merged Conformity Sweep + OKF Tidy workflow); historical/changelog mentions left intact. Wording/refs → PATCH.
 - **1.4.0** — New §The anti-drift family under "Adding a new invariant": names the reusable invariant *class* that locks a source-of-truth consolidation — `fallback == source` (FB), `sidecar ⊆ source` (MU), `asset-per-id` (WART), `prose == data` lint (RG). Each ties a copy you couldn't delete back to the SoT so it can't silently re-diverge; each still earns its negative test. Mined from the model-armory consolidation onto `star-alliance-arsenal/models.json` (the FB check is the guard that would have caught the original `app.js sonnet=doer` bug). Pairs with `schema-evolution` 1.1.0 §Consolidation. New section → MINOR.
 - **1.3.0** — New §Member-table consistency check: documents the `member-table-sync.py` PostToolUse hook invariant, adds explicit `build.py` re-run to the conformity-close checklist, and instructs Quartermaster to verify hook wiring in `settings.json` before closing.

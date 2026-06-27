@@ -11,9 +11,6 @@ Usage examples:
     # 3. Opus is Claude-native: dispatched locally, not via a backend script.
     #    The orchestrator should use the Task tool directly.
     python summon.py opus "Draft a release note."
-
-    # 4. gpt-5.5 is OpenAI-direct and not provisioned on this device.
-    python summon.py gpt-5.5
 """
 
 import argparse
@@ -48,7 +45,7 @@ except Exception:
     CLAUDE = _FALLBACK_CLAUDE
     _KNOWN = set()
 
-KNOWN_IDS = sorted(_KNOWN | {'minimax-m3', 'gpt-5.5'} | set(CLOUD_TAG) | CLAUDE)
+KNOWN_IDS = sorted(_KNOWN | {'minimax-m3'} | set(CLOUD_TAG) | CLAUDE)
 
 
 def _passthrough(args, token_flag=None):
@@ -148,18 +145,7 @@ def main():
         )
         sys.exit(0)
 
-    # 4. gpt-5.5 — DEACTIVATED pending an OpenAI API key (Atta's call, 2026-06-26).
-    #    Kept in member loadouts ON PURPOSE; do NOT strip. Reactivate by setting the
-    #    OpenAI key on the device and wiring the OpenAI-direct backend here.
-    if args.model_id == 'gpt-5.5':
-        print(
-            "summon: gpt-5.5 is DEACTIVATED — awaiting an OpenAI API key "
-            "(OpenAI-direct, no key on device). Reactivate once the key is set.",
-            file=sys.stderr,
-        )
-        sys.exit(69)
-
-    # 5. Unknown model_id: surface the sorted catalogue and bail.
+    # 4. Unknown model_id: surface the sorted catalogue and bail.
     print(
         f"summon: unknown model_id {args.model_id!r}. Known: "
         f"{', '.join(KNOWN_IDS)}",

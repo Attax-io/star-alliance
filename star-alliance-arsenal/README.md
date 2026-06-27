@@ -65,7 +65,6 @@ summon.py nemotron-3-ultra…→ ollama_cloud.py nemotron-3-super:cloud  (reserv
 summon.py qwen3.5 …        → ollama_cloud.py qwen3.5:cloud           (reserve, pulled)
 summon.py gemma4 …         → ollama_cloud.py gemma4:cloud            (reserve, pulled)
 summon.py opus|sonnet|haiku→ "native — use the Task tool" (exit 0)
-summon.py gpt-5.5          → "not provisioned" (exit 69)
 ```
 
 ## Shared flags

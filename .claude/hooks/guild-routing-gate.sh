@@ -60,7 +60,7 @@ if any(k in p for k in stakes):
     print("FULL"); sys.exit(0)
 has_small = any(k in p for k in small)
 has_large = any(k in p for k in large)
-short = len(p) <= 240
+short = len(p) <= int(pol.get("size_short_chars", 240))
 # Only clearly-small AND clearly-low-stakes AND short → LITE. Else FULL.
 print("LITE" if (has_small and not has_large and short) else "FULL")
 PY

@@ -4,7 +4,7 @@ description: "Deploy for marketing, growth, demand generation, content/SEO, bran
 model: opus
 tools: [Read, Edit, Write, Bash]
 skills: [growth-marketing, relationship-intel, article-creator, imagegen-frontend, storm-investigation, ultra-brainstorming, star-alliance-language, weapon-utility]
-weapons: [minimax-m3, image-01, opus, glm-5.2, kimi-k2.7, gemma4, gpt-5.5, sonnet]  # priority order: doers→thinkers→sonnet
+weapons: [minimax-m3, image-01, opus, glm-5.2, kimi-k2.7, gemma4, sonnet]  # priority order: doers→thinkers→sonnet
 type: Member
 
 ---
@@ -29,8 +29,7 @@ Your weapons are AI models — each suited to a different kind of quest. Choose 
 | **4th** — Quaternary | glm-5.2 | GLM-5.2 — the staff. Analytical breakdowns and multilingual reach. |
 | **5th** — Quinary | kimi-k2.7 | Kimi K2.7 — the greatbow. Massive context for long content, campaigns, and proof banks. |
 | **6th** — Senary | gemma4 | Gemma 4 — the hand-axe. Light, fast thinker: a quick analytical second mind for hooks, headline variants, and content angles. |
-| **7th** — Septenary | gpt-5.5 | GPT-5.5 — the enchanted blade. Creative second opinion on hooks and copy. |
-| **8th** — Octonary | sonnet | Claude Sonnet — the reliable longsword. Fast balanced daily marketing work. |
+| **7th** — Septenary | sonnet | Claude Sonnet — the reliable longsword. Fast balanced daily marketing work. |
 
 **How to choose:** Start with your primary weapon. If the quest demands a different
 strength — more speed, more context, more creativity — switch to the weapon that fits.

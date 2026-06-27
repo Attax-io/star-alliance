@@ -246,27 +246,6 @@
         "note": "est · shares Ollama Cloud pool"
       }
     },
-    "gpt-5.5": {
-      "role": "thinker",
-      "backend": "openai-direct",
-      "cloud_tag": null,
-      "status": "deactivated",
-      "pull": null,
-      "weight": 0.2,
-      "kind": "text",
-      "summary": "OpenAI-direct second opinion. Deactivated — no key on device; kept in loadouts on purpose.",
-      "label": "GPT-5.5",
-      "color": "#9d7bff",
-      "tier": "Premium",
-      "host": "OpenAI · direct",
-      "desc": "OpenAI GPT-5.5 — a US-hosted frontier second opinion. Premium-priced.",
-      "ollama_desc": "OpenAI GPT-5.5 · OpenAI's flagship frontier model. Multimodal reasoning, world-class coding, and strong creative generation. Best used as a second opinion on hard problems, cross-validation, or tasks that benefit from a different model family's perspective.",
-      "call": "python3 star-alliance-arsenal/summon.py gpt-5.5  → reports NOT provisioned (no key on device).\nWhen provisioned: OpenAI direct, POST api.openai.com/v1/chat/completions, Bearer $OPENAI_API_KEY, model:'gpt-5.5'.",
-      "meter": {
-        "kind": "off",
-        "note": "Not provisioned — no key on device yet"
-      }
-    },
     "image-01": {
       "role": "media",
       "backend": "minimax-media",

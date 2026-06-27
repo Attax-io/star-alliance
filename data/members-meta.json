@@ -1,6 +1,6 @@
 {
  "version": 1,
- "_weaponStatusNote": "LIVE doer = minimax-m3 (~99% of all 549 ledger offload calls). The six bench weapons are RESERVE: pulled and reachable (verified ollama list 2026-06-27) but idle — kept in loadouts and drawable, just not advertised as the live doer. gpt-5.5 is deactivated (no OpenAI key on device). Reactivate a reserve weapon by drawing it; once it logs real ledger calls, promote it back. Statuses: live (default, omitted) · reserve · deactivated.",
+ "_weaponStatusNote": "LIVE doer = minimax-m3 (~99% of all 549 ledger offload calls). The six bench weapons are RESERVE: pulled and reachable (verified ollama list 2026-06-27) but idle — kept in loadouts and drawable, just not advertised as the live doer. Reactivate a reserve weapon by drawing it; once it logs real ledger calls, promote it back. Statuses: live (default, omitted) · reserve.",
  "members": {
   "the-butler": {
    "name": "The Butler",
@@ -46,7 +46,6 @@
     "minimax-m3": "MiniMax M3 — the crossbow. Cheap 1M-context prime doer for bulk schema scaffolds, migration drafts, and structural bookkeeping.",
     "kimi-k2.7": "Kimi K2.7 — the greatbow. Massive context for sprawling architectures.",
     "opus": "Claude Opus — the heaviest blade. Deepest reasoning for schema modeling.",
-    "gpt-5.5": "GPT-5.5 — the enchanted blade. Exceptional analytical reasoning.",
     "glm-5.2": "GLM-5.2 — the staff. Coding-first thinking for system design and schema work.",
     "deepseek-v4-pro": "DeepSeek V4 Pro — the greatsword. Frontier reasoning for structural integrity.",
     "sonnet": "Claude Sonnet — the reliable longsword for daily structural work."
@@ -78,7 +77,6 @@
     "minimax-m3": "MiniMax M3 — the crossbow. Precise structural doer for knowledge graphs and repetitive tooling.",
     "opus": "Claude Opus — the heaviest blade. Deepest reasoning for the gnarliest bugs.",
     "glm-5.2": "GLM-5.2 — the staff. Coding-first precision for implementation.",
-    "gpt-5.5": "GPT-5.5 — the enchanted blade. Analytical second opinion on tough code.",
     "deepseek-v4-pro": "DeepSeek V4 Pro — the greatsword. Frontier MoE reasoning for complex code.",
     "sonnet": "Claude Sonnet — the reliable longsword for daily coding."
    },
@@ -146,7 +144,6 @@
     "kimi-k2.7": "Kimi K2.7 — the greatbow for long campaign documents.",
     "opus": "Claude Opus — the heaviest blade for complex multi-wave planning.",
     "glm-5.2": "GLM-5.2 — the staff for analytical breakdowns.",
-    "gpt-5.5": "GPT-5.5 — the enchanted blade. Analytical and creative second opinion for campaign plans.",
     "deepseek-v4-pro": "DeepSeek V4 Pro — the greatsword. Frontier reasoning for multi-wave strategy.",
     "sonnet": "Claude Sonnet — the reliable longsword. Fast balanced daily wave driver."
    },
@@ -179,7 +176,6 @@
     "minimax-m3": "MiniMax M3 — the crossbow. Cheap 1M-context prime doer for bulk article extraction, locale string drafts, and mechanical translation passes.",
     "kimi-k2.7": "Kimi K2.7 — the greatbow for long legal documents.",
     "haiku": "Claude Haiku — the dagger. Fastest cheap quick translations across locales.",
-    "gpt-5.5": "GPT-5.5 — the enchanted blade. Best multilingual.",
     "glm-5.2": "GLM-5.2 — the staff. Strongest Chinese/multilingual.",
     "opus": "Claude Opus — the heaviest blade. Deepest reasoning for legal nuance.",
     "deepseek-v4-pro": "DeepSeek V4 Pro — the greatsword. Frontier reasoning for complex legal analysis.",
@@ -212,7 +208,6 @@
     "image-01": "MiniMax image-01 — the engraver's burin. Ad creative, social cards, and brand visuals from a prompt.",
     "minimax-m3": "MiniMax M3 — the crossbow. Precise structural doer for briefs, sequences, and plans.",
     "opus": "Claude Opus — the heaviest blade. Deepest reasoning for positioning and strategy.",
-    "gpt-5.5": "GPT-5.5 — the enchanted blade. Creative second opinion on hooks and copy.",
     "glm-5.2": "GLM-5.2 — the staff. Analytical breakdowns and multilingual reach.",
     "sonnet": "Claude Sonnet — the reliable longsword. Fast balanced daily marketing work.",
     "gemma4": "Gemma 4 — the hand-axe. Light, fast thinker: a quick analytical second mind for hooks, headline variants, and content angles."
@@ -246,7 +241,6 @@
     "minimax-m3": "MiniMax M3 — the crossbow. Cheap 1M-context prime doer for bulk market-data extraction, table building, and research bookkeeping.",
     "kimi-k2.7": "Kimi K2.7 — the greatbow. Massive context for long market histories.",
     "opus": "Claude Opus — the heaviest blade for deep financial analysis.",
-    "gpt-5.5": "GPT-5.5 — the enchanted blade for market reasoning.",
     "glm-5.2": "GLM-5.2 — the staff for data analysis.",
     "deepseek-v4-pro": "DeepSeek V4 Pro — the greatsword. Frontier reasoning for trading strategy.",
     "sonnet": "Claude Sonnet — the reliable longsword. Fast balanced daily market reads."
@@ -280,7 +274,6 @@
     "minimax-m3": "MiniMax M3 — the crossbow for routine versioning.",
     "kimi-k2.7": "Kimi K2.7 — the greatbow. Massive context to track the full arsenal inventory.",
     "opus": "Claude Opus — the heaviest blade. Deepest reasoning for skill evolution.",
-    "gpt-5.5": "GPT-5.5 — the enchanted blade. Analytical and creative input on skill design.",
     "glm-5.2": "GLM-5.2 — the staff. Coding-first for skill syncing and tooling.",
     "sonnet": "Claude Sonnet — the reliable longsword for daily skill management."
    },

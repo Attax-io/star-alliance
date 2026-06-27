@@ -2,7 +2,7 @@
 name: ultra-brainstorming
 description: "An ASSIGNABLE multi-thinker method — any member who carries it fires ALL his available thinker models at once on the same material, then his prime (highest-priority) thinker reviews every output and synthesizes one opinion. Use to deepen one member's thinking across model diversity, or at a fan-in to fuse several members' inputs into one doer-ready plan. Triggers: 'ultra-brainstorm this', 'super-plan this', 'think this across all models', 'use all my thinkers', 'synthesize the members' work', 'merge these proposals into one plan', 'plan this deeply before we build'. Distinct from storm-investigation (five persona minds on one topic) and members-formation (the Butler's routing): this is a MODEL ensemble — several thinking models, each a different mind — converging into one ranked, peer-reviewed result. It is the thinker fan-out exception named in weapon-utility."
 metadata:
-  version: 1.3.0
+  version: 1.3.1
 type: Skill
 
 ---
@@ -85,7 +85,6 @@ Strategist's; another member runs its own thinkers:
 | Model | The mind it brings | Backend |
 |---|---|---|
 | **opus** | Deepest structural reasoning — is the plan *sound*? | Claude-native → **Task tool**, not a script |
-| **gpt-5.5** | Analytical + creative second opinion — what's the non-obvious move? | OpenAI-direct — **DEACTIVATED** (no key); skip until reactivated |
 | **deepseek-v4-pro** | Frontier multi-step reasoning — the long dependency chains. | Ollama cloud |
 | **glm-5.2** | A different analytical frame — where the others over-fit. | Ollama cloud |
 | **kimi-k2.7** | Holds the whole context — long-range coherence across all inputs. | Ollama cloud |
@@ -175,6 +174,7 @@ member · MAJOR: method contract change). Regenerate `VERSIONS.md` with
 `python3 skillsmith/scripts/skill_registry.py write`, then `python3 build.py`.
 
 ## Changelog
+- **1.3.1** — Removed the dead `gpt-5.5` row from the thinker-panel table (model retired from the arsenal — Strategic Audit 2026-06-28). Refs → PATCH.
 - **1.3.0** — **Made the panel MANDATORY for carriers + hardened against fake runs.** "When to run
   it" flipped from discretionary to an obligation: a member that carries this skill **must** fire its
   thinker panel on plan-grade / hard-problem work (planning, architecture/data-model, fan-in,

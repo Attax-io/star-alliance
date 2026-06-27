@@ -4,7 +4,7 @@ description: "Deploy for writing code, applying changes, fixing bugs, implementi
 model: sonnet
 tools: [Read, Edit, Write, Bash]
 skills: [bug-fix-workflow, db-rename-sweep, dev-server, graphify, claude-code-hooks, supabase, supabase-postgres-best-practices, full-output-enforcement, obsidian-markdown, performance, python-master, motion-design, ultra-brainstorming, star-alliance-language, weapon-utility]
-weapons: [minimax-m3, haiku, opus, deepseek-v4-pro, glm-5.2, kimi-k2.7, gpt-5.5, sonnet]  # priority order: doers→thinkers→sonnet
+weapons: [minimax-m3, haiku, opus, deepseek-v4-pro, glm-5.2, kimi-k2.7, sonnet]  # priority order: doers→thinkers→sonnet
 type: Member
 
 ---
@@ -29,8 +29,7 @@ Your weapons are AI models — each suited to a different kind of quest. Choose 
 | **4th** — Quaternary | deepseek-v4-pro | DeepSeek V4 Pro — the greatsword. Frontier MoE reasoning for complex code. |
 | **5th** — Quinary | glm-5.2 | GLM-5.2 — the staff. Coding-first precision for implementation. |
 | **6th** — Senary | kimi-k2.7 | Kimi K2.7 — the greatbow. Massive context for big codebases. |
-| **7th** — Septenary | gpt-5.5 | GPT-5.5 — the enchanted blade. Analytical second opinion on tough code. |
-| **8th** — Octonary | sonnet | Claude Sonnet — the reliable longsword for daily coding. |
+| **7th** — Septenary | sonnet | Claude Sonnet — the reliable longsword for daily coding. |
 
 **How to choose:** Start with your primary weapon. If the quest demands a different
 strength — more speed, more context, more creativity — switch to the weapon that fits.

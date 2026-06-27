@@ -18,9 +18,14 @@
       "rls", "policy", "secret", "api key", "credential", "schema change",
       "mass edit", "all files", "every file", "across the repo", "rewrite all"
     ],
+    "size_short_chars": 400,
     "size_small_signals": [
       "typo", "one line", "single line", "quick fix", "rename variable",
-      "fix the", "tweak", "comment", "small change", "one-liner", "minor"
+      "fix the", "tweak", "comment", "small change", "one-liner", "minor",
+      "explain", "what is", "what's", "what are", "what does", "how does",
+      "how do i", "how do you", "why does", "why is", "recap", "summarize",
+      "summary", "show me", "describe", "in plain", "tell me", "walk me through",
+      "clarify", "read the", "look at", "list the", "is the", "are the", "does the"
     ],
     "size_large_signals": [
       "campaign", "audit", "build", "refactor", "feature", "multi", "phase",
