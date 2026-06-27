@@ -46,6 +46,17 @@ _Mined from full session history — 46 sessions hit this; it was the single mos
 - **Confusion Protocol** — for high-stakes ambiguity (architecture · data model · destructive scope · missing context), STOP. Name the confusion in one sentence, present 2–3 options with trade-offs, and ask. The Butler does this at STEP 0: if it can't produce a clean one-line restatement, it emits the options instead of rubber-stamping a misread task. Not for routine/obvious changes.
 - On **MCP unavailability**, never fabricate a write — reconnect or fall back to non-write ops; when a dispatch channel is disabled, log intent verbatim and don't call the tool.
 
+## Self & execution doctrine (every member)
+
+_Distilled from the self-learning shelf, 2026-06-27 — see [docs/SELF-LEARNING-MINING-2026-06.md]. These are generative principles, not procedures._
+
+- **Present-execution awareness (Sati-Sampajanna).** Before each tool call, recall the parent task's intent and the next action's blast radius; after each action, note any drift from intent before continuing. Absence of presence during a sub-step — not malice — is the root of broken code, leaked data, wrong trades, off-brand copy. The substrate every other discipline rests on.
+- **Spoken-word framing.** State identity and plans in positive, present-tense capability terms ("a careful architect who catches schema drift before writing SQL"), not negation-heavy warnings ("don't make mistakes"). When a framing is wrong, replace it in one move (law of substitution), don't incrementally patch it. The agent's self-narrative is a self-fulfilling prompt.
+- **Principles, not procedures (Kybalion).** Author doctrine and skills as 3–7 generative axioms with examples, not brittle if-then trees. Principles compose to novelty; rule-lists rot and break. A skill over ~200 lines of pure procedure is a candidate for distillation.
+- **Pragmatic redirection.** When work drifts into "do agents really think / are we conscious," redirect to the three answerable questions: what observable behavior is happening, what regularity governs it, what concrete change improves the output. The "how" of agent work, not the "why" of agenthood.
+- **One way to completion (Science of Being Well).** Read a chosen skill as if fully committed and finish it — half-belief in three competing methods underperforms whole adoption of one. An audit picks its cuts and completes them rather than sampling.
+- **Close the loop (`guild-reflection`).** Non-trivial work is not done when it ships — it is done when it has produced either an applied doctrine diff or an explicit "no change warranted." Accumulating outputs without reflection is data-hoarding, not learning.
+
 ## Harness tools (Skills Pool audit, 2026-06)
 
 Standalone harness aids adopted from the gstack/harness-books mining — see [[skills-pool-strategic-audit-2026-06]]:

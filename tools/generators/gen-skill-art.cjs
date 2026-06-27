@@ -22,6 +22,18 @@ const STYLE = "fantasy RPG skill icon, Fallen Sword MMORPG style, dark parchment
 
 const SKILLS = [
   {
+    id: "metamorphosis-check",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "A guardrail skill that catches the single most dangerous agent failure: confidently running the", no text, no watermarks`,
+  },
+  {
+    id: "letting-go",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "A universal guardrail skill that kills retry-storms, perfectionism paralysis, and over-delibera", no text, no watermarks`,
+  },
+  {
+    id: "guild-reflection",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "The Quartermaster's self-improvement engine — turn finished work into durable guild upgrades th", no text, no watermarks`,
+  },
+  {
     id: "probability-statistics",
     prompt: `${STYLE}. A merchant-sage's table of chance on dark parchment: a pair of glowing golden dice mid-roll, a luminous bell-curve (normal distribution) arcing in gold light above a row of histogram bars, a brass scale weighing a frequentist coin against a Bayesian prior-scroll, scattered data-points resolving into a fitted trend-line, arcane probability glyphs (Σ, integral signs, a P-value seal) orbiting the scene — the read-only craft of reasoning rigorously about uncertainty, never a trade in sight`,
   },

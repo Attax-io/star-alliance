@@ -22,7 +22,7 @@ star-alliance/
 │   ├── the-quartermaster.md
 │   ├── the-strategist.md
 │   └── the-translator.md
-├── star-alliance-skills/  ← shared skill pool (61 skills, each a directory with SKILL.md)
+├── star-alliance-skills/  ← shared skill pool (64 skills, each a directory with SKILL.md)
 │   ├── algorithmic-trading-chan/
 │   ├── article-creator/
 │   ├── bug-fix-workflow/
@@ -162,7 +162,7 @@ metadata:
 **On any skill change, in the same commit:**
 
 1. Bump the skill's `metadata.version`.
-2. Regenerate [`VERSIONS.md`](VERSIONS.md) (`python61 skillsmith/scripts/skill_registry.py write`).
+2. Regenerate [`VERSIONS.md`](VERSIONS.md) (`python3 skillsmith/scripts/skill_registry.py write`).
 3. If the skill keeps its own changelog (e.g. `cleanup`, `conquering-campaign`), add an entry there too.
 4. Re-sync the on-device copy if the skill runs from `~/.claude/skills/` (a stale device copy
    silently runs old code — the `cleanup` §L24 lesson).
@@ -202,4 +202,4 @@ The authoritative gate is **`skill-creator`'s `quick_validate.py` green** on eve
 ## Registry
 
 See [`VERSIONS.md`](VERSIONS.md) for the full skill → version table with word counts and Cowork
-status (61 skills).
+status (64 skills).

@@ -69,7 +69,10 @@
         "probability-statistics",
         "guild-sync",
         "volume-price-analysis",
-        "python-master"
+        "python-master",
+        "guild-reflection",
+        "letting-go",
+        "metamorphosis-check"
       ],
       "members": [
         "the-butler",
@@ -82,7 +85,7 @@
         "the-merchant",
         "the-quartermaster"
       ],
-      "notes": "The home domain. All 9 guild members + 61 skills live here. Every other domain borrows from this skill pool."
+      "notes": "The home domain. All 9 guild members + 64 skills live here. Every other domain borrows from this skill pool."
     },
     {
       "id": "lex-council-app",

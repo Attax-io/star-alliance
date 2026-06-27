@@ -52,6 +52,22 @@ python3 "$SA/star-alliance-skills/skillsmith/scripts/skill_registry.py" write   
 
 ## Step C4 — Wire it into the guild dashboard (REQUIRED — don't skip)
 
+> **Fast path — `tools/wire_skill.py` mechanizes the deterministic half of C4.** Idempotent
+> and source-agnostic (works no matter what authored the skill dir):
+>
+> ```sh
+> python3 tools/wire_skill.py <name> --render   # or --all to sweep every unwired dir
+> ```
+>
+> It adds the `skills-meta.json` entry (derived from the SKILL.md frontmatter), inserts the skill
+> into the `domains.json` home pool, reconciles **every** skill-count surface (domains notes +
+> both README mentions) to the real dir count, drops an art-prompt **stub** into
+> `gen-skill-art.cjs`, and (with `--render`) renders the missing tile. It then PRINTS the two
+> judgment steps it won't guess: **member assignment + Skill Drills row** (step 3 below) and
+> **refining the art subject** (step 4). The conformity `K`-check failure now points at this
+> command. Do the manual steps, then `build.py` + `conformity_check.py`. Manual breakdown of each
+> surface follows for hand-wiring:
+
 `skill_registry.py write` only touches `VERSIONS.md`. The dashboard (`guild-data.*` + the web app)
 reads **four other hand-edited sources**. A new skill is **not done** until all four are updated and
 `build.py` is re-run — skip any and the skill ships broken: no card, **no themed art** (falls back to

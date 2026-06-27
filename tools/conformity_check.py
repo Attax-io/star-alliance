@@ -284,8 +284,10 @@ def main():
     meta_keys = set(skills_meta.keys())
     data_ids = {s["id"] for s in g["skills"]}
     if skill_dirs != meta_keys:
-        fails.append(f"K  skill dirs vs skills-meta differ: only-dir={sorted(skill_dirs - meta_keys)} "
-                     f"only-meta={sorted(meta_keys - skill_dirs)}")
+        new_dirs = sorted(skill_dirs - meta_keys)
+        hint = "  → auto-wire: python3 tools/wire_skill.py --all" if new_dirs else ""
+        fails.append(f"K  skill dirs vs skills-meta differ: only-dir={new_dirs} "
+                     f"only-meta={sorted(meta_keys - skill_dirs)}{hint}")
     if skill_dirs != data_ids:
         fails.append(f"K  skill dirs vs guild-data differ: only-dir={sorted(skill_dirs - data_ids)} "
                      f"only-data={sorted(data_ids - skill_dirs)}")
