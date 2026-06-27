@@ -524,7 +524,7 @@ function memberCard(m) {
     <div class="mc-skills">${shown}${extra}</div>
     <div class="mc-foot">
       <span>${pluralize(active, "skill")}${blocked ? ` <span class="blk-note">· ${blocked} blocked</span>` : ""}</span>
-      <span class="sep"></span><span>${pluralize(m.weapons.length, "weapon")}</span>
+      <span class="sep"></span><span>${pluralize(effectiveWeapons(m).length, "weapon")}</span>
       <span class="mc-foot-spacer"></span>${memberLevelBadge(m)}
     </div>
   </div>`;
