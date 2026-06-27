@@ -8,7 +8,7 @@ timestamp: 2026-06-27T10:27:03Z
 > **Mode of `design-language`.** The product voice of the Lex Council app — a legal-financial
 > council. Load via the dispatcher when writing UI strings, changelogs, client-facing copy, or
 > docs for the product. Triggers: "Lex Council tone", "write this in the council voice",
-> "product copy for Lex Council". This is the *words* layer; the app's *look* is `design-taste`/`brandkit`.
+> "product copy for Lex Council". This is the *words* layer; the app's *look* is `design-taste` / `imagegen-frontend` (brand mode).
 
 ---
 

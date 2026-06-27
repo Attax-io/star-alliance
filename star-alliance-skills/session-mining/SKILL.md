@@ -170,6 +170,12 @@ tree can drift between sessions. A checkpoint older than the last commit on the 
 the commit history and re-checkpoint. Keep it one file, overwritten per save — it is not a log.
 
 ## Changelog
+- **1.3.0** — `mine_sessions.py` gains `--cache <path>`: per-transcript signal lines are memoized by
+  `size:mtime`, so an unchanged `.jsonl` is reused instead of re-read+re-regexed on every re-mine.
+  Cache is fingerprinted on `--user-kw`/`--asst-kw`/`--cap` → any change auto-rebuilds (never serves
+  wrong-lens lines). Measured 3.5s → 0.05s (579/579 hits), output byte-identical; no-cache path
+  unchanged. Extraction refactored into a pure `extract()`. Complements 1.1.0's watermark (which
+  drops out-of-window sessions): the cache also skips unchanged in-window files. New capability → MINOR.
 - **1.2.0** — New §Checkpoint: forward-facing save/restore of working context to
   `.claude/state/checkpoint.md` (git state + decisions + remaining work), ported from the gstack
   context-save / context-restore pattern. Complements mining (past→lessons) with continuity

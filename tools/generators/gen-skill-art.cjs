@@ -50,10 +50,6 @@ const SKILLS = [
     prompt: `${STYLE}. A glowing scroll unfurling with golden runic script, quill pen with ink dripping arcane light, parchment page covered in illuminated manuscript text, scribe's candlelight casting warm amber glow`,
   },
   {
-    id: "brandkit",
-    prompt: `${STYLE}. A gilded heraldic shield bearing a royal crown, flanked by two crossed banners with rampant lion emblems, embossed in gold leaf on deep crimson, wax seal with guild crest at bottom`,
-  },
-  {
     id: "bug-fix-workflow",
     prompt: `${STYLE}. Two crossed enchanted daggers striking a glowing red demonic rune, sparks and purple arcane energy exploding at the crossing point, the rune cracking and dissolving, dramatic combat lighting`,
   },
@@ -103,7 +99,7 @@ const SKILLS = [
   },
   {
     id: "imagegen-frontend",
-    prompt: `${STYLE}. A grand arcane viewing portal framed in carved stone beside a glowing rectangular arcane tablet, both conjuring vivid fantasy interface artwork from swirling violet and teal summoning energy, web of glowing threads radiating outward — a dual device for both grand portals and handheld screens`,
+    prompt: `${STYLE}. A grand arcane viewing portal framed in carved stone beside a glowing rectangular arcane tablet and a gilded heraldic identity shield, all three conjuring vivid fantasy interface artwork and a brand crest from swirling violet and teal summoning energy, web of glowing threads radiating outward — a triune device for web portals, handheld screens, and brand identity`,
   },
   {
     id: "impeccable",

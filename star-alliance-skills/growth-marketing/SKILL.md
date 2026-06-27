@@ -1,20 +1,20 @@
 ---
 name: growth-marketing
-description: "The Herald's marketing craft — turn a business's invisibility into a repeatable demand engine across four modes. content-seo: ICP + pain keywords, topic clusters, local SEO, on-page, publish via article-creator. brand-positioning: positioning statement, ICP, value prop, voice, proof bank, hand off to brandkit. email-nurture: lead magnets, capture, a 4-6 email sequence, re-engagement, bar-compliance. social-paid: channel mix, organic cadence, a paid-ads starter, retargeting, tracking. Tuned for legal-services and other trust-led professional businesses; composes with storm-investigation for audience and market research. Triggers: 'plan our marketing', 'we need leads', 'fix our positioning', 'content plan', 'SEO plan', 'build an email sequence', 'social plan', 'ad plan', 'go to market', 'growth marketing', 'demand gen'."
+description: "The Herald's marketing craft — turn a business's invisibility into a repeatable demand engine across four modes. content-seo: ICP + pain keywords, topic clusters, local SEO, on-page, publish via article-creator. brand-positioning: positioning statement, ICP, value prop, voice, proof bank, hand off to imagegen-frontend (brand mode). email-nurture: lead magnets, capture, a 4-6 email sequence, re-engagement, bar-compliance. social-paid: channel mix, organic cadence, a paid-ads starter, retargeting, tracking. Tuned for legal-services and other trust-led professional businesses; composes with storm-investigation for audience and market research. Triggers: 'plan our marketing', 'we need leads', 'fix our positioning', 'content plan', 'SEO plan', 'build an email sequence', 'social plan', 'ad plan', 'go to market', 'growth marketing', 'demand gen'."
 metadata:
   version: 1.0.0
 type: Skill
 
 ---
 # Growth Marketing — the Herald's craft
-Turns a legal-services business's invisibility into a repeatable demand engine. Composes with **article-creator** (publish long-form), **brandkit** (visuals and identity), and **storm-investigation** (ICP, market, competitor research). One skill, four modes — pick one, ship the artifact, measure.
+Turns a legal-services business's invisibility into a repeatable demand engine. Composes with **article-creator** (publish long-form), **imagegen-frontend** (visuals and identity, `brand` mode), and **storm-investigation** (ICP, market, competitor research). One skill, four modes — pick one, ship the artifact, measure.
 
 ## When to run which mode
 
 | Mode | Trigger | Produces |
 |---|---|---|
 | `content-seo` | "We need organic leads" / new practice area / low site traffic | Topic cluster + briefs + on-page checklist + 90-day publish plan |
-| `brand-positioning` | "Our messaging is fuzzy" / launching a new firm / rebrand | Positioning statement, ICP profile, voice guide, proof bank, brandkit handoff |
+| `brand-positioning` | "Our messaging is fuzzy" / launching a new firm / rebrand | Positioning statement, ICP profile, voice guide, proof bank, imagegen-frontend (brand mode) handoff |
 | `email-nurture` | "We get leads but they don't convert" / new lead magnet / slow pipeline | Lead magnet brief + capture plan + 4–6 email sequence + compliance checklist |
 | `social-paid` | "We need distribution now" / stalled organic / new market | Organic cadence + repurposing system + paid-ads starter (search + social) + tracking plan |
 
@@ -41,10 +41,10 @@ Make the firm unmistakable. Two attorneys can both do "estate planning in Austin
 4. **Articulate the value prop in three layers.** Headline (one line), sub-headline (one sentence expanding the benefit), proof points (3–5 bullets: case results, bar admissions, peer ratings, publications, years of practice). Strip legalese.
 5. **Lock the voice.** Pick 3–4 voice attributes (e.g., "plainspoken, calm, direct, never snide") and 3 anti-attributes (e.g., "no Latin unless defined, no chest-thumping, no 'warrior' metaphors"). Write 5 example do/don't pairs covering website copy, social, and email.
 6. **Build the proof bank.** A single document listing: case results (anonymized where required), settlements and verdicts, bar admissions and certifications, peer ratings (Avvo, Martindale, Super Lawyers), speaking engagements, media mentions, pro bono work, attorney bios with credentials. This is the raw material every mode downstream will draw from.
-7. **Hand off to `brandkit`.** Positioning statement + voice guide + proof bank becomes the input for visual identity: logo, palette, typography, photography direction, templates for proposals, decks, email signatures, and social cards. The brandkit skill produces these; the Herald defines what they must say.
+7. **Hand off to `imagegen-frontend` (`brand` mode).** Positioning statement + voice guide + proof bank becomes the input for visual identity: logo, palette, typography, photography direction, templates for proposals, decks, email signatures, and social cards. The Designer's `imagegen-frontend` `brand` mode produces these; the Herald defines what they must say.
 8. **Audit the existing surface.** Website, Google Business Profile, LinkedIn, Avvo, directory listings, email signature, letterhead. Rewrite every bio, headline, and "About" section to match the new positioning. Consistency compounds.
 
-**OUTPUT artifact:** `brand-positioning-kit.md` — positioning statement, ICP profiles, value prop (3 layers), voice guide with do/don't examples, proof bank, handoff brief for `brandkit`, and an audit checklist of every surface to update.
+**OUTPUT artifact:** `brand-positioning-kit.md` — positioning statement, ICP profiles, value prop (3 layers), voice guide with do/don't examples, proof bank, handoff brief for `imagegen-frontend` (`brand` mode), and an audit checklist of every surface to update.
 
 ## Mode 3 — email-nurture
 Convert leads without being pushy. Legal buyers move slowly — they're scared, comparing, and shopping trust as much as competence.
@@ -69,11 +69,11 @@ Convert leads without being pushy. Legal buyers move slowly — they're scared, 
 Get the firm's name in front of the right people this week, not this quarter.
 
 1. **Pick the channel mix by ICP.** For B2B legal (corporate, IP, employment for employers, regulatory): LinkedIn-led, X/Twitter secondary, no Facebook. For consumer legal (family, PI, estate, criminal defense): Google Business Profile + Facebook + Instagram Reels + YouTube Shorts. For local service legal: Google Business Profile + Nextdoor + Facebook community groups. Start with one; add a second only when the first is steady.
-2. **Build the organic cadence (3–5 posts/week).** Mix: 40% educational (plain-English explainers, "what to do if X"), 30% proof (case results, awards, bar admissions — framed as the firm's standard, not chest-thumping), 20% behind-the-scenes (the team, the office, the process, "this week in court"), 10% soft CTA (consultation slots, lead magnet, event). Repurpose one `content-seo` article into 4–6 social posts. Use `brandkit` templates for every card.
+2. **Build the organic cadence (3–5 posts/week).** Mix: 40% educational (plain-English explainers, "what to do if X"), 30% proof (case results, awards, bar admissions — framed as the firm's standard, not chest-thumping), 20% behind-the-scenes (the team, the office, the process, "this week in court"), 10% soft CTA (consultation slots, lead magnet, event). Repurpose one `content-seo` article into 4–6 social posts. Use `imagegen-frontend` (`brand` mode) templates for every card.
 3. **The LinkedIn formula for lawyers.** One founder or rainmaker posts 3x/week: a 150-word personal take on a legal development (new case law, regulatory change, common client mistake), with a single-line CTA. Comments on other lawyers' and journalists' posts daily, in voice. This is the highest-ROI channel for B2B legal and beats paid ads for trust-building.
 4. **The paid-ads starter.** Start with Google Search ads on 5–10 high-intent terms per practice area (e.g., "divorce attorney [city]," "DUI lawyer near me," "wrongful termination lawyer [county]"). Use exact and phrase match; tight negative keyword list. Budget tiers: $500/mo = test, $1,500/mo = real signal, $5,000+/mo = scale. Layer Meta ads (Facebook/Instagram) only for consumer practice areas with strong visual proof — $300–$1,000/mo to retarget site visitors and video viewers. Skip LinkedIn ads until the firm has a defined B2B ICP and a $1,500+/mo budget.
 5. **Build the retargeting loop.** Every landing page has Meta Pixel + Google Tag + LinkedIn Insight Tag. Retarget three audiences: (a) visited practice-area page but no consultation, (b) downloaded lead magnet but no booking, (c) watched 50%+ of a video. One ad creative per audience, refreshed every 6 weeks to fight fatigue.
-6. **Creative from `brandkit`.** Every ad uses the firm's templates: same color, same typography, same photography style. Test 3 hooks per audience: a question, a stat, a short story. Rotate winners monthly.
+6. **Creative from `imagegen-frontend` (`brand` mode).** Every ad uses the firm's templates: same color, same typography, same photography style. Test 3 hooks per audience: a question, a stat, a short story. Rotate winners monthly.
 7. **Track to revenue.** UTM every link. Connect CRM consultation data to ad platform conversions. Report weekly: cost per consultation booked, cost per signed engagement, and the practice area that produced each. Pause any keyword or creative that produces consultations that don't sign within 60 days.
 8. **Stay compliant on every channel.** Ad disclaimers where state bars require, no guarantees of outcomes, no client-identifying info, "Attorney Advertising" labels on LinkedIn ads in required states. Keep records of every ad creative for the bar's recordkeeping window.
 
@@ -92,7 +92,7 @@ Get the firm's name in front of the right people this week, not this quarter.
 1. **Research first.** Run `storm-investigation` to pull ICP, competitor positioning, market demand, and proof material. No mode runs blind.
 2. **Pick the mode.** Match the firm's current bottleneck: no traffic → `content-seo`; fuzzy messaging → `brand-positioning`; leads that don't convert → `email-nurture`; needs distribution now → `social-paid`. Run one mode per sprint.
 3. **Produce the artifact.** Each mode outputs a single markdown artifact (named in the OUTPUT line) that the firm can execute against. No vague strategy decks.
-4. **Hand off the work that isn't this skill's job.** Long-form publishing → `article-creator` with the content-seo brief. Visuals, templates, identity → `brandkit` with the brand-positioning handoff. Audience research → `storm-investigation` upfront.
+4. **Hand off the work that isn't this skill's job.** Long-form publishing → `article-creator` with the content-seo brief. Visuals, templates, identity → `imagegen-frontend` (`brand` mode) with the brand-positioning handoff. Audience research → `storm-investigation` upfront.
 5. **Ship the artifact, then ship the work it prescribes.** A positioning statement that never reaches the website is theater. A content plan that never publishes is a wish.
 6. **Measure and iterate.** After 30, 60, and 90 days: review the metrics in each artifact's measurement section, kill what isn't working, double down on what is, and rerun the relevant mode. The Herald is a loop, not a deliverable.
 
