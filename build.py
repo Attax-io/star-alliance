@@ -828,9 +828,19 @@ def main() -> int:
         report(guild)
         return 0
 
+    # Regenerate the in-file "## Your Weapons" tables from the loadout (self-heal).
+    members_meta = (
+        json.loads((repo / "members-meta.json").read_text()).get("members", {})
+        if (repo / "members-meta.json").exists() else {}
+    )
+    synced = sync_member_tables(repo, members_meta, a.check)
+    if synced:
+        verb = "Would regenerate" if a.check else "Regenerated"
+        print(f"{verb} Your Weapons table in {len(synced)} member(s): {', '.join(synced)}")
+
     changed = write_outputs(repo, guild, a.check)
     if a.check:
-        return 1 if changed else 0
+        return 1 if (changed or synced) else 0
     return 0
 
 
