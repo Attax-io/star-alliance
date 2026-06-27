@@ -54,7 +54,11 @@
     "trading-strategy",
     "portfolio-risk",
     "high-alert",
-    "japanese-candlesticks"
+    "japanese-candlesticks",
+    "okf",
+    "star-alliance-language",
+    "claude-code-hooks",
+    "schema-evolution"
    ],
    "members": [
     "the-butler",
@@ -67,7 +71,7 @@
     "the-merchant",
     "the-quartermaster"
    ],
-   "notes": "The home domain. All 9 guild members + 46 skills live here. Every other domain borrows from this skill pool."
+   "notes": "The home domain. All 9 guild members + 48 skills live here. Every other domain borrows from this skill pool."
   },
   {
    "id": "lex-council-app",
