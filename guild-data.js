@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 65
     },
-    "generated": "2026-06-27T18:25:41Z",
+    "generated": "2026-06-27T18:29:25Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -2105,7 +2105,7 @@ const GUILD = {
         "lines": 52,
         "words": 1016
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-merchant"
       ]
