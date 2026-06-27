@@ -87,6 +87,14 @@
     "triggers": "'use the X voice', 'make it sound like Fallen Sword', 'guild voice', 'Lex Council tone', 'reskin this copy', 'Erildath'",
     "modes": "fallen-sword; star-alliance; lex-council"
   },
+  "motion-design": {
+    "icon": "🌀",
+    "blurb": "The Designer's easing & timing specialist — exact curves, durations, transform-origins",
+    "level": "Advanced",
+    "tabler": "ti-wave-sine",
+    "triggers": "'animate this', 'add a transition', 'motion for X', 'clean up this animation', 'this feels too fast/slow', 'make it feel more alive', easing, timing, spring vs bezier, bounce",
+    "modes": "evaluate; recommend"
+  },
   "design-taste": {
     "icon": "🎨",
     "blurb": "The Designer's seven-mode premium taste engine, anti-AI-slop",

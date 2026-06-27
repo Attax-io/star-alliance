@@ -70,6 +70,10 @@ const SKILLS = [
     prompt: `${STYLE}. Three ancient open tomes arranged in a fan, each inscribed in a different glowing script — dark-fantasy Erildath runes, the guild's star-forged glyphs, and a council's formal seal-script — a single luminous quill weaving a thread of light between all three, the art of giving each world its own tongue`,
   },
   {
+    id: "motion-design",
+    prompt: `${STYLE}. An enchanted pendulum of polished brass swinging in a long arcing trail of golden light, its motion-curve traced as a glowing ease-out spline across dark parchment, sand-timer grains streaming in measured cadence beside it, faint after-images marking the rhythm of perfect timing — the art of giving movement its exact curve and beat`,
+  },
+  {
     id: "full-output-enforcement",
     prompt: `${STYLE}. A massive tower shield of impenetrable dark steel, embossed with three vertical roman numerals in gold, a large central boss radiating authority, shield wall aura of silver force energy`,
   },
