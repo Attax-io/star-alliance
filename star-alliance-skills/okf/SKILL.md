@@ -131,6 +131,14 @@ guarantee real — producer and consumer share one contract, exactly as OKF inte
 - Don't hand-bump the project version; `guild-log` the work and `build.py` does it.
 
 ## Changelog
+- **1.2.0** — **Placement is now enforced, not just promised.** Added the `--layout`
+  audit + a declared layout taxonomy (`LAYOUT_PINNED` / `LAYOUT_RULES`) to
+  `okf_audit.py`: it classifies every loose root file as pinned / concept-path-target
+  / unclassified, with a **safe vs review** safety tag. `--layout --fix` relocates the
+  safe class via `git mv`; the review class (path-referenced files) is deferred to a
+  gated Architecture Build. Closes the long-standing gap where OKF claimed repo-wide
+  tidiness but the tool only checked markdown frontmatter. The default frontmatter
+  audit and the `okf-gate` hook are unchanged.
 - **1.1.0** — Declared canonical: **OKF is the Star Alliance Language**, the guild's single knowledge format — Quartermaster-produced, read by every member via [[star-alliance-language]]. The `skill_registry.py` generator now emits OKF frontmatter on `VERSIONS.md`, so the whole repo (members, skills, docs, registries) audits 100% conformant.
 - **1.0.0** — Initial release. The producer half of the guild knowledge standard (OKF v0.1): one concept per file, `type:` frontmatter, cross-links, audit + `--fix`.
 
