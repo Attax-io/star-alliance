@@ -28,7 +28,7 @@ import sys, os, re, json, argparse, subprocess, datetime
 # ── Governance scope ─────────────────────────────────────────────────────────
 # Directories never governed (vendored, generated, machine, VCS internals).
 EXCLUDE_DIR_PARTS = {
-    ".git", "node_modules", "__pycache__", ".venv", "venv",
+    ".git", ".claude", "worktrees", "node_modules", "__pycache__", ".venv", "venv",
     "scratchpad", "routine-logs", "routine-ledger",
 }
 # Any path containing one of these substrings is skipped wholesale.
