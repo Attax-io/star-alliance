@@ -262,7 +262,7 @@ def main():
                      if not (ROOT / "skill-art" / f"{s}.png").exists())
     if artless:
         fails.append(f"ART skills missing a skill-art/<id>.png tile: {artless} "
-                     f"(forge via gen-skill-art.cjs + build.py)")
+                     f"(forge via tools/generators/gen-skill-art.cjs + build.py)")
 
     # VER — every skill has a VERSIONS.md registry row whose version matches its SKILL.md
     versions_txt = (ROOT / "VERSIONS.md").read_text()
