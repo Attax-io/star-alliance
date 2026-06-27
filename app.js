@@ -1778,11 +1778,11 @@ app.addEventListener("input", debounce((e) => {
 app.addEventListener("change", (e) => { if (e.target.id === "f-level" || e.target.id === "f-sort") filterSkills(); });
 
 // star-map highlight via delegation (mouse + keyboard)
-app.addEventListener("mouseover", (e) => { const n = e.target.closest(".starmap .node, .starmap .you-core, .starmap .cgate"); if (n) showStarTip(n, e); });
-app.addEventListener("mousemove", (e) => { const n = e.target.closest(".starmap .node, .starmap .you-core, .starmap .cgate"); if (n) showStarTip(n, e); });
-app.addEventListener("mouseout", (e) => { const n = e.target.closest(".starmap .node, .starmap .you-core, .starmap .cgate"); if (n && !e.relatedTarget?.closest?.(".starmap .node, .starmap .you-core, .starmap .cgate")) hideStarTip(); });
-app.addEventListener("focusin", (e) => { const n = e.target.closest(".starmap .node, .starmap .you-core, .starmap .cgate"); if (n) { const r = n.getBoundingClientRect(); showStarTip(n, { clientX: r.left + r.width / 2, clientY: r.top + r.height / 2 }); } });
-app.addEventListener("focusout", (e) => { if (e.target.closest(".starmap .node, .starmap .you-core, .starmap .cgate")) hideStarTip(); });
+app.addEventListener("mouseover", (e) => { const n = e.target.closest(".starmap .node, .starmap .you-core, .starmap .cgate, .starmap .hooknode"); if (n) showStarTip(n, e); });
+app.addEventListener("mousemove", (e) => { const n = e.target.closest(".starmap .node, .starmap .you-core, .starmap .cgate, .starmap .hooknode"); if (n) showStarTip(n, e); });
+app.addEventListener("mouseout", (e) => { const n = e.target.closest(".starmap .node, .starmap .you-core, .starmap .cgate, .starmap .hooknode"); if (n && !e.relatedTarget?.closest?.(".starmap .node, .starmap .you-core, .starmap .cgate, .starmap .hooknode")) hideStarTip(); });
+app.addEventListener("focusin", (e) => { const n = e.target.closest(".starmap .node, .starmap .you-core, .starmap .cgate, .starmap .hooknode"); if (n) { const r = n.getBoundingClientRect(); showStarTip(n, { clientX: r.left + r.width / 2, clientY: r.top + r.height / 2 }); } });
+app.addEventListener("focusout", (e) => { if (e.target.closest(".starmap .node, .starmap .you-core, .starmap .cgate, .starmap .hooknode")) hideStarTip(); });
 
 byId("topbar").addEventListener("click", (e) => {
   if (e.target.closest("#nav-toggle")) {
