@@ -343,7 +343,9 @@ kbd {
 .spark { stroke: none; }
 .you-core { cursor: pointer; outline: none; }
 .you-core .halo { fill: var(--gold); opacity:.22; transform-box: fill-box; transform-origin:center; animation: pulse 4.5s ease-in-out infinite; }
-/* Sovereign mark — 8-spike gold starburst, slowly turning, with a white-hot core. */
+/* Sovereign mark — a smooth gold SUN: rounded corona lobes + a living outer aura
+   that counter-turns and breathes, wrapped around a white-hot core. */
+.you-core .you-aura { fill: color-mix(in srgb, var(--gold) 78%, #fff); transform-box: fill-box; transform-origin:center; animation: youspin-rev 64s linear infinite, sunbreath 5.5s ease-in-out infinite; filter: drop-shadow(0 0 9px color-mix(in srgb, var(--gold) 60%, transparent)); }
 .you-core .you-burst { fill: var(--gold); stroke: color-mix(in srgb, var(--gold) 55%, #fff); stroke-width:1; transform-box: fill-box; transform-origin:center; animation: youspin 48s linear infinite; filter: drop-shadow(0 0 6px color-mix(in srgb, var(--gold) 70%, transparent)); }
 .you-core .you-coreglow { fill: #fff; opacity:.30; }
 .you-core .core { fill: #fff; stroke: var(--gold); stroke-width:1.2; filter: drop-shadow(0 0 7px var(--gold)); }
