@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 66
     },
-    "generated": "2026-06-27T18:42:28Z",
+    "generated": "2026-06-27T18:42:57Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -4468,7 +4468,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "📊",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Anna Coulling's VPA: read volume confirming/contradicting price, the insider cycle, VAP",
       "level": "Advanced",
       "ramp": "teal",
