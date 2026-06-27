@@ -72,7 +72,9 @@ between `image-to-code` (production code) and the `imagegen-*` skills (reference
 1. Start with `design-taste` (`engineer` mode) for any UI work — it sets the baseline quality.
 2. For brand work, use `brandkit` to create a full visual identity system — the guild's
    heraldry must be consistent across all realms.
-3. For image-to-code, use the right skill: `imagegen-frontend-web` or `imagegen-frontend-mobile`.
+3. To turn a mockup into production frontend, use `image-to-code` — it generates the design
+   image, analyzes it, then implements code to match. For *reference imagery only* (no code),
+   use `imagegen-frontend-web` (one frame per section) or `imagegen-frontend-mobile`.
 4. For redesigns, use `design-taste` in `redesign` mode, then layer in the other archetypes.
 5. Use `impeccable` for critique and polish — it catches what you missed, like a master
    inspecting a blade for flaws.
