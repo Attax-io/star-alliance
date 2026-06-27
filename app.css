@@ -352,8 +352,19 @@ kbd {
 .cgate-approval { color: var(--gold); }
 .cgate-certify { color: var(--cyan); }
 .cgate-report { color: var(--green); }
+/* Hook ring — harness lifecycle hooks plotted on the outer arc (same on every map). */
+.starmap .hookring-arc { stroke: rgba(167,139,250,.22); stroke-width:1; stroke-dasharray: 2 7; }
+.starmap .hooknode { cursor: pointer; outline: none; color: var(--violet); }
+.starmap .hooknode .hooknode-halo { fill: var(--violet); opacity:.14; transform-box: fill-box; transform-origin:center; animation: pulse 4.5s ease-in-out infinite; }
+.starmap .hooknode .hooknode-core { fill: color-mix(in srgb, var(--violet) 28%, var(--panel-2)); stroke: var(--violet); stroke-width:1.5; transition: filter var(--dur) var(--ease); }
+.starmap .hooknode .hooknode-glyph { fill: var(--starlight); font-size:12px; font-weight:700; pointer-events:none; }
+.starmap .hooknode .hooknode-badge { fill: var(--ink); font-size:9px; font-weight:700; text-anchor:middle; paint-order:stroke; stroke: var(--violet); stroke-width:8px; pointer-events:none; }
+.starmap .hooknode .hooknode-label { fill: var(--muted); font-size:10.5px; font-weight:600; letter-spacing:.02em; paint-order:stroke; stroke:var(--ink); stroke-width:3px; pointer-events:none; }
+.starmap .hooknode:hover .hooknode-core, .starmap .hooknode:focus-visible .hooknode-core { filter: drop-shadow(0 0 9px var(--violet)); }
+.starmap .hooknode:hover .hooknode-label, .starmap .hooknode:focus-visible .hooknode-label { fill: var(--starlight); }
 .starmap-tip { position:absolute; z-index:5; max-width:280px; pointer-events:none; background: var(--panel-2); border:1px solid var(--line-2); border-left:3px solid var(--accent); border-radius: var(--r2); padding:10px 12px; box-shadow: var(--shadow-panel); }
 .starmap-tip .tip-name { font-weight:600; color: var(--starlight); font-size: var(--t-sm); margin-bottom:4px; }
+.starmap-tip .tip-body b { color: var(--starlight); font-weight:600; }
 .starmap-tip .tip-body { color: var(--muted); font-size: var(--t-xs); line-height:1.5; }
 @keyframes pulse { 0%,100% { transform: scale(1); opacity:.14; } 50% { transform: scale(1.18); opacity:.26; } }
 @media (prefers-reduced-motion: reduce) {
@@ -909,6 +920,18 @@ a.tag.off { text-decoration: none; }
   font-family: var(--mono);
   margin-top: 4px;
 }
+/* Workflow-step weapon loadout chips (thinker / doers / ultra) — token-based, no hardcoded hex. */
+.swf-loadout { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.lo-tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-family: var(--mono); font-size: var(--t-xs); line-height: 1.4;
+  padding: 2px 8px; border-radius: var(--r2);
+  border: 1px solid var(--line-2); color: var(--muted);
+}
+.lo-thinker { color: var(--cyan); border-color: rgba(61,240,255,.35); background: rgba(61,240,255,.07); }
+.lo-doers   { color: var(--green); border-color: rgba(78,201,133,.35); background: rgba(78,201,133,.07); }
+.lo-ultra   { color: var(--gold); border-color: rgba(232,201,58,.4); background: rgba(232,201,58,.08); }
+.lo-x { opacity: .8; margin-left: 2px; }
 .swf-ctx {
   font-size: var(--t-xs);
   color: var(--hint);
