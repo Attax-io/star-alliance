@@ -105,8 +105,11 @@ The single source of truth for the taxonomy is `LAYOUT_PINNED` + `LAYOUT_RULES` 
    value by adding `title`, `description`, `tags`, and **cross-links** between
    related concepts. Hand bulk enrichment to a doer weapon (`summon.py minimax-m3`)
    — drafting a one-line `description` for 50 files is doer-grade.
-4. **Sweep non-md tidy.** Find orphaned/duplicate/dead files, place each under its
-   concept-path, delete genuine dead code (confirm first), and `guild-log` the move.
+4. **Sweep non-md tidy (placement).** Run `okf_audit.py --layout` to list root files
+   off their concept-path. `--layout --fix` relocates the **safe** class (via
+   `git mv`); the **review** class is reported for a path-rewrite sweep (Architecture
+   Build), never moved blind. Then prune orphaned/dead files (confirm first) and
+   `guild-log` the moves.
 5. **Verify the gate.** The `okf-gate` hook blocks any future non-conformant write.
    Confirm it's registered in `.claude/settings.json` under `PreToolUse`.
 6. **Close out.** Run `dashboard-parity` if the change should show on the dashboard,
