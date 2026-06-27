@@ -261,6 +261,8 @@ async function createMemberUI() {
 // Guild-wide weapon kill switch — a deactivated weapon is hidden from all agent loadouts.
 let disabledWeapons = [];
 try { disabledWeapons = JSON.parse(localStorage.getItem("sa-disabled-weapons") || "[]") || []; } catch (_) { disabledWeapons = []; }
+// Seed deactivations from source — members-meta.json weaponStatus marks weapons dark/deactivated at the guild level.
+for (const wid of Object.keys((GUILD.meta && GUILD.meta.weaponStatus) || {})) { if (!disabledWeapons.includes(wid)) disabledWeapons.push(wid); }
 const saveDisabledWeapons = () => { try { localStorage.setItem("sa-disabled-weapons", JSON.stringify(disabledWeapons)); } catch (_) {} };
 const isWeaponDisabled = (mid) => disabledWeapons.includes(mid);
 const toggleWeaponDisabled = (mid) => { isWeaponDisabled(mid) ? pull(disabledWeapons, mid) : disabledWeapons.push(mid); saveDisabledWeapons(); };

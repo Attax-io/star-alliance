@@ -2,6 +2,27 @@
   "version": 1,
   "entries": [
     {
+      "id": 76,
+      "date": "2026-06-27",
+      "type": "chore",
+      "title": "Wire the Guild campaign — workflow runner wired end-to-end",
+      "who": "Quartermaster",
+      "detail": "Waves 0-4: additive step schema in workflows.json + data-driven guild/run.py; frame_brief.py and plan.py primitives; 7 new guild/ scripts (session_scout, hygiene_run, version_bump, wire, commission_art, sync_act, prune_runs); 55 scripted steps' act text normalized; gate steps resolve to human; the-merchant recruited for the trading project (skills 42->44: market-recon reused + trading-strategy + portfolio-risk new) and promoted Foundational->Advanced; dark/deactivated models marked via members-meta weaponStatus (gpt-5.5 deactivated, nemotron-3-ultra dark), now carried to the dashboard through build.py meta + app.js seed."
+    },
+    {
+      "id": 75,
+      "date": "2026-06-27",
+      "type": "member-upgrade",
+      "title": "Promote The Merchant: Foundational → Advanced",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Foundational → Advanced (craft-depth tier). Prerequisite checklist for Advanced verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-merchant"
+      ],
+      "from": "Foundational",
+      "to": "Advanced"
+    },
+    {
       "id": 74,
       "date": "2026-06-27",
       "type": "decision",
@@ -1568,5 +1589,6 @@
       "commit": "325a46a5",
       "_derived": true
     }
-  ]
+  ],
+  "count": 130
 }

@@ -17,7 +17,7 @@ star-alliance/
 │   ├── the-quartermaster.md
 │   ├── the-strategist.md
 │   └── the-translator.md
-├── star-alliance-skills/  ← shared skill pool (42 skills, each a directory with SKILL.md)
+├── star-alliance-skills/  ← shared skill pool (44 skills, each a directory with SKILL.md)
 │   ├── article-creator/
 │   ├── brandkit/
 │   ├── ...
@@ -54,7 +54,7 @@ your project's `.claude/agents/` and installing their skills.
 | **The Strategist** | Multi-wave campaigns, deep multi-model planning, bug workflows, performance | ultra-brainstorming, conquering-campaign, storm-investigation, bug-fix-workflow, performance, strategies-review, vault-log-compliance | "plan the campaign", "break this into waves", "ultra-brainstorm this", "run the bug workflow" |
 | **The Translator** | Legal codex, law translation, multi-locale content | codex-law-translate, article-creator, obsidian-markdown | "load this law", "translate this law", "add translations" |
 | **The Herald** | Marketing, growth, demand generation — content/SEO, brand, email, social/paid | growth-marketing, article-creator, brandkit, storm-investigation | "plan our marketing", "we need leads", "fix our positioning", "go to market" |
-| **The Merchant** | Investment analysis, trading strategies, market research, portfolio management | _(skills to be recruited)_ | "analyze this investment", "build a trading strategy", "research this market" |
+| **The Merchant** | Investment analysis, trading strategies, market research, portfolio management | market-recon, trading-strategy, portfolio-risk, storm-investigation | "analyze this investment", "build a trading strategy", "research this market" |
 | **The Quartermaster** | Skill management, syncing, upgrading, daily evolution | skillsmith, guild-log, cleanup, storm-investigation | "sync my skills", "upgrade a skill", "run the skill routine" |
 
 ### Member levels
@@ -71,11 +71,11 @@ operate it with `python3 member_level.py report | promote`.
 |---|---|
 | **Master** | The Strategist |
 | **Elite** | The Designer |
-| **Advanced** | The Architect · The Developer · The Herald · The Quartermaster |
+| **Advanced** | The Quartermaster · The Herald · The Developer · The Architect · The Merchant |
 | **Intermediate** | The Translator |
-| **Foundational** | The Butler · The Merchant |
+| **Foundational** | The Butler |
 
-The thinnest arsenals (Butler, Merchant) sit at Foundational by design — that's the "who's lagging"
+The thinnest arsenal (the Butler) sits at Foundational by design — that's the "who's lagging"
 signal. `member_level.py report` shows each member's exact gap to the next tier.
 
 ### Shared skills
@@ -104,6 +104,7 @@ These skills belong to one member only — they define the member's specialty:
 - `graphify` — The Developer's knowledge graph engine (folded in from the retired Engineer)
 - `skillsmith` — The Quartermaster's management toolkit
 - `growth-marketing` — The Herald's four-mode marketing engine (content/SEO, brand, email, social/paid)
+- `market-recon`, `trading-strategy`, `portfolio-risk` — The Merchant's read-only trading crafts (the read, the plan, the book)
 - `image-to-code`, `imagegen-*`, `impeccable`, etc. — The Designer's design arsenal (`brandkit` now shared with The Herald)
 
 ## Deploying a member
@@ -194,4 +195,4 @@ The authoritative gate is **`skill-creator`'s `quick_validate.py` green** on eve
 ## Registry
 
 See [`VERSIONS.md`](VERSIONS.md) for the full skill → version table with word counts and Cowork
-status (42 skills).
+status (44 skills).

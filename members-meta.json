@@ -1,5 +1,9 @@
 {
   "version": 1,
+  "weaponStatus": {
+    "gpt-5.5": "deactivated",
+    "nemotron-3-ultra": "dark"
+  },
   "members": {
     "the-butler": {
       "name": "The Butler",
@@ -220,7 +224,7 @@
     "the-merchant": {
       "name": "The Merchant",
       "role": "Investment · Trading · Market Research",
-      "level": "Foundational",
+      "level": "Advanced",
       "color": "#3da155",
       "summary": "Investment and trading specialist. Analyzes markets, builds trading strategies, assesses risk, and manages portfolios with rigor.",
       "deploy": "Investment analysis, trading strategies, market research, portfolio management",

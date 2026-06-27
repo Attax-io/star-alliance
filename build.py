@@ -618,7 +618,7 @@ def derive_version(log: dict) -> tuple[str, dict]:
     return f"{major}.{minor}.{patch}", {"major": major, "minor": minor, "patch": patch}
 
 
-def build_meta(members, skills, domains, workflows, log) -> dict:
+def build_meta(members, skills, domains, workflows, log, members_meta_file=None) -> dict:
     version, version_tiers = derive_version(log)
     return {
         "name": "Star Alliance",
@@ -626,6 +626,7 @@ def build_meta(members, skills, domains, workflows, log) -> dict:
         "versionTiers": version_tiers,
         "generated": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
         "schemaVersion": SCHEMA_VERSION,
+        "weaponStatus": (members_meta_file or {}).get("weaponStatus", {}),
         "counts": {
             "members": len(members),
             "skills": len(skills),
@@ -656,7 +657,7 @@ def assemble(repo: Path) -> tuple[dict, list[str], list[str]]:
     compute_member_levels(members, skills, errors, warnings)
 
     guild = {
-        "meta": build_meta(members, skills, domains, workflows, log),
+        "meta": build_meta(members, skills, domains, workflows, log, members_meta_file),
         "members": members,
         "skills": skills,
         "domains": domains,

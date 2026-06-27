@@ -23,11 +23,6 @@ from delegate import delegate  # noqa: E402
 REPO_ROOT = Path(__file__).resolve().parent.parent
 WORKFLOWS_JSON = REPO_ROOT / "workflows.json"
 
-# Known prose step titles that should be handled by a script instead.
-TITLE_SCRIPT: dict[str, str] = {
-    "confirm guild conformance": "guild/conformance.py",
-}
-
 # Step titles that mean "wait for a human" — never automated.
 HUMAN_TITLES = {
     "place the order",
@@ -64,27 +59,84 @@ def resolve_step(step: dict) -> str:
     title = (step.get("title") or "").strip()
     title_lc = title.lower()
     actor = (step.get("actor") or "").strip().lower()
+    # A gate is a human-approval checkpoint (Butler report-back / your-go).
+    # It must NEVER route to a weapon — the runner halts and awaits a human.
+    if step.get("kind") == "gate" or step.get("gate"):
+        return "human"
     if actor in ("user", "you") or title_lc in HUMAN_TITLES:
         return "human"
     explicit = (step.get("script") or "").strip()
     if explicit:
         return f"script:{explicit}"
-    if title_lc in TITLE_SCRIPT:
-        return f"script:{TITLE_SCRIPT[title_lc]}"
     weapon = (step.get("weapon") or DEFAULT_WEAPON).strip()
     return f"prose:{(actor or 'agent')}/{weapon}"
 
 
-def run_script(path: str) -> tuple[int, str, str]:
-    """Run a script via python3, return (exit_code, stdout, stderr)."""
+def args_to_flags(args: dict | None) -> list[str]:
+    """Translate a step's `args` object into ['--key', 'value', ...] CLI flags.
+
+    Backward-compatible: a step with no `args` yields an empty list, so its
+    invocation is unchanged. Boolean True becomes a bare `--flag`; False/None
+    are omitted. Everything else is stringified.
+    """
+    flags: list[str] = []
+    for key, val in (args or {}).items():
+        flag = f"--{key}"
+        if val is True:
+            flags.append(flag)
+        elif val is False or val is None:
+            continue
+        else:
+            flags += [flag, str(val)]
+    return flags
+
+
+def _artifact_path(name: str, state_dir: Path) -> Path:
+    """Resolve a produces/inputs key to a concrete file path under state_dir.
+
+    A bare key (e.g. "raw request") becomes a slugged .md file in state_dir; a
+    path-like value is resolved repo-relative if not absolute.
+    """
+    if "/" in name or name.endswith((".md", ".txt", ".json")):
+        p = Path(name)
+        return p if p.is_absolute() else (REPO_ROOT / name).resolve()
+    p = state_dir / f"{slugify(name)}.md"
+    return p
+
+
+def resolve_io_args(args: dict, step: dict, state_dir: Path) -> dict:
+    """Fill in --in / --out for a script step from its inputs / produces.
+
+    Only fills what the step's `args` did not set explicitly, so authors keep
+    full control. Used for framing/planning steps where the file rails are
+    boilerplate.
+    """
+    out = dict(args)
+    if "in" not in out:
+        inputs = step.get("inputs") or []
+        if inputs:
+            out["in"] = str(_artifact_path(str(inputs[0]), state_dir))
+    if "out" not in out:
+        produces = (step.get("produces") or "").strip()
+        if produces:
+            out["out"] = str(_artifact_path(produces, state_dir))
+    return out
+
+
+def run_script(path: str, args: dict | None = None) -> tuple[int, str, str]:
+    """Run a script via python3 (with optional --key value flags from `args`).
+
+    Returns (exit_code, stdout, stderr).
+    """
     p = Path(path)
     if not p.is_absolute():
         p = (REPO_ROOT / path).resolve()
     if not p.exists():
         return 1, "", f"script not found: {p}"
+    cmd = ["python3", str(p)] + args_to_flags(args)
     try:
         proc = subprocess.run(
-            ["python3", str(p)],
+            cmd,
             capture_output=True,
             text=True,
             cwd=str(REPO_ROOT),
@@ -165,10 +217,18 @@ def main() -> int:
         try:
             if resolution.startswith("script:"):
                 path = resolution.split(":", 1)[1]
+                step_args = step.get("args") if isinstance(step.get("args"), dict) else None
+                if step_args:
+                    # Steps that carry `args` get their file rails wired: --in from
+                    # the step's first input (resolved to a state_dir/repo path) and
+                    # --out from `produces`, unless the args set them explicitly.
+                    step_args = resolve_io_args(step_args, step, state_dir)
+                flags = args_to_flags(step_args)
                 if args.dry_run:
-                    print(f"   (dry-run) would run: python3 {path}")
+                    shown_cmd = f"python3 {path}" + (f" {' '.join(flags)}" if flags else "")
+                    print(f"   (dry-run) would run: {shown_cmd}")
                     continue
-                code, _out, err = run_script(path)
+                code, _out, err = run_script(path, step_args)
                 if code != 0 and step.get("gate"):
                     halted = True
                     halt_reason = (f"step {i} '{title}' (gate) exited {code}: "

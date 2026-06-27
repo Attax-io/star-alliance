@@ -21,8 +21,15 @@
           "kind": "member",
           "actor": "the-butler",
           "title": "Rewrite as Clear Brief",
-          "act": "The Butler rewrites your request into an unambiguous, actionable brief with success criteria.",
-          "produces": "cleared brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "cleared brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "raw request"
+          ]
         },
         {
           "kind": "gate",
@@ -33,8 +40,15 @@
           "kind": "member",
           "actor": "the-strategist",
           "title": "Form the Campaign Plan",
-          "act": "The Strategist breaks the mission into waves and assigns each specialist a role that fits their speciality.",
-          "produces": "campaign plan"
+          "act": "Runs `guild/plan.py` — the Strategist's planning step as a runnable primitive.",
+          "produces": "campaign plan",
+          "script": "guild/plan.py",
+          "args": {
+            "template": "campaign"
+          },
+          "inputs": [
+            "cleared brief"
+          ]
         },
         {
           "kind": "member",
@@ -73,7 +87,8 @@
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -103,8 +118,15 @@
           "kind": "member",
           "actor": "the-butler",
           "title": "Clarify the Ask",
-          "act": "The Butler sharpens the request into a single, unambiguous fix ticket with clear acceptance.",
-          "produces": "clarified ticket"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "clarified ticket",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "clarify"
+          },
+          "inputs": [
+            "small request"
+          ]
         },
         {
           "kind": "gate",
@@ -129,7 +151,8 @@
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -159,8 +182,15 @@
           "kind": "member",
           "actor": "the-butler",
           "title": "Shape the Brief",
-          "act": "The Butler reframes your ask into a focused design brief with clear visual success criteria.",
-          "produces": "design brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "design brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "design request"
+          ]
         },
         {
           "kind": "gate",
@@ -171,8 +201,15 @@
           "kind": "member",
           "actor": "the-strategist",
           "title": "Plan the Sprint",
-          "act": "The Strategist sequences design, build, and verification into a single tight sprint plan.",
-          "produces": "sprint plan"
+          "act": "Runs `guild/plan.py` — the Strategist's planning step as a runnable primitive.",
+          "produces": "sprint plan",
+          "script": "guild/plan.py",
+          "args": {
+            "template": "sprint"
+          },
+          "inputs": [
+            "design brief"
+          ]
         },
         {
           "kind": "member",
@@ -199,7 +236,8 @@
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -229,8 +267,15 @@
           "kind": "member",
           "actor": "the-butler",
           "title": "Clarify the Ask",
-          "act": "The Butler rewrites the ask into a precise architecture brief with constraints called out.",
-          "produces": "architecture brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "architecture brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "clarify"
+          },
+          "inputs": [
+            "architecture request"
+          ]
         },
         {
           "kind": "gate",
@@ -241,8 +286,15 @@
           "kind": "member",
           "actor": "the-strategist",
           "title": "Scope the Work",
-          "act": "The Strategist defines the boundaries, milestones, dependencies, and risks of the effort.",
-          "produces": "scope document"
+          "act": "Runs `guild/plan.py` — the Strategist's planning step as a runnable primitive.",
+          "produces": "scope document",
+          "script": "guild/plan.py",
+          "args": {
+            "template": "scope"
+          },
+          "inputs": [
+            "architecture brief"
+          ]
         },
         {
           "kind": "member",
@@ -274,7 +326,8 @@
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -304,8 +357,15 @@
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Request",
-          "act": "The Butler restates the request as a clear codex-loading task with target locales listed.",
-          "produces": "codex brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "codex brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "law reference"
+          ]
         },
         {
           "kind": "gate",
@@ -330,7 +390,8 @@
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -360,8 +421,15 @@
           "kind": "member",
           "actor": "the-butler",
           "title": "Sharpen the Question",
-          "act": "The Butler sharpens the question into a focused read-only research brief with clear scope.",
-          "produces": "research brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "research brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "reframe"
+          },
+          "inputs": [
+            "research question"
+          ]
         },
         {
           "kind": "gate",
@@ -379,7 +447,8 @@
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -409,8 +478,15 @@
           "kind": "member",
           "actor": "the-butler",
           "title": "Route the Request",
-          "act": "The Butler classifies the request and routes it to the right maintenance owner.",
-          "produces": "routed request"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "routed request",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "classify"
+          },
+          "inputs": [
+            "maintenance request"
+          ]
         },
         {
           "kind": "member",
@@ -437,7 +513,8 @@
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -467,8 +544,15 @@
           "kind": "member",
           "actor": "the-butler",
           "title": "Restate the Order",
-          "act": "Before any work begins, the Butler echoes your request back in plain English — loop today and yesterday's sessions, read the guild log, and log whatever is missing — so you both agree on the quest before he moves.",
-          "produces": "plain-English brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "plain-English brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "restate"
+          },
+          "inputs": [
+            "sweep request"
+          ]
         },
         {
           "kind": "gate",
@@ -498,7 +582,8 @@
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -528,8 +613,15 @@
           "kind": "member",
           "actor": "the-butler",
           "title": "Restate the Order",
-          "act": "The Butler echoes the order back in plain English — audit every source and generated artifact, reconcile them against each other and against the logged decisions, and surface anything that contradicts — so you both agree on the quest before he moves.",
-          "produces": "plain-English brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "plain-English brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "restate"
+          },
+          "inputs": [
+            "sweep request"
+          ]
         },
         {
           "kind": "gate",
@@ -582,8 +674,15 @@
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Bug",
-          "act": "The Butler restates the bug and the acceptance in plain English, and routes it to the Strategist.",
-          "produces": "framed bug"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "framed bug",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "bug request"
+          ]
         },
         {
           "kind": "gate",
@@ -620,7 +719,8 @@
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -650,8 +750,15 @@
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Sweep",
-          "act": "The Butler restates the sweep as read-only — propose, do not apply — and routes it to the Strategist.",
-          "produces": "security brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "security brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "security request"
+          ]
         },
         {
           "kind": "gate",
@@ -662,8 +769,15 @@
           "kind": "member",
           "actor": "the-strategist",
           "title": "Scope the Surface",
-          "act": "The Strategist scopes the audit surface — RLS policies, SECURITY DEFINER RPCs, anon/authenticated grants — and keeps it propose-only.",
-          "produces": "audit scope"
+          "act": "Runs `guild/plan.py` — the Strategist's planning step as a runnable primitive.",
+          "produces": "audit scope",
+          "script": "guild/plan.py",
+          "args": {
+            "template": "scope"
+          },
+          "inputs": [
+            "security brief"
+          ]
         },
         {
           "kind": "member",
@@ -688,7 +802,8 @@
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -718,8 +833,15 @@
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Rotation",
-          "act": "The Butler restates which modes to run (or 'follow-ups for the last campaign') and routes it to the Quartermaster.",
-          "produces": "cleanup brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "cleanup brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "cleanup request"
+          ]
         },
         {
           "kind": "gate",
@@ -737,7 +859,8 @@
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -767,8 +890,15 @@
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Release",
-          "act": "The Butler restates the release scope — which branches, which version step — and routes it to the Quartermaster.",
-          "produces": "release brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "release brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "release request"
+          ]
         },
         {
           "kind": "gate",
@@ -805,7 +935,8 @@
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -835,8 +966,15 @@
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Tool",
-          "act": "The Butler restates the tool, its governing law, and where it lives, then routes it to the Architect.",
-          "produces": "tool brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "tool brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "tool request"
+          ]
         },
         {
           "kind": "gate",
@@ -868,7 +1006,8 @@
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -898,8 +1037,15 @@
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Matter",
-          "act": "The Butler restates the document, its audience, and its language(s), then routes it to the Translator.",
-          "produces": "drafting brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "drafting brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "drafting request"
+          ]
         },
         {
           "kind": "gate",
@@ -929,7 +1075,8 @@
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -959,8 +1106,15 @@
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Triage",
-          "act": "The Butler restates the scope — which inboxes, which window — and confirms the read-only-until-approved boundary.",
-          "produces": "triage brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "triage brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "triage request"
+          ]
         },
         {
           "kind": "gate",
@@ -985,7 +1139,8 @@
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -1015,8 +1170,15 @@
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Routine",
-          "act": "The Butler restates the job, its cadence, and what 'done' looks like, then routes it to the Strategist.",
-          "produces": "routine brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "routine brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "routine request"
+          ]
         },
         {
           "kind": "gate",
@@ -1027,8 +1189,15 @@
           "kind": "member",
           "actor": "the-strategist",
           "title": "Define the Watch",
-          "act": "The Strategist defines the scheduled task — cron cadence, the recommended weapon per step, and the checkpoints — so it can run unattended and resume safely.",
-          "produces": "routine spec"
+          "act": "Runs `guild/plan.py` — the Strategist's planning step as a runnable primitive.",
+          "produces": "routine spec",
+          "script": "guild/plan.py",
+          "args": {
+            "template": "spec"
+          },
+          "inputs": [
+            "routine brief"
+          ]
         },
         {
           "kind": "member",
@@ -1041,7 +1210,8 @@
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -1071,8 +1241,15 @@
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Recon",
-          "act": "The Butler restates the audit lens — SEO, messaging, conversion — and routes it to the Strategist.",
-          "produces": "marketing brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "marketing brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "marketing request"
+          ]
         },
         {
           "kind": "gate",
@@ -1104,7 +1281,8 @@
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -1134,8 +1312,15 @@
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Art",
-          "act": "The Butler restates the asset, its size, and where it lives, then routes it to the Designer.",
-          "produces": "art brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "art brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "art request"
+          ]
         },
         {
           "kind": "gate",
@@ -1167,7 +1352,8 @@
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -1197,8 +1383,15 @@
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Weapon",
-          "act": "The Butler restates the weapon and the change, then routes it to the Strategist.",
-          "produces": "weapon brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "weapon brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "weapon request"
+          ]
         },
         {
           "kind": "gate",
@@ -1230,7 +1423,8 @@
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -1260,8 +1454,15 @@
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Audit",
-          "act": "The Butler restates the question and the angles to cover, then routes it to the Strategist.",
-          "produces": "audit brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "audit brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "audit question"
+          ]
         },
         {
           "kind": "gate",
@@ -1272,8 +1473,15 @@
           "kind": "member",
           "actor": "the-strategist",
           "title": "Convene the Panel",
-          "act": "The Strategist loads ultra-brainstorming and convenes the multi-model panel across the live thinker weapons.",
-          "produces": "panel"
+          "act": "Runs `guild/plan.py` — the Strategist's planning step as a runnable primitive.",
+          "produces": "panel",
+          "script": "guild/plan.py",
+          "args": {
+            "template": "panel"
+          },
+          "inputs": [
+            "audit brief"
+          ]
         },
         {
           "kind": "member",
@@ -1286,7 +1494,8 @@
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -1316,8 +1525,15 @@
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Capture",
-          "act": "The Butler restates the pattern to capture and routes it to the Strategist.",
-          "produces": "capture brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "capture brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "capture request"
+          ]
         },
         {
           "kind": "gate",
@@ -1349,7 +1565,8 @@
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -1379,8 +1596,15 @@
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Sweep",
-          "act": "The Butler restates the window and scope (received + sent, all contacts) and confirms the read-only-until-flagged boundary.",
-          "produces": "intel brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "intel brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "intel request"
+          ]
         },
         {
           "kind": "gate",
@@ -1412,7 +1636,8 @@
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -1442,8 +1667,15 @@
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Harvest",
-          "act": "The Butler restates the harvest — which folder, identify-or-extract — and routes it to the Architect.",
-          "produces": "harvest brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "harvest brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "law PDFs"
+          ]
         },
         {
           "kind": "gate",
@@ -1480,7 +1712,8 @@
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -1510,8 +1743,15 @@
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Query",
-          "act": "The Butler restates the question as a focused, answerable search brief — scope, what counts as a good answer — and routes it to the Strategist.",
-          "produces": "search brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "search brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "web question"
+          ]
         },
         {
           "kind": "gate",
@@ -1529,7 +1769,8 @@
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {

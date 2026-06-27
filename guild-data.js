@@ -3,20 +3,24 @@
 const GUILD = {
   "meta": {
     "name": "Star Alliance",
-    "version": "6.52.57",
+    "version": "6.52.59",
     "versionTiers": {
       "major": 6,
       "minor": 52,
-      "patch": 57
+      "patch": 59
     },
-    "generated": "2026-06-27T01:34:35Z",
+    "generated": "2026-06-27T02:29:10Z",
     "schemaVersion": 3,
+    "weaponStatus": {
+      "gpt-5.5": "deactivated",
+      "nemotron-3-ultra": "dark"
+    },
     "counts": {
       "members": 9,
-      "skills": 42,
+      "skills": 44,
       "domains": 3,
       "workflows": 25,
-      "log": 129
+      "log": 131
     }
   },
   "members": [
@@ -1602,14 +1606,14 @@ const GUILD = {
       "name": "The Merchant",
       "role": "Investment · Trading · Market Research",
       "model": "opus",
-      "conferred": "Foundational",
+      "conferred": "Advanced",
       "color": "#3da155",
       "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-merc\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#102820\"/><stop offset=\"1\" stop-color=\"#0a1812\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-merc)\"/><path d=\"M48 18 L48 62\" stroke=\"#4ec9a0\" stroke-width=\"3\"/><circle cx=\"48\" cy=\"18\" r=\"4\" fill=\"#4ec9a0\"/><path d=\"M24 42 L72 42\" stroke=\"#4ec9a0\" stroke-width=\"2\" opacity=\".3\"/><path d=\"M24 42 L24 50 L34 50 L34 42 M62 42 L62 54 L72 54 L72 42\" fill=\"none\" stroke=\"#4ec9a0\" stroke-width=\"2\"/><path d=\"M48 42 L48 36 L42 36 L42 42 M48 42 L48 48 L54 48 L54 42\" fill=\"none\" stroke=\"#4ec9a0\" stroke-width=\"2\" opacity=\".5\"/><rect x=\"28\" y=\"60\" width=\"6\" height=\"8\" rx=\"1\" fill=\"#4ec9a0\" opacity=\".3\"/><rect x=\"38\" y=\"60\" width=\"6\" height=\"12\" rx=\"1\" fill=\"#4ec9a0\" opacity=\".4\"/><rect x=\"48\" y=\"60\" width=\"6\" height=\"6\" rx=\"1\" fill=\"#4ec9a0\" opacity=\".25\"/><rect x=\"58\" y=\"60\" width=\"6\" height=\"14\" rx=\"1\" fill=\"#4ec9a0\" opacity=\".35\"/></svg>",
       "summary": "Investment and trading specialist. Analyzes markets, builds trading strategies, assesses risk, and manages portfolios with rigor.",
       "deploy": "Investment analysis, trading strategies, market research, portfolio management",
       "triggers": "analyze this investment · build a trading strategy · research this market",
       "description": "Deploy for investment analysis, trading strategies, market research, portfolio management, and financial decision-making. Triggers: 'analyze this investment', 'build a trading strategy', 'research this market', 'manage the portfolio', 'should I buy or sell', 'what's the risk on this'.",
-      "prompt": "You are **the Merchant**, the investment and trading specialist of the Star Alliance —\nthe guild's trader and assayer.\n\nYou analyze markets, build trading strategies, assess risk, and manage portfolios. You\nunderstand that gold is made and lost on information quality and discipline — not on\nhunches. In Fallen Sword, the Auction House and Buff Market reward those who know the\nvalue of what they trade. You bring that same rigor to financial decisions.\n\n## Your Weapons\n\nYour weapons are AI models — each suited to a different kind of quest. Choose by priority:\n\n| Priority | Weapon | When to Draw It |\n|---|---|---|\n| **1st** — Primary | kimi-k2.7 | Kimi K2.7 — the greatbow. Massive context for long market histories. |\n| **2nd** — Secondary | nemotron-3-ultra | Nemotron-3 Ultra — the lance. High-throughput for long portfolio runs. |\n| **3rd** — Tertiary | opus | Claude Opus — the heaviest blade for deep financial analysis. |\n| **4th** — Quaternary | gpt-5.5 | GPT-5.5 — the enchanted blade for market reasoning. |\n| **5th** — Quinary | glm-5.2 | GLM-5.2 — the staff for data analysis. |\n| **6th** — Senary | deepseek-v4-pro | DeepSeek V4 Pro — the greatsword. Frontier reasoning for trading strategy. |\n| **7th** — Septenary | sonnet | Claude Sonnet — the reliable longsword. Fast balanced daily market reads. |\n\n**How to choose:** Start with your primary weapon. If the quest demands a different\nstrength — more speed, more context, more creativity — switch to the weapon that fits.\nA wise guild member knows which blade to draw for each fight.\n\n## Your expertise\n\n- Investment analysis (fundamental and technical)\n- Trading strategy development and backtesting\n- Market research and trend analysis\n- Portfolio management and asset allocation\n- Risk assessment and position sizing\n- Financial modeling and valuation\n\n## How you work\n\n1. **Never guess.** Every recommendation comes with data, reasoning, and a risk\n   assessment. A merchant who guesses loses their gold.\n2. **Always show your work.** Cite sources, show calculations, explain the logic. The\n   scales must be visible.\n3. **Assess risk first.** Before any recommendation, evaluate downside, upside, and\n   probability. Know what's in the Withered Lands before you march there.\n4. **Be honest about uncertainty.** Markets are probabilistic. You say \"I don't know\"\n   when you don't.\n5. **Backtest when possible.** A strategy without evidence is a hypothesis, not a\n   strategy. A blade untested is just metal.\n6. **Think in positions, not trades.** Portfolio construction matters more than any\n   single bet.\n7. **Consider the user's situation.** Risk tolerance, time horizon, and goals shape\n   every recommendation.\n8. For any market, investment, or decision research, run `storm-investigation` first —\n   five contrasting personas (Bull / Bear / Macro / Quant / Contrarian), a contradiction\n   map, a synthesized briefing, then a peer-review confidence grade. Never recommend off a\n   single-perspective read; the bull and the bear both get a voice before you call it.\n\n## Principles\n\n- **Capital preservation first.** You don't recommend losing gold on bad risk.\n- **Diversification is not a slogan.** You build real, balanced portfolios.\n- **Fees and taxes matter.** Net returns are what count — the auction house takes its cut.\n- **Markets are adversarial.** You assume someone is on the other side of every trade.\n- **No financial advice disclaimer.** You provide analysis and strategy, not licensed\n  financial advice. The user makes their own decisions.\n\n## Skills\n\n- `storm-investigation` — the Merchant's research engine. Multi-perspective STORM analysis\n  (five personas → contradiction map → ranked briefing → peer-review grade) for any market,\n  investment, or risk question. This is how the Merchant turns hunches into evidence.\n\nStill to be recruited:\n- Market analysis and screener tools\n- Backtesting framework\n- Portfolio rebalancing calculator\n- Risk assessment worksheet\n\n## What you don't do\n\n- You don't write application code — delegate to The Developer.\n- You don't design systems — delegate to The Architect.\n- You don't plan engineering campaigns — delegate to The Strategist.",
+      "prompt": "You are **the Merchant**, the investment and trading specialist of the Star Alliance —\nthe guild's trader and assayer.\n\nYou analyze markets, build trading strategies, assess risk, and manage portfolios. You\nunderstand that gold is made and lost on information quality and discipline — not on\nhunches. In Fallen Sword, the Auction House and Buff Market reward those who know the\nvalue of what they trade. You bring that same rigor to financial decisions.\n\n## Your Weapons\n\nYour weapons are AI models — each suited to a different kind of quest. Choose by priority:\n\n| Priority | Weapon | When to Draw It |\n|---|---|---|\n| **1st** — Primary | kimi-k2.7 | Kimi K2.7 — the greatbow. Massive context for long market histories. |\n| **2nd** — Secondary | nemotron-3-ultra | Nemotron-3 Ultra — the lance. High-throughput for long portfolio runs. |\n| **3rd** — Tertiary | opus | Claude Opus — the heaviest blade for deep financial analysis. |\n| **4th** — Quaternary | gpt-5.5 | GPT-5.5 — the enchanted blade for market reasoning. |\n| **5th** — Quinary | glm-5.2 | GLM-5.2 — the staff for data analysis. |\n| **6th** — Senary | deepseek-v4-pro | DeepSeek V4 Pro — the greatsword. Frontier reasoning for trading strategy. |\n| **7th** — Septenary | sonnet | Claude Sonnet — the reliable longsword. Fast balanced daily market reads. |\n\n**How to choose:** Start with your primary weapon. If the quest demands a different\nstrength — more speed, more context, more creativity — switch to the weapon that fits.\nA wise guild member knows which blade to draw for each fight.\n\n## Your expertise\n\n- Investment analysis (fundamental and technical)\n- Trading strategy development and backtesting\n- Market research and trend analysis\n- Portfolio management and asset allocation\n- Risk assessment and position sizing\n- Financial modeling and valuation\n\n## How you work\n\n1. **Never guess.** Every recommendation comes with data, reasoning, and a risk\n   assessment. A merchant who guesses loses their gold.\n2. **Always show your work.** Cite sources, show calculations, explain the logic. The\n   scales must be visible.\n3. **Assess risk first.** Before any recommendation, evaluate downside, upside, and\n   probability. Know what's in the Withered Lands before you march there.\n4. **Be honest about uncertainty.** Markets are probabilistic. You say \"I don't know\"\n   when you don't.\n5. **Backtest when possible.** A strategy without evidence is a hypothesis, not a\n   strategy. A blade untested is just metal.\n6. **Think in positions, not trades.** Portfolio construction matters more than any\n   single bet.\n7. **Consider the user's situation.** Risk tolerance, time horizon, and goals shape\n   every recommendation.\n8. For any market, investment, or decision research, run `storm-investigation` first —\n   five contrasting personas (Bull / Bear / Macro / Quant / Contrarian), a contradiction\n   map, a synthesized briefing, then a peer-review confidence grade. Never recommend off a\n   single-perspective read; the bull and the bear both get a voice before you call it.\n\n## Principles\n\n- **Capital preservation first.** You don't recommend losing gold on bad risk.\n- **Diversification is not a slogan.** You build real, balanced portfolios.\n- **Fees and taxes matter.** Net returns are what count — the auction house takes its cut.\n- **Markets are adversarial.** You assume someone is on the other side of every trade.\n- **No financial advice disclaimer.** You provide analysis and strategy, not licensed\n  financial advice. The user makes their own decisions.\n\n## Skills\n\n- `market-recon` — the Merchant's read-only market/investment/risk analysis. Scopes a single\n  question, gathers evidence (fundamentals, technicals, structure, positioning, catalysts),\n  assesses risk, and ships a dated, graded report with a \"what would change my view\" trigger.\n  Four modes: asset/equity research, single trade-idea, portfolio review, macro/rates read.\n- `trading-strategy` — turns a market view into an executable-on-paper strategy spec: a\n  falsifiable edge with mechanical entry/exit/stop/invalidation rules, position sizing, and a\n  backtest framing. Four modes: trend-following, mean-reversion, event/catalyst, systematic\n  screen. Designs the plan; never places the trade.\n- `portfolio-risk` — book-level construction and risk measurement: exposures, VaR/expected\n  shortfall/drawdown/correlation with every assumption named, stress tests, and a proposed\n  (never executed) rebalance. Four modes: construction, risk-audit, rebalance-proposal,\n  stress-test.\n- `storm-investigation` — the Merchant's research engine. Multi-perspective STORM analysis\n  (five personas → contradiction map → ranked briefing → peer-review grade) for any market,\n  investment, or risk question. This is how the Merchant turns hunches into evidence.\n\nAll three trading crafts are **read-only**: the Merchant analyzes, designs, and proposes —\nthe user (or another member) decides and acts. No skill here places a trade or moves money.\n\n## What you don't do\n\n- You don't write application code — delegate to The Developer.\n- You don't design systems — delegate to The Architect.\n- You don't plan engineering campaigns — delegate to The Strategist.",
       "weapons": [
         {
           "model": "kimi-k2.7",
@@ -1654,20 +1658,22 @@ const GUILD = {
       ],
       "skills": [
         "market-recon",
+        "trading-strategy",
+        "portfolio-risk",
         "storm-investigation",
         "weapon-utility"
       ],
       "levelInfo": {
-        "earned": "Foundational",
+        "earned": "Advanced",
         "qualified": true,
-        "nextTier": "Intermediate",
-        "rampEarned": "gray",
-        "rampConferred": "gray",
-        "ad": 6,
+        "nextTier": "Elite",
+        "rampEarned": "teal",
+        "rampConferred": "teal",
+        "ad": 12,
         "signals": {
-          "ad": 6,
-          "nSkills": 2,
-          "nUnique": 1,
+          "ad": 12,
+          "nSkills": 4,
+          "nUnique": 3,
           "nMaster": 0,
           "peak": 3,
           "nWeapons": 7,
@@ -1684,7 +1690,7 @@ const GUILD = {
             {
               "label": "craft skills",
               "ok": true,
-              "have": 2,
+              "have": 4,
               "need": 1
             },
             {
@@ -1695,20 +1701,20 @@ const GUILD = {
           "Intermediate": [
             {
               "label": "Arsenal Depth",
-              "ok": false,
-              "have": 6,
+              "ok": true,
+              "have": 12,
               "need": 8
             },
             {
               "label": "craft skills",
               "ok": true,
-              "have": 2,
+              "have": 4,
               "need": 2
             },
             {
               "label": "unique skills",
               "ok": true,
-              "have": 1,
+              "have": 3,
               "need": 1
             },
             {
@@ -1719,8 +1725,8 @@ const GUILD = {
           "Advanced": [
             {
               "label": "Arsenal Depth",
-              "ok": false,
-              "have": 6,
+              "ok": true,
+              "have": 12,
               "need": 12
             },
             {
@@ -1729,8 +1735,8 @@ const GUILD = {
             },
             {
               "label": "unique skills",
-              "ok": false,
-              "have": 1,
+              "ok": true,
+              "have": 3,
               "need": 2
             },
             {
@@ -1744,7 +1750,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": false,
-              "have": 6,
+              "have": 12,
               "need": 18
             },
             {
@@ -1755,8 +1761,8 @@ const GUILD = {
             },
             {
               "label": "unique skills",
-              "ok": false,
-              "have": 1,
+              "ok": true,
+              "have": 3,
               "need": 3
             },
             {
@@ -1768,7 +1774,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": false,
-              "have": 6,
+              "have": 12,
               "need": 24
             },
             {
@@ -1779,8 +1785,8 @@ const GUILD = {
             },
             {
               "label": "unique skills",
-              "ok": false,
-              "have": 1,
+              "ok": true,
+              "have": 3,
               "need": 3
             },
             {
@@ -1797,23 +1803,23 @@ const GUILD = {
           {
             "label": "Arsenal Depth",
             "ok": false,
-            "have": 6,
-            "need": 8
+            "have": 12,
+            "need": 18
           },
           {
-            "label": "craft skills",
-            "ok": true,
-            "have": 2,
-            "need": 2
+            "label": "Master-level skills",
+            "ok": false,
+            "have": 0,
+            "need": 1
           },
           {
             "label": "unique skills",
             "ok": true,
-            "have": 1,
-            "need": 1
+            "have": 3,
+            "need": 3
           },
           {
-            "label": "does[] + doesnt[] filled",
+            "label": "conformity-clean",
             "ok": true
           }
         ],
@@ -2455,16 +2461,16 @@ const GUILD = {
     {
       "id": "dashboard-parity",
       "name": "dashboard-parity",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "icon": "🪞",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Prove every change actually renders on the dashboard",
       "level": "Advanced",
       "ramp": "teal",
       "tabler": "ti-device-desktop-check",
       "src": "own",
-      "desc": "The Quartermaster's craft for proving that every change actually reaches the rendered dashboard at index.html — not just the source files, but the generated guild-data.js the browser loads and the live DOM it paints. The dashboard is buildless: index.html loads guild-data.js (const GUILD), regenerated from the source files by build.py. A change is only done when it survives that whole chain. This craft rebuilds, asserts the new value is present in guild-data.js (the file the browser reads, not only guild-data.json) and the old value is gone, renders index.html on the local server, and confirms the change shows in the live DOM with a screenshot. Use after any edit that should appear on the dashboard — members, skills, workflows, domains, the guild log, the version, or any art. Triggers: 'is it on the dashboard', 'did it reflect on index.html', 'verify the dashboard', 'check the dashboard renders', 'dashboard parity', 'did the build land', 'did my change show up'. Differentiate from guild-conformity (proves the source files agree with each other and with the generated data) and cleanup (app/i18n hygiene).",
+      "desc": "The Quartermaster's craft for proving a change actually reaches the rendered dashboard at index.html — not just the source files, but the generated guild-data.js the browser loads and the live DOM it paints. The dashboard is buildless: index.html loads guild-data.js (const GUILD), regenerated from source by build.py, so a change is done only when it survives that chain. This craft rebuilds, asserts the new value is in guild-data.js and the old value is gone, renders index.html on the local server, and confirms it shows in the live DOM via screenshot. Use after any edit that should appear on the dashboard — members, skills, workflows, domains, the guild log, the version, or any art. Triggers: 'is it on the dashboard', 'did it reflect on index.html', 'verify the dashboard', 'check the dashboard renders', 'dashboard parity', 'did the build land', 'did my change show up'. Differentiate from guild-conformity (source files agree with each other and the generated data) and cleanup (app/i18n hygiene).",
       "intro": "You are the keeper of the looking-glass. A change is not done when the source file is saved, nor when the build script exits zero — it is done when the Guild Master opens the dashboard and sees it. The dashboard is buildless: index.html loads guild-data.js (a top-level const GUILD), which build.py r",
       "sections": [
         "What it is / is not",
@@ -2736,7 +2742,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "📣",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Four-mode marketing engine: content/SEO, brand, email, social/paid",
       "level": "Master",
       "ramp": "purple",
@@ -3374,6 +3380,43 @@ const GUILD = {
       ]
     },
     {
+      "id": "portfolio-risk",
+      "name": "portfolio-risk",
+      "version": "0.1.0",
+      "icon": "🛡️",
+      "art": "",
+      "artPng": true,
+      "blurb": "Book-level portfolio construction and risk metrics (VaR, drawdown, exposure)",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-shield-half",
+      "src": "own",
+      "desc": "The Merchant's craft for read-only, book-level portfolio construction and risk measurement that ships a written, dated report and never trades or moves money. Scope the book (holdings, weights, base currency, benchmark); map exposures (asset class, sector, factor, geography, currency, concentration); compute risk metrics (volatility, beta, correlation, VaR with its limits, expected shortfall, max drawdown, liquidity-under-stress) with every assumption named; stress and scenario test; then propose (never execute) a rebalance with target weights, turnover, tracking error, and tax cost, plus a confidence grade. Four modes: construction, risk-audit, rebalance-proposal, stress-test. Differentiate from market-recon (single read), trading-strategy (per-strategy rules), and storm-investigation (general research). Triggers: 'review my portfolio', 'what is the risk on my book', 'compute VaR', 'check my exposures', 'should I rebalance', 'stress test this portfolio'. Never executes a trade or transfer.",
+      "intro": "A single bet can be right and the book can still bleed. The Merchant's job is to see the book whole — every position, every exposure, every quiet dependency that wakes up in a storm — and to write down, in dated ink, what would happen if the weather turned. Risk is measured before the squall, not af",
+      "sections": [
+        "What it is / is not",
+        "The craft",
+        "Modes",
+        "Sharpening the craft",
+        "Gotchas",
+        "Versioning",
+        "Changelog"
+      ],
+      "triggers": "'review my portfolio', 'what is the risk on my book', 'compute VaR', 'check my exposures', 'should I rebalance', 'stress test this portfolio'",
+      "modes": "construction; risk-audit; rebalance-proposal; stress-test",
+      "disabled": false,
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 55,
+        "words": 834
+      },
+      "global": false,
+      "members": [
+        "the-merchant"
+      ]
+    },
+    {
       "id": "relationship-intel",
       "name": "relationship-intel",
       "version": "1.0.0",
@@ -3725,6 +3768,43 @@ const GUILD = {
       ]
     },
     {
+      "id": "trading-strategy",
+      "name": "trading-strategy",
+      "version": "0.1.0",
+      "icon": "🎯",
+      "art": "",
+      "artPng": true,
+      "blurb": "Read-only trading-strategy design: entry/exit rules, sizing, backtest framing",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-target-arrow",
+      "src": "own",
+      "desc": "The Merchant's craft for read-only trading-strategy design that ships a written, dated strategy spec and never places a trade or writes broker code. Take a market view (often from market-recon) and forge it into an executable-on-paper plan: scope the instrument, horizon, and regime; define a falsifiable edge with mechanical entry, exit, stop, time-stop, and invalidation rules; size the position by risk-per-trade and stop distance; frame a backtest with costs, in/out-of-sample split, and metrics (hit rate, payoff, expectancy, drawdown); then hand off a graded spec with a clear invalidation trigger. Four modes: trend-following, mean-reversion, event/catalyst-driven, systematic rules-based screen. Differentiate from market-recon (the read), portfolio-risk (the book), and storm-investigation (general research). Triggers: 'build a trading strategy', 'design an entry/exit plan', 'backtest this idea', 'how should I size this trade', 'turn this view into a strategy'. Never executes a trade or transfer.",
+      "intro": "A craft of rules over hunches. A market view is a rumor until it is hammered into entry, exit, sizing, and risk — a written, dated plan that can be tested, falsified, and handed across the table without losing its shape. A blade untested is just metal; a strategy untested is just hope. The Merchant'",
+      "sections": [
+        "What it is / is not",
+        "The craft",
+        "Modes",
+        "Sharpening the craft",
+        "Gotchas",
+        "Versioning",
+        "Changelog"
+      ],
+      "triggers": "'build a trading strategy', 'design an entry/exit plan', 'backtest this idea', 'how should I size this trade', 'turn this view into a strategy'",
+      "modes": "trend-following; mean-reversion; event/catalyst-driven; systematic rules-based screen",
+      "disabled": false,
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 55,
+        "words": 901
+      },
+      "global": false,
+      "members": [
+        "the-merchant"
+      ]
+    },
+    {
       "id": "transactions-domain-model",
       "name": "transactions-domain-model",
       "version": "1.3.1",
@@ -3973,7 +4053,9 @@ const GUILD = {
         "comms-triage",
         "legal-rule-modeling",
         "design-taste",
-        "dashboard-parity"
+        "dashboard-parity",
+        "trading-strategy",
+        "portfolio-risk"
       ],
       "members": [
         "the-butler",
@@ -3986,7 +4068,7 @@ const GUILD = {
         "the-merchant",
         "the-quartermaster"
       ],
-      "notes": "The home domain. All 9 guild members + 42 skills live here. Every other domain borrows from this skill pool."
+      "notes": "The home domain. All 9 guild members + 44 skills live here. Every other domain borrows from this skill pool."
     },
     {
       "id": "lex-council-app",
@@ -4069,8 +4151,15 @@ const GUILD = {
           "kind": "member",
           "actor": "the-butler",
           "title": "Rewrite as Clear Brief",
-          "act": "The Butler rewrites your request into an unambiguous, actionable brief with success criteria.",
-          "produces": "cleared brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "cleared brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "raw request"
+          ]
         },
         {
           "kind": "gate",
@@ -4081,8 +4170,15 @@ const GUILD = {
           "kind": "member",
           "actor": "the-strategist",
           "title": "Form the Campaign Plan",
-          "act": "The Strategist breaks the mission into waves and assigns each specialist a role that fits their speciality.",
-          "produces": "campaign plan"
+          "act": "Runs `guild/plan.py` — the Strategist's planning step as a runnable primitive.",
+          "produces": "campaign plan",
+          "script": "guild/plan.py",
+          "args": {
+            "template": "campaign"
+          },
+          "inputs": [
+            "cleared brief"
+          ]
         },
         {
           "kind": "member",
@@ -4121,7 +4217,8 @@ const GUILD = {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -4152,8 +4249,15 @@ const GUILD = {
           "kind": "member",
           "actor": "the-butler",
           "title": "Clarify the Ask",
-          "act": "The Butler sharpens the request into a single, unambiguous fix ticket with clear acceptance.",
-          "produces": "clarified ticket"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "clarified ticket",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "clarify"
+          },
+          "inputs": [
+            "small request"
+          ]
         },
         {
           "kind": "gate",
@@ -4178,7 +4282,8 @@ const GUILD = {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -4209,8 +4314,15 @@ const GUILD = {
           "kind": "member",
           "actor": "the-butler",
           "title": "Shape the Brief",
-          "act": "The Butler reframes your ask into a focused design brief with clear visual success criteria.",
-          "produces": "design brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "design brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "design request"
+          ]
         },
         {
           "kind": "gate",
@@ -4221,8 +4333,15 @@ const GUILD = {
           "kind": "member",
           "actor": "the-strategist",
           "title": "Plan the Sprint",
-          "act": "The Strategist sequences design, build, and verification into a single tight sprint plan.",
-          "produces": "sprint plan"
+          "act": "Runs `guild/plan.py` — the Strategist's planning step as a runnable primitive.",
+          "produces": "sprint plan",
+          "script": "guild/plan.py",
+          "args": {
+            "template": "sprint"
+          },
+          "inputs": [
+            "design brief"
+          ]
         },
         {
           "kind": "member",
@@ -4249,7 +4368,8 @@ const GUILD = {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -4280,8 +4400,15 @@ const GUILD = {
           "kind": "member",
           "actor": "the-butler",
           "title": "Clarify the Ask",
-          "act": "The Butler rewrites the ask into a precise architecture brief with constraints called out.",
-          "produces": "architecture brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "architecture brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "clarify"
+          },
+          "inputs": [
+            "architecture request"
+          ]
         },
         {
           "kind": "gate",
@@ -4292,8 +4419,15 @@ const GUILD = {
           "kind": "member",
           "actor": "the-strategist",
           "title": "Scope the Work",
-          "act": "The Strategist defines the boundaries, milestones, dependencies, and risks of the effort.",
-          "produces": "scope document"
+          "act": "Runs `guild/plan.py` — the Strategist's planning step as a runnable primitive.",
+          "produces": "scope document",
+          "script": "guild/plan.py",
+          "args": {
+            "template": "scope"
+          },
+          "inputs": [
+            "architecture brief"
+          ]
         },
         {
           "kind": "member",
@@ -4325,7 +4459,8 @@ const GUILD = {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -4356,8 +4491,15 @@ const GUILD = {
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Request",
-          "act": "The Butler restates the request as a clear codex-loading task with target locales listed.",
-          "produces": "codex brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "codex brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "law reference"
+          ]
         },
         {
           "kind": "gate",
@@ -4382,7 +4524,8 @@ const GUILD = {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -4413,8 +4556,15 @@ const GUILD = {
           "kind": "member",
           "actor": "the-butler",
           "title": "Sharpen the Question",
-          "act": "The Butler sharpens the question into a focused read-only research brief with clear scope.",
-          "produces": "research brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "research brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "reframe"
+          },
+          "inputs": [
+            "research question"
+          ]
         },
         {
           "kind": "gate",
@@ -4432,7 +4582,8 @@ const GUILD = {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -4463,8 +4614,15 @@ const GUILD = {
           "kind": "member",
           "actor": "the-butler",
           "title": "Route the Request",
-          "act": "The Butler classifies the request and routes it to the right maintenance owner.",
-          "produces": "routed request"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "routed request",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "classify"
+          },
+          "inputs": [
+            "maintenance request"
+          ]
         },
         {
           "kind": "member",
@@ -4491,7 +4649,8 @@ const GUILD = {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -4522,8 +4681,15 @@ const GUILD = {
           "kind": "member",
           "actor": "the-butler",
           "title": "Restate the Order",
-          "act": "Before any work begins, the Butler echoes your request back in plain English — loop today and yesterday's sessions, read the guild log, and log whatever is missing — so you both agree on the quest before he moves.",
-          "produces": "plain-English brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "plain-English brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "restate"
+          },
+          "inputs": [
+            "sweep request"
+          ]
         },
         {
           "kind": "gate",
@@ -4553,7 +4719,8 @@ const GUILD = {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -4584,8 +4751,15 @@ const GUILD = {
           "kind": "member",
           "actor": "the-butler",
           "title": "Restate the Order",
-          "act": "The Butler echoes the order back in plain English — audit every source and generated artifact, reconcile them against each other and against the logged decisions, and surface anything that contradicts — so you both agree on the quest before he moves.",
-          "produces": "plain-English brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "plain-English brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "restate"
+          },
+          "inputs": [
+            "sweep request"
+          ]
         },
         {
           "kind": "gate",
@@ -4639,8 +4813,15 @@ const GUILD = {
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Bug",
-          "act": "The Butler restates the bug and the acceptance in plain English, and routes it to the Strategist.",
-          "produces": "framed bug"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "framed bug",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "bug request"
+          ]
         },
         {
           "kind": "gate",
@@ -4677,7 +4858,8 @@ const GUILD = {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -4708,8 +4890,15 @@ const GUILD = {
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Sweep",
-          "act": "The Butler restates the sweep as read-only — propose, do not apply — and routes it to the Strategist.",
-          "produces": "security brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "security brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "security request"
+          ]
         },
         {
           "kind": "gate",
@@ -4720,8 +4909,15 @@ const GUILD = {
           "kind": "member",
           "actor": "the-strategist",
           "title": "Scope the Surface",
-          "act": "The Strategist scopes the audit surface — RLS policies, SECURITY DEFINER RPCs, anon/authenticated grants — and keeps it propose-only.",
-          "produces": "audit scope"
+          "act": "Runs `guild/plan.py` — the Strategist's planning step as a runnable primitive.",
+          "produces": "audit scope",
+          "script": "guild/plan.py",
+          "args": {
+            "template": "scope"
+          },
+          "inputs": [
+            "security brief"
+          ]
         },
         {
           "kind": "member",
@@ -4746,7 +4942,8 @@ const GUILD = {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -4777,8 +4974,15 @@ const GUILD = {
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Rotation",
-          "act": "The Butler restates which modes to run (or 'follow-ups for the last campaign') and routes it to the Quartermaster.",
-          "produces": "cleanup brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "cleanup brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "cleanup request"
+          ]
         },
         {
           "kind": "gate",
@@ -4796,7 +5000,8 @@ const GUILD = {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -4827,8 +5032,15 @@ const GUILD = {
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Release",
-          "act": "The Butler restates the release scope — which branches, which version step — and routes it to the Quartermaster.",
-          "produces": "release brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "release brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "release request"
+          ]
         },
         {
           "kind": "gate",
@@ -4865,7 +5077,8 @@ const GUILD = {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -4896,8 +5109,15 @@ const GUILD = {
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Tool",
-          "act": "The Butler restates the tool, its governing law, and where it lives, then routes it to the Architect.",
-          "produces": "tool brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "tool brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "tool request"
+          ]
         },
         {
           "kind": "gate",
@@ -4929,7 +5149,8 @@ const GUILD = {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -4960,8 +5181,15 @@ const GUILD = {
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Matter",
-          "act": "The Butler restates the document, its audience, and its language(s), then routes it to the Translator.",
-          "produces": "drafting brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "drafting brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "drafting request"
+          ]
         },
         {
           "kind": "gate",
@@ -4991,7 +5219,8 @@ const GUILD = {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -5022,8 +5251,15 @@ const GUILD = {
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Triage",
-          "act": "The Butler restates the scope — which inboxes, which window — and confirms the read-only-until-approved boundary.",
-          "produces": "triage brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "triage brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "triage request"
+          ]
         },
         {
           "kind": "gate",
@@ -5048,7 +5284,8 @@ const GUILD = {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -5079,8 +5316,15 @@ const GUILD = {
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Routine",
-          "act": "The Butler restates the job, its cadence, and what 'done' looks like, then routes it to the Strategist.",
-          "produces": "routine brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "routine brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "routine request"
+          ]
         },
         {
           "kind": "gate",
@@ -5091,8 +5335,15 @@ const GUILD = {
           "kind": "member",
           "actor": "the-strategist",
           "title": "Define the Watch",
-          "act": "The Strategist defines the scheduled task — cron cadence, the recommended weapon per step, and the checkpoints — so it can run unattended and resume safely.",
-          "produces": "routine spec"
+          "act": "Runs `guild/plan.py` — the Strategist's planning step as a runnable primitive.",
+          "produces": "routine spec",
+          "script": "guild/plan.py",
+          "args": {
+            "template": "spec"
+          },
+          "inputs": [
+            "routine brief"
+          ]
         },
         {
           "kind": "member",
@@ -5105,7 +5356,8 @@ const GUILD = {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -5136,8 +5388,15 @@ const GUILD = {
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Recon",
-          "act": "The Butler restates the audit lens — SEO, messaging, conversion — and routes it to the Strategist.",
-          "produces": "marketing brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "marketing brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "marketing request"
+          ]
         },
         {
           "kind": "gate",
@@ -5169,7 +5428,8 @@ const GUILD = {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -5200,8 +5460,15 @@ const GUILD = {
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Art",
-          "act": "The Butler restates the asset, its size, and where it lives, then routes it to the Designer.",
-          "produces": "art brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "art brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "art request"
+          ]
         },
         {
           "kind": "gate",
@@ -5233,7 +5500,8 @@ const GUILD = {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -5264,8 +5532,15 @@ const GUILD = {
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Weapon",
-          "act": "The Butler restates the weapon and the change, then routes it to the Strategist.",
-          "produces": "weapon brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "weapon brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "weapon request"
+          ]
         },
         {
           "kind": "gate",
@@ -5297,7 +5572,8 @@ const GUILD = {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -5328,8 +5604,15 @@ const GUILD = {
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Audit",
-          "act": "The Butler restates the question and the angles to cover, then routes it to the Strategist.",
-          "produces": "audit brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "audit brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "audit question"
+          ]
         },
         {
           "kind": "gate",
@@ -5340,8 +5623,15 @@ const GUILD = {
           "kind": "member",
           "actor": "the-strategist",
           "title": "Convene the Panel",
-          "act": "The Strategist loads ultra-brainstorming and convenes the multi-model panel across the live thinker weapons.",
-          "produces": "panel"
+          "act": "Runs `guild/plan.py` — the Strategist's planning step as a runnable primitive.",
+          "produces": "panel",
+          "script": "guild/plan.py",
+          "args": {
+            "template": "panel"
+          },
+          "inputs": [
+            "audit brief"
+          ]
         },
         {
           "kind": "member",
@@ -5354,7 +5644,8 @@ const GUILD = {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -5385,8 +5676,15 @@ const GUILD = {
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Capture",
-          "act": "The Butler restates the pattern to capture and routes it to the Strategist.",
-          "produces": "capture brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "capture brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "capture request"
+          ]
         },
         {
           "kind": "gate",
@@ -5418,7 +5716,8 @@ const GUILD = {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -5449,8 +5748,15 @@ const GUILD = {
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Sweep",
-          "act": "The Butler restates the window and scope (received + sent, all contacts) and confirms the read-only-until-flagged boundary.",
-          "produces": "intel brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "intel brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "intel request"
+          ]
         },
         {
           "kind": "gate",
@@ -5482,7 +5788,8 @@ const GUILD = {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -5513,8 +5820,15 @@ const GUILD = {
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Harvest",
-          "act": "The Butler restates the harvest — which folder, identify-or-extract — and routes it to the Architect.",
-          "produces": "harvest brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "harvest brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "law PDFs"
+          ]
         },
         {
           "kind": "gate",
@@ -5551,7 +5865,8 @@ const GUILD = {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -5582,8 +5897,15 @@ const GUILD = {
           "kind": "member",
           "actor": "the-butler",
           "title": "Frame the Query",
-          "act": "The Butler restates the question as a focused, answerable search brief — scope, what counts as a good answer — and routes it to the Strategist.",
-          "produces": "search brief"
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "search brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "web question"
+          ]
         },
         {
           "kind": "gate",
@@ -5601,7 +5923,8 @@ const GUILD = {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
-          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
           "produces": "conformance sign-off"
         },
         {
@@ -5615,6 +5938,27 @@ const GUILD = {
   ],
   "log": {
     "entries": [
+      {
+        "id": 76,
+        "date": "2026-06-27",
+        "type": "chore",
+        "title": "Wire the Guild campaign — workflow runner wired end-to-end",
+        "who": "Quartermaster",
+        "detail": "Waves 0-4: additive step schema in workflows.json + data-driven guild/run.py; frame_brief.py and plan.py primitives; 7 new guild/ scripts (session_scout, hygiene_run, version_bump, wire, commission_art, sync_act, prune_runs); 55 scripted steps' act text normalized; gate steps resolve to human; the-merchant recruited for the trading project (skills 42->44: market-recon reused + trading-strategy + portfolio-risk new) and promoted Foundational->Advanced; dark/deactivated models marked via members-meta weaponStatus (gpt-5.5 deactivated, nemotron-3-ultra dark), now carried to the dashboard through build.py meta + app.js seed."
+      },
+      {
+        "id": 75,
+        "date": "2026-06-27",
+        "type": "member-upgrade",
+        "title": "Promote The Merchant: Foundational → Advanced",
+        "who": "The Quartermaster",
+        "detail": "Conferred member level Foundational → Advanced (craft-depth tier). Prerequisite checklist for Advanced verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+        "ref": [
+          "the-merchant"
+        ],
+        "from": "Foundational",
+        "to": "Advanced"
+      },
       {
         "id": 74,
         "date": "2026-06-27",
@@ -7238,6 +7582,6 @@ const GUILD = {
         "id": "g-325a46a5-add-skill-conquering-campaign"
       }
     ],
-    "count": 129
+    "count": 131
   }
 };

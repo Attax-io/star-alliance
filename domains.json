@@ -50,7 +50,9 @@
         "comms-triage",
         "legal-rule-modeling",
         "design-taste",
-        "dashboard-parity"
+        "dashboard-parity",
+        "trading-strategy",
+        "portfolio-risk"
       ],
       "members": [
         "the-butler",
@@ -63,7 +65,7 @@
         "the-merchant",
         "the-quartermaster"
       ],
-      "notes": "The home domain. All 9 guild members + 42 skills live here. Every other domain borrows from this skill pool."
+      "notes": "The home domain. All 9 guild members + 44 skills live here. Every other domain borrows from this skill pool."
     },
     {
       "id": "lex-council-app",
