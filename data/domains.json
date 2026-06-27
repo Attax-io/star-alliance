@@ -23,7 +23,6 @@
         "obsidian-markdown",
         "image-to-code",
         "imagegen-frontend",
-        "brandkit",
         "impeccable",
         "performance",
         "codex-law-translate",
@@ -79,7 +78,7 @@
         "the-merchant",
         "the-quartermaster"
       ],
-      "notes": "The home domain. All 9 guild members + 58 skills live here. Every other domain borrows from this skill pool."
+      "notes": "The home domain. All 9 guild members + 57 skills live here. Every other domain borrows from this skill pool."
     },
     {
       "id": "lex-council-app",
@@ -92,7 +91,6 @@
         "supabase",
         "supabase-postgres-best-practices",
         "performance",
-        "brandkit",
         "design-taste",
         "full-output-enforcement",
         "image-to-code",
@@ -124,7 +122,7 @@
       "color": "#7c5dc8",
       "skills": [
         "article-creator",
-        "brandkit",
+        "imagegen-frontend",
         "codex-law-translate",
         "obsidian-markdown",
         "full-output-enforcement",

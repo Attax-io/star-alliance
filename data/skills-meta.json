@@ -23,14 +23,6 @@
     "triggers": "on \"new insights post\", \"add it to /insights\", \"make this an article\", \"push to the articles table\", or any request that implies writing rows into articles/articletranslations. This skill exists because the insert has six landmines discovered in production: th",
     "modes": ""
   },
-  "brandkit": {
-    "icon": "🎨",
-    "blurb": "Premium brand-kit image generation: logos, decks, identity systems",
-    "level": "Advanced",
-    "tabler": "ti-palette",
-    "triggers": "",
-    "modes": ""
-  },
   "bug-fix-workflow": {
     "icon": "🐛",
     "blurb": "End-to-end bug triage, reproduction, and root-cause fixing",
@@ -193,11 +185,11 @@
   },
   "imagegen-frontend": {
     "icon": "🖼️",
-    "blurb": "Premium frontend reference-imagery engine — web sections and mobile app screens, images only",
-    "level": "Elite",
+    "blurb": "Premium image-generation engine — web sections, mobile app screens, and brand identity, images only",
+    "level": "Master",
     "tabler": "ti-photo",
-    "triggers": "'generate website design references', 'mock the landing page', 'design the app screens', 'show me onboarding screens', 'imagegen'",
-    "modes": "web; mobile"
+    "triggers": "'generate website design references', 'mock the landing page', 'design the app screens', 'create a brand kit', 'design the logo / identity', 'imagegen'",
+    "modes": "web; mobile; brand"
   },
   "impeccable": {
     "icon": "✨",

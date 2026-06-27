@@ -1,0 +1,230 @@
+{
+  "algorithmic-trading-chan": {
+    "sha": "54845dfa21f8f504",
+    "version": "1.0.0"
+  },
+  "arsenal-forge": {
+    "sha": "164b495678e3d700",
+    "version": "1.0.0"
+  },
+  "article-creator": {
+    "sha": "f99e45952367db74",
+    "version": "1.0.1"
+  },
+  "bug-fix-workflow": {
+    "sha": "478f8156e761e290",
+    "version": "1.2.0"
+  },
+  "claude-code-hooks": {
+    "sha": "575f4f5bbe74f75e",
+    "version": "1.1.0"
+  },
+  "cleanup": {
+    "sha": "e9d1e4c4844dfbbb",
+    "version": "1.20.0"
+  },
+  "codex-law-translate": {
+    "sha": "c30b62e1d1639fcb",
+    "version": "1.1.0"
+  },
+  "comms-triage": {
+    "sha": "55b017f7936f724e",
+    "version": "1.0.0"
+  },
+  "conquering-campaign": {
+    "sha": "19eb07416dffdb19",
+    "version": "3.8.3"
+  },
+  "dashboard-parity": {
+    "sha": "59e2307b8a715b83",
+    "version": "1.1.0"
+  },
+  "db-rename-sweep": {
+    "sha": "4074ce712f914b2c",
+    "version": "1.1.0"
+  },
+  "design-language": {
+    "sha": "7fcd7bfe0dceb0f5",
+    "version": "1.0.0"
+  },
+  "design-taste": {
+    "sha": "0a835000e2b50831",
+    "version": "1.0.0"
+  },
+  "dev-server": {
+    "sha": "ffdbad83c82c93cd",
+    "version": "1.1.0"
+  },
+  "full-output-enforcement": {
+    "sha": "a59fa406f8b4af45",
+    "version": "1.0.0"
+  },
+  "graphify": {
+    "sha": "2dcaa6e77a974782",
+    "version": "1.0.0"
+  },
+  "growth-marketing": {
+    "sha": "a9085de312be321c",
+    "version": "1.0.0"
+  },
+  "guild-conformity": {
+    "sha": "9abcf4a577dd7935",
+    "version": "1.4.1"
+  },
+  "guild-log": {
+    "sha": "96acfd0c3772f395",
+    "version": "1.2.1"
+  },
+  "guild-sync": {
+    "sha": "761c4348f383d1d2",
+    "version": "1.0.0"
+  },
+  "harness-efficiency": {
+    "sha": "b09f4dfd7b504137",
+    "version": "1.2.0"
+  },
+  "high-alert": {
+    "sha": "e4a9c0b8e277d3a7",
+    "version": "1.0.0"
+  },
+  "image-to-code": {
+    "sha": "caae458908f5e14a",
+    "version": "1.0.0"
+  },
+  "imagegen-frontend": {
+    "sha": "9fff16277a337236",
+    "version": "1.0.0"
+  },
+  "impeccable": {
+    "sha": "bec53fdc312be194",
+    "version": "3.0.7"
+  },
+  "japanese-candlesticks": {
+    "sha": "9a959f3a1c656f95",
+    "version": "1.0.0"
+  },
+  "law-harvest": {
+    "sha": "50b63cb7ec55c817",
+    "version": "1.0.0"
+  },
+  "legal-drafting": {
+    "sha": "29a88a029a965e5c",
+    "version": "1.0.0"
+  },
+  "legal-rule-modeling": {
+    "sha": "d463f6b893b52303",
+    "version": "1.0.0"
+  },
+  "market-recon": {
+    "sha": "cdc5853a23b68e67",
+    "version": "1.0.0"
+  },
+  "members-formation": {
+    "sha": "d4958fdafe1574b2",
+    "version": "1.1.1"
+  },
+  "motion-design": {
+    "sha": "c696518869b0fbe2",
+    "version": "1.0.0"
+  },
+  "obsidian-markdown": {
+    "sha": "9afaa8d4a964c65d",
+    "version": "1.0.0"
+  },
+  "okf": {
+    "sha": "4d21a80dc645f1f7",
+    "version": "1.2.0"
+  },
+  "performance": {
+    "sha": "23e1efb777ab9082",
+    "version": "1.0.3"
+  },
+  "portability-audit": {
+    "sha": "75a46502081d36de",
+    "version": "1.0.0"
+  },
+  "portfolio-risk": {
+    "sha": "c17d1e42f5edfcb3",
+    "version": "0.1.0"
+  },
+  "project-start": {
+    "sha": "a562726046b9d112",
+    "version": "1.0.0"
+  },
+  "python-master": {
+    "sha": "3786474d69472c60",
+    "version": "1.0.0"
+  },
+  "relationship-intel": {
+    "sha": "dfab2f2eab38449f",
+    "version": "1.0.0"
+  },
+  "release-train": {
+    "sha": "47fa23dfa590d174",
+    "version": "1.0.1"
+  },
+  "scheduled-watch": {
+    "sha": "5db735784c6215c2",
+    "version": "1.0.0"
+  },
+  "schema-evolution": {
+    "sha": "e3f7245be14885c5",
+    "version": "1.1.0"
+  },
+  "session-mining": {
+    "sha": "f2cf29089127ebb8",
+    "version": "1.2.0"
+  },
+  "skillsmith": {
+    "sha": "4b85c8d604f11d9e",
+    "version": "1.5.1"
+  },
+  "star-alliance-language": {
+    "sha": "8cb172bae9832466",
+    "version": "1.2.0"
+  },
+  "storm-investigation": {
+    "sha": "ae5516a64d8e59de",
+    "version": "1.0.0"
+  },
+  "strategies-review": {
+    "sha": "639ff62c0a02d642",
+    "version": "1.0.0"
+  },
+  "supabase": {
+    "sha": "2f9af5d1ce63b555",
+    "version": "0.1.2"
+  },
+  "supabase-postgres-best-practices": {
+    "sha": "717031d85d4783f1",
+    "version": "1.1.1"
+  },
+  "trading-strategy": {
+    "sha": "8f0eaf5c96e0dfd1",
+    "version": "0.1.0"
+  },
+  "transactions-domain-model": {
+    "sha": "da2f29ea60d21b3c",
+    "version": "1.3.1"
+  },
+  "ultra-brainstorming": {
+    "sha": "d8780cca16564265",
+    "version": "1.2.0"
+  },
+  "vault-log-compliance": {
+    "sha": "632e55e4209b5ae8",
+    "version": "1.1.0"
+  },
+  "volume-price-analysis": {
+    "sha": "c9d3c2c489a955a5",
+    "version": "1.0.0"
+  },
+  "weapon-utility": {
+    "sha": "0f8a8bf19181550a",
+    "version": "2.1.0"
+  },
+  "workflow-forge": {
+    "sha": "a3f706ae16241ff3",
+    "version": "1.3.0"
+  }
+}
