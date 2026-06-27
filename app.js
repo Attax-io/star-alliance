@@ -749,13 +749,16 @@ function renderMemberDossier(id) {
   const sharedN = active.filter(isShared).length;
 
   const eff = effectiveWeapons(m);
+  const primeThinkerModel = eff.find((w) => { const r = modelMeta(w.model).role; return r === "thinker" || r === "both"; })?.model;
   const weapons = eff.map((w, i) => {
     const mm = modelMeta(w.model);
     const role = mm.role ? ROLE_META[mm.role] : null;
-    return `<div class="weapon-card${w.added ? " added" : ""}" draggable="true" data-model="${esc(w.model)}" data-member="${esc(m.id)}" style="--wc:${esc(mm.color)}">
+    const isPrime = w.model === primeThinkerModel;
+    return `<div class="weapon-card${w.added ? " added" : ""}${isPrime ? " prime-thinker" : ""}" draggable="true" data-model="${esc(w.model)}" data-member="${esc(m.id)}" style="--wc:${esc(mm.color)}">
       <div class="weapon-thumb-wrap">
         <img class="weapon-thumb" src="weapon-art/${esc(w.model)}.png" alt="${esc(mm.label)}" loading="lazy">
         ${role ? `<img class="weapon-role-pip" src="${esc(role.icon)}" alt="${esc(role.label)}" title="${esc(role.label)}: ${esc(role.rule)}" style="--rc:${esc(role.color)}">` : ""}
+        ${isPrime ? `<span class="weapon-prime-flag" title="Prime thinker — plans the work and reviews the result">PRIME</span>` : ""}
         <div class="weapon-thumb-tip">
           <div class="wtt-header">
             <div class="wtt-name">${esc(mm.label)}</div>
