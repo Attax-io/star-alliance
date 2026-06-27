@@ -302,6 +302,28 @@ kbd {
 
 /* constellation reborn + power core + hover tooltip */
 .starmap-wrap { position: relative; padding: var(--s5); }
+/* "Read more" → opens the active workflow's full page, pinned bottom-right of the map */
+.starmap-readmore {
+  position: absolute; right: var(--s4); bottom: var(--s4); z-index: 4;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 13px; border-radius: var(--r1);
+  font-size: var(--t-sm); font-weight: 600; text-decoration: none; white-space: nowrap;
+  color: var(--starlight);
+  background: color-mix(in srgb, var(--accent) 16%, rgba(10,12,20,.82));
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, var(--line-2));
+  box-shadow: 0 2px 12px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.06);
+  backdrop-filter: blur(4px);
+  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease),
+              transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.starmap-readmore:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 28%, rgba(10,12,20,.9));
+  transform: translateY(-1px);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent),
+              0 4px 18px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+.srm-icon { font-size: 14px; line-height: 1; }
 .starmap { width: 100%; max-width: 820px; margin: 0 auto; display: block; aspect-ratio: 1/1; overflow: visible; }
 .starmap .orbit { fill: none; stroke: rgba(232,236,245,.07); stroke-width: 1; }
 .starmap .orbit.dashed { stroke-dasharray: 2 9; stroke: rgba(232,236,245,.10); }
@@ -350,10 +372,7 @@ kbd {
 .starmap .hooknode .hooknode-label { fill: var(--muted); font-size:10.5px; font-weight:600; letter-spacing:.02em; paint-order:stroke; stroke:var(--ink); stroke-width:3px; pointer-events:none; }
 .starmap .hooknode:hover .hooknode-core, .starmap .hooknode:focus-visible .hooknode-core { filter: drop-shadow(0 0 9px var(--violet)); }
 .starmap .hooknode:hover .hooknode-label, .starmap .hooknode:focus-visible .hooknode-label { fill: var(--starlight); }
-.starmap-tip { position:absolute; z-index:5; max-width:280px; pointer-events:none; background: var(--panel-2); border:1px solid var(--line-2); border-left:3px solid var(--accent); border-radius: var(--r2); padding:10px 12px; box-shadow: var(--shadow-panel); }
-.starmap-tip .tip-name { font-weight:600; color: var(--starlight); font-size: var(--t-sm); margin-bottom:4px; }
-.starmap-tip .tip-body b { color: var(--starlight); font-weight:600; }
-.starmap-tip .tip-body { color: var(--muted); font-size: var(--t-xs); line-height:1.5; }
+/* star/gate/hook hover now reuses the Fallen Sword #fs-tip (see showStarTip). */
 @keyframes pulse { 0%,100% { transform: scale(1); opacity:.14; } 50% { transform: scale(1.18); opacity:.26; } }
 @media (prefers-reduced-motion: reduce) {
   .power-core, .comet-tail { display:none; }
@@ -1061,7 +1080,7 @@ a.tag.off { text-decoration: none; }
 .flow-hint strong { color: var(--starlight); font-weight: 600; }
 /* the floating tooltip blurb now carries multi-paragraph workflow briefs */
 .fst-blurb { white-space: pre-line; }
-/* make a flow tile feel double-clickable */
+/* single-click a tile → trace that workflow on the map above */
 .flow-tile { cursor: pointer; }
 
 /* Workflow detail page reuses the skill-panel hero; art + md body sizing */

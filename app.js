@@ -542,13 +542,15 @@ function renderStarMap(query) {
   const accent = ACCENT[wf.accent] || "var(--cyan)";
   return `${viewHead("Operations", "Star Map",
       `A workflow is just a set of repeated steps the Star Alliance follow to get a job done. Hover a star to read ${esc(wf.name)}'s role — the power core traces the active workflow.`)}
-    ${flowChips(wf.id)}
-    ${unknown ? `<div class="flow-note">Unknown flow — showing the default.</div>` : ""}
-    <p class="flow-hint">Hover a workflow tile for its brief · <strong>double-click</strong> to open its full page · single-click traces it on the map below.</p>
     <div class="starmap-wrap glass" style="--accent:${accent}">
       ${buildConstellation(wf)}
-      <div class="starmap-tip" id="starmap-tip" hidden></div>
-    </div>`;
+      <a class="starmap-readmore" href="#/workflows/${esc(wf.id)}" aria-label="Open the full ${esc(wf.name)} workflow page">
+        <span class="srm-icon" aria-hidden="true">📖</span> Read more
+      </a>
+    </div>
+    <p class="flow-hint">Hover a star for its role · pick a workflow below to trace it on the map · <strong>Read more</strong> opens the active workflow's full page.</p>
+    ${unknown ? `<div class="flow-note">Unknown flow — showing the default.</div>` : ""}
+    ${flowChips(wf.id)}`;
 }
 
 // Accent name → CSS color. There is no --blue token, so map it to a literal.
@@ -568,7 +570,7 @@ function flowChips(activeId) {
       .filter(Boolean).join("\n\n");
     return `<a class="flow-tile" href="#/map?flow=${esc(w.id)}" style="--accent:${accent}"${w.id === activeId ? ' aria-current="page"' : ''}
       data-flow="${esc(w.id)}" data-tip-name="${esc(w.name)}" data-tip-level="${esc(w.category || "")}" data-tip-blurb="${esc(blurb)}"
-      aria-label="${esc(w.name)} — double-click to open its page">
+      aria-label="${esc(w.name)} — click to trace it on the map above">
       <span class="ft-pic">${pic}</span>
       <span class="ft-name">${esc(w.name)}</span>
     </a>`;
@@ -1718,31 +1720,24 @@ function filterAssign() {
 
 /* ── 8. Star-map hover/focus highlight ────────────────────────────────────── */
 function showStarTip(node, evt) {
-  const tip = document.getElementById("starmap-tip");
   const svg = app.querySelector(".starmap");
-  const wrap = app.querySelector(".starmap-wrap");
-  if (!tip || !svg || !wrap) return;
+  if (!svg) return;
   svg.classList.add("dim");
   app.querySelectorAll(".starmap .node").forEach((n) => n.classList.toggle("active", n === node));
-  tip.innerHTML = `<div class="tip-name">${node.dataset.name || ""}</div><div class="tip-body">${node.dataset.tip || ""}</div>`;
-  tip.hidden = false;
-  const wr = wrap.getBoundingClientRect();
-  let x = evt.clientX - wr.left + 14;
-  let y = evt.clientY - wr.top + 14;
-  const tw = tip.offsetWidth, th = tip.offsetHeight;
-  if (x + tw > wr.width) x = wr.width - tw - 8;
-  if (y + th > wr.height) y = wr.height - th - 8;
-  if (x < 8) x = 8;
-  if (y < 8) y = 8;
-  tip.style.left = x + "px";
-  tip.style.top = y + "px";
+  // Render into the SAME Fallen Sword tooltip (#fs-tip) the skills grid uses, so
+  // the map and the skills share one tooltip language. dataset.name / dataset.tip
+  // are build-time-authored, trusted HTML (hooks carry <b>/<br>) — injected raw.
+  fsTip.innerHTML =
+    `<div class="fst-header"><div class="fst-name">${node.dataset.name || ""}</div></div>` +
+    `<div class="fst-body"><div class="fst-blurb">${node.dataset.tip || ""}</div></div>`;
+  positionTip(evt.clientX, evt.clientY);
+  fsTip.classList.add("visible");
 }
 function hideStarTip() {
-  const tip = document.getElementById("starmap-tip");
   const svg = app.querySelector(".starmap");
   if (svg) svg.classList.remove("dim");
   app.querySelectorAll(".starmap .node.active").forEach((n) => n.classList.remove("active"));
-  if (tip) tip.hidden = true;
+  hideTip();
 }
 
 // Drive the power core(s) along the active-workflow path. SMIL animateMotion
@@ -2087,12 +2082,6 @@ document.addEventListener("mousemove", (e) => {
   } else if (tipTarget) {
     hideTip();
   }
-});
-
-// Double-click a Star Map workflow tile → open its detail page.
-app.addEventListener("dblclick", (e) => {
-  const tile = e.target.closest(".flow-tile[data-flow]");
-  if (tile) { e.preventDefault(); hideTip(); location.hash = `#/workflows/${tile.dataset.flow}`; }
 });
 
 document.addEventListener("mouseleave", hideTip);
