@@ -86,11 +86,17 @@ A wise guild member knows which blade to draw for each fight.
   shortfall/drawdown/correlation with every assumption named, stress tests, and a proposed
   (never executed) rebalance. Four modes: construction, risk-audit, rebalance-proposal,
   stress-test.
+- `japanese-candlesticks` — the Merchant's read-only craft for reading candlestick charts,
+  distilled from Steve Nison's *Japanese Candlestick Charting Techniques*. Identifies and
+  interprets every candlestick line and pattern (single/multi-line reversals, continuations,
+  the doji family), reads their bull-vs-bear psychology and reliability, and fuses them with
+  Western tools for confluence. Eleven exhaustive reference files. Names the pattern; never
+  places the trade.
 - `storm-investigation` — the Merchant's research engine. Multi-perspective STORM analysis
   (five personas → contradiction map → ranked briefing → peer-review grade) for any market,
   investment, or risk question. This is how the Merchant turns hunches into evidence.
 
-All three trading crafts are **read-only**: the Merchant analyzes, designs, and proposes —
+All four trading crafts are **read-only**: the Merchant analyzes, designs, and proposes —
 the user (or another member) decides and acts. No skill here places a trade or moves money.
 
 ## What you don't do
