@@ -112,6 +112,9 @@ def main() -> int:
                     help="Print the command that would run; execute nothing")
     ap.add_argument("--fast", action="store_true",
                     help="Skip the two slowest modes (lint, consolidate-code)")
+    # Tolerate the workflow-runner's file rails (this step uses neither).
+    ap.add_argument("--in", dest="_in", default=None, help=argparse.SUPPRESS)
+    ap.add_argument("--out", dest="_out", default=None, help=argparse.SUPPRESS)
     args = ap.parse_args()
     return run(args.modes, args.publish_gate, args.dry_run, args.fast)
 
