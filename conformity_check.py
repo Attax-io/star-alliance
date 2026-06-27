@@ -147,6 +147,27 @@ def main():
         fails.append(f"K  skill dirs vs guild-data differ: only-dir={sorted(skill_dirs - data_ids)} "
                      f"only-data={sorted(data_ids - skill_dirs)}")
 
+    # ART — every skill ships with a Fallen Sword tile (never a bare-emoji fallback)
+    artless = sorted(s for s in skill_dirs
+                     if not (ROOT / "skill-art" / f"{s}.png").exists())
+    if artless:
+        fails.append(f"ART skills missing a skill-art/<id>.png tile: {artless} "
+                     f"(forge via gen-skill-art.cjs + build.py)")
+
+    # VER — every skill has a VERSIONS.md registry row whose version matches its SKILL.md
+    versions_txt = (ROOT / "VERSIONS.md").read_text()
+    ver_rows = dict(re.findall(
+        r'\|\s*\[`([^`]+)`\][^|]*\|\s*([0-9]+\.[0-9]+\.[0-9]+)\s*\|', versions_txt))
+    for s in sorted(skill_dirs):
+        smd = (ROOT / "star-alliance-skills" / s / "SKILL.md").read_text()
+        vm = re.search(r'^\s*version:\s*([0-9]+\.[0-9]+\.[0-9]+)', smd, re.M)
+        skill_ver = vm.group(1) if vm else None
+        if s not in ver_rows:
+            fails.append(f"VER {s}: no row in VERSIONS.md "
+                         f"(regen: star-alliance-skills/skillsmith/scripts/skill_registry.py write)")
+        elif skill_ver and ver_rows[s] != skill_ver:
+            fails.append(f"VER {s}: VERSIONS.md says {ver_rows[s]} but SKILL.md is {skill_ver}")
+
     # G — gen-workflow-art.cjs has a prompt entry for every workflow (art can be forged)
     gen = (ROOT / "gen-workflow-art.cjs")
     if gen.exists():
