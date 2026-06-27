@@ -46,7 +46,7 @@ const MODELS = {
     ollama_desc: "Claude Opus 4.8 · Anthropic's most powerful model. Best for complex reasoning, deep analysis, agentic orchestration, and long-horizon planning. Top-tier on MMLU, HumanEval, MATH. Use for hard problems that need the best answer, not the fastest.",
     call: "Native — no script. You ARE Opus, the orchestrator. Delegate sub-work via the Task tool: subagent_type + model:'opus'.\n(python3 star-alliance-arsenal/summon.py opus just echoes this reminder.)",
     meter: { kind: "sub", note: "Claude subscription · unmetered" } },
-  "sonnet":           { label: "Sonnet",          color: "#3df0ff", tier: "Thinker", host: "Anthropic · native",  role: "both", desc: "Claude Sonnet 4.6 — the reliable longsword. Fast, balanced daily dispatch.",
+  "sonnet":           { label: "Sonnet",          color: "#3df0ff", tier: "Doer",    host: "Anthropic · native",  role: "doer", desc: "Claude Sonnet 4.6 — the reliable longsword. Fast, balanced daily dispatch.",
     ollama_desc: "Claude Sonnet 4.6 · Balanced speed and intelligence. Near-Opus quality at a fraction of the latency. Excels at coding, writing, analysis, and tool use. The go-to for reliable daily dispatch — fast enough for interactive use, smart enough for hard tasks.",
     call: "Native — no script. Task tool subagent, model:'sonnet'. Or switch the main loop with /model sonnet.",
     meter: { kind: "sub", note: "Claude subscription · unmetered" } },
