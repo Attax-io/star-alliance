@@ -162,7 +162,7 @@ metadata:
 **On any skill change, in the same commit:**
 
 1. Bump the skill's `metadata.version`.
-2. Regenerate [`VERSIONS.md`](VERSIONS.md) (`python3 skillsmith/scripts/skill_registry.py write`).
+2. Regenerate [`VERSIONS.md`](VERSIONS.md) (`python61 skillsmith/scripts/skill_registry.py write`).
 3. If the skill keeps its own changelog (e.g. `cleanup`, `conquering-campaign`), add an entry there too.
 4. Re-sync the on-device copy if the skill runs from `~/.claude/skills/` (a stale device copy
    silently runs old code — the `cleanup` §L24 lesson).

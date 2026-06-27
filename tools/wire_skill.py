@@ -104,11 +104,11 @@ def wire_domains_and_counts():
     for s in added:
         home["skills"].append(s)
     # notes count
-    home["notes"] = re.sub(r"\d+ skills", f"{total} skills", home["notes"])
+    home["notes"] = re.sub(r"\b\d+ skills\b", f"{total} skills", home["notes"])
     dump_json(DOMAINS, dom)
     # README — every "(N skills" / "N skills)" mention
     txt = README.read_text()
-    txt = re.sub(r"\d+ skills", f"{total} skills", txt)
+    txt = re.sub(r"\b\d+ skills\b", f"{total} skills", txt)
     README.write_text(txt)
     return added, total
 
