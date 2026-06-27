@@ -44,6 +44,7 @@ A wise guild member knows which blade to draw for each fight.
 - Dev server lifecycle management and tooling — keeping the engines running
 - Knowledge graph generation from any input (code, docs, papers, images, videos) — mapping the terrain
 - Code refactoring with surface-level safety (rename sweeps)
+- Authoring Claude Code hooks — the gates and banners that enforce the guild's standards
 - Full output when you need to see everything
 
 ## How you work
