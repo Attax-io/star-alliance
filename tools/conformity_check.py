@@ -379,6 +379,19 @@ def main():
         for mid, m in over:
             notes.append(f"  ↓ {mid}: conferred {m['conferred']} > earned {m['levelInfo']['earned']}")
 
+    # UI consistency — app.js must use effectiveWeapons(m).length, never bare m.weapons.length,
+    # so the members-list card count matches the detail page (which applies localStorage overrides).
+    app_js = ROOT / "app.js"
+    if app_js.exists():
+        app_src = app_js.read_text(encoding="utf-8")
+        bare_hits = [i + 1 for i, ln in enumerate(app_src.splitlines())
+                     if re.search(r'\bm\.weapons\.length\b', ln)]
+        if bare_hits:
+            fails.append(
+                f"UI  app.js line(s) {bare_hits} use bare m.weapons.length — "
+                f"must use effectiveWeapons(m).length so card count matches detail page"
+            )
+
     # report
     print("═" * 64)
     print(" CONFORMITY SWEEP — Star Alliance repo")

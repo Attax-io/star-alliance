@@ -2,7 +2,7 @@
 name: workflow-forge
 description: "The Strategist's craft for distilling a finished run into a reusable star-map workflow in workflows.json. Recognise when a run is worth saving (a repeatable sequence not already on the map), draft the workflow object — id, name, icon, accent, category, tagline, a 'when' description, and steps[] (each step kind member or gate with actor, title, act, produces) — honouring the two hard guild standards (every workflow ends with the Butler 'report' gate; the last member step before it is the-quartermaster's conformance close), name the members and the weapon per step, then hand to the Quartermaster to register it and rebuild. Use when a run should become a repeatable workflow. Triggers: 'save this as a workflow', 'turn this run into a workflow', 'add this to the star map', 'crystallize this formation', 'register a workflow', 'workflow forge'. Differentiate from members-formation (the Butler's live routing — produces formations, not saved workflows) and skillsmith (skills, not workflows)."
 metadata:
-  version: 1.2.0
+  version: 1.3.0
 type: Skill
 
 ---
@@ -78,7 +78,31 @@ Keep a private ledger: workflow id, date forged, first re-use date, count of re-
 ## Versioning
 Own skill. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new mode/section · MAJOR: method contract change). Regenerate `VERSIONS.md` with `python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.
 
+## Cast validation after forge (1.3.0)
+
+After writing a new workflow to `workflows.json`, the `workflow-banner-enforcer.py` Stop hook reads the cast from `steps[].actor` and enforces that at least one member reports for duty each turn. A workflow with an actor name that does not match a `guild-data.json` member ID will silently never satisfy the enforcer — the turn will loop forever with the member gate firing.
+
+**Add to every forge close:**
+
+```sh
+# Verify all actors in the new workflow exist as guild members:
+python3 -c "
+import json
+wfs = json.load(open('workflows.json'))['workflows']
+members = {m['id'] for m in json.load(open('guild-data.json'))['members']}
+for wf in wfs:
+    for s in wf.get('steps', []):
+        a = s.get('actor')
+        if a and a not in ('you',) and a not in members:
+            print(f'UNKNOWN ACTOR in {wf[\"name\"]}: {a}')
+print('cast check done')
+"
+```
+
+Gotcha: `the-butler`, `the-developer`, etc. — the `the-` prefix is the canonical member ID. Do not drop it or abbreviate it in the `actor` field. The enforcer normalizes via `_core()` (strips `the-`, lowercases), but `guild-data.json` lookup is exact-match.
+
 ## Changelog
+- **1.3.0** — New §Cast validation after forge: documents the cast-actor lookup gap (unknown actor → enforcer loops forever), adds a one-shot validation command to run after every `workflows.json` write, and calls out the `the-` prefix invariant. Prevents harness lock-up from a typo in `actor`.
 - **1.2.0** — Introduced the workflow **`class`** (`mutating` | `read-only`). The Quartermaster conformance-close is now required **only** for mutating workflows; read-only/advisory workflows end at the Butler report with the worker as the last step, and a ceremonial Quartermaster no-op close is now **rejected**. Stops force-fitting a conformance sweep onto conversation/research runs that change nothing.
 - **1.1.0** — Documented the **structured weapon fields** on member steps (`thinker`, `doers` with parallel `count`, `ultra`), now enforced by `build.py` + `conformity_check.py` and rendered on the dashboard. Step authoring names weapons as fields, not only prose.
 - **1.0.0** — Initial release. The Strategist's craft for distilling a finished run into a registered star-map workflow.
