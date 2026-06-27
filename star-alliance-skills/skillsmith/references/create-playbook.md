@@ -139,7 +139,7 @@ writing of content, the thinker only slices, reviews, and files. Proven on `japa
    them explicitly:
 
    ```sh
-   python3 star-alliance-arsenal/summon.py minimax-m3 -f "$SRC" -s "$SYS" --max-tokens 16000 --timeout 600 > "$DEST"
+   python3 "$STAR_ALLIANCE_ROOT/star-alliance-arsenal/summon.py" minimax-m3 -f "$SRC" -s "$SYS" --max-tokens 16000 --timeout 600 > "$DEST"
    ```
 
    (`summon.py` passes `--max-tokens`/`--timeout` through to the backend; drop to `minimax.py` direct only if

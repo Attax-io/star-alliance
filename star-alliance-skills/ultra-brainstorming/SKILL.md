@@ -84,7 +84,7 @@ orchestrator can "synthesize" in its own single head and the panel never runs. M
 mechanical runner, which fires every reachable thinker and returns their candidates as JSON:
 
 ```
-python3 star-alliance-arsenal/ultra_brainstorm.py "<brief>" --max-tokens 16000
+python3 "$STAR_ALLIANCE_ROOT/star-alliance-arsenal/ultra_brainstorm.py" "<brief>" --max-tokens 16000
 # or: -f brief.txt ; --models glm-5.2,kimi-k2.7,deepseek-v4-pro,gemma4
 ```
 

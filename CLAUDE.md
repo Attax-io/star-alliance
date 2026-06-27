@@ -7,12 +7,13 @@ timestamp: 2026-06-27T10:27:03Z
 
 ## Default sub-agent model: MiniMax M3
 
-For all delegated sub-work, default to MiniMax M3 via `python3 minimax.py`.
+For all delegated sub-work, default to MiniMax M3 via `python3 "$STAR_ALLIANCE_ROOT/star-alliance-arsenal/minimax.py"`.
 
 ```
-python3 minimax.py "<prompt>"
+python3 "$STAR_ALLIANCE_ROOT/star-alliance-arsenal/minimax.py" "<prompt>"
 # flags: -s <system>  --json  -f <file>  (reads stdin if no arg)
 # key: ~/.config/minimax/m3.key
+# STAR_ALLIANCE_ROOT set in .claude/settings.json env block
 ```
 
 Use Claude models (Opus/Sonnet/Haiku via Task tool) only when:

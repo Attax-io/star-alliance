@@ -53,10 +53,17 @@ Cowork limits (the always-on invariant for every mode): `references/cowork-limit
 - "upgrade the X skill", "bump X's version", "is X cowork-installable", "trim X's description" → `upgrade`
 - "create a skill", "make a new skill", "turn this into a skill", "new skill for X" → `create`
 - "run the skill routine", "evolve my skills", "improve my skills", "do the daily skill pass", "what should the routine change" → `routine`
+- "deploy member to project", "install the-developer into project X", "set up star alliance in project X" → `deploy-member`
 
 Skip when: the user wants to *run* an existing skill (just invoke it), or is editing app code unrelated to the skills repo.
 
 ## Helper scripts (do the mechanical work; never edit frontmatter except where noted)
+
+```sh
+# Deploy a member + skills into another project
+bash "$STAR_ALLIANCE_ROOT/star-alliance-arsenal/install.sh" <member> <project-path> --tier 2
+# tiers: 1=skills-only  2=+member+env  3=+hooks+workflows-lite
+```
 
 ```sh
 # Registry + Cowork-compliance (operates on the repo)
