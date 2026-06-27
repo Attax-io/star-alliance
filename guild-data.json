@@ -7,7 +7,7 @@
       "minor": 55,
       "patch": 66
     },
-    "generated": "2026-06-27T19:26:02Z",
+    "generated": "2026-06-27T19:39:14Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -28,7 +28,7 @@
     },
     "counts": {
       "members": 9,
-      "skills": 58,
+      "skills": 59,
       "domains": 3,
       "workflows": 30,
       "hooks": 7,
@@ -4008,6 +4008,40 @@
       "members": [
         "the-quartermaster"
       ]
+    },
+    {
+      "id": "spec-driven-development",
+      "name": "spec-driven-development",
+      "version": "1.0.0",
+      "icon": "📦",
+      "art": "",
+      "artPng": false,
+      "blurb": "The Architect's discipline for building from an executable specification instead of vibe-c…",
+      "level": "Foundational",
+      "ramp": "gray",
+      "tabler": "",
+      "src": "own",
+      "desc": "The Architect's discipline for building from an executable specification instead of vibe-coding — the spec→plan→tasks→implement pipeline distilled from GitHub Spec Kit. The method: write WHAT/WHY first (a testable spec, no tech stack), gate it against a quality checklist, derive a HOW plan checked against the project constitution (CLAUDE.md), break the plan into independently-testable user-story tasks ordered by priority (P1=MVP), then implement story-by-story with a checkpoint after each. Every phase is a gate: a spec with unresolved [NEEDS CLARIFICATION] does not advance; a plan that violates the constitution must justify the violation or simplify. Use to plan a feature before writing code, to stop vibe-coding, to turn a vague ask into a buildable spec, or to structure a multi-surface build. Triggers: 'spec this out', 'spec-driven', 'write a spec first', 'plan before we build', 'turn this into a spec', 'specify the feature', 'break this into tasks', 'what's the MVP slice'. Differentiate from conquering-campaign (multi-wave execution engine — this is the planning discipline it can run on), ultra-brainstorming (model-ensemble idea fan-out — this is a phased pipeline), and schema-evolution (one additive data-model change).",
+      "intro": "Code was king for decades; the spec was scaffolding thrown away once the \"real work\" began. Spec-Driven Development flips it: **the specification is the source of truth, and the implementation flows from it.** You do not start typing code. You write down WHAT the user needs and WHY, prove it is test",
+      "sections": [
+        "The pipeline",
+        "The quality gates (why this beats vibe-coding)",
+        "Success criteria: measurable + technology-agnostic",
+        "How you work (guild form)",
+        "What it is / is not",
+        "Pairs with"
+      ],
+      "triggers": "",
+      "modes": "",
+      "disabled": false,
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 120,
+        "words": 1005
+      },
+      "global": false,
+      "members": []
     },
     {
       "id": "star-alliance-language",
