@@ -795,7 +795,7 @@ def assemble(repo: Path) -> tuple[dict, list[str], list[str]]:
     compute_member_levels(members, skills, errors, warnings)
 
     guild = {
-        "meta": build_meta(members, skills, domains, workflows, log, members_meta_file),
+        "meta": build_meta(members, skills, domains, workflows, log, members_meta_file, hooks),
         "members": members,
         "skills": skills,
         "domains": domains,
