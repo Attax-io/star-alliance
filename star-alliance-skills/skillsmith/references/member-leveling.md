@@ -87,6 +87,30 @@ If a member's arsenal regresses below their conferred tier, `earned < conferred`
 The Quartermaster either restores the arsenal or records a downward `member-upgrade` (a demotion).
 Level always reflects current craft. Demotions are rare and always logged.
 
+## Wave 6 — the deployment-frequency (usage / reach) axis [SPEC — next gated build]
+
+The conferred level meters **capability** and is deliberately blind to **usage**. Wave 6 adds the
+second, orthogonal axis: *how widely is this member actually deployed?* It is a **separate meter**, not
+a level modifier — a Master-tier member deployed nowhere and a Foundational member running in five
+projects are both honest, just on different axes. Never let reach inflate or deflate the craft level.
+
+**Data source (now unblocked).** `install.sh` appends every deploy to
+`star-alliance-skills/skillsmith/references/deploy-ledger.md` (`date · member · tier · target`). That
+append-only ledger is the reach signal — no new instrumentation needed; the `deploy-member` mode (see
+`deploy-playbook.md`) feeds it on every install.
+
+**Proposed meter (to build in `build.py`, gated — not yet wired):**
+- **Reach** = count of *distinct* `target` projects a member is deployed into (from the deploy ledger).
+- **Recency** = days since that member's most recent deploy.
+- **Tier weight** = sum of deploy tiers (a Tier-3 deploy is "deeper" reach than a Tier-1 skills-only).
+- Surface as a non-blocking `members-meta.json` field (`reach`) + a Reach column in
+  `member_level.py report`, exactly like `conferred`/`earned` — read-only, never a build-breaker.
+
+**Why gated, not built now:** the meter needs real deploy-ledger rows to calibrate the thresholds (an
+empty ledger makes every member reach-0). Build it once the ledger has accrued a few real deploys, so
+the bands reflect actual usage rather than a guess. Until then this section is the contract; the level
+axis above ships and stands alone.
+
 ## When to run it
 
 - As a sub-step of the daily `routine` (Stage D): run `member_level.py report`, promote anyone the

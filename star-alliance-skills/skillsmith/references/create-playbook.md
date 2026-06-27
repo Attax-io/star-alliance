@@ -76,10 +76,15 @@ the bare emoji — this is exactly the `storm-investigation` v1.0.0 miss), or no
    > skill from the loadout, delete its drill row in the same edit. The `SD` audit in
    > `conformity_check.py` enforces exactly this; conformity-close (Invariant #8) is the backstop, not
    > the primary guard — get it right at edit time, every time.
-4. **Themed art (Fallen Sword)** — every skill has a `skill-art/<id>.png`. Add a `{ id, prompt }` entry
-   to **`gen-skill-art.cjs`** using the shared `STYLE` prefix (dark parchment, gold runic border,
-   fantasy RPG icon) + a subject that depicts the skill; end the prompt with `no text, no watermarks`.
-   Then render it — MiniMax's image API is the doer:
+4. **Themed art (Fallen Sword) — the Designer's MANDATORY handoff.** Every skill has a
+   `skill-art/<id>.png`; a new skill with none falls back to a bare emoji (the `storm-investigation`
+   v1.0.0 miss). In the **Skill Forge** star-map workflow this is an explicit step owned by
+   **the-designer** ("Forge the Sigil", `kind: member`, MANDATORY) — so when `create` runs under that
+   workflow, the Quartermaster *hands the art to the Designer*, who adds the `{ id, prompt }` entry to
+   **`gen-skill-art.cjs`** using the shared `STYLE` prefix (dark parchment, gold runic border, fantasy
+   RPG icon) + a subject that depicts the skill, ending with `no text, no watermarks`, and renders it.
+   Running `create` outside the workflow? The Quartermaster does this step himself — it is never
+   optional, never deferred to "later". Then render — MiniMax's image API is the doer:
 
    ```sh
    node "$SA/gen-skill-art.cjs"          # renders ONLY the missing PNG; existing art is skipped

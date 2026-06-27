@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 62
     },
-    "generated": "2026-06-27T17:50:54Z",
+    "generated": "2026-06-27T17:55:33Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -3915,7 +3915,7 @@ const GUILD = {
     {
       "id": "skillsmith",
       "name": "skillsmith",
-      "version": "1.4.0",
+      "version": "1.5.0",
       "icon": "🛠️",
       "art": "",
       "artPng": true,
@@ -3959,8 +3959,8 @@ const GUILD = {
         "skill_sync.py"
       ],
       "stats": {
-        "lines": 157,
-        "words": 4743
+        "lines": 163,
+        "words": 5203
       },
       "global": true,
       "members": [

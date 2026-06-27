@@ -94,6 +94,30 @@ pipeline(activeSkills,
 
 Budget the fan-out; don't STORM all 28 skills every day (see §R5).
 
+**Re-aim the lens — convergence on one question ≠ no work left (the Run-12 lesson, codified).** Runs
+1–11 graded only the *friction snippets* (is this mention noise?) and converged to a no-op for ten
+straight runs — yet Run 12 found a real, never-adjudicated defect the instant it changed the
+**question** instead of the corpus. So every run that the friction lens reports converged MUST rotate
+to a second lens before declaring no-op:
+
+1. **Body-vs-reality STORM** on the highest-mention skill that has **never been body-STORMed** — diff
+   the skill's prose against what the project *memories* and *session transcripts* say actually
+   happens (this is how `dev-server`, `bug-fix-workflow`, and `codex-law-translate` upgrades were all
+   found: zero friction snippets, large body-vs-reality gaps).
+2. **Repo↔device drift** — a skill hand-upgraded on one side but not the other (the R13 class).
+3. **Cross-skill contradiction** — a skill mandating what another skill / a project memory bans.
+
+A converged friction lens is a signal to *re-aim*, not to stop. Record which lens produced the no-op so
+the next run rotates to a fresh one rather than re-grading the same snippets.
+
+**Standing attended-only class — do NOT keep autonomously re-deferring it.** The `cleanup` docs-mode
+INDEX.md gap (~540 orphan vault-logs + ~1299 broken wikilinks in the **Lex Council** repo) has been
+re-deferred 5+ times. It is **out of autonomous routine scope** and must stop consuming STORM budget
+each run: it lives in a *foreign* repo (not `star-alliance`), targets a *fork* skill (`cleanup`,
+edit-with-care per §R4.2), and is gated on a human reading the INDEX.md curated-vs-generated contract
+first. Treat it as a one-line ledger carry ("attended-only, see prior defers") — do not re-STORM it
+unless a new, in-scope signal appears.
+
 ### Stage C — Notebook (the durable memory)
 
 Append a dated entry to **`references/routine-ledger/YYYY-MM-DD.md`** (format in
@@ -119,7 +143,7 @@ or a future run.
 
 ### Stage E — Report
 
-- **Conformity-close first (Invariant #8) — the Quartermaster's final gate.** Before committing, rebuild the guild data and run the Conformity Sweep: `python3 build.py && python3 conformity_check.py`. It must report **FULL CONFORMITY** (exit 0) — guild-data↔json parity, `meta.counts`, workflow gates/actors, member arsenal order, decision-conformity, and the **K-invariant** (skill dirs == `skills-meta.json` == generated skill ids) all hold. If it FAILS, fix the contradiction **before** the commit — a created / removed skill not yet in `skills-meta.json` + `build.py` output, a stale count, a broken ref — never ship a contradiction. Stage the regenerated `guild-data.*` (+ `skills-meta.json`/`domains.json` on a create/remove) in the **same** commit as the skill change.
+- **Conformity-close first (Invariant #8) — the Quartermaster's final gate.** Before committing, rebuild the guild data and run the Compliance Audit: `python3 build.py && python3 conformity_check.py`. It must report **FULL CONFORMITY** (exit 0) — guild-data↔json parity, `meta.counts`, workflow gates/actors, member arsenal order, decision-conformity, and the **K-invariant** (skill dirs == `skills-meta.json` == generated skill ids) all hold. If it FAILS, fix the contradiction **before** the commit — a created / removed skill not yet in `skills-meta.json` + `build.py` output, a stale count, a broken ref — never ship a contradiction. Stage the regenerated `guild-data.*` (+ `skills-meta.json`/`domains.json` on a create/remove) in the **same** commit as the skill change.
 - Commit each applied change separately, message:
   `skillsmith routine YYYY-MM-DD: <verb> <skill> — <one-line> [conf N/10]`.
 - `git push origin main`.

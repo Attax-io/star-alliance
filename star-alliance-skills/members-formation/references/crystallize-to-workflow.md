@@ -65,7 +65,7 @@ A **gate** step:
 
 ## Conformance rules — keep `conformity_check.py` green
 
-These are enforced; a crystallized workflow that breaks one will fail the Conformity Sweep:
+These are enforced; a crystallized workflow that breaks one will fail the Compliance Audit:
 
 1. **Ends with a `report` gate** — the Butler's plain-English report (decision #23, check `D23`).
 2. **Last member step before the report is `the-quartermaster`** — the conformance close

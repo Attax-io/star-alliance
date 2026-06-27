@@ -10,6 +10,10 @@ Subcommands:
   write             regenerate <repo>/VERSIONS.md from live frontmatter
   check [name]      Cowork-compliance check; exit 1 if any HARD violation
                     (description > 1024 chars). `name` limits to one skill.
+  scope             classify each skill Global vs Sector-specific (from guild-data.json
+                    `global` + `members`), and surface SHARE-CANDIDATES — non-global skills
+                    a member set spans across >=2 sectors (could be promoted to global or
+                    shared wider). Read-only; needs a built guild-data.json.
 
 Paths default to the repo this script lives in (…/skillsmith/../..). Override with
   --repo /path/to/star-alliance
@@ -253,9 +257,63 @@ def cmd_write(repo: Path):
     return 1 if hard else 0
 
 
+def cmd_scope(repo: Path):
+    """Classify each skill Global vs Sector-specific and surface share-candidates.
+
+    Reads the built guild-data.json (needs `python3 build.py` first). Scope model
+    (per the skill-scope-and-sharing-model memory): a skill's `global` flag = deploy/sync
+    everywhere; a non-global skill belongs to the project DOMAINS (sectors) that list it.
+    The home pool (`star-alliance`) holds every skill, so it is excluded from the sector count.
+    A non-global skill listed in >=2 project sectors is a SHARE-CANDIDATE — it is already
+    de-facto shared and could be promoted to `global` or wired wider."""
+    import json
+    gd = repo / "guild-data.json"
+    if not gd.exists():
+        print(f"guild-data.json not found at {gd} — run `python3 build.py` first.", file=sys.stderr)
+        return 2
+    d = json.loads(gd.read_text())
+    domains = d.get("domains", [])
+    HOME = "star-alliance"
+    proj = [dom for dom in domains if dom.get("id") != HOME]
+    # skill id -> list of project-sector names that carry it
+    sectors_of: dict[str, list[str]] = {}
+    for dom in proj:
+        for sid in dom.get("skills", []):
+            sid = sid if isinstance(sid, str) else sid.get("id", "")
+            sectors_of.setdefault(sid, []).append(dom.get("name") or dom.get("id"))
+    rows = sorted(d.get("skills", []), key=lambda s: s.get("id", ""))
+    glob = [s for s in rows if s.get("global")]
+    share = []
+    print(f"{'SKILL':32} {'scope':>10}  sectors")
+    print("-" * 70)
+    for s in rows:
+        sid = s.get("id", "")
+        secs = sectors_of.get(sid, [])
+        if s.get("global"):
+            scope = "Global"
+        elif secs:
+            scope = "Sector"
+        else:
+            scope = "Home-only"
+        if not s.get("global") and len(secs) >= 2:
+            share.append(sid)
+        print(f"{sid:32} {scope:>10}  {', '.join(secs) if secs else '—'}")
+    print("-" * 70)
+    print(f"{len(rows)} skills · {len(glob)} Global · "
+          f"{sum(1 for s in rows if not s.get('global') and sectors_of.get(s.get('id',''))) } Sector-specific · "
+          f"{sum(1 for s in rows if not s.get('global') and not sectors_of.get(s.get('id','')))} Home-only")
+    if share:
+        print(f"\nSHARE-CANDIDATES (non-global, span >=2 sectors — promote to global or share wider):")
+        for sid in share:
+            print(f"  • {sid}  ({', '.join(sectors_of[sid])})")
+    else:
+        print("\nSHARE-CANDIDATES: none (no non-global skill spans >=2 project sectors).")
+    return 0
+
+
 def main():
     ap = argparse.ArgumentParser(description="skillsmith registry + Cowork-compliance")
-    ap.add_argument("cmd", choices=["report", "write", "check"])
+    ap.add_argument("cmd", choices=["report", "write", "check", "scope"])
     ap.add_argument("name", nargs="?", help="limit `check` to one skill")
     ap.add_argument("--repo", type=Path, default=default_repo())
     a = ap.parse_args()
@@ -268,6 +326,8 @@ def main():
         return 0
     if a.cmd == "check":
         return cmd_check(repo, a.name)
+    if a.cmd == "scope":
+        return cmd_scope(repo)
     if a.cmd == "write":
         return cmd_write(repo)
 

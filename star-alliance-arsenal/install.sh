@@ -58,6 +58,13 @@ echo "   Target  : $TARGET"
 echo "   Tier    : $TIER"
 echo ""
 
+# ── deploy ledger (append-only; the deployment-frequency axis for member-leveling Wave 6) ─────
+DEPLOY_LEDGER="$SA_ROOT/star-alliance-skills/skillsmith/references/deploy-ledger.md"
+if [[ ! -f "$DEPLOY_LEDGER" ]]; then
+  printf '%s\n' '# Deploy Ledger' '' 'Append-only record of every `install.sh` deploy. Consumed by member-leveling Wave 6 (the usage/reach axis). Do not hand-prune.' '' '| Date | Member | Tier | Target |' '|---|---|---|---|' > "$DEPLOY_LEDGER"
+fi
+printf '| %s | `%s` | %s | `%s` |\n' "$(date +%Y-%m-%d)" "$MEMBER_NAME" "$TIER" "$TARGET" >> "$DEPLOY_LEDGER"
+
 # ── helpers ─────────────────────────────────────────────────────────────────
 
 ensure_dir() { mkdir -p "$1"; }

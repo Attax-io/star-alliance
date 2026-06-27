@@ -53,7 +53,7 @@ Match by request shape. (Authoritative list is always `workflows.json`; this is 
 | **Legal** | Legal Codex · Legal Drafting · Tool Forge · Law Harvest | laws are loaded/translated, legal docs drafted, or legal tooling built |
 | **Research & Intel** | Market Recon · Brand Audit · Relationship Intel | a read-only question — market, brand, or relationship analysis |
 | **Guild Self** | Skill Forge · Arsenal Forge · Strategic Audit · Workflow Forge | the guild improves itself — skills, weapons, audits, new workflows |
-| **Hygiene & Release** | Conformity Sweep · Hygiene Rotation · Guild Log Sync · Release Train | cleanup, conformance, log upkeep, or shipping a version |
+| **Hygiene & Release** | Compliance Audit · Hygiene Rotation · Guild Log Sync · Release Train | cleanup, conformance, log upkeep, or shipping a version |
 | **Comms & Automation** | Comms Triage · Standing Watch | inbound comms are triaged or a watch runs on a schedule |
 
 Each workflow already encodes its members. The Butler reads the `when`, not the roster.
