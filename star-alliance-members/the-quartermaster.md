@@ -148,6 +148,7 @@ then it's wrong in production. Never close a mission without a clean build.
 | `data/members-meta.json` | yes — hook fires |
 | `star-alliance-skills/**` | yes — hook fires |
 | `data/guild-log.json` | yes — hook fires |
+| `member-art/`, `skill-art/`, `role-art/`, `weapon-art/`, `workflow-art/` | yes — hook fires |
 | `build.py` itself | run manually after editing |
 | `guild-data.json` / `guild-data.js` | these ARE the outputs — never edit directly |
 

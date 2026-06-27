@@ -2,7 +2,7 @@
 name: weapon-utility
 description: "Every member's rule for which weapon (model) to draw and how thinker and doer weapons work together. Thinker weapons read, plan, and prompt the doers; doer weapons do the job and return it; the thinker then reviews the result against the plan and re-prompts the doer until it conforms. A member draws the highest-priority AVAILABLE weapon of the kind the job needs — scanning its arsenal left to right. One thinker plans and reviews and may dispatch several doers in parallel (many of one model or a mix); only ultra-brainstorming runs several thinkers at once. Use whenever a member must pick a model, decide thinker-vs-doer, or run the plan → do → review loop. Triggers: 'which weapon', 'which model should X use', 'pick the weapon', 'thinker or doer', 'draw a weapon', 'run the weapon loop', 'how does the member choose its model'. Every member consults this before acting — it is the atomic layer beneath members-formation (which member works) and ultra-brainstorming (fuse several members across models)."
 metadata:
-  version: 1.8.0
+  version: 2.0.0
 type: Skill
 
 ---
@@ -29,23 +29,26 @@ arsenal registry [`star-alliance-arsenal/models.json`](../../star-alliance-arsen
 from which `summon.py`, `conformity_check.py`, the weapon-gate hook, and the dashboard all derive.
 Edit the registry, never hand-list. The lists below are a human-readable mirror.
 
-- **Thinker weapons** — the **mind**. They *read, plan, and prompt the doer on what to do*,
-  then *review what comes back*. A thinker never does the bulk work itself; it directs.
-  `opus` is the **prime thinker** — the best mind, and therefore the **first thinker in every
-  arsenal**. The prime thinker is just whichever thinker leads the block; with `opus` present it
-  is always `opus`.
-  (`opus`, `gpt-5.5`, `deepseek-v4-pro`, `glm-5.2`, `kimi-k2.7`, `nemotron-3-ultra`, `qwen3.5`,
-  `gemma4`. `sonnet` can think too.) `gemma4` is a **light, fast thinker** — a cheap second mind
-  for content/marketing angles, not a deep reasoner; the guild leans on `minimax-m3` (direct API)
-  as the prime doer, so the Ollama bench is read as thinkers.
-- **Doer weapons** — the **hands**. They *take the thinker's prompt, do the job, and return it*.
-  A doer never decides strategy; it executes. `minimax-m3` is the **prime doer** — every member's
-  first-drawn hand. (`minimax-m3`, `haiku`, and the MiniMax forge doers
-  `image-01`/`video`/`speech`/`music`.)
-- **Dual weapon** (`both`) — only `sonnet` remains dual, and it sits **last in every arsenal** for
-  two reasons: it is the universal last-resort for **either** role, AND it is the guild's
-  **Claude-capable fallback** for tools no other doer can run — see *Sonnet, the Claude-only-tool
-  fallback* below.
+- **The brain — the model the member RUNS AS.** A member's brain is its **session model**
+  (`model:` in the member's `.md`): `opus` for an Opus-run member, `sonnet` for a Sonnet-run one.
+  This is the *live mind* — the model actually reading, planning, orchestrating, and calling tools in
+  a session. **Brain = personality:** the model it runs as IS the model that thinks. (The dashboard
+  marks it with a purple **BRAIN** flag.)
+- **Escalation thinkers — a bigger mind the brain delegates to.** The *other* thinker weapons in the
+  arsenal (`opus`, `gpt-5.5`, `deepseek-v4-pro`, `glm-5.2`, `kimi-k2.7`, `nemotron-3-ultra`, `qwen3.5`,
+  `gemma4`) are **not** the member's identity — they are weapons the brain *reaches for* on a hard
+  problem (one at a time, or all at once under [[ultra-brainstorming]]). `opus` is the strongest
+  escalation thinker and **leads the thinker block** in arsenal order; `gemma4` is a light, fast one
+  (a cheap second mind for content/marketing angles). A Sonnet-run member escalating to `opus` is
+  drawing a bigger brain; an Opus-run member already runs on its sharpest mind.
+- **Doer weapons — the hands.** They *take the brain's prompt, do the job, and return it*. A doer
+  never decides strategy; it executes. `minimax-m3` is the **prime doer** — every member's first-drawn
+  hand (the dashboard marks it with an orange **DOER** flag). (`minimax-m3`, `haiku`, and the MiniMax
+  forge doers `image-01`/`video`/`speech`/`music`.)
+- **Dual weapon** (`both`) — only `sonnet` is dual. It sits **last in every arsenal** (universal
+  last-resort for either role + the guild's **Claude-capable fallback** for tools no other doer can
+  run — see *Sonnet, the Claude-only-tool fallback* below), AND for the five **Sonnet-run members** it
+  is also their **brain** (the model they run as).
 
 ## The tool boundary — doers return content, thinkers run tools (HARD RULE)
 
@@ -206,6 +209,7 @@ python3 tools/efficiency_report.py   # shows median in/out tokens split by lite 
 **The safety check always wins:** before adjusting any `size_small_signals`, verify zero high-stakes turns in the LITE column (a migration, git push, deploy in a LITE-tagged turn is the hard failure). Stakes keyword list in `data/harness.json` is immutable until safety is confirmed.
 
 ## Changelog
+- **2.0.0** — **Brain = personality (the model the member runs as).** Redefines the member's mind: the **brain is its session model** (`model:`) — the live model that actually thinks and orchestrates in a session — NOT "whichever thinker leads the arsenal." `opus` and the other thinkers are reframed as **escalation weapons** the brain delegates to, not the member's identity. The dashboard now flags the **BRAIN** (session-model weapon) and the **DOER** (prime doer, `minimax-m3`) on each member's cards; `conformity_check.py` replaces the `PT` (prime-thinker==opus) check with **`BR`** (the session model is a carried, thinking weapon) + **`PD`** (prime doer leads). Supersedes the §5 "prime thinker = first thinker weapon = opus" decision. Selection-contract change → MAJOR.
 - **1.8.0** — **Draw no weapon — script it.** New lead rule in §Drawing the right weapon: before picking a thinker or doer, ask whether the job needs a *model* at all. An exact, mechanical transform (field-preserving JSON merge, literal extraction, deterministic rename) is a **script**, not a summon — an LLM doer *or* thinker silently drops a field or rewords a value on a precision-critical merge, where a `node -e` eval + Python merge will not. Draw a model only for generative/judgemental work. Mined from the model-armory consolidation, where the 15×16-field registry merge was done by script (not minimax) precisely to avoid transcription loss. New selection rule → MINOR.
 - **1.7.0** — **`gemma4` reclassed doer → thinker.** It now joins the thinker bench (light, fast
   second mind, esp. content/marketing) — the guild leans on `minimax-m3` (direct API) as the prime

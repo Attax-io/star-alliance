@@ -21,6 +21,11 @@ TRIGGERS = [
     "workflows.json",
     "/star-alliance-skills/",
     "data/guild-log.json",
+    "/member-art/",
+    "/skill-art/",
+    "/role-art/",
+    "/weapon-art/",
+    "/workflow-art/",
 ]
 
 
