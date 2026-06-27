@@ -121,7 +121,7 @@ STEP 2 · FOLLOW THE WORKFLOW (workflows.json) — MANDATORY, not optional:
   Legal:              Legal Codex · Legal Drafting · Tool Forge · Law Harvest
   Research & Intel:   Market Recon · Brand Audit · Relationship Intel
   Guild Self:         Skill Forge · Arsenal Forge · Strategic Audit · Workflow Forge
-  Hygiene & Release:  Conformity Sweep · Hygiene Rotation · Guild Log Sync · Release Train
+  Hygiene & Release:  Compliance Audit · Hygiene Rotation · Guild Log Sync · Release Train
   Comms & Automation: Comms Triage · Standing Watch
   ▶ If a workflow fits, FOLLOW its steps — do not improvise your own path.
   ▶ If NO existing workflow fits the request → STOP. Tell the Guild Master and ASK
