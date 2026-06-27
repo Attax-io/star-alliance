@@ -1229,6 +1229,102 @@ function skillCard(s) {
   </a>`;
 }
 
+// ── SKILL.md live reader ──────────────────────────────────────────────────
+// Reads each skill's real SKILL.md file at runtime (served static under root)
+// and renders it inline on the skill panel — nothing is baked into guild-data,
+// so the widget always shows the file's current content. Needs the http server
+// (node .claude/serve.cjs); file:// blocks the fetch.
+
+// Inline pass over an already-HTML-escaped string: code spans, bold, italic,
+// wikilinks ([[skill]] → its panel), and [text](url) links.
+function mdInline(t) {
+  const codes = [];
+  t = t.replace(/`([^`]+)`/g, (_, c) => { codes.push(c); return ` ${codes.length - 1} `; });
+  t = t
+    .replace(/\[\[([^\]]+)\]\]/g, (_, n) => {
+      const id = n.trim();
+      return bySkill.has(id)
+        ? `<a class="md-wikilink" href="#/skills/${id}">${id}</a>`
+        : `<span class="md-wikilink dead">${id}</span>`;
+    })
+    .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, txt, url) =>
+      `<a class="md-link" href="${url}"${/^https?:/.test(url) ? ' target="_blank" rel="noopener"' : ""}>${txt}</a>`)
+    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+    .replace(/\*([^*\n]+)\*/g, "<em>$1</em>")
+    .replace(/(?<![A-Za-z0-9])_([^_\n]+)_(?![A-Za-z0-9])/g, "<em>$1</em>");
+  return t.replace(/ (\d+) /g, (_, k) => `<code>${codes[+k]}</code>`);
+}
+
+// Block-level Markdown → HTML. Frontmatter stripped; headings/code/lists/
+// tables/quotes/rules supported. Deliberately small — no external lib.
+function mdToHtml(src) {
+  src = src.replace(/^﻿/, "").replace(/^---\n[\s\S]*?\n---\n?/, "");
+  const lines = src.replace(/\r\n?/g, "\n").split("\n");
+  const out = [];
+  let para = [];
+  const flush = () => { if (para.length) { out.push(`<p>${mdInline(esc(para.join(" ")))}</p>`); para = []; } };
+  let i = 0;
+  while (i < lines.length) {
+    const t = lines[i].trim();
+    const fence = t.match(/^```(.*)$/);
+    if (fence) {
+      flush();
+      const lang = fence[1].trim(), code = []; i++;
+      while (i < lines.length && !lines[i].trim().startsWith("```")) { code.push(lines[i]); i++; }
+      i++;
+      out.push(`<pre class="md-pre"${lang ? ` data-lang="${esc(lang)}"` : ""}><code>${esc(code.join("\n"))}</code></pre>`);
+      continue;
+    }
+    if (t === "") { flush(); i++; continue; }
+    const h = t.match(/^(#{1,6})\s+(.*)$/);
+    if (h) { flush(); const lvl = Math.min(h[1].length + 1, 6); out.push(`<h${lvl} class="md-h">${mdInline(esc(h[2].replace(/\s+#+\s*$/, "")))}</h${lvl}>`); i++; continue; }
+    if (/^(-{3,}|\*{3,}|_{3,})$/.test(t)) { flush(); out.push(`<hr class="md-hr">`); i++; continue; }
+    if (t.startsWith(">")) {
+      flush(); const q = [];
+      while (i < lines.length && lines[i].trim().startsWith(">")) { q.push(lines[i].trim().replace(/^>\s?/, "")); i++; }
+      out.push(`<blockquote class="md-bq">${mdInline(esc(q.join(" ")))}</blockquote>`);
+      continue;
+    }
+    if (t.startsWith("|") && i + 1 < lines.length && /-/.test(lines[i + 1]) && /^\|?[\s:|-]+\|/.test(lines[i + 1].trim())) {
+      flush(); const rows = [];
+      while (i < lines.length && lines[i].trim().startsWith("|")) { rows.push(lines[i].trim()); i++; }
+      const cells = (r) => r.replace(/^\||\|$/g, "").split("|").map((c) => c.trim());
+      const head = cells(rows[0]);
+      let tbl = `<table class="md-table"><thead><tr>${head.map((c) => `<th>${mdInline(esc(c))}</th>`).join("")}</tr></thead><tbody>`;
+      for (const r of rows.slice(2)) tbl += `<tr>${cells(r).map((c) => `<td>${mdInline(esc(c))}</td>`).join("")}</tr>`;
+      out.push(tbl + `</tbody></table>`);
+      continue;
+    }
+    if (/^[-*+]\s+/.test(t) || /^\d+\.\s+/.test(t)) {
+      flush(); const ordered = /^\d+\.\s+/.test(t), items = [];
+      while (i < lines.length) {
+        const lt = lines[i].trim();
+        if (ordered ? /^\d+\.\s+/.test(lt) : /^[-*+]\s+/.test(lt)) { items.push(lt.replace(ordered ? /^\d+\.\s+/ : /^[-*+]\s+/, "")); i++; }
+        else break;
+      }
+      const tag = ordered ? "ol" : "ul";
+      out.push(`<${tag} class="md-list">${items.map((it) => `<li>${mdInline(esc(it))}</li>`).join("")}</${tag}>`);
+      continue;
+    }
+    para.push(t); i++;
+  }
+  flush();
+  return out.join("\n");
+}
+
+// Lazy-fetch a skill's SKILL.md into the panel widget (called on first expand).
+async function loadSkillMd(id, host) {
+  host.innerHTML = `<div class="md-loading">Reading SKILL.md…</div>`;
+  try {
+    const res = await fetch(`star-alliance-skills/${encodeURIComponent(id)}/SKILL.md`, { cache: "no-store" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    host.innerHTML = mdToHtml(await res.text());
+  } catch (err) {
+    host.innerHTML = `<div class="md-error">Couldn't read the file — ${esc(String(err.message || err))}.
+      <span class="md-hint">Serve the dashboard over http (<code>node .claude/serve.cjs</code>); <code>file://</code> blocks local reads.</span></div>`;
+  }
+}
+
 function renderSkillPanel(id) {
   const s = bySkill.get(id);
   if (!s) return renderNotFound(`No skill “${esc(id)}” in the skill pool.`);
@@ -1291,6 +1387,16 @@ function renderSkillPanel(id) {
       <div class="section glass"><div class="section-title">Carried by · ${carrierIds.length}</div><div class="ref-grid">${carriers}</div></div>
       ${sections}
       ${files}
+      <div class="section glass skill-md-widget" data-skill="${esc(s.id)}">
+        <button class="skill-md-toggle" type="button" data-skill="${esc(s.id)}" aria-expanded="false"
+          title="Read this skill's SKILL.md file, rendered live from disk">
+          <span class="smt-ico">📖</span>
+          <span class="smt-label">Read the SKILL.md</span>
+          <span class="smt-meta">${s.stats.lines} lines · ${s.stats.words} words</span>
+          <span class="smt-chev">▸</span>
+        </button>
+        <div class="skill-md-body" hidden></div>
+      </div>
     </div>`;
 }
 
@@ -1743,6 +1849,19 @@ app.addEventListener("click", (e) => {
   // Deactivate / reactivate a skill for the whole guild.
   const dt = e.target.closest("#deactivate-toggle");
   if (dt) { e.preventDefault(); toggleDisabled(dt.dataset.skill); refreshView(); byId("deactivate-toggle")?.focus(); return; }
+  // Expand / collapse the live SKILL.md reader (lazy-fetches on first open).
+  const smt = e.target.closest(".skill-md-toggle");
+  if (smt) {
+    e.preventDefault();
+    const widget = smt.closest(".skill-md-widget");
+    const body = widget.querySelector(".skill-md-body");
+    const open = smt.getAttribute("aria-expanded") === "true";
+    smt.setAttribute("aria-expanded", String(!open));
+    widget.classList.toggle("open", !open);
+    body.hidden = open;
+    if (!open && !body.dataset.loaded) { body.dataset.loaded = "1"; loadSkillMd(smt.dataset.skill, body); }
+    return;
+  }
   // Deactivate / reactivate a weapon (model) guild-wide from Arsenal page.
   const dw = e.target.closest("[data-weapon]");
   const pw = e.target.closest(".weapon-power-btn");

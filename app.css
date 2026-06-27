@@ -1024,3 +1024,77 @@ a.tag.off { text-decoration: none; }
 .model-usage .mu-dot { color: var(--green); font-size: 9px; }
 .model-usage .mu-win { font-size: 9px; color: var(--muted); border: 1px solid var(--line-2);
   border-radius: var(--pill); padding: 0 5px; margin-left: auto; }
+
+/* ── SKILL.md live reader widget (skill panel) ───────────────────────────── */
+.skill-md-widget { padding: 0; overflow: hidden; }
+.skill-md-toggle {
+  display: flex; align-items: center; gap: var(--s3); width: 100%;
+  padding: var(--s4) var(--s5); background: transparent; border: 0; cursor: pointer;
+  color: var(--starlight); font: inherit; text-align: left;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.skill-md-toggle:hover { background: rgba(61,240,255,.05); }
+.skill-md-toggle .smt-ico { font-size: 17px; line-height: 1; }
+.skill-md-toggle .smt-label { font-size: var(--t-md); font-weight: 600; letter-spacing: .01em; }
+.skill-md-toggle .smt-meta {
+  font-family: var(--mono); font-size: var(--t-xs); color: var(--hint);
+  letter-spacing: .04em; margin-left: var(--s2);
+}
+.skill-md-toggle .smt-chev {
+  margin-left: auto; color: var(--cyan); font-size: 13px;
+  transition: transform var(--dur) var(--ease);
+}
+.skill-md-widget.open .skill-md-toggle .smt-chev { transform: rotate(90deg); }
+.skill-md-widget.open .skill-md-toggle { border-bottom: 1px solid var(--line); }
+
+.skill-md-body { padding: var(--s5); color: var(--starlight); line-height: 1.7; font-size: var(--t-md); }
+.skill-md-body .md-loading, .skill-md-body .md-error { color: var(--muted); font-size: var(--t-sm); }
+.skill-md-body .md-error { color: var(--rose); }
+.skill-md-body .md-hint { display: block; margin-top: var(--s2); color: var(--hint); font-size: var(--t-xs); }
+
+.skill-md-body .md-h {
+  color: var(--starlight); line-height: 1.3; margin: var(--s5) 0 var(--s3);
+  font-weight: 650; letter-spacing: -.01em;
+}
+.skill-md-body > .md-h:first-child { margin-top: 0; }
+.skill-md-body h2.md-h { font-size: var(--t-lg); padding-bottom: var(--s2); border-bottom: 1px solid var(--line-3); }
+.skill-md-body h3.md-h { font-size: var(--t-md); color: var(--cyan); }
+.skill-md-body h4.md-h, .skill-md-body h5.md-h, .skill-md-body h6.md-h { font-size: var(--t-sm); color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+.skill-md-body p { margin: 0 0 var(--s3); color: var(--starlight); }
+.skill-md-body strong { color: #fff; font-weight: 650; }
+.skill-md-body em { color: var(--starlight); }
+.skill-md-body a.md-link { color: var(--cyan); text-decoration: none; border-bottom: 1px solid rgba(61,240,255,.3); }
+.skill-md-body a.md-link:hover { border-bottom-color: var(--cyan); }
+.skill-md-body .md-wikilink {
+  color: var(--violet); text-decoration: none; font-weight: 500;
+  border-bottom: 1px dashed rgba(157,123,255,.4);
+}
+.skill-md-body .md-wikilink.dead { color: var(--faint); border-bottom-style: dotted; cursor: default; }
+.skill-md-body .md-list { margin: 0 0 var(--s3) var(--s5); padding: 0; }
+.skill-md-body .md-list li { margin: var(--s1) 0; color: var(--starlight); }
+.skill-md-body .md-bq {
+  margin: 0 0 var(--s3); padding: var(--s2) var(--s4); color: var(--muted);
+  border-left: 3px solid var(--violet); background: rgba(157,123,255,.06); border-radius: 0 var(--r1) var(--r1) 0;
+}
+.skill-md-body .md-hr { border: 0; border-top: 1px solid var(--line); margin: var(--s5) 0; }
+.skill-md-body code {
+  font-family: var(--mono); font-size: .88em; padding: 1px 5px; border-radius: var(--r1);
+  background: rgba(255,255,255,.06); border: 1px solid var(--line-3); color: var(--cyan);
+}
+.skill-md-body .md-pre {
+  position: relative; margin: 0 0 var(--s4); padding: var(--s4); overflow-x: auto;
+  background: var(--ink); border: 1px solid var(--line-2); border-radius: var(--r2);
+}
+.skill-md-body .md-pre code { background: none; border: 0; padding: 0; color: var(--starlight); font-size: var(--t-sm); line-height: 1.6; }
+.skill-md-body .md-pre[data-lang]::before {
+  content: attr(data-lang); position: absolute; top: 6px; right: 10px;
+  font-family: var(--mono); font-size: 9px; letter-spacing: .1em; text-transform: uppercase; color: var(--faint);
+}
+.skill-md-body .md-table {
+  width: 100%; border-collapse: collapse; margin: 0 0 var(--s4); font-size: var(--t-sm);
+}
+.skill-md-body .md-table th, .skill-md-body .md-table td {
+  padding: var(--s2) var(--s3); text-align: left; border: 1px solid var(--line-2); vertical-align: top;
+}
+.skill-md-body .md-table th { background: rgba(255,255,255,.04); color: var(--cyan); font-weight: 600; }
+.skill-md-body .md-table td { color: var(--muted); }
