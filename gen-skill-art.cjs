@@ -205,6 +205,10 @@ const SKILLS = [
     id: "star-alliance-language",
     prompt: `${STYLE}. A hooded guild-reader at a lectern unrolling a luminous concept-map of an ordered library, glowing rune-labels and gold cross-link threads charting where each knowledge lives, only three tomes pulled open and softly lit while the rest rest shelved and dim, an eye-of-orientation sigil above guiding the gaze, swift cheap reliable reading with no blind full-read, the quiet reader's-protocol counterpart to the gold tidying crest`,
   },
+  {
+    id: "session-mining",
+    prompt: `${STYLE}. A dwarven runesmith's pickaxe of glowing gold striking a deep vein of crystal memory-shards in a dark cavern wall, each struck shard floating up as a luminous scroll-fragment of a past chronicle, a set of scales beside the vein weighing the true shards against false ones — the dull already-known shards crumbling to dust while the rare new ones rise glowing, an arcane ledger open below catching the verified findings in gold ink, the craft of mining old chronicles for lessons and proving which still matter`,
+  },
 ];
 
 function postJSON(url, headers, body) {
