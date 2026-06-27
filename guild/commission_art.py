@@ -98,7 +98,9 @@ def commission(brief: Path, out: Path, max_iter: int) -> int:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Art Forge — commission an image from a brief")
-    ap.add_argument("--brief", required=True, help="Path to the brief markdown")
+    # --in is the workflow-runner's file-rail alias for --brief (resolve_io_args
+    # in guild/run.py supplies --in from the step's first `inputs` entry).
+    ap.add_argument("--brief", "--in", dest="brief", required=True, help="Path to the brief markdown")
     ap.add_argument("--out", required=True, help="Path for the output asset")
     ap.add_argument("--max-iter", type=int, default=1, help="Max generation attempts")
     args = ap.parse_args()
