@@ -3,7 +3,7 @@ name: schema-evolution
 description: "The Architect's craft for evolving a structured data model without breaking what already reads it — adding an optional, backward-compatible field to a JSON (or table) schema and threading it through every consumer in lockstep. The method: add the field as OPTIONAL with a safe default, validate it where it's authored (fatal in the generator) and again at the conformance gate, render/consume it everywhere it should appear, document it in the authoring skill, and PROVE old data with the field absent still passes green. Use when adding a field to a shared data model, versioning a record shape, or making a non-breaking migration across producers and consumers. Triggers: 'add a field to', 'extend the schema', 'add an optional field', 'evolve the data model', 'thread this through every consumer', 'backward-compatible migration', 'version this record shape', 'add a column without breaking'. Differentiate from db-rename-sweep (renames an existing name) and transactions-domain-model (loads one fixed domain)."
 metadata:
   version: 1.0.0
-type: Architect
+type: Skill
 
 ---
 # Schema Evolution — the Architect's craft
