@@ -1,4 +1,12 @@
 {
+  "algorithmic-trading-chan": {
+    "icon": "📈",
+    "blurb": "Ernie Chan's quant doctrine: mean reversion, momentum, backtesting pitfalls, Kelly risk",
+    "level": "Advanced",
+    "tabler": "ti-chart-candle",
+    "triggers": "'explain cointegration', 'how do I size with Kelly', 'why did this backtest lie', 'mean reversion vs momentum', 'teach me Chan's strategies'",
+    "modes": "backtesting integrity; mean reversion; momentum; risk management"
+  },
   "arsenal-forge": {
     "icon": "⚔️",
     "blurb": "Recruit or re-role a weapon — identity, role, wire to loadouts",
@@ -29,6 +37,14 @@
     "level": "Intermediate",
     "tabler": "ti-bug",
     "triggers": "gotcha, the INSERT/push pattern (identity PK, trigger-filled names, reporter-uuid lookup, status=1, no notification fires), the \"doesn't work\" reproduction technique, and the rule for WHEN a bug may be marked Fixed (DB fixes now, frontend fixes only after depl",
+    "modes": ""
+  },
+  "claude-code-hooks": {
+    "icon": "🪝",
+    "blurb": "Author Claude Code hooks the right way — fail-open gates and banners",
+    "level": "Advanced",
+    "tabler": "ti-webhook",
+    "triggers": "'write a hook', 'add a PreToolUse hook', 'gate this tool', 'block this command', 'fire a banner on', 'why is my hook blocking', 'fail-open hook', 'test my hook', 'claude code hooks'",
     "modes": ""
   },
   "cleanup": {
@@ -87,14 +103,6 @@
     "triggers": "'use the X voice', 'make it sound like Fallen Sword', 'guild voice', 'Lex Council tone', 'reskin this copy', 'Erildath'",
     "modes": "fallen-sword; star-alliance; lex-council"
   },
-  "motion-design": {
-    "icon": "🌀",
-    "blurb": "The Designer's easing & timing specialist — exact curves, durations, transform-origins",
-    "level": "Advanced",
-    "tabler": "ti-wave-sine",
-    "triggers": "'animate this', 'add a transition', 'motion for X', 'clean up this animation', 'this feels too fast/slow', 'make it feel more alive', easing, timing, spring vs bezier, bounce",
-    "modes": "evaluate; recommend"
-  },
   "design-taste": {
     "icon": "🎨",
     "blurb": "The Designer's seven-mode premium taste engine, anti-AI-slop",
@@ -151,6 +159,14 @@
     "triggers": "'log this', 'guild log this', 'did you log it?', '/guild-log', or any dashboard/UI/folder change git can't see on its own",
     "modes": ""
   },
+  "harness-efficiency": {
+    "icon": "📊",
+    "blurb": "Prove & tune what the harness saves — net tokens, LITE/FULL tier split, offload health",
+    "level": "Advanced",
+    "tabler": "ti-gauge",
+    "triggers": "'efficiency report', 'harness efficiency', 'how much are we saving', 'is the gate working', 'tier split', 'check the offload', 'net tokens saved', 'tune the stakes list', or before/after a routing-gate hook change",
+    "modes": "Report — join usage-log.jsonl + turn-cost.jsonl via efficiency_report.py (net-saved + per-tier breakdown); Watch — hunt the one hard failure (a high-stakes turn that took LITE); Tune — edit the data/harness.json stakes/size policy, then re-run the gate regression matrix"
+  },
   "high-alert": {
     "icon": "🚨",
     "blurb": "Session klaxon: banners on workflow start, skill activation, member duty",
@@ -190,6 +206,14 @@
     "tabler": "ti-award",
     "triggers": "",
     "modes": ""
+  },
+  "japanese-candlesticks": {
+    "icon": "🕯️",
+    "blurb": "Read & interpret Japanese candlestick charts (Nison) — every reversal, continuation & doji pattern",
+    "level": "Advanced",
+    "tabler": "ti-chart-candle-filled",
+    "triggers": "'what candlestick pattern is this', 'is this a hammer or a doji', 'read this candlestick chart', 'explain bullish engulfing', 'morning star meaning', 'teach me Japanese candlesticks'",
+    "modes": "single-line reversals; multi-line reversals; continuations; the doji family; Western-tool confluence"
   },
   "law-harvest": {
     "icon": "📚",
@@ -231,6 +255,14 @@
     "triggers": "'route this', 'who should handle this', 'form the team', 'distribute the work', 'can these run in parallel', 'coordinate the members', 'plan the dispatch', or any request touching more than one craft. The Butler's one dedicated craft — he is the router, not a specialist.",
     "modes": ""
   },
+  "motion-design": {
+    "icon": "🌀",
+    "blurb": "The Designer's easing & timing specialist — exact curves, durations, transform-origins",
+    "level": "Advanced",
+    "tabler": "ti-wave-sine",
+    "triggers": "'animate this', 'add a transition', 'motion for X', 'clean up this animation', 'this feels too fast/slow', 'make it feel more alive', easing, timing, spring vs bezier, bounce",
+    "modes": "evaluate; recommend"
+  },
   "obsidian-markdown": {
     "icon": "📝",
     "blurb": "Edit Obsidian-flavored markdown with wikilinks and callouts",
@@ -247,14 +279,6 @@
     "triggers": "'tidy the repo', 'OKF', 'make it OKF-conformant', 'run the OKF audit', 'fix frontmatter', 'keep it clean', after any campaign that left files behind. The producer half of the guild's knowledge standard; pairs with star-alliance-language (reader). Enforced mechanically by the okf-gate PreToolUse hook.",
     "modes": "audit (default) — report non-conformant governed .md; --fix — migrate-first baseline (inject type: + timestamp:, idempotent); enrich — add title/description/tags/cross-links; sweep — place non-md by concept-path & prune orphans"
   },
-  "star-alliance-language": {
-    "icon": "🗣️",
-    "blurb": "The guild's shared reading protocol for OKF-tidied repos — read the concept map, not whole files",
-    "level": "Foundational",
-    "tabler": "ti-map-search",
-    "triggers": "automatic — every member orients through it when starting work in a repo. 'read the repo', 'what's in here', 'map this', 'orient me', 'where is X documented'. Universal — rides every member like weapon-utility. The consumer half of the OKF pair (okf produces, this reads).",
-    "modes": "map (default) — one-shot concept map via okf_read.py (frontmatter + cross-links, grouped, index.md first); --dir/--type/--grep narrow; --links walk one concept's graph; --json feed a doer"
-  },
   "performance": {
     "icon": "⚡",
     "blurb": "Speed up websites with performance optimization best practices",
@@ -263,6 +287,14 @@
     "triggers": "",
     "modes": ""
   },
+  "portability-audit": {
+    "icon": "🗺️",
+    "blurb": "Audit how portable a Claude Code project is — maps 6 layers, assigns tier gaps, produces an install plan",
+    "level": "Intermediate",
+    "tabler": "ti-map-check",
+    "triggers": "'audit portability', 'can I use this in another project', 'portability audit', 'what needs to move', 'install plan for project X', '/portability-audit'",
+    "modes": "Six layers: skills → members → arsenal paths → env vars → hooks → workflows. Assigns tier gap per finding; outputs ranked gap list + install.sh command."
+  },
   "portfolio-risk": {
     "icon": "🛡️",
     "blurb": "Book-level portfolio construction and risk metrics (VaR, drawdown, exposure)",
@@ -270,6 +302,14 @@
     "tabler": "ti-shield-half",
     "triggers": "'review my portfolio', 'what is the risk on my book', 'compute VaR', 'check my exposures', 'should I rebalance', 'stress test this portfolio'",
     "modes": "construction; risk-audit; rebalance-proposal; stress-test"
+  },
+  "project-start": {
+    "icon": "🚀",
+    "blurb": "Session health check for SA-equipped projects — verifies STAR_ALLIANCE_ROOT, diffs skill versions, reports stale skills",
+    "level": "Foundational",
+    "tabler": "ti-rocket",
+    "triggers": "'start session', 'session start', '/project-start', 'check my skills', 'are my skills up to date', 'health check'",
+    "modes": "Three checks: STAR_ALLIANCE_ROOT resolves → skill version diff → member file present. Reports gaps with one-line fix commands. Never auto-installs."
   },
   "relationship-intel": {
     "icon": "🤝",
@@ -295,6 +335,22 @@
     "triggers": "'schedule this', 'run this daily', 'set up a cron task', 'make this a routine', 'standing watch'",
     "modes": ""
   },
+  "schema-evolution": {
+    "icon": "🧬",
+    "blurb": "Add an optional field to a data model without breaking any reader",
+    "level": "Advanced",
+    "tabler": "ti-binary-tree-2",
+    "triggers": "'add a field to', 'extend the schema', 'add an optional field', 'evolve the data model', 'thread this through every consumer', 'backward-compatible migration', 'version this record shape', 'add a column without breaking'",
+    "modes": ""
+  },
+  "session-mining": {
+    "icon": "⛏️",
+    "blurb": "Mine past sessions for lessons, verify against the live repo, ship a ranked upgrade plan",
+    "level": "Advanced",
+    "tabler": "ti-pick",
+    "triggers": "'review the last N sessions', 'mine my sessions', 'what did we learn from these sessions', 'what should we upgrade/merge/create from past work', 'audit the sessions for lessons', 'note down skills we can extract', or any retrospective over prior runs. Locates all three session stores, signal-extracts with offset/limit discipline (no blind read), doer-summarizes via MiniMax, STORM-synthesizes, then VERIFIES against the repo to kill every lesson already shipped. Propose-only.",
+    "modes": "Six phases: locate stores → map (session_map.py) → signal-extract (mine_sessions.py, never blind-read) → doer-summarize (MiniMax) → STORM synthesize → verify-against-repo → propose-only register. On-demand companion to skillsmith's daily routine."
+  },
   "skillsmith": {
     "icon": "🛠️",
     "blurb": "Manage, sync, upgrade, and auto-evolve Star Alliance skills",
@@ -302,6 +358,14 @@
     "tabler": "ti-tools",
     "triggers": "'sync my skills', 'upgrade a skill', 'create a skill', 'install my skills', 'run the skill routine', 'evolve my skills', '/skillsmith'. Scripts in scripts/; procedures in references/.",
     "modes": "sync: reconcile repo and device by metadata.version, honoring fork+external exceptions. upgrade: bump a skill's version, regenerate the VERSIONS.md registry, run the Cowork-compliance check, add a changelog entry. create: author a new skill via the official skill-creator, then make it upgradeable. r"
+  },
+  "star-alliance-language": {
+    "icon": "🗣️",
+    "blurb": "The guild's shared reading protocol for OKF-tidied repos — read the concept map, not whole files",
+    "level": "Foundational",
+    "tabler": "ti-map-search",
+    "triggers": "automatic — every member orients through it when starting work in a repo. 'read the repo', 'what's in here', 'map this', 'orient me', 'where is X documented'. Universal — rides every member like weapon-utility. The consumer half of the OKF pair (okf produces, this reads).",
+    "modes": "map (default) — one-shot concept map via okf_read.py (frontmatter + cross-links, grouped, index.md first); --dir/--type/--grep narrow; --links walk one concept's graph; --json feed a doer"
   },
   "storm-investigation": {
     "icon": "🌀",
@@ -382,61 +446,5 @@
     "tabler": "ti-map-2",
     "triggers": "'save this as a workflow', 'add this to the star map', 'register a workflow', 'crystallize this formation'",
     "modes": ""
-  },
-  "claude-code-hooks": {
-    "icon": "🪝",
-    "blurb": "Author Claude Code hooks the right way — fail-open gates and banners",
-    "level": "Advanced",
-    "tabler": "ti-webhook",
-    "triggers": "'write a hook', 'add a PreToolUse hook', 'gate this tool', 'block this command', 'fire a banner on', 'why is my hook blocking', 'fail-open hook', 'test my hook', 'claude code hooks'",
-    "modes": ""
-  },
-  "schema-evolution": {
-    "icon": "🧬",
-    "blurb": "Add an optional field to a data model without breaking any reader",
-    "level": "Advanced",
-    "tabler": "ti-binary-tree-2",
-    "triggers": "'add a field to', 'extend the schema', 'add an optional field', 'evolve the data model', 'thread this through every consumer', 'backward-compatible migration', 'version this record shape', 'add a column without breaking'",
-    "modes": ""
-  },
-  "session-mining": {
-    "icon": "⛏️",
-    "blurb": "Mine past sessions for lessons, verify against the live repo, ship a ranked upgrade plan",
-    "level": "Advanced",
-    "tabler": "ti-pick",
-    "triggers": "'review the last N sessions', 'mine my sessions', 'what did we learn from these sessions', 'what should we upgrade/merge/create from past work', 'audit the sessions for lessons', 'note down skills we can extract', or any retrospective over prior runs. Locates all three session stores, signal-extracts with offset/limit discipline (no blind read), doer-summarizes via MiniMax, STORM-synthesizes, then VERIFIES against the repo to kill every lesson already shipped. Propose-only.",
-    "modes": "Six phases: locate stores → map (session_map.py) → signal-extract (mine_sessions.py, never blind-read) → doer-summarize (MiniMax) → STORM synthesize → verify-against-repo → propose-only register. On-demand companion to skillsmith's daily routine."
-  },
-  "japanese-candlesticks": {
-    "icon": "🕯️",
-    "blurb": "Read & interpret Japanese candlestick charts (Nison) — every reversal, continuation & doji pattern",
-    "level": "Advanced",
-    "tabler": "ti-chart-candle-filled",
-    "triggers": "'what candlestick pattern is this', 'is this a hammer or a doji', 'read this candlestick chart', 'explain bullish engulfing', 'morning star meaning', 'teach me Japanese candlesticks'",
-    "modes": "single-line reversals; multi-line reversals; continuations; the doji family; Western-tool confluence"
-  },
-  "harness-efficiency": {
-    "icon": "📊",
-    "blurb": "Prove & tune what the harness saves — net tokens, LITE/FULL tier split, offload health",
-    "level": "Advanced",
-    "tabler": "ti-gauge",
-    "triggers": "'efficiency report', 'harness efficiency', 'how much are we saving', 'is the gate working', 'tier split', 'check the offload', 'net tokens saved', 'tune the stakes list', or before/after a routing-gate hook change",
-    "modes": "Report — join usage-log.jsonl + turn-cost.jsonl via efficiency_report.py (net-saved + per-tier breakdown); Watch — hunt the one hard failure (a high-stakes turn that took LITE); Tune — edit the data/harness.json stakes/size policy, then re-run the gate regression matrix"
-  },
-  "portability-audit": {
-    "icon": "🗺️",
-    "blurb": "Audit how portable a Claude Code project is — maps 6 layers, assigns tier gaps, produces an install plan",
-    "level": "Intermediate",
-    "tabler": "ti-map-check",
-    "triggers": "'audit portability', 'can I use this in another project', 'portability audit', 'what needs to move', 'install plan for project X', '/portability-audit'",
-    "modes": "Six layers: skills → members → arsenal paths → env vars → hooks → workflows. Assigns tier gap per finding; outputs ranked gap list + install.sh command."
-  },
-  "project-start": {
-    "icon": "🚀",
-    "blurb": "Session health check for SA-equipped projects — verifies STAR_ALLIANCE_ROOT, diffs skill versions, reports stale skills",
-    "level": "Foundational",
-    "tabler": "ti-rocket",
-    "triggers": "'start session', 'session start', '/project-start', 'check my skills', 'are my skills up to date', 'health check'",
-    "modes": "Three checks: STAR_ALLIANCE_ROOT resolves → skill version diff → member file present. Reports gaps with one-line fix commands. Never auto-installs."
   }
 }

@@ -63,7 +63,8 @@
         "schema-evolution",
         "session-mining",
         "portability-audit",
-        "project-start"
+        "project-start",
+        "algorithmic-trading-chan"
       ],
       "members": [
         "the-butler",
@@ -76,7 +77,7 @@
         "the-merchant",
         "the-quartermaster"
       ],
-      "notes": "The home domain. All 9 guild members + 55 skills live here. Every other domain borrows from this skill pool."
+      "notes": "The home domain. All 9 guild members + 56 skills live here. Every other domain borrows from this skill pool."
     },
     {
       "id": "lex-council-app",
