@@ -63,6 +63,7 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 |---|---|---|---|
 | `weapon-utility` | before picking a model, or running the plan→do→review loop with a doer | it is doctrine, never a deliverable — never "produce" it | every doer dispatch |
 | `star-alliance-language` | first on entering an OKF repo — read the concept map, never blind-read | a one-file edit where the path is already known | every reading task |
+| `session-mining` | mining past sessions for lessons → ranked, verified upgrade proposals | live upgrades already scoped, or repo tidy (→ `okf`) | `skillsmith`, `storm-investigation` |
 
 ## How you work
 

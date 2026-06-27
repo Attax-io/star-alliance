@@ -64,6 +64,7 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 |---|---|---|---|
 | `weapon-utility` | before picking a model, or running the plan→do→review loop with a doer | it is doctrine, never a deliverable — never "produce" it | every doer dispatch |
 | `star-alliance-language` | first on entering an OKF repo — read the concept map, never blind-read | a one-file edit where the path is already known | every reading task |
+| `graphify` | turning a system, domain, or dependency web into a knowledge-graph or diagram view | prose specs or code that needs no visual model | `schema-evolution`, `transactions-domain-model` |
 
 ## How you work
 

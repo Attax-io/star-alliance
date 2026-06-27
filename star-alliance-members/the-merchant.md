@@ -93,6 +93,7 @@ When to draw each skill, and the adjacent task that wrongly pulls it. Every craf
 |---|---|---|---|
 | `weapon-utility` | before picking a model, or running the plan→do→review loop with a doer | it is doctrine, never a deliverable — never "produce" it | every doer dispatch |
 | `star-alliance-language` | first on entering an OKF repo — read the concept map, never blind-read | a one-file edit where the path is already known | every reading task |
+| `ultra-brainstorming` | fanning a thesis across all thinker models, then synthesizing one ranked view | a single-perspective read or a final buy/sell verdict | `storm-investigation`, `market-recon` |
 
 ## Skills
 
