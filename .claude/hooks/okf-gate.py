@@ -17,7 +17,7 @@
 # Mechanics: PreToolUse gets the tool call as JSON on stdin. For Write we inspect
 # `content`; for Edit/MultiEdit we inspect the on-disk file AFTER applying the
 # proposed new_string in memory (best-effort) — if we cannot reconstruct, we fall
-# back to the resulting-file heuristic of "does the edit keep/ään introduce a
+# back to the resulting-file heuristic of "does the edit keep/introduce a
 # valid frontmatter". The check is intentionally cheap and structural.
 #   • governed target + result conformant      → exit 0 (allow)
 #   • governed target + result NOT conformant  → exit 2 (block, print fix line)
