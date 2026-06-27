@@ -240,7 +240,16 @@ def main():
                         help='Strip ```json fences, validate, and re-dump compact.')
     parser.add_argument('--timeout', type=int, default=180,
                         help='HTTP timeout in seconds (default: 180).')
+    parser.add_argument('--batch', default=None,
+                        help='JSONL file of prompts; process all over ONE keep-alive '
+                             'connection and emit JSONL results in order. Each line is a '
+                             'bare prompt string or {"prompt","system","max_tokens"}.')
     args = parser.parse_args()
+
+    # Batch mode: one process, one connection, N prompts → N JSONL results.
+    if args.batch is not None:
+        api_key = resolve_api_key()
+        sys.exit(run_batch(api_key, args.model, args.batch, args.max_tokens, args.timeout))
 
     prompt = resolve_prompt(args)
     if not prompt or not prompt.strip():
