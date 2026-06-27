@@ -231,6 +231,22 @@
     "triggers": "",
     "modes": ""
   },
+  "okf": {
+    "icon": "🧹",
+    "blurb": "Keep the whole repo tidy & conformant to the Open Knowledge Format (OKF v0.1)",
+    "level": "Advanced",
+    "tabler": "ti-file-stack",
+    "triggers": "'tidy the repo', 'OKF', 'make it OKF-conformant', 'run the OKF audit', 'fix frontmatter', 'keep it clean', after any campaign that left files behind. The producer half of the guild's knowledge standard; pairs with star-alliance-language (reader). Enforced mechanically by the okf-gate PreToolUse hook.",
+    "modes": "audit (default) — report non-conformant governed .md; --fix — migrate-first baseline (inject type: + timestamp:, idempotent); enrich — add title/description/tags/cross-links; sweep — place non-md by concept-path & prune orphans"
+  },
+  "star-alliance-language": {
+    "icon": "🗣️",
+    "blurb": "The guild's shared reading protocol for OKF-tidied repos — read the concept map, not whole files",
+    "level": "Foundational",
+    "tabler": "ti-map-search",
+    "triggers": "automatic — every member orients through it when starting work in a repo. 'read the repo', 'what's in here', 'map this', 'orient me', 'where is X documented'. Universal — rides every member like weapon-utility. The consumer half of the OKF pair (okf produces, this reads).",
+    "modes": "map (default) — one-shot concept map via okf_read.py (frontmatter + cross-links, grouped, index.md first); --dir/--type/--grep narrow; --links walk one concept's graph; --json feed a doer"
+  },
   "performance": {
     "icon": "⚡",
     "blurb": "Speed up websites with performance optimization best practices",
