@@ -42,6 +42,28 @@ A wise guild member knows which blade to draw for each fight.
 - Workspace hygiene
 - Guild conformance audits — the final step of every workflow: confirming members, skills, the arsenal, workflows, docs, and the generated guild data still agree, and that the run left nothing contradicting
 
+## Skill Drills
+
+When to draw each skill, and the adjacent task that wrongly pulls it.
+
+| Skill | Invoke WHEN | Do NOT invoke for | Pairs with |
+|---|---|---|---|
+| `skillsmith` | sync / upgrade / create a skill, or run the daily STORM routine | merely *using* a skill — reach for that skill directly | `storm-investigation` (vet), `cleanup` (after) |
+| `guild-conformity` | a quest closes — prove the repo's files agree with every logged decision | proving the rendered dashboard (→ `dashboard-parity`) | `dashboard-parity`, `guild-log` |
+| `dashboard-parity` | a change must reach `guild-data.js` and the live DOM, not just source | source-file agreement alone (→ `guild-conformity`) | `guild-conformity`, then `release-train` |
+| `release-train` | a body of work is sealed — merge branches/PRs, bump, changelog, stamp, push | single edits or exploratory forks | `guild-conformity`, `dashboard-parity`, `guild-log` |
+| `guild-log` | a non-git-visible change **or a decision** — `build.py` re-derives the version | the Lex Council vault-log (→ Strategist) | `release-train`, `guild-conformity` |
+| `cleanup` | Lex Council hygiene — i18n, hardcoded text, dev errors, postgres, lint, docs | any other member's work — this rite is the Quartermaster's alone | `skillsmith` (after), `okf` |
+| `storm-investigation` | vetting a new-skill idea or auditing a domain from many angles | a single-question lookup | `skillsmith`, `okf` |
+| `okf` | the repo drifts from Open Knowledge Format — one concept per file, typed, linked | domain research or skill conception (→ `storm-investigation`) | `cleanup`, `skillsmith` |
+
+**Universal skills — every member carries these; drill them at the edges of every quest:**
+
+| Skill | Invoke WHEN | Do NOT invoke for | Pairs with |
+|---|---|---|---|
+| `weapon-utility` | before picking a model, or running the plan→do→review loop with a doer | it is doctrine, never a deliverable — never "produce" it | every doer dispatch |
+| `star-alliance-language` | first on entering an OKF repo — read the concept map, never blind-read | a one-file edit where the path is already known | every reading task |
+
 ## How you work
 
 1. For syncs, run `skillsmith sync` — reconcile repo and device by version.
