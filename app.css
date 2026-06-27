@@ -342,10 +342,15 @@ kbd {
 .comet-tail { filter: blur(1.1px) drop-shadow(0 0 6px var(--accent)); pointer-events: none; }
 .spark { stroke: none; }
 .you-core { cursor: pointer; outline: none; }
-.you-core .halo { fill: var(--gold); opacity:.18; transform-box: fill-box; transform-origin:center; animation: pulse 4.5s ease-in-out infinite; }
-.you-core:hover .core, .you-core:focus-visible .core { filter: drop-shadow(0 0 12px var(--gold)); }
-.you-core .core { fill: var(--gold); stroke: rgba(255,255,255,.85); stroke-width:1.4; }
+.you-core .halo { fill: var(--gold); opacity:.22; transform-box: fill-box; transform-origin:center; animation: pulse 4.5s ease-in-out infinite; }
+/* Sovereign mark — 8-spike gold starburst, slowly turning, with a white-hot core. */
+.you-core .you-burst { fill: var(--gold); stroke: color-mix(in srgb, var(--gold) 55%, #fff); stroke-width:1; transform-box: fill-box; transform-origin:center; animation: youspin 48s linear infinite; filter: drop-shadow(0 0 6px color-mix(in srgb, var(--gold) 70%, transparent)); }
+.you-core .you-coreglow { fill: #fff; opacity:.30; }
+.you-core .core { fill: #fff; stroke: var(--gold); stroke-width:1.2; filter: drop-shadow(0 0 7px var(--gold)); }
 .you-core .you-glyph { fill: var(--ink); font-size:12px; font-weight:700; }
+.you-core:hover .you-burst, .you-core:focus-visible .you-burst { filter: drop-shadow(0 0 12px var(--gold)); }
+.you-core:hover .core, .you-core:focus-visible .core { filter: drop-shadow(0 0 13px #fff); }
+@keyframes youspin { to { transform: rotate(360deg); } }
 .cgate { cursor: pointer; outline: none; }
 .cgate .cgate-shape { fill: color-mix(in srgb, currentColor 22%, transparent); stroke: currentColor; stroke-width:1.5; transition: filter var(--dur) var(--ease); }
 .cgate:hover .cgate-shape, .cgate:focus-visible .cgate-shape { filter: drop-shadow(0 0 8px currentColor); }
