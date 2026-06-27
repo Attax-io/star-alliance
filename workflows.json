@@ -2534,6 +2534,91 @@
         "guild health check",
         "evolve the guild"
       ]
+    },
+    {
+      "id": "app-packaging",
+      "name": "App Packaging",
+      "icon": "📦",
+      "accent": "violet",
+      "category": "Build & Fix",
+      "class": "mutating",
+      "tagline": "Wrap a working surface into a real installable app.",
+      "when": "Use when packaging an existing web/dashboard surface into a distributable desktop (or native) app — Tauri/Electron shell, a bundled server sidecar, icon, and a reproducible build. Not for feature work on the surface itself (that is Standard Mission / Architecture Build).",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Request the Package",
+          "act": "You name the surface to package and the target shell (e.g. Tauri desktop app with a server sidecar).",
+          "produces": "packaging request"
+        },
+        {
+          "kind": "member",
+          "actor": "the-butler",
+          "title": "Clarify the Ask",
+          "act": "The Butler restates the package target, sidecar model, and what gets touched as a one-line brief.",
+          "produces": "packaging brief"
+        },
+        {
+          "kind": "gate",
+          "gate": "approval",
+          "label": "You approve the packaging brief — toolchain installs and a new app shell are about to be created."
+        },
+        {
+          "kind": "member",
+          "actor": "the-developer",
+          "title": "Provision the Toolchain",
+          "act": "Verify and install the build prerequisites (Node, Rust/cargo, Tauri CLI, platform SDK). Records what was installed.",
+          "produces": "ready toolchain"
+        },
+        {
+          "kind": "member",
+          "actor": "the-developer",
+          "title": "Scaffold the Shell",
+          "act": "Create the app shell (src-tauri/ config, window, icon) pointing at the existing surface — no change to the surface's own code.",
+          "produces": "app shell"
+        },
+        {
+          "kind": "member",
+          "actor": "the-developer",
+          "title": "Wire the Sidecar",
+          "act": "Bundle the server (serve.cjs + a Node runtime) as a sidecar the app spawns on launch and stops on quit, so the app is self-contained.",
+          "produces": "wired sidecar"
+        },
+        {
+          "kind": "member",
+          "actor": "the-developer",
+          "title": "Build and Smoke-Test",
+          "act": "Produce the app bundle, launch it, and confirm the surface loads and edits write through the sidecar.",
+          "produces": "installable app"
+        },
+        {
+          "kind": "gate",
+          "gate": "certify",
+          "label": "The Quartermaster certifies the build is reproducible and the app is self-contained."
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Guild Conformance",
+          "act": "Run the conformity sweep, log the packaging, and confirm the repo still agrees with itself.",
+          "produces": "verified package"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports back in plain English: the app is built, where it is, and how to launch it."
+        }
+      ],
+      "trigger_phrases": [
+        "package the app",
+        "build it into a tauri app",
+        "make a desktop app",
+        "wrap the dashboard",
+        "build an installer",
+        "bundle as an app",
+        "make it an app"
+      ]
     }
   ]
 }
