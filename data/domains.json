@@ -22,8 +22,7 @@
         "full-output-enforcement",
         "obsidian-markdown",
         "image-to-code",
-        "imagegen-frontend-web",
-        "imagegen-frontend-mobile",
+        "imagegen-frontend",
         "brandkit",
         "impeccable",
         "performance",
@@ -79,7 +78,7 @@
         "the-merchant",
         "the-quartermaster"
       ],
-      "notes": "The home domain. All 9 guild members + 58 skills live here. Every other domain borrows from this skill pool."
+      "notes": "The home domain. All 9 guild members + 57 skills live here. Every other domain borrows from this skill pool."
     },
     {
       "id": "lex-council-app",
@@ -96,8 +95,7 @@
         "design-taste",
         "full-output-enforcement",
         "image-to-code",
-        "imagegen-frontend-mobile",
-        "imagegen-frontend-web",
+        "imagegen-frontend",
         "impeccable",
         "db-rename-sweep",
         "bug-fix-workflow",

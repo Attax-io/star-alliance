@@ -191,21 +191,13 @@
     "triggers": "",
     "modes": ""
   },
-  "imagegen-frontend-mobile": {
-    "icon": "📱",
-    "blurb": "Elite mobile screen concept generator for iOS and Android apps",
+  "imagegen-frontend": {
+    "icon": "🖼️",
+    "blurb": "Premium frontend reference-imagery engine — web sections and mobile app screens, images only",
     "level": "Elite",
-    "tabler": "ti-device-mobile",
-    "triggers": "",
-    "modes": ""
-  },
-  "imagegen-frontend-web": {
-    "icon": "🌐",
-    "blurb": "Elite website design image generation with conversion awareness built in",
-    "level": "Advanced",
-    "tabler": "ti-browser",
-    "triggers": "",
-    "modes": ""
+    "tabler": "ti-photo",
+    "triggers": "'generate website design references', 'mock the landing page', 'design the app screens', 'show me onboarding screens', 'imagegen'",
+    "modes": "web; mobile"
   },
   "impeccable": {
     "icon": "✨",
