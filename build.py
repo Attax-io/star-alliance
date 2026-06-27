@@ -460,6 +460,16 @@ def load_workflows(repo: Path) -> list[dict]:
     return workflows
 
 
+def _wf_token(x) -> str:
+    """A list item in a workflow step may be a plain string or a dict like
+    {"model": "minimax-m3", "count": 3}. Render either as readable text."""
+    if isinstance(x, dict):
+        name = x.get("model") or x.get("name") or x.get("actor") or "?"
+        cnt = x.get("count")
+        return f"{name}×{cnt}" if cnt else str(name)
+    return str(x)
+
+
 def workflow_to_md(wf: dict) -> str:
     """Serialize one workflow (from workflows.json) to a readable markdown doc —
     the source for the in-page workflow reader (mirrors a skill's SKILL.md)."""
@@ -503,9 +513,9 @@ def workflow_to_md(wf: dict) -> str:
                 out.append(s["act"])
             bullets = []
             if s.get("produces"): bullets.append(f"**Produces:** {s['produces']}")
-            if s.get("inputs"): bullets.append(f"**Inputs:** {', '.join(s['inputs'])}")
+            if s.get("inputs"): bullets.append(f"**Inputs:** {', '.join(_wf_token(x) for x in s['inputs'])}")
             if s.get("script"): bullets.append(f"**Script:** `{s['script']}`")
-            if s.get("doers"): bullets.append(f"**Doers:** {', '.join(s['doers'])}")
+            if s.get("doers"): bullets.append(f"**Doers:** {', '.join(_wf_token(x) for x in s['doers'])}")
             if bullets:
                 out.append("")
                 for b in bullets:

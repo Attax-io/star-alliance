@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 62
     },
-    "generated": "2026-06-27T15:38:52Z",
+    "generated": "2026-06-27T15:39:36Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "gpt-5.5": "deactivated",

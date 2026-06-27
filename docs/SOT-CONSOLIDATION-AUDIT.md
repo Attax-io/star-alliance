@@ -19,6 +19,16 @@ timestamp: 2026-06-27T00:00:00Z
 >   session already implements it correctly. *Not* the session model.
 > - **Scope: report only.** Phases A/B/C in §6 are the proposed remediation, **not yet
 >   executed**. Nothing below has been applied.
+>
+> **§7 added (deep cascade pass) — supersedes §4/§6 where they conflict:**
+> - **"Demote `guild-data.json`" is REVERSED.** It is the Python-side runtime SoT —
+>   `weapon-gate.py` + `high-alert.py` `json.load` it live; deleting it breaks hooks at
+>   session runtime. `guild-data.js` = browser SoT. Both kept.
+> - **"Generate `guild-routing-gate.sh`" is DOWNGRADED to a lint.** Those lines are
+>   hand-edited doctrine prose, and the hook gates every turn — regeneration risk > reward.
+> - **Model identity lives in 20 places across 12 files** (not just the 3 role tables) —
+>   see the §7.2 census. `data/models.json` owns *semantic* facts only; routing/keys stay
+>   in `summon.py`, cost stays in `models-usage.json` (§7.3).
 
 **Grade: D+ (structurally unsound).** Nine entities, four with live contradictions. The
 repo *mostly* derives from sources via `build.py`, but three hand-maintained side-tables
