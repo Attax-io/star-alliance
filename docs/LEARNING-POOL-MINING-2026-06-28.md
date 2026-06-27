@@ -271,3 +271,14 @@ These convert prose doctrine into enforced mechanism — the through-line of eve
 Awaiting Guild Master go to turn any of these rows into real guild edits (each = its own workflow:
 Skill Forge / Arsenal Forge / Workflow Forge / a CLAUDE.md doctrine diff). No guild assets changed yet —
 this doc is analysis only.
+
+---
+
+## ✅ SHIPPED 2026-06-28 (Top-5 build — "proceed as recommended")
+- **#4 Arsenal doctor** — `star-alliance-arsenal/doctor.py` (probe weapons → PASS/WARN/FAIL+fix; `--ping`/`--json`). Tested: 6 pass.
+- **#2 Stop-the-Line gate** — `.claude/hooks/stop-line-gate.py`, wired into `sa-pretool.py`. **Opt-in** (`touch .claude/state/stop-line-armed`); blocks SOURCE writes without `📋 Acceptance:` line. Unit-tested 4/4; disarmed by default.
+- **#3 Constitution** — `docs/CONSTITUTION.md` v1.0.0 (10 ratified articles + plan-time check + amendment process).
+- **#1 Memory-graph** — CLAUDE.md doctrine ("read the domain core before working"); MEMORY.md now graph root; seeded `core-hooks-gates` memory.
+- **#5 Member exit-states + handoff** — `exit_state` + `handoff` added to all 9 members in `data/members-meta.json`; dashboard rebuilt clean.
+
+Remaining rows (6–20) un-started — deferred for explicit go (esp. L-effort #6 codebase-memory-mcp trial, #17 timesfm: need sandbox install + bake-off).

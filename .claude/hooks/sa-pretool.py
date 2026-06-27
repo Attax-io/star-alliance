@@ -31,6 +31,7 @@ GATES = [
     ("workflow-gate.py",    None),
     ("high-alert.py",       {"Skill", "Workflow", "Agent", "Task"}),
     ("okf-gate.py",         {"Write", "Edit", "MultiEdit"}),
+    ("stop-line-gate.py",   {"Write", "Edit", "MultiEdit"}),
     ("weapon-gate.py",      {"Bash", "Task", "Agent"}),
     ("destructive-gate.py", {"Bash"}),
 ]
