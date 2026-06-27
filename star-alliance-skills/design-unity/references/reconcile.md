@@ -52,6 +52,12 @@ A token swap is a **value change, not a refactor.** After each cluster of fixes:
 
 ## Safety
 
-- **No mass auto-fix without the audit.** Reconcile only what the ranked report flagged; don't freelance.
+- **No mass auto-fix without the audit.** Reconcile only the genuine-drift candidates the audit ranked AFTER
+  its Step-0 exclusions; never sweep raw match lists. Touching an annotated intentional lock (e.g. `theme-flat`)
+  is a regression, not a fix.
+- **Verify light AND dark mode after every batch.** The most common intentional lock exists because a token
+  *flips* between themes — so a "successful" light-mode conversion can silently break dark mode (and vice
+  versa). If you can't view both modes (dev server / both theme classes), do NOT convert colour locks; defer
+  them. This is non-negotiable: it is the exact failure the Step-0 guard was added to prevent.
 - **Confirm before flattening intentional contrast** — uniformity is the goal, but a deliberate accent surface
   or a one-off hero is not "drift." Unity is one *language*, not one *look-for-everything*.

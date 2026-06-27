@@ -88,9 +88,11 @@ the count (how many sites share it).
 
 ## Output
 
-A `design-unity-audit.md` report: a ranked table of divergences + a one-line headline
-("N divergences across M files; top offender: raw `#3B82F6` in 41 sites → `--color-primary`"). This report is
-the input to `reconcile`. Do not fix during the audit — measure first, fix in the next phase by blast radius.
+A `design-unity-audit.md` report: the **Step-0 split** (total matches → minus locks / definitions / tests /
+no-var contexts → genuine-drift candidates), then a ranked table of the genuine divergences + a one-line
+headline ("M genuine-drift candidates; top offender: raw `#3B82F6` in 41 sites → `--color-primary`"). The
+headline reports the genuine count, never the raw match count. This report is the input to `reconcile`. Do not
+fix during the audit — measure first, fix in the next phase by blast radius.
 
 ## Standing-guard mode
 

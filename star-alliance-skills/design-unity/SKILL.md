@@ -2,7 +2,7 @@
 name: design-unity
 description: "The Designer's UI-unity guardian — make ONE design language the single source of truth and hold every surface to it. Three phases: establish (define or extract the canonical DESIGN.md plus a real code token file — CSS custom properties / theme — doc describes, tokens enforce); audit (scan every surface and flag divergence from the source of truth — hardcoded hex, off-scale spacing / type / radius / shadow, duplicate components, inconsistent motion — ranked by blast radius, file:line); reconcile (fix the drift — raw values to tokens, duplicate components to the canonical one, strays to the scale, without breaking functionality). Use to unify a UI, kill design drift, enforce a design system, or stand up a single source of truth. Triggers: 'make the UI consistent', 'one source of truth for the UI', 'enforce the design system', 'kill the design drift', 'unify the look', 'audit UI conformity', 'design tokens'. Differentiate from design-taste (decides the language) and imagegen-frontend (generates imagery)."
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 type: Skill
 
 ---
@@ -50,6 +50,10 @@ A surface is **non-conformant** when it does any of these instead of consuming t
 - **Inconsistent treatment** — same role, different look (two "primary" buttons with different radius/weight).
 - **Orphan pattern** — a one-off that should be promoted into the system or deleted, not left to multiply.
 
+**Not drift:** an *annotated intentional lock* — a hardcode kept on purpose (dark-mode contrast where the token
+flips, a fixed brand mark, a PDF/email/canvas context where CSS vars don't resolve, a token definition itself).
+The `audit` phase **subtracts these first** (its Step 0); a sweep that converts them is a regression, not a fix.
+
 Full detection recipe + ranking in `references/audit.md`.
 
 ## How the Designer works
@@ -90,6 +94,12 @@ Full detection recipe + ranking in `references/audit.md`.
 
 - **Audit needs a SoT.** Running `audit`/`reconcile` with no canonical token file just measures chaos against
   chaos. `establish` is the gate.
+- **Raw match count ≠ drift count.** Always subtract intentional locks / token definitions / tests / no-var
+  contexts (audit Step 0) before reporting or reconciling. Headlining the raw count over-reports and makes the
+  sweep dangerous. Discover the project's lock annotation (e.g. `theme-flat`) by READING the comments around a
+  sample of hardcodes first.
+- **Colour locks need both themes verified.** Never convert a colour you can't view in light AND dark mode — a
+  flipping token is exactly why the lock exists.
 - **Reconcile never breaks functionality.** A token swap is a value change, not a refactor — verify the surface
   still renders and behaves before moving on.
 - **Two token files = no source of truth.** If you find competing theme files, merging them to one IS the task.
@@ -99,4 +109,5 @@ Full detection recipe + ranking in `references/audit.md`.
 Own skill. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new phase/reference · MAJOR: method-contract change). Regenerate `VERSIONS.md` with `python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write`, then `python3 build.py`.
 
 ## Changelog
+- **1.1.0** — Added **intentional-lock detection** (audit Step 0): the audit now subtracts annotated locks (e.g. `theme-flat`), token definitions, test fixtures, and no-var (PDF/email/canvas) contexts BEFORE counting drift, and reports the genuine-drift count rather than the raw match count. Reconcile now mandates verifying BOTH light and dark mode after every batch (a flipping token is why the lock exists) and never converting a lock. Mined from a real run on the Lex Council App where 97/408 raw-hex hits were intentional dark-mode-contrast locks — a naive hex→token sweep would have regressed dark mode. SKILL.md taxonomy + gotchas, `references/audit.md` (Step 0 + output split), `references/reconcile.md` (dark-mode safety).
 - **1.0.0** — Initial release. The Designer's UI-unity / conformity engine: three-phase loop (establish → audit → reconcile) over a single source of truth (`DESIGN.md` + a code token file). Playbooks under `references/`. Pairs with `design-taste` (encode mode bootstraps the SoT) and `impeccable`.

@@ -218,6 +218,10 @@ const SKILLS = [
     prompt: `${STYLE}. An arcane abacus beside a chiseled stone tablet of law transmuting into a glowing deterministic formula, brackets rates and caps etched as runic gates, a calculator-crystal computing inputs into outputs, an article-citation sigil beside each rule, the law made arithmetic`,
   },
   {
+    id: "invariant-inference",
+    prompt: `${STYLE}. A master diviner's table where two sorted heaps of glowing rune-stones — emerald "good" stones on the left, crimson "bad" stones on the right — are separated by a single luminous golden boundary-line conjured mid-air, an arcane lens forging a brand-new predicate-rune to split a stubborn pair the existing runes could not, a loop of counterexample-lightning arcing back from a judging scrying-eye to refine the line, the proven rule sealed in a hovering crystal — the art of learning a hidden law from examples and proving it true`,
+  },
+  {
     id: "high-alert",
     prompt: `${STYLE}. A blazing signal-beacon flaming atop a dark stone watchtower, golden-red alarm fire leaping skyward, a bronze war-horn and a swinging warning bell beside it, concentric red-gold alert rings radiating outward across the night, a herald's banner snapping in the wind, the whole guild roused to attention, urgent klaxon glow`,
   },

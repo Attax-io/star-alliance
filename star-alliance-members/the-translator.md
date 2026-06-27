@@ -53,6 +53,7 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | `law-harvest` | ingesting raw law PDFs into the Source-Law library | already-translated text; Architect *structures*, you *translate* | `codex-law-translate` (downstream) |
 | `article-creator` | long-form **legal/codex** content must publish to production, all 6 locales | marketing articles — that is the Herald's | `codex-law-translate`, `obsidian-markdown` |
 | `obsidian-markdown` | docs needing wikilinks, callouts, properties — Obsidian-flavored | bare prose or source code | `legal-drafting`, `article-creator` |
+| `invariant-inference` | a fuzzy statute boundary must be pinned to an exact rule from example cases (shared craft with the Architect) | translating settled statute text, or modeling a clear arithmetic rule (→ `legal-rule-modeling`) | `legal-drafting`, ← Architect (CEGIS method) |
 
 **Universal skills — every member carries these; drill them at the edges of every quest:**
 
