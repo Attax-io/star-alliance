@@ -1,0 +1,65 @@
+{
+  "_note": "Hand-authored source of truth for the Star Map hook ring. Each entry is one harness lifecycle event (.claude/settings.json `hooks` key), in turn-chronological order, with plain-English copy for the dashboard tooltip. Keep in sync with .claude/settings.json — build.py folds this into GUILD.hooks.",
+  "hooks": [
+    {
+      "event": "UserPromptSubmit",
+      "label": "You Send a Message",
+      "glyph": "✎",
+      "fires": "The instant you send a prompt, before the guild reads it.",
+      "scripts": [
+        {
+          "name": "guild-routing-gate.sh",
+          "plain": "Injects the Star Alliance routing rules into every message you send, so the Butler picks the right member and the right workflow before anyone acts."
+        }
+      ]
+    },
+    {
+      "event": "PreToolUse",
+      "label": "Before Any Tool Runs",
+      "glyph": "⛓",
+      "fires": "Right before the guild fires any tool — a file edit, a command, a skill.",
+      "scripts": [
+        {
+          "name": "workflow-gate.py",
+          "plain": "Blocks every tool until the turn has declared a star-map workflow banner. No banner, no action — this is the gate you keep seeing."
+        },
+        {
+          "name": "high-alert.py",
+          "plain": "When a skill, workflow, or agent is invoked, fires the alert banners that announce it (the ⚡ and 🗺 klaxons)."
+        },
+        {
+          "name": "okf-gate.py",
+          "plain": "Before any file write or edit, blocks knowledge documents that would be saved without proper Open-Knowledge-Format frontmatter (a `type:` field), so docs never drift out of format."
+        }
+      ]
+    },
+    {
+      "event": "PostToolUse",
+      "label": "After an Edit Lands",
+      "glyph": "⟳",
+      "fires": "Right after a file is written or edited.",
+      "scripts": [
+        {
+          "name": "member-table-sync.py",
+          "plain": "After editing files, regenerates each member's 'Your Weapons' table from its loadout, so the table can never drift from the truth."
+        },
+        {
+          "name": "autocommit.sh",
+          "plain": "Auto-commits the edited file to git immediately, so nothing is ever lost and you are never asked 'Commit?' (commit only — never pushes)."
+        }
+      ]
+    },
+    {
+      "event": "Stop",
+      "label": "The Turn Ends",
+      "glyph": "✦",
+      "fires": "When the guild finishes its reply and the turn closes.",
+      "scripts": [
+        {
+          "name": "workflow-banner-enforcer.py",
+          "plain": "Checks that the finished turn declared a workflow and the right member reported for duty — even on plain-talk turns that fire no tools. Blocks the turn-end if either is missing."
+        }
+      ]
+    }
+  ]
+}
