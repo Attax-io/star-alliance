@@ -403,6 +403,155 @@ function createMember(member, opts, cb) {
   cb(null);
 }
 
+// ── Phase-3 control-panel writers: skills, domains, models, workflows, log.
+//    Every entity is now editable from the dashboard. Generic JSON-file editor
+//    keeps each writer tiny; all .bak before write, all followed by regen.
+const SKILLS_DIR = path.join(ROOT, 'star-alliance-skills');
+const DOMAINS_JSON = path.join(ROOT, 'data/domains.json');
+const MODELS_JSON = path.join(ROOT, 'star-alliance-arsenal/models.json');
+const WORKFLOWS_JSON = path.join(ROOT, 'workflows.json');
+const LOG_EVENT_PY = path.join(ROOT, 'tools/log_event.py');
+const ID_RE = /^[a-z0-9-]+$/;          // skills, domains, workflows
+const MODEL_ID_RE = /^[A-Za-z0-9._-]+$/;  // model ids carry dots (gpt-5.5)
+
+// Read JSON, .bak the raw text, hand the parsed doc to mutate(doc) → doc|Error,
+// write it back pretty-printed. Synchronous: these files are all small.
+function editJsonFile(file, mutate, cb) {
+  let raw, doc;
+  try { raw = fs.readFileSync(file, 'utf8'); doc = JSON.parse(raw); } catch (e) { return cb(e); }
+  let next;
+  try { next = mutate(doc); } catch (e) { return cb(e); }
+  if (next instanceof Error) return cb(next);
+  try {
+    fs.writeFileSync(file + '.bak', raw);
+    fs.writeFileSync(file, JSON.stringify(next || doc, null, 2) + '\n');
+  } catch (e) { return cb(e); }
+  cb(null);
+}
+
+// skills-meta.json: patch the presentation fields for one skill.
+function setSkillMeta(skill, fields, cb) {
+  if (!ID_RE.test(skill)) return cb(new Error('invalid skill id'));
+  const allowed = ['icon', 'blurb', 'level', 'tabler', 'triggers', 'modes'];
+  editJsonFile(SKILLS_META, (obj) => {
+    if (!obj[skill]) obj[skill] = {};
+    fields = fields || {};
+    for (const k of allowed) if (Object.prototype.hasOwnProperty.call(fields, k)) {
+      let v = fields[k]; if (typeof v !== 'string') v = String(v);
+      obj[skill][k] = v.slice(0, 1200);
+    }
+    return obj;
+  }, cb);
+}
+
+// SKILL.md body rewrite (frontmatter preserved verbatim) — mirrors setMemberBody.
+function setSkillBody(skill, text, cb) {
+  if (!ID_RE.test(skill)) return cb(new Error('invalid skill id'));
+  const file = path.join(SKILLS_DIR, skill, 'SKILL.md');
+  let content; try { content = fs.readFileSync(file, 'utf8'); } catch (e) { return cb(e); }
+  const lines = content.split('\n');
+  if (lines[0] !== '---') return cb(new Error('no frontmatter'));
+  let second = -1;
+  for (let i = 1; i < lines.length; i++) if (lines[i] === '---') { second = i; break; }
+  if (second === -1) return cb(new Error('no frontmatter'));
+  const frontmatter = lines.slice(0, second + 1).join('\n') + '\n';
+  const clean = String(text == null ? '' : text).replace(/^\n+|\n+$/g, '');
+  try { fs.writeFileSync(file + '.bak', content); fs.writeFileSync(file, frontmatter + '\n' + clean + '\n'); }
+  catch (e) { return cb(e); }
+  cb(null);
+}
+
+function createSkill(skill, opts, cb) {
+  if (!ID_RE.test(skill)) return cb(new Error('invalid skill id'));
+  opts = opts || {};
+  const dir = path.join(SKILLS_DIR, skill);
+  if (fs.existsSync(dir)) return cb(new Error('skill exists'));
+  const name = String(opts.name || skill);
+  const desc = String(opts.description || name).replace(/"/g, '\\"');
+  const fm = ['---', 'name: ' + skill, 'description: "' + desc + '"',
+    'metadata:', '  version: 0.1.0', 'type: Skill', '---', '',
+    '# ' + name, '', String(opts.body || 'Describe this skill.'), ''].join('\n');
+  try { fs.mkdirSync(dir, { recursive: true }); fs.writeFileSync(path.join(dir, 'SKILL.md'), fm); }
+  catch (e) { return cb(e); }
+  editJsonFile(SKILLS_META, (obj) => {
+    obj[skill] = { icon: opts.icon || '📦', blurb: String(opts.blurb || '').slice(0, 200),
+      level: opts.level || 'Foundational', tabler: opts.tabler || '', triggers: opts.triggers || '', modes: '' };
+    return obj;
+  }, cb);
+}
+
+function deleteSkill(skill, cb) {
+  if (!ID_RE.test(skill)) return cb(new Error('invalid skill id'));
+  const dir = path.join(SKILLS_DIR, skill);
+  if (!fs.existsSync(dir)) return cb(new Error('no such skill'));
+  const md = path.join(dir, 'SKILL.md');
+  try { if (fs.existsSync(md)) fs.writeFileSync(md + '.deleted.bak', fs.readFileSync(md)); } catch (_) {}
+  try { fs.rmSync(dir, { recursive: true, force: true }); } catch (e) { return cb(e); }
+  editJsonFile(SKILLS_META, (obj) => { delete obj[skill]; return obj; }, cb);
+}
+
+// domains.json — upsert/delete one domain by id (array of {id,...}).
+function upsertDomain(domain, cb) {
+  if (!domain || !ID_RE.test(String(domain.id || ''))) return cb(new Error('invalid domain id'));
+  editJsonFile(DOMAINS_JSON, (doc) => {
+    if (!Array.isArray(doc.domains)) doc.domains = [];
+    const i = doc.domains.findIndex((d) => d.id === domain.id);
+    if (i === -1) doc.domains.push(domain); else doc.domains[i] = Object.assign({}, doc.domains[i], domain);
+    return doc;
+  }, cb);
+}
+function deleteDomain(id, cb) {
+  if (!ID_RE.test(String(id || ''))) return cb(new Error('invalid domain id'));
+  editJsonFile(DOMAINS_JSON, (doc) => {
+    doc.domains = (doc.domains || []).filter((d) => d.id !== id); return doc;
+  }, cb);
+}
+
+// models.json — upsert/delete one model by id (object map keyed by id).
+function upsertModel(id, fields, cb) {
+  if (!MODEL_ID_RE.test(String(id || ''))) return cb(new Error('invalid model id'));
+  editJsonFile(MODELS_JSON, (doc) => {
+    if (!doc.models) doc.models = {};
+    doc.models[id] = Object.assign({}, doc.models[id] || {}, fields || {});
+    return doc;
+  }, cb);
+}
+function deleteModel(id, cb) {
+  if (!MODEL_ID_RE.test(String(id || ''))) return cb(new Error('invalid model id'));
+  editJsonFile(MODELS_JSON, (doc) => { if (doc.models) delete doc.models[id]; return doc; }, cb);
+}
+
+// workflows.json — upsert/delete one workflow by id (array of {id,...}).
+function upsertWorkflow(wf, cb) {
+  if (!wf || !ID_RE.test(String(wf.id || ''))) return cb(new Error('invalid workflow id'));
+  editJsonFile(WORKFLOWS_JSON, (doc) => {
+    if (!Array.isArray(doc.workflows)) doc.workflows = [];
+    const i = doc.workflows.findIndex((w) => w.id === wf.id);
+    if (i === -1) doc.workflows.push(wf); else doc.workflows[i] = Object.assign({}, doc.workflows[i], wf);
+    return doc;
+  }, cb);
+}
+function deleteWorkflow(id, cb) {
+  if (!ID_RE.test(String(id || ''))) return cb(new Error('invalid workflow id'));
+  editJsonFile(WORKFLOWS_JSON, (doc) => {
+    doc.workflows = (doc.workflows || []).filter((w) => w.id !== id); return doc;
+  }, cb);
+}
+
+// guild log — append-only, via the canonical tools/log_event.py (auto-stamps
+// date/id, never overwrites). Provenance stays intact; no direct JSON write.
+const LOG_TYPES = new Set(['skill-upgrade','skill-create','skill-remove','member-upgrade',
+  'member-create','member-remove','workflow','dashboard','structure','chore','decision']);
+function appendLog(entry, cb) {
+  entry = entry || {};
+  if (!LOG_TYPES.has(entry.type)) return cb(new Error('invalid log type'));
+  if (!entry.title || typeof entry.title !== 'string') return cb(new Error('title required'));
+  const args = [LOG_EVENT_PY, '--type', entry.type, '--title', entry.title.slice(0, 200)];
+  if (entry.detail) args.push('--detail', String(entry.detail).slice(0, 1000));
+  if (entry.who) args.push('--who', String(entry.who).slice(0, 60));
+  execFile('python3', args, { cwd: ROOT, timeout: 15000 }, (err) => cb(err || null));
+}
+
 // Dispatch a parsed save body to the right writer; returns true if handled.
 function dispatchSave(body, done) {
   switch (body.kind) {
@@ -418,6 +567,18 @@ function dispatchSave(body, done) {
     case 'member-body':      return setMemberBody(body.member, body.text, done);
     case 'member-create':    return createMember(body.member, body.opts, done);
     case 'member-delete':    return deleteMember(body.member, done);
+    // Phase-3: skills / domains / models / workflows / log
+    case 'skill-meta':       return setSkillMeta(body.skill, body.fields, done);
+    case 'skill-body':       return setSkillBody(body.skill, body.text, done);
+    case 'skill-create':     return createSkill(body.skill, body.opts, done);
+    case 'skill-delete':     return deleteSkill(body.skill, done);
+    case 'domain-upsert':    return upsertDomain(body.domain, done);
+    case 'domain-delete':    return deleteDomain(body.id, done);
+    case 'model-upsert':     return upsertModel(body.id, body.fields, done);
+    case 'model-delete':     return deleteModel(body.id, done);
+    case 'workflow-upsert':  return upsertWorkflow(body.workflow, done);
+    case 'workflow-delete':  return deleteWorkflow(body.id, done);
+    case 'log-append':       return appendLog(body.entry, done);
     default:                 return done(new Error('unknown kind'));
   }
 }
@@ -462,6 +623,30 @@ http.createServer((req, res) => {
         res.end(body);
         }, PROJECT_TRANSCRIPT_DIR);
       });
+    });
+    return;
+  }
+
+  // Control-panel status: proves the server is live (so the UI knows it can
+  // write to disk vs the file:// localStorage fallback), with last-build time
+  // and the version baked into the current guild-data.js.
+  if (req.method === 'GET' && req.url === '/api/status') {
+    let lastBuild = null, version = null;
+    try { lastBuild = fs.statSync(path.join(ROOT, 'guild-data.js')).mtime.toISOString(); } catch (_) {}
+    try {
+      const reg = JSON.parse(fs.readFileSync(path.join(ROOT, 'guild-data.json'), 'utf8'));
+      version = reg && reg.meta && reg.meta.version || null;
+    } catch (_) {}
+    res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', 'Cache-Control': 'no-store' });
+    return res.end(JSON.stringify({ live: true, lastBuild, version, ts: Date.now() }));
+  }
+  // On-demand rebuild — run build.py without any source edit.
+  if (req.method === 'POST' && req.url === '/api/rebuild') {
+    regenGuildData((err) => {
+      let lastBuild = null;
+      try { lastBuild = fs.statSync(path.join(ROOT, 'guild-data.js')).mtime.toISOString(); } catch (_) {}
+      res.writeHead(err ? 500 : 200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+      res.end(JSON.stringify({ ok: !err, error: err ? String(err.message || err) : undefined, lastBuild }));
     });
     return;
   }

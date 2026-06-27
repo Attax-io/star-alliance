@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 62
     },
-    "generated": "2026-06-27T17:30:33Z",
+    "generated": "2026-06-27T17:37:22Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -5388,7 +5388,7 @@ const GUILD = {
         "fix the frontmatter",
         "keep the repo clean"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "bug-cycle",
