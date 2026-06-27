@@ -2,6 +2,19 @@
   "version": 1,
   "entries": [
     {
+      "id": 91,
+      "date": "2026-06-27",
+      "type": "member-upgrade",
+      "title": "Promote The Designer: Elite → Master",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Elite → Master (craft-depth tier). Prerequisite checklist for Master verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-designer"
+      ],
+      "from": "Elite",
+      "to": "Master"
+    },
+    {
       "id": 90,
       "date": "2026-06-27",
       "type": "member-upgrade",

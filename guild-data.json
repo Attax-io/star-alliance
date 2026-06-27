@@ -1,13 +1,13 @@
 {
   "meta": {
     "name": "Star Alliance",
-    "version": "6.55.65",
+    "version": "6.55.66",
     "versionTiers": {
       "major": 6,
       "minor": 55,
-      "patch": 65
+      "patch": 66
     },
-    "generated": "2026-06-27T18:29:25Z",
+    "generated": "2026-06-27T18:30:35Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -32,7 +32,7 @@
       "domains": 3,
       "workflows": 29,
       "hooks": 7,
-      "log": 145
+      "log": 146
     }
   },
   "members": [
@@ -713,7 +713,7 @@
       "name": "The Designer",
       "role": "UI/UX · Visual Quality · Brand Kits",
       "model": "sonnet",
-      "conferred": "Elite",
+      "conferred": "Master",
       "color": "#d54d7a",
       "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-design\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#2d1018\"/><stop offset=\"1\" stop-color=\"#1f0a10\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-design)\"/><circle cx=\"38\" cy=\"36\" r=\"7\" fill=\"#ff6b8a\" opacity=\".8\"/><circle cx=\"58\" cy=\"36\" r=\"7\" fill=\"#4ec985\" opacity=\".8\"/><circle cx=\"48\" cy=\"52\" r=\"7\" fill=\"#5e9ef5\" opacity=\".8\"/><circle cx=\"36\" cy=\"50\" r=\"5\" fill=\"#e8c93a\" opacity=\".7\"/><circle cx=\"60\" cy=\"50\" r=\"5\" fill=\"#a67cf2\" opacity=\".7\"/></svg>",
       "summary": "Premium UI/UX designer. Turns rough sketches into polished interfaces. Design is how the product communicates.",
@@ -780,7 +780,7 @@
         "qualified": true,
         "nextTier": null,
         "rampEarned": "purple",
-        "rampConferred": "amber",
+        "rampConferred": "purple",
         "ad": 24,
         "signals": {
           "ad": 24,
@@ -912,7 +912,7 @@
           ]
         },
         "progress": [],
-        "dueForPromotion": true,
+        "dueForPromotion": false,
         "overConferred": false
       }
     },
@@ -7074,6 +7074,19 @@
   "log": {
     "entries": [
       {
+        "id": 91,
+        "date": "2026-06-27",
+        "type": "member-upgrade",
+        "title": "Promote The Designer: Elite → Master",
+        "who": "The Quartermaster",
+        "detail": "Conferred member level Elite → Master (craft-depth tier). Prerequisite checklist for Master verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+        "ref": [
+          "the-designer"
+        ],
+        "from": "Elite",
+        "to": "Master"
+      },
+      {
         "id": 90,
         "date": "2026-06-27",
         "type": "member-upgrade",
@@ -8865,7 +8878,7 @@
         "id": "g-325a46a5-add-skill-conquering-campaign"
       }
     ],
-    "count": 145
+    "count": 146
   },
   "models": {
     "opus": {
