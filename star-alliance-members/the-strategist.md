@@ -43,6 +43,31 @@ A wise guild member knows which blade to draw for each fight.
 - Strategy review and execution tracking
 - Vault-logging compliance — you keep the trail clean, as a commander must
 
+## Skill Drills
+
+When to draw each skill, and the adjacent task that wrongly pulls it.
+
+| Skill | Invoke WHEN | Do NOT invoke for | Pairs with |
+|---|---|---|---|
+| `ultra-brainstorming` | many members feed one quest — synthesize one war-plan from many minds | solo tasks, or when one thinker suffices | `conquering-campaign`, `storm-investigation` |
+| `conquering-campaign` | a quest sprawls 3+ surfaces (AUDIT/BUILD/EXTENSION) — too big for one wave | single-surface tweaks (→ Developer) | `ultra-brainstorming` (open), `workflow-forge` (close) |
+| `workflow-forge` | a proven, repeatable run should be codified into `workflows.json` | one-off experiments not yet battle-tested | `conquering-campaign` finale, `session-mining` |
+| `arsenal-forge` | recruiting or re-skinning an AI weapon into the arsenal | borrowing or tuning an existing weapon | `storm-investigation`, `performance` |
+| `scheduled-watch` | an unattended task must run on a cron cadence and resume with no human | one-time checks or interactive tasks | `vault-log-compliance`, `performance` |
+| `storm-investigation` | a contested/unfamiliar quest needs five-persona scouting before committing | well-mapped terrain or a single lookup | `conquering-campaign`, `ultra-brainstorming` |
+| `session-mining` | a retrospective over past sessions — extract + verify lessons vs live repo | fresh campaigns with no prior runs to mine | `strategies-review`, `workflow-forge` |
+| `bug-fix-workflow` | a bug hunt spans multiple waves | a single bug — that is the Developer's forge | `storm-investigation`, `vault-log-compliance` |
+| `performance` | the app loads slow — find bottlenecks, speed the site | functional bugs or feature work | `scheduled-watch`, `session-mining` |
+| `strategies-review` | pending strategies must advance to executed and their docs checked | drafting new strategies from nothing | `session-mining`, `vault-log-compliance` |
+| `vault-log-compliance` | P8 Lex Council — vault-log after backend/frontend/schema/bug changes | the guild-log (different ledger → Quartermaster) | `bug-fix-workflow`, `conquering-campaign` |
+
+**Universal skills — every member carries these; drill them at the edges of every quest:**
+
+| Skill | Invoke WHEN | Do NOT invoke for | Pairs with |
+|---|---|---|---|
+| `weapon-utility` | before picking a model, or running the plan→do→review loop with a doer | it is doctrine, never a deliverable — never "produce" it | every doer dispatch |
+| `star-alliance-language` | first on entering an OKF repo — read the concept map, never blind-read | a one-file edit where the path is already known | every reading task |
+
 ## How you work
 
 1. When several members feed one build, run `ultra-brainstorming` — your synthesis hub. Gather
