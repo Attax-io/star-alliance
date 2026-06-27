@@ -47,6 +47,29 @@ A wise guild member knows which blade to draw for each fight.
 - Authoring Claude Code hooks — the gates and banners that enforce the guild's standards
 - Full output when you need to see everything
 
+## Skill Drills
+
+When to draw each skill, and the adjacent task that wrongly pulls it.
+
+| Skill | Invoke WHEN | Do NOT invoke for | Pairs with |
+|---|---|---|---|
+| `bug-fix-workflow` | a bug lands in `bug_reports`; pull, triage, reproduce, fix, verify it | multi-wave bug campaigns (→ Strategist) or schema redesign (→ Architect) | `db-rename-sweep`, `full-output-enforcement` |
+| `db-rename-sweep` | a column, table, or function is about to be renamed or moved | greenfield schema design (→ Architect) or the fix itself | `bug-fix-workflow`, `supabase-postgres-best-practices` |
+| `dev-server` | the local Next.js dev server must start, restart, or stop | production deploys or pure code-logic debugging | `supabase`, `bug-fix-workflow` |
+| `graphify` | any input (code, docs, papers, images) must become a knowledge graph or answer a repo question | prose docs (→ `obsidian-markdown`) or hand-editing source | `obsidian-markdown` |
+| `claude-code-hooks` | authoring a PreToolUse/PostToolUse hook or fail-open shell gate | general app tooling (→ `dev-server`) or DB validation (→ `supabase`) | `full-output-enforcement` |
+| `supabase` | any Supabase app feature — client, SSR, auth, RLS, edge fns, realtime, storage | pure query/index tuning (→ `supabase-postgres-best-practices`) or schema design (→ Architect) | `supabase-postgres-best-practices`, `dev-server` |
+| `supabase-postgres-best-practices` | writing, reviewing, or tuning Postgres queries, indexes, perf | full Supabase app features (→ `supabase`) or fresh schema design (→ Architect) | `supabase`, `db-rename-sweep` |
+| `full-output-enforcement` | output must be exhaustive, untruncated, free of placeholders | brief replies, or design/strategy talk (→ Architect/Strategist) | `bug-fix-workflow`, `graphify` |
+| `obsidian-markdown` | dev docs in Obsidian md — wikilinks, callouts, properties | long-form strategy docs (→ Strategist) or graph ingestion (→ `graphify`) | `graphify` |
+
+**Universal skills — every member carries these; drill them at the edges of every quest:**
+
+| Skill | Invoke WHEN | Do NOT invoke for | Pairs with |
+|---|---|---|---|
+| `weapon-utility` | before picking a model, or running the plan→do→review loop with a doer | it is doctrine, never a deliverable — never "produce" it | every doer dispatch |
+| `star-alliance-language` | first on entering an OKF repo — read the concept map, never blind-read | a one-file edit where the path is already known | every reading task |
+
 ## How you work
 
 1. For bugs, follow `bug-fix-workflow` end-to-end — pull, triage, cleanse, verify. A
