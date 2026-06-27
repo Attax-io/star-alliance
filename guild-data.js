@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 61
     },
-    "generated": "2026-06-27T12:38:38Z",
+    "generated": "2026-06-27T12:53:07Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "gpt-5.5": "deactivated",
@@ -2302,7 +2302,7 @@ const GUILD = {
         "lines": 124,
         "words": 1516
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-developer"
       ]
@@ -2572,7 +2572,7 @@ const GUILD = {
         "lines": 75,
         "words": 1521
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-quartermaster"
       ]
@@ -2651,7 +2651,7 @@ const GUILD = {
         "lines": 92,
         "words": 917
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-designer"
       ]
@@ -2960,7 +2960,7 @@ const GUILD = {
         "lines": 28,
         "words": 292
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-butler"
       ]
@@ -3505,7 +3505,7 @@ const GUILD = {
     {
       "id": "okf",
       "name": "okf",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "icon": "🧹",
       "art": "",
       "artPng": true,
@@ -3519,6 +3519,7 @@ const GUILD = {
       "sections": [
         "What OKF requires (the whole spec, one screen)",
         "The standard, applied to THIS repo",
+        "Layout taxonomy — where each kind of file belongs",
         "How you work",
         "Conformance contract (what type: lets the reader assume)",
         "Don't",
@@ -3532,10 +3533,10 @@ const GUILD = {
         "okf_audit.py"
       ],
       "stats": {
-        "lines": 100,
-        "words": 822
+        "lines": 141,
+        "words": 1204
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-quartermaster"
       ]
@@ -3613,7 +3614,7 @@ const GUILD = {
         "lines": 54,
         "words": 834
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-merchant"
       ]
@@ -3760,7 +3761,7 @@ const GUILD = {
         "lines": 110,
         "words": 1311
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-architect"
       ]
@@ -3798,7 +3799,7 @@ const GUILD = {
         "lines": 85,
         "words": 780
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-strategist"
       ]
@@ -3890,7 +3891,7 @@ const GUILD = {
         "lines": 88,
         "words": 687
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-architect",
         "the-butler",
@@ -4122,7 +4123,7 @@ const GUILD = {
         "lines": 54,
         "words": 901
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-merchant"
       ]

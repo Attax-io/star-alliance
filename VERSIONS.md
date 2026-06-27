@@ -60,7 +60,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`market-recon`](star-alliance-skills/market-recon/SKILL.md) | 1.0.0 | own | 127 / 914 | 1115 / 55 | ✓ lean | The Merchant's craft for read-only market, investment, and risk analysis that ships a writ… |
 | [`members-formation`](star-alliance-skills/members-formation/SKILL.md) | 1.1.0 | own | 141 / 883 | 1775 / 178 | ✓ lean | The Butler's routing method — match an incoming request to the right star-map workflow in … |
 | [`obsidian-markdown`](star-alliance-skills/obsidian-markdown/SKILL.md) | 1.0.0 | own | 36 / 262 | 610 / 163 | ✓ lean | Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, a… |
-| [`okf`](star-alliance-skills/okf/SKILL.md) | 1.1.0 | own | 76 / 512 | 822 / 101 | ✓ lean | Keep the whole Star Alliance repo tidy and conformant to the Open Knowledge Format (OKF v0… |
+| [`okf`](star-alliance-skills/okf/SKILL.md) | 1.2.0 | own | 76 / 512 | 1204 / 142 | ✓ lean | Keep the whole Star Alliance repo tidy and conformant to the Open Knowledge Format (OKF v0… |
 | [`performance`](star-alliance-skills/performance/SKILL.md) | 1.0.3 | vendored | 32 / 219 | 1418 / 371 | ✓ lean | Optimize web performance for faster loading and better user experience |
 | [`portfolio-risk`](star-alliance-skills/portfolio-risk/SKILL.md) | 0.1.0 | own | 129 / 1005 | 834 / 55 | ✓ lean | The Merchant's craft for read-only, book-level portfolio construction and risk measurement… |
 | [`relationship-intel`](star-alliance-skills/relationship-intel/SKILL.md) | 1.0.0 | own | 136 / 961 | 1072 / 55 | ✓ lean | The Herald's craft for turning email traffic into living relationship intelligence so the … |
