@@ -446,5 +446,13 @@
     "tabler": "ti-map-2",
     "triggers": "'save this as a workflow', 'add this to the star map', 'register a workflow', 'crystallize this formation'",
     "modes": ""
+  },
+  "guild-sync": {
+    "icon": "🔄",
+    "blurb": "Prove the device still matches the repo, then reconcile drift",
+    "level": "Advanced",
+    "tabler": "ti-refresh",
+    "triggers": "'sync the repo with claude', 'is the device up to date', 'what else needs syncing', 'device parity', 'sync rotation', 'check for drift'",
+    "modes": ""
   }
 }

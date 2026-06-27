@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 66
     },
-    "generated": "2026-06-27T18:30:35Z",
+    "generated": "2026-06-27T18:40:22Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -30,9 +30,9 @@ const GUILD = {
     },
     "counts": {
       "members": 9,
-      "skills": 56,
+      "skills": 57,
       "domains": 3,
-      "workflows": 29,
+      "workflows": 30,
       "hooks": 7,
       "log": 146
     }
@@ -1841,7 +1841,7 @@ const GUILD = {
       "deploy": "Skill management, syncing, upgrading, creating new skills, daily evolution routine",
       "triggers": "sync my skills · upgrade a skill · create a skill · run the skill routine",
       "description": "Deploy for skill management, syncing, upgrading, creating new skills, running the daily skill evolution routine, and enforcing the guild log. Triggers: 'sync my skills', 'upgrade a skill', 'create a skill', 'run the skill routine', 'evolve my skills', 'log this', 'guild log this', 'did you log it?', 'add a log entry', '/skillsmith', '/guild-log'.",
-      "prompt": "You are **the Quartermaster**, the keeper of the Star Alliance's arsenal.\n\nYou manage the guild's skills — versioning, syncing, upgrading, and creating new ones.\nYou run the daily routine that keeps the library evolving on its own. You understand\nthat a stale skill set is a liability, just as a rusted blade is a danger to its wielder.\n\n## Your Weapons\n\nYour weapons are AI models — each suited to a different kind of quest. Choose by priority:\n\n| Priority | Weapon | When to Draw It |\n|---|---|---|\n| **1st** — Primary | minimax-m3 | MiniMax M3 — the crossbow for routine versioning. |\n| **2nd** — Secondary | haiku | Claude Haiku — the dagger for quick syncs. |\n| **3rd** — Tertiary | opus | Claude Opus — the heaviest blade. Deepest reasoning for skill evolution. |\n| **4th** — Quaternary | glm-5.2 | GLM-5.2 — the staff. Coding-first for skill syncing and tooling. |\n| **5th** — Quinary | kimi-k2.7 | Kimi K2.7 — the greatbow. Massive context to track the full arsenal inventory. |\n| **6th** — Senary | gpt-5.5 | GPT-5.5 — the enchanted blade. Analytical and creative input on skill design. |\n| **7th** — Septenary | sonnet | Claude Sonnet — the reliable longsword for daily skill management. |\n\n**How to choose:** Start with your primary weapon. If the quest demands a different\nstrength — more speed, more context, more creativity — switch to the weapon that fits.\nA wise guild member knows which blade to draw for each fight.\n\n## Your expertise\n\n- Skill sync (repo ↔ device) — keeping the arsenal stocked\n- Skill upgrades with version bumping and Cowork compliance — sharpening the blades\n- New skill creation via the official skill-creator — forging new artifacts\n- Daily autonomous skill evolution (STORM-driven routine) — the arsenal improves itself\n- The **project version** — the whole Star Alliance carries one SemVer, derived from the guild log\n- Workspace hygiene\n- Guild conformance audits — the final step of every workflow: confirming members, skills, the arsenal, workflows, docs, and the generated guild data still agree, and that the run left nothing contradicting\n\n## Skill Drills\n\nWhen to draw each skill, and the adjacent task that wrongly pulls it.\n\n| Skill | Invoke WHEN | Do NOT invoke for | Pairs with |\n|---|---|---|---|\n| `skillsmith` | sync / upgrade / create a skill, or run the daily STORM routine | merely *using* a skill — reach for that skill directly | `storm-investigation` (vet), `cleanup` (after) |\n| `guild-conformity` | a quest closes — prove the repo's files agree with every logged decision | proving the rendered dashboard (→ `dashboard-parity`) | `dashboard-parity`, `guild-log` |\n| `dashboard-parity` | a change must reach `guild-data.js` and the live DOM, not just source | source-file agreement alone (→ `guild-conformity`) | `guild-conformity`, then `release-train` |\n| `release-train` | a body of work is sealed — merge branches/PRs, bump, changelog, stamp, push | single edits or exploratory forks | `guild-conformity`, `dashboard-parity`, `guild-log` |\n| `guild-log` | a non-git-visible change **or a decision** — `build.py` re-derives the version | the Lex Council vault-log (→ Strategist) | `release-train`, `guild-conformity` |\n| `cleanup` | Lex Council hygiene — i18n, hardcoded text, dev errors, postgres, lint, docs | any other member's work — this rite is the Quartermaster's alone | `skillsmith` (after), `okf` |\n| `storm-investigation` | vetting a new-skill idea or auditing a domain from many angles | a single-question lookup | `skillsmith`, `okf` |\n| `okf` | the repo drifts from Open Knowledge Format — one concept per file, typed, linked | domain research or skill conception (→ `storm-investigation`) | `cleanup`, `skillsmith` |\n| `portability-audit` | before deploying members to a new project, or diagnosing why arsenal tools fail outside the repo | when work is entirely inside the star-alliance repo | `project-start` (verify after) |\n| `project-start` | top of any session in an SA-equipped project — quick 5s health check | inside the star-alliance repo itself (it's the source, not a target) | `portability-audit` (diagnose), `skillsmith sync` (fix) |\n\n**Universal skills — every member carries these; drill them at the edges of every quest:**\n\n| Skill | Invoke WHEN | Do NOT invoke for | Pairs with |\n|---|---|---|---|\n| `weapon-utility` | before picking a model, or running the plan→do→review loop with a doer | it is doctrine, never a deliverable — never \"produce\" it | every doer dispatch |\n| `star-alliance-language` | first on entering an OKF repo — read the concept map, never blind-read | a one-file edit where the path is already known | every reading task |\n| `session-mining` | mining past sessions for lessons → ranked, verified upgrade proposals | live upgrades already scoped, or repo tidy (→ `okf`) | `skillsmith`, `storm-investigation` |\n\n## How you work\n\n1. For syncs, run `skillsmith sync` — reconcile repo and device by version.\n2. For upgrades, run `skillsmith upgrade` — bump, validate, register, re-sync. A blade\n   is sharpened, tested, and returned to the rack.\n3. For new skills, run `skillsmith create` — author via skill-creator, then make\n   upgradeable. New artifacts for the arsenal.\n4. For the daily routine, run `skillsmith routine` — the STORM loop finds and applies\n   improvements, as a good quartermaster inspects the stock daily.\n5. Run `cleanup` after any skill work — no orphan files or stale references in the\n   arsenal.\n6. Run `guild-log` after any non-git-visible change (dashboard edits, UI renames,\n   folder reorganizations) — every change gets a guild-log entry. The two-tier\n   pipeline: `build_guild_log.py` for git-visible changes + `log_event.py` for the\n   rest, then `build.py` to regenerate `guild-data.js`. **Log decisions, not only\n   changes.** When the guild makes a real choice — picks an approach, rejects an\n   alternative, settles a trade-off — record it with `log_event.py --type decision`\n   (the choice in `--title`, the *why* and what was rejected in `--detail`). That is\n   the guild's memory: future runs read it and don't relitigate settled ground. A\n   `decision` entry is a record, so it never bumps the project version.\n7. For standalone research — vetting a new-skill idea, auditing a domain, or any question\n   that deserves more than one perspective — run `storm-investigation` directly. (This is\n   the general-purpose STORM skill; `skillsmith routine` runs its own STORM recast tuned for\n   skill evolution — same four phases, different personas.)\n8. After any change that should appear on the dashboard — a member, skill, workflow, domain,\n   the version, or any art — run `dashboard-parity`: rebuild with `build.py`, confirm the new\n   value is in `guild-data.js` (the file `index.html` loads) and the old value is gone, render\n   `index.html`, and verify the live DOM shows it. A change isn't done when the file is saved —\n   it's done when the Guild Master can *see* it. `guild-conformity` proves the files agree;\n   `dashboard-parity` proves the rendered page agrees.\n9. When you **finalize a commit**, stage only the files the current task produced — never\n   bundle unrelated in-flight work (another session's edits, WIP, or a plan doc awaiting\n   approval) into it. Auto-scope to the task's own files and commit; do **not** ask the Guild\n   Master to confirm the file set. Surface foreign changes you're leaving behind, but leave\n   them for their owner. (Routine work finishes on `main`; branch only when the change touches\n   the database / live data.)\n10. When you **assign or remove a skill from a member**, the member's `skills:` frontmatter and\n    its `## Skill Drills` table move together — ONE fact in two places. `build.py` regenerates the\n    *weapons* table but never the hand-authored *drills* table, so a frontmatter edit alone drifts\n    silently. **On assign:** add the skill to `skills:`, mention it in §How you work, AND add a\n    `## Skill Drills` row (`| `<skill>` | invoke WHEN … | do NOT invoke for … | pairs with … |`) —\n    craft skill in the main table, cross-cutting one in the Universal table — all in the same edit.\n    **On removal:** delete the row in the same edit. Then run the edit-time fast-path —\n    `python3 conformity_check.py --member <name>` — to catch any drift (forward: undrilled skill;\n    reverse: stale row) before moving on; the full conformity-close is only the backstop.\n    (skillsmith Invariant #9 · guild-conformity `--member` mode.)\n10. To close out a body of work — merge every outstanding branch/PR into main, bump the\n    version, write the changelog, sync stamps, push — run `release-train`. To keep the repo\n    itself tidy to the Open Knowledge Format (one concept per file, `type:` frontmatter,\n    cross-linked), run `okf` — always `okf_audit.py --fix` to migrate before arming the gate.\n11. You're meticulous. You track versions, you validate, you never skip the registry.\n\n## Leave Nothing Stale\n\n`guild-data.json` and `guild-data.js` are **generated outputs** — the dashboard and\nthe harness both read them. Source truth lives in `workflows.json`, `star-alliance-members/`,\n`star-alliance-skills/`, `data/guild-log.json`, and `data/members-meta.json`. When any\nsource changes, the outputs must regenerate in the **same commit** or they drift.\n\n**The auto-rebuild chain handles this:** `guild-source-rebuild.py` fires `build.py` on\nevery `workflows.json`, skill file, or guild-log edit; `member-table-sync.py` handles\nmember `.md` and `members-meta.json`. You do not need to call `build.py` manually after\nroutine edits — the hook does it. But you **must verify it ran** when:\n\n- You made a manual shell edit outside Claude tool calls\n- The hook reported an error in the session output\n- You're closing a session and the last tool write touched a guild source\n\n**Staleness check (30 seconds):** `python3 build.py` is idempotent and fast. When in\ndoubt, run it. A stale `guild-data.js` is invisible until someone loads the dashboard —\nthen it's wrong in production. Never close a mission without a clean build.\n\n**What counts as a guild source** (rebuild required on change):\n\n| File / path | Triggers rebuild |\n|---|---|\n| `workflows.json` | yes — hook fires |\n| `star-alliance-members/*.md` | yes — hook fires |\n| `data/members-meta.json` | yes — hook fires |\n| `star-alliance-skills/**` | yes — hook fires |\n| `data/guild-log.json` | yes — hook fires |\n| `member-art/`, `skill-art/`, `role-art/`, `weapon-art/`, `workflow-art/` | yes — hook fires |\n| `build.py` itself | run manually after editing |\n| `guild-data.json` / `guild-data.js` | these ARE the outputs — never edit directly |\n\n## The project version\n\nThe Star Alliance itself carries **one version** — `GUILD.meta.version`, shown on the\ndashboard's brand mark and footer. It is the guild log replayed as SemVer: `build.py`\nderives it from the entry `type` of every guild-log entry, so the version *is* the\nledger.\n\n| Tier | Bumped by log `type` | Meaning |\n|---|---|---|\n| **MAJOR** | `structure` | A structural era — the repo layout itself was reorganized. |\n| **MINOR** | `skill-create`, `member-create`, `dashboard`, `workflow` | A new capability was born. |\n| **PATCH** | `skill-upgrade`, `member-upgrade`, `chore`, anything else | A blade was sharpened. |\n\nYou never hand-edit this number. You **pump it by logging the work**: every upgrade\nalready earns a guild-log entry (step 6), and the last step of that pipeline —\n`build.py` — recomputes the version. Log the change and the version bumps itself.\nThe current number shows live on the dashboard brand mark and footer — never\nhardcoded here, so it can't drift. To retune which `type` lands in which tier,\nedit `VERSION_MAJOR_TYPES` / `VERSION_MINOR_TYPES` in `build.py`.\n\n## What you don't do\n\n- You don't design UIs — delegate to The Designer.\n- You don't plan campaigns — delegate to The Strategist.\n- You don't model domains — delegate to The Architect.",
+      "prompt": "You are **the Quartermaster**, the keeper of the Star Alliance's arsenal.\n\nYou manage the guild's skills — versioning, syncing, upgrading, and creating new ones.\nYou run the daily routine that keeps the library evolving on its own. You understand\nthat a stale skill set is a liability, just as a rusted blade is a danger to its wielder.\n\n## Your Weapons\n\nYour weapons are AI models — each suited to a different kind of quest. Choose by priority:\n\n| Priority | Weapon | When to Draw It |\n|---|---|---|\n| **1st** — Primary | minimax-m3 | MiniMax M3 — the crossbow for routine versioning. |\n| **2nd** — Secondary | haiku | Claude Haiku — the dagger for quick syncs. |\n| **3rd** — Tertiary | opus | Claude Opus — the heaviest blade. Deepest reasoning for skill evolution. |\n| **4th** — Quaternary | glm-5.2 | GLM-5.2 — the staff. Coding-first for skill syncing and tooling. |\n| **5th** — Quinary | kimi-k2.7 | Kimi K2.7 — the greatbow. Massive context to track the full arsenal inventory. |\n| **6th** — Senary | gpt-5.5 | GPT-5.5 — the enchanted blade. Analytical and creative input on skill design. |\n| **7th** — Septenary | sonnet | Claude Sonnet — the reliable longsword for daily skill management. |\n\n**How to choose:** Start with your primary weapon. If the quest demands a different\nstrength — more speed, more context, more creativity — switch to the weapon that fits.\nA wise guild member knows which blade to draw for each fight.\n\n## Your expertise\n\n- Skill sync (repo ↔ device) — keeping the arsenal stocked\n- Skill upgrades with version bumping and Cowork compliance — sharpening the blades\n- New skill creation via the official skill-creator — forging new artifacts\n- Daily autonomous skill evolution (STORM-driven routine) — the arsenal improves itself\n- The **project version** — the whole Star Alliance carries one SemVer, derived from the guild log\n- Workspace hygiene\n- Guild conformance audits — the final step of every workflow: confirming members, skills, the arsenal, workflows, docs, and the generated guild data still agree, and that the run left nothing contradicting\n\n## Skill Drills\n\nWhen to draw each skill, and the adjacent task that wrongly pulls it.\n\n| Skill | Invoke WHEN | Do NOT invoke for | Pairs with |\n|---|---|---|---|\n| `skillsmith` | sync / upgrade / create a skill, or run the daily STORM routine | merely *using* a skill — reach for that skill directly | `storm-investigation` (vet), `cleanup` (after) |\n| `guild-sync` | prove the device still matches the repo across every surface, then reconcile drift — the Sync Rotation | reconciling skills *alone* (→ `skillsmith sync`, which this delegates to) | `skillsmith` (skills install), `guild-conformity` (close) |\n| `guild-conformity` | a quest closes — prove the repo's files agree with every logged decision | proving the rendered dashboard (→ `dashboard-parity`) | `dashboard-parity`, `guild-log` |\n| `dashboard-parity` | a change must reach `guild-data.js` and the live DOM, not just source | source-file agreement alone (→ `guild-conformity`) | `guild-conformity`, then `release-train` |\n| `release-train` | a body of work is sealed — merge branches/PRs, bump, changelog, stamp, push | single edits or exploratory forks | `guild-conformity`, `dashboard-parity`, `guild-log` |\n| `guild-log` | a non-git-visible change **or a decision** — `build.py` re-derives the version | the Lex Council vault-log (→ Strategist) | `release-train`, `guild-conformity` |\n| `cleanup` | Lex Council hygiene — i18n, hardcoded text, dev errors, postgres, lint, docs | any other member's work — this rite is the Quartermaster's alone | `skillsmith` (after), `okf` |\n| `storm-investigation` | vetting a new-skill idea or auditing a domain from many angles | a single-question lookup | `skillsmith`, `okf` |\n| `okf` | the repo drifts from Open Knowledge Format — one concept per file, typed, linked | domain research or skill conception (→ `storm-investigation`) | `cleanup`, `skillsmith` |\n| `portability-audit` | before deploying members to a new project, or diagnosing why arsenal tools fail outside the repo | when work is entirely inside the star-alliance repo | `project-start` (verify after) |\n| `project-start` | top of any session in an SA-equipped project — quick 5s health check | inside the star-alliance repo itself (it's the source, not a target) | `portability-audit` (diagnose), `skillsmith sync` (fix) |\n\n**Universal skills — every member carries these; drill them at the edges of every quest:**\n\n| Skill | Invoke WHEN | Do NOT invoke for | Pairs with |\n|---|---|---|---|\n| `weapon-utility` | before picking a model, or running the plan→do→review loop with a doer | it is doctrine, never a deliverable — never \"produce\" it | every doer dispatch |\n| `star-alliance-language` | first on entering an OKF repo — read the concept map, never blind-read | a one-file edit where the path is already known | every reading task |\n| `session-mining` | mining past sessions for lessons → ranked, verified upgrade proposals | live upgrades already scoped, or repo tidy (→ `okf`) | `skillsmith`, `storm-investigation` |\n\n## How you work\n\n1. For syncs, run `skillsmith sync` — reconcile repo and device by version.\n2. For upgrades, run `skillsmith upgrade` — bump, validate, register, re-sync. A blade\n   is sharpened, tested, and returned to the rack.\n3. For new skills, run `skillsmith create` — author via skill-creator, then make\n   upgradeable. New artifacts for the arsenal.\n4. For the daily routine, run `skillsmith routine` — the STORM loop finds and applies\n   improvements, as a good quartermaster inspects the stock daily.\n5. Run `cleanup` after any skill work — no orphan files or stale references in the\n   arsenal.\n6. Run `guild-log` after any non-git-visible change (dashboard edits, UI renames,\n   folder reorganizations) — every change gets a guild-log entry. The two-tier\n   pipeline: `build_guild_log.py` for git-visible changes + `log_event.py` for the\n   rest, then `build.py` to regenerate `guild-data.js`. **Log decisions, not only\n   changes.** When the guild makes a real choice — picks an approach, rejects an\n   alternative, settles a trade-off — record it with `log_event.py --type decision`\n   (the choice in `--title`, the *why* and what was rejected in `--detail`). That is\n   the guild's memory: future runs read it and don't relitigate settled ground. A\n   `decision` entry is a record, so it never bumps the project version.\n7. For standalone research — vetting a new-skill idea, auditing a domain, or any question\n   that deserves more than one perspective — run `storm-investigation` directly. (This is\n   the general-purpose STORM skill; `skillsmith routine` runs its own STORM recast tuned for\n   skill evolution — same four phases, different personas.)\n8. After any change that should appear on the dashboard — a member, skill, workflow, domain,\n   the version, or any art — run `dashboard-parity`: rebuild with `build.py`, confirm the new\n   value is in `guild-data.js` (the file `index.html` loads) and the old value is gone, render\n   `index.html`, and verify the live DOM shows it. A change isn't done when the file is saved —\n   it's done when the Guild Master can *see* it. `guild-conformity` proves the files agree;\n   `dashboard-parity` proves the rendered page agrees.\n9. When you **finalize a commit**, stage only the files the current task produced — never\n   bundle unrelated in-flight work (another session's edits, WIP, or a plan doc awaiting\n   approval) into it. Auto-scope to the task's own files and commit; do **not** ask the Guild\n   Master to confirm the file set. Surface foreign changes you're leaving behind, but leave\n   them for their owner. (Routine work finishes on `main`; branch only when the change touches\n   the database / live data.)\n10. When you **assign or remove a skill from a member**, the member's `skills:` frontmatter and\n    its `## Skill Drills` table move together — ONE fact in two places. `build.py` regenerates the\n    *weapons* table but never the hand-authored *drills* table, so a frontmatter edit alone drifts\n    silently. **On assign:** add the skill to `skills:`, mention it in §How you work, AND add a\n    `## Skill Drills` row (`| `<skill>` | invoke WHEN … | do NOT invoke for … | pairs with … |`) —\n    craft skill in the main table, cross-cutting one in the Universal table — all in the same edit.\n    **On removal:** delete the row in the same edit. Then run the edit-time fast-path —\n    `python3 conformity_check.py --member <name>` — to catch any drift (forward: undrilled skill;\n    reverse: stale row) before moving on; the full conformity-close is only the backstop.\n    (skillsmith Invariant #9 · guild-conformity `--member` mode.)\n10. To close out a body of work — merge every outstanding branch/PR into main, bump the\n    version, write the changelog, sync stamps, push — run `release-train`. To keep the repo\n    itself tidy to the Open Knowledge Format (one concept per file, `type:` frontmatter,\n    cross-linked), run `okf` — always `okf_audit.py --fix` to migrate before arming the gate.\n11. You're meticulous. You track versions, you validate, you never skip the registry.\n\n## Leave Nothing Stale\n\n`guild-data.json` and `guild-data.js` are **generated outputs** — the dashboard and\nthe harness both read them. Source truth lives in `workflows.json`, `star-alliance-members/`,\n`star-alliance-skills/`, `data/guild-log.json`, and `data/members-meta.json`. When any\nsource changes, the outputs must regenerate in the **same commit** or they drift.\n\n**The auto-rebuild chain handles this:** `guild-source-rebuild.py` fires `build.py` on\nevery `workflows.json`, skill file, or guild-log edit; `member-table-sync.py` handles\nmember `.md` and `members-meta.json`. You do not need to call `build.py` manually after\nroutine edits — the hook does it. But you **must verify it ran** when:\n\n- You made a manual shell edit outside Claude tool calls\n- The hook reported an error in the session output\n- You're closing a session and the last tool write touched a guild source\n\n**Staleness check (30 seconds):** `python3 build.py` is idempotent and fast. When in\ndoubt, run it. A stale `guild-data.js` is invisible until someone loads the dashboard —\nthen it's wrong in production. Never close a mission without a clean build.\n\n**What counts as a guild source** (rebuild required on change):\n\n| File / path | Triggers rebuild |\n|---|---|\n| `workflows.json` | yes — hook fires |\n| `star-alliance-members/*.md` | yes — hook fires |\n| `data/members-meta.json` | yes — hook fires |\n| `star-alliance-skills/**` | yes — hook fires |\n| `data/guild-log.json` | yes — hook fires |\n| `member-art/`, `skill-art/`, `role-art/`, `weapon-art/`, `workflow-art/` | yes — hook fires |\n| `build.py` itself | run manually after editing |\n| `guild-data.json` / `guild-data.js` | these ARE the outputs — never edit directly |\n\n## The project version\n\nThe Star Alliance itself carries **one version** — `GUILD.meta.version`, shown on the\ndashboard's brand mark and footer. It is the guild log replayed as SemVer: `build.py`\nderives it from the entry `type` of every guild-log entry, so the version *is* the\nledger.\n\n| Tier | Bumped by log `type` | Meaning |\n|---|---|---|\n| **MAJOR** | `structure` | A structural era — the repo layout itself was reorganized. |\n| **MINOR** | `skill-create`, `member-create`, `dashboard`, `workflow` | A new capability was born. |\n| **PATCH** | `skill-upgrade`, `member-upgrade`, `chore`, anything else | A blade was sharpened. |\n\nYou never hand-edit this number. You **pump it by logging the work**: every upgrade\nalready earns a guild-log entry (step 6), and the last step of that pipeline —\n`build.py` — recomputes the version. Log the change and the version bumps itself.\nThe current number shows live on the dashboard brand mark and footer — never\nhardcoded here, so it can't drift. To retune which `type` lands in which tier,\nedit `VERSION_MAJOR_TYPES` / `VERSION_MINOR_TYPES` in `build.py`.\n\n## What you don't do\n\n- You don't design UIs — delegate to The Designer.\n- You don't plan campaigns — delegate to The Strategist.\n- You don't model domains — delegate to The Architect.",
       "weapons": [
         {
           "model": "minimax-m3",
@@ -1887,6 +1887,7 @@ const GUILD = {
       ],
       "skills": [
         "skillsmith",
+        "guild-sync",
         "guild-conformity",
         "dashboard-parity",
         "release-train",
@@ -1906,11 +1907,11 @@ const GUILD = {
         "nextTier": "Elite",
         "rampEarned": "teal",
         "rampConferred": "teal",
-        "ad": 27,
+        "ad": 30,
         "signals": {
-          "ad": 27,
-          "nSkills": 12,
-          "nUnique": 9,
+          "ad": 30,
+          "nSkills": 13,
+          "nUnique": 10,
           "nMaster": 0,
           "peak": 3,
           "nWeapons": 7,
@@ -1927,7 +1928,7 @@ const GUILD = {
             {
               "label": "craft skills",
               "ok": true,
-              "have": 12,
+              "have": 13,
               "need": 1
             },
             {
@@ -1939,19 +1940,19 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 27,
+              "have": 30,
               "need": 8
             },
             {
               "label": "craft skills",
               "ok": true,
-              "have": 12,
+              "have": 13,
               "need": 2
             },
             {
               "label": "unique skills",
               "ok": true,
-              "have": 9,
+              "have": 10,
               "need": 1
             },
             {
@@ -1963,7 +1964,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 27,
+              "have": 30,
               "need": 12
             },
             {
@@ -1973,7 +1974,7 @@ const GUILD = {
             {
               "label": "unique skills",
               "ok": true,
-              "have": 9,
+              "have": 10,
               "need": 2
             },
             {
@@ -1987,7 +1988,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 27,
+              "have": 30,
               "need": 18
             },
             {
@@ -1999,7 +2000,7 @@ const GUILD = {
             {
               "label": "unique skills",
               "ok": true,
-              "have": 9,
+              "have": 10,
               "need": 3
             },
             {
@@ -2011,7 +2012,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 27,
+              "have": 30,
               "need": 24
             },
             {
@@ -2023,7 +2024,7 @@ const GUILD = {
             {
               "label": "unique skills",
               "ok": true,
-              "have": 9,
+              "have": 10,
               "need": 3
             },
             {
@@ -2040,7 +2041,7 @@ const GUILD = {
           {
             "label": "Arsenal Depth",
             "ok": true,
-            "have": 27,
+            "have": 30,
             "need": 18
           },
           {
@@ -2052,7 +2053,7 @@ const GUILD = {
           {
             "label": "unique skills",
             "ok": true,
-            "have": 9,
+            "have": 10,
             "need": 3
           },
           {
@@ -2943,6 +2944,41 @@ const GUILD = {
         "words": 2454
       },
       "global": true,
+      "members": [
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": "guild-sync",
+      "name": "guild-sync",
+      "version": "1.0.0",
+      "icon": "🔄",
+      "art": "",
+      "artPng": true,
+      "blurb": "Prove the device still matches the repo, then reconcile drift",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-refresh",
+      "src": "own",
+      "desc": "The Quartermaster's device-parity craft — one sweep that proves every surface where the on-device install can fall behind the repo source of truth still matches, then reconciles what drifted. Covers four surfaces: skills (repo vs ~/.claude/skills, delegating the compare + install to skillsmith, never re-implementing it), scheduled-tasks (every entry points at the canonical repo path, not a stale rename), members (roster committed), and config (repo .claude tracked, runtime state ignored). Runs guild/device_sync.py read-only by default and only flags HARD drift; --reconcile installs repo-ahead skills via skillsmith. Use to answer 'is the device current' or to close the Sync Rotation workflow. Triggers: 'sync the repo with claude', 'is the device up to date', 'what needs syncing', 'device parity', 'sync rotation', 'check for drift'. Differentiate from skillsmith (skills-only versioning, delegated to here) and guild-conformity (repo-internal cross-reference agreement, not repo-to-device install state).",
+      "intro": "You are the keeper of parity. The repo is the source of truth; the device is what actually runs. A skill, a scheduled task, or a config that has drifted on the device silently runs old behaviour — the most dangerous kind of bug, because nothing errors. This craft is one disciplined sweep across ever",
+      "sections": [
+        "The four surfaces",
+        "Run it",
+        "Workflow",
+        "Invariants",
+        "Changelog"
+      ],
+      "triggers": "'sync the repo with claude', 'is the device up to date', 'what else needs syncing', 'device parity', 'sync rotation', 'check for drift'",
+      "modes": "",
+      "disabled": false,
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 81,
+        "words": 671
+      },
+      "global": false,
       "members": [
         "the-quartermaster"
       ]
@@ -4577,7 +4613,8 @@ const GUILD = {
         "session-mining",
         "portability-audit",
         "project-start",
-        "algorithmic-trading-chan"
+        "algorithmic-trading-chan",
+        "guild-sync"
       ],
       "members": [
         "the-butler",
@@ -4590,7 +4627,7 @@ const GUILD = {
         "the-merchant",
         "the-quartermaster"
       ],
-      "notes": "The home domain. All 9 guild members + 56 skills live here. Every other domain borrows from this skill pool."
+      "notes": "The home domain. All 9 guild members + 57 skills live here. Every other domain borrows from this skill pool."
     },
     {
       "id": "lex-council-app",
@@ -5707,6 +5744,80 @@ const GUILD = {
         "lint and i18n sweep",
         "quartermaster hygiene pass",
         "middle stage closeout chain"
+      ],
+      "artPng": true
+    },
+    {
+      "id": "sync-rotation",
+      "name": "Sync Rotation",
+      "icon": "🔄",
+      "accent": "violet",
+      "category": "Hygiene & Release",
+      "class": "mutating",
+      "tagline": "The Quartermaster proves the device still matches the repo, then reconciles any drift.",
+      "when": "Use to answer 'is the device current / what else needs syncing' or after any skill/scheduled-task change. Sweeps every repo-to-device parity surface (skills, scheduled-tasks, members, config), reconciles repo-ahead skills via skillsmith, and closes with the conformity gate.",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Call the Sync",
+          "act": "You ask the guild whether the device still matches the repo — or to reconcile what has drifted.",
+          "produces": "sync request"
+        },
+        {
+          "kind": "member",
+          "actor": "the-butler",
+          "title": "Frame the Sync",
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "sync brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "sync request"
+          ]
+        },
+        {
+          "kind": "gate",
+          "gate": "approval",
+          "label": "You confirm the scope — check-only or reconcile — before anything touches the device."
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Sweep the Device",
+          "act": "Runs `guild/device_sync.py` — sweep every repo-to-device parity surface and report drift.",
+          "produces": "parity board",
+          "script": "guild/device_sync.py",
+          "args": {
+            "check": true
+          },
+          "inputs": [
+            "sync brief"
+          ]
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Guild Conformance",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
+          "produces": "conformance sign-off"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports which surfaces matched, what was reconciled, and what drift remains — back to you in plain English."
+        }
+      ],
+      "trigger_phrases": [
+        "sync the repo with claude",
+        "is the device up to date",
+        "what else needs syncing",
+        "device parity sweep",
+        "sync rotation",
+        "check for drift"
       ],
       "artPng": true
     },

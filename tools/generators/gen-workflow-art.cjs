@@ -75,6 +75,10 @@ const WORKFLOWS = [
     prompt: `${STYLE}. A VIOLET enchanted broom of light sweeping glowing debris and tangled threads off an aged parchment ledger, runes snapping into clean alignment, methodical housekeeping across many small modes`,
   },
   {
+    id: "sync-rotation",
+    prompt: `${STYLE}. Two facing arcane tomes on dark parchment bound by a glowing ring of VIOLET circular arrows flowing between them, a master ledger and its living mirror-copy held in perfect step, a few stray runes on the copy flaring red and a thread of violet light drawing them back into alignment, the closing rite that keeps the device true to the repo`,
+  },
+  {
     id: "release-train",
     prompt: `${STYLE}. A CYAN celestial locomotive of light hauling merged banner-branches into one bright main line, a version sigil stamped on its side, departing a station gate, a clean coordinated shipment`,
   },

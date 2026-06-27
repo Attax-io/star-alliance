@@ -3,7 +3,7 @@ name: the-quartermaster
 description: "Deploy for skill management, syncing, upgrading, creating new skills, running the daily skill evolution routine, and enforcing the guild log. Triggers: 'sync my skills', 'upgrade a skill', 'create a skill', 'run the skill routine', 'evolve my skills', 'log this', 'guild log this', 'did you log it?', 'add a log entry', '/skillsmith', '/guild-log'."
 model: sonnet
 tools: [Read, Edit, Write, Bash]
-skills: [skillsmith, guild-conformity, dashboard-parity, release-train, guild-log, cleanup, storm-investigation, session-mining, okf, star-alliance-language, weapon-utility, portability-audit, project-start]
+skills: [skillsmith, guild-sync, guild-conformity, dashboard-parity, release-train, guild-log, cleanup, storm-investigation, session-mining, okf, star-alliance-language, weapon-utility, portability-audit, project-start]
 weapons: [minimax-m3, haiku, opus, glm-5.2, kimi-k2.7, gpt-5.5, sonnet]  # priority order: doers→thinkers→sonnet
 type: Member
 
@@ -49,6 +49,7 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | Skill | Invoke WHEN | Do NOT invoke for | Pairs with |
 |---|---|---|---|
 | `skillsmith` | sync / upgrade / create a skill, or run the daily STORM routine | merely *using* a skill — reach for that skill directly | `storm-investigation` (vet), `cleanup` (after) |
+| `guild-sync` | prove the device still matches the repo across every surface, then reconcile drift — the Sync Rotation | reconciling skills *alone* (→ `skillsmith sync`, which this delegates to) | `skillsmith` (skills install), `guild-conformity` (close) |
 | `guild-conformity` | a quest closes — prove the repo's files agree with every logged decision | proving the rendered dashboard (→ `dashboard-parity`) | `dashboard-parity`, `guild-log` |
 | `dashboard-parity` | a change must reach `guild-data.js` and the live DOM, not just source | source-file agreement alone (→ `guild-conformity`) | `guild-conformity`, then `release-train` |
 | `release-train` | a body of work is sealed — merge branches/PRs, bump, changelog, stamp, push | single edits or exploratory forks | `guild-conformity`, `dashboard-parity`, `guild-log` |

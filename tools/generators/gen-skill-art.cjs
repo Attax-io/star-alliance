@@ -162,6 +162,10 @@ const SKILLS = [
     prompt: `${STYLE}. A great golden scale of justice each pan bearing a glowing guild seal, a crystal magnifying lens hovering over an open parchment ledger, threads of light cross-checking matching runes between two tomes, a blazing green checkmark sigil where all aligns, audit made harmony`,
   },
   {
+    id: "guild-sync",
+    prompt: `${STYLE}. Two facing enchanted mirrors on dark parchment — a master tome of glowing golden runes on the left, its living reflection on the right — bound by a ring of circular arrows of light flowing between them keeping both in perfect step, a few stray runes on the reflection flaring red where they have fallen out of sync and a golden thread reaching out to draw them back into alignment, the art of keeping the copy true to the source`,
+  },
+  {
     id: "market-recon",
     prompt: `${STYLE}. A brass-and-crystal merchant's spyglass over an arcane market chart, glowing green and crimson candlestick bars rising across aged parchment, floating risk-runes and a balanced coin-scale, eyes-only reconnaissance of fortunes, observation not execution`,
   },
