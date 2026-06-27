@@ -2,7 +2,7 @@
 name: weapon-utility
 description: "Every member's rule for which weapon (model) to draw and how thinker and doer weapons work together. Thinker weapons read, plan, and prompt the doers; doer weapons do the job and return it; the thinker then reviews the result against the plan and re-prompts the doer until it conforms. A member draws the highest-priority AVAILABLE weapon of the kind the job needs — scanning its arsenal left to right. One thinker plans and reviews and may dispatch several doers in parallel (many of one model or a mix); only ultra-brainstorming runs several thinkers at once. Use whenever a member must pick a model, decide thinker-vs-doer, or run the plan → do → review loop. Triggers: 'which weapon', 'which model should X use', 'pick the weapon', 'thinker or doer', 'draw a weapon', 'run the weapon loop', 'how does the member choose its model'. Every member consults this before acting — it is the atomic layer beneath members-formation (which member works) and ultra-brainstorming (fuse several members across models)."
 metadata:
-  version: 2.2.0
+  version: 3.0.0
 type: Skill
 
 ---
@@ -21,6 +21,25 @@ Know what it is *not*:
   blades. The two meet only in the exception below.
 - Not the arsenal **order** itself — that is fixed by decision **#25** (doers first, then
   thinkers/duals, then Sonnet last). This skill *reads* that order; it does not set it.
+
+## The arsenal is universal — four seats
+
+The arsenal is no longer a per-member loadout; it is **one universal set**, organized as four
+**seats** defined once in `star-alliance-arsenal/models.json` → `seats` (each a DEFAULT model
++ a FALLBACK chain):
+
+- **Brain** — the model the member RUNS AS (`model:` in its `.md`); plans, reviews, wields the
+  tools. The **only per-member seat** (an override of `seats.brain`, default `opus`).
+- **Doer** — `minimax-m3`; the hands (bulk execution, returns text, no tools).
+- **Critic** — `glm-5.2`; the independent reviewer, a *different family* than the Brain (see
+  §The Critic seat).
+- **Bench** — every other model; the **swarm pool**. Pull N with
+  `python3 star-alliance-arsenal/bench_pull.py doer|thinker <N>` → doer-swarm (parallel slices,
+  via `guild/delegate.py`) or thinker-swarm ([[ultra-brainstorming]]).
+
+The doctrine below is unchanged — only the *source* of the arsenal moved from nine hand-kept
+loadouts to one seat registry (killing the per-member drift class). "Brain" / "Doer" / "Critic" /
+"Bench" are the seat names; the role taxonomy (thinker/doer/both) still classifies each model.
 
 ## The two kinds of weapon
 
@@ -257,6 +276,7 @@ python3 tools/efficiency_report.py   # shows median in/out tokens split by lite 
 **The safety check always wins:** before adjusting any `size_small_signals`, verify zero high-stakes turns in the LITE column (a migration, git push, deploy in a LITE-tagged turn is the hard failure). Stakes keyword list in `data/harness.json` is immutable until safety is confirmed.
 
 ## Changelog
+- **3.0.0** — **Universal arsenal (4 seats).** The arsenal is no longer nine hand-kept per-member loadouts — it is ONE universal set of seats (Brain/Doer/Critic/Bench) defined in `models.json` → `seats`. New §The arsenal is universal. Only the **Brain** is per-member (the `model:` it runs as); Doer/Critic are universal seat defaults; **Bench** is the swarm pool, pulled via new `star-alliance-arsenal/bench_pull.py`. build.py now DERIVES each member's arsenal from the seats; per-member `weapons:`/`weaponsDesc` deleted (drift class killed); conformity retired A/PD/W/S/WT, added ST. Selection-contract change (source of the arsenal) → MAJOR. Phase 2–4 of the 4-seat Architecture Build.
 - **2.2.0** — **Critic seat (third seat).** New §The Critic seat: Brain plans · Doer executes · **Critic refutes** before ship. Default `glm-5.2` (a DIFFERENT family than the opus Brain — diverse blind spots, enforced by `conformity_check` ST). Two modes: COLD (`critique.py`, GLM text-only, no tools) vs GROUNDED (a Claude review agent that runs grep/build — the only way to catch *absence* bugs). Seats now live in `models.json` → `seats` (Brain/Doer/Critic/Bench), emitted to guild-data. Phase 1 of the 4-seat Architecture Build (additive; the full per-member→universal arsenal rewrite is Phase 2). New seat doctrine → MINOR.
 - **2.1.1** — Removed the dead `gpt-5.5` reference from the escalation-thinker list and the availability example (model retired from the arsenal — Strategic Audit 2026-06-28). Refs → PATCH.
 - **2.1.0** — **Swarm dispatch (mined from SWARM Parallelism, `yandex-research/swarm`).** New §Swarm dispatch maps three ideas from training over unreliable/heterogeneous/preemptible nodes onto the doer fan-out: **(1) throughput-weighted fan-out** — split a mixed doer pool ∝ each doer's measured speed/reliability (give `minimax-m3` the bulk), not round-robin; heterogeneity self-balances. **(2) mid-flight slice reroute** — a `None` in the `delegate_many` result is a *preempted peer, not a dead job*: re-dispatch that one slice to the next doer right (same plan/prompt), the left→right doer-fallback applied at SLICE granularity mid-flight instead of whole-job; only an exhausted pool for that slice fails up to the thinker. Closes the prior gap where the skill cited `delegate_many`'s `None` contract (1.5.0) but gave no doctrine for handling it. **(3) stable-coordinator / swappable-workers** — names the *why* behind reroute: the thinker (Claude brain) is SWARM's stable cheap monitor (always reachable, holds plan + tool buttons); doers are the preemptible GPU peers — never put the plan or tool calls on a weapon that can vanish. New dispatch doctrine → MINOR.

@@ -496,6 +496,8 @@ kbd {
 .weapon-role-pip { position: absolute; bottom: 6px; right: 6px; width: 24px; height: 24px; border-radius: 6px; object-fit: cover; border: 1px solid color-mix(in srgb, var(--rc) 60%, transparent); box-shadow: 0 0 8px color-mix(in srgb, var(--rc) 50%, transparent); z-index: 2; }
 .weapon-brain-flag { position: absolute; top: 6px; left: 6px; z-index: 3; font-size: 9px; font-weight: 700; letter-spacing: .08em; color: #0a0e1a; background: #9d7bff; border-radius: 4px; padding: 2px 5px; line-height: 1.2; pointer-events: none; }
 .weapon-doer-flag { position: absolute; top: 6px; left: 6px; z-index: 3; font-size: 9px; font-weight: 700; letter-spacing: .08em; color: #0a0e1a; background: #ffb04e; border-radius: 4px; padding: 2px 5px; line-height: 1.2; pointer-events: none; }
+.weapon-critic-flag { position: absolute; top: 6px; right: 6px; z-index: 3; font-size: 9px; font-weight: 700; letter-spacing: .08em; color: #0a0e1a; background: #ff6b9d; border-radius: 4px; padding: 2px 5px; line-height: 1.2; pointer-events: none; }
+.is-critic { border-color: color-mix(in srgb, #ff6b9d 45%, var(--line-2)); box-shadow: 0 0 0 1px color-mix(in srgb, #ff6b9d 25%, transparent); }
 .is-brain { border-color: color-mix(in srgb, #9d7bff 45%, var(--line-2)); box-shadow: 0 0 0 1px color-mix(in srgb, #9d7bff 25%, transparent); }
 .is-doer { border-color: color-mix(in srgb, #ffb04e 45%, var(--line-2)); box-shadow: 0 0 0 1px color-mix(in srgb, #ffb04e 25%, transparent); }
 

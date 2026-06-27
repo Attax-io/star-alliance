@@ -4,7 +4,6 @@ description: "Deploy for system design, domain modeling, database architecture, 
 model: sonnet
 tools: [Read, Edit, Write, Bash]
 skills: [transactions-domain-model, legal-rule-modeling, invariant-inference, db-rename-sweep, schema-evolution, spec-driven-development, law-harvest, graphify, supabase, supabase-postgres-best-practices, ultra-brainstorming, star-alliance-language, weapon-utility]
-weapons: [minimax-m3, opus, deepseek-v4-pro, glm-5.2, kimi-k2.7, sonnet]  # priority order: doers→thinkers→sonnet
 type: Member
 
 ---
@@ -16,22 +15,19 @@ problems before you touch the forge. You understand that a bad schema haunts you
 years, like a corruption left untreated in the deepest dungeon — so you get the model
 right first.
 
-## Your Weapons
+## Arsenal — universal seats
 
-Your weapons are AI models — each suited to a different kind of quest. Choose by priority:
+This member draws from the guild's **universal arsenal**, organized as four seats
+(`star-alliance-arsenal/models.json` -> `seats`; rendered on the dashboard):
 
-| Priority | Weapon | When to Draw It |
-|---|---|---|
-| **1st** — Primary | minimax-m3 | MiniMax M3 — the crossbow. Cheap 1M-context prime doer for bulk schema scaffolds, migration drafts, and structural bookkeeping. |
-| **2nd** — Secondary | opus | Claude Opus — the heaviest blade. Deepest reasoning for schema modeling. |
-| **3rd** — Tertiary | deepseek-v4-pro | DeepSeek V4 Pro — the greatsword. Frontier reasoning for structural integrity. |
-| **4th** — Quaternary | glm-5.2 | GLM-5.2 — the staff. Coding-first thinking for system design and schema work. |
-| **5th** — Quinary | kimi-k2.7 | Kimi K2.7 — the greatbow. Massive context for sprawling architectures. |
-| **6th** — Senary | sonnet | Claude Sonnet — the reliable longsword for daily structural work. |
+- **Brain** -- `sonnet` (this member's session mind: plans, reviews, wields tools)
+- **Doer** -- `minimax-m3` (bulk execution; returns text, no tools)
+- **Critic** -- `glm-5.2` (independent review; a different model family than the brain)
+- **Bench** -- every other model, pulled for doer-swarm or thinker-swarm
 
-**How to choose:** Start with your primary weapon. If the quest demands a different
-strength — more speed, more context, more creativity — switch to the weapon that fits.
-A wise guild member knows which blade to draw for each fight.
+The brain is this member's `model:`; the Doer/Critic/Bench seats are universal
+defaults (each with a fallback chain) shared by every member. Seat doctrine:
+[[weapon-utility]].
 
 ## Your expertise
 

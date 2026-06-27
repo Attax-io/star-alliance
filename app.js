@@ -357,18 +357,12 @@ function effectiveWeapons(m) {
   }
   return out;
 }
-function grantModel(mid, model) {
-  const o = ensureWov(mid), m = byMember.get(mid);
-  pull(o.remove, model);
-  if (!baseWeapons(m).includes(model) && !o.add.includes(model)) o.add.push(model);
-  cleanWov(mid); saveWeapons(); saveMemberField(mid, "weapons");
-}
-function revokeModel(mid, model) {
-  const o = ensureWov(mid), m = byMember.get(mid);
-  pull(o.add, model);
-  if (baseWeapons(m).includes(model) && !o.remove.includes(model)) o.remove.push(model);
-  cleanWov(mid); saveWeapons(); saveMemberField(mid, "weapons");
-}
+// Arsenal is UNIVERSAL now (4-seat model): a member's weapons are DERIVED from the
+// seats (models.json), not a per-member loadout. Grant/revoke/reorder are retired
+// no-ops — they used to persist a per-member loadout that no longer exists. Edit
+// seats in models.json; the brain is the member's `model:`.
+function grantModel(mid, model) { /* retired — arsenal is universal */ }
+function revokeModel(mid, model) { /* retired — arsenal is universal */ }
 const toggleWield = (mid, model) => { const m = byMember.get(mid); wields(m, model) ? revokeModel(mid, model) : grantModel(mid, model); };
 const resetAllWeapons = () => { weaponOv = {}; saveWeapons(); };
 
@@ -376,6 +370,7 @@ const resetAllWeapons = () => { weaponOv = {}; saveWeapons(); };
 //    via the dev server, then fold the change into the in-memory base so the
 //    overlay == source. No server (file://) → keep the localStorage overlay (fallback).
 async function saveMemberField(mid, field) {
+  if (field === 'weapons') return;  // arsenal is universal (derived from seats) — never persisted per-member
   const m = byMember.get(mid); if (!m) return;
   const values = field === 'skills' ? assignedSkills(m) : effectiveWeapons(m).map((w) => w.model);
   const payload = { kind: 'member-field', member: mid, field, values };
@@ -396,7 +391,7 @@ async function saveMemberField(mid, field) {
   }
   refreshView();
 }
-function reorderWeapons(mid, orderedModels) { ensureWov(mid).order = orderedModels.slice(); cleanWov(mid); saveWeapons(); }
+function reorderWeapons(mid, orderedModels) { /* retired — arsenal order is universal (seats) */ }
 function resetWeaponOrder(mid) { const o = weaponOv[mid]; if (o) delete o.order; cleanWov(mid); saveWeapons(); }
 
 // Assign-panel UI state (preserved across in-place refreshes, reset on real navigation).
@@ -848,19 +843,24 @@ function renderMemberDossier(id) {
   const sharedN = active.filter(isShared).length;
 
   const eff = effectiveWeapons(m);
-  const brainModel = m.model;                                                 // brain = the model the agent RUNS AS (its mind)
-  const primeDoerModel = eff.find((w) => modelMeta(w.model).role === "doer")?.model;  // hands = first doer-role weapon (minimax-m3)
+  const seats = m.seats || {};                                                // 4-seat arsenal (Phase 2): brain/doer/critic/bench
+  const brainModel = (seats.brain && seats.brain.model) || m.model;           // brain = the model the agent RUNS AS (its mind)
+  const primeDoerModel = (seats.doer && seats.doer.model)                     // hands = the Doer seat (minimax-m3)
+    || eff.find((w) => modelMeta(w.model).role === "doer")?.model;
+  const criticModel = (seats.critic && seats.critic.model) || null;           // independent reviewer (glm-5.2, a different family than the brain)
   const weapons = eff.map((w, i) => {
     const mm = modelMeta(w.model);
     const role = mm.role ? ROLE_META[mm.role] : null;
     const isBrain = w.model === brainModel;
     const isDoer = w.model === primeDoerModel;
-    return `<div class="weapon-card${w.added ? " added" : ""}${isBrain ? " is-brain" : ""}${isDoer ? " is-doer" : ""}" draggable="true" data-model="${esc(w.model)}" data-member="${esc(m.id)}" style="--wc:${esc(mm.color)}">
+    const isCritic = w.model === criticModel;
+    return `<div class="weapon-card${w.added ? " added" : ""}${isBrain ? " is-brain" : ""}${isDoer ? " is-doer" : ""}${isCritic ? " is-critic" : ""}" draggable="true" data-model="${esc(w.model)}" data-member="${esc(m.id)}" style="--wc:${esc(mm.color)}">
       <div class="weapon-thumb-wrap">
         <img class="weapon-thumb" src="weapon-art/${esc(w.model)}.png" alt="${esc(mm.label)}" loading="lazy">
         ${role ? `<img class="weapon-role-pip" src="${esc(role.icon)}" alt="${esc(role.label)}" title="${esc(role.label)}: ${esc(role.rule)}" style="--rc:${esc(role.color)}">` : ""}
         ${isBrain ? `<span class="weapon-brain-flag" title="Brain — the model this agent runs as and thinks with">BRAIN</span>` : ""}
         ${isDoer ? `<span class="weapon-doer-flag" title="Prime doer — the hands that do the bulk execution">DOER</span>` : ""}
+        ${isCritic ? `<span class="weapon-critic-flag" title="Critic — independent reviewer, a different model family than the brain">CRITIC</span>` : ""}
         <div class="weapon-thumb-tip">
           <div class="wtt-header">
             <div class="wtt-name">${esc(mm.label)}</div>
@@ -870,8 +870,6 @@ function renderMemberDossier(id) {
         </div>
       </div>
       <div class="weapon-name"><span class="weapon-glyph" style="--wc:${esc(mm.color)}">${esc(modelGlyph(w.model))}</span>${esc(mm.label)}
-        <button class="wc-revoke" type="button" data-member="${esc(m.id)}" data-model="${esc(w.model)}"
-          title="Revoke from this agent" aria-label="Revoke ${esc(mm.label)} from this agent">✕</button>
       </div>
     </div>`;
   }).join("");
@@ -971,7 +969,7 @@ function renderMemberDossier(id) {
             <span>Arsenal · ${pluralize(eff.length, "weapon")}</span>
             <a class="reset-btn" href="#/arsenal">Manage in Arsenal →</a>
           </div>
-          <p class="skill-hint">The models this agent can wield. Tap <strong>✕</strong> to revoke one · grant more from the <a href="#/arsenal">Arsenal</a> · <strong>drag a card</strong> to reorder priority. Edits persist in this browser.</p>
+          <p class="skill-hint">The <strong>universal arsenal</strong>, projected for this member as four seats — <strong>Brain</strong> (its <code>model:</code>) · <strong>Doer</strong> · <strong>Critic</strong> · <strong>Bench</strong>. Defined once in <code>models.json → seats</code>; not per-member editable.</p>
           <div class="arsenal-grid">${weapons}</div>
         </div>
       </div>

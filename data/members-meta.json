@@ -10,14 +10,6 @@
    "summary": "Takes your orders and routes them to the right member. Knows the full roster, who's good at what, and how to sequence their work.",
    "deploy": "Any request — The Butler decides who handles what",
    "triggers": "Any request — The Butler decides who handles what",
-   "weaponsDesc": {
-    "minimax-m3": "MiniMax M3 — the crossbow. Precise structural doer for routing manifests and roster bookkeeping.",
-    "opus": "Claude Opus — the heaviest blade. Deepest reasoning for complex routing.",
-    "deepseek-v4-pro": "DeepSeek V4 Pro — the greatsword. Frontier reasoning for complex multi-step routing.",
-    "glm-5.2": "GLM-5.2 — the staff. Strong multilingual analysis.",
-    "kimi-k2.7": "Kimi K2.7 — the greatbow. Massive context to hold the whole roster and sequence state.",
-    "sonnet": "Claude Sonnet — the reliable longsword. Fast enough for daily dispatch."
-   },
    "does": [
     "Receives orders and decides which member handles what",
     "Forms the team — decides who works simultaneously vs. step by step",
@@ -42,14 +34,6 @@
    "summary": "Designs systems and database architecture. Thinks in data flow, domain boundaries, and structural integrity.",
    "deploy": "System design, domain modeling, database architecture, structural refactoring",
    "triggers": "design the system · model the domain · architect the database",
-   "weaponsDesc": {
-    "minimax-m3": "MiniMax M3 — the crossbow. Cheap 1M-context prime doer for bulk schema scaffolds, migration drafts, and structural bookkeeping.",
-    "kimi-k2.7": "Kimi K2.7 — the greatbow. Massive context for sprawling architectures.",
-    "opus": "Claude Opus — the heaviest blade. Deepest reasoning for schema modeling.",
-    "glm-5.2": "GLM-5.2 — the staff. Coding-first thinking for system design and schema work.",
-    "deepseek-v4-pro": "DeepSeek V4 Pro — the greatsword. Frontier reasoning for structural integrity.",
-    "sonnet": "Claude Sonnet — the reliable longsword for daily structural work."
-   },
    "does": [
     "Domain modeling and transaction boundaries",
     "Database schema design and migration",
@@ -71,15 +55,6 @@
    "summary": "Writes code, fixes bugs, implements features. Takes specs and turns them into working code. Tests before saying it's done.",
    "deploy": "Writing code, applying changes, fixing bugs, implementing features",
    "triggers": "write the code · fix this bug · implement this feature",
-   "weaponsDesc": {
-    "kimi-k2.7": "Kimi K2.7 — the greatbow. Massive context for big codebases.",
-    "haiku": "Claude Haiku — the dagger. Fast for quick fixes.",
-    "minimax-m3": "MiniMax M3 — the crossbow. Precise structural doer for knowledge graphs and repetitive tooling.",
-    "opus": "Claude Opus — the heaviest blade. Deepest reasoning for the gnarliest bugs.",
-    "glm-5.2": "GLM-5.2 — the staff. Coding-first precision for implementation.",
-    "deepseek-v4-pro": "DeepSeek V4 Pro — the greatsword. Frontier MoE reasoning for complex code.",
-    "sonnet": "Claude Sonnet — the reliable longsword for daily coding."
-   },
    "does": [
     "Writing and applying code changes",
     "Bug fixing end-to-end",
@@ -106,15 +81,6 @@
    "summary": "Premium UI/UX designer. Turns rough sketches into polished interfaces. Design is how the product communicates.",
    "deploy": "UI/UX design, visual quality, brand kits, image-to-code conversion",
    "triggers": "design the UI · make it look premium · create a brand kit",
-   "weaponsDesc": {
-    "image-01": "MiniMax image-01 — the engraver's burin. Generates images, mockups, and visual assets from a prompt.",
-    "minimax-video": "MiniMax Video — the moving tapestry. Generates motion and video for living interfaces.",
-    "minimax-speech": "MiniMax Speech — the herald's voice. Generates spoken audio and voiceover.",
-    "minimax-music": "MiniMax Music — the bard's lute. Generates music and sound to score the experience.",
-    "minimax-m3": "MiniMax M3 — the crossbow. Precise structural doer for code-shaped design work.",
-    "opus": "Claude Opus — the master's eye. The escalation thinker, drawn for the hardest design calls: plans the design, makes the taste calls, and critiques the doers' renders before they ship.",
-    "sonnet": "Claude Sonnet — the reliable longsword. The dual at the tail: stands in for any role, and the Claude-capable fallback when a doer needs a tool only Claude models can run."
-   },
    "does": [
     "Frontend visual design (web and mobile)",
     "Image-to-code conversion",
@@ -139,14 +105,6 @@
    "summary": "Campaign commander. Handles work too big for a single pass. Breaks it into waves and drives them to completion.",
    "deploy": "Large multi-wave projects, campaign planning, bug workflows, performance",
    "triggers": "plan the campaign · break this into waves · optimize performance",
-   "weaponsDesc": {
-    "minimax-m3": "MiniMax M3 — the crossbow. Cheap 1M-context prime doer for campaign artifacts, wave manifests, and mechanical transforms across many files.",
-    "kimi-k2.7": "Kimi K2.7 — the greatbow for long campaign documents.",
-    "opus": "Claude Opus — the heaviest blade for complex multi-wave planning.",
-    "glm-5.2": "GLM-5.2 — the staff for analytical breakdowns.",
-    "deepseek-v4-pro": "DeepSeek V4 Pro — the greatsword. Frontier reasoning for multi-wave strategy.",
-    "sonnet": "Claude Sonnet — the reliable longsword. Fast balanced daily wave driver."
-   },
    "does": [
     "Deep multi-model planning — fuses several members' outputs into one plan (ultra-brainstorm)",
     "Multi-wave campaign planning and execution",
@@ -172,15 +130,6 @@
    "summary": "Legal codex specialist. Loads real-world laws, translates them across all locales, and creates published content.",
    "deploy": "Legal codex loading, law translation, multi-locale content work",
    "triggers": "load this law · translate this law · add translations",
-   "weaponsDesc": {
-    "minimax-m3": "MiniMax M3 — the crossbow. Cheap 1M-context prime doer for bulk article extraction, locale string drafts, and mechanical translation passes.",
-    "kimi-k2.7": "Kimi K2.7 — the greatbow for long legal documents.",
-    "haiku": "Claude Haiku — the dagger. Fastest cheap quick translations across locales.",
-    "glm-5.2": "GLM-5.2 — the staff. Strongest Chinese/multilingual.",
-    "opus": "Claude Opus — the heaviest blade. Deepest reasoning for legal nuance.",
-    "deepseek-v4-pro": "DeepSeek V4 Pro — the greatsword. Frontier reasoning for complex legal analysis.",
-    "sonnet": "Claude Sonnet — the reliable longsword. Fast balanced daily translation work."
-   },
    "does": [
     "Loading laws into the legal codex",
     "Multi-locale translation (6 locales)",
@@ -203,15 +152,6 @@
    "summary": "The guild's voice to the world. Turns silence into a steady call — the right people hear it, trust it, and answer. Marketing for trust-led businesses without breaking faith.",
    "deploy": "Marketing, growth, demand generation, content/SEO, brand positioning, email nurture, social/paid",
    "triggers": "plan our marketing · we need leads · fix our positioning · go to market",
-   "weaponsDesc": {
-    "kimi-k2.7": "Kimi K2.7 — the greatbow. Massive context for long content, campaigns, and proof banks.",
-    "image-01": "MiniMax image-01 — the engraver's burin. Ad creative, social cards, and brand visuals from a prompt.",
-    "minimax-m3": "MiniMax M3 — the crossbow. Precise structural doer for briefs, sequences, and plans.",
-    "opus": "Claude Opus — the heaviest blade. Deepest reasoning for positioning and strategy.",
-    "glm-5.2": "GLM-5.2 — the staff. Analytical breakdowns and multilingual reach.",
-    "sonnet": "Claude Sonnet — the reliable longsword. Fast balanced daily marketing work.",
-    "gemma4": "Gemma 4 — the hand-axe. Light, fast thinker: a quick analytical second mind for hooks, headline variants, and content angles."
-   },
    "does": [
     "Demand generation and lead flow",
     "Content marketing and SEO (pillar/cluster, local SEO)",
@@ -237,14 +177,6 @@
    "summary": "Investment and trading specialist. Analyzes markets, builds trading strategies, assesses risk, and manages portfolios with rigor.",
    "deploy": "Investment analysis, trading strategies, market research, portfolio management",
    "triggers": "analyze this investment · build a trading strategy · research this market",
-   "weaponsDesc": {
-    "minimax-m3": "MiniMax M3 — the crossbow. Cheap 1M-context prime doer for bulk market-data extraction, table building, and research bookkeeping.",
-    "kimi-k2.7": "Kimi K2.7 — the greatbow. Massive context for long market histories.",
-    "opus": "Claude Opus — the heaviest blade for deep financial analysis.",
-    "glm-5.2": "GLM-5.2 — the staff for data analysis.",
-    "deepseek-v4-pro": "DeepSeek V4 Pro — the greatsword. Frontier reasoning for trading strategy.",
-    "sonnet": "Claude Sonnet — the reliable longsword. Fast balanced daily market reads."
-   },
    "does": [
     "Investment analysis (fundamental and technical)",
     "Trading strategy development and backtesting",
@@ -269,14 +201,6 @@
    "summary": "Keeper of the guild's arsenal. Manages skills — versioning, syncing, upgrading, creating new ones. Runs the daily evolution routine.",
    "deploy": "Skill management, syncing, upgrading, creating new skills, daily evolution routine",
    "triggers": "sync my skills · upgrade a skill · create a skill · run the skill routine",
-   "weaponsDesc": {
-    "haiku": "Claude Haiku — the dagger for quick syncs.",
-    "minimax-m3": "MiniMax M3 — the crossbow for routine versioning.",
-    "kimi-k2.7": "Kimi K2.7 — the greatbow. Massive context to track the full arsenal inventory.",
-    "opus": "Claude Opus — the heaviest blade. Deepest reasoning for skill evolution.",
-    "glm-5.2": "GLM-5.2 — the staff. Coding-first for skill syncing and tooling.",
-    "sonnet": "Claude Sonnet — the reliable longsword for daily skill management."
-   },
    "does": [
     "Skill sync (repo ↔ device)",
     "Skill upgrades with version bumping",

@@ -249,7 +249,7 @@ function buildLedger(claude, bench) {
 //    and a round-trip verify, then regenerate guild-data so the edit sticks.
 function setMemberField(member, field, values, cb) {
   if (!/^[a-z0-9-]+$/.test(member)) return cb(new Error('bad member'));
-  if (field !== 'skills' && field !== 'weapons') return cb(new Error('bad field'));
+  if (field !== 'skills') return cb(new Error('field not editable — the arsenal is universal (models.json seats); only skills are per-member'));
   if (!Array.isArray(values) || !values.every((v) => /^[A-Za-z0-9._-]+$/.test(String(v)))) return cb(new Error('bad values'));
   const file = path.join(ROOT, 'star-alliance-members', member + '.md');
   const newBracket = '[' + values.join(', ') + ']';
@@ -389,12 +389,10 @@ function createMember(member, opts, cb) {
   for (const w of weapons) if (!idRe.test(w)) return cb(new Error('invalid weapon id: ' + w));
   const frontmatter = ['---', 'name: ' + member, 'description: ' + JSON.stringify(opts.role || name),
     'model: ' + model, 'tools: [Read, Edit, Write, Bash]', 'skills: [' + skills.join(', ') + ']',
-    'weapons: [' + weapons.join(', ') + ']', '---'].join('\n');
+    '---'].join('\n');  // no per-member weapons: the arsenal is universal (models.json seats)
   const content = frontmatter + '\n\nYou are ' + name + ', a member of the Star Alliance.\n\n';
   try { fs.writeFileSync(file, content); } catch (e) { return cb(e); }
-  const descMap = opts.descMap || {};
-  const weaponsDesc = {}; for (const w of weapons) weaponsDesc[w] = String(descMap[w] || '').slice(0, 500);
-  const entry = { name: name, role: opts.role || '', color: opts.color || '#888888', summary: '', deploy: '', triggers: '', weaponsDesc: weaponsDesc, does: [], doesnt: [] };
+  const entry = { name: name, role: opts.role || '', color: opts.color || '#888888', summary: '', deploy: '', triggers: '', does: [], doesnt: [] };
   let raw, meta;
   try { raw = fs.readFileSync(META); meta = JSON.parse(raw); } catch (e) { return cb(e); }
   if (!meta.members) meta.members = {};
@@ -562,11 +560,7 @@ function appendLog(entry, cb) {
 function dispatchSave(body, done) {
   switch (body.kind) {
     case 'member-field':
-      return setMemberField(body.member, body.field, body.values, (e, info) => {
-        if (e) return done(e);
-        if (body.field === 'weapons') return syncWeaponsMeta(body.member, body.values, body.desc, done);
-        done(null);
-      });
+      return setMemberField(body.member, body.field, body.values, (e) => done(e || null));
     case 'skill-flag':       return setSkillFlag(body.skill, body.disabled, done);
     case 'member-meta':      return setMemberMeta(body.member, body.fields, done);
     case 'member-description':return setMemberDescription(body.member, body.text, done);

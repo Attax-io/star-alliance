@@ -326,22 +326,59 @@ def iter_agents(repo: Path):
         yield md
 
 
-def build_member(agent: dict, meta: dict, errors: list[str]) -> dict:
+def derive_member_arsenal(brain_model, seats: dict, models: dict):
+    """Project the UNIVERSAL arsenal for one member from the seats SoT (models.json).
+    Phase 2 of the 4-seat build: per-member loadouts are gone — the brain is the
+    member's session model (an override of seats.brain), and Doer/Critic/Bench are
+    the universal seat defaults. Bench = every other live text model. Returns
+    (seats_obj, weapons[{model,desc}]) — weapons[] is a derived projection kept for
+    backward-compatible dashboard rendering. Bench = every other live model, text
+    AND media (image/video/speech/music) — media doers are universal generative
+    weapons; dropping them strips the Designer/Herald of their asset tools."""
+    def dflt(seat):
+        return (seats.get(seat) or {}).get("default")
+    brain = brain_model or dflt("brain")
+    doer = dflt("doer")
+    critic = dflt("critic")
+    held = {m for m in (brain, doer, critic) if m}
+    bench = [mid for mid, d in models.items()
+             if d.get("kind", "text") in ("text", "media")
+             and d.get("role") in ("thinker", "doer", "both", "media")
+             and d.get("status") in ("live", "reserve")
+             and mid not in held]
+    seats_obj = {
+        "brain":  {"model": brain, "override": bool(brain_model) and brain_model != dflt("brain")},
+        "doer":   {"model": doer},
+        "critic": {"model": critic},
+        "bench":  bench,
+    }
+    seat_of = {brain: "Brain", doer: "Doer", critic: "Critic"}
+    ordered, seen = [], set()
+    for m in [doer, brain, critic] + bench:
+        if m and m not in seen and m != "sonnet":
+            seen.add(m)
+            ordered.append(m)
+    if "sonnet" in models and "sonnet" not in seen:  # dual sits last, never duped
+        ordered.append("sonnet")
+
+    def desc(mid):
+        d = models.get(mid, {})
+        tag = seat_of.get(mid, "Bench")
+        body = d.get("summary") or d.get("desc") or ""
+        return (f"{tag} — {body}").strip(" —")
+    weapons = [{"model": m, "desc": desc(m)} for m in ordered]
+    return seats_obj, weapons
+
+
+def build_member(agent: dict, meta: dict, errors: list[str], seats: dict, models: dict) -> dict:
     mid = agent["id"]
-    wdesc = meta.get("weaponsDesc", {})
-    weapons = []
-    for w in agent["weapons"]:
-        if w not in wdesc:
-            errors.append(f"member '{mid}': weapon '{w}' has no weaponsDesc entry")
-        weapons.append({"model": w, "desc": wdesc.get(w, "")})
-    for w in wdesc:
-        if w not in agent["weapons"]:
-            errors.append(f"member '{mid}': weaponsDesc '{w}' matches no weapon in the agent .md")
+    brain = agent.get("model")
+    seats_obj, weapons = derive_member_arsenal(brain, seats, models)
     return {
         "id": mid,
         "name": meta.get("name", mid),
         "role": meta.get("role", ""),
-        "model": agent["model"],
+        "model": brain,
         "conferred": meta.get("level", "Foundational"),  # ratified tier (Quartermaster-owned)
         "color": meta.get("color", "#888888"),
         "avatar": meta.get("avatar", ""),
@@ -350,6 +387,7 @@ def build_member(agent: dict, meta: dict, errors: list[str]) -> dict:
         "triggers": meta.get("triggers", ""),
         "description": agent["description"],
         "prompt": agent.get("prompt", ""),
+        "seats": seats_obj,
         "weapons": weapons,
         "does": meta.get("does", []),
         "doesnt": meta.get("doesnt", []),
@@ -434,9 +472,11 @@ def build_members(repo: Path, members_meta: dict, errors: list[str]) -> list[dic
     # with any agent missing from meta appended alphabetically for safety.
     ordered = [aid for aid in members_meta if aid in agents]
     ordered += [aid for aid in agents if aid not in members_meta]
+    seats = load_seats(repo)
+    models = load_models(repo)
     members = []
     for aid in ordered:
-        members.append(build_member(agents[aid], members_meta.get(aid, {}), errors))
+        members.append(build_member(agents[aid], members_meta.get(aid, {}), errors, seats, models))
     return members
 
 
