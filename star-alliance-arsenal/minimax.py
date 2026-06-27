@@ -93,6 +93,113 @@ def post_chat(api_key, model, messages, max_tokens, timeout):
         sys.exit(4)
 
 
+def _log_call(usage, wall_ms):
+    """Record one batch call's spend to the shared ledger (best-effort)."""
+    try:
+        from arsenal_usage import log_usage
+        total = usage.get('total_tokens')
+        p_tok = usage.get('prompt_tokens')
+        c_tok = usage.get('completion_tokens')
+        if c_tok is None and total is not None:
+            c_tok = total - (p_tok or 0)
+        model_id = os.environ.get('SA_MODEL_ID') or 'minimax-m3'
+        log_usage(model_id, 'minimax', p_tok or 0, c_tok or 0, wall_ms=wall_ms)
+    except Exception:
+        pass
+
+
+def run_batch(api_key, model, path, default_max_tokens, timeout):
+    """Process N prompts from a JSONL file over ONE keep-alive HTTPS connection.
+
+    Each input line is either a bare JSON string (the prompt) or an object with
+    keys: prompt (required), system, max_tokens. Results are emitted to stdout as
+    JSONL, one per line, IN INPUT ORDER:
+        {"i":0,"ok":true,"content":"…","tokens":123}
+        {"i":1,"ok":false,"error":"…"}
+    A single failed prompt does not abort the batch (its line is ok:false). This
+    is the time win: one process + one TCP/TLS connection for the whole fan-out
+    instead of N subprocess spawns and N fresh handshakes. Returns an exit code.
+    """
+    try:
+        with open(path, 'r', encoding='utf-8') as fh:
+            raw_lines = [ln for ln in (l.strip() for l in fh) if ln]
+    except OSError as e:
+        print('minimax: cannot read batch file {0}: {1}'.format(path, e), file=sys.stderr)
+        return 2
+
+    specs = []
+    for ln in raw_lines:
+        try:
+            obj = json.loads(ln)
+        except json.JSONDecodeError:
+            obj = ln  # tolerate a bare unquoted line as a literal prompt
+        if isinstance(obj, str):
+            specs.append({'prompt': obj})
+        elif isinstance(obj, dict) and obj.get('prompt'):
+            specs.append(obj)
+        else:
+            specs.append({'prompt': None})  # placeholder → reported as error
+
+    conn = http.client.HTTPSConnection(API_HOST, timeout=timeout)
+    headers = {
+        'Authorization': 'Bearer ' + api_key,
+        'Content-Type': 'application/json',
+    }
+    any_fail = False
+    try:
+        for i, spec in enumerate(specs):
+            prompt = spec.get('prompt')
+            if not prompt or not str(prompt).strip():
+                any_fail = True
+                print(json.dumps({'i': i, 'ok': False, 'error': 'empty prompt'},
+                                 ensure_ascii=False))
+                continue
+            messages = build_messages(spec.get('system', ''), prompt)
+            body = json.dumps({
+                'model': model,
+                'messages': messages,
+                'max_tokens': int(spec.get('max_tokens') or default_max_tokens),
+            }).encode('utf-8')
+            t0 = time.monotonic()
+            try:
+                conn.request('POST', API_PATH, body=body, headers=headers)
+                resp = conn.getresponse()
+                payload = resp.read().decode('utf-8', errors='replace')
+                if resp.status != 200:
+                    raise RuntimeError('HTTP {0}: {1}'.format(resp.status, payload[:300]))
+                data = json.loads(payload)
+            except Exception as e:
+                # A broken connection mid-batch: reopen once for the remaining items.
+                any_fail = True
+                try:
+                    conn.close()
+                    conn = http.client.HTTPSConnection(API_HOST, timeout=timeout)
+                except Exception:
+                    pass
+                print(json.dumps({'i': i, 'ok': False, 'error': str(e)}, ensure_ascii=False))
+                continue
+            wall_ms = int((time.monotonic() - t0) * 1000)
+            usage = data.get('usage') or {}
+            _log_call(usage, wall_ms)
+            try:
+                content = data['choices'][0]['message'].get('content')
+            except (KeyError, IndexError, TypeError):
+                content = None
+            if content is None or not str(content).strip():
+                any_fail = True
+                print(json.dumps({'i': i, 'ok': False, 'error': 'empty content'},
+                                 ensure_ascii=False))
+                continue
+            print(json.dumps({'i': i, 'ok': True, 'content': content,
+                              'tokens': usage.get('total_tokens')}, ensure_ascii=False))
+    finally:
+        try:
+            conn.close()
+        except Exception:
+            pass
+    return 0 if not any_fail else 6
+
+
 def strip_fences(text):
     """Remove leading/trailing ``` / ```json fences and surrounding whitespace."""
     text = re.sub(r'^\s*```(?:json)?\s*\n?', '', text, count=1, flags=re.IGNORECASE)
