@@ -279,12 +279,12 @@ def main():
             fails.append(f"VER {s}: VERSIONS.md says {ver_rows[s]} but SKILL.md is {skill_ver}")
 
     # G — gen-workflow-art.cjs has a prompt entry for every workflow (art can be forged)
-    gen = (ROOT / "gen-workflow-art.cjs")
+    gen = (ROOT / "tools/generators/gen-workflow-art.cjs")
     if gen.exists():
         gen_ids = set(re.findall(r'id:\s*"([^"]+)"', gen.read_text()))
         uncovered = {w["id"] for w in g["workflows"]} - gen_ids
         if uncovered:
-            fails.append(f"G  gen-workflow-art.cjs missing art prompt for {sorted(uncovered)}")
+            fails.append(f"G  tools/generators/gen-workflow-art.cjs missing art prompt for {sorted(uncovered)}")
 
     # N — counts
     counts = g.get("meta", {}).get("counts", {})
