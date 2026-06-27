@@ -96,7 +96,29 @@ Own skill. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: 
 MAJOR: a change to what counts as a regression). Regenerate `VERSIONS.md` via
 `python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write`, then `python3 build.py`.
 
+## New metrics (1.1.0)
+
+`turn-cost.jsonl` now carries two additional fields populated by the B1/H2 hook patches:
+
+- **`wall_ms`** — real wall-clock milliseconds from UserPromptSubmit to Stop. Now available in every record. Use to compute p50/p95 user-perceived latency alongside token cost.
+- **`tier`** — now reliably `lite` or `full` (was `unknown` on 90% of turns due to a sidecar bug). The B1 fix (guild-routing-gate.sh writes `.claude/state/last-tier`; turn-cost.py reads + deletes it) resolves this.
+
+Add to every `efficiency_report.py` run:
+
+```sh
+# Latency summary (requires wall_ms field, present from 2026-06-27 onward)
+python3 tools/efficiency_report.py --latency      # p50/p95/p99 wall_ms by tier
+python3 tools/efficiency_report.py --cache        # cache hit-rate (cache_read / (cache_read + cache_create))
+```
+
+### Updated read each run
+
+4. **Tier coverage.** If `tier=unknown` rows persist after the B1 patch, the `.claude/state/` directory may be missing or the sidecar is being deleted before `turn-cost.py` reads it. Check hook order in `settings.json` (turn-cost must run after guild-routing-gate, which it does via Stop vs UserPromptSubmit ordering — this should not happen in normal operation).
+5. **Latency spike detection.** p95 `wall_ms` > 120 000 (2 min) on FULL turns signals the context window is bloated. The PreCompact snapshot (new hook) should help rehydrate faster after compression.
+6. **Cache hit-rate.** `cache_read / (cache_read + cache_create)` below 0.6 means the cache is thrashing — prompts are changing too much between turns or the 5-min TTL is expiring. Investigate turn cadence.
+
 ## Changelog
+- **1.1.0** — B1 tier sidecar fix: `tier` now reliable. H2 wall_ms: real latency now in every record. New `--latency` and `--cache` flags documented. Updated "read each run" section with 3 new checks.
 - **1.0.0** — Initial release. The Strategist's craft for proving and tuning harness efficiency: read
   `usage-log.jsonl` + `turn-cost.jsonl` via `efficiency_report.py`, watch the net trend + LITE/FULL
   tier split, hunt the one hard failure (a high-stakes turn that took LITE), and tune the

@@ -2,7 +2,7 @@
 name: guild-conformity
 description: "The Quartermaster's craft for proving the whole guild repo agrees with itself and with every logged decision, then reconciling any contradiction at its source. Wraps the read-only conformity_check.py (which emits a contradiction map across members, members-meta, skills, skills-meta, domains, workflows, the guild log, and the generated guild-data) plus fixing each real contradiction at its source of truth and rebuilding with build.py until the check passes clean. It is the closing step of every guild workflow and the spine of the conformity-sweep. Use when a workflow is closing, after any structural change, or when you need proof nothing contradicts. Triggers: 'run the conformity check', 'confirm guild conformance', 'does the repo agree with itself', 'conformity sweep', 'reconcile the guild data', 'is everything consistent'. Differentiate from cleanup (app/i18n hygiene) and skillsmith (skill versioning)."
 metadata:
-  version: 1.2.0
+  version: 1.3.0
 type: Skill
 
 ---
@@ -97,7 +97,25 @@ sweep-time SD flag caught it.)
 ## Versioning
 Own skill. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new mode/section · MAJOR: method contract change). Regenerate `VERSIONS.md` with `python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.
 
+## Member-table consistency check (1.3.0)
+
+`member-table-sync.py` (PostToolUse hook) keeps each member's `## Your Weapons` prose table in sync with its frontmatter `weapons:` loadout. If the hook is unwired or `build.py` fails silently, the table can drift while the frontmatter is correct — conformity_check.py would not catch it because it reads frontmatter, not rendered prose.
+
+**Add to every conformity close:**
+
+```sh
+# Spot-check: does each member's prose table match its frontmatter weapons: list?
+python3 conformity_check.py --member <name>   # existing flag checks skill↔drill
+# If member-table-sync.py is wired, it runs build.py automatically on every edit.
+# If you suspect drift, re-run build.py explicitly:
+python3 build.py
+python3 conformity_check.py
+```
+
+**New invariant to watch:** after any member `.md` edit, confirm `build.py` ran (check the PostToolUse chain in `settings.json` — `member-table-sync.py` must appear before `autocommit.sh` so the table is committed with the change, not separately). If `member-table-sync.py` is missing from PostToolUse, flag it as a harness gap and add it before closing.
+
 ## Changelog
+- **1.3.0** — New §Member-table consistency check: documents the `member-table-sync.py` PostToolUse hook invariant, adds explicit `build.py` re-run to the conformity-close checklist, and instructs Quartermaster to verify hook wiring in `settings.json` before closing.
 - **1.2.0** — Added **§Edit-time fast-path (`--member`)** + the matching `conformity_check.py --member <name>` mode: a focused per-member skill↔drill audit (SD forward + R skills-meta + SD **reverse**, catching a stale drill row left after a removal — which the full forward-only SD check missed) the Quartermaster runs the instant a loadout changes, before the full sweep. Primary guard for skillsmith Invariant #9; the conformity-close stays the backstop. New mode + section → MINOR.
 - **1.1.0** — Added **§Adding a new invariant** — the Artisan-rung method for teaching the check to catch a *class* of contradiction, not just an instance: enforce at the source (`build.py`, fatal), re-assert at the gate (`conformity_check.py`, tagged, "when present" for optional fields), and **prove it with a negative test** (hand-break a record → confirm the tag fires → revert → confirm green). Mined from the `WPN`/`CLS`/tightened-`expected_order` rules added this session. New section → MINOR.
 - **1.0.0** — Initial release. The Quartermaster's repo-wide conformity audit and reconcile loop — the closing seal on every workflow.
