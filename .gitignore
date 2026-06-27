@@ -13,3 +13,6 @@ star-alliance-arsenal/usage-log.jsonl
 
 # Workflow-runner runtime output (artifacts, signoffs, summaries)
 runs/
+
+# dashboard launcher runtime log
+.claude/serve.out

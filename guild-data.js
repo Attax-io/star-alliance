@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 65
     },
-    "generated": "2026-06-27T18:17:53Z",
+    "generated": "2026-06-27T18:18:52Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -3895,7 +3895,7 @@ const GUILD = {
     {
       "id": "session-mining",
       "name": "session-mining",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "icon": "⛏️",
       "art": "",
       "artPng": true,
@@ -3912,6 +3912,7 @@ const GUILD = {
         "Doctrine baked in (from the runs that forged this)",
         "Versioning",
         "Incremental mining — last-mine-ts delta (1.1.0)",
+        "Checkpoint — save/restore working context (1.2.0)",
         "Changelog"
       ],
       "triggers": "'review the last N sessions', 'mine my sessions', 'what did we learn from these sessions', 'what should we upgrade/merge/create from past work', 'audit the sessions for lessons', 'note down skills we can extract', or any retrospective over prior runs. Locates all three session stores, signal-extracts with offset/limit discipline (no blind read), doer-summarizes via MiniMax, STORM-synthesizes, then VERIFIES against the repo to kill every lesson already shipped. Propose-only.",
@@ -3923,8 +3924,8 @@ const GUILD = {
         "session_map.py"
       ],
       "stats": {
-        "lines": 115,
-        "words": 959
+        "lines": 155,
+        "words": 1280
       },
       "global": true,
       "members": [

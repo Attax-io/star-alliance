@@ -12,7 +12,7 @@ description: >-
   every 'lesson' already shipped. Output is propose-only (apply-gate OFF). The on-demand companion to
   skillsmith's daily routine; uses storm-investigation to synthesize.
 metadata:
-  version: 1.1.0
+  version: 1.2.0
 type: Skill
 
 ---
@@ -125,7 +125,47 @@ print(f'mining sessions newer than {since} ({time.strftime(\"%Y-%m-%d\", time.gm
 
 This turns a growing O(n-sessions) rescan into an O(new-sessions) pass. For repos with >20 sessions, the difference is minutes → seconds. The full rescan remains available for a first-run or when a prior mine was incomplete.
 
+## Checkpoint — save/restore working context (1.2.0)
+
+Mining reads PAST sessions for lessons; **checkpoint** writes the CURRENT session's resume note for the
+NEXT one. Use it before a likely context loss — compaction, end of day, a handoff, or any time you'd
+hate to re-derive "where was I". Distinct from memory (durable facts) and guild-log (non-git changes):
+a checkpoint is a *transient* mid-task handoff, overwritten each save.
+
+**Save** — capture git state + decisions + remaining work to a known path:
+
+```sh
+mkdir -p .claude/state
+{
+  echo "# Checkpoint — $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  echo "## Git"
+  echo "- branch: $(git branch --show-current 2>/dev/null)"
+  echo "- last commit: $(git log -1 --oneline 2>/dev/null)"
+  echo "- dirty (diff --stat):"; git diff --stat 2>/dev/null | sed 's/^/  /'
+  echo "- staged:"; git diff --cached --stat 2>/dev/null | sed 's/^/  /'
+} > .claude/state/checkpoint.md
+# then APPEND the prose the git state can't carry — the thinker writes these by hand:
+#   ## Decisions made   (what was chosen and why)
+#   ## Remaining work    (the next concrete steps, in order)
+#   ## Gotchas / open    (anything that will bite the next session)
+```
+
+**Restore** — first action of a resumed session: read the note, reconcile against reality, then continue.
+
+```sh
+[ -f .claude/state/checkpoint.md ] && cat .claude/state/checkpoint.md || echo "no checkpoint"
+git status -s        # reconcile: the working tree may have moved since the save
+```
+
+Trust the note for *intent* (decisions, next steps), but re-verify *state* against `git status` — the
+tree can drift between sessions. A checkpoint older than the last commit on the branch is stale; prefer
+the commit history and re-checkpoint. Keep it one file, overwritten per save — it is not a log.
+
 ## Changelog
+- **1.2.0** — New §Checkpoint: forward-facing save/restore of working context to
+  `.claude/state/checkpoint.md` (git state + decisions + remaining work), ported from the gstack
+  context-save / context-restore pattern. Complements mining (past→lessons) with continuity
+  (now→next-session). New section → MINOR.
 - **1.1.0** — New §Incremental mining: documents the `data/last-mine-ts.json` watermark pattern, add watermark-write command after a successful run, and filter command at run start. Prevents full-history rescan on every invocation. New section → MINOR.
 - **1.0.0** — Initial release. Six-phase pipeline (locate → map → signal-extract → doer-summarize →
   STORM synthesize → verify → propose-only register). `session_map.py` (store join) + `mine_sessions.py`
