@@ -136,8 +136,9 @@ def main():
     ap.add_argument("-f", "--file", default=None, help="Read the brief from this file.")
     ap.add_argument("--models", default=None,
                     help="Comma list of model ids to run (default: auto-detect).")
-    ap.add_argument("--max-tokens", type=int, default=2000,
-                    help="Per-thinker output budget (default 2000; do not go low).")
+    ap.add_argument("--max-tokens", type=int, default=4000,
+                    help="Per-thinker budget (default 4000; reasoning models burn "
+                         "the budget on <think> first — low values return empty).")
     ap.add_argument("--timeout", type=int, default=180, help="Per-call HTTP timeout (s).")
     args = ap.parse_args()
 

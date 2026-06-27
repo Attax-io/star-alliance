@@ -17,8 +17,28 @@ Run from the repo root (paths below assume that), e.g. `python3 star-alliance-ar
 |---|---|
 | `summon.py <model-id> "<prompt>"` | **One dispatcher.** Routes to the right backend by model id. Start here. |
 | `minimax.py "<prompt>"` | MiniMax M3 — **direct** cloud sub (`api.minimax.io`). |
-| `ollama_cloud.py <tag>:cloud "<prompt>"` | Any Ollama Cloud model (`/api/chat`). |
+| `ollama_cloud.py <tag>:cloud "<prompt>"` | Any Ollama Cloud model (`/api/chat`). Slot-guarded — see **Concurrency**. |
+| `ultra_brainstorm.py "<brief>"` | **Multi-thinker fan-out** for the `ultra-brainstorming` skill — fires every reachable thinker sequentially, returns JSON candidates for synthesis. |
+| `models/` | **Per-weapon docs** — one md each: backend · how to pull · how to summon · concurrency. [Index](models/README.md). |
 | `models-usage.json` | Parked hand-edited caps (was the consumption gauge; gauge removed, file kept). |
+
+## Concurrency (Ollama Cloud)
+
+Ollama Cloud caps **concurrent models** by plan — **Free = 1**, Pro = 3, Max = 10.
+Beyond the cap, requests queue, then get **rejected** (429/503) once the queue fills.
+A naive parallel fan-out (e.g. firing 5 thinkers at once) therefore silently loses
+the overflow models — they *look dead* when the account is just over its slot count.
+
+`ollama_cloud.py` guards this with a cross-process **slot semaphore**
+(`OLLAMA_MAX_CONCURRENT`, default **1**) + busy-retry, so calls queue **locally**
+instead of being dropped. Keep it at `1` on Free; set it to your plan's number on
+Pro/Max. MiniMax-direct and Claude (Task tool) are **separate pools** — they overlap
+the Ollama panel freely.
+
+```
+OLLAMA_MAX_CONCURRENT=1 python3 star-alliance-arsenal/summon.py glm-5.2 "…"   # Free
+OLLAMA_MAX_CONCURRENT=3 python3 star-alliance-arsenal/summon.py glm-5.2 "…"   # Pro
+```
 
 ## summon.py routing
 

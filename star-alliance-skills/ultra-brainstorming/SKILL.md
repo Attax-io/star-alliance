@@ -2,7 +2,7 @@
 name: ultra-brainstorming
 description: "An ASSIGNABLE multi-thinker method — any member who carries it fires ALL his available thinker models at once on the same material, then his prime (highest-priority) thinker reviews every output and synthesizes one opinion. Use to deepen one member's thinking across model diversity, or at a fan-in to fuse several members' inputs into one doer-ready plan. Triggers: 'ultra-brainstorm this', 'super-plan this', 'think this across all models', 'use all my thinkers', 'synthesize the members' work', 'merge these proposals into one plan', 'plan this deeply before we build'. Distinct from storm-investigation (five persona minds on one topic) and members-formation (the Butler's routing): this is a MODEL ensemble — several thinking models, each a different mind — converging into one ranked, peer-reviewed result. It is the thinker fan-out exception named in weapon-utility."
 metadata:
-  version: 1.1.0
+  version: 1.2.0
 type: Skill
 
 ---
@@ -63,22 +63,43 @@ Run **all of the holding member's available thinker weapons** on the same combin
 an **independent mind**. The panel is therefore the member's own arsenal — the example below is the
 Strategist's; another member runs its own thinkers:
 
-| Model | The mind it brings |
-|---|---|
-| **opus** | Deepest structural reasoning — is the plan *sound*? |
-| **gpt-5.5** | Analytical + creative second opinion — what's the non-obvious move? |
-| **deepseek-v4-pro** | Frontier multi-step reasoning — the long dependency chains. |
-| **glm-5.2** | A different analytical frame — where the others over-fit. |
-| **kimi-k2.7** | Holds the whole context — long-range coherence across all inputs. |
+| Model | The mind it brings | Backend |
+|---|---|---|
+| **opus** | Deepest structural reasoning — is the plan *sound*? | Claude-native → **Task tool**, not a script |
+| **gpt-5.5** | Analytical + creative second opinion — what's the non-obvious move? | OpenAI-direct — **DEACTIVATED** (no key); skip until reactivated |
+| **deepseek-v4-pro** | Frontier multi-step reasoning — the long dependency chains. | Ollama cloud |
+| **glm-5.2** | A different analytical frame — where the others over-fit. | Ollama cloud |
+| **kimi-k2.7** | Holds the whole context — long-range coherence across all inputs. | Ollama cloud |
+
+The panel is **only what is actually reachable** — never name a mind that can't run. Each weapon has a
+doc under [`star-alliance-arsenal/models/`](../../star-alliance-arsenal/models/README.md) (backend ·
+how to pull · how to summon · concurrency). Confirm cloud thinkers with `ollama list` first.
 
 Each model returns exactly three things: its **best plan** (3–5 steps) · the **one risk** it weighs
 heaviest · the **one idea no other model would propose**. Diversity is the entire value — different
 engines, different blind spots.
 
-**Execution.** Run the panel as **parallel doers**, one per model. Use Claude sub-agents or a
-`Workflow` when models need tools or must return structured output; otherwise call each weapon
-directly. **Do not collapse the panel to a single MiniMax doer** — the repo default favors MiniMax
-for doer work, but here the point is *model diversity*; one model is not a brainstorm.
+**Execution — use the runner, don't hand-wave it.** Phase 2 is where this skill quietly *fails*: an
+orchestrator can "synthesize" in its own single head and the panel never runs. Make it real with the
+mechanical runner, which fires every reachable thinker and returns their candidates as JSON:
+
+```
+python3 star-alliance-arsenal/ultra_brainstorm.py "<brief>" --max-tokens 4000
+# or: -f brief.txt ; --models glm-5.2,kimi-k2.7,deepseek-v4-pro
+```
+
+Then add the **Claude minds** the runner lists in `run_via_task` (e.g. `opus`) by spawning them with
+the **Task tool** (`model=opus`) on the same brief, and fold those candidates into the same panel.
+
+**Concurrency is a hard limit, not a style choice.** Ollama Cloud caps *concurrent models* by plan —
+**Free = 1**, Pro = 3, Max = 10 — and **rejects** overflow once the queue fills. That is the real
+reason a 5-model parallel fan-out drops models: they look dead when the account is just over its slot
+count. So the runner goes **sequential** for cloud thinkers (correct on Free), and `ollama_cloud.py`
+holds a slot semaphore (`OLLAMA_MAX_CONCURRENT`, default 1) that queues locally + retries on busy. On
+Pro/Max raise `OLLAMA_MAX_CONCURRENT` to the plan's number. Claude (Task) and MiniMax-direct are
+*separate* pools — they overlap freely with the Ollama panel. **Never collapse the panel to a single
+MiniMax doer** — the repo default favors MiniMax for doer work, but here the point is *model
+diversity*; one model is not a brainstorm.
 
 ### Phase 3 — Convergence map
 Across the candidate plans: (1) where do **two+ models agree** — the high-confidence spine;
@@ -127,6 +148,12 @@ member · MAJOR: method contract change). Regenerate `VERSIONS.md` with
 `python3 skillsmith/scripts/skill_registry.py write`, then `python3 build.py`.
 
 ## Changelog
+- **1.2.0** — **Made Phase 2 mechanical + concurrency-aware.** Added the `ultra_brainstorm.py`
+  runner so the fan-out actually fires (was prose the orchestrator could skip, synthesizing in one
+  head). Documented the Ollama Cloud concurrency cap (Free=1/Pro=3/Max=10) as the real cause of
+  dropped panel models, tied to the new `OLLAMA_MAX_CONCURRENT` slot guard in `ollama_cloud.py`.
+  Panel table now tags each mind's backend (opus → Task tool; gpt-5.5 deactivated) and links the new
+  per-weapon docs under `star-alliance-arsenal/models/`. Execution is sequential for cloud thinkers.
 - **1.1.0** — **Generalized into an assignable multi-thinker skill.** Reframed from "the Strategist's" method to a power any member gains by carrying it: the holding member fires ALL its own available thinker weapons at once and its prime thinker synthesizes one opinion. Added the within-member use (not just cross-member fan-in), an Assignment section, and tied it explicitly to the thinker fan-out exception in [[weapon-utility]]. Panel is now the holding member's own arsenal rather than a fixed Strategist panel.
 - **1.0.0** — Initial release. Five-phase multi-model synthesis: gather & frame, divergent
   multi-model brainstorm (5-thinker panel), convergence map, one-plan synthesis, peer-review gate,

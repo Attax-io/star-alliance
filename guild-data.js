@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 62
     },
-    "generated": "2026-06-27T15:07:48Z",
+    "generated": "2026-06-27T15:23:28Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "gpt-5.5": "deactivated",
@@ -4220,7 +4220,7 @@ const GUILD = {
     {
       "id": "ultra-brainstorming",
       "name": "ultra-brainstorming",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "icon": "🧠",
       "art": "",
       "artPng": true,
@@ -4247,8 +4247,8 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 127,
-        "words": 1212
+        "lines": 154,
+        "words": 1530
       },
       "global": true,
       "members": [
