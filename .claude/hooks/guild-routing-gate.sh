@@ -66,6 +66,13 @@ print("LITE" if (has_small and not has_large and short) else "FULL")
 PY
 )
 
+# B1 — write tier to sidecar so turn-cost.py can read it reliably.
+# The marker SA-GATE:TIER lands in the hook's stdout (system-reminder context),
+# not in user-turn text, so turn-cost.py's regex never matched → tier=unknown.
+# Sidecar file is the fix: one write here, one read+delete in turn-cost.py.
+mkdir -p "${CLAUDE_PROJECT_DIR:-$(pwd)}/.claude/state"
+printf '%s' "$TIER" > "${CLAUDE_PROJECT_DIR:-$(pwd)}/.claude/state/last-tier"
+
 if [ "$TIER" = "LITE" ]; then
 cat <<'EOF'
 ⚔ STAR ALLIANCE ROUTING GATE — LITE (small, low-stakes turn).  [SA-GATE:LITE]

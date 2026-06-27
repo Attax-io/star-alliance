@@ -17,7 +17,7 @@
 # Best-effort by contract — like every other hook here, it FAILS OPEN (exit 0) on
 # any error: a broken measurement hook must never brick a turn or block Stop.
 # ─────────────────────────────────────────────────────────────────────────────
-import sys, os, json, time, re
+import sys, os, json, time, re, pathlib
 
 TIER_RE = re.compile(r"SA-GATE:(LITE|FULL)")
 
@@ -91,15 +91,25 @@ def main():
         cache_read += int(u.get("cache_read_input_tokens") or 0)
         cache_create += int(u.get("cache_creation_input_tokens") or 0)
 
-    # Detect which routing tier fired this turn (LITE vs FULL). The marker is
-    # injected by guild-routing-gate.sh into the prompt context, so it lands in
-    # the user-turn / system-reminder text for this window.
+    # Detect which routing tier fired this turn (LITE vs FULL).
+    # B1 fix: guild-routing-gate.sh writes the tier to a sidecar file
+    # (.claude/state/last-tier) because the SA-GATE marker lands in hook stdout
+    # (system-reminder context), not in user-turn text — so the regex below never
+    # matched and 90% of turns logged tier=unknown. Sidecar is consumed once.
     tier = "unknown"
-    for o in window:
-        m = TIER_RE.search(_text_of(o))
-        if m:
-            tier = m.group(1).lower()
-            break
+    tier_file = pathlib.Path(project_dir()) / ".claude" / "state" / "last-tier"
+    if tier_file.exists():
+        try:
+            tier = tier_file.read_text().strip().lower()
+            tier_file.unlink()
+        except Exception:
+            pass
+    if tier == "unknown":
+        for o in window:
+            m = TIER_RE.search(_text_of(o))
+            if m:
+                tier = m.group(1).lower()
+                break
 
     rec = {
         "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
