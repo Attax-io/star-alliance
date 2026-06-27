@@ -114,6 +114,16 @@ def main():
 
     ui = last_user_index(lines)
     text, n_assistant = assistant_blocks_since(lines, ui)
+
+    # RACE GUARD: the Stop hook can fire before the finished assistant turn is
+    # flushed to the transcript .jsonl. When that happens we see no assistant text
+    # for this turn and would false-block a fully-compliant reply (the banner IS
+    # text). If there's no visible assistant text yet, the turn isn't judgeable —
+    # fail open. A real answer always carries text, so this only catches the race.
+    if not text.strip():
+        sys.stderr.write("[banner-enforcer] no assistant text yet (flush race) — failing open\n")
+        sys.exit(0)
+
     relent = n_assistant >= CAP  # anti-brick: stop blocking after CAP banner-less turns
 
     # 1) A valid workflow must be declared this turn.
