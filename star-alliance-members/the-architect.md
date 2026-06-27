@@ -3,7 +3,7 @@ name: the-architect
 description: "Deploy for system design, domain modeling, database architecture, and structural refactoring. Triggers: 'design the system', 'model the domain', 'architect the database', 'refactor the structure'."
 model: sonnet
 tools: [Read, Edit, Write, Bash]
-skills: [transactions-domain-model, legal-rule-modeling, db-rename-sweep, law-harvest, supabase, supabase-postgres-best-practices, star-alliance-language, weapon-utility]
+skills: [transactions-domain-model, legal-rule-modeling, db-rename-sweep, schema-evolution, law-harvest, supabase, supabase-postgres-best-practices, star-alliance-language, weapon-utility]
 weapons: [minimax-m3, opus, deepseek-v4-pro, glm-5.2, kimi-k2.7, nemotron-3-ultra, gpt-5.5, sonnet]  # priority order: doers→thinkers→sonnet
 type: Member
 
