@@ -105,7 +105,7 @@
       "host": "Ollama Cloud",
       "desc": "DeepSeek V4 Pro — the scythe. Wide-sweeping frontier MoE reasoning.",
       "ollama_desc": "DeepSeek V4 Pro · Mixture-of-Experts frontier reasoning at low cost. Exceptional at STEM, mathematics, and logical inference. Near GPT-4 quality for a fraction of the price. Best for hard analytical problems, algorithm design, and scientific reasoning.",
-      "call": "Easiest:  python3 star-alliance-arsenal/summon.py deepseek-v4-pro \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py deepseek-v4-pro:cloud \"<prompt>\"\nPull first:  ollama pull deepseek-v4-pro:cloud  ✓ pulled",
+      "call": "Easiest:  python3 star-alliance-arsenal/summon.py deepseek-v4-pro \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py deepseek-v4-pro:cloud \"<prompt>\"\nPull first:  ollama pull deepseek-v4-pro:cloud",
       "meter": {
         "kind": "used",
         "spent": 0,
@@ -113,7 +113,7 @@
         "unit": "req",
         "est": true,
         "pool": "Ollama Cloud",
-        "note": "est · not yet pulled · shares Ollama Cloud pool"
+        "note": "est · shares Ollama Cloud pool"
       }
     },
     "glm-5.2": {
@@ -131,7 +131,7 @@
       "host": "Ollama Cloud",
       "desc": "GLM-5.2 — the longbow. Coding-first, strong multilingual analysis. Long reach, pulled & ready.",
       "ollama_desc": "GLM-5.2 · Zhipu AI's flagship. Coding-first with top LiveCodeBench performance. Strong multilingual capabilities — especially Chinese, Arabic, and European languages. Best for code review, multi-language tasks, and structured analytical work.",
-      "call": "Easiest:  python3 star-alliance-arsenal/summon.py glm-5.2 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py glm-5.2:cloud \"<prompt>\"  (-s, --json, -f, stdin)\nOllama Cloud sub · tag glm-5.2:cloud  ✓ pulled",
+      "call": "Easiest:  python3 star-alliance-arsenal/summon.py glm-5.2 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py glm-5.2:cloud \"<prompt>\"  (-s, --json, -f, stdin)\nOllama Cloud sub · tag glm-5.2:cloud",
       "meter": {
         "kind": "used",
         "spent": 0,
@@ -157,7 +157,7 @@
       "host": "Ollama Cloud",
       "desc": "Kimi K2.7 — the hammer. Long-horizon coding and agentic work, blunt force done right.",
       "ollama_desc": "Kimi K2.7 · Moonshot AI's agentic powerhouse. Designed for long-horizon tool use, autonomous coding, and multi-step debugging. Strong at planning, self-correction, and sustained agentic loops. Best when a task requires many tool calls across a long session.",
-      "call": "Easiest:  python3 star-alliance-arsenal/summon.py kimi-k2.7 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py kimi-k2.7-code:cloud \"<prompt>\"\nPull first:  ollama pull kimi-k2.7-code:cloud  ✓ pulled",
+      "call": "Easiest:  python3 star-alliance-arsenal/summon.py kimi-k2.7 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py kimi-k2.7-code:cloud \"<prompt>\"\nPull first:  ollama pull kimi-k2.7-code:cloud",
       "meter": {
         "kind": "used",
         "spent": 0,
@@ -165,7 +165,7 @@
         "unit": "req",
         "est": true,
         "pool": "Ollama Cloud",
-        "note": "est · not yet pulled · shares Ollama Cloud pool"
+        "note": "est · shares Ollama Cloud pool"
       }
     },
     "nemotron-3-ultra": {
@@ -183,7 +183,7 @@
       "host": "Ollama Cloud",
       "desc": "Nemotron-3 Ultra — the lance. High-throughput reasoning, long agent runs.",
       "ollama_desc": "Nemotron-3 Ultra · NVIDIA's high-throughput reasoning model. Strong at structured data extraction, long-form document analysis, and sustained multi-turn agentic work. Optimized for inference efficiency — best when you need frontier reasoning at scale.",
-      "call": "Easiest:  python3 star-alliance-arsenal/summon.py nemotron-3-ultra \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py nemotron-3-super:cloud \"<prompt>\"\nPull first:  ollama pull nemotron-3-super:cloud  (NOT pulled yet — pull before use)",
+      "call": "Easiest:  python3 star-alliance-arsenal/summon.py nemotron-3-ultra \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py nemotron-3-super:cloud \"<prompt>\"\nPull first:  ollama pull nemotron-3-super:cloud",
       "meter": {
         "kind": "used",
         "spent": 0,
@@ -191,7 +191,7 @@
         "unit": "req",
         "est": true,
         "pool": "Ollama Cloud",
-        "note": "est · not yet pulled · shares Ollama Cloud pool"
+        "note": "est · shares Ollama Cloud pool"
       }
     },
     "qwen3.5": {
@@ -209,7 +209,7 @@
       "host": "Ollama Cloud",
       "desc": "Qwen 3.5 — the shortsword. Versatile general-purpose workhorse.",
       "ollama_desc": "Qwen 3.5 · Alibaba's versatile coder. Supports 29 languages, strong structured output, function calling, and API integration. Well-rounded across coding, writing, and analysis. Best for multilingual tasks and general-purpose work where flexibility matters.",
-      "call": "Easiest:  python3 star-alliance-arsenal/summon.py qwen3.5 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py qwen3.5:cloud \"<prompt>\"\nPull first:  ollama pull qwen3.5:cloud  ✓ pulled",
+      "call": "Easiest:  python3 star-alliance-arsenal/summon.py qwen3.5 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py qwen3.5:cloud \"<prompt>\"\nPull first:  ollama pull qwen3.5:cloud",
       "meter": {
         "kind": "used",
         "spent": 0,
@@ -217,7 +217,7 @@
         "unit": "req",
         "est": true,
         "pool": "Ollama Cloud",
-        "note": "est · not yet pulled · shares Ollama Cloud pool"
+        "note": "est · shares Ollama Cloud pool"
       }
     },
     "gemma4": {
@@ -235,7 +235,7 @@
       "host": "Ollama Cloud",
       "desc": "Gemma 4 — the ninja star. Small, fast, deadly accurate for quick cheap passes.",
       "ollama_desc": "Gemma 4 · Google's lightweight open model. Fast, compact, deployable anywhere. Strong instruction following, basic reasoning, and summarization at minimal cost. Best for high-volume quick passes, preprocessing, and tasks where speed and cost trump depth.",
-      "call": "Easiest:  python3 star-alliance-arsenal/summon.py gemma4 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py gemma4:cloud \"<prompt>\"\nPull first:  ollama pull gemma4:cloud  ✓ pulled",
+      "call": "Easiest:  python3 star-alliance-arsenal/summon.py gemma4 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py gemma4:cloud \"<prompt>\"\nPull first:  ollama pull gemma4:cloud",
       "meter": {
         "kind": "used",
         "spent": 0,
@@ -243,7 +243,7 @@
         "unit": "req",
         "est": true,
         "pool": "Ollama Cloud",
-        "note": "est · not yet pulled · shares Ollama Cloud pool"
+        "note": "est · shares Ollama Cloud pool"
       }
     },
     "gpt-5.5": {

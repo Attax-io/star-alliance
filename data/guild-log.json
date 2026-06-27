@@ -509,7 +509,7 @@
       "type": "decision",
       "title": "Arsenal loadouts ordered doers → thinkers/duals → Sonnet last",
       "who": "the-quartermaster",
-      "detail": "Every member's weapon list is ordered: pure doers first (best-first), then thinkers and dual thinker/doer models (best-first), then Sonnet pinned last. Sonnet is role 'both' but is always the tail. Rationale: the Guild Master wanted doers prioritised for execution, thinkers held in reserve, and Sonnet as the universal fallback. Machine-enforced by conformity_check.py check A.",
+      "detail": "Every member's weapon list is ordered: pure doers first (minimax-m3 pinned to lead, the rest in their declared order), then thinkers and dual thinker/doer models (opus pinned to lead, the rest in declared order), then Sonnet pinned last. Sonnet is role 'both' but is always the tail. Rationale: the Guild Master wanted doers prioritised for execution, thinkers held in reserve, and Sonnet as the universal fallback. Machine-enforced by conformity_check.py check A — expected_order() pins the prime lead of each group and preserves declared order within it (not a best-first sort). [detail corrected 2026-06-27 to match the implemented rule.]",
       "ref": [
         "the-quartermaster"
       ]

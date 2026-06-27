@@ -9,6 +9,12 @@ type: Document
 ---
 # Star Alliance — The Strategist's Audit
 
+> **⚠ DATED SNAPSHOT (2026-06-26, v6.30.29) — not a source of truth.** This is a point-in-time
+> analysis, not a live reference. Some rows are now stale: it predates the `the-engineer`→`the-developer`
+> fold, the model-armory consolidation onto `star-alliance-arsenal/models.json`, and the brain=session-model
+> change (guild-log #87). For current facts read the registry, `guild-data`, and the guild log — never the
+> model/member rows below.
+
 > Run through the **`ultra-brainstorming`** skill: a feature-by-feature loop (Phase 1) framed into
 > one brief, then brainstormed across a real multi-model panel (Phase 2), converged (Phase 3),
 > synthesized (Phase 4), and graded (Phase 5). Below is the Phase-4 plan with the Phase-5 grade

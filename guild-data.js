@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 65
     },
-    "generated": "2026-06-27T18:20:37Z",
+    "generated": "2026-06-27T18:22:09Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -30,7 +30,7 @@ const GUILD = {
     },
     "counts": {
       "members": 9,
-      "skills": 55,
+      "skills": 56,
       "domains": 3,
       "workflows": 29,
       "hooks": 7,
@@ -2066,6 +2066,48 @@ const GUILD = {
   ],
   "skills": [
     {
+      "id": "algorithmic-trading-chan",
+      "name": "algorithmic-trading-chan",
+      "version": "1.0.0",
+      "icon": "📦",
+      "art": "",
+      "artPng": false,
+      "blurb": "The Merchant's quant doctrine, distilled from Ernest Chan's Algorithmic Trading: Winning S…",
+      "level": "Foundational",
+      "ramp": "gray",
+      "tabler": "",
+      "src": "own",
+      "desc": "The Merchant's quant doctrine, distilled from Ernest Chan's Algorithmic Trading: Winning Strategies and Their Rationale. The rationale behind real strategies, not just recipes: backtesting pitfalls (look-ahead, data-snooping, survivorship, futures roll, regime shifts) and the three significance tests; mean reversion (stationarity, ADF, Hurst, half-life, cointegration via Johansen/CADF, Bollinger, Kalman) across stocks/ETFs, pairs, currencies, futures; momentum (time-series, cross-sectional, earnings drift, intraday/HFT) and why it coexists with reversion; risk management (Kelly, half-Kelly, Monte Carlo/historical leverage, CPPI, stop-loss debate, VIX/TED indicators). Teaching only; never trades or moves money. Use for: 'explain cointegration', 'how do I size with Kelly', 'why did this backtest lie', 'mean reversion vs momentum', 'teach me Chan's strategies', 'half-life of mean reversion'. Pairs with trading-strategy, market-recon, portfolio-risk.",
+      "intro": "Ernest Chan's second book is not a bag of recipes; it is a study of why a handful of strategies actually earn — and why far more backtests lie. The two engines are mean reversion (prices that revert to an equilibrium, tradeable when a portfolio is stationary or cointegrated) and momentum (prices tha",
+      "sections": [
+        "What it is / is not",
+        "Core principles (read these first)",
+        "How you work",
+        "Reference library (distilled from the book)",
+        "Sharpening the craft"
+      ],
+      "triggers": "",
+      "modes": "",
+      "disabled": false,
+      "refs": [
+        "01-backtesting-and-execution.md",
+        "02-mean-reversion-basics.md",
+        "03-implementing-mean-reversion.md",
+        "04-mean-reversion-stocks-etfs.md",
+        "05-mean-reversion-currencies-futures.md",
+        "06-interday-momentum.md",
+        "07-intraday-momentum.md",
+        "08-risk-management.md"
+      ],
+      "scripts": [],
+      "stats": {
+        "lines": 52,
+        "words": 1016
+      },
+      "global": false,
+      "members": []
+    },
+    {
       "id": "arsenal-forge",
       "name": "arsenal-forge",
       "version": "1.0.0",
@@ -3504,7 +3546,7 @@ const GUILD = {
         "lines": 132,
         "words": 758
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-designer"
       ]
@@ -7537,7 +7579,7 @@ const GUILD = {
         "type": "decision",
         "title": "Arsenal loadouts ordered doers → thinkers/duals → Sonnet last",
         "who": "the-quartermaster",
-        "detail": "Every member's weapon list is ordered: pure doers first (best-first), then thinkers and dual thinker/doer models (best-first), then Sonnet pinned last. Sonnet is role 'both' but is always the tail. Rationale: the Guild Master wanted doers prioritised for execution, thinkers held in reserve, and Sonnet as the universal fallback. Machine-enforced by conformity_check.py check A.",
+        "detail": "Every member's weapon list is ordered: pure doers first (minimax-m3 pinned to lead, the rest in their declared order), then thinkers and dual thinker/doer models (opus pinned to lead, the rest in declared order), then Sonnet pinned last. Sonnet is role 'both' but is always the tail. Rationale: the Guild Master wanted doers prioritised for execution, thinkers held in reserve, and Sonnet as the universal fallback. Machine-enforced by conformity_check.py check A — expected_order() pins the prime lead of each group and preserves declared order within it (not a best-first sort). [detail corrected 2026-06-27 to match the implemented rule.]",
         "ref": [
           "the-quartermaster"
         ]
@@ -8927,7 +8969,7 @@ const GUILD = {
       "host": "Ollama Cloud",
       "desc": "DeepSeek V4 Pro — the scythe. Wide-sweeping frontier MoE reasoning.",
       "ollama_desc": "DeepSeek V4 Pro · Mixture-of-Experts frontier reasoning at low cost. Exceptional at STEM, mathematics, and logical inference. Near GPT-4 quality for a fraction of the price. Best for hard analytical problems, algorithm design, and scientific reasoning.",
-      "call": "Easiest:  python3 star-alliance-arsenal/summon.py deepseek-v4-pro \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py deepseek-v4-pro:cloud \"<prompt>\"\nPull first:  ollama pull deepseek-v4-pro:cloud  ✓ pulled",
+      "call": "Easiest:  python3 star-alliance-arsenal/summon.py deepseek-v4-pro \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py deepseek-v4-pro:cloud \"<prompt>\"\nPull first:  ollama pull deepseek-v4-pro:cloud",
       "meter": {
         "kind": "used",
         "spent": 0,
@@ -8935,7 +8977,7 @@ const GUILD = {
         "unit": "req",
         "est": true,
         "pool": "Ollama Cloud",
-        "note": "est · not yet pulled · shares Ollama Cloud pool"
+        "note": "est · shares Ollama Cloud pool"
       }
     },
     "glm-5.2": {
@@ -8953,7 +8995,7 @@ const GUILD = {
       "host": "Ollama Cloud",
       "desc": "GLM-5.2 — the longbow. Coding-first, strong multilingual analysis. Long reach, pulled & ready.",
       "ollama_desc": "GLM-5.2 · Zhipu AI's flagship. Coding-first with top LiveCodeBench performance. Strong multilingual capabilities — especially Chinese, Arabic, and European languages. Best for code review, multi-language tasks, and structured analytical work.",
-      "call": "Easiest:  python3 star-alliance-arsenal/summon.py glm-5.2 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py glm-5.2:cloud \"<prompt>\"  (-s, --json, -f, stdin)\nOllama Cloud sub · tag glm-5.2:cloud  ✓ pulled",
+      "call": "Easiest:  python3 star-alliance-arsenal/summon.py glm-5.2 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py glm-5.2:cloud \"<prompt>\"  (-s, --json, -f, stdin)\nOllama Cloud sub · tag glm-5.2:cloud",
       "meter": {
         "kind": "used",
         "spent": 0,
@@ -8979,7 +9021,7 @@ const GUILD = {
       "host": "Ollama Cloud",
       "desc": "Kimi K2.7 — the hammer. Long-horizon coding and agentic work, blunt force done right.",
       "ollama_desc": "Kimi K2.7 · Moonshot AI's agentic powerhouse. Designed for long-horizon tool use, autonomous coding, and multi-step debugging. Strong at planning, self-correction, and sustained agentic loops. Best when a task requires many tool calls across a long session.",
-      "call": "Easiest:  python3 star-alliance-arsenal/summon.py kimi-k2.7 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py kimi-k2.7-code:cloud \"<prompt>\"\nPull first:  ollama pull kimi-k2.7-code:cloud  ✓ pulled",
+      "call": "Easiest:  python3 star-alliance-arsenal/summon.py kimi-k2.7 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py kimi-k2.7-code:cloud \"<prompt>\"\nPull first:  ollama pull kimi-k2.7-code:cloud",
       "meter": {
         "kind": "used",
         "spent": 0,
@@ -8987,7 +9029,7 @@ const GUILD = {
         "unit": "req",
         "est": true,
         "pool": "Ollama Cloud",
-        "note": "est · not yet pulled · shares Ollama Cloud pool"
+        "note": "est · shares Ollama Cloud pool"
       }
     },
     "nemotron-3-ultra": {
@@ -9005,7 +9047,7 @@ const GUILD = {
       "host": "Ollama Cloud",
       "desc": "Nemotron-3 Ultra — the lance. High-throughput reasoning, long agent runs.",
       "ollama_desc": "Nemotron-3 Ultra · NVIDIA's high-throughput reasoning model. Strong at structured data extraction, long-form document analysis, and sustained multi-turn agentic work. Optimized for inference efficiency — best when you need frontier reasoning at scale.",
-      "call": "Easiest:  python3 star-alliance-arsenal/summon.py nemotron-3-ultra \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py nemotron-3-super:cloud \"<prompt>\"\nPull first:  ollama pull nemotron-3-super:cloud  (NOT pulled yet — pull before use)",
+      "call": "Easiest:  python3 star-alliance-arsenal/summon.py nemotron-3-ultra \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py nemotron-3-super:cloud \"<prompt>\"\nPull first:  ollama pull nemotron-3-super:cloud",
       "meter": {
         "kind": "used",
         "spent": 0,
@@ -9013,7 +9055,7 @@ const GUILD = {
         "unit": "req",
         "est": true,
         "pool": "Ollama Cloud",
-        "note": "est · not yet pulled · shares Ollama Cloud pool"
+        "note": "est · shares Ollama Cloud pool"
       }
     },
     "qwen3.5": {
@@ -9031,7 +9073,7 @@ const GUILD = {
       "host": "Ollama Cloud",
       "desc": "Qwen 3.5 — the shortsword. Versatile general-purpose workhorse.",
       "ollama_desc": "Qwen 3.5 · Alibaba's versatile coder. Supports 29 languages, strong structured output, function calling, and API integration. Well-rounded across coding, writing, and analysis. Best for multilingual tasks and general-purpose work where flexibility matters.",
-      "call": "Easiest:  python3 star-alliance-arsenal/summon.py qwen3.5 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py qwen3.5:cloud \"<prompt>\"\nPull first:  ollama pull qwen3.5:cloud  ✓ pulled",
+      "call": "Easiest:  python3 star-alliance-arsenal/summon.py qwen3.5 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py qwen3.5:cloud \"<prompt>\"\nPull first:  ollama pull qwen3.5:cloud",
       "meter": {
         "kind": "used",
         "spent": 0,
@@ -9039,7 +9081,7 @@ const GUILD = {
         "unit": "req",
         "est": true,
         "pool": "Ollama Cloud",
-        "note": "est · not yet pulled · shares Ollama Cloud pool"
+        "note": "est · shares Ollama Cloud pool"
       }
     },
     "gemma4": {
@@ -9057,7 +9099,7 @@ const GUILD = {
       "host": "Ollama Cloud",
       "desc": "Gemma 4 — the ninja star. Small, fast, deadly accurate for quick cheap passes.",
       "ollama_desc": "Gemma 4 · Google's lightweight open model. Fast, compact, deployable anywhere. Strong instruction following, basic reasoning, and summarization at minimal cost. Best for high-volume quick passes, preprocessing, and tasks where speed and cost trump depth.",
-      "call": "Easiest:  python3 star-alliance-arsenal/summon.py gemma4 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py gemma4:cloud \"<prompt>\"\nPull first:  ollama pull gemma4:cloud  ✓ pulled",
+      "call": "Easiest:  python3 star-alliance-arsenal/summon.py gemma4 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py gemma4:cloud \"<prompt>\"\nPull first:  ollama pull gemma4:cloud",
       "meter": {
         "kind": "used",
         "spent": 0,
@@ -9065,7 +9107,7 @@ const GUILD = {
         "unit": "req",
         "est": true,
         "pool": "Ollama Cloud",
-        "note": "est · not yet pulled · shares Ollama Cloud pool"
+        "note": "est · shares Ollama Cloud pool"
       }
     },
     "gpt-5.5": {
