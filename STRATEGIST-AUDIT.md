@@ -4,8 +4,9 @@ author: The Strategist (ultra-brainstorming, 4-model panel)
 date: 2026-06-26
 project_version_at_audit: 6.30.29
 method: ultra-brainstorming v1.0.0 — 5-phase multi-model synthesis
----
+type: Document
 
+---
 # Star Alliance — The Strategist's Audit
 
 > Run through the **`ultra-brainstorming`** skill: a feature-by-feature loop (Phase 1) framed into

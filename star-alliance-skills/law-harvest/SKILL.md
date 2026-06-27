@@ -3,8 +3,9 @@ name: law-harvest
 description: "The shared Architect + Translator craft for ingesting real law PDFs into a clean, verified Source-Law library — the feed for the legal codex. The Architect scans the Stock Laws folder, identifies each misnamed PDF by its content, renames to the canonical scheme, resolves conflicts, and queues an extraction; the Translator extracts the queued law verbatim — Arabic canonical, page-ranges intact, no paraphrase and no gaps — into Source Laws, then updates the index and writes a dated harvest digest. A certify gate between the halves proves the extraction is faithful and complete before it enters the library. Feeds codex-law-translate (which then translates and publishes). Use to bring real law PDFs into the library. Triggers: 'harvest the laws', 'process the stock laws', 'extract this law', 'identify these law PDFs', 'add laws to the source library', 'law harvest'. Differentiate from codex-law-translate (translate + publish) and db-rename-sweep (DB renames, not files)."
 metadata:
   version: 1.0.0
----
+type: Skill
 
+---
 # Law Harvest — the Architect · Translator's craft
 
 This craft turns a folder of messy, misnamed, half-OCR'd law PDFs into a clean Source-Law library — the verified feed that every downstream translation, citation, and publication in Lex Council drinks from. You carry it two-handed: the Architect reads the scrolls, names them true, and queues them; the Translator drains them word for word into the library, page-ranges intact, and seals the harvest with a dated digest. One dropped clause downstream becomes a mistranslation in five languages; one renamed law with the wrong number becomes a citation that points at the wrong statute. The harvest is where the chain either holds or breaks.

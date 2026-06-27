@@ -3,8 +3,9 @@ name: strategies-review
 description: Review pending strategies and move them to executed then check the docs.
 metadata:
   version: 1.0.0
----
+type: Skill
 
+---
 ## Step 1 — Load the resolutions log first
 
 Read `docs/strategy/auto_strategizing/RESOLUTIONS.md` before anything else. This file is the canonical record of every strategy decision (APPLIED, POSTPONED, or PROPOSED) with resolution IDs. Use it to pre-classify each pending strategy's real status before reading individual files.

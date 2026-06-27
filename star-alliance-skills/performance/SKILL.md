@@ -5,8 +5,9 @@ license: MIT
 metadata:
   author: web-quality-skills
   version: "1.0.3"
----
+type: Skill
 
+---
 # Performance optimization
 
 Deep performance optimization based on Lighthouse performance audits. Focuses on loading speed, runtime efficiency, and resource optimization.

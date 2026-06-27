@@ -3,8 +3,9 @@ name: ultra-brainstorming
 description: "The Strategist's super-planning method — fuse the outputs of several members into one doer-ready plan by brainstorming them across several thinking models at once. Use when two or more members have produced inputs (analyses, sketches, proposals, risks) that must become a single coherent plan before any doer can start. Triggers: 'ultra-brainstorm this', 'super-plan this', 'synthesize the members' work', 'brainstorm this across models', 'merge these proposals into one plan', 'plan this deeply before we build', or any fan-in where several specialists feed one build. Distinct from storm-investigation (five persona minds on one topic) and members-formation (the Butler's routing): this is a MODEL ensemble — several thinking models, each a different mind — that converges many members' work into one ranked, peer-reviewed plan handed to the member doing the job."
 metadata:
   version: 1.0.0
----
+type: Skill
 
+---
 # Ultra-Brainstorming — the Strategist's synthesis hub
 
 This is where several members' outputs **converge**, get brainstormed across **several thinking

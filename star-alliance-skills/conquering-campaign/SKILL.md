@@ -3,8 +3,9 @@ name: conquering-campaign
 description: "Multi-wave campaign skill for work too big for one pass. Three modes — AUDIT (reconcile docs with code/DB), BUILD (multi-phase features/refactors/migrations touching 3+ surfaces), EXTENSION (extends a recent predecessor, reusing its prescan). Gate G0 runs FIRST: work that doesn't clear the bar (3+ INDEPENDENT logical changes — one vertical slice = ONE — OR genuinely multi-phase, OR an app-wide doc↔code/DB audit) is declined and routed to a lighter pass, no campaign folder created. Triggers ONLY above that bar: 'audit my app', 'build this feature', 'ship this refactor', 'phase this migration', 'proceed in application', 'extend [campaign] to X', 'roll out [pattern] to [surface]', 'apply [v1.X] to [Z]'. Planning asks every question upfront then executes autonomously (a 15+-site rename, namespace move, or public-component rename earns a single approval gate). Enforces always-on pre-flight gates, conformity, consolidation, and self-verification (tsc+lint+preview). Full detail in references/."
 metadata:
   version: 3.8.3
----
+type: Skill
 
+---
 # Conquering Campaign
 
 ## Core philosophy

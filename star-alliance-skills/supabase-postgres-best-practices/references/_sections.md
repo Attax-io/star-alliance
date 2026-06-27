@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Section Definitions
 
 This file defines the rule categories for Postgres best practices. Rules are automatically assigned to sections based on their filename prefix.

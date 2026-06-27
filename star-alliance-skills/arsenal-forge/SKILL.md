@@ -3,8 +3,9 @@ name: arsenal-forge
 description: "The Strategist's craft for recruiting a new weapon (AI model) into the guild arsenal, or re-skinning / re-roleing an existing one. Set the weapon's identity (model id, element, colour, visual metaphor, Fallen-Sword name), assign its role under the thinker/doer/both schema and its priority slot under the arsenal-order rule (doers first, then thinkers and duals best-first, sonnet always last), commission the weapon art via the Designer (art-forge), then hand to the Quartermaster to wire it into summon.py routing, every member's loadout, and the weapon card with its role icon. The weapon must be routable — reachable by summon.py or Claude-native — or it is a phantom that will not fire. Use when a model joins or changes. Triggers: 'add a weapon', 'recruit a model', 'a new model joined', 're-skin this weapon', 'change a weapon role', 'arsenal forge'. Differentiate from art-forge (only the image) and members-formation (members, not weapons)."
 metadata:
   version: 1.0.0
----
+type: Skill
 
+---
 # Arsenal Forge — the Strategist's craft
 
 This is your craft, Strategist: recruiting a new weapon into the guild arsenal, or re-skinning and re-roling one that already serves. A weapon here is an AI model — minimax, opus, sonnet, haiku, kimi, or any cloud/API model the guild can reach. A member that fights without a properly forged weapon is a soldier holding a name instead of a blade. A weapon that cannot be summoned is a phantom, and phantoms are forbidden. The craft is short but unforgiving: identity, role, slot, art, wire, gate.

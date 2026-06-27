@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Lex Council Design Language
 
 > **Mode of `design-language`.** The product voice of the Lex Council app — a legal-financial

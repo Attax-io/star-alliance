@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Mode: hardcoded — full recipe
 
 > **Script:** `python3 ~/.claude/skills/cleanup/scripts/i18n_extract.py <detect|merge|propagate|verify>` — the deterministic machinery (candidate harvest + reuse-map + single-writer key merge + 6-locale propagate + MISSING_MESSAGE verify). The `.tsx` edits + the translation are the agent/recipe layer.

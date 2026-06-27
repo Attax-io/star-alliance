@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # STORM Investigation — paste-ready prompt pack
 
 The four verbatim prompts. Replace `[TOPIC]` (and `[ROLE]` in Prompt 3) before running. Run in

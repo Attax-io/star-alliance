@@ -3,8 +3,9 @@ title: Select Optimal Primary Key Strategy
 impact: HIGH
 impactDescription: Better index locality, reduced fragmentation
 tags: primary-key, identity, uuid, serial, schema
----
+type: Document
 
+---
 ## Select Optimal Primary Key Strategy
 
 Primary key choice affects insert performance, index size, and replication

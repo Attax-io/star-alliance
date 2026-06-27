@@ -5,8 +5,9 @@ date: 2026-06-26
 project_version_at_scan: 6.30.29
 method: full-text mine of 546 archived session transcripts → cluster → gate
 scope: 24 star-alliance sessions (S1–S24) + 522 Lex Council sessions (492 App + 30 lex_council)
----
+type: Document
 
+---
 # Star Alliance — The Strategist's Workflow Catalogue
 
 > The Guild Master asked: *"check all former archived sessions and note down all possible

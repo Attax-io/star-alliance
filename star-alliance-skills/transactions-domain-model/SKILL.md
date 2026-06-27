@@ -13,8 +13,9 @@ description: >
   announce the skill is running.
 metadata:
   version: 1.3.1
----
+type: Skill
 
+---
 # Transactions Domain Model
 
 > ⚠️ **Schema-name staleness (this model was written ~April 2026, BEFORE the 2026-05-24 v2 DB-naming

@@ -3,8 +3,9 @@ name: dashboard-parity
 description: "The Quartermaster's craft for proving a change actually reaches the rendered dashboard at index.html — not just the source files, but the generated guild-data.js the browser loads and the live DOM it paints. The dashboard is buildless: index.html loads guild-data.js (const GUILD), regenerated from source by build.py, so a change is done only when it survives that chain. This craft rebuilds, asserts the new value is in guild-data.js and the old value is gone, renders index.html on the local server, and confirms it shows in the live DOM via screenshot. Use after any edit that should appear on the dashboard — members, skills, workflows, domains, the guild log, the version, or any art. Triggers: 'is it on the dashboard', 'did it reflect on index.html', 'verify the dashboard', 'check the dashboard renders', 'dashboard parity', 'did the build land', 'did my change show up'. Differentiate from guild-conformity (source files agree with each other and the generated data) and cleanup (app/i18n hygiene)."
 metadata:
   version: 1.0.1
----
+type: Skill
 
+---
 # Dashboard Parity — the Quartermaster's craft
 
 You are the keeper of the looking-glass. A change is not done when the source file is saved, nor when the build script exits zero — it is done when the Guild Master opens the dashboard and *sees it*. The dashboard is buildless: `index.html` loads `guild-data.js` (a top-level `const GUILD`), which `build.py` regenerates from the source files. Between a saved edit and a painted pixel sit four places a change can silently die. Your craft is to walk that whole chain and prove, with a rebuild, a file assertion, a DOM assertion, and a screenshot, that the looking-glass shows the truth.

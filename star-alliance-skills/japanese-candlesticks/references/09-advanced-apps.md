@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Advanced Applications — Elliott, Market Profile, Options, Hedging, Practice
 
 ## Elliott Wave — Foundational Concepts

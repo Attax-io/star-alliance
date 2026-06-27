@@ -3,8 +3,9 @@ name: portfolio-risk
 description: "The Merchant's craft for read-only, book-level portfolio construction and risk measurement that ships a written, dated report and never trades or moves money. Scope the book (holdings, weights, base currency, benchmark); map exposures (asset class, sector, factor, geography, currency, concentration); compute risk metrics (volatility, beta, correlation, VaR with its limits, expected shortfall, max drawdown, liquidity-under-stress) with every assumption named; stress and scenario test; then propose (never execute) a rebalance with target weights, turnover, tracking error, and tax cost, plus a confidence grade. Four modes: construction, risk-audit, rebalance-proposal, stress-test. Differentiate from market-recon (single read), trading-strategy (per-strategy rules), and storm-investigation (general research). Triggers: 'review my portfolio', 'what is the risk on my book', 'compute VaR', 'check my exposures', 'should I rebalance', 'stress test this portfolio'. Never executes a trade or transfer."
 metadata:
   version: 0.1.0
----
+type: Skill
 
+---
 # Portfolio Risk — the Merchant's craft
 
 A single bet can be right and the book can still bleed. The Merchant's job is to see the book whole — every position, every exposure, every quiet dependency that wakes up in a storm — and to write down, in dated ink, what would happen if the weather turned. Risk is measured before the squall, not after the hull is stove in.

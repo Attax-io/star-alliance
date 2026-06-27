@@ -3,13 +3,13 @@
 const GUILD = {
   "meta": {
     "name": "Star Alliance",
-    "version": "6.52.61",
+    "version": "6.55.61",
     "versionTiers": {
       "major": 6,
-      "minor": 52,
+      "minor": 55,
       "patch": 61
     },
-    "generated": "2026-06-27T09:54:58Z",
+    "generated": "2026-06-27T10:44:33Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "gpt-5.5": "deactivated",
@@ -17,10 +17,10 @@ const GUILD = {
     },
     "counts": {
       "members": 9,
-      "skills": 46,
+      "skills": 48,
       "domains": 3,
-      "workflows": 27,
-      "log": 136
+      "workflows": 29,
+      "log": 139
     }
   },
   "members": [
@@ -86,6 +86,7 @@ const GUILD = {
       "skills": [
         "members-formation",
         "comms-triage",
+        "star-alliance-language",
         "weapon-utility",
         "high-alert"
       ],
@@ -95,10 +96,10 @@ const GUILD = {
         "nextTier": "Intermediate",
         "rampEarned": "gray",
         "rampConferred": "gray",
-        "ad": 6,
+        "ad": 7,
         "signals": {
-          "ad": 6,
-          "nSkills": 3,
+          "ad": 7,
+          "nSkills": 4,
           "nUnique": 3,
           "nMaster": 0,
           "peak": 3,
@@ -116,7 +117,7 @@ const GUILD = {
             {
               "label": "craft skills",
               "ok": true,
-              "have": 3,
+              "have": 4,
               "need": 1
             },
             {
@@ -128,13 +129,13 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": false,
-              "have": 6,
+              "have": 7,
               "need": 8
             },
             {
               "label": "craft skills",
               "ok": true,
-              "have": 3,
+              "have": 4,
               "need": 2
             },
             {
@@ -152,7 +153,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": false,
-              "have": 6,
+              "have": 7,
               "need": 12
             },
             {
@@ -176,7 +177,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": false,
-              "have": 6,
+              "have": 7,
               "need": 18
             },
             {
@@ -200,7 +201,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": false,
-              "have": 6,
+              "have": 7,
               "need": 24
             },
             {
@@ -229,13 +230,13 @@ const GUILD = {
           {
             "label": "Arsenal Depth",
             "ok": false,
-            "have": 6,
+            "have": 7,
             "need": 8
           },
           {
             "label": "craft skills",
             "ok": true,
-            "have": 3,
+            "have": 4,
             "need": 2
           },
           {
@@ -316,6 +317,7 @@ const GUILD = {
         "law-harvest",
         "supabase",
         "supabase-postgres-best-practices",
+        "star-alliance-language",
         "weapon-utility"
       ],
       "levelInfo": {
@@ -324,10 +326,10 @@ const GUILD = {
         "nextTier": "Elite",
         "rampEarned": "teal",
         "rampConferred": "teal",
-        "ad": 12,
+        "ad": 13,
         "signals": {
-          "ad": 12,
-          "nSkills": 6,
+          "ad": 13,
+          "nSkills": 7,
           "nUnique": 2,
           "nMaster": 0,
           "peak": 3,
@@ -345,7 +347,7 @@ const GUILD = {
             {
               "label": "craft skills",
               "ok": true,
-              "have": 6,
+              "have": 7,
               "need": 1
             },
             {
@@ -357,13 +359,13 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 12,
+              "have": 13,
               "need": 8
             },
             {
               "label": "craft skills",
               "ok": true,
-              "have": 6,
+              "have": 7,
               "need": 2
             },
             {
@@ -381,7 +383,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 12,
+              "have": 13,
               "need": 12
             },
             {
@@ -405,7 +407,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": false,
-              "have": 12,
+              "have": 13,
               "need": 18
             },
             {
@@ -429,7 +431,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": false,
-              "have": 12,
+              "have": 13,
               "need": 24
             },
             {
@@ -458,7 +460,7 @@ const GUILD = {
           {
             "label": "Arsenal Depth",
             "ok": false,
-            "have": 12,
+            "have": 13,
             "need": 18
           },
           {
@@ -552,6 +554,7 @@ const GUILD = {
         "supabase-postgres-best-practices",
         "full-output-enforcement",
         "obsidian-markdown",
+        "star-alliance-language",
         "weapon-utility"
       ],
       "levelInfo": {
@@ -560,10 +563,10 @@ const GUILD = {
         "nextTier": "Elite",
         "rampEarned": "teal",
         "rampConferred": "teal",
-        "ad": 13,
+        "ad": 14,
         "signals": {
-          "ad": 13,
-          "nSkills": 8,
+          "ad": 14,
+          "nSkills": 9,
           "nUnique": 3,
           "nMaster": 1,
           "peak": 4,
@@ -581,7 +584,7 @@ const GUILD = {
             {
               "label": "craft skills",
               "ok": true,
-              "have": 8,
+              "have": 9,
               "need": 1
             },
             {
@@ -593,13 +596,13 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 13,
+              "have": 14,
               "need": 8
             },
             {
               "label": "craft skills",
               "ok": true,
-              "have": 8,
+              "have": 9,
               "need": 2
             },
             {
@@ -617,7 +620,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 13,
+              "have": 14,
               "need": 12
             },
             {
@@ -641,7 +644,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": false,
-              "have": 13,
+              "have": 14,
               "need": 18
             },
             {
@@ -665,7 +668,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": false,
-              "have": 13,
+              "have": 14,
               "need": 24
             },
             {
@@ -694,7 +697,7 @@ const GUILD = {
           {
             "label": "Arsenal Depth",
             "ok": false,
-            "have": 13,
+            "have": 14,
             "need": 18
           },
           {
@@ -777,6 +780,7 @@ const GUILD = {
         "imagegen-frontend-mobile",
         "brandkit",
         "impeccable",
+        "star-alliance-language",
         "weapon-utility"
       ],
       "levelInfo": {
@@ -785,10 +789,10 @@ const GUILD = {
         "nextTier": "Master",
         "rampEarned": "amber",
         "rampConferred": "amber",
-        "ad": 20,
+        "ad": 21,
         "signals": {
-          "ad": 20,
-          "nSkills": 7,
+          "ad": 21,
+          "nSkills": 8,
           "nUnique": 6,
           "nMaster": 2,
           "peak": 4,
@@ -806,7 +810,7 @@ const GUILD = {
             {
               "label": "craft skills",
               "ok": true,
-              "have": 7,
+              "have": 8,
               "need": 1
             },
             {
@@ -818,13 +822,13 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 20,
+              "have": 21,
               "need": 8
             },
             {
               "label": "craft skills",
               "ok": true,
-              "have": 7,
+              "have": 8,
               "need": 2
             },
             {
@@ -842,7 +846,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 20,
+              "have": 21,
               "need": 12
             },
             {
@@ -866,7 +870,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 20,
+              "have": 21,
               "need": 18
             },
             {
@@ -890,7 +894,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": false,
-              "have": 20,
+              "have": 21,
               "need": 24
             },
             {
@@ -919,7 +923,7 @@ const GUILD = {
           {
             "label": "Arsenal Depth",
             "ok": false,
-            "have": 20,
+            "have": 21,
             "need": 24
           },
           {
@@ -1018,6 +1022,7 @@ const GUILD = {
         "performance",
         "strategies-review",
         "vault-log-compliance",
+        "star-alliance-language",
         "weapon-utility"
       ],
       "levelInfo": {
@@ -1026,10 +1031,10 @@ const GUILD = {
         "nextTier": null,
         "rampEarned": "purple",
         "rampConferred": "purple",
-        "ad": 25,
+        "ad": 26,
         "signals": {
-          "ad": 25,
-          "nSkills": 10,
+          "ad": 26,
+          "nSkills": 11,
           "nUnique": 8,
           "nMaster": 2,
           "peak": 4,
@@ -1047,7 +1052,7 @@ const GUILD = {
             {
               "label": "craft skills",
               "ok": true,
-              "have": 10,
+              "have": 11,
               "need": 1
             },
             {
@@ -1059,13 +1064,13 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 25,
+              "have": 26,
               "need": 8
             },
             {
               "label": "craft skills",
               "ok": true,
-              "have": 10,
+              "have": 11,
               "need": 2
             },
             {
@@ -1083,7 +1088,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 25,
+              "have": 26,
               "need": 12
             },
             {
@@ -1107,7 +1112,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 25,
+              "have": 26,
               "need": 18
             },
             {
@@ -1131,7 +1136,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 25,
+              "have": 26,
               "need": 24
             },
             {
@@ -1224,6 +1229,7 @@ const GUILD = {
         "law-harvest",
         "article-creator",
         "obsidian-markdown",
+        "star-alliance-language",
         "weapon-utility"
       ],
       "levelInfo": {
@@ -1232,10 +1238,10 @@ const GUILD = {
         "nextTier": "Advanced",
         "rampEarned": "blue",
         "rampConferred": "blue",
-        "ad": 9,
+        "ad": 10,
         "signals": {
-          "ad": 9,
-          "nSkills": 5,
+          "ad": 10,
+          "nSkills": 6,
           "nUnique": 2,
           "nMaster": 0,
           "peak": 3,
@@ -1253,7 +1259,7 @@ const GUILD = {
             {
               "label": "craft skills",
               "ok": true,
-              "have": 5,
+              "have": 6,
               "need": 1
             },
             {
@@ -1265,13 +1271,13 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 9,
+              "have": 10,
               "need": 8
             },
             {
               "label": "craft skills",
               "ok": true,
-              "have": 5,
+              "have": 6,
               "need": 2
             },
             {
@@ -1289,7 +1295,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": false,
-              "have": 9,
+              "have": 10,
               "need": 12
             },
             {
@@ -1313,7 +1319,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": false,
-              "have": 9,
+              "have": 10,
               "need": 18
             },
             {
@@ -1337,7 +1343,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": false,
-              "have": 9,
+              "have": 10,
               "need": 24
             },
             {
@@ -1366,7 +1372,7 @@ const GUILD = {
           {
             "label": "Arsenal Depth",
             "ok": false,
-            "have": 9,
+            "have": 10,
             "need": 12
           },
           {
@@ -1452,6 +1458,7 @@ const GUILD = {
         "article-creator",
         "brandkit",
         "storm-investigation",
+        "star-alliance-language",
         "weapon-utility"
       ],
       "levelInfo": {
@@ -1460,10 +1467,10 @@ const GUILD = {
         "nextTier": "Elite",
         "rampEarned": "teal",
         "rampConferred": "teal",
-        "ad": 14,
+        "ad": 15,
         "signals": {
-          "ad": 14,
-          "nSkills": 5,
+          "ad": 15,
+          "nSkills": 6,
           "nUnique": 2,
           "nMaster": 1,
           "peak": 4,
@@ -1481,7 +1488,7 @@ const GUILD = {
             {
               "label": "craft skills",
               "ok": true,
-              "have": 5,
+              "have": 6,
               "need": 1
             },
             {
@@ -1493,13 +1500,13 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 14,
+              "have": 15,
               "need": 8
             },
             {
               "label": "craft skills",
               "ok": true,
-              "have": 5,
+              "have": 6,
               "need": 2
             },
             {
@@ -1517,7 +1524,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 14,
+              "have": 15,
               "need": 12
             },
             {
@@ -1541,7 +1548,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": false,
-              "have": 14,
+              "have": 15,
               "need": 18
             },
             {
@@ -1565,7 +1572,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": false,
-              "have": 14,
+              "have": 15,
               "need": 24
             },
             {
@@ -1594,7 +1601,7 @@ const GUILD = {
           {
             "label": "Arsenal Depth",
             "ok": false,
-            "have": 14,
+            "have": 15,
             "need": 18
           },
           {
@@ -1683,6 +1690,7 @@ const GUILD = {
         "portfolio-risk",
         "japanese-candlesticks",
         "storm-investigation",
+        "star-alliance-language",
         "weapon-utility"
       ],
       "levelInfo": {
@@ -1691,10 +1699,10 @@ const GUILD = {
         "nextTier": "Elite",
         "rampEarned": "teal",
         "rampConferred": "teal",
-        "ad": 15,
+        "ad": 16,
         "signals": {
-          "ad": 15,
-          "nSkills": 5,
+          "ad": 16,
+          "nSkills": 6,
           "nUnique": 4,
           "nMaster": 0,
           "peak": 3,
@@ -1712,7 +1720,7 @@ const GUILD = {
             {
               "label": "craft skills",
               "ok": true,
-              "have": 5,
+              "have": 6,
               "need": 1
             },
             {
@@ -1724,13 +1732,13 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 15,
+              "have": 16,
               "need": 8
             },
             {
               "label": "craft skills",
               "ok": true,
-              "have": 5,
+              "have": 6,
               "need": 2
             },
             {
@@ -1748,7 +1756,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 15,
+              "have": 16,
               "need": 12
             },
             {
@@ -1772,7 +1780,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": false,
-              "have": 15,
+              "have": 16,
               "need": 18
             },
             {
@@ -1796,7 +1804,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": false,
-              "have": 15,
+              "have": 16,
               "need": 24
             },
             {
@@ -1825,7 +1833,7 @@ const GUILD = {
           {
             "label": "Arsenal Depth",
             "ok": false,
-            "have": 15,
+            "have": 16,
             "need": 18
           },
           {
@@ -1913,6 +1921,8 @@ const GUILD = {
         "guild-log",
         "cleanup",
         "storm-investigation",
+        "okf",
+        "star-alliance-language",
         "weapon-utility"
       ],
       "levelInfo": {
@@ -1921,11 +1931,11 @@ const GUILD = {
         "nextTier": "Elite",
         "rampEarned": "teal",
         "rampConferred": "teal",
-        "ad": 17,
+        "ad": 21,
         "signals": {
-          "ad": 17,
-          "nSkills": 7,
-          "nUnique": 6,
+          "ad": 21,
+          "nSkills": 9,
+          "nUnique": 7,
           "nMaster": 0,
           "peak": 3,
           "nWeapons": 7,
@@ -1942,7 +1952,7 @@ const GUILD = {
             {
               "label": "craft skills",
               "ok": true,
-              "have": 7,
+              "have": 9,
               "need": 1
             },
             {
@@ -1954,19 +1964,19 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 17,
+              "have": 21,
               "need": 8
             },
             {
               "label": "craft skills",
               "ok": true,
-              "have": 7,
+              "have": 9,
               "need": 2
             },
             {
               "label": "unique skills",
               "ok": true,
-              "have": 6,
+              "have": 7,
               "need": 1
             },
             {
@@ -1978,7 +1988,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 17,
+              "have": 21,
               "need": 12
             },
             {
@@ -1988,7 +1998,7 @@ const GUILD = {
             {
               "label": "unique skills",
               "ok": true,
-              "have": 6,
+              "have": 7,
               "need": 2
             },
             {
@@ -2001,8 +2011,8 @@ const GUILD = {
           "Elite": [
             {
               "label": "Arsenal Depth",
-              "ok": false,
-              "have": 17,
+              "ok": true,
+              "have": 21,
               "need": 18
             },
             {
@@ -2014,7 +2024,7 @@ const GUILD = {
             {
               "label": "unique skills",
               "ok": true,
-              "have": 6,
+              "have": 7,
               "need": 3
             },
             {
@@ -2026,7 +2036,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": false,
-              "have": 17,
+              "have": 21,
               "need": 24
             },
             {
@@ -2038,7 +2048,7 @@ const GUILD = {
             {
               "label": "unique skills",
               "ok": true,
-              "have": 6,
+              "have": 7,
               "need": 3
             },
             {
@@ -2054,8 +2064,8 @@ const GUILD = {
         "progress": [
           {
             "label": "Arsenal Depth",
-            "ok": false,
-            "have": 17,
+            "ok": true,
+            "have": 21,
             "need": 18
           },
           {
@@ -2067,7 +2077,7 @@ const GUILD = {
           {
             "label": "unique skills",
             "ok": true,
-            "have": 6,
+            "have": 7,
             "need": 3
           },
           {
@@ -2110,7 +2120,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 58,
+        "lines": 57,
         "words": 1106
       },
       "global": true,
@@ -2145,7 +2155,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 111,
+        "lines": 110,
         "words": 839
       },
       "global": true,
@@ -2198,7 +2208,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 795,
+        "lines": 794,
         "words": 2543
       },
       "global": true,
@@ -2238,7 +2248,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 236,
+        "lines": 235,
         "words": 2145
       },
       "global": true,
@@ -2310,7 +2320,7 @@ const GUILD = {
         "watermark.py"
       ],
       "stats": {
-        "lines": 330,
+        "lines": 329,
         "words": 5594
       },
       "global": true,
@@ -2369,7 +2379,7 @@ const GUILD = {
         "verify.js"
       ],
       "stats": {
-        "lines": 228,
+        "lines": 227,
         "words": 2112
       },
       "global": true,
@@ -2406,7 +2416,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 60,
+        "lines": 59,
         "words": 1052
       },
       "global": true,
@@ -2472,7 +2482,7 @@ const GUILD = {
       ],
       "scripts": [],
       "stats": {
-        "lines": 466,
+        "lines": 465,
         "words": 10351
       },
       "global": false,
@@ -2508,7 +2518,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 51,
+        "lines": 50,
         "words": 1164
       },
       "global": false,
@@ -2544,7 +2554,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 48,
+        "lines": 47,
         "words": 542
       },
       "global": true,
@@ -2587,7 +2597,7 @@ const GUILD = {
       ],
       "scripts": [],
       "stats": {
-        "lines": 93,
+        "lines": 92,
         "words": 917
       },
       "global": false,
@@ -2634,7 +2644,7 @@ const GUILD = {
       ],
       "scripts": [],
       "stats": {
-        "lines": 99,
+        "lines": 98,
         "words": 1068
       },
       "global": true,
@@ -2671,7 +2681,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 73,
+        "lines": 72,
         "words": 645
       },
       "global": true,
@@ -2706,7 +2716,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 46,
+        "lines": 45,
         "words": 382
       },
       "global": true,
@@ -2750,7 +2760,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 1025,
+        "lines": 1024,
         "words": 5904
       },
       "global": true,
@@ -2789,7 +2799,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 97,
+        "lines": 96,
         "words": 2490
       },
       "global": true,
@@ -2825,7 +2835,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 52,
+        "lines": 51,
         "words": 997
       },
       "global": true,
@@ -2862,7 +2872,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 231,
+        "lines": 230,
         "words": 2454
       },
       "global": true,
@@ -2895,7 +2905,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 29,
+        "lines": 28,
         "words": 292
       },
       "global": false,
@@ -2963,7 +2973,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 1225,
+        "lines": 1224,
         "words": 5735
       },
       "global": true,
@@ -3031,7 +3041,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 1462,
+        "lines": 1461,
         "words": 6460
       },
       "global": true,
@@ -3082,7 +3092,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 984,
+        "lines": 983,
         "words": 5724
       },
       "global": true,
@@ -3197,7 +3207,7 @@ const GUILD = {
       ],
       "scripts": [],
       "stats": {
-        "lines": 60,
+        "lines": 59,
         "words": 965
       },
       "global": true,
@@ -3233,7 +3243,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 63,
+        "lines": 62,
         "words": 1152
       },
       "global": true,
@@ -3271,7 +3281,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 54,
+        "lines": 53,
         "words": 1156
       },
       "global": true,
@@ -3307,7 +3317,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 64,
+        "lines": 63,
         "words": 1447
       },
       "global": true,
@@ -3344,7 +3354,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 55,
+        "lines": 54,
         "words": 1115
       },
       "global": true,
@@ -3384,7 +3394,7 @@ const GUILD = {
       ],
       "scripts": [],
       "stats": {
-        "lines": 178,
+        "lines": 177,
         "words": 1775
       },
       "global": true,
@@ -3431,13 +3441,50 @@ const GUILD = {
       ],
       "scripts": [],
       "stats": {
-        "lines": 163,
+        "lines": 162,
         "words": 610
       },
       "global": true,
       "members": [
         "the-developer",
         "the-translator"
+      ]
+    },
+    {
+      "id": "okf",
+      "name": "okf",
+      "version": "1.0.0",
+      "icon": "🧹",
+      "art": "",
+      "artPng": false,
+      "blurb": "Keep the whole repo tidy & conformant to the Open Knowledge Format (OKF v0.1)",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-file-stack",
+      "src": "own",
+      "desc": "Keep the whole Star Alliance repo tidy and conformant to the Open Knowledge Format (OKF v0.1) — one concept per markdown file, each carrying a `type:` frontmatter, cross-linked, with non-knowledge files swept and placed by concept-path. The Quartermaster's repo-hygiene standard. Use when the user says 'tidy the repo', 'OKF', 'keep it clean', 'make it OKF-conformant', 'run the OKF audit', 'fix frontmatter', or after any campaign that left new files behind. Pairs with star-alliance-language (the reader half).",
+      "intro": "The producer half of the guild's knowledge standard. The Quartermaster runs this to keep the entire repo tidy and conformant to the **Open Knowledge Format (OKF v0.1)** — Google Cloud's vendor-neutral spec for representing knowledge as a directory of markdown files. Its companion is star-alliance-la",
+      "sections": [
+        "What OKF requires (the whole spec, one screen)",
+        "The standard, applied to THIS repo",
+        "How you work",
+        "Conformance contract (what type: lets the reader assume)",
+        "Don't"
+      ],
+      "triggers": "'tidy the repo', 'OKF', 'make it OKF-conformant', 'run the OKF audit', 'fix frontmatter', 'keep it clean', after any campaign that left files behind. The producer half of the guild's knowledge standard; pairs with star-alliance-language (reader). Enforced mechanically by the okf-gate PreToolUse hook.",
+      "modes": "audit (default) — report non-conformant governed .md; --fix — migrate-first baseline (inject type: + timestamp:, idempotent); enrich — add title/description/tags/cross-links; sweep — place non-md by concept-path & prune orphans",
+      "disabled": false,
+      "refs": [],
+      "scripts": [
+        "okf_audit.py"
+      ],
+      "stats": {
+        "lines": 91,
+        "words": 710
+      },
+      "global": false,
+      "members": [
+        "the-quartermaster"
       ]
     },
     {
@@ -3473,7 +3520,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 371,
+        "lines": 370,
         "words": 1418
       },
       "global": true,
@@ -3510,7 +3557,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 55,
+        "lines": 54,
         "words": 834
       },
       "global": false,
@@ -3547,7 +3594,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 55,
+        "lines": 54,
         "words": 1072
       },
       "global": true,
@@ -3584,7 +3631,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 62,
+        "lines": 61,
         "words": 1146
       },
       "global": true,
@@ -3620,7 +3667,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 48,
+        "lines": 47,
         "words": 1030
       },
       "global": true,
@@ -3674,12 +3721,57 @@ const GUILD = {
         "skill_sync.py"
       ],
       "stats": {
-        "lines": 148,
+        "lines": 147,
         "words": 4288
       },
       "global": true,
       "members": [
         "the-quartermaster"
+      ]
+    },
+    {
+      "id": "star-alliance-language",
+      "name": "star-alliance-language",
+      "version": "1.0.0",
+      "icon": "🗣️",
+      "art": "",
+      "artPng": false,
+      "blurb": "The guild's shared reading protocol for OKF-tidied repos — read the concept map, not whole files",
+      "level": "Foundational",
+      "ramp": "gray",
+      "tabler": "ti-map-search",
+      "src": "own",
+      "desc": "The guild's shared reading protocol for OKF-tidied repos — how every member quickly, cheaply, and reliably takes in a repo the Quartermaster has kept conformant, on future runs. Read the concept map first (frontmatter + cross-links), open only the few concepts the task needs, never blind-read. Universal — rides every member, like weapon-utility. Use whenever a member starts work in a repo, needs to find where knowledge lives, or asks 'read the repo', 'what's in here', 'map this', 'orient me', 'where is X documented'.",
+      "intro": "The consumer half of the guild's knowledge standard. Where the okf skill (Quartermaster) produces a tidy, OKF-conformant repo, this skill is how **every member reads it back** — fast, cheap, and the same way every time. It is the shared \"language\" the guild speaks when consuming knowledge, the mirro",
+      "sections": [
+        "Why this exists",
+        "The protocol (do this, in order)",
+        "When to reach for it",
+        "Relationship to the rest of the arsenal",
+        "Don't"
+      ],
+      "triggers": "automatic — every member orients through it when starting work in a repo. 'read the repo', 'what's in here', 'map this', 'orient me', 'where is X documented'. Universal — rides every member like weapon-utility. The consumer half of the OKF pair (okf produces, this reads).",
+      "modes": "map (default) — one-shot concept map via okf_read.py (frontmatter + cross-links, grouped, index.md first); --dir/--type/--grep narrow; --links walk one concept's graph; --json feed a doer",
+      "disabled": false,
+      "refs": [],
+      "scripts": [
+        "okf_read.py"
+      ],
+      "stats": {
+        "lines": 80,
+        "words": 608
+      },
+      "global": false,
+      "members": [
+        "the-architect",
+        "the-butler",
+        "the-designer",
+        "the-developer",
+        "the-herald",
+        "the-merchant",
+        "the-quartermaster",
+        "the-strategist",
+        "the-translator"
       ]
     },
     {
@@ -3713,7 +3805,7 @@ const GUILD = {
       ],
       "scripts": [],
       "stats": {
-        "lines": 94,
+        "lines": 93,
         "words": 919
       },
       "global": true,
@@ -3752,7 +3844,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 44,
+        "lines": 43,
         "words": 297
       },
       "global": true,
@@ -3790,7 +3882,7 @@ const GUILD = {
       ],
       "scripts": [],
       "stats": {
-        "lines": 106,
+        "lines": 105,
         "words": 1184
       },
       "global": true,
@@ -3860,7 +3952,7 @@ const GUILD = {
       ],
       "scripts": [],
       "stats": {
-        "lines": 54,
+        "lines": 53,
         "words": 242
       },
       "global": true,
@@ -3898,7 +3990,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 55,
+        "lines": 54,
         "words": 901
       },
       "global": false,
@@ -3942,7 +4034,7 @@ const GUILD = {
       ],
       "scripts": [],
       "stats": {
-        "lines": 399,
+        "lines": 398,
         "words": 3263
       },
       "global": true,
@@ -3979,7 +4071,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 108,
+        "lines": 107,
         "words": 926
       },
       "global": true,
@@ -4014,7 +4106,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 119,
+        "lines": 118,
         "words": 1445
       },
       "global": true,
@@ -4052,7 +4144,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 122,
+        "lines": 121,
         "words": 1116
       },
       "global": true,
@@ -4096,7 +4188,7 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 59,
+        "lines": 58,
         "words": 1078
       },
       "global": true,
@@ -4983,6 +5075,84 @@ const GUILD = {
         "audit the whole repo"
       ],
       "artPng": true
+    },
+    {
+      "id": "okf-tidy",
+      "name": "OKF Tidy",
+      "icon": "🧹",
+      "accent": "gold",
+      "category": "Hygiene & Release",
+      "tagline": "The Quartermaster keeps the whole repo tidy & conformant to the Open Knowledge Format, so every member can read it fast on future runs.",
+      "when": "Use to bring the repo to (or back to) OKF conformance — after a campaign leaves files behind, when frontmatter drifts, or to migrate-first before arming the okf-gate. The producer pass; star-alliance-language is how members then read the result.",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Call the Tidy",
+          "act": "You ask the guild to tidy the repo to the Open Knowledge Format standard.",
+          "produces": "tidy request"
+        },
+        {
+          "kind": "member",
+          "actor": "the-butler",
+          "title": "Restate the Order",
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "plain-English brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "restate"
+          },
+          "inputs": [
+            "tidy request"
+          ]
+        },
+        {
+          "kind": "gate",
+          "gate": "approval",
+          "label": "You confirm the tidy scope before any file is rewritten — a whole-repo frontmatter migration is hard to eyeball after the fact."
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Audit Conformance",
+          "act": "The Quartermaster runs `okf_audit.py` (the okf skill) to report every governed .md lacking YAML frontmatter or a `type:` field, and surveys non-markdown files for orphans and misplacement.",
+          "produces": "non-conformance report"
+        },
+        {
+          "kind": "gate",
+          "gate": "certify",
+          "label": "The Quartermaster certifies the migration is safe — exclusions cover vendored/generated trees and build.py still parses members & skills after frontmatter is injected."
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Migrate, Enrich & Sweep",
+          "act": "The Quartermaster runs `okf_audit.py --fix` (migrate-first baseline), enriches concepts with title/description/tags and cross-links (handing bulk drafting to a doer weapon), places non-md files by concept-path, prunes confirmed dead files, then runs build.py so the dashboard reflects the tidy.",
+          "produces": "OKF-conformant repo"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Conformance & Gate",
+          "act": "Re-runs `okf_audit.py` until it passes clean, confirms the okf-gate hook is registered in .claude/settings.json, then runs guild-log + guild-conformity so the run leaves the repo agreeing with itself.",
+          "produces": "verified tidy"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports what was migrated, enriched, swept, and gated — and flags whether the okf-gate is now armed."
+        }
+      ],
+      "trigger_phrases": [
+        "okf",
+        "okf tidy",
+        "tidy the repo",
+        "make it okf-conformant",
+        "run the okf audit",
+        "keep the repo clean",
+        "fix the frontmatter"
+      ],
+      "artPng": false
     },
     {
       "id": "bug-cycle",
@@ -6370,6 +6540,66 @@ const GUILD = {
       "artPng": true
     },
     {
+      "id": "local-session",
+      "name": "Local Session",
+      "icon": "🦅",
+      "accent": "indigo",
+      "category": "Research & Intel",
+      "tagline": "Spawn an isolated Claude subagent to scout or work, then verify what it brings back.",
+      "when": "Use this when the task should run in a fresh, isolated local session — 'start a new local session to investigate X', 'spawn a subagent', 'delegate this to a local Claude'. The routed member scopes the brief, spawns a CLAUDE session-doer via the Agent tool (a spawned session must be Claude — MiniMax doers run via summon.py and have NO tool access, so they cannot BE a session), gives it a disjoint scoped task, then verifies its findings against source before reporting. Pick the cheapest Claude doer the member carries: haiku where held (the-developer, the-translator, the-quartermaster), else sonnet.",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Pose the Session Task",
+          "act": "You ask for work to run in a fresh, isolated local session — an investigation or a scoped job.",
+          "produces": "session task"
+        },
+        {
+          "kind": "member",
+          "actor": "the-developer",
+          "title": "Scope & Spawn",
+          "act": "The routed member scopes a disjoint brief and spawns a CLAUDE session-doer via the Agent tool — haiku if the member carries it (dev/translator/quartermaster), else sonnet; NEVER MiniMax, whose summon.py doers have no tool access and cannot be a session. The subagent runs its scoped task in isolation and returns structured findings.",
+          "produces": "session findings",
+          "inputs": [
+            "session task"
+          ]
+        },
+        {
+          "kind": "member",
+          "actor": "the-developer",
+          "title": "Review & Synthesize",
+          "act": "The routed member verifies the subagent's findings against source — nothing trusted unverified — and synthesizes the answer.",
+          "produces": "verified result"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Conformance",
+          "act": "Runs guild/conformance.py if anything was mutated; for a read-only scout, confirms the session touched nothing and closes clean.",
+          "produces": "conformance sign-off"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports the verified findings and their sources back to you in plain English, and flags whether the run is worth saving as a reusable workflow."
+        }
+      ],
+      "trigger_phrases": [
+        "start a new local session",
+        "new local session",
+        "start a local session",
+        "spawn a subagent",
+        "spawn a local session",
+        "investigate in a separate session",
+        "delegate to a local claude",
+        "run this in a subagent",
+        "local claude doer",
+        "isolated session"
+      ],
+      "artPng": true
+    },
+    {
       "id": "conversation",
       "name": "Conversation",
       "icon": "💬",
@@ -6427,6 +6657,30 @@ const GUILD = {
   ],
   "log": {
     "entries": [
+      {
+        "id": 84,
+        "date": "2026-06-27",
+        "type": "workflow",
+        "title": "OKF Tidy workflow",
+        "who": "the-quartermaster",
+        "detail": "New Hygiene & Release star-map workflow: Quartermaster migrate-first audit/fix/enrich/sweep to OKF conformance, with approval+certify gates and okf-gate verification."
+      },
+      {
+        "id": 83,
+        "date": "2026-06-27",
+        "type": "skill-create",
+        "title": "star-alliance-language skill — OKF reading protocol (consumer)",
+        "who": "the-quartermaster",
+        "detail": "Universal skill (rides every member like weapon-utility): the fast reading protocol for OKF-tidied repos. Ships okf_read.py emitting a one-shot concept map from frontmatter + cross-links so members read by type/title, never blind full-reads."
+      },
+      {
+        "id": 82,
+        "date": "2026-06-27",
+        "type": "skill-create",
+        "title": "okf skill — whole-repo OKF hygiene (producer)",
+        "who": "the-quartermaster",
+        "detail": "Quartermaster skill keeps the whole repo tidy and OKF v0.1 conformant; ships okf_audit.py and is enforced by the okf-gate hook."
+      },
       {
         "id": 81,
         "date": "2026-06-27",
@@ -8121,6 +8375,6 @@ const GUILD = {
         "id": "g-325a46a5-add-skill-conquering-campaign"
       }
     ],
-    "count": 136
+    "count": 139
   }
 };

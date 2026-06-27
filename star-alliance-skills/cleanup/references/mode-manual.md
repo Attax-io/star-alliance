@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Mode: `manual` — keep the in-app user manual fresh + translated
 
 **Status: LIVE (added v1.15.0).**

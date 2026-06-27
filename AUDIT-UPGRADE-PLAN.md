@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Star Alliance — Guild Retrospective: Upgrade Plan
 
 _Campaign output. 3 stores · full history (Mar 15–Jun 27) · 8,695 signal windows → 1,806 raw candidates → 112 distinct lessons → the upgrades below._

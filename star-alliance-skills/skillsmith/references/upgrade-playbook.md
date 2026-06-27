@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Mode: upgrade — bump a skill, keep it Cowork-installable
 
 Goal: a change to a skill is shipped with its version bumped, the registry refreshed, the Cowork

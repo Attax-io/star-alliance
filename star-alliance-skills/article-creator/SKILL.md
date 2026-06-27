@@ -15,8 +15,9 @@ description: >
   + P8 vault log. Load silently.
 metadata:
   version: 1.0.1
----
+type: Skill
 
+---
 # Article Creator — Insights CMS Pipeline
 
 Creates one article + 6 locale translations in the Lex Council production database,

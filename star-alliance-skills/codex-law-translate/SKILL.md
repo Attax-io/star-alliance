@@ -13,8 +13,9 @@ description: >
   (Ollama is gone). All writes go to production via service-role REST — no DDL, idempotent.
 metadata:
   version: 1.1.0
----
+type: Skill
 
+---
 # Codex Law Translate (Lex Council)
 
 Canonical pipeline for putting a law into the **legal codex** with AR + 5 translations, reviewed and

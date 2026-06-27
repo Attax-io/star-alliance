@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 ## What happened
 
 **Task:** <!-- e.g., "Set up MFA on patient records" -->

@@ -3,8 +3,9 @@ title: Use UPSERT for Insert-or-Update Operations
 impact: MEDIUM
 impactDescription: Atomic operation, eliminates race conditions
 tags: upsert, on-conflict, insert, update
----
+type: Document
 
+---
 ## Use UPSERT for Insert-or-Update Operations
 
 Using separate SELECT-then-INSERT/UPDATE creates race conditions. Use INSERT ... ON CONFLICT for atomic upserts.

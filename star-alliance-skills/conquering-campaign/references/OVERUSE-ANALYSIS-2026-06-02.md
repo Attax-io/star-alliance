@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Conquering-campaign over-invocation — reflection input (2026-06-02)
 
 > **Status: SHIPPED as v3.7.0 (2026-06-02).** Lessons + route mined from the last ~3 days of sessions

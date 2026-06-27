@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # The Checkpoint Pattern
 
 When a subagent can't verify something at campaign time (DB pooler down, MCP unavailable, third-party API throttled, environment offline in audit mode; post-deploy probe queued, prod telemetry not yet available, stability window not yet elapsed in build mode), don't guess and don't omit. Insert a checkpoint marker, register it in `CHECKPOINTS.md`, and ship the doc / phase log with the marker visible.

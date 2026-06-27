@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Putting It Together & Confluence of Candlesticks
 
 ## The Visual-Summary Method (Chapter 9)

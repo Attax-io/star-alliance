@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Mode: consolidate — full recipe
 
 > ✅ **#303 DB-native (done 2026-06-21):** `public.app_translations` (DB) is the

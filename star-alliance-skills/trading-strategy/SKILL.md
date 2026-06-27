@@ -3,8 +3,9 @@ name: trading-strategy
 description: "The Merchant's craft for read-only trading-strategy design that ships a written, dated strategy spec and never places a trade or writes broker code. Take a market view (often from market-recon) and forge it into an executable-on-paper plan: scope the instrument, horizon, and regime; define a falsifiable edge with mechanical entry, exit, stop, time-stop, and invalidation rules; size the position by risk-per-trade and stop distance; frame a backtest with costs, in/out-of-sample split, and metrics (hit rate, payoff, expectancy, drawdown); then hand off a graded spec with a clear invalidation trigger. Four modes: trend-following, mean-reversion, event/catalyst-driven, systematic rules-based screen. Differentiate from market-recon (the read), portfolio-risk (the book), and storm-investigation (general research). Triggers: 'build a trading strategy', 'design an entry/exit plan', 'backtest this idea', 'how should I size this trade', 'turn this view into a strategy'. Never executes a trade or transfer."
 metadata:
   version: 0.1.0
----
+type: Skill
 
+---
 # Trading Strategy — the Merchant's craft
 
 A craft of rules over hunches. A market view is a rumor until it is hammered into entry, exit, sizing, and risk — a written, dated plan that can be tested, falsified, and handed across the table without losing its shape. A blade untested is just metal; a strategy untested is just hope. The Merchant's job here is to take the read from market-recon and forge it into a spec a sober trader could paper-trade tomorrow, with no orders placed and no broker touched.

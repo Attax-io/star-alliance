@@ -1,3 +1,8 @@
+---
+type: Readme
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # guild/ — workflow runner (PILOT)
 
 First slice of the [workflow automation proposal](../STRATEGIST-WORKFLOW-AUTOMATION.md):

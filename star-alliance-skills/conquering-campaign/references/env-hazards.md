@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Environment Hazards
 
 Quick index of runtime and tooling hazards; each entry names the failure mode # and cure location.

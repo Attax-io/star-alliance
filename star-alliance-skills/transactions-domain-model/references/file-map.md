@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Transactions Domain — File Map
 
 Quick reference for locating transaction-related code. Read the relevant file before modifying it.

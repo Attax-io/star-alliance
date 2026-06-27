@@ -3,8 +3,9 @@ title: Batch INSERT Statements for Bulk Data
 impact: MEDIUM
 impactDescription: 10-50x faster bulk inserts
 tags: batch, insert, bulk, performance, copy
----
+type: Document
 
+---
 ## Batch INSERT Statements for Bulk Data
 
 Individual INSERT statements have high overhead. Batch multiple rows in single statements or use COPY.

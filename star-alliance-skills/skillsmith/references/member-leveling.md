@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Member Leveling — the Quartermaster's operating manual
 
 > The standard the Quartermaster applies when conferring a member's level. The full rationale and the

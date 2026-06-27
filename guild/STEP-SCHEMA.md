@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Workflow Step Schema — the-architect's design spec
 
 Status: **BLESSED CONTRACT** (implemented in `guild/run.py`) · wiring into `workflows.json` **LIVE** as of Wave 0 (see bottom).

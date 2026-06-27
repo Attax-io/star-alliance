@@ -1,3 +1,8 @@
+---
+type: Readme
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Guild Members
 
 Each member is a Claude Code agent definition — a markdown file with a system prompt and a curated list of skills from the shared pool at `../star-alliance-skills/`.

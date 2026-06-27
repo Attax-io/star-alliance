@@ -4,8 +4,9 @@ author: the-strategist
 date: 2026-06-26
 status: proposal (no changes applied)
 scope: workflows.json (version 1, 24 entries)
----
+type: Document
 
+---
 # The Strategist's Merge Review
 
 > Guild Master's order: *"Review all the workflows — are any worth merging? Pros and cons."*

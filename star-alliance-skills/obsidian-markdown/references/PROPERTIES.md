@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Properties (Frontmatter) Reference
 
 Properties use YAML frontmatter at the start of a note:

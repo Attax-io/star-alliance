@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Cowork limits — the always-on invariant
 
 Every skill in the repo is kept installable through the Cowork skill installer. Three limits:

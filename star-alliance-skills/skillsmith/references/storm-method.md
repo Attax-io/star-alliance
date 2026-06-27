@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # The STORM method — adapted for skill evolution
 
 `routine` mode researches every candidate change with **STORM** before it touches a skill. STORM

@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # FE + i18n playbook — conquering-campaign
 
 Load this for any FE / theme / i18n / codemod phase. SKILL.md keeps the gates (G1 reuse-before-build) + the named-pattern index; the procedures, code samples, and the new lessons live here.

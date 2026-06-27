@@ -3,8 +3,9 @@ name: dev-server
 description: "Use this skill whenever the user says 'open dev server', 'run dev server', 'restart dev server', 'start the app', 'launch dev', 'open the app', or any variation of starting/restarting/viewing the local Next.js development server. Handles start and restart in one turn — no ToolSearch round-trips needed."
 metadata:
   version: 1.1.0
----
+type: Skill
 
+---
 # Dev Server
 
 Manages the local Next.js dev server for the current project using the Claude Preview MCP tools. Assumes the project has a `.claude/launch.json` entry named `web` (or another configurable name — see Notes).

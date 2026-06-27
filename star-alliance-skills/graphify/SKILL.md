@@ -4,8 +4,9 @@ description: "any input (code, docs, papers, images, videos) to knowledge graph.
 metadata:
   version: 1.0.0
   trigger: /graphify
----
+type: Skill
 
+---
 # /graphify
 
 Turn any folder of files into a navigable knowledge graph with community detection, an honest audit trail, and three outputs: interactive HTML, GraphRAG-ready JSON, and a plain-language GRAPH_REPORT.md.

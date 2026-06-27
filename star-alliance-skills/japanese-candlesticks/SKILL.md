@@ -3,8 +3,9 @@ name: japanese-candlesticks
 description: "The Merchant's read-only craft for reading Japanese candlestick charts, distilled from Steve Nison's Japanese Candlestick Charting Techniques. Identify and explain every candlestick line and pattern — single-line reversals (hammer, hanging man, shooting star, belt-hold), multi-line reversals (engulfing, dark-cloud cover, piercing, harami, tweezers, stars, crows, towers), continuations (windows, tasuki, three methods, soldiers), and the doji family — then read their bull-vs-bear psychology, confirmation, and reliability, and fuse them with Western tools (trendlines, retracements, moving averages, oscillators) for confluence. Analysis and teaching only; never trades or moves money. Use for: 'what candlestick pattern is this', 'is this a hammer or a doji', 'read this candlestick chart', 'explain bullish engulfing', 'morning star meaning', 'teach me Japanese candlesticks', 'candlestick analysis'. Differentiate from market-recon, trading-strategy, and portfolio-risk. Never executes a trade or transfer."
 metadata:
   version: 1.0.0
----
+type: Skill
 
+---
 # Japanese Candlesticks — the Merchant's craft
 
 A four-century-old Japanese eye for price, set down in the West by Steve Nison. Candlesticks use the same open-high-low-close as a bar chart, but the *real body* and its *shadows* turn raw prices into a picture of the war between bull and bear — who holds the close, who was rejected at the extremes, where conviction broke. This craft is read-only: the Merchant names the pattern, tells its story, weighs its reliability, and hands the read across the table. The pen, never the purse — no order is placed and no broker is touched.

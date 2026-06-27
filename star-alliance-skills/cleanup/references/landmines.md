@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Lessons learned (cross-mode landmines)
 
 > **Wired into scripts (v1.8.0):** L9/L10/L15/L17 → `postgres_cleanup.py` detect (emits + classifies the security_invoker / stale-prosrc / permissive-RLS / dead-service_role / rls-no-policy queries); L11 + L19 → `lint_cleanup.py` (baseline-delta + view-registry cross-check); L14 → `errors_cleanup.py` noise list; L16 → `i18n_cleanup.py` detect (window.confirm scan). The rest remain cross-mode prose guidance. **L25–L31 (added 2026-06-02 from mining the 2026-05-30→06-02 cleanup runs — 4 followup sweeps + 2 run-all passes) are prose-only, EXCEPT L27 → now mechanized by `scripts/commit_scope.py` (R10, v1.10.0). L25/L26/L28–L31 remain prose pending wiring.**

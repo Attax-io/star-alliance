@@ -3,8 +3,9 @@ title: Apply Principle of Least Privilege
 impact: MEDIUM
 impactDescription: Reduced attack surface, better audit trail
 tags: privileges, security, roles, permissions
----
+type: Document
 
+---
 ## Apply Principle of Least Privilege
 
 Grant only the minimum permissions required. Never use superuser for application queries.

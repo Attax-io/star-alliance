@@ -3,8 +3,9 @@ title: Campaigns — Re-run Protocol (audit & build)
 description: How to run a doc-sync audit campaign or a multi-phase build campaign on this project
 created: <YYYY-MM-DD>
 referenced_by: GENERAL-GUIDELINES.md (P14 or equivalent), CLAUDE.md, primary_instructions.md
----
+type: Document
 
+---
 # Campaigns
 
 This convention covers **two kinds of campaign** that run on this project:

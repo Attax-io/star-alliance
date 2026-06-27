@@ -4,8 +4,9 @@ description: >-
   Multi-perspective deep-research method (Stanford STORM, NAACL 2024) for any topic — run five contrasting expert personas, map where they contradict, synthesize a ranked briefing, then peer-review it for confidence. Use when the user wants real understanding fast, not a surface summary: 'research this topic', 'run STORM', 'STORM this', 'investigate X deeply', 'deep dive on X', 'multi-perspective research', '5 expert perspectives', 'contradiction map', 'give me a research briefing', 'red-team this idea', or research before a decision — before writing/investing/negotiating/interviewing/presenting/learning. Distinct from deep-research (which is web-search fan-out): STORM is persona-simulation reasoning that catches blind spots a single prompt misses, optionally grounded with sources. Produces a briefing with confidence scores a single expert could not write.
 metadata:
   version: 1.0.0
----
+type: Skill
 
+---
 # STORM Investigation
 
 A way of *thinking*, not a tool. **STORM** — *Synthesis of Topic Outlines through Retrieval and

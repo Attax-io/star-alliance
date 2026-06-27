@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Skill Maintenance
 
 Deploy/sync procedures + self-health checks for the conquering-campaign skill. (Extracted from SKILL.md at v3.7.1 — the lean-core-v2 move continued; SKILL.md keeps stub headings that point here.)

@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Wave Playbook
 
 Full wave-by-wave brief templates for subagent dispatch. Two top-level sections — one per mode. Read the right section before launching each wave.

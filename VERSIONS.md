@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Skill Version Registry
 
 Canonical version + Cowork-compliance status of every skill. **Source of truth is

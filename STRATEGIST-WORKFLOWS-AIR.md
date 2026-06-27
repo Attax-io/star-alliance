@@ -5,8 +5,9 @@ date: 2026-06-26
 project_version_at_scan: 6.49.42
 method: read-only mine of the Air's local session stores → MiniMax cluster → Strategist differential gate
 companion: STRATEGIST-WORKFLOWS.md (the Mac-mini pass — the canonical 546+562-session catalogue)
----
+type: Document
 
+---
 # Star Alliance — The Air Pass (differential)
 
 > The Guild Master asked the Strategist to run the Mac-mini workflow-investigation + skill-smith

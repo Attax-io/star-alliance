@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Mode: followups — full recipe
 
 > **Script:** `python3 ~/.claude/skills/cleanup/scripts/followups_cleanup.py <locate|extract|classify|mark>` — automates locate→extract→classify (+ mark). EXECUTION of the doable items (F4) is Claude's job, not the script.

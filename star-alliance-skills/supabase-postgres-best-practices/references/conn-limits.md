@@ -3,8 +3,9 @@ title: Set Appropriate Connection Limits
 impact: CRITICAL
 impactDescription: Prevent database crashes and memory exhaustion
 tags: connections, max-connections, limits, stability
----
+type: Document
 
+---
 ## Set Appropriate Connection Limits
 
 Too many connections exhaust memory and degrade performance. Set limits based on available resources.

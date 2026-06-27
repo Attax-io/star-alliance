@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Continuation Patterns — Windows, Tasuki, Three Methods, Soldiers
 
 ## Introduction to Continuation Patterns

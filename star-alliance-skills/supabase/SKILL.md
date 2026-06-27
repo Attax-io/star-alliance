@@ -4,8 +4,9 @@ description: "Use when doing ANY task involving Supabase. Triggers: Supabase pro
 metadata:
   author: supabase
   version: "0.1.2"
----
+type: Skill
 
+---
 # Supabase
 
 ## Core Principles

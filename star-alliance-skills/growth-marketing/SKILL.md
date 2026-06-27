@@ -3,8 +3,9 @@ name: growth-marketing
 description: "The Herald's marketing craft — turn a business's invisibility into a repeatable demand engine across four modes. content-seo: ICP + pain keywords, topic clusters, local SEO, on-page, publish via article-creator. brand-positioning: positioning statement, ICP, value prop, voice, proof bank, hand off to brandkit. email-nurture: lead magnets, capture, a 4-6 email sequence, re-engagement, bar-compliance. social-paid: channel mix, organic cadence, a paid-ads starter, retargeting, tracking. Tuned for legal-services and other trust-led professional businesses; composes with storm-investigation for audience and market research. Triggers: 'plan our marketing', 'we need leads', 'fix our positioning', 'content plan', 'SEO plan', 'build an email sequence', 'social plan', 'ad plan', 'go to market', 'growth marketing', 'demand gen'."
 metadata:
   version: 1.0.0
----
+type: Skill
 
+---
 # Growth Marketing — the Herald's craft
 Turns a legal-services business's invisibility into a repeatable demand engine. Composes with **article-creator** (publish long-form), **brandkit** (visuals and identity), and **storm-investigation** (ICP, market, competitor research). One skill, four modes — pick one, ship the artifact, measure.
 

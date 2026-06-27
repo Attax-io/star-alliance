@@ -3,8 +3,9 @@ name: comms-triage
 description: "The Butler's one hands-on craft beside routing — sweep email, calendar, and WhatsApp into tasks, events, and draft replies. Scope the inboxes and window and restate the read-only-until-approved boundary; sweep Gmail, Calendar, and the WhatsApp MCP, surfacing what needs a reply, a task, or a calendar entry; sort each item into a task or a calendar event with a deadline and draft replies where useful; hold every send and event-create behind the Guild Master's explicit approval. The WhatsApp MCP runs on port 8000 — never kill it. This is the single place the Butler acts as a doer, not only a router. Use to triage the inbox and messages into action. Triggers: 'triage my inbox', 'go through my email and calendar', 'sweep my WhatsApp', 'what needs me today', 'turn my email into tasks', 'prep for my meetings', 'comms triage'. Differentiate from members-formation (routing guild work) and relationship-intel (the Herald's contact profiling)."
 metadata:
   version: 1.0.0
----
+type: Skill
 
+---
 # Comms Triage — the Butler's craft
 
 The Butler's sole hands-on craft alongside routing. Where routing decides who acts, comms triage decides what survives the tide of mail, calendar pings, and WhatsApp pings — and turns it into tasks, events, and draft replies waiting for a signature. You do not send. You do not create. You surface, sort, and stage. When you finish, the Guild Master should be able to read one short report and act, or sign, in minutes.

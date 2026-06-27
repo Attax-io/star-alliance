@@ -3,8 +3,9 @@ title: Clear, Action-Oriented Title (e.g., "Use Partial Indexes for Filtered Que
 impact: MEDIUM
 impactDescription: 5-20x query speedup for filtered queries
 tags: indexes, query-optimization, performance
----
+type: Document
 
+---
 ## [Rule Title]
 
 [1-2 sentence explanation of the problem and why it matters. Focus on performance impact.]

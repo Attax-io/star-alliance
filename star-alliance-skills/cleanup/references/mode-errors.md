@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Mode: errors — full recipe
 
 Triage the runtime errors that pile up during normal browsing of the

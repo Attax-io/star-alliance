@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Consolidation candidates registry
 
 Unconsolidated-but-should-be instances across the Lex Council app, mined from 146 archived

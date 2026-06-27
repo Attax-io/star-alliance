@@ -3,8 +3,9 @@ name: legal-rule-modeling
 description: "The Architect's craft for modelling a governing law into the exact calculation rules and inputs a public legal calculator must honour — the 'Model the Law' step of tool-forge. Read the law (e.g. Egyptian wage tax, social insurance, severance, inheritance/mawarith, feddan/kirat land, customs); extract the computation — brackets, rates, caps, floors, rounding, edge cases, exemptions — into a deterministic inputs → computation → output model the Developer can implement without re-reading the statute; cite the article behind each rule; flag every ambiguity for the team-review disclaimer. Use before building any legal calculator or corporate tool. Triggers: 'model the law for this calculator', 'extract the calculation rules', 'what are the brackets for X', 'rule model for the tool'. Differentiate from transactions-domain-model (the app's money model) and codex-law-translate (translating the law's text, not its arithmetic)."
 metadata:
   version: 1.0.0
----
+type: Skill
 
+---
 # Legal Rule Modeling — the Architect's craft
 
 A legal calculator is only as honest as its rule model. Your craft turns a statute — its brackets, rates, caps, floors, and dusty edge cases — into a deterministic spec the Developer can transcribe into code without ever re-reading the original Arabic text. You are the cartographer of arithmetic. Miss a boundary and the public trusts a number that betrays them; misread a rate and a worker loses a month's wages. The model is the spine of the tool. Break it and the whole tool-forge collapses downstream.

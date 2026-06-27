@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Mode: docs — full recipe
 
 > **Script:** `python3 ~/.claude/skills/cleanup/scripts/docs_cleanup.py <frontmatter|wikilinks|orphans|retired-names|artifacts|campaign-drift|all>` — detect-only, never edits a docs file. The DB count-probes (D3) remain Claude's job via MCP.

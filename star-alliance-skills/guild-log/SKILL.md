@@ -3,8 +3,9 @@ name: guild-log
 description: "Enforce logging of non-git-visible changes to the Star Alliance guild log. Use this skill whenever a session has changed dashboard markup, renamed UI strings, edited skills-meta.json or members-meta.json, modified guild-log.json directly, reorganized star-alliance-members/ or star-alliance-skills/ folder layout, or made any visual/structural change that won't show up in a git diff as a version bump. Also use when the user says 'log this', 'guild log this', 'did you log it?', 'add a log entry', or any time work ends and it's unclear whether the change was git-visible. Skill audits what was touched, decides auto-derived vs manual logging, runs build_guild_log.py for git-visible changes and log_event.py for the rest, then rebuilds the dashboard via build.py. Ask Atta to confirm before writing."
 metadata:
   version: 1.2.1
----
+type: Skill
 
+---
 # Guild Log Compliance
 
 The Star Alliance guild log (`guild-log.json`, surfaced through the generated `guild-data.js` that `index.html` loads as `GUILD.log`) is the canonical history of changes across the guild. **If a change isn't logged, the Guild Log view on the dashboard silently misses it** — and future readers (including the agent on the next session) lose the trail.

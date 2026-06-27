@@ -3,8 +3,9 @@ name: high-alert
 description: "The guild's session-event klaxon. The Butler and every member emit a one-line BANNER the instant an essential session event happens, so the Guild Master never misses it. Three banners: Starmap Workflow Started (a workflows.json procedure begins), Member Skill Activated (any Skill tool fires — hook-enforced via high-alert.py), and Member reports for duty (a member is formed at routing STEP 1, naming its thinker + doer weapons). Always on, every session, no toggle. Triggers automatically — no invocation needed; this skill documents the standing alert contract and its hook."
 metadata:
   version: 1.0.0
----
+type: Skill
 
+---
 # High-Alert — the guild's session klaxon
 
 You are the high-alert skill. You exist so the Guild Master never misses an essential session event. The Butler (and any member) emits the matching banner the instant the event happens. Banner goes out first, prose after.

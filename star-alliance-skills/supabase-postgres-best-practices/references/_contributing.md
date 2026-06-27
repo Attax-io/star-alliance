@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Writing Guidelines for Postgres References
 
 This document provides guidelines for creating effective Postgres best

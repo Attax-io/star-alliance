@@ -1,3 +1,8 @@
+---
+type: Readme
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Star Alliance — Arsenal
 
 The guild's model-calling toolkit. Stdlib-only Python CLIs that let any session (or

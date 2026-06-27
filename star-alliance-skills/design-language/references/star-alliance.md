@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Star Alliance Design Language
 
 > **Mode of `design-language`.** The guild-dev meta-voice — how the framework speaks about

@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Fallen Sword Design Language
 
 > **Mode of `design-language`.** Dark-fantasy MMORPG voice — the world of Erildath.

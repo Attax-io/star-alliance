@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Cleanup skill — upgrade notes (mined 2026-06-19)
 
 **Baseline:** v1.16.0 (last upgrade 2026-06-17 ~11:37, added `manual` mode).

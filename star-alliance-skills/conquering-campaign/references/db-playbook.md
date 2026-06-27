@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # DB playbook — conquering-campaign
 
 Load this for any phase touching schema / RLS / views / triggers / functions / migrations. SKILL.md keeps the one-line gates (G2, G3, G6) + the named-pattern index; the full procedures + the project-specific schema facts live here.

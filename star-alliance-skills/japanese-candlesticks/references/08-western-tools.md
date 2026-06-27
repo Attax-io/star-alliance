@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Candlesticks with Western Tools — Trendlines, Retracements, MAs, Oscillators, Volume
 
 ## Support and Resistance Lines

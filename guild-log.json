@@ -2,6 +2,30 @@
   "version": 1,
   "entries": [
     {
+      "id": 84,
+      "date": "2026-06-27",
+      "type": "workflow",
+      "title": "OKF Tidy workflow",
+      "who": "the-quartermaster",
+      "detail": "New Hygiene & Release star-map workflow: Quartermaster migrate-first audit/fix/enrich/sweep to OKF conformance, with approval+certify gates and okf-gate verification."
+    },
+    {
+      "id": 83,
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "star-alliance-language skill — OKF reading protocol (consumer)",
+      "who": "the-quartermaster",
+      "detail": "Universal skill (rides every member like weapon-utility): the fast reading protocol for OKF-tidied repos. Ships okf_read.py emitting a one-shot concept map from frontmatter + cross-links so members read by type/title, never blind full-reads."
+    },
+    {
+      "id": 82,
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "okf skill — whole-repo OKF hygiene (producer)",
+      "who": "the-quartermaster",
+      "detail": "Quartermaster skill keeps the whole repo tidy and OKF v0.1 conformant; ships okf_audit.py and is enforced by the okf-gate hook."
+    },
+    {
       "id": 81,
       "date": "2026-06-27",
       "type": "chore",

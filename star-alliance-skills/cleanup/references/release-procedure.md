@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Release procedure — phase 2 of cleanup `release` mode
 
 This is the full version-bump recipe the `release` mode runs **after** the

@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Mode: create — author a new skill, then make it upgradeable
 
 Goal: a brand-new skill, authored with the **official `skill-creator`** workflow, that lands in the

@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Crystallizing a formation into a star-map workflow
 
 > **This is the fallback path.** The Butler's primary job is to *select* an existing workflow from

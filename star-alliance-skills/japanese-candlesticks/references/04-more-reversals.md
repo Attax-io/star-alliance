@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # More Reversals — Harami, Tweezers, Crows, Counterattack, Towers
 
 ## Harami Pattern

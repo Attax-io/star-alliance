@@ -14,8 +14,9 @@ description: >
   mode is forgetting one. Load silently — no need to announce the skill is running.
 metadata:
   version: 1.1.0
----
+type: Skill
 
+---
 # DB Rename Sweep — Context Loader
 
 This skill's only job is to auto-trigger on rename keywords and point you at the authoritative checklist in the vault before you touch anything.

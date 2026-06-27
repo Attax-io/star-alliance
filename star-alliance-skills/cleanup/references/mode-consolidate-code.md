@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Mode: consolidate-code — full recipe
 
 > **Script:** `python3 ~/.claude/skills/cleanup/scripts/consolidate_code.py <scan|classify|surface|extract>` — `extract` is dry-run by default and refuses to auto-merge (byte-compare + a conquering-campaign required for any real consolidation, per §L4).

@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Mode: routine — the daily STORM-driven skill-evolution loop
 
 Goal: **once a day, autonomously make the skill library better.** Each run mines your code, projects,

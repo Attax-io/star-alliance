@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Version history — conquering-campaign
 
 Semver: **MAJOR** = paradigm shift / artifact-layout change · **MINOR** = new section / discipline / failure-mode class · **PATCH** = clarification, enum value, sub-pattern, checklist of existing prose. Newest first.

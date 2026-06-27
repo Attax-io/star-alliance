@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Strategist Report — Workflow Automation Proposal
 
 > **Status:** PROPOSAL (not yet built) · **Date:** 2026-06-27

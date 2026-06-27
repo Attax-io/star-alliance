@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Adversarial reviewer brief — Lex Council legal codex translations
 
 You are a **senior legal-translation reviewer**, fluent in Arabic + English, French, Spanish, Russian

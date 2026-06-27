@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Failure-mode catalog — conquering-campaign
 
 Full prose for every numbered failure mode. SKILL.md carries the compressed cross-reference table (`#N | title | status | cure pointer`); this file carries the diagnostic narrative + post-mortem context. Look up `#N` here when you need the *why* and the *how-it-was-found*, not just the cure pointer.

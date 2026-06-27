@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Conquering-campaign reflection — lessons + upgrade route (2026-06-04)
 
 > **Status: PROPOSED (not yet applied).** Mined from the latest sessions (2026-06-02 → 06-04),

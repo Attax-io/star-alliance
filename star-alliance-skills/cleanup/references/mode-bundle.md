@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Mode: bundle — full recipe
 
 Cloudflare/OpenNext **Worker size-wall** hygiene. The app deploys via

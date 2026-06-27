@@ -3,8 +3,9 @@ title: Prevent Deadlocks with Consistent Lock Ordering
 impact: MEDIUM-HIGH
 impactDescription: Eliminate deadlock errors, improve reliability
 tags: deadlocks, locking, transactions, ordering
----
+type: Document
 
+---
 ## Prevent Deadlocks with Consistent Lock Ordering
 
 Deadlocks occur when transactions lock resources in different orders. Always

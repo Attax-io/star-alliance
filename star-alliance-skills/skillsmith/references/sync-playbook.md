@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Mode: sync — reconcile the repo with the on-device copies
 
 Goal: the git repo (`Attax-io/star-alliance`) and the on-device copies (`~/.claude/skills` global,

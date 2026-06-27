@@ -3,8 +3,9 @@ name: design-taste
 description: "The Designer's core taste engine — one multi-mode skill replacing the guild's scattered style skills. Pick and enforce a premium, anti-generic visual language for any interface, then hold the line against AI-slop defaults. Modes: engineer (metric dials, component architecture, the AI-tells ban list); agency (Awwwards-tier 'expensive' aesthetic + motion choreography); minimal (warm editorial monochrome); brutalist (Swiss industrial + tactical terminal); motion (GSAP scroll, AIDA, true-randomized layout); encode (emit a DESIGN.md the whole team follows); redesign (audit and upgrade an existing UI without breaking it). Each mode's full playbook lives in references/. Use for any visual-design, styling, taste, or redesign work. Triggers: 'design the UI', 'make it premium', 'pick a style', 'minimalist', 'brutalist', 'add motion', 'write a DESIGN.md', 'redesign this', 'anti-slop'. Differentiate from brandkit (identity/logo systems), image-to-code (generate then build), and impeccable (external npx polish)."
 metadata:
   version: 1.0.0
----
+type: Skill
 
+---
 # Design Taste — the Designer's core taste engine
 
 This is the Designer's one craft for **deciding and enforcing how an interface looks and feels.**

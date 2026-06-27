@@ -6,8 +6,9 @@ project_version_at_plan: 6.49.42
 status: APPROVED 2026-06-26 — §8 decisions ratified (level=craft depth · checklists as calibrated · demotion policy A). Campaign in execution.
 owners: Strategist plans · Developer implements · Quartermaster operates
 method: conquering-campaign (BUILD) — five waves, prerequisites-as-checklist standard
----
+type: Document
 
+---
 # Star Alliance — Member Leveling System
 
 > The Guild Master's order: *"give each member a level… decided by his skills and speciality.

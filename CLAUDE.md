@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Star Alliance — Claude Instructions
 
 ## Default sub-agent model: MiniMax M3

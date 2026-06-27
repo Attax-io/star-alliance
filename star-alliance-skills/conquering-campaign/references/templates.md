@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Templates
 
 Canonical shapes for every artefact a campaign produces. Copy and adapt — don't reinvent these formats per run, the consistency is what makes campaigns auditable.

@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Cleanup skill — upgrade routes
 
 Checkup of `cleanup` v1.16.0. Maps every place the skill can still grow, ranked by

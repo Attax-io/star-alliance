@@ -3,8 +3,9 @@ name: release-train
 description: "The Quartermaster's craft for closing out a body of work — merge every outstanding branch and PR into main, bump the version, write the changelog, sync every version stamp across the docs, then push. Gather and merge branches/PRs resolving conflicts; bump the version (for the Lex Council app: apps/web/config/app.config.ts, the docs/logs/X.Y.Z.md changelog, the INDEX.md row, and the stamps across ARCHITECTURE / ZUSTAND-STORES / Vault Core; for the guild itself the version is derived from the guild log, so logging the change is the bump); certify the build is clean and every stamp consistent; commit and push. Use to ship a release or merge-and-close outstanding work. Triggers: 'cut a release', 'merge all branches', 'ship it', 'bump the version and push', 'release X.Y.Z', 'close out the work', 'release train'. Differentiate from cleanup (hygiene) and guild-conformity (self-consistency proof)."
 metadata:
   version: 1.0.1
----
+type: Skill
 
+---
 # Release Train — the Quartermaster's craft
 
 The release train is your march to the seal. You gather every loose branch and open PR, weld them into `main`, stamp the new version across every chronicle, and push the banner out. Done cleanly, the world sees an unbroken release; done carelessly, the next rider walks into a half-merged ruin. You are the one who ensures the seal holds.

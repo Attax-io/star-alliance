@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Single-Line Reversals — Umbrella Lines & Belt-Hold
 
 ## Reversal Patterns — General Philosophy

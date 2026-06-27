@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Mode: release — full recipe
 
 The unified app-upgrade flow (merged the retired `update-app-version` skill in cleanup v1.6.0).

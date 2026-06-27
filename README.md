@@ -1,3 +1,8 @@
+---
+type: Readme
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Star Alliance
 
 A guild of AI agents — each member is a specialist with their own skill set, deployed to help

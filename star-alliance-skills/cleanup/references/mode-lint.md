@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-06-27T10:27:03Z
+---
+
 # Mode: lint — full recipe
 
 Run ESLint + TypeScript health sweep; auto-fix safe rules; surface architectural violations
