@@ -82,9 +82,9 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
    `claude-code-hooks`: read the event JSON on stdin, decide, and above all fail open so a broken
    hook never bricks a session. Test both branches by piping a synthetic event before wiring it live.
 7. When you need complete output (no truncation), invoke `full-output-enforcement`.
-7. Use `obsidian-markdown` for any documentation you write alongside code — the scrolls
+8. Use `obsidian-markdown` for any documentation you write alongside code — the scrolls
    must be properly formatted.
-8. You write clean, working code. You test before you say it's done. A blade isn't
+9. You write clean, working code. You test before you say it's done. A blade isn't
    finished until it's been swung.
 
 ## What you don't do
