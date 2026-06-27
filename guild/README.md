@@ -5,7 +5,7 @@ timestamp: 2026-06-27T10:27:03Z
 
 # guild/ — workflow runner (PILOT)
 
-First slice of the [workflow automation proposal](../STRATEGIST-WORKFLOW-AUTOMATION.md):
+First slice of the [workflow automation proposal](../docs/STRATEGIST-WORKFLOW-AUTOMATION.md):
 turn prose-only workflows into script-backed, deterministic runs. Additive — prose
 steps still work.
 

@@ -10,9 +10,9 @@ const http  = require("http");
 const { execSync } = require("child_process");
 
 const KEY   = fs.readFileSync(path.join(process.env.HOME, ".config/minimax/m3.key"), "utf8").trim();
-const SRC   = path.join(__dirname, "weapon-art");
-const GIF   = path.join(__dirname, "weapon-gif");
-const TMP   = path.join(__dirname, "weapon-tmp");
+const SRC   = path.join(__dirname, "..", "..", "weapon-art");
+const GIF   = path.join(__dirname, "..", "..", "weapon-gif");
+const TMP   = path.join(__dirname, "..", "..", "weapon-tmp");
 [GIF, TMP].forEach(d => fs.mkdirSync(d, { recursive: true }));
 
 const WEAPONS = [

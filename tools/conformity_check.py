@@ -87,10 +87,10 @@ def main():
 
     g = json.loads((ROOT / "guild-data.json").read_text())
     members = {m["id"]: m for m in g["members"]}
-    skills_meta = json.loads((ROOT / "skills-meta.json").read_text())
+    skills_meta = json.loads((ROOT / "data/skills-meta.json").read_text())
     skill_ids = set(skills_meta.keys())
-    meta = json.loads((ROOT / "members-meta.json").read_text())["members"]
-    log = json.loads((ROOT / "guild-log.json").read_text())["entries"]
+    meta = json.loads((ROOT / "data/members-meta.json").read_text())["members"]
+    log = json.loads((ROOT / "data/guild-log.json").read_text())["entries"]
     decisions = [e for e in log if e.get("type") == "decision"]
 
     # P — guild-data.js == guild-data.json
@@ -301,7 +301,7 @@ def main():
     for mobj in re.finditer(r'\((\d+)\s+skills', readme_txt):
         if int(mobj.group(1)) != actual_skills:
             fails.append(f"DC README claims {mobj.group(1)} skills, actual {actual_skills}")
-    doms = json.loads((ROOT / "domains.json").read_text())["domains"]
+    doms = json.loads((ROOT / "data/domains.json").read_text())["domains"]
     home = next((d for d in doms if d["id"] == "star-alliance"), None)
     if home:
         if len(home["skills"]) != actual_skills:
@@ -367,7 +367,7 @@ def main():
 
     # member leveling — promotion queue + regression review (NOTES, never blocking).
     # Leveling is Quartermaster-gated and human-in-the-loop, so drift belongs in the
-    # QM's queue, not the build gate. See STRATEGIST-MEMBER-LEVELING.md §3.
+    # QM's queue, not the build gate. See docs/STRATEGIST-MEMBER-LEVELING.md §3.
     due = [(mid, m) for mid, m in members.items() if m.get("levelInfo", {}).get("dueForPromotion")]
     over = [(mid, m) for mid, m in members.items() if m.get("levelInfo", {}).get("overConferred")]
     if due:

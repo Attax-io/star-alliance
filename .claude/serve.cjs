@@ -267,7 +267,7 @@ function setMemberField(member, field, values, cb) {
 // rebuild aborts. descMap (from the dashboard's MODELS) supplies text for new models.
 function syncWeaponsMeta(member, values, descMap, cb) {
   if (!/^[a-z0-9-]+$/.test(member)) return cb(new Error('bad member'));
-  const file = path.join(ROOT, 'members-meta.json');
+  const file = path.join(ROOT, 'data/members-meta.json');
   fs.readFile(file, 'utf8', (err, raw) => {
     if (err) return cb(err);
     let doc; try { doc = JSON.parse(raw); } catch (e) { return cb(e); }
@@ -292,8 +292,8 @@ function regenGuildData(cb) {
 
 // ── Phase-2 control-panel writers (MiniMax-authored). Each .bak's before write.
 const MEMBERS_DIR = path.join(ROOT, 'star-alliance-members');
-const META = path.join(ROOT, 'members-meta.json');
-const SKILLS_META = path.join(ROOT, 'skills-meta.json');
+const META = path.join(ROOT, 'data/members-meta.json');
+const SKILLS_META = path.join(ROOT, 'data/skills-meta.json');
 
 function setSkillFlag(skill, disabled, cb) {
   if (!/^[a-z0-9-]+$/.test(skill)) return cb(new Error('invalid skill id'));

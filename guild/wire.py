@@ -31,7 +31,7 @@ BUILD = REPO_ROOT / "build.py"
 
 REGISTRY = {
     "weapon": REPO_ROOT / "star-alliance-arsenal" / "models-usage.json",
-    "skill": REPO_ROOT / "skills-meta.json",
+    "skill": REPO_ROOT / "data/skills-meta.json",
     "workflow": REPO_ROOT / "workflows.json",
 }
 

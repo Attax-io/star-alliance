@@ -55,14 +55,14 @@ def default_repo() -> Path:
 
 
 def load_log(repo: Path) -> dict:
-    p = repo / "guild-log.json"
+    p = repo / "data/guild-log.json"
     if p.exists():
         return json.loads(p.read_text())
     return {"version": 1, "entries": []}
 
 
 def save_log(repo: Path, log: dict) -> None:
-    p = repo / "guild-log.json"
+    p = repo / "data/guild-log.json"
     p.write_text(json.dumps(log, ensure_ascii=False, indent=2) + "\n")
 
 

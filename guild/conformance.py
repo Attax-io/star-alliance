@@ -16,7 +16,7 @@ import time
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-CHECK = REPO_ROOT / "conformity_check.py"
+CHECK = REPO_ROOT / "tools" / "conformity_check.py"
 
 _ISSUE_RE = re.compile(
     r"(\d+)\s+(?:issues?|contradictions?|failures?|errors?|problems?)",

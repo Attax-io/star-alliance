@@ -30,7 +30,7 @@ def main():
     proj = os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
 
     is_member_md = "/star-alliance-members/" in path and path.endswith(".md")
-    is_meta = path.endswith("members-meta.json")
+    is_meta = path.endswith("data/members-meta.json")
     if not (is_member_md or is_meta):
         sys.exit(0)
 

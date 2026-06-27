@@ -69,7 +69,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`schema-evolution`](star-alliance-skills/schema-evolution/SKILL.md) | 1.0.0 | own | 152 / 1013 | 1311 / 111 | ✓ lean | The Architect's craft for evolving a structured data model without breaking what already r… |
 | [`session-mining`](star-alliance-skills/session-mining/SKILL.md) | 1.0.0 | own | 134 / 934 | 780 / 86 | ✓ lean | Mine your own Claude session history for lessons, then turn them into ranked, verified upg… |
 | [`skillsmith`](star-alliance-skills/skillsmith/SKILL.md) | 1.3.2 | own | 132 / 987 | 4404 / 149 | ✓ lean | Manage, sync, upgrade, create, and auto-evolve Star Alliance skills across the star-allian… |
-| [`star-alliance-language`](star-alliance-skills/star-alliance-language/SKILL.md) | 1.1.0 | own | 84 / 522 | 687 / 89 | ✓ lean | The guild's shared reading protocol for OKF-tidied repos — how every member quickly, cheap… |
+| [`star-alliance-language`](star-alliance-skills/star-alliance-language/SKILL.md) | 1.2.0 | own | 84 / 522 | 912 / 111 | ✓ lean | The guild's shared reading protocol for OKF-tidied repos — how every member quickly, cheap… |
 | [`storm-investigation`](star-alliance-skills/storm-investigation/SKILL.md) | 1.0.0 | own | 113 / 866 | 919 / 94 | ✓ lean | Multi-perspective deep-research method (Stanford STORM, NAACL 2024) for any topic — run fi… |
 | [`strategies-review`](star-alliance-skills/strategies-review/SKILL.md) | 1.0.0 | own | 12 / 72 | 297 / 44 | ✓ lean | Review pending strategies and move them to executed then check the docs. |
 | [`supabase`](star-alliance-skills/supabase/SKILL.md) | 0.1.2 | vendored | 58 / 475 | 1184 / 106 | ✓ lean | Use when doing ANY task involving Supabase |

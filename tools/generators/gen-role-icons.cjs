@@ -8,7 +8,7 @@ const path = require("path");
 const https = require("https");
 
 const KEY  = fs.readFileSync(path.join(process.env.HOME, ".config/minimax/m3.key"), "utf8").trim();
-const OUT  = path.join(__dirname, "role-art");
+const OUT  = path.join(__dirname, "..", "..", "role-art");
 fs.mkdirSync(OUT, { recursive: true });
 
 const ICONS = [

@@ -10,8 +10,8 @@ const https = require("https");
 const KEY_PATH = path.join(process.env.HOME, ".config/minimax/m3.key");
 const API_KEY = fs.readFileSync(KEY_PATH, "utf8").trim();
 
-const MEMBER_DIR = path.join(__dirname, "member-art");
-const WEAPON_DIR = path.join(__dirname, "weapon-art");
+const MEMBER_DIR = path.join(__dirname, "..", "..", "member-art");
+const WEAPON_DIR = path.join(__dirname, "..", "..", "weapon-art");
 fs.mkdirSync(MEMBER_DIR, { recursive: true });
 
 const MEMBERS = [

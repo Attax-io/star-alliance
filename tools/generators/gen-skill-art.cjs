@@ -11,7 +11,7 @@ const https = require("https");
 const KEY_PATH = path.join(process.env.HOME, ".config/minimax/m3.key");
 const API_KEY = fs.readFileSync(KEY_PATH, "utf8").trim();
 
-const OUT_DIR = path.join(__dirname, "skill-art");
+const OUT_DIR = path.join(__dirname, "..", "..", "skill-art");
 fs.mkdirSync(OUT_DIR, { recursive: true });
 
 // Parse --regen flag

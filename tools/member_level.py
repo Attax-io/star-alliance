@@ -9,7 +9,7 @@ level → log a member-upgrade entry → rebuild → conformity-close).
 
 The standard lives in build.py (MEMBER_TIER_THRESHOLDS) + the manual at
 star-alliance-skills/skillsmith/references/member-leveling.md. Full rationale:
-STRATEGIST-MEMBER-LEVELING.md.
+docs/STRATEGIST-MEMBER-LEVELING.md.
 
 Usage:
   python3 member_level.py report                  # promotion queue + laggard board
@@ -112,7 +112,7 @@ def cmd_report(guild):
 
 def set_conferred(mid, tier):
     """Minimal-diff update of a member's conferred `level` in members-meta.json."""
-    p = ROOT / "members-meta.json"
+    p = ROOT / "data/members-meta.json"
     txt = p.read_text()
     pat = re.compile(r'("' + re.escape(mid) + r'":\s*\{.*?"level":\s*")[^"]*(")', re.DOTALL)
     new, n = pat.subn(lambda m: m.group(1) + tier + m.group(2), txt, count=1)

@@ -2,6 +2,33 @@
   "version": 1,
   "entries": [
     {
+      "id": 86,
+      "date": "2026-06-27",
+      "type": "decision",
+      "title": "Member Skill Drills tables are AUTHORED (judgment), not generated like weapon tables",
+      "who": "the-quartermaster",
+      "detail": "Decision #77 mandates weapon tables be generated from the loadout. Skill Drills are different: the Invoke-WHEN / Do-NOT / Pairs-with columns are per-skill judgment calls and anti-misfire boundaries that cannot be derived from the skills[] list alone, so they are hand-authored in guild voice. The conformity guarantee is mechanical instead: every skills[] entry MUST appear in a Skill Drills table row (verified). Rejected alternative: auto-generating rows from each skill's description — too coarse, loses the anti-trigger and the member's own slice of shared skills."
+    },
+    {
+      "id": 85,
+      "date": "2026-06-27",
+      "type": "member-upgrade",
+      "title": "All 9 members gain a Skill Drills table — when/how to invoke each carried skill",
+      "who": "the-quartermaster",
+      "detail": "Strategic Audit on member skill-invocation guidance. Added a '## Skill Drills' table (Skill | Invoke WHEN | Do NOT invoke for | Pairs with) to every working member, plus a shared universal block for weapon-utility + star-alliance-language. Closed 5 finding classes: F1 universal skills orphaned in all 9, F2 listed-but-undrilled skills (supabase, relationship-intel, release-train, okf, high-alert, legal-drafting, law-harvest, workflow-forge, arsenal-forge, scheduled-watch, etc.), F3 no anti-triggers anywhere, F4 numbering defects (dev/architect dup steps; designer image-to-code mislabel), F5 format drift. Conformity verifier: 78/78 skill refs now drilled. Audit report at star-alliance-members/SKILL-DRILLS-AUDIT.md.",
+      "ref": [
+        "the-architect",
+        "the-developer",
+        "the-designer",
+        "the-herald",
+        "the-merchant",
+        "the-strategist",
+        "the-translator",
+        "the-quartermaster",
+        "the-butler"
+      ]
+    },
+    {
       "id": 84,
       "date": "2026-06-27",
       "type": "workflow",

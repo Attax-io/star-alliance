@@ -106,7 +106,7 @@ def link_or_copy(src: Path, dst: Path, dev: bool, is_dir: bool) -> str:
 
 # --- domains.json + the install set --------------------------------------------
 def load_domains(repo: Path) -> list:
-    return json.loads((repo / "domains.json").read_text()).get("domains", [])
+    return json.loads((repo / "data/domains.json").read_text()).get("domains", [])
 
 
 def norm(p) -> Path:
@@ -190,7 +190,7 @@ def git_sha(repo: Path) -> str | None:
 
 def harness_version(repo: Path) -> str:
     try:
-        return json.loads((repo / "harness.json").read_text()).get("harness_version", "0.0.0")
+        return json.loads((repo / "data/harness.json").read_text()).get("harness_version", "0.0.0")
     except Exception:
         return "0.0.0"
 

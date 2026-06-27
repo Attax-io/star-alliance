@@ -433,7 +433,7 @@ const crumb = (href, label) => `<a class="crumb" href="${href}">← ${esc(label)
 const rampClass = (s) => `ramp ramp-${esc(s.ramp || "gray")}`;
 
 // Member craft-level (Wave 2 build.py emits m.conferred + m.levelInfo). A level is a
-// craft-depth meter, decoupled from standing — see STRATEGIST-MEMBER-LEVELING.md.
+// craft-depth meter, decoupled from standing — see docs/STRATEGIST-MEMBER-LEVELING.md.
 const memberRamp = (m) => `ramp ramp-${esc((m.levelInfo && m.levelInfo.rampConferred) || "gray")}`;
 function memberLevelBadge(m) {
   const li = m.levelInfo || {};

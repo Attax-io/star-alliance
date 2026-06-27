@@ -20,7 +20,7 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-BUILD_GUILD_LOG = REPO_ROOT / "build_guild_log.py"
+BUILD_GUILD_LOG = REPO_ROOT / "tools" / "build_guild_log.py"
 BUILD = REPO_ROOT / "build.py"
 
 

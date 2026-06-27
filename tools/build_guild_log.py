@@ -90,8 +90,8 @@ def is_dashboard_file(path: str) -> bool:
     """Return True if path is part of the dashboard surface."""
     return path in {
         "index.html", "app.css", "app.js",
-        "build.py", "skills-meta.json", "members-meta.json",
-        "domains.json", "guild-data.js", "guild-data.json",
+        "build.py", "data/skills-meta.json", "data/members-meta.json",
+        "data/domains.json", "guild-data.js", "guild-data.json",
     }
 
 
@@ -131,7 +131,7 @@ def classify(repo: Path, ref: str, subject: str, files: list[str]) -> list[dict]
             # Repo-meta changes; only log as structural if no skills/members changed
             pass
         elif f in {"members", "star-alliance-skills", "star-alliance-members",
-                   "log_event.py", "build_guild_log.py", "guild-log.json"}:
+                   "log_event.py", "build_guild_log.py", "data/guild-log.json"}:
             structural = True
 
     # Skill version bumps → skill-upgrade
@@ -259,14 +259,14 @@ def _infer_who(subject: str) -> str:
 
 
 def load_log(repo: Path) -> dict:
-    p = repo / "guild-log.json"
+    p = repo / "data/guild-log.json"
     if p.exists():
         return json.loads(p.read_text())
     return {"version": 1, "entries": []}
 
 
 def save_log(repo: Path, log: dict) -> None:
-    p = repo / "guild-log.json"
+    p = repo / "data/guild-log.json"
     p.write_text(json.dumps(log, ensure_ascii=False, indent=2) + "\n")
 
 

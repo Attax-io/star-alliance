@@ -62,7 +62,7 @@ LEVEL_RAMP = {
 
 # ── Member leveling ───────────────────────────────────────────────────────────
 # A member's level is a CRAFT-DEPTH meter (arsenal + specialty), decoupled from
-# standing — see STRATEGIST-MEMBER-LEVELING.md and skillsmith/references/
+# standing — see docs/STRATEGIST-MEMBER-LEVELING.md and skillsmith/references/
 # member-leveling.md. It is EARNED by an objective, repo-derived checklist
 # (computed here) and CONFERRED by the Quartermaster (the `level` field in
 # members-meta.json), recorded in the guild log as a `member-upgrade` entry.
@@ -442,7 +442,7 @@ def build_members(repo: Path, members_meta: dict, errors: list[str]) -> list[dic
 # ── Domains & Log ────────────────────────────────────────────────────────────
 
 def load_domains(repo: Path) -> list[dict]:
-    p = repo / "domains.json"
+    p = repo / "data/domains.json"
     if not p.exists():
         return []
     return json.loads(p.read_text()).get("domains", [])
@@ -462,14 +462,14 @@ def load_workflows(repo: Path) -> list[dict]:
 def load_hooks(repo: Path) -> list[dict]:
     """Harness lifecycle hooks surfaced on the Star Map ring (hooks.json).
     Hand-authored plain-English mirror of .claude/settings.json `hooks`."""
-    p = repo / "hooks.json"
+    p = repo / "data/hooks.json"
     if not p.exists():
         return []
     return json.loads(p.read_text()).get("hooks", [])
 
 
 def load_log(repo: Path) -> dict:
-    p = repo / "guild-log.json"
+    p = repo / "data/guild-log.json"
     if not p.exists():
         return {"entries": [], "count": 0}
     entries = json.loads(p.read_text()).get("entries", [])
@@ -777,8 +777,8 @@ def assemble(repo: Path) -> tuple[dict, list[str], list[str]]:
     errors: list[str] = []
     warnings: list[str] = []
 
-    skills_meta = json.loads((repo / "skills-meta.json").read_text()) if (repo / "skills-meta.json").exists() else {}
-    members_meta_file = json.loads((repo / "members-meta.json").read_text()) if (repo / "members-meta.json").exists() else {"members": {}}
+    skills_meta = json.loads((repo / "data/skills-meta.json").read_text()) if (repo / "data/skills-meta.json").exists() else {}
+    members_meta_file = json.loads((repo / "data/members-meta.json").read_text()) if (repo / "data/members-meta.json").exists() else {"members": {}}
     members_meta = members_meta_file.get("members", {})
 
     skills = build_skills(repo, skills_meta, warnings)
@@ -905,8 +905,8 @@ def main() -> int:
 
     # Regenerate the in-file "## Your Weapons" tables from the loadout (self-heal).
     members_meta = (
-        json.loads((repo / "members-meta.json").read_text()).get("members", {})
-        if (repo / "members-meta.json").exists() else {}
+        json.loads((repo / "data/members-meta.json").read_text()).get("members", {})
+        if (repo / "data/members-meta.json").exists() else {}
     )
     synced = sync_member_tables(repo, members_meta, a.check)
     if synced:
