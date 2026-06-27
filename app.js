@@ -831,7 +831,7 @@ function renderMemberDossier(id) {
             <span>General Skills · ${generalIds.length}${blocked ? ` <span class="blk-note">· ${blocked} blocked</span>` : ""}${added ? ` <span class="add-note">· ${added} added</span>` : ""}</span>
             ${memberHasOverrides(m.id) ? `<button class="reset-btn" id="reset-member" data-member="${esc(m.id)}">Reset agent</button>` : ""}
           </div>
-          <p class="skill-hint">Global skills — available in every sector. Tap a skill's <strong>icon</strong> to block it · <strong>✕</strong> to unassign. Hover for details.</p>
+          <p class="skill-hint">Cross-cutting skills — not tied to any one sector. Tap a skill's <strong>icon</strong> to block it · <strong>✕</strong> to unassign. Hover for details.</p>
           <div class="skill-lines">${generalIds.length ? generalIds.map(skillLine).join("") : `<p class="empty">No general skills carried.</p>`}</div>
           ${assignPanel}
         </div>
