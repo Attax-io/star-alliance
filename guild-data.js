@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 65
     },
-    "generated": "2026-06-27T18:13:23Z",
+    "generated": "2026-06-27T18:16:01Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -2905,7 +2905,7 @@ const GUILD = {
     {
       "id": "harness-efficiency",
       "name": "harness-efficiency",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "icon": "📊",
       "art": "",
       "artPng": true,
@@ -2930,7 +2930,9 @@ const GUILD = {
       "triggers": "'efficiency report', 'harness efficiency', 'how much are we saving', 'is the gate working', 'tier split', 'check the offload', 'net tokens saved', 'tune the stakes list', or before/after a routing-gate hook change",
       "modes": "Report — join usage-log.jsonl + turn-cost.jsonl via efficiency_report.py (net-saved + per-tier breakdown); Watch — hunt the one hard failure (a high-stakes turn that took LITE); Tune — edit the data/harness.json stakes/size policy, then re-run the gate regression matrix",
       "disabled": false,
-      "refs": [],
+      "refs": [
+        "harness-doctrine.md"
+      ],
       "scripts": [],
       "stats": {
         "lines": 119,
