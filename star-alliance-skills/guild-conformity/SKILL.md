@@ -77,4 +77,5 @@ Track, always: green-sweep ratio, median rebuilds to green, count of hand-edits 
 Own skill. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new mode/section · MAJOR: method contract change). Regenerate `VERSIONS.md` with `python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.
 
 ## Changelog
+- **1.1.0** — Added **§Adding a new invariant** — the Artisan-rung method for teaching the check to catch a *class* of contradiction, not just an instance: enforce at the source (`build.py`, fatal), re-assert at the gate (`conformity_check.py`, tagged, "when present" for optional fields), and **prove it with a negative test** (hand-break a record → confirm the tag fires → revert → confirm green). Mined from the `WPN`/`CLS`/tightened-`expected_order` rules added this session. New section → MINOR.
 - **1.0.0** — Initial release. The Quartermaster's repo-wide conformity audit and reconcile loop — the closing seal on every workflow.
