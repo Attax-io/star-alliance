@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 62
     },
-    "generated": "2026-06-27T13:42:29Z",
+    "generated": "2026-06-27T13:50:33Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "gpt-5.5": "deactivated",
@@ -320,21 +320,22 @@ const GUILD = {
         "graphify",
         "supabase",
         "supabase-postgres-best-practices",
+        "ultra-brainstorming",
         "star-alliance-language",
         "weapon-utility"
       ],
       "levelInfo": {
-        "earned": "Elite",
+        "earned": "Master",
         "qualified": true,
-        "nextTier": "Master",
-        "rampEarned": "amber",
+        "nextTier": null,
+        "rampEarned": "purple",
         "rampConferred": "teal",
-        "ad": 20,
+        "ad": 24,
         "signals": {
-          "ad": 20,
-          "nSkills": 9,
+          "ad": 24,
+          "nSkills": 10,
           "nUnique": 3,
-          "nMaster": 1,
+          "nMaster": 2,
           "peak": 4,
           "nWeapons": 8,
           "hasSummary": true,
@@ -350,7 +351,7 @@ const GUILD = {
             {
               "label": "craft skills",
               "ok": true,
-              "have": 9,
+              "have": 10,
               "need": 1
             },
             {
@@ -362,13 +363,13 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 20,
+              "have": 24,
               "need": 8
             },
             {
               "label": "craft skills",
               "ok": true,
-              "have": 9,
+              "have": 10,
               "need": 2
             },
             {
@@ -386,7 +387,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 20,
+              "have": 24,
               "need": 12
             },
             {
@@ -410,13 +411,13 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 20,
+              "have": 24,
               "need": 18
             },
             {
               "label": "Master-level skills",
               "ok": true,
-              "have": 1,
+              "have": 2,
               "need": 1
             },
             {
@@ -433,14 +434,14 @@ const GUILD = {
           "Master": [
             {
               "label": "Arsenal Depth",
-              "ok": false,
-              "have": 20,
+              "ok": true,
+              "have": 24,
               "need": 24
             },
             {
               "label": "Master-level skills",
-              "ok": false,
-              "have": 1,
+              "ok": true,
+              "have": 2,
               "need": 2
             },
             {
@@ -459,34 +460,7 @@ const GUILD = {
             }
           ]
         },
-        "progress": [
-          {
-            "label": "Arsenal Depth",
-            "ok": false,
-            "have": 20,
-            "need": 24
-          },
-          {
-            "label": "Master-level skills",
-            "ok": false,
-            "have": 1,
-            "need": 2
-          },
-          {
-            "label": "unique skills",
-            "ok": true,
-            "have": 3,
-            "need": 3
-          },
-          {
-            "label": "conformity-clean",
-            "ok": true
-          },
-          {
-            "label": "profile complete",
-            "ok": true
-          }
-        ],
+        "progress": [],
         "dueForPromotion": true,
         "overConferred": false
       }
@@ -563,6 +537,7 @@ const GUILD = {
         "full-output-enforcement",
         "obsidian-markdown",
         "performance",
+        "ultra-brainstorming",
         "star-alliance-language",
         "weapon-utility"
       ],
@@ -572,12 +547,12 @@ const GUILD = {
         "nextTier": "Master",
         "rampEarned": "amber",
         "rampConferred": "teal",
-        "ad": 19,
+        "ad": 23,
         "signals": {
-          "ad": 19,
-          "nSkills": 11,
+          "ad": 23,
+          "nSkills": 12,
           "nUnique": 3,
-          "nMaster": 1,
+          "nMaster": 2,
           "peak": 4,
           "nWeapons": 8,
           "hasSummary": true,
@@ -593,7 +568,7 @@ const GUILD = {
             {
               "label": "craft skills",
               "ok": true,
-              "have": 11,
+              "have": 12,
               "need": 1
             },
             {
@@ -605,13 +580,13 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 19,
+              "have": 23,
               "need": 8
             },
             {
               "label": "craft skills",
               "ok": true,
-              "have": 11,
+              "have": 12,
               "need": 2
             },
             {
@@ -629,7 +604,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 19,
+              "have": 23,
               "need": 12
             },
             {
@@ -653,13 +628,13 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 19,
+              "have": 23,
               "need": 18
             },
             {
               "label": "Master-level skills",
               "ok": true,
-              "have": 1,
+              "have": 2,
               "need": 1
             },
             {
@@ -677,13 +652,13 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": false,
-              "have": 19,
+              "have": 23,
               "need": 24
             },
             {
               "label": "Master-level skills",
-              "ok": false,
-              "have": 1,
+              "ok": true,
+              "have": 2,
               "need": 2
             },
             {
@@ -706,13 +681,13 @@ const GUILD = {
           {
             "label": "Arsenal Depth",
             "ok": false,
-            "have": 19,
+            "have": 23,
             "need": 24
           },
           {
             "label": "Master-level skills",
-            "ok": false,
-            "have": 1,
+            "ok": true,
+            "have": 2,
             "need": 2
           },
           {
@@ -4228,6 +4203,8 @@ const GUILD = {
       },
       "global": true,
       "members": [
+        "the-architect",
+        "the-developer",
         "the-herald",
         "the-merchant",
         "the-strategist"
