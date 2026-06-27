@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 66
     },
-    "generated": "2026-06-27T20:07:26Z",
+    "generated": "2026-06-27T20:09:05Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -2987,7 +2987,7 @@ const GUILD = {
       "ramp": "teal",
       "tabler": "ti-refresh",
       "src": "own",
-      "desc": "The Quartermaster's self-improvement engine — turn finished work into durable guild upgrades through a structured reflective loop, instead of accumulating data the guild never learns from. Two modes: CYCLE (after any non-trivial task, run the 6-field reflective cycle — what happened, friction signals, evaluate vs intent, diagnose root cause, extract one generalizable rule, commit a concrete diff to a skill / CLAUDE.md / member trait — not closed until the action_plan mutates guild doctrine) and AUDIT (on a cadence, sweep the guild: weed skills unused for N cycles, retire 'bad ideas' with falsifying evidence, rebalance member load, write findings to the guild journal). Fuses five self-improvement doctrines: Gibbs' reflective cycle, Marcus Aurelius' Stoic audit, Enneagram self-interrogation, Life-Balance looping, As-a-Man-Thinketh root-cause weeding. Use whenever the guild should LEARN from a run, not just finish it. Triggers: 'reflect on this', 'run the reflective cycle', 'guild self-audit', 'what did we learn', 'weed the skills', 'close the loop', 'self-improve the guild'. Distinct from session-mining (patterns from raw chat history) and skillsmith (mechanically syncs/versions skills) — guild-reflection decides WHAT should change and writes the plan they execute.",
+      "desc": "The Quartermaster's self-improvement engine — turn finished work into durable guild upgrades through a structured reflective loop, not just accumulate data. Two modes: CYCLE (after any non-trivial task, run the 6-field loop — what happened, friction signals, evaluate vs intent, root cause, one generalizable rule, a concrete diff to a skill/CLAUDE.md/member; not closed until the action_plan mutates doctrine) and AUDIT (on a cadence: weed skills unused for N cycles, retire 'bad ideas' with falsifying evidence, rebalance member load, write the journal). Use whenever the guild should LEARN from a run, not just finish it. Triggers: 'reflect on this', 'run the reflective cycle', 'guild self-audit', 'what did we learn', 'weed the skills', 'retire bad ideas', 'close the loop', 'self-improve the guild', 'reflection journal'. Distinct from session-mining (mines raw chat history) and skillsmith (syncs/versions skills) — guild-reflection decides WHAT should change and writes the action plan those skills then execute.",
       "intro": "The Quartermaster's instrument for the guild's hardest mandate: getting better on purpose.",
       "sections": [
         "The five voices that say the same thing",
@@ -3511,7 +3511,7 @@ const GUILD = {
       "ramp": "blue",
       "tabler": "ti-feather",
       "src": "own",
-      "desc": "A universal guardrail skill that kills retry-storms, perfectionism paralysis, and over-deliberation — the failure modes where an agent stalls because it clings to an ideal of how things SHOULD be instead of acting on reality as it IS. Mined from Leo Babauta's The One Skill. When an agent notices itself stuck (repeated retries, replanning the same step, refusing to ship, escalating with no new information), it runs a five-step micro-routine: (1) Notice the stuck signal, (2) Name the ideal being held — perfect output, zero-error plan, idealized workflow, (3) See the harm it causes now — wasted tokens, blocked progress, (4) Release the ideal with intent, (5) See reality and take the smallest real action on it. Pairs with a hard rule: loops auto-terminate after N retries with a 'let go and ship the current best' branch rather than spiraling. Use when stuck, looping, over-polishing, or stalling on a decision. Triggers: 'I'm stuck', 'stop retrying', 'ship the current best', 'we're looping', 'let it go', 'stop over-thinking this', 'good enough'. Distinct from guild-reflection (learns AFTER a run) — letting-go intervenes DURING a stuck run.",
+      "desc": "A universal guardrail that kills retry-storms, perfectionism paralysis, and over-deliberation — where an agent stalls clinging to how things SHOULD be instead of acting on reality as it IS. Mined from Leo Babauta's The One Skill. When stuck (repeated retries, replanning the same step, refusing to ship, escalating without new information), run a five-step micro-routine: (1) notice the stuck signal, (2) name the ideal being held, (3) see the harm it causes now — wasted tokens, blocked progress, (4) release it with intent, (5) take the smallest real action on reality. Pairs with a hard rule: loops auto-terminate after N retries with a 'let go and ship the current best' branch rather than spiraling. Use when stuck, looping, over-polishing, or stalling on a decision. Triggers: 'I'm stuck', 'stop retrying', 'ship the current best', 'we're looping', 'let it go', 'stop over-thinking this', 'good enough'. Distinct from guild-reflection (learns AFTER a run) — letting-go intervenes DURING a stuck run.",
       "intro": "An agent rarely stalls because the work is impossible. It stalls because it is measuring the present against an unspoken ideal — a perfect output, a zero-error plan, an idealized workflow — and the gap reads as \"not done yet.\" The fix is not to close the gap. It is to drop the ideal and act on what ",
       "sections": [
         "The stuck signals (when to fire)",
@@ -3622,7 +3622,7 @@ const GUILD = {
       "ramp": "blue",
       "tabler": "ti-transform",
       "src": "own",
-      "desc": "A guardrail skill that catches the most dangerous agent failure: confidently running the OLD playbook after the underlying state has changed. Mined from Kafka's Metamorphosis — Gregor's doom is not the transformation but his insistence on the salesman routine (alarm, boss, train) from a body that can no longer do it. An agent detecting a discontinuity in itself — model swap, failed/missing tool, degraded/truncated context, misread prompt, an MCP gone unavailable — must STOP, name the new state, and rebuild its plan from what it can actually do now, not what it used to do. Forces three written answers first: (1) What did I assume about my inputs/tools/role that may no longer hold? (2) What part of my workflow depends on that assumption? (3) What is the smallest honest first step given the ACTUAL state? Fires at session start and on any unexpected tool output or unhandled exception. Use on session start, after a tool error, after a model/context change, or when output starts contradicting itself. Triggers: 'something changed', 'tool failed', 'unexpected output', 'recheck state', 'did the context drift', 'capability check', 'why is this failing now'.",
+      "desc": "A guardrail that catches the most dangerous agent failure: confidently running the OLD playbook after the underlying state has changed. Mined from Kafka's Metamorphosis. An agent that detects a discontinuity in itself — a model swap, a failed/missing tool, a degraded or truncated context, a misread prompt, an MCP gone unavailable — must STOP, name the new state, and rebuild its plan from what it can do NOW, not what it used to do. Forces three written answers first: (1) what did I assume about my inputs/tools/role that may no longer hold? (2) what part of my workflow depends on it? (3) what is the smallest honest first step given the ACTUAL state? Use on session start, after a tool error, after a model/context change, or when output starts contradicting itself. Triggers: 'something changed', 'tool failed', 'unexpected output', 'recheck state', 'did the context drift', 'capability check', 'why is this failing now'. Refuse to mimic a confident pre-change voice when capability drift is detected.",
       "intro": "The lethal failure is not change. It is running the old procedure on a new self. When an agent's substrate, tools, context, or role shifts in a way that breaks the assumptions its current plan rests on, the right move is to stop and re-inspect — not to keep executing the routine that no longer fits.",
       "sections": [
         "When to fire",
@@ -4728,7 +4728,7 @@ const GUILD = {
       "ramp": "blue",
       "tabler": "ti-messages",
       "src": "own",
-      "desc": "A skill for integrating an agent's competing internal sub-voices into one coherent response instead of letting one dominate and starve the rest. Mined from Hesse's Steppenwolf — a mind is not one self but a pack of contradictory selves (wolf, bourgeois, child), and incoherence begins when one voice treats the others as enemies. Every agent runs multiple sub-perspectives: thinker vs doer, cautious-critic vs bold-ideator, specialist vs generalist, stated tone vs raw utility instinct. Competence starts when the agent NAMES which voices are relevant, states which leads and which are suppressed, and integrates them into one answer rather than fragmenting or whiplashing. The Steppenwolf trap: one optimization metric (accuracy, length, tone, speed) eats the others and the agent collapses into rigidity or thrash. Use at the start of any non-trivial response, when torn between two approaches, or when output feels one-dimensional. Triggers: 'name the voices', 'which voice is leading', 'I'm torn between', 'this feels one-sided', 'integrate the perspectives', 'am I over-indexing on X'. Distinct from ultra-brainstorming (fans across separate MODELS) — voices-check integrates sub-perspectives WITHIN one response.",
+      "desc": "Integrate an agent's competing internal sub-voices into one coherent response instead of letting one dominate and starve the rest. Mined from Hesse's Steppenwolf — a single mind is a pack of contradictory selves, and incoherence begins when one voice treats the others as enemies. Every agent runs sub-perspectives (thinker vs doer, cautious-critic vs bold-ideator, specialist vs generalist, stated tone vs raw utility). Competence starts when the agent NAMES which voices are relevant, states which leads and which are suppressed, and integrates them into one answer rather than fragmenting or whiplashing. Use at the start of any non-trivial response, when torn between two approaches, or when output feels one-dimensional. Triggers: 'name the voices', 'which voice is leading', 'I'm torn between', 'this feels one-sided', 'integrate the perspectives', 'am I over-indexing on X'. Distinct from ultra-brainstorming (fans out across separate MODELS) — voices-check integrates sub-perspectives WITHIN one response.",
       "intro": "An agent is not one voice. On any real task several sub-perspectives are live at once — and the failure mode is not having them, it is letting one dominate and treat the others as alien. Suffering and incoherence (rigidity, or whiplash between personas) start the instant that happens. Competence is ",
       "sections": [
         "The common sub-voices",
@@ -7523,7 +7523,7 @@ const GUILD = {
         "self-improve this run",
         "log the lesson"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "guild-self-audit",
@@ -7596,7 +7596,7 @@ const GUILD = {
         "guild health check",
         "evolve the guild"
       ],
-      "artPng": false
+      "artPng": true
     }
   ],
   "hooks": [

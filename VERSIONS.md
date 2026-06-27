@@ -50,7 +50,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`growth-marketing`](star-alliance-skills/growth-marketing/SKILL.md) | 1.0.0 | own | 110 / 851 | 2506 / 97 | ✓ lean | The Herald's marketing craft — turn a business's invisibility into a repeatable demand eng… |
 | [`guild-conformity`](star-alliance-skills/guild-conformity/SKILL.md) | 1.4.1 | own | 131 / 916 | 2167 / 139 | ✓ lean | The Quartermaster's craft for proving the whole guild repo agrees with itself and with eve… |
 | [`guild-log`](star-alliance-skills/guild-log/SKILL.md) | 1.2.1 | own | 118 / 801 | 2454 / 231 | ✓ lean | Enforce logging of non-git-visible changes to the Star Alliance guild log |
-| [`guild-reflection`](star-alliance-skills/guild-reflection/SKILL.md) | 1.0.0 | own | 182 / 1283 | 833 / 95 | ✗ desc>1024 | The Quartermaster's self-improvement engine — turn finished work into durable guild upgrad… |
+| [`guild-reflection`](star-alliance-skills/guild-reflection/SKILL.md) | 1.0.0 | own | 148 / 1020 | 833 / 95 | ✓ lean | The Quartermaster's self-improvement engine — turn finished work into durable guild upgrad… |
 | [`guild-sync`](star-alliance-skills/guild-sync/SKILL.md) | 1.0.1 | own | 139 / 1014 | 742 / 83 | ✓ lean | The Quartermaster's device-parity craft — one sweep that proves every surface where the on… |
 | [`harness-efficiency`](star-alliance-skills/harness-efficiency/SKILL.md) | 1.2.0 | own | 150 / 1010 | 1303 / 143 | ✓ lean | The Strategist's craft for proving the Star Alliance harness actually saves tokens and tim… |
 | [`high-alert`](star-alliance-skills/high-alert/SKILL.md) | 1.0.0 | own | 88 / 577 | 292 / 29 | ✓ lean | The guild's session-event klaxon |
@@ -62,10 +62,10 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`law-harvest`](star-alliance-skills/law-harvest/SKILL.md) | 1.0.0 | own | 149 / 979 | 1152 / 63 | ✓ lean | The shared Architect + Translator craft for ingesting real law PDFs into a clean, verified… |
 | [`legal-drafting`](star-alliance-skills/legal-drafting/SKILL.md) | 1.0.0 | own | 122 / 935 | 1156 / 54 | ✓ lean | The Translator's craft for drafting client correspondence and bilingual (Arabic/French/Eng… |
 | [`legal-rule-modeling`](star-alliance-skills/legal-rule-modeling/SKILL.md) | 1.0.0 | own | 133 / 931 | 1447 / 64 | ✓ lean | The Architect's craft for modelling a governing law into the exact calculation rules and i… |
-| [`letting-go`](star-alliance-skills/letting-go/SKILL.md) | 1.0.0 | own | 183 / 1150 | 410 / 46 | ✗ desc>1024 | A universal guardrail skill that kills retry-storms, perfectionism paralysis, and over-del… |
+| [`letting-go`](star-alliance-skills/letting-go/SKILL.md) | 1.0.0 | own | 157 / 1005 | 410 / 46 | ✓ lean | A universal guardrail that kills retry-storms, perfectionism paralysis, and over-deliberat… |
 | [`market-recon`](star-alliance-skills/market-recon/SKILL.md) | 1.0.0 | own | 127 / 914 | 1115 / 55 | ✓ lean | The Merchant's craft for read-only market, investment, and risk analysis that ships a writ… |
 | [`members-formation`](star-alliance-skills/members-formation/SKILL.md) | 1.1.1 | own | 141 / 883 | 1805 / 179 | ✓ lean | The Butler's routing method — match an incoming request to the right star-map workflow in … |
-| [`metamorphosis-check`](star-alliance-skills/metamorphosis-check/SKILL.md) | 1.0.0 | own | 186 / 1165 | 374 / 46 | ✗ desc>1024 | A guardrail skill that catches the most dangerous agent failure: confidently running the O… |
+| [`metamorphosis-check`](star-alliance-skills/metamorphosis-check/SKILL.md) | 1.0.0 | own | 163 / 1007 | 374 / 46 | ✓ lean | A guardrail that catches the most dangerous agent failure: confidently running the OLD pla… |
 | [`motion-design`](star-alliance-skills/motion-design/SKILL.md) | 2.0.0 | own | 135 / 1018 | 1307 / 180 | ✓ lean | Two-mode motion & interaction design specialist for product UI |
 | [`obsidian-markdown`](star-alliance-skills/obsidian-markdown/SKILL.md) | 1.0.0 | own | 36 / 262 | 610 / 163 | ✓ lean | Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, a… |
 | [`okf`](star-alliance-skills/okf/SKILL.md) | 1.2.0 | own | 76 / 512 | 1204 / 142 | ✓ lean | Keep the whole Star Alliance repo tidy and conformant to the Open Knowledge Format (OKF v0… |
@@ -91,9 +91,9 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`transactions-domain-model`](star-alliance-skills/transactions-domain-model/SKILL.md) | 1.3.1 | own | 108 / 951 | 3263 / 399 | ✓ lean | Loads the complete Lex Council transactions domain model before any transaction-related wo… |
 | [`ultra-brainstorming`](star-alliance-skills/ultra-brainstorming/SKILL.md) | 1.3.0 | own | 129 / 873 | 2028 / 191 | ✓ lean | An ASSIGNABLE multi-thinker method — any member who carries it fires ALL his available thi… |
 | [`vault-log-compliance`](star-alliance-skills/vault-log-compliance/SKILL.md) | 1.1.0 | own | 128 / 807 | 1445 / 119 | ✓ lean | Enforces P8 vault-logging compliance for Lex Council |
-| [`voices-check`](star-alliance-skills/voices-check/SKILL.md) | 1.0.0 | own | 176 / 1218 | 358 / 44 | ✗ desc>1024 | A skill for integrating an agent's competing internal sub-voices into one coherent respons… |
+| [`voices-check`](star-alliance-skills/voices-check/SKILL.md) | 1.0.0 | own | 145 / 1013 | 358 / 44 | ✓ lean | Integrate an agent's competing internal sub-voices into one coherent response instead of l… |
 | [`volume-price-analysis`](star-alliance-skills/volume-price-analysis/SKILL.md) | 1.0.0 | own | 137 / 1020 | 1067 / 55 | ✓ lean | The Merchant's read-only craft for Volume Price Analysis, distilled from Anna Coulling's A… |
 | [`weapon-utility`](star-alliance-skills/weapon-utility/SKILL.md) | 2.1.0 | own | 166 / 1009 | 3516 / 256 | ✓ lean | Every member's rule for which weapon (model) to draw and how thinker and doer weapons work… |
 | [`workflow-forge`](star-alliance-skills/workflow-forge/SKILL.md) | 1.3.0 | own | 153 / 997 | 1701 / 102 | ✓ lean | The Strategist's craft for distilling a finished run into a reusable star-map workflow in … |
 
-_66 skills — 57 lean · 4 large (installable, over the 500-line ideal) · 1 near the word ceiling · 4 hard violations._
+_66 skills — 61 lean · 4 large (installable, over the 500-line ideal) · 1 near the word ceiling · 0 hard violations._
