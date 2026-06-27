@@ -53,6 +53,15 @@
             "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/weapon-gate.py\""
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/destructive-gate.py\""
+          }
+        ]
       }
     ],
     "PostToolUse": [
