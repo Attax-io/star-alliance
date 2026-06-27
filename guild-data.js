@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 66
     },
-    "generated": "2026-06-27T19:39:14Z",
+    "generated": "2026-06-27T19:40:12Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -4036,7 +4036,11 @@ const GUILD = {
       "triggers": "",
       "modes": "",
       "disabled": false,
-      "refs": [],
+      "refs": [
+        "plan-template.md",
+        "spec-template.md",
+        "tasks-template.md"
+      ],
       "scripts": [],
       "stats": {
         "lines": 120,
