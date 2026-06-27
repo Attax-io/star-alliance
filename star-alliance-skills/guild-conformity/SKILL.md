@@ -2,7 +2,7 @@
 name: guild-conformity
 description: "The Quartermaster's craft for proving the whole guild repo agrees with itself and with every logged decision, then reconciling any contradiction at its source. Wraps the read-only conformity_check.py (which emits a contradiction map across members, members-meta, skills, skills-meta, domains, workflows, the guild log, and the generated guild-data) plus fixing each real contradiction at its source of truth and rebuilding with build.py until the check passes clean. It is the closing step of every guild workflow and the spine of the Compliance Audit. Use when a workflow is closing, after any structural change, or when you need proof nothing contradicts. Triggers: 'run the conformity check', 'confirm guild conformance', 'does the repo agree with itself', 'conformity sweep', 'reconcile the guild data', 'is everything consistent'. Differentiate from cleanup (app/i18n hygiene) and skillsmith (skill versioning)."
 metadata:
-  version: 1.4.0
+  version: 1.4.1
 type: Skill
 
 ---
@@ -117,7 +117,7 @@ the harness-efficiency session, where a skill landed in two loadouts with no dri
 sweep-time SD flag caught it.)
 
 ## Versioning
-Own skill. Current: **1.4.0**. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new mode/section · MAJOR: method contract change). Regenerate `VERSIONS.md` with `python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.
+Own skill. Current: **1.4.1**. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new mode/section · MAJOR: method contract change). Regenerate `VERSIONS.md` with `python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.
 
 ## Member-table consistency check (1.3.0)
 
@@ -137,6 +137,7 @@ python3 conformity_check.py
 **New invariant to watch:** after any member `.md` edit, confirm `build.py` ran (check the PostToolUse chain in `settings.json` — `member-table-sync.py` must appear before `autocommit.sh` so the table is committed with the change, not separately). If `member-table-sync.py` is missing from PostToolUse, flag it as a harness gap and add it before closing.
 
 ## Changelog
+- **1.4.1** — Reconciled the workflow rename: live references to the old "Conformity Sweep" workflow now read **Compliance Audit** (the merged Conformity Sweep + OKF Tidy workflow); historical/changelog mentions left intact. Wording/refs → PATCH.
 - **1.4.0** — New §The anti-drift family under "Adding a new invariant": names the reusable invariant *class* that locks a source-of-truth consolidation — `fallback == source` (FB), `sidecar ⊆ source` (MU), `asset-per-id` (WART), `prose == data` lint (RG). Each ties a copy you couldn't delete back to the SoT so it can't silently re-diverge; each still earns its negative test. Mined from the model-armory consolidation onto `star-alliance-arsenal/models.json` (the FB check is the guard that would have caught the original `app.js sonnet=doer` bug). Pairs with `schema-evolution` 1.1.0 §Consolidation. New section → MINOR.
 - **1.3.0** — New §Member-table consistency check: documents the `member-table-sync.py` PostToolUse hook invariant, adds explicit `build.py` re-run to the conformity-close checklist, and instructs Quartermaster to verify hook wiring in `settings.json` before closing.
 - **1.2.0** — Added **§Edit-time fast-path (`--member`)** + the matching `conformity_check.py --member <name>` mode: a focused per-member skill↔drill audit (SD forward + R skills-meta + SD **reverse**, catching a stale drill row left after a removal — which the full forward-only SD check missed) the Quartermaster runs the instant a loadout changes, before the full sweep. Primary guard for skillsmith Invariant #9; the conformity-close stays the backstop. New mode + section → MINOR.

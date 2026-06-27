@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 62
     },
-    "generated": "2026-06-27T17:57:19Z",
+    "generated": "2026-06-27T17:58:19Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -2855,7 +2855,7 @@ const GUILD = {
     {
       "id": "guild-conformity",
       "name": "guild-conformity",
-      "version": "1.4.0",
+      "version": "1.4.1",
       "icon": "🔎",
       "art": "",
       "artPng": true,
@@ -2883,8 +2883,8 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 137,
-        "words": 2133
+        "lines": 138,
+        "words": 2167
       },
       "global": true,
       "members": [
