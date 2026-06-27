@@ -2108,6 +2108,60 @@
         "inquiry",
         "what does this do"
       ]
+    },
+    {
+      "id": "conversation",
+      "name": "Conversation",
+      "icon": "💬",
+      "accent": "slate",
+      "category": "Comms & Automation",
+      "tagline": "Plain talk — a greeting, an ack, or a meta-question with no specialist lane.",
+      "when": "The catch-all lane for any turn that fits no other workflow: greetings, acknowledgements, thanks, clarifications, and meta-questions about the guild itself. It exists so EVERY turn — even one that fires no tools and writes nothing — can declare a workflow under the turn-end banner gate. The Butler answers directly in plain English; nothing is mutated. If a turn turns out to need real work, route it to the proper specialist lane instead of staying here.",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Say the Word",
+          "act": "You greet, acknowledge, or ask a meta-question that fits no specialist lane.",
+          "produces": "utterance"
+        },
+        {
+          "kind": "member",
+          "actor": "the-butler",
+          "title": "Answer Plainly",
+          "act": "The Butler answers directly in plain English from what is already known — no tools, no writes, no doer weapons. If the turn actually needs work, he routes it to the proper specialist lane instead.",
+          "produces": "reply",
+          "inputs": [
+            "utterance"
+          ]
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm No-Op",
+          "act": "Confirms the turn mutated nothing — a plain reply cannot drift the repo, so no conformance sweep is needed; signs it off as clean.",
+          "produces": "no-op sign-off"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler's plain-English reply IS the report back to you; he flags if the turn should have been a real workflow instead."
+        }
+      ],
+      "trigger_phrases": [
+        "hi",
+        "hello",
+        "hey",
+        "thanks",
+        "thank you",
+        "got it",
+        "okay",
+        "what do you think",
+        "tell me about",
+        "is this a bug",
+        "did you",
+        "explain"
+      ]
     }
   ]
 }
