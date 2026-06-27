@@ -207,7 +207,9 @@ def main():
         f"⚔ Member reports for duty: <member> using <thinker> and <doer>! the instant a "
         f"member takes the field. This workflow's cast (steps[].actor): {roster_str} — each "
         f"fires ⚔ as it acts (one per member, including the closing the-quartermaster), "
-        f"NOT one per workflow.\n"
+        f"NOT one per workflow. Keep the 🗺 Starmap Workflow Started: {declared}! banner in "
+        f"this SAME reply alongside the ⚔ — both gates are checked together; emit both at "
+        f"once or you'll be re-prompted for whichever you drop.\n"
     )
     sys.exit(2)
 
