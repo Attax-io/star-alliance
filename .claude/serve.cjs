@@ -19,7 +19,7 @@ const ROOT = path.resolve(__dirname, '..');
 const PROJECT_TRANSCRIPT_DIR = path.join(
   os.homedir(), '.claude', 'projects', ROOT.replace(/[/.]/g, '-')
 );
-const PORT = 4178;
+const PORT = process.env.PORT || 4178;
 const TYPES = {
   '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css',
   '.json': 'application/json', '.svg': 'image/svg+xml', '.ico': 'image/x-icon',

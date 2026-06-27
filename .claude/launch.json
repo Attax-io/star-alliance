@@ -5,7 +5,8 @@
       "name": "dashboard",
       "runtimeExecutable": "node",
       "runtimeArgs": [".claude/serve.cjs"],
-      "port": 4178
+      "port": 4178,
+      "autoPort": true
     }
   ]
 }
