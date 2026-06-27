@@ -50,7 +50,7 @@
   "the-developer": {
    "name": "The Developer",
    "role": "Writing Code · Fixing Bugs · Implementation",
-   "level": "Elite",
+   "level": "Master",
    "color": "#3da155",
    "summary": "Writes code, fixes bugs, implements features. Takes specs and turns them into working code. Tests before saying it's done.",
    "deploy": "Writing code, applying changes, fixing bugs, implementing features",
@@ -125,7 +125,7 @@
   "the-translator": {
    "name": "The Translator",
    "role": "Legal Codex · Law Translation",
-   "level": "Intermediate",
+   "level": "Advanced",
    "color": "#b89530",
    "summary": "Legal codex specialist. Loads real-world laws, translates them across all locales, and creates published content.",
    "deploy": "Legal codex loading, law translation, multi-locale content work",

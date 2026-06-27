@@ -9,12 +9,9 @@ Checks (each maps to a source-of-truth invariant or a logged decision):
   P  parity        guild-data.js  ==  guild-data.json
   D23 report-gate  every workflow ENDS with a Butler 'report' gate   (decision #23)
   C  qm-close      every workflow's last member step before report is the-quartermaster
-  A  arsenal-order per member: doers → thinkers/duals → sonnet last   (session decision)
-  BR brain       each member's session model (model:) is a carried, thinking weapon (brain = personality)
-  PD prime-doer  the prime doer (minimax-m3) leads the arsenal (the member's hands)
+  BR brain         each member's session model (model:) is a registry thinker (brain = personality)
+  ST seats         models.json `seats` valid (Brain/Doer/Critic/Bench) + critic family != brain family
   R  refs          workflow actors ∈ members∪{you}; gates valid; member skills exist
-  S  source==gen   member .md frontmatter weapons order == generated guild-data
-  W  weaponsDesc   members-meta weaponsDesc set == member weapons set
   SD skill-drills  every member-carried skill has a `## Skill Drills` table row
   N  counts        guild-data meta.counts == real lengths
   WART weapon-art  every registry weapon has a weapon-art/<id>.png tile
@@ -63,48 +60,11 @@ CLAUDE_NATIVE = {"opus", "sonnet", "haiku"}
 MEDIA_WEAPONS = {"image-01", "minimax-video", "minimax-speech", "minimax-music"}
 
 
-def expected_order(weapons):
-    """Canonical arsenal order:
-       prime doer (minimax-m3, cheapest) first → other doers → prime thinker (opus,
-       best) first → other thinkers → sonnet last (universal Claude-tool fallback).
-       Relative order within the 'other doers' / 'other thinkers' groups is preserved."""
-    doers = [w for w in weapons if ROLE.get(w) == "doer"]
-    if "minimax-m3" in doers:  # prime doer always leads
-        doers = ["minimax-m3"] + [w for w in doers if w != "minimax-m3"]
-    thinkers = [w for w in weapons if ROLE.get(w) in ("thinker", "both") and w != "sonnet"]
-    if "opus" in thinkers:     # prime thinker always leads the thinker block
-        thinkers = ["opus"] + [w for w in thinkers if w != "opus"]
-    tail = ["sonnet"] if "sonnet" in weapons else []
-    return doers + thinkers + tail
-
-
 def frontmatter_list(text, key):
     m = re.search(rf'^{key}:\s*\[([^\]]*)\]', text, re.M)
     if not m:
         return None
     return [x.strip() for x in m.group(1).split(",") if x.strip()]
-
-
-def _parse_weapons_table(text):
-    """Return [(model, desc), …] from the `## Your Weapons` table, or None if absent.
-    Columns are: | Priority | Weapon | When to Draw It |."""
-    lines = text.split("\n")
-    try:
-        start = next(i for i, l in enumerate(lines) if l.strip() == "## Your Weapons")
-    except StopIteration:
-        return None
-    end = next((i for i in range(start + 1, len(lines)) if lines[i].startswith("## ")), len(lines))
-    rows = []
-    for l in lines[start + 1:end]:
-        if not l.lstrip().startswith("|"):
-            continue
-        cells = [c.strip() for c in l.strip().strip("|").split("|")]
-        if len(cells) != 3:
-            continue
-        if cells[0] == "Priority" or set(cells[1]) <= set("-: "):
-            continue  # header row / separator
-        rows.append((cells[1], cells[2]))
-    return rows or None
 
 
 def main():

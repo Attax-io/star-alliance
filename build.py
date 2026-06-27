@@ -345,9 +345,11 @@ def derive_member_arsenal(brain_model, seats: dict, models: dict, errors: list[s
     # below, never an error. Fail loud instead. Bench is NOT checked here — it is built from
     # models.items() just below, so every bench id is a registry key by construction.
     if errors is not None:
-        for seat, mid in (("brain", brain), ("doer", doer), ("critic", critic)):
+        # brain may be a member's session-model override; doer/critic are seat defaults.
+        for seat, mid, src in (("brain", brain, "session model" if brain_model else "default"),
+                               ("doer", doer, "default"), ("critic", critic, "default")):
             if mid and mid not in models:
-                errors.append(f"seat '{seat}' default '{mid}' is not a models.json key")
+                errors.append(f"seat '{seat}' {src} '{mid}' is not a models.json key")
     held = {m for m in (brain, doer, critic) if m}
     bench = [mid for mid, d in models.items()
              if d.get("kind", "text") in ("text", "media")
@@ -418,68 +420,10 @@ def build_member(agent: dict, meta: dict, errors: list[str], seats: dict, models
     }
 
 
-# ── "## Your Weapons" prose table — GENERATED, never hand-edited ──────────────
-# The table inside each member .md duplicates the frontmatter `weapons:` order and
-# the members-meta.json `weaponsDesc` text. Two hand-kept copies = guaranteed drift
-# (8 of 9 members had drifted before this was generated). So the table is now a
-# build artifact: frontmatter loadout + weaponsDesc → rendered here, written back
-# into the .md. Change the loadout in frontmatter, rebuild, the table self-heals.
-# conformity_check.py check WT is the backstop for any hand-edit that skips a build.
-ORDINAL_LABELS = [
-    "1st** — Primary", "2nd** — Secondary", "3rd** — Tertiary", "4th** — Quaternary",
-    "5th** — Quinary", "6th** — Senary", "7th** — Septenary", "8th** — Octonary",
-    "9th** — Nonary", "10th** — Denary",
-]
-
-
-def render_weapons_table(weapons: list[str], wdesc: dict) -> str:
-    """Render the `## Your Weapons` markdown table from loadout order + weaponsDesc."""
-    rows = ["| Priority | Weapon | When to Draw It |", "|---|---|---|"]
-    for i, w in enumerate(weapons):
-        label = f"**{ORDINAL_LABELS[i]}" if i < len(ORDINAL_LABELS) else f"**{i+1}th**"
-        rows.append(f"| {label} | {w} | {wdesc.get(w, '')} |")
-    return "\n".join(rows)
-
-
-def replace_weapons_table(text: str, new_table: str) -> tuple[str, bool]:
-    """Swap the markdown table inside the `## Your Weapons` section for `new_table`,
-    preserving the intro line above it and any prose (e.g. 'How to choose') below."""
-    lines = text.split("\n")
-    start = next((i for i, l in enumerate(lines) if l.strip() == "## Your Weapons"), None)
-    if start is None:
-        return text, False
-    end = next((i for i in range(start + 1, len(lines)) if lines[i].startswith("## ")), len(lines))
-    tstart = tend = None
-    for i in range(start + 1, end):
-        if lines[i].lstrip().startswith("|"):
-            tstart = i if tstart is None else tstart
-            tend = i
-        elif tstart is not None:
-            break  # table block ended
-    if tstart is None:
-        return text, False
-    new_lines = lines[:tstart] + new_table.split("\n") + lines[tend + 1:]
-    return "\n".join(new_lines), True
-
-
-def sync_member_tables(repo: Path, members_meta: dict, check: bool) -> list[str]:
-    """Regenerate every member's `## Your Weapons` table from its loadout. Returns
-    the ids whose table changed. In --check mode, detect but never write."""
-    changed = []
-    for md in iter_agents(repo):
-        mid = md.stem
-        wdesc = members_meta.get(mid, {}).get("weaponsDesc", {})
-        text = md.read_text()
-        fm, _ = split_frontmatter(text)
-        weapons = parse_list_field(fm, "weapons")
-        if not weapons:
-            continue
-        new_text, did = replace_weapons_table(text, render_weapons_table(weapons, wdesc))
-        if did and new_text != text:
-            changed.append(mid)
-            if not check:
-                md.write_text(new_text)
-    return changed
+# NOTE: the per-member "## Your Weapons" prose table is RETIRED (4-seat arsenal).
+# The arsenal is universal (models.json seats), derived per member by
+# derive_member_arsenal() — there is no per-member table to render or sync anymore.
+# Each member .md carries a static "## Arsenal — universal seats" note instead.
 
 
 def build_members(repo: Path, members_meta: dict, errors: list[str]) -> list[dict]:
@@ -1102,19 +1046,10 @@ def main() -> int:
         report(guild)
         return 0
 
-    # Regenerate the in-file "## Your Weapons" tables from the loadout (self-heal).
-    members_meta = (
-        json.loads((repo / "data/members-meta.json").read_text()).get("members", {})
-        if (repo / "data/members-meta.json").exists() else {}
-    )
-    synced = sync_member_tables(repo, members_meta, a.check)
-    if synced:
-        verb = "Would regenerate" if a.check else "Regenerated"
-        print(f"{verb} Your Weapons table in {len(synced)} member(s): {', '.join(synced)}")
 
     changed = write_outputs(repo, guild, a.check)
     if a.check:
-        return 1 if (changed or synced) else 0
+        return 1 if changed else 0
     return 0
 
 

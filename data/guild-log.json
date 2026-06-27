@@ -2,6 +2,40 @@
   "version": 1,
   "entries": [
     {
+      "id": 98,
+      "date": "2026-06-28",
+      "type": "chore",
+      "title": "4-seat arsenal: dead-code cleanup + member promotions",
+      "who": "Atta",
+      "detail": "Closed the 4-seat Architecture Build. Removed now-dead weapon-table machinery: build.py (render_weapons_table/replace_weapons_table/sync_member_tables/ORDINAL_LABELS + the sync call), conformity_check.py (expected_order, _parse_weapons_table orphans; docstring updated to drop retired A/PD/W/S and document ST), serve.cjs (syncWeaponsMeta dead fn; setMemberField rejects weapons; createMember no longer writes weapons/weaponsDesc), app.js (grant/revoke/reorder no-op, revoke button removed, dossier hint rewritten to the 4 seats). Conferred the due member promotions (earned tiers) via member_level.py promote --all. build --check idempotent, FULL CONFORMITY, node --check + py_compile all green, zero dangling refs to removed symbols."
+    },
+    {
+      "id": 97,
+      "date": "2026-06-28",
+      "type": "member-upgrade",
+      "title": "Promote The Translator: Intermediate → Advanced",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Intermediate → Advanced (craft-depth tier). Prerequisite checklist for Advanced verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-translator"
+      ],
+      "from": "Intermediate",
+      "to": "Advanced"
+    },
+    {
+      "id": 96,
+      "date": "2026-06-28",
+      "type": "member-upgrade",
+      "title": "Promote The Developer: Elite → Master",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Elite → Master (craft-depth tier). Prerequisite checklist for Master verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-developer"
+      ],
+      "from": "Elite",
+      "to": "Master"
+    },
+    {
       "id": 95,
       "date": "2026-06-28",
       "type": "chore",

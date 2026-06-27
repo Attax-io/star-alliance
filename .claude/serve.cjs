@@ -274,29 +274,6 @@ function setMemberField(member, field, values, cb) {
   });
 }
 
-// build.py requires members-meta.json weaponsDesc keys to match the .md weapons
-// EXACTLY (both directions). So a weapons edit must re-sync weaponsDesc or the
-// rebuild aborts. descMap (from the dashboard's MODELS) supplies text for new models.
-function syncWeaponsMeta(member, values, descMap, cb) {
-  if (!/^[a-z0-9-]+$/.test(member)) return cb(new Error('bad member'));
-  const file = path.join(ROOT, 'data/members-meta.json');
-  fs.readFile(file, 'utf8', (err, raw) => {
-    if (err) return cb(err);
-    let doc; try { doc = JSON.parse(raw); } catch (e) { return cb(e); }
-    const mem = doc.members && doc.members[member];
-    if (!mem) return cb(new Error('member not in members-meta.json'));
-    const prev = mem.weaponsDesc || {};
-    const next = {};
-    values.forEach((mdl) => {
-      let d = (descMap && typeof descMap[mdl] === 'string') ? descMap[mdl] : (prev[mdl] || '');
-      next[mdl] = String(d).slice(0, 500);
-    });
-    mem.weaponsDesc = next;
-    try { fs.writeFileSync(file + '.bak', raw); fs.writeFileSync(file, JSON.stringify(doc, null, 2) + '\n'); }
-    catch (e) { return cb(e); }
-    cb(null);
-  });
-}
 
 function regenGuildData(cb) {
   execFile('python3', [path.join(ROOT, 'build.py')], { cwd: ROOT, timeout: 20000 }, (err) => cb(err));
