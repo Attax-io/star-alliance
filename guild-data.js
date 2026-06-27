@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 57,
       "patch": 71
     },
-    "generated": "2026-06-27T22:36:18Z",
+    "generated": "2026-06-27T23:14:48Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -4901,7 +4901,7 @@ const GUILD = {
     {
       "id": "weapon-utility",
       "name": "weapon-utility",
-      "version": "2.1.1",
+      "version": "2.2.0",
       "icon": "🗡️",
       "art": "",
       "artPng": true,
@@ -4916,6 +4916,7 @@ const GUILD = {
         "The two kinds of weapon",
         "The tool boundary — doers return content, thinkers run tools (HARD RULE)",
         "Sonnet — the Claude-only-tool fallback (never let a doer stall)",
+        "The Critic seat — independent review (the third seat)",
         "The thinker ↔ doer loop",
         "Drawing the right weapon",
         "One thinker, one-or-many doers — and the ultra-brainstorming exception",
@@ -4932,8 +4933,8 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 256,
-        "words": 3536
+        "lines": 281,
+        "words": 3863
       },
       "global": true,
       "members": [
@@ -10052,6 +10053,45 @@ const GUILD = {
         "est": true,
         "note": "est · set real cap"
       }
+    }
+  },
+  "seats": {
+    "_comment": "Universal role SEATS — each is a DEFAULT model + FALLBACK chain, NOT a hardcoded model (the gpt-5.5 lesson). Brain = the thinking mind (wields tools); Doer = the hands (text only, no tools); Critic = the independent reviewer, deliberately a DIFFERENT backend family than the Brain (diverse blind spots); Bench = every non-seat model, pulled N-at-a-time for doer-swarm or thinker-swarm. A member's `model:` overrides the brain default. critique.py drives the Critic's COLD text mode; a Claude review agent drives its GROUNDED tool-using mode. Consumers DERIVE from here; conformity_check ST enforces seat ids exist + critic-family != brain-family.",
+    "brain": {
+      "default": "opus",
+      "fallback": [
+        "sonnet"
+      ],
+      "role": "thinker",
+      "duty": "Plans, reviews, owns the standard, wields the tools."
+    },
+    "doer": {
+      "default": "minimax-m3",
+      "fallback": [
+        "haiku",
+        "sonnet"
+      ],
+      "role": "doer",
+      "duty": "Executes the plan, returns work as text. No tools."
+    },
+    "critic": {
+      "default": "glm-5.2",
+      "fallback": [
+        "deepseek-v4-pro",
+        "kimi-k2.7"
+      ],
+      "role": "thinker",
+      "modes": [
+        "cold",
+        "grounded"
+      ],
+      "duty": "Refutes the brain's work before it ships. Cold = GLM text-only; Grounded = a Claude agent that runs checks."
+    },
+    "bench": {
+      "default": null,
+      "fallback": null,
+      "role": "any",
+      "duty": "All non-seat models. Pulled N-at-a-time for doer-swarm or thinker-swarm."
     }
   }
 };

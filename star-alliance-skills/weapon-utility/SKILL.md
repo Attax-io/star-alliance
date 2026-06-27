@@ -2,7 +2,7 @@
 name: weapon-utility
 description: "Every member's rule for which weapon (model) to draw and how thinker and doer weapons work together. Thinker weapons read, plan, and prompt the doers; doer weapons do the job and return it; the thinker then reviews the result against the plan and re-prompts the doer until it conforms. A member draws the highest-priority AVAILABLE weapon of the kind the job needs — scanning its arsenal left to right. One thinker plans and reviews and may dispatch several doers in parallel (many of one model or a mix); only ultra-brainstorming runs several thinkers at once. Use whenever a member must pick a model, decide thinker-vs-doer, or run the plan → do → review loop. Triggers: 'which weapon', 'which model should X use', 'pick the weapon', 'thinker or doer', 'draw a weapon', 'run the weapon loop', 'how does the member choose its model'. Every member consults this before acting — it is the atomic layer beneath members-formation (which member works) and ultra-brainstorming (fuse several members across models)."
 metadata:
-  version: 2.1.1
+  version: 2.2.0
 type: Skill
 
 ---
@@ -86,6 +86,30 @@ expected fall-through, not a failure or an escalation loop**: you are not retryi
 you are picking the only weapon that *can* hold the tool. The run continues without interruption.
 (Where a member also carries `haiku`, that Claude doer can run such tools too; `sonnet` is the
 **guaranteed** fallback because it is in every arsenal.)
+
+## The Critic seat — independent review (the third seat)
+
+Brain plans, Doer executes — and the **Critic refutes** before work ships. The Critic is
+the third standing seat (default `glm-5.2`, in `models.json` → `seats.critic`), and it is
+deliberately a **different model family than the Brain**: a critic that shares the author's
+lineage shares its blind spots. Opus-brain + GLM-critic = diverse failure modes — that
+diversity *is* the point, not a coincidence. `conformity_check` (ST) enforces critic-family
+≠ brain-family.
+
+The Critic has **two modes, and the difference is load-bearing**:
+
+- **Cold critique** — hand it a *diff or plan as TEXT*; it refutes from reasoning alone.
+  Cheap, fast, no tools: `git diff HEAD | python3 star-alliance-arsenal/critique.py`
+  (or `-f plan.md`, `-m <fallback>`). Being non-Claude, it **cannot inspect the repo** — it
+  judges only what you paste in.
+- **Grounded verify** — when the check must *run* something (grep for a regression, run the
+  build, read a file the diff didn't include), the critic must be a **Claude review agent**
+  (Task/Agent), because only Claude weapons hold the tools. Cold critique alone misses
+  *absence* bugs — a stale id left in a file nobody pasted — so grounded verify is the
+  backstop, not optional, on real source changes.
+
+The Critic is wired to the independent-verification gate (`verify-gate`): a source-changing
+turn records a critic pass before it can close. It is never the Brain reviewing itself.
 
 ## The thinker ↔ doer loop
 
@@ -233,6 +257,7 @@ python3 tools/efficiency_report.py   # shows median in/out tokens split by lite 
 **The safety check always wins:** before adjusting any `size_small_signals`, verify zero high-stakes turns in the LITE column (a migration, git push, deploy in a LITE-tagged turn is the hard failure). Stakes keyword list in `data/harness.json` is immutable until safety is confirmed.
 
 ## Changelog
+- **2.2.0** — **Critic seat (third seat).** New §The Critic seat: Brain plans · Doer executes · **Critic refutes** before ship. Default `glm-5.2` (a DIFFERENT family than the opus Brain — diverse blind spots, enforced by `conformity_check` ST). Two modes: COLD (`critique.py`, GLM text-only, no tools) vs GROUNDED (a Claude review agent that runs grep/build — the only way to catch *absence* bugs). Seats now live in `models.json` → `seats` (Brain/Doer/Critic/Bench), emitted to guild-data. Phase 1 of the 4-seat Architecture Build (additive; the full per-member→universal arsenal rewrite is Phase 2). New seat doctrine → MINOR.
 - **2.1.1** — Removed the dead `gpt-5.5` reference from the escalation-thinker list and the availability example (model retired from the arsenal — Strategic Audit 2026-06-28). Refs → PATCH.
 - **2.1.0** — **Swarm dispatch (mined from SWARM Parallelism, `yandex-research/swarm`).** New §Swarm dispatch maps three ideas from training over unreliable/heterogeneous/preemptible nodes onto the doer fan-out: **(1) throughput-weighted fan-out** — split a mixed doer pool ∝ each doer's measured speed/reliability (give `minimax-m3` the bulk), not round-robin; heterogeneity self-balances. **(2) mid-flight slice reroute** — a `None` in the `delegate_many` result is a *preempted peer, not a dead job*: re-dispatch that one slice to the next doer right (same plan/prompt), the left→right doer-fallback applied at SLICE granularity mid-flight instead of whole-job; only an exhausted pool for that slice fails up to the thinker. Closes the prior gap where the skill cited `delegate_many`'s `None` contract (1.5.0) but gave no doctrine for handling it. **(3) stable-coordinator / swappable-workers** — names the *why* behind reroute: the thinker (Claude brain) is SWARM's stable cheap monitor (always reachable, holds plan + tool buttons); doers are the preemptible GPU peers — never put the plan or tool calls on a weapon that can vanish. New dispatch doctrine → MINOR.
 - **2.0.0** — **Brain = personality (the model the member runs as).** Redefines the member's mind: the **brain is its session model** (`model:`) — the live model that actually thinks and orchestrates in a session — NOT "whichever thinker leads the arsenal." `opus` and the other thinkers are reframed as **escalation weapons** the brain delegates to, not the member's identity. The dashboard now flags the **BRAIN** (session-model weapon) and the **DOER** (prime doer, `minimax-m3`) on each member's cards; `conformity_check.py` replaces the `PT` (prime-thinker==opus) check with **`BR`** (the session model is a carried, thinking weapon) + **`PD`** (prime doer leads). Supersedes the §5 "prime thinker = first thinker weapon = opus" decision. Selection-contract change → MAJOR.

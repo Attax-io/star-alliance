@@ -59,3 +59,13 @@ def weight_map(path=None):
     """{id: weight} for models that declare one (non-Claude doers/thinkers)."""
     return {mid: d["weight"] for mid, d in _safe(path).items()
             if d.get("weight") is not None}
+
+
+def seats(path=None):
+    """The universal role seats block (Brain/Doer/Critic/Bench) from models.json.
+    {} if absent or unreadable — callers degrade to per-member defaults."""
+    try:
+        with open(path or _PATH, encoding="utf-8") as fh:
+            return json.load(fh).get("seats", {})
+    except Exception:
+        return {}

@@ -818,6 +818,16 @@ def load_models(repo: Path) -> dict:
         return {}
 
 
+def load_seats(repo: Path) -> dict:
+    """The universal role seats (Brain/Doer/Critic/Bench) from models.json.
+    Emitted into guild-data as GUILD.seats so the dashboard renders the seat layer
+    (and the Critic, which had no surface) instead of per-member loadouts."""
+    try:
+        return json.loads((repo / "star-alliance-arsenal" / "models.json").read_text()).get("seats", {})
+    except Exception:
+        return {}
+
+
 def load_model_roles(repo: Path) -> dict:
     """Model id -> role for workflow weapon-field validation. DERIVED from the
     canonical registry (star-alliance-arsenal/models.json), normalizing the media
@@ -900,6 +910,7 @@ def assemble(repo: Path) -> tuple[dict, list[str], list[str]]:
         "hooks": hooks,
         "log": log,
         "models": load_models(repo),
+        "seats": load_seats(repo),
     }
     return guild, errors, warnings
 

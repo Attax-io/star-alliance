@@ -466,6 +466,29 @@ def main():
         if cloud_map != reg_tags:
             fails.append(f"FB summon _FALLBACK_CLOUD_TAG {cloud_map} != registry cloud_tags "
                          f"{reg_tags} (routing fallback drifted from models.json)")
+        # ST — universal SEATS (models.json "seats"): every seat default + fallback must
+        #      name a real registry id, and the Critic must be a DIFFERENT backend family
+        #      than the Brain (diverse blind spots is the whole point of an adversary).
+        try:
+            seats = json.loads((ROOT / "star-alliance-arsenal" / "models.json").read_text()).get("seats", {})
+        except Exception:
+            seats = {}
+        if seats:
+            for seat in ("brain", "doer", "critic"):
+                s = seats.get(seat) or {}
+                dflt = s.get("default")
+                if dflt and dflt not in reg_ids:
+                    fails.append(f"ST seat '{seat}' default '{dflt}' is not a registry model")
+                for fb in (s.get("fallback") or []):
+                    if fb not in reg_ids:
+                        fails.append(f"ST seat '{seat}' fallback '{fb}' is not a registry model")
+            bdef = (seats.get("brain") or {}).get("default")
+            cdef = (seats.get("critic") or {}).get("default")
+            bfam = (_regm.get(bdef) or {}).get("backend")
+            cfam = (_regm.get(cdef) or {}).get("backend")
+            if bdef and cdef and bfam and cfam and bfam == cfam:
+                fails.append(f"ST critic '{cdef}' shares the brain's backend family '{bfam}' "
+                             f"— critic must differ from brain for diverse review")
 
     # === RG — guild-routing-gate.sh member→model prose must match guild-data (lint, not
     #     generate: the lines are hand-edited doctrine per audit §7.1/C2, just kept honest) ===
