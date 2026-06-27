@@ -366,6 +366,7 @@ function parseHash() {
 
 const ROUTES = {
   map:     { list: renderStarMap,      navKey: "map" },
+  workflows: { list: renderStarMap,    detail: renderWorkflowPage,  navKey: "map" },
   members: { list: renderMembers,      detail: renderMemberDossier, navKey: "members" },
   arsenal: { list: renderArsenal, detail: renderWeaponDetail, navKey: "arsenal" },
   skills:  { list: renderSkills,       detail: renderSkillPanel,    navKey: "skills" },
@@ -543,28 +544,7 @@ function renderStarMap(query) {
       `A workflow is just a set of repeated steps the Star Alliance follow to get a job done. Hover a star to read ${esc(wf.name)}'s role — the power core traces the active workflow.`)}
     ${flowChips(wf.id)}
     ${unknown ? `<div class="flow-note">Unknown flow — showing the default.</div>` : ""}
-    <div class="flow-meta glass" style="--accent:${accent}">
-      <div class="fm-icon" aria-hidden="true">${esc(wf.icon || "")}</div>
-      <div class="fm-body">
-        <div class="fm-tagline">${esc(wf.tagline || "")}</div>
-        <div class="fm-when"><span class="fm-when-label">When</span> ${esc(wf.when || "")}</div>
-        ${(() => {
-          const scriptMap = new Map();
-          wf.steps.forEach((s, i) => {
-            if (!s.script) return;
-            if (!scriptMap.has(s.script)) scriptMap.set(s.script, []);
-            scriptMap.get(s.script).push({ idx: i + 1, title: s.title || "", produces: s.produces || "" });
-          });
-          if (!scriptMap.size) return "";
-          const chips = [...scriptMap.entries()].map(([path, usages]) => {
-            const short = path.replace("guild/", "").replace(".py", "");
-            const tip = usages.map(u => `Step ${u.idx}: ${u.title}${u.produces ? " → " + u.produces : ""}`).join(" · ");
-            return `<span class="script-chip" data-tip="${esc(tip)}" onmouseenter="showTip(this,event.clientX,event.clientY)" onmousemove="showTip(this,event.clientX,event.clientY)" onmouseleave="hideTip()"><span class="script-chip-dot"></span><code>${esc(short)}</code></span>`;
-          }).join("");
-          return `<div class="fm-scripts"><span class="fm-when-label">Scripts</span><div class="fm-script-chips">${chips}</div></div>`;
-        })()}
-      </div>
-    </div>
+    <p class="flow-hint">Hover a workflow tile for its brief · <strong>double-click</strong> to open its full page · single-click traces it on the map below.</p>
     <div class="starmap-wrap glass" style="--accent:${accent}">
       ${buildConstellation(wf)}
       <div class="starmap-tip" id="starmap-tip" hidden></div>
@@ -582,11 +562,55 @@ function flowChips(activeId) {
     const pic = w.artPng
       ? `<img class="ft-img" src="workflow-art/${esc(w.id)}.png" alt="${esc(w.name)}" loading="lazy">`
       : `<span class="ft-emoji" aria-hidden="true">${esc(w.icon || '⚔')}</span>`;
-    return `<a class="flow-tile" href="#/map?flow=${esc(w.id)}" style="--accent:${accent}"${w.id === activeId ? ' aria-current="page"' : ''} title="${esc(w.tagline || w.name)}">
+    // Tooltip blurb = the old info bar, condensed: tagline + when + script list.
+    const scripts = [...new Set((w.steps || []).filter(s => s.script).map(s => s.script.replace("guild/", "").replace(".py", "")))];
+    const blurb = [w.tagline, w.when ? `When: ${w.when}` : "", scripts.length ? `Scripts: ${scripts.join(", ")}` : ""]
+      .filter(Boolean).join("\n\n");
+    return `<a class="flow-tile" href="#/map?flow=${esc(w.id)}" style="--accent:${accent}"${w.id === activeId ? ' aria-current="page"' : ''}
+      data-flow="${esc(w.id)}" data-tip-name="${esc(w.name)}" data-tip-level="${esc(w.category || "")}" data-tip-blurb="${esc(blurb)}"
+      aria-label="${esc(w.name)} — double-click to open its page">
       <span class="ft-pic">${pic}</span>
       <span class="ft-name">${esc(w.name)}</span>
     </a>`;
   }).join("") + `</nav>`;
+}
+
+// Workflow detail page (#/workflows/<id>) — hero + the workflow's markdown,
+// rendered with the same mdToHtml used by the skill reader. Reached by
+// double-clicking a tile on the Star Map.
+function renderWorkflowPage(id) {
+  const w = GUILD.workflows.find((x) => x.id === id);
+  if (!w) return renderNotFound(`No workflow “${esc(id)}” in the star map.`);
+  const accent = ACCENT[w.accent] || "var(--cyan)";
+  const md = (typeof WORKFLOW_MD !== "undefined" && WORKFLOW_MD && WORKFLOW_MD[id]) || "";
+  const pic = w.artPng
+    ? `<img class="wp-art-img" src="workflow-art/${esc(w.id)}.png" alt="${esc(w.name)}" loading="lazy">`
+    : `<span class="wp-art-emoji" aria-hidden="true">${esc(w.icon || "⚔")}</span>`;
+  const stepCount = (w.steps || []).filter((s) => s.kind === "member").length;
+  const gateCount = (w.steps || []).filter((s) => s.kind === "gate").length;
+  return `${crumb("#/map", "Star Map")}
+    <div class="skill-panel" style="--accent:${accent}">
+      <div class="sp-hero glass">
+        <div class="sp-icon${w.artPng ? " art" : ""}">${pic}</div>
+        <div class="sp-meta">
+          <h1 class="sp-title">${esc(w.name)}</h1>
+          <div class="sp-tags">
+            ${w.category ? `<span class="tag cyan">${esc(w.category)}</span>` : ""}
+            ${w.class ? `<span class="tag">${esc(w.class)}</span>` : ""}
+          </div>
+          <p class="sp-blurb">${esc(w.tagline || "")}</p>
+        </div>
+        <a class="ref-pill" href="#/map?flow=${esc(w.id)}" style="--mc:${accent}" title="Trace this workflow on the Star Map">✦ View on map</a>
+      </div>
+      <div class="telemetry glass">
+        <div class="stat"><b class="count">${stepCount}</b><span>Steps</span></div>
+        <div class="stat"><b class="count">${gateCount}</b><span>Gates</span></div>
+        <div class="stat"><b class="count">${(w.trigger_phrases || []).length}</b><span>Triggers</span></div>
+      </div>
+      <div class="section glass">
+        <div class="skill-md-body">${md ? mdToHtml(md) : `<div class="md-error">No workflow markdown found — run <code>python3 build.py</code>.</div>`}</div>
+      </div>
+    </div>`;
 }
 
 const TIER_RANK = { "opus": 0, "gpt-5.5": 1, "sonnet": 2, "glm-5.2": 3, "kimi-k2.7": 3, "minimax-m3": 3, "deepseek-v4-pro": 3, "nemotron-3-ultra": 3, "qwen3.5": 3, "gemma4": 4, "haiku": 4, "image-01": 5, "minimax-video": 5, "minimax-speech": 5, "minimax-music": 5 };
@@ -2056,13 +2080,19 @@ function hideTip() {
 }
 
 document.addEventListener("mousemove", (e) => {
-  const sit = e.target.closest(".sit[data-tip-name]");
+  const sit = e.target.closest(".sit[data-tip-name], .flow-tile[data-tip-name]");
   if (sit) {
     if (tipTarget !== sit) { tipTarget = sit; showTip(sit, e.clientX, e.clientY); }
     else positionTip(e.clientX, e.clientY);
   } else if (tipTarget) {
     hideTip();
   }
+});
+
+// Double-click a Star Map workflow tile → open its detail page.
+app.addEventListener("dblclick", (e) => {
+  const tile = e.target.closest(".flow-tile[data-flow]");
+  if (tile) { e.preventDefault(); hideTip(); location.hash = `#/workflows/${tile.dataset.flow}`; }
 });
 
 document.addEventListener("mouseleave", hideTip);
