@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 61
     },
-    "generated": "2026-06-27T10:44:33Z",
+    "generated": "2026-06-27T11:54:51Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "gpt-5.5": "deactivated",
@@ -20,6 +20,7 @@ const GUILD = {
       "skills": 48,
       "domains": 3,
       "workflows": 29,
+      "hooks": 7,
       "log": 139
     }
   },
@@ -733,7 +734,7 @@ const GUILD = {
       "deploy": "UI/UX design, visual quality, brand kits, image-to-code conversion",
       "triggers": "design the UI · make it look premium · create a brand kit",
       "description": "Deploy for UI/UX design, frontend visual quality, brand kits, image-to-code conversion, and design system work. Triggers: 'design the UI', 'make it look premium', 'create a brand kit', 'convert this image to code', 'redesign this'.",
-      "prompt": "You are **the Designer**, a senior UI/UX designer in the Star Alliance — the guild's\nartisan and engraver.\n\nYou have an eye for premium, conversion-aware design. You can take a rough sketch and\nturn it into a polished interface, as a master engraver turns bare metal into a\nwork of art. You understand that design is not decoration — it's how the product\ncommunicates, just as a sword's engravings tell its story.\n\n## Your Weapons\n\nYour weapons are AI models — Sonnet is the hand that directs, the MiniMax doers are the\nhands that make. You plan, critique, and orchestrate with Sonnet, then dispatch the doers\nto generate the actual assets. Choose by priority:\n\n| Priority | Weapon | When to Draw It |\n|---|---|---|\n| **1st** — Primary | minimax-m3 | MiniMax M3 — the crossbow. Precise structural doer for code-shaped design work. |\n| **2nd** — Secondary | image-01 | MiniMax image-01 — the engraver's burin. Generates images, mockups, and visual assets from a prompt. |\n| **3rd** — Tertiary | minimax-video | MiniMax Video — the moving tapestry. Generates motion and video for living interfaces. |\n| **4th** — Quaternary | minimax-speech | MiniMax Speech — the herald's voice. Generates spoken audio and voiceover. |\n| **5th** — Quinary | minimax-music | MiniMax Music — the bard's lute. Generates music and sound to score the experience. |\n| **6th** — Senary | sonnet | Claude Sonnet — the reliable longsword. The hand that directs: plans the design, critiques it, and dispatches the doers. |\n\n**How to choose:** Direct with Sonnet — it holds the taste and the plan. When the quest\nneeds a real asset, dispatch the MiniMax doer that fits: image-01 for stills, video for\nmotion, speech and music for sound, M3 for structural code-shaped work. You orchestrate;\nthe doers generate.\n\n## Your expertise\n\n- Frontend visual design (web and mobile)\n- Image-to-code conversion — turning mockups into production code\n- Brand kit creation and visual identity systems — the guild's sigils and heraldry\n- Design systems: minimalist, industrial-brutalist, high-end agency\n- Redesigning existing projects to premium quality\n\n## How you work\n\n1. Start with `design-taste` (`engineer` mode) for any UI work — it sets the baseline quality.\n2. For brand work, use `brandkit` to create a full visual identity system — the guild's\n   heraldry must be consistent across all realms.\n3. For image-to-code, use the right skill: `imagegen-frontend-web` or `imagegen-frontend-mobile`.\n4. For redesigns, use `design-taste` in `redesign` mode, then layer in the other archetypes.\n5. Use `impeccable` for critique and polish — it catches what you missed, like a master\n   inspecting a blade for flaws.\n6. Load `design-language` when a surface needs a specific *voice* — its vocabulary, lore, and\n   naming (not its look). Modes: `fallen-sword` (dark-fantasy / Erildath), `star-alliance` (the\n   guild's own meta-voice), `lex-council` (the legal-finance product voice).\n7. You iterate visually. You show, don't tell. A picture is worth a thousand scrolls.\n\n## Design philosophies you carry\n\n- **Minimalist** — clean editorial-style interfaces when the product needs clarity\n- **Industrial brutalist** — raw mechanical interfaces when the product needs edge\n- **High-end agency** — premium polish when the product needs to impress\n- **Stitch** — semantic design systems when structure matters most\n\n## What you don't do\n\n- You don't design database schemas — delegate to The Architect.\n- You don't run multi-wave campaigns — delegate to The Strategist.",
+      "prompt": "You are **the Designer**, a senior UI/UX designer in the Star Alliance — the guild's\nartisan and engraver.\n\nYou have an eye for premium, conversion-aware design. You can take a rough sketch and\nturn it into a polished interface, as a master engraver turns bare metal into a\nwork of art. You understand that design is not decoration — it's how the product\ncommunicates, just as a sword's engravings tell its story.\n\n## Your Weapons\n\nYour weapons are AI models — Sonnet is the hand that directs, the MiniMax doers are the\nhands that make. You plan, critique, and orchestrate with Sonnet, then dispatch the doers\nto generate the actual assets. Choose by priority:\n\n| Priority | Weapon | When to Draw It |\n|---|---|---|\n| **1st** — Primary | minimax-m3 | MiniMax M3 — the crossbow. Precise structural doer for code-shaped design work. |\n| **2nd** — Secondary | image-01 | MiniMax image-01 — the engraver's burin. Generates images, mockups, and visual assets from a prompt. |\n| **3rd** — Tertiary | minimax-video | MiniMax Video — the moving tapestry. Generates motion and video for living interfaces. |\n| **4th** — Quaternary | minimax-speech | MiniMax Speech — the herald's voice. Generates spoken audio and voiceover. |\n| **5th** — Quinary | minimax-music | MiniMax Music — the bard's lute. Generates music and sound to score the experience. |\n| **6th** — Senary | opus | Claude Opus — the master's eye. The prime thinker: plans the design, makes the taste calls, and critiques the doers' renders before they ship. |\n| **7th** — Septenary | sonnet | Claude Sonnet — the reliable longsword. The dual at the tail: stands in for any role, and the Claude-capable fallback when a doer needs a tool only Claude models can run. |\n\n**How to choose:** Direct with Sonnet — it holds the taste and the plan. When the quest\nneeds a real asset, dispatch the MiniMax doer that fits: image-01 for stills, video for\nmotion, speech and music for sound, M3 for structural code-shaped work. You orchestrate;\nthe doers generate.\n\n## Your expertise\n\n- Frontend visual design (web and mobile)\n- Image-to-code conversion — turning mockups into production code\n- Brand kit creation and visual identity systems — the guild's sigils and heraldry\n- Design systems: minimalist, industrial-brutalist, high-end agency\n- Redesigning existing projects to premium quality\n\n## How you work\n\n1. Start with `design-taste` (`engineer` mode) for any UI work — it sets the baseline quality.\n2. For brand work, use `brandkit` to create a full visual identity system — the guild's\n   heraldry must be consistent across all realms.\n3. For image-to-code, use the right skill: `imagegen-frontend-web` or `imagegen-frontend-mobile`.\n4. For redesigns, use `design-taste` in `redesign` mode, then layer in the other archetypes.\n5. Use `impeccable` for critique and polish — it catches what you missed, like a master\n   inspecting a blade for flaws.\n6. Load `design-language` when a surface needs a specific *voice* — its vocabulary, lore, and\n   naming (not its look). Modes: `fallen-sword` (dark-fantasy / Erildath), `star-alliance` (the\n   guild's own meta-voice), `lex-council` (the legal-finance product voice).\n7. You iterate visually. You show, don't tell. A picture is worth a thousand scrolls.\n\n## Design philosophies you carry\n\n- **Minimalist** — clean editorial-style interfaces when the product needs clarity\n- **Industrial brutalist** — raw mechanical interfaces when the product needs edge\n- **High-end agency** — premium polish when the product needs to impress\n- **Stitch** — semantic design systems when structure matters most\n\n## What you don't do\n\n- You don't design database schemas — delegate to The Architect.\n- You don't run multi-wave campaigns — delegate to The Strategist.",
       "weapons": [
         {
           "model": "minimax-m3",
@@ -756,8 +757,12 @@ const GUILD = {
           "desc": "MiniMax Music — the bard's lute. Generates music and sound to score the experience."
         },
         {
+          "model": "opus",
+          "desc": "Claude Opus — the master's eye. The prime thinker: plans the design, makes the taste calls, and critiques the doers' renders before they ship."
+        },
+        {
           "model": "sonnet",
-          "desc": "Claude Sonnet — the reliable longsword. The hand that directs: plans the design, critiques it, and dispatches the doers."
+          "desc": "Claude Sonnet — the reliable longsword. The dual at the tail: stands in for any role, and the Claude-capable fallback when a doer needs a tool only Claude models can run."
         }
       ],
       "does": [
@@ -796,7 +801,7 @@ const GUILD = {
           "nUnique": 6,
           "nMaster": 2,
           "peak": 4,
-          "nWeapons": 6,
+          "nWeapons": 7,
           "hasSummary": true,
           "profileComplete": true,
           "conformityClean": true
@@ -862,7 +867,7 @@ const GUILD = {
             {
               "label": "weapons",
               "ok": true,
-              "have": 6,
+              "have": 7,
               "need": 6
             }
           ],
@@ -3453,7 +3458,7 @@ const GUILD = {
     {
       "id": "okf",
       "name": "okf",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "icon": "🧹",
       "art": "",
       "artPng": false,
@@ -3469,7 +3474,8 @@ const GUILD = {
         "The standard, applied to THIS repo",
         "How you work",
         "Conformance contract (what type: lets the reader assume)",
-        "Don't"
+        "Don't",
+        "Changelog"
       ],
       "triggers": "'tidy the repo', 'OKF', 'make it OKF-conformant', 'run the OKF audit', 'fix frontmatter', 'keep it clean', after any campaign that left files behind. The producer half of the guild's knowledge standard; pairs with star-alliance-language (reader). Enforced mechanically by the okf-gate PreToolUse hook.",
       "modes": "audit (default) — report non-conformant governed .md; --fix — migrate-first baseline (inject type: + timestamp:, idempotent); enrich — add title/description/tags/cross-links; sweep — place non-md by concept-path & prune orphans",
@@ -3479,8 +3485,8 @@ const GUILD = {
         "okf_audit.py"
       ],
       "stats": {
-        "lines": 91,
-        "words": 710
+        "lines": 100,
+        "words": 822
       },
       "global": false,
       "members": [
@@ -3732,7 +3738,7 @@ const GUILD = {
     {
       "id": "star-alliance-language",
       "name": "star-alliance-language",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "icon": "🗣️",
       "art": "",
       "artPng": false,
@@ -3748,7 +3754,8 @@ const GUILD = {
         "The protocol (do this, in order)",
         "When to reach for it",
         "Relationship to the rest of the arsenal",
-        "Don't"
+        "Don't",
+        "Changelog"
       ],
       "triggers": "automatic — every member orients through it when starting work in a repo. 'read the repo', 'what's in here', 'map this', 'orient me', 'where is X documented'. Universal — rides every member like weapon-utility. The consumer half of the OKF pair (okf produces, this reads).",
       "modes": "map (default) — one-shot concept map via okf_read.py (frontmatter + cross-links, grouped, index.md first); --dir/--type/--grep narrow; --links walk one concept's graph; --json feed a doer",
@@ -3758,8 +3765,8 @@ const GUILD = {
         "okf_read.py"
       ],
       "stats": {
-        "lines": 80,
-        "words": 608
+        "lines": 88,
+        "words": 687
       },
       "global": false,
       "members": [
@@ -4045,7 +4052,7 @@ const GUILD = {
     {
       "id": "ultra-brainstorming",
       "name": "ultra-brainstorming",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "icon": "🧠",
       "art": "",
       "artPng": true,
@@ -4054,14 +4061,15 @@ const GUILD = {
       "ramp": "purple",
       "tabler": "ti-brain",
       "src": "own",
-      "desc": "The Strategist's super-planning method — fuse the outputs of several members into one doer-ready plan by brainstorming them across several thinking models at once. Use when two or more members have produced inputs (analyses, sketches, proposals, risks) that must become a single coherent plan before any doer can start. Triggers: 'ultra-brainstorm this', 'super-plan this', 'synthesize the members' work', 'brainstorm this across models', 'merge these proposals into one plan', 'plan this deeply before we build', or any fan-in where several specialists feed one build. Distinct from storm-investigation (five persona minds on one topic) and members-formation (the Butler's routing): this is a MODEL ensemble — several thinking models, each a different mind — that converges many members' work into one ranked, peer-reviewed plan handed to the member doing the job.",
-      "intro": "This is where several members' outputs converge, get brainstormed across **several thinking models at once, and leave as one plan** for the doer. It is the Strategist's deep-planning craft, alongside campaign waves.",
+      "desc": "An ASSIGNABLE multi-thinker method — any member who carries it fires ALL his available thinker models at once on the same material, then his prime (highest-priority) thinker reviews every output and synthesizes one opinion. Use to deepen one member's thinking across model diversity, or at a fan-in to fuse several members' inputs into one doer-ready plan. Triggers: 'ultra-brainstorm this', 'super-plan this', 'think this across all models', 'use all my thinkers', 'synthesize the members' work', 'merge these proposals into one plan', 'plan this deeply before we build'. Distinct from storm-investigation (five persona minds on one topic) and members-formation (the Butler's routing): this is a MODEL ensemble — several thinking models, each a different mind — converging into one ranked, peer-reviewed result. It is the thinker fan-out exception named in weapon-utility.",
+      "intro": "This skill gives any member who carries it one extra power: instead of running a single prime thinker, the member fires all of its available thinker weapons at once on the same material, then its **prime (highest-priority) thinker reviews every output and synthesizes one opinion*. This is exactly th",
       "sections": [
         "When to run it",
         "In / out",
         "The five phases — run in order",
         "Handoff to the doer",
         "Where it sits in a formation",
+        "Assignment",
         "Versioning",
         "Changelog"
       ],
@@ -4071,8 +4079,8 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 107,
-        "words": 926
+        "lines": 127,
+        "words": 1212
       },
       "global": true,
       "members": [
@@ -4117,7 +4125,7 @@ const GUILD = {
     {
       "id": "weapon-utility",
       "name": "weapon-utility",
-      "version": "1.1.1",
+      "version": "1.3.0",
       "icon": "🗡️",
       "art": "",
       "artPng": true,
@@ -4126,13 +4134,14 @@ const GUILD = {
       "ramp": "gray",
       "tabler": "ti-swords",
       "src": "own",
-      "desc": "Every member's rule for which weapon (model) to draw and how thinker and doer weapons work together. Thinker weapons read, plan, and prompt the doers; doer weapons do the job and return it; the thinker then reviews the result against the plan and re-prompts the doer until it conforms. A member draws the highest-priority AVAILABLE weapon of the kind the job needs — scanning its arsenal left to right — and wields one weapon at a time, unless ultra-brainstorming is active. Use whenever a member must pick a model, decide thinker-vs-doer, or run the plan → do → review loop. Triggers: 'which weapon', 'which model should X use', 'pick the weapon', 'thinker or doer', 'draw a weapon', 'run the weapon loop', 'how does the member choose its model'. Every member consults this before acting — it is the atomic layer beneath members-formation (which member works) and ultra-brainstorming (fuse several members across models).",
+      "desc": "Every member's rule for which weapon (model) to draw and how thinker and doer weapons work together. Thinker weapons read, plan, and prompt the doers; doer weapons do the job and return it; the thinker then reviews the result against the plan and re-prompts the doer until it conforms. A member draws the highest-priority AVAILABLE weapon of the kind the job needs — scanning its arsenal left to right. One thinker plans and reviews and may dispatch several doers in parallel (many of one model or a mix); only ultra-brainstorming runs several thinkers at once. Use whenever a member must pick a model, decide thinker-vs-doer, or run the plan → do → review loop. Triggers: 'which weapon', 'which model should X use', 'pick the weapon', 'thinker or doer', 'draw a weapon', 'run the weapon loop', 'how does the member choose its model'. Every member consults this before acting — it is the atomic layer beneath members-formation (which member works) and ultra-brainstorming (fuse several members across models).",
       "intro": "Every member carries an arsenal of weapons (AI models). This skill is the member's standing rule for which weapon to draw and how the weapons work together. It runs inside a single member — the layer beneath the Butler's routing.",
       "sections": [
         "The two kinds of weapon",
+        "Sonnet — the Claude-only-tool fallback (never let a doer stall)",
         "The thinker ↔ doer loop",
         "Drawing the right weapon",
-        "One weapon at a time — and the ultra-brainstorming exception",
+        "One thinker, one-or-many doers — and the ultra-brainstorming exception",
         "Availability — when a weapon counts as drawable",
         "Where it sits",
         "Versioning",
@@ -4144,8 +4153,8 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 121,
-        "words": 1116
+        "lines": 147,
+        "words": 1568
       },
       "global": true,
       "members": [
@@ -4163,7 +4172,7 @@ const GUILD = {
     {
       "id": "workflow-forge",
       "name": "workflow-forge",
-      "version": "1.0.0",
+      "version": "1.2.0",
       "icon": "🗺️",
       "art": "",
       "artPng": true,
@@ -4188,8 +4197,8 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 58,
-        "words": 1078
+        "lines": 77,
+        "words": 1487
       },
       "global": true,
       "members": [
@@ -4251,7 +4260,9 @@ const GUILD = {
         "trading-strategy",
         "portfolio-risk",
         "high-alert",
-        "japanese-candlesticks"
+        "japanese-candlesticks",
+        "okf",
+        "star-alliance-language"
       ],
       "members": [
         "the-butler",
@@ -4264,7 +4275,7 @@ const GUILD = {
         "the-merchant",
         "the-quartermaster"
       ],
-      "notes": "The home domain. All 9 guild members + 46 skills live here. Every other domain borrows from this skill pool."
+      "notes": "The home domain. All 9 guild members + 48 skills live here. Every other domain borrows from this skill pool."
     },
     {
       "id": "lex-council-app",
@@ -4333,6 +4344,7 @@ const GUILD = {
       "icon": "🛰️",
       "accent": "cyan",
       "category": "Build & Fix",
+      "class": "mutating",
       "tagline": "The full guild pipeline for serious, multi-step missions.",
       "when": "Use this when the work is large, multi-disciplinary, or needs several specialists coordinated in waves — the guild's conquering-campaign, planned and driven to completion.",
       "steps": [
@@ -4355,6 +4367,9 @@ const GUILD = {
           },
           "inputs": [
             "raw request"
+          ],
+          "doers": [
+            "minimax-m3"
           ]
         },
         {
@@ -4374,14 +4389,19 @@ const GUILD = {
           },
           "inputs": [
             "cleared brief"
-          ]
+          ],
+          "thinker": "opus",
+          "ultra": true
         },
         {
           "kind": "member",
           "actor": "the-butler",
           "title": "Distribute the Assignments",
           "act": "The Butler routes each slice of the plan to the right specialist with clear, scoped instructions.",
-          "produces": "routed assignments"
+          "produces": "routed assignments",
+          "doers": [
+            "minimax-m3"
+          ]
         },
         {
           "kind": "member",
@@ -4400,14 +4420,25 @@ const GUILD = {
           "actor": "the-developer",
           "title": "Implement the Plan",
           "act": "The Developer writes the code, fixes any bugs, and self-tests everything before handing it back.",
-          "produces": "working implementation"
+          "produces": "working implementation",
+          "thinker": "opus",
+          "doers": [
+            {
+              "model": "minimax-m3",
+              "count": 3
+            },
+            "haiku"
+          ]
         },
         {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Clean Up and Verify",
           "act": "The Quartermaster runs final cleanup checks and confirms the whole mission works end to end.",
-          "produces": "verified build"
+          "produces": "verified build",
+          "doers": [
+            "minimax-m3"
+          ]
         },
         {
           "kind": "member",
@@ -4439,6 +4470,7 @@ const GUILD = {
       "icon": "⚡",
       "accent": "green",
       "category": "Build & Fix",
+      "class": "mutating",
       "tagline": "A lean path for small, well-understood changes.",
       "when": "Use this for small bugs, UI tweaks, or a pasted error to fix (and any of the same class) where planning would only slow things down.",
       "steps": [
@@ -4512,6 +4544,7 @@ const GUILD = {
       "icon": "🎨",
       "accent": "rose",
       "category": "Design",
+      "class": "mutating",
       "tagline": "From visual concept to shipped UI in one tight sprint.",
       "when": "Use this when the work centers on UI, UX, brand, or visual quality — including admin/members panel layout redesigns and card/panel consolidation, the most frequent visual work on the app.",
       "steps": [
@@ -4606,6 +4639,7 @@ const GUILD = {
       "icon": "🏛️",
       "accent": "blue",
       "category": "Build & Fix",
+      "class": "mutating",
       "tagline": "Schemas, systems, and structural change, done right.",
       "when": "Use this when the work touches the database, system design, or core architecture — including performance tuning and finance-critical data migrations (plan, dry-run with BEGIN/ROLLBACK, reconcile).",
       "steps": [
@@ -4705,6 +4739,7 @@ const GUILD = {
       "icon": "⚖️",
       "accent": "gold",
       "category": "Legal",
+      "class": "mutating",
       "tagline": "Turn real laws into a clean, multilingual codex.",
       "when": "Use this to load real laws into the codex and translate them across locales — loop the source laws, load + translate each, and stop at the publish gate (you publish). Fed by Law Harvest — run that first to build the verified source-law library.",
       "steps": [
@@ -4778,6 +4813,7 @@ const GUILD = {
       "icon": "📈",
       "accent": "green",
       "category": "Research & Intel",
+      "class": "read-only",
       "tagline": "Read-only trading, investment, and market intelligence.",
       "when": "Use this for investment, trading, or market research where no code should be written. (For website/SEO/brand audits use Brand Audit.)",
       "steps": [
@@ -4815,14 +4851,6 @@ const GUILD = {
           "produces": "market report"
         },
         {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Guild Conformance",
-          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
-          "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
-        },
-        {
           "kind": "gate",
           "gate": "report",
           "label": "The Butler reports the Merchant's market and risk report, with caveats — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
@@ -4844,6 +4872,7 @@ const GUILD = {
       "icon": "🛠️",
       "accent": "violet",
       "category": "Guild Self",
+      "class": "mutating",
       "tagline": "Keep the guild's skills sharp, synced, and current.",
       "when": "Use this for guild self-maintenance — skill sync, upgrades, creating a new skill, or turning a one-off task into a reusable skill.",
       "steps": [
@@ -4930,6 +4959,7 @@ const GUILD = {
       "icon": "📜",
       "accent": "gold",
       "category": "Hygiene & Release",
+      "class": "mutating",
       "tagline": "Sweep recent sessions and backfill any missing guild-log entries.",
       "when": "Use this to reconcile the guild log after a stretch of work — loop the recent sessions, find changes that never got recorded, and log them. First stage of the release-closeout chain: Guild Log Sync → Hygiene Rotation → Release Train.",
       "steps": [
@@ -4980,7 +5010,10 @@ const GUILD = {
           "actor": "the-quartermaster",
           "title": "Log the Missing Entries",
           "act": "The Quartermaster, drawing MiniMax M3, runs the two-tier pipeline — build_guild_log.py to backfill git-visible commits, log_event.py for the non-git events — then build.py to regenerate the dashboard data.",
-          "produces": "synced guild log"
+          "produces": "synced guild log",
+          "doers": [
+            "minimax-m3"
+          ]
         },
         {
           "kind": "member",
@@ -5012,6 +5045,7 @@ const GUILD = {
       "icon": "⚖️",
       "accent": "gold",
       "category": "Hygiene & Release",
+      "class": "mutating",
       "tagline": "The Quartermaster audits the whole repo and proves it agrees with itself — and with every decision on record.",
       "when": "Use after big changes, or any time you need proof the project is internally consistent and nothing contradicts a logged decision.",
       "steps": [
@@ -5082,6 +5116,7 @@ const GUILD = {
       "icon": "🧹",
       "accent": "gold",
       "category": "Hygiene & Release",
+      "class": "mutating",
       "tagline": "The Quartermaster keeps the whole repo tidy & conformant to the Open Knowledge Format, so every member can read it fast on future runs.",
       "when": "Use to bring the repo to (or back to) OKF conformance — after a campaign leaves files behind, when frontmatter drifts, or to migrate-first before arming the okf-gate. The producer pass; star-alliance-language is how members then read the result.",
       "steps": [
@@ -5160,6 +5195,7 @@ const GUILD = {
       "icon": "🪲",
       "accent": "green",
       "category": "Build & Fix",
+      "class": "mutating",
       "tagline": "Pull a reported bug, hunt the real root cause, fix it, and close the loop.",
       "when": "Use this for bugs filed in the bug_reports table — the daily triage-and-fix loop. The recurring Lex signatures that belong here: a missing i18n message key rendering raw in the UI, a missing DB column, or an RLS / permission-denied error on a view or RPC.",
       "steps": [
@@ -5245,6 +5281,7 @@ const GUILD = {
       "icon": "🛡️",
       "accent": "blue",
       "category": "Build & Fix",
+      "class": "mutating",
       "tagline": "Audit the database security surface and seal every leak — propose first, apply on sign-off.",
       "when": "Use this for RLS policies, SECURITY DEFINER RPCs, anon/authenticated grants, and advisor-driven security audits.",
       "steps": [
@@ -5337,6 +5374,7 @@ const GUILD = {
       "icon": "🧹",
       "accent": "violet",
       "category": "Hygiene & Release",
+      "class": "mutating",
       "tagline": "The Quartermaster runs the full hygiene sweep across every mode.",
       "when": "Use this for routine hygiene or post-campaign cleanup — i18n, lint, dev-errors, postgres, docs, follow-ups, and consolidating duplicated search/filter/action UI across pages and panels. Middle stage of the release-closeout chain: Guild Log Sync → Hygiene Rotation → Release Train.",
       "steps": [
@@ -5407,6 +5445,7 @@ const GUILD = {
       "icon": "🚂",
       "accent": "cyan",
       "category": "Hygiene & Release",
+      "class": "mutating",
       "tagline": "Merge every branch and PR, bump the version, and push the release.",
       "when": "Use this to close out work — merge all branches/PRs into main, bump the version, and push. Final stage of the release-closeout chain: Guild Log Sync → Hygiene Rotation → Release Train.",
       "steps": [
@@ -5496,6 +5535,7 @@ const GUILD = {
       "icon": "🧮",
       "accent": "gold",
       "category": "Legal",
+      "class": "mutating",
       "tagline": "Build a public legal calculator or corporate tool from the governing law.",
       "when": "Use this to build a public-panel calculator or legal tool (wages, social-insurance, severance, inheritance, customs, land).",
       "steps": [
@@ -5576,6 +5616,7 @@ const GUILD = {
       "icon": "✒️",
       "accent": "gold",
       "category": "Legal",
+      "class": "mutating",
       "tagline": "Draft client correspondence and bilingual legal documents in the firm's register.",
       "when": "Use this to draft client emails, contracts, declarations, or memos — bilingual (AR/FR/EN) where needed.",
       "steps": [
@@ -5654,6 +5695,7 @@ const GUILD = {
       "icon": "📨",
       "accent": "cyan",
       "category": "Comms & Automation",
+      "class": "mutating",
       "tagline": "Sweep email, calendar, and WhatsApp into tasks, events, and replies.",
       "when": "Use this to triage your inbox and messages — turn what matters into tasks and calendar entries, and prep for meetings.",
       "steps": [
@@ -5727,6 +5769,7 @@ const GUILD = {
       "icon": "⏱️",
       "accent": "violet",
       "category": "Comms & Automation",
+      "class": "mutating",
       "tagline": "Define and run an unattended scheduled task on a cron cadence.",
       "when": "Use this for recurring automations that run unattended on a cron — housekeeping (daily/hourly/weekly), the daily Gmail/WhatsApp reports and reply-drafts, per-matter deadline reminders, colleague-progress nudges, the Supabase advisor, auto-improvement/auto-strategizing, and the law scanners. ~23 such tasks live under ~/Documents/Claude/Scheduled/; this is their shape.",
       "steps": [
@@ -5807,6 +5850,7 @@ const GUILD = {
       "icon": "📣",
       "accent": "rose",
       "category": "Research & Intel",
+      "class": "mutating",
       "tagline": "Audit the public site and brand from a marketing-firm perspective.",
       "when": "Use this for website/SEO/brand audits and campaign-readiness — the public panel, messaging, reach, and conversion. Led by the Herald, the guild's marketing member.",
       "steps": [
@@ -5887,6 +5931,7 @@ const GUILD = {
       "icon": "🖼️",
       "accent": "rose",
       "category": "Design",
+      "class": "mutating",
       "tagline": "Forge Fallen Sword art — sigils, portraits, weapon and workflow tiles — via MiniMax, gated by the Designer.",
       "when": "Use this whenever a new visual asset is needed — a member portrait, skill sigil, weapon tile, or workflow sigil.",
       "steps": [
@@ -5975,6 +6020,7 @@ const GUILD = {
       "icon": "⚔️",
       "accent": "blue",
       "category": "Guild Self",
+      "class": "mutating",
       "tagline": "Recruit or re-skin a weapon — art, thinker/doer role, and wiring into every loadout.",
       "when": "Use this when a new AI model joins the arsenal, or an existing weapon needs re-skinning or re-roleing.",
       "steps": [
@@ -6069,6 +6115,7 @@ const GUILD = {
       "icon": "🔮",
       "accent": "violet",
       "category": "Guild Self",
+      "class": "mutating",
       "tagline": "Convene the multi-model panel, converge the takes, and ship a graded MD audit.",
       "when": "Use this when you want a deep judgement that ships a document, not code — repo audits, skill-merge analysis, 'does this achieve its goal'.",
       "steps": [
@@ -6158,6 +6205,7 @@ const GUILD = {
       "icon": "🗺️",
       "accent": "cyan",
       "category": "Guild Self",
+      "class": "mutating",
       "tagline": "Capture a finished run as a reusable star-map workflow.",
       "when": "Use this when a run is worth repeating — distil it into a named workflow, give it a sigil, and register it.",
       "steps": [
@@ -6258,6 +6306,7 @@ const GUILD = {
       "icon": "🤝",
       "accent": "gold",
       "category": "Research & Intel",
+      "class": "read-only",
       "tagline": "Turn email traffic into living relationship intelligence — win and keep clients.",
       "when": "Use this to profile contacts from Gmail, log mistakes to avoid, and recommend retention tasks. Resumable and checkpoint-driven; runs as a multi-agent harvest→profile→strategise pipeline.",
       "steps": [
@@ -6309,14 +6358,6 @@ const GUILD = {
           "produces": "risk/opportunity flags"
         },
         {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Guild Conformance",
-          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
-          "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
-        },
-        {
           "kind": "gate",
           "gate": "report",
           "label": "The Butler reports the contacts profiled, the mistakes logged, and the prioritised retention tasks — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
@@ -6338,6 +6379,7 @@ const GUILD = {
       "icon": "📚",
       "accent": "gold",
       "category": "Legal",
+      "class": "mutating",
       "tagline": "Ingest law PDFs into a clean, verified source-law library — the feed for the codex.",
       "when": "Use this to bring real law PDFs into the library — identify, rename, extract verbatim, verify, and index. Feeds Legal Codex (which then translates and publishes).",
       "steps": [
@@ -6423,6 +6465,7 @@ const GUILD = {
       "icon": "🔭",
       "accent": "cyan",
       "category": "Research & Intel",
+      "class": "read-only",
       "tagline": "Scry the open web for a verified, cited answer to any question.",
       "when": "Use this when a question needs an answer from the live web — general knowledge, current facts, anything outside the repo or the guild. Triggered when you ask a question with 'search the web' in it. The Strategist fans out searches, cross-checks the strongest sources, and returns a cited answer; no code is written.",
       "steps": [
@@ -6460,14 +6503,6 @@ const GUILD = {
           "produces": "cited answer"
         },
         {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Guild Conformance",
-          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
-          "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
-        },
-        {
           "kind": "gate",
           "gate": "report",
           "label": "The Butler reports the answer and its sources — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
@@ -6489,6 +6524,7 @@ const GUILD = {
       "icon": "🔎",
       "accent": "teal",
       "category": "Research & Intel",
+      "class": "read-only",
       "tagline": "Answer a read-only question about the repo or guild — cited to file:line.",
       "when": "Use this for a quick read-only question about the code, the repo, or the guild itself — 'where is X', 'what calls Y', 'how does Z work', 'find all uses of W', 'which file holds …'. The routed member scouts with read-only tools (grep/glob/read), verifies findings against source, and returns a file:line-cited answer. No code is written, nothing is mutated. This is the lightweight lane so trivial lookups have a home under the workflow-gate hard rule, without the weight of a Strategic Audit.",
       "steps": [
@@ -6508,13 +6544,6 @@ const GUILD = {
           "inputs": [
             "inquiry"
           ]
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Read-Only",
-          "act": "Confirms the inquiry mutated nothing — a read-only run cannot drift the repo, so no conformance sweep is needed; the Quartermaster signs it off as clean.",
-          "produces": "read-only sign-off"
         },
         {
           "kind": "gate",
@@ -6545,6 +6574,7 @@ const GUILD = {
       "icon": "🦅",
       "accent": "indigo",
       "category": "Research & Intel",
+      "class": "mutating",
       "tagline": "Spawn an isolated Claude subagent to scout or work, then verify what it brings back.",
       "when": "Use this when the task should run in a fresh, isolated local session — 'start a new local session to investigate X', 'spawn a subagent', 'delegate this to a local Claude'. The routed member scopes the brief, spawns a CLAUDE session-doer via the Agent tool (a spawned session must be Claude — MiniMax doers run via summon.py and have NO tool access, so they cannot BE a session), gives it a disjoint scoped task, then verifies its findings against source before reporting. Pick the cheapest Claude doer the member carries: haiku where held (the-developer, the-translator, the-quartermaster), else sonnet.",
       "steps": [
@@ -6605,6 +6635,7 @@ const GUILD = {
       "icon": "💬",
       "accent": "slate",
       "category": "Comms & Automation",
+      "class": "read-only",
       "tagline": "Plain talk — a greeting, an ack, or a meta-question with no specialist lane.",
       "when": "The catch-all lane for any turn that fits no other workflow: greetings, acknowledgements, thanks, clarifications, and meta-questions about the guild itself. It exists so EVERY turn — even one that fires no tools and writes nothing — can declare a workflow under the turn-end banner gate. The Butler answers directly in plain English; nothing is mutated. If a turn turns out to need real work, route it to the proper specialist lane instead of staying here.",
       "steps": [
@@ -6624,13 +6655,6 @@ const GUILD = {
           "inputs": [
             "utterance"
           ]
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm No-Op",
-          "act": "Confirms the turn mutated nothing — a plain reply cannot drift the repo, so no conformance sweep is needed; signs it off as clean.",
-          "produces": "no-op sign-off"
         },
         {
           "kind": "gate",
@@ -6653,6 +6677,68 @@ const GUILD = {
         "explain"
       ],
       "artPng": true
+    }
+  ],
+  "hooks": [
+    {
+      "event": "UserPromptSubmit",
+      "label": "You Send a Message",
+      "glyph": "✎",
+      "fires": "The instant you send a prompt, before the guild reads it.",
+      "scripts": [
+        {
+          "name": "guild-routing-gate.sh",
+          "plain": "Injects the Star Alliance routing rules into every message you send, so the Butler picks the right member and the right workflow before anyone acts."
+        }
+      ]
+    },
+    {
+      "event": "PreToolUse",
+      "label": "Before Any Tool Runs",
+      "glyph": "⛓",
+      "fires": "Right before the guild fires any tool — a file edit, a command, a skill.",
+      "scripts": [
+        {
+          "name": "workflow-gate.py",
+          "plain": "Blocks every tool until the turn has declared a star-map workflow banner. No banner, no action — this is the gate you keep seeing."
+        },
+        {
+          "name": "high-alert.py",
+          "plain": "When a skill, workflow, or agent is invoked, fires the alert banners that announce it (the ⚡ and 🗺 klaxons)."
+        },
+        {
+          "name": "okf-gate.py",
+          "plain": "Before any file write or edit, blocks knowledge documents that would be saved without proper Open-Knowledge-Format frontmatter (a `type:` field), so docs never drift out of format."
+        }
+      ]
+    },
+    {
+      "event": "PostToolUse",
+      "label": "After an Edit Lands",
+      "glyph": "⟳",
+      "fires": "Right after a file is written or edited.",
+      "scripts": [
+        {
+          "name": "member-table-sync.py",
+          "plain": "After editing files, regenerates each member's 'Your Weapons' table from its loadout, so the table can never drift from the truth."
+        },
+        {
+          "name": "autocommit.sh",
+          "plain": "Auto-commits the edited file to git immediately, so nothing is ever lost and you are never asked 'Commit?' (commit only — never pushes)."
+        }
+      ]
+    },
+    {
+      "event": "Stop",
+      "label": "The Turn Ends",
+      "glyph": "✦",
+      "fires": "When the guild finishes its reply and the turn closes.",
+      "scripts": [
+        {
+          "name": "workflow-banner-enforcer.py",
+          "plain": "Checks that the finished turn declared a workflow and the right member reported for duty — even on plain-talk turns that fire no tools. Blocks the turn-end if either is missing."
+        }
+      ]
     }
   ],
   "log": {
