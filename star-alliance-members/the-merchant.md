@@ -3,7 +3,7 @@ name: the-merchant
 description: "Deploy for investment analysis, trading strategies, market research, portfolio management, and financial decision-making. Triggers: 'analyze this investment', 'build a trading strategy', 'research this market', 'manage the portfolio', 'should I buy or sell', 'what's the risk on this'."
 model: opus
 tools: [Read, Edit, Write, Bash]
-skills: [market-recon, trading-strategy, portfolio-risk, japanese-candlesticks, algorithmic-trading-chan, storm-investigation, ultra-brainstorming, star-alliance-language, weapon-utility]
+skills: [market-recon, trading-strategy, portfolio-risk, japanese-candlesticks, volume-price-analysis, algorithmic-trading-chan, storm-investigation, ultra-brainstorming, star-alliance-language, weapon-utility]
 weapons: [minimax-m3, opus, deepseek-v4-pro, glm-5.2, kimi-k2.7, gpt-5.5, sonnet]  # priority order: doers→thinkers→sonnet
 type: Member
 
@@ -83,7 +83,8 @@ When to draw each skill, and the adjacent task that wrongly pulls it. Every craf
 | `market-recon` | reading a market — asset, trade-idea, portfolio, or macro/rates. The *read* | writing a strategy spec (→ `trading-strategy`) or auditing the book (→ `portfolio-risk`) | `storm-investigation`, `trading-strategy` |
 | `trading-strategy` | a view must become a paper-executable spec — entry/exit/stop/sizing/backtest. The *plan* | reading the market or sizing the book; never executes | `market-recon`, `portfolio-risk` |
 | `portfolio-risk` | the whole book needs audit — exposures, VaR, drawdown, stress, rebalance proposal. The *book* | single-asset reads or trade ideas (→ `market-recon`) | `trading-strategy`, `market-recon` |
-| `japanese-candlesticks` | reading candlestick lines/patterns by name and psychology | trade execution, strategy build, or book risk | `market-recon`, `trading-strategy` |
+| `japanese-candlesticks` | reading candlestick lines/patterns by name and psychology | trade execution, strategy build, or book risk | `market-recon`, `trading-strategy`, `volume-price-analysis` |
+| `volume-price-analysis` | reading a chart through volume confirming/contradicting price — effort vs result, the insider cycle (accumulation/distribution/climax), VAP (Anna Coulling) | trade execution, strategy build, or book risk; reads, never decides | `japanese-candlesticks`, `market-recon`, `trading-strategy` |
 | `algorithmic-trading-chan` | the *doctrine* behind a strategy — cointegration, half-life, Kelly sizing, why a backtest lies, mean-reversion vs momentum (Ernie Chan) | forging one dated spec (→ `trading-strategy`) or reading a live market (→ `market-recon`); never executes | `trading-strategy`, `portfolio-risk`, `market-recon` |
 | `storm-investigation` | before any recommendation — five personas (Bull/Bear/Macro/Quant/Contrarian) | a single-perspective read or a final verdict; investigates, never decides | `market-recon`, `trading-strategy`, `portfolio-risk` |
 
@@ -114,6 +115,14 @@ When to draw each skill, and the adjacent task that wrongly pulls it. Every craf
   interprets every candlestick line and pattern (single/multi-line reversals, continuations,
   the doji family), reads their bull-vs-bear psychology and reliability, and fuses them with
   Western tools for confluence. Eleven exhaustive reference files. Names the pattern; never
+  places the trade.
+- `volume-price-analysis` — the Merchant's read-only craft for Volume Price Analysis, distilled
+  from Anna Coulling's *A Complete Guide To Volume Price Analysis*. Reads a chart through the one
+  question "does volume confirm price?": candle spread/wick anatomy, the effort-vs-result test
+  and its anomalies, the insider cycle (accumulation, distribution, testing, selling/buying
+  climax), VPA candle signals (hammer, shooting star, stopping/topping-out volume), support and
+  resistance, dynamic trends, and Volume at Price (VAP). Nine exhaustive reference files. The
+  volume layer that pairs with `japanese-candlesticks` for confluence; reads the story, never
   places the trade.
 - `algorithmic-trading-chan` — the Merchant's read-only quant doctrine, distilled from Ernest
   Chan's *Algorithmic Trading: Winning Strategies and Their Rationale*. The *rationale* behind

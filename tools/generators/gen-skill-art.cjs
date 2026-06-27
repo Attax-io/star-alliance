@@ -22,6 +22,10 @@ const STYLE = "fantasy RPG skill icon, Fallen Sword MMORPG style, dark parchment
 
 const SKILLS = [
   {
+    id: "volume-price-analysis",
+    prompt: `${STYLE}. A towering set of glowing golden volume bars rising beneath a row of carved red-and-green candlestick bars on dark parchment, a great brass balance-scale at center weighing "effort" (a heavy volume bar) against "result" (a price candle) with one pan tipping to reveal a hidden cloaked insider figure pulling strings below the chart, a horizontal volume-at-price histogram glowing along the right edge — the art of reading what the smart money cannot hide`,
+  },
+  {
     id: "algorithmic-trading-chan",
     prompt: `${STYLE}. An ancient quant's grimoire open on dark parchment, a glowing golden pendulum swinging back toward a marked equilibrium line on the left page (mean reversion) while a soaring golden arrow trends upward across the right page (momentum), a row of carved candlestick bars etched in gold along the bottom, arcane equations and a balanced brass scale weighing risk in the margin — the master trader's tome of why strategies win`,
   },

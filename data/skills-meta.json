@@ -159,6 +159,14 @@
     "triggers": "'log this', 'guild log this', 'did you log it?', '/guild-log', or any dashboard/UI/folder change git can't see on its own",
     "modes": ""
   },
+  "guild-sync": {
+    "icon": "🔄",
+    "blurb": "Prove the device still matches the repo, then reconcile drift",
+    "level": "Advanced",
+    "tabler": "ti-refresh",
+    "triggers": "'sync the repo with claude', 'is the device up to date', 'what else needs syncing', 'device parity', 'sync rotation', 'check for drift'",
+    "modes": ""
+  },
   "harness-efficiency": {
     "icon": "📊",
     "blurb": "Prove & tune what the harness saves — net tokens, LITE/FULL tier split, offload health",
@@ -431,6 +439,14 @@
     "triggers": ", RPC functions, RLS policies, edge functions, cron jobs), frontend code (components, pages, hooks, mutations, stores), schema changes, or bug fixes — even if the user doesn't explicitly ask for a vault log. Also use when the user says phrases like \"vault log ",
     "modes": ""
   },
+  "volume-price-analysis": {
+    "icon": "📊",
+    "blurb": "Anna Coulling's VPA: read volume confirming/contradicting price, the insider cycle, VAP",
+    "level": "Advanced",
+    "tabler": "ti-chart-histogram",
+    "triggers": "'read this chart with volume', 'is this accumulation or distribution', 'why is volume contradicting price', 'what is a selling climax', 'explain volume price analysis'",
+    "modes": "effort vs result; insider cycle (accumulation/distribution/climax); VPA candle signals; volume at price"
+  },
   "weapon-utility": {
     "icon": "🗡️",
     "blurb": "Each member's rule for drawing a weapon: thinkers plan & review, doers execute",
@@ -445,14 +461,6 @@
     "level": "Advanced",
     "tabler": "ti-map-2",
     "triggers": "'save this as a workflow', 'add this to the star map', 'register a workflow', 'crystallize this formation'",
-    "modes": ""
-  },
-  "guild-sync": {
-    "icon": "🔄",
-    "blurb": "Prove the device still matches the repo, then reconcile drift",
-    "level": "Advanced",
-    "tabler": "ti-refresh",
-    "triggers": "'sync the repo with claude', 'is the device up to date', 'what else needs syncing', 'device parity', 'sync rotation', 'check for drift'",
     "modes": ""
   }
 }
