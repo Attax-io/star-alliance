@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 66
     },
-    "generated": "2026-06-27T19:43:46Z",
+    "generated": "2026-06-27T19:45:07Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -315,6 +315,7 @@ const GUILD = {
       "skills": [
         "transactions-domain-model",
         "legal-rule-modeling",
+        "invariant-inference",
         "db-rename-sweep",
         "schema-evolution",
         "spec-driven-development",
@@ -332,10 +333,10 @@ const GUILD = {
         "nextTier": null,
         "rampEarned": "purple",
         "rampConferred": "purple",
-        "ad": 27,
+        "ad": 30,
         "signals": {
-          "ad": 27,
-          "nSkills": 11,
+          "ad": 30,
+          "nSkills": 12,
           "nUnique": 4,
           "nMaster": 2,
           "peak": 4,
@@ -353,7 +354,7 @@ const GUILD = {
             {
               "label": "craft skills",
               "ok": true,
-              "have": 11,
+              "have": 12,
               "need": 1
             },
             {
@@ -365,13 +366,13 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 27,
+              "have": 30,
               "need": 8
             },
             {
               "label": "craft skills",
               "ok": true,
-              "have": 11,
+              "have": 12,
               "need": 2
             },
             {
@@ -389,7 +390,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 27,
+              "have": 30,
               "need": 12
             },
             {
@@ -413,7 +414,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 27,
+              "have": 30,
               "need": 18
             },
             {
@@ -437,7 +438,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 27,
+              "have": 30,
               "need": 24
             },
             {
@@ -1165,6 +1166,7 @@ const GUILD = {
       "skills": [
         "codex-law-translate",
         "legal-drafting",
+        "invariant-inference",
         "law-harvest",
         "article-creator",
         "obsidian-markdown",
@@ -1172,15 +1174,15 @@ const GUILD = {
         "weapon-utility"
       ],
       "levelInfo": {
-        "earned": "Intermediate",
+        "earned": "Advanced",
         "qualified": true,
-        "nextTier": "Advanced",
-        "rampEarned": "blue",
+        "nextTier": "Elite",
+        "rampEarned": "teal",
         "rampConferred": "blue",
-        "ad": 10,
+        "ad": 13,
         "signals": {
-          "ad": 10,
-          "nSkills": 6,
+          "ad": 13,
+          "nSkills": 7,
           "nUnique": 2,
           "nMaster": 0,
           "peak": 3,
@@ -1198,7 +1200,7 @@ const GUILD = {
             {
               "label": "craft skills",
               "ok": true,
-              "have": 6,
+              "have": 7,
               "need": 1
             },
             {
@@ -1210,13 +1212,13 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 10,
+              "have": 13,
               "need": 8
             },
             {
               "label": "craft skills",
               "ok": true,
-              "have": 6,
+              "have": 7,
               "need": 2
             },
             {
@@ -1233,8 +1235,8 @@ const GUILD = {
           "Advanced": [
             {
               "label": "Arsenal Depth",
-              "ok": false,
-              "have": 10,
+              "ok": true,
+              "have": 13,
               "need": 12
             },
             {
@@ -1258,7 +1260,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": false,
-              "have": 10,
+              "have": 13,
               "need": 18
             },
             {
@@ -1282,7 +1284,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": false,
-              "have": 10,
+              "have": 13,
               "need": 24
             },
             {
@@ -1311,27 +1313,27 @@ const GUILD = {
           {
             "label": "Arsenal Depth",
             "ok": false,
-            "have": 10,
-            "need": 12
+            "have": 13,
+            "need": 18
           },
           {
-            "label": "an Advanced+ skill",
-            "ok": true
+            "label": "Master-level skills",
+            "ok": false,
+            "have": 0,
+            "need": 1
           },
           {
             "label": "unique skills",
-            "ok": true,
+            "ok": false,
             "have": 2,
-            "need": 2
+            "need": 3
           },
           {
-            "label": "weapons",
-            "ok": true,
-            "have": 8,
-            "need": 6
+            "label": "conformity-clean",
+            "ok": true
           }
         ],
-        "dueForPromotion": false,
+        "dueForPromotion": true,
         "overConferred": false
       }
     },
@@ -3205,13 +3207,13 @@ const GUILD = {
       "id": "invariant-inference",
       "name": "invariant-inference",
       "version": "1.0.0",
-      "icon": "📦",
+      "icon": "🧬",
       "art": "",
       "artPng": false,
-      "blurb": "The Architect's craft for data-driven invariant and rule synthesis, distilled from LoopInv…",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "",
+      "blurb": "Infer & prove a latent rule from good/bad examples (CEGIS), distilled from LoopInvGen",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-binary-tree",
       "src": "own",
       "desc": "The Architect's craft for data-driven invariant and rule synthesis, distilled from LoopInvGen (SyGuS-Comp Inv-track winner). Learn a logical rule that holds on 'good' cases and fails on 'bad' ones, prove it against an oracle, and refine it on counterexamples — the CEGIS skeleton: sample → learn (synthesizing new predicates on demand, no fixed feature set) → check → refine → stop only when the oracle cannot break it. Carries the full LoopInvGen method (Process / Record / Infer, PIE = BFL + HEnum, the strengthening loop, the three sufficiency conditions) AND the transfer doctrine for reusing it beyond loops: deriving data-model / state-machine invariants, CHECK constraints, RLS predicates, regression oracles for migrations, and (shared with the-translator) pinning down fuzzy statute boundaries for legal-rule-modeling. Use when you must infer a rule over a large/unbounded domain you can sample or check but not enumerate. Triggers: 'infer the invariant', 'what must always hold here', 'learn the rule that separates these cases', 'CEGIS this', 'derive a CHECK/RLS constraint from examples', 'pin down this ambiguous boundary'. Differentiate from legal-rule-modeling (models a KNOWN statute's arithmetic; this infers an UNKNOWN rule from examples) and schema-evolution (changes the schema; this discovers what must stay true across it). Method-level reasoning, not a tool install.",
       "intro": "Some rules are written down; you model those with legal-rule-modeling. Other rules are latent — true of a working system but never stated, or hiding at a boundary the statute left fuzzy. This craft recovers them. It is distilled from LoopInvGen, the data-driven loop-invariant generator that won the ",
@@ -3223,7 +3225,7 @@ const GUILD = {
         "Honest limits",
         "Provenance"
       ],
-      "triggers": "",
+      "triggers": "'infer the invariant', 'what must always hold here', 'learn the rule that separates these cases', 'CEGIS this', 'derive a CHECK/RLS constraint from examples', 'pin down this ambiguous boundary'",
       "modes": "",
       "disabled": false,
       "refs": [
@@ -3236,7 +3238,10 @@ const GUILD = {
         "words": 672
       },
       "global": false,
-      "members": []
+      "members": [
+        "the-architect",
+        "the-translator"
+      ]
     },
     {
       "id": "japanese-candlesticks",
@@ -3477,7 +3482,7 @@ const GUILD = {
     {
       "id": "motion-design",
       "name": "motion-design",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "icon": "🌀",
       "art": "",
       "artPng": true,
@@ -3486,17 +3491,16 @@ const GUILD = {
       "ramp": "teal",
       "tabler": "ti-wave-sine",
       "src": "own",
-      "desc": "Specialist motion engine for UI — picks the exact easing curve, duration token, transform-origin, and spring-vs-bezier call for any animation, by interaction purpose and frequency. The deep counterpart to design-taste's broad `motion` mode: design-taste DECIDES whether/where a surface gets motion; motion-design SPECIFIES the precise curve and timing. Every animation needs a job — if it has no job, it recommends none. Carries a decision-tree (enter/exit · morph · time-based · hover · keyboard · gesture) and a full easing+duration token set (ease-out/in-out families, --dur-1..5), plus performance (compositor-only props, will-change, blur budget) and prefers-reduced-motion accessibility. Triggers: 'animate this', 'add a transition', 'motion for X', 'clean up this animation', 'this feels too fast/slow', 'make it feel more alive/natural', questions about easing, timing, micro-interactions, spring vs bezier, bounce. NOT for whether a design should have motion at all or overall visual style — that is design-taste.",
-      "intro": "Design intentional, purposeful motion for product UI. This skill evaluates an animation's need and recommends specific easing curves, durations, transform-origins, and implementation approaches based on interaction frequency and purpose.",
+      "desc": "Two-mode motion & interaction design specialist for product UI. CREATE — build components with purposeful motion (React, Framer Motion, CSS, HTML) using a motion cookbook, a creation-gotchas self-check, and the guild easing+duration token set. AUDIT — review existing motion, flag AI-slop patterns (pulse-spam, hover-scale-on-everything, stagger-spam, blur-everywhere), run a motion-gap analysis, and emit a branded HTML report with looping demos (pass --terminal for markdown). Weights three designer lenses — Emil Kowalski (restraint/speed), Jakub Krehel (production polish), Jhey Tompkins (playful) — by project context. Every animation needs a job; no job, no motion. Accessibility (prefers-reduced-motion) is mandatory. Triggers: 'animate this', 'add a transition', 'build an animated X', 'make it feel alive', 'audit/review the motion', 'is this animation good', easing/timing/spring-vs-bezier questions. The deep specialist beneath design-taste's motion mode: design-taste DECIDES whether a surface moves; motion-design SPECIFIES and BUILDS the motion. NOT for overall visual style — that is design-taste.",
+      "intro": "Senior design-engineer specialism for motion and interaction design on product UI. This skill runs in two modes:",
       "sections": [
-        "Process",
-        "Output Format",
-        "Animation Recommendation",
-        "Example",
-        "Animation Recommendation",
-        "Tips for Best Results",
-        "Resources",
+        "STEP 0: Detect Mode (DO THIS FIRST)",
+        "The Three Designers",
+        "Core Principles (Both Modes)",
+        "Reference Index",
+        "Workflow Index",
         "Gotchas",
+        "Credits",
         "Versioning",
         "Changelog"
       ],
@@ -3521,8 +3525,8 @@ const GUILD = {
       ],
       "scripts": [],
       "stats": {
-        "lines": 132,
-        "words": 758
+        "lines": 179,
+        "words": 1307
       },
       "global": true,
       "members": [
@@ -4067,7 +4071,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "📜",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Build from an executable spec — spec→plan→tasks→implement, each phase gated",
       "level": "Advanced",
       "ramp": "teal",

@@ -23,13 +23,46 @@ Precondition: the SoT exists (run `establish` first). Auditing without a SoT mea
 
 The last class is checked first — if the two SoT artifacts disagree, every downstream audit is unreliable.
 
+**NOT a divergence:** an *annotated intentional lock* (a hardcode kept on purpose — dark-mode contrast, a
+fixed brand mark, a no-var context). These are conformant-by-exception and are subtracted in Step 0 below,
+never counted as drift. If a project has a recurring lock reason, it belongs in `DESIGN.md` as a sanctioned
+exception so the exception itself is part of the single source of truth.
+
+## Step 0 — subtract the intentional exceptions FIRST (do not skip)
+
+**A raw value is not automatically drift.** Before counting anything, partition the matches and remove the
+sanctioned ones — otherwise the audit over-reports and the reconcile sweep becomes dangerous (it would
+"fix" things that are correct on purpose). This is the single most important guard in the audit; it is the
+lesson that a naive hex→token sweep regressed dark-mode contrast on a real app.
+
+Buckets to **exclude before ranking** (each is conformant-by-exception, not a divergence):
+
+- **Intentional locks (annotated).** A hardcode on a line carrying a lock comment — e.g. `theme-flat`,
+  `// design-unity-ignore`, an eslint/stylelint suppression, or any project-specific marker. These exist
+  precisely because the token is *wrong* in that context: the classic case is a colour that must stay fixed
+  while the token **flips in dark mode** (navy text on a gold button must read navy in both modes for AA).
+  Tokenizing it BREAKS the design. Grep for the project's lock annotation and subtract those lines.
+- **Token *definitions*.** The files that DEFINE the SoT — the token modules (`tokens/*.ts`), the CSS
+  `:root`, a `theme.ts`, a `C`/`PALETTE` palette object, swatch/preview demos that display the literal on
+  purpose. The literal there IS canonical; it cannot reference itself.
+- **Test fixtures.** `__tests__/`, `*.test.*`, `*.spec.*` — tests assert literal values; converting them
+  breaks the tests.
+- **Contexts where vars don't resolve.** PDF / email / canvas / image generation (`generate-*`, mail
+  templates). CSS custom properties don't exist there; the literal is required.
+
+Discover the project's lock convention before you start (grep a sample of hardcodes and READ the surrounding
+comments — the annotation is usually right there). Report the split explicitly: total matches, minus locks,
+minus definitions, minus tests, minus no-var contexts, equals **genuine-drift candidates**. Never headline the
+raw match count as "drift to fix".
+
 ## The scan recipe (hand the bulk to the doer)
 
 The thinker frames the patterns and makes the keep/kill calls; `minimax-m3` (or `rg`) does the grepping.
+Run this only on what survives Step 0.
 
 1. **Colours.** Grep every `#hex`, `rgb(/rgba(`, `hsl(`, `oklch(` in component/style files. Any literal that
    equals (or is a near-cluster of) a token value is a **hardcoded** divergence. Any literal with no token at
-   all is either an orphan (promote to a token) or genuine drift.
+   all is either an orphan (promote to a token) or genuine drift. (Minus the Step-0 exclusions.)
 2. **Spacing / sizing.** Grep margin/padding/gap/width/height literals. Flag any value not on the spacing scale.
    Watch for unit-mixing (`px` where the system is `rem`).
 3. **Type.** Grep `font-size` / `font-weight` / `line-height`. Flag anything off the type scale or any ad-hoc

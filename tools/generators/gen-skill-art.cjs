@@ -22,6 +22,10 @@ const STYLE = "fantasy RPG skill icon, Fallen Sword MMORPG style, dark parchment
 
 const SKILLS = [
   {
+    id: "spec-driven-development",
+    prompt: `${STYLE}. A master architect's grand glowing blueprint-scroll unfurled on dark parchment, the scroll itself transforming left-to-right into a built stone fortress as the eye travels along it (a sealed spec-scroll → a drafting compass and plan → a checklist of stacked task-tablets → a finished citadel tower), four ornate golden gate-arches spaced along the path each sealed with a runic checkmark seal that the work must pass through, a quill and a brass set-square crossed at the base over a foundation stone — the discipline of building from the spec, never from the gut`,
+  },
+  {
     id: "python-master",
     prompt: `${STYLE}. A great emerald-and-gold serpent (python) coiled protectively around a master smith's anvil on dark parchment, its scales etched with glowing runic code-glyphs, a forge-hammer and an open blueprint-scroll of interlocking modular gears resting on the anvil, fourteen tiny golden craft-sigils orbiting the coil like a constellation (a flask for tests, a quill for docs, a shield for security, a gear for tooling), a sealed package crate stamped with gold wax at the base — the master craft of forging flawless Python`,
   },

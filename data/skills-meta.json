@@ -1,474 +1,482 @@
 {
-  "algorithmic-trading-chan": {
-    "icon": "📈",
-    "blurb": "Ernie Chan's quant doctrine: mean reversion, momentum, backtesting pitfalls, Kelly risk",
-    "level": "Advanced",
-    "tabler": "ti-chart-candle",
-    "triggers": "'explain cointegration', 'how do I size with Kelly', 'why did this backtest lie', 'mean reversion vs momentum', 'teach me Chan's strategies'",
-    "modes": "backtesting integrity; mean reversion; momentum; risk management"
-  },
-  "arsenal-forge": {
-    "icon": "⚔️",
-    "blurb": "Recruit or re-role a weapon — identity, role, wire to loadouts",
-    "level": "Intermediate",
-    "tabler": "ti-swords",
-    "triggers": "'add a weapon', 'recruit a model', 're-skin this weapon', 'change a weapon role', 'arsenal forge'",
-    "modes": ""
-  },
-  "article-creator": {
-    "icon": "📝",
-    "blurb": "End-to-end Insights article creation pushed to production DB",
-    "level": "Foundational",
-    "tabler": "ti-article",
-    "triggers": "on \"new insights post\", \"add it to /insights\", \"make this an article\", \"push to the articles table\", or any request that implies writing rows into articles/articletranslations. This skill exists because the insert has six landmines discovered in production: th",
-    "modes": ""
-  },
-  "bug-fix-workflow": {
-    "icon": "🐛",
-    "blurb": "End-to-end bug triage, reproduction, and root-cause fixing",
-    "level": "Intermediate",
-    "tabler": "ti-bug",
-    "triggers": "gotcha, the INSERT/push pattern (identity PK, trigger-filled names, reporter-uuid lookup, status=1, no notification fires), the \"doesn't work\" reproduction technique, and the rule for WHEN a bug may be marked Fixed (DB fixes now, frontend fixes only after depl",
-    "modes": ""
-  },
-  "claude-code-hooks": {
-    "icon": "🪝",
-    "blurb": "Author Claude Code hooks the right way — fail-open gates and banners",
-    "level": "Advanced",
-    "tabler": "ti-webhook",
-    "triggers": "'write a hook', 'add a PreToolUse hook', 'gate this tool', 'block this command', 'fire a banner on', 'why is my hook blocking', 'fail-open hook', 'test my hook', 'claude code hooks'",
-    "modes": ""
-  },
-  "cleanup": {
-    "icon": "🧹",
-    "blurb": "Multi-mode hygiene: i18n translations, dedup, hardcoded text",
-    "level": "Intermediate",
-    "tabler": "ti-eraser",
-    "triggers": "\\\"run cleanup\\\", \\\"/cleanup\\\", \\\"i18n cleanup\\\", \\\"translate untranslated\\\", \\\"find hardcoded text\\\", \\\"find leaking keys\\\", \\\"raw key paths\\\", \\\"fix dev errors\\\", \\\"check postgres\\\", \\\"run lint\\\", \\\"consolidate code\\\", \\\"check the bundle size\\\", \\\"doc cleanup",
-    "modes": "language (i18n translations); consolidate (i18n key dedup); hardcoded (extract raw UI text to next-intl keys); leaks (i18n keys used in code but missing from JSON); errors (dev log sweep); postgres (Supabase advisors + pg health); lint (ESLint --fix + tsc); consolidate-code (duplicate code detection"
-  },
-  "codex-law-translate": {
-    "icon": "⚖️",
-    "blurb": "Legal codex pipeline: load law, translate to five locales",
-    "level": "Intermediate",
-    "tabler": "ti-gavel",
-    "triggers": "",
-    "modes": ""
-  },
-  "comms-triage": {
-    "icon": "📨",
-    "blurb": "Sweep email, calendar, and WhatsApp into tasks, events, and replies",
-    "level": "Intermediate",
-    "tabler": "ti-inbox",
-    "triggers": "'triage my inbox', 'what needs me today', 'turn my email into tasks', 'sweep my WhatsApp', 'comms triage'",
-    "modes": ""
-  },
-  "conquering-campaign": {
-    "icon": "🚀",
-    "blurb": "Multi-wave campaign orchestrator: audit, build, run mega-work",
-    "level": "Master",
-    "tabler": "ti-flag",
-    "triggers": "ONLY above that bar: 'audit my app', 'build this feature', 'ship this refactor', 'phase this migration', 'proceed in application', 'extend [campaign] to X', 'roll out [pattern] to [surface]', 'apply [v1.X] to [Z]'. Planning asks every question upfront then exe",
-    "modes": "AUDIT (reconcile docs with code/DB), BUILD (multi-phase features/refactors/migrations touching 3+ surfaces), EXTENSION (extends a recent predecessor, reusing its prescan). Gate G0 runs FIRST: work that doesn't clear the bar (3+ INDEPENDENT logical changes — one vertical slice = ONE — OR genuinely mu"
-  },
-  "dashboard-parity": {
-    "icon": "🪞",
-    "blurb": "Prove every change actually renders on the dashboard",
-    "level": "Advanced",
-    "tabler": "ti-device-desktop-check",
-    "triggers": "'is it on the dashboard', 'did it reflect on index.html', 'verify the dashboard', 'dashboard parity', 'did the build land', 'did my change show up'",
-    "modes": ""
-  },
-  "db-rename-sweep": {
-    "icon": "🏷️",
-    "blurb": "Scans database schema for safe table and column renames",
-    "level": "Foundational",
-    "tabler": "ti-database",
-    "triggers": "on \"rename\", \"rename sweep\", \"rename checklist\", \"naming cleanup\", \"change table name\", \"rename this view\", \"prefix the tables\", \"sweep the old name\", \"unify the naming\", or any request that implies a SQL ALTER TABLE ... RENAME / RENAME COLUMN. The skill exist",
-    "modes": ""
-  },
-  "design-language": {
-    "icon": "🗣️",
-    "blurb": "The guild's multi-language voice engine — narrative vocabulary & tone, not visual",
-    "level": "Master",
-    "tabler": "ti-language",
-    "triggers": "'use the X voice', 'make it sound like Fallen Sword', 'guild voice', 'Lex Council tone', 'reskin this copy', 'Erildath'",
-    "modes": "fallen-sword; star-alliance; lex-council"
-  },
-  "design-taste": {
-    "icon": "🎨",
-    "blurb": "The Designer's seven-mode premium taste engine, anti-AI-slop",
-    "level": "Master",
-    "tabler": "ti-brush",
-    "triggers": "'design the UI', 'make it premium', 'pick a style', 'minimalist', 'brutalist', 'add motion', 'write a DESIGN.md', 'redesign this', 'anti-slop'",
-    "modes": "engineer; agency; minimal; brutalist; motion; encode; redesign"
-  },
-  "design-unity": {
-    "icon": "🧬",
-    "blurb": "UI conformity engine — one source of truth, every surface in one design language",
-    "level": "Advanced",
-    "tabler": "ti-color-swatch",
-    "triggers": "'make the UI consistent', 'one source of truth for the UI', 'enforce the design system', 'kill the design drift', 'unify the look', 'audit UI conformity', 'design tokens'",
-    "modes": "establish; audit; reconcile"
-  },
-  "dev-server": {
-    "icon": "🚀",
-    "blurb": "Launches, restarts, and manages your local development server",
-    "level": "Foundational",
-    "tabler": "ti-server",
-    "triggers": "",
-    "modes": ""
-  },
-  "full-output-enforcement": {
-    "icon": "🛡️",
-    "blurb": "Forces complete output with no truncation or placeholders",
-    "level": "Foundational",
-    "tabler": "ti-arrows-maximize",
-    "triggers": "",
-    "modes": ""
-  },
-  "graphify": {
-    "icon": "🕸️",
-    "blurb": "Transforms any input into a navigable knowledge graph",
-    "level": "Master",
-    "tabler": "ti-binary-tree",
-    "triggers": "",
-    "modes": ""
-  },
-  "growth-marketing": {
-    "icon": "📣",
-    "blurb": "Four-mode marketing engine: content/SEO, brand, email, social/paid",
-    "level": "Master",
-    "tabler": "ti-speakerphone",
-    "triggers": "'plan our marketing', 'we need leads', 'fix our positioning', 'content plan', 'SEO plan', 'build an email sequence', 'social plan', 'ad plan', 'go to market', 'growth marketing'. The Herald's craft; composes with article-creator, imagegen-frontend (brand mode), storm-investigation.",
-    "modes": "content-seo (ICP + pain keywords, topic clusters, local SEO, on-page, publish via article-creator); brand-positioning (positioning statement, ICP, value prop, voice, proof bank, imagegen-frontend brand-mode handoff); email-nurture (lead magnets, capture, 4-6 email sequence, re-engagement, bar-compliance); social-paid (channel mix, organic cadence, paid-ads starter, retargeting, tracking)"
-  },
-  "guild-conformity": {
-    "icon": "🔎",
-    "blurb": "Prove the guild repo agrees with itself, then reconcile",
-    "level": "Advanced",
-    "tabler": "ti-checkup-list",
-    "triggers": "'confirm guild conformance', 'run the conformity check', 'reconcile the guild data', 'conformity sweep', 'is everything consistent'",
-    "modes": ""
-  },
-  "guild-log": {
-    "icon": "📓",
-    "blurb": "Logs non-git-visible guild changes via the two-tier pipeline",
-    "level": "Foundational",
-    "tabler": "ti-history",
-    "triggers": "'log this', 'guild log this', 'did you log it?', '/guild-log', or any dashboard/UI/folder change git can't see on its own",
-    "modes": ""
-  },
-  "guild-sync": {
-    "icon": "🔄",
-    "blurb": "Prove the device still matches the repo, then reconcile drift",
-    "level": "Advanced",
-    "tabler": "ti-refresh",
-    "triggers": "'sync the repo with claude', 'is the device up to date', 'what else needs syncing', 'device parity', 'sync rotation', 'check for drift'",
-    "modes": ""
-  },
-  "harness-efficiency": {
-    "icon": "📊",
-    "blurb": "Prove & tune what the harness saves — net tokens, LITE/FULL tier split, offload health",
-    "level": "Advanced",
-    "tabler": "ti-gauge",
-    "triggers": "'efficiency report', 'harness efficiency', 'how much are we saving', 'is the gate working', 'tier split', 'check the offload', 'net tokens saved', 'tune the stakes list', or before/after a routing-gate hook change",
-    "modes": "Report — join usage-log.jsonl + turn-cost.jsonl via efficiency_report.py (net-saved + per-tier breakdown); Watch — hunt the one hard failure (a high-stakes turn that took LITE); Tune — edit the data/harness.json stakes/size policy, then re-run the gate regression matrix"
-  },
-  "high-alert": {
-    "icon": "🚨",
-    "blurb": "Session klaxon: banners on workflow start, skill activation, member duty",
-    "level": "Foundational",
-    "tabler": "ti-alert-triangle",
-    "triggers": "always on, no invocation — fires automatically on workflow start, Skill tool use (hook-enforced), and member formation at routing STEP 1",
-    "modes": ""
-  },
-  "image-to-code": {
-    "icon": "🖼️",
-    "blurb": "Elite pipeline that designs the image, then engineers matching code",
-    "level": "Advanced",
-    "tabler": "ti-code",
-    "triggers": "",
-    "modes": ""
-  },
-  "imagegen-frontend": {
-    "icon": "🖼️",
-    "blurb": "Premium image-generation engine — web sections, mobile app screens, and brand identity, images only",
-    "level": "Master",
-    "tabler": "ti-photo",
-    "triggers": "'generate website design references', 'mock the landing page', 'design the app screens', 'create a brand kit', 'design the logo / identity', 'imagegen'",
-    "modes": "web; mobile; brand"
-  },
-  "impeccable": {
-    "icon": "✨",
-    "blurb": "Polish, critique, distill, and harden any design with Swiss precision",
-    "level": "Intermediate",
-    "tabler": "ti-award",
-    "triggers": "",
-    "modes": ""
-  },
-  "japanese-candlesticks": {
-    "icon": "🕯️",
-    "blurb": "Read & interpret Japanese candlestick charts (Nison) — every reversal, continuation & doji pattern",
-    "level": "Advanced",
-    "tabler": "ti-chart-candle-filled",
-    "triggers": "'what candlestick pattern is this', 'is this a hammer or a doji', 'read this candlestick chart', 'explain bullish engulfing', 'morning star meaning', 'teach me Japanese candlesticks'",
-    "modes": "single-line reversals; multi-line reversals; continuations; the doji family; Western-tool confluence"
-  },
-  "law-harvest": {
-    "icon": "📚",
-    "blurb": "Ingest law PDFs verbatim into the verified Source-Law library",
-    "level": "Intermediate",
-    "tabler": "ti-files",
-    "triggers": "'harvest the laws', 'extract this law', 'process the stock laws', 'identify these law PDFs', 'law harvest'",
-    "modes": ""
-  },
-  "legal-drafting": {
-    "icon": "✒️",
-    "blurb": "Client correspondence and bilingual legal instruments in the firm's register",
-    "level": "Advanced",
-    "tabler": "ti-file-pencil",
-    "triggers": "'draft a client email', 'write this contract', 'draft a declaration', 'write a legal memo', 'bilingual letter'",
-    "modes": ""
-  },
-  "legal-rule-modeling": {
-    "icon": "🧮",
-    "blurb": "Model a governing law into deterministic calculator rules",
-    "level": "Advanced",
-    "tabler": "ti-calculator",
-    "triggers": "'model the law for this calculator', 'extract the calculation rules', 'what are the brackets for X', 'rule model'",
-    "modes": ""
-  },
-  "market-recon": {
-    "icon": "📈",
-    "blurb": "Read-only market, investment, and risk analysis that ships a report",
-    "level": "Advanced",
-    "tabler": "ti-chart-candle",
-    "triggers": "'analyze this investment', 'research this market', 'is this a buy', 'review my portfolio', 'macro read'",
-    "modes": "asset/equity research; single trade-idea; portfolio review; macro/rates read"
-  },
-  "members-formation": {
-    "icon": "🧭",
-    "blurb": "The Butler's routing method: who works, in what arrangement, then crystallize",
-    "level": "Advanced",
-    "tabler": "ti-route",
-    "triggers": "'route this', 'who should handle this', 'form the team', 'distribute the work', 'can these run in parallel', 'coordinate the members', 'plan the dispatch', or any request touching more than one craft. The Butler's one dedicated craft — he is the router, not a specialist.",
-    "modes": ""
-  },
-  "motion-design": {
-    "icon": "🌀",
-    "blurb": "The Designer's easing & timing specialist — exact curves, durations, transform-origins",
-    "level": "Advanced",
-    "tabler": "ti-wave-sine",
-    "triggers": "'animate this', 'add a transition', 'motion for X', 'clean up this animation', 'this feels too fast/slow', 'make it feel more alive', easing, timing, spring vs bezier, bounce",
-    "modes": "evaluate; recommend"
-  },
-  "obsidian-markdown": {
-    "icon": "📝",
-    "blurb": "Edit Obsidian-flavored markdown with wikilinks and callouts",
-    "level": "Foundational",
-    "tabler": "ti-markdown",
-    "triggers": "",
-    "modes": ""
-  },
-  "okf": {
-    "icon": "🧹",
-    "blurb": "Keep the whole repo tidy & conformant to the Open Knowledge Format (OKF v0.1)",
-    "level": "Advanced",
-    "tabler": "ti-file-stack",
-    "triggers": "'tidy the repo', 'OKF', 'make it OKF-conformant', 'run the OKF audit', 'fix frontmatter', 'keep it clean', after any campaign that left files behind. The producer half of the guild's knowledge standard; pairs with star-alliance-language (reader). Enforced mechanically by the okf-gate PreToolUse hook.",
-    "modes": "audit (default) — report non-conformant governed .md; --fix — migrate-first baseline (inject type: + timestamp:, idempotent); enrich — add title/description/tags/cross-links; sweep — place non-md by concept-path & prune orphans"
-  },
-  "performance": {
-    "icon": "⚡",
-    "blurb": "Speed up websites with performance optimization best practices",
-    "level": "Intermediate",
-    "tabler": "ti-gauge",
-    "triggers": "",
-    "modes": ""
-  },
-  "portability-audit": {
-    "icon": "🗺️",
-    "blurb": "Audit how portable a Claude Code project is — maps 6 layers, assigns tier gaps, produces an install plan",
-    "level": "Intermediate",
-    "tabler": "ti-map-check",
-    "triggers": "'audit portability', 'can I use this in another project', 'portability audit', 'what needs to move', 'install plan for project X', '/portability-audit'",
-    "modes": "Six layers: skills → members → arsenal paths → env vars → hooks → workflows. Assigns tier gap per finding; outputs ranked gap list + install.sh command."
-  },
-  "portfolio-risk": {
-    "icon": "🛡️",
-    "blurb": "Book-level portfolio construction and risk metrics (VaR, drawdown, exposure)",
-    "level": "Advanced",
-    "tabler": "ti-shield-half",
-    "triggers": "'review my portfolio', 'what is the risk on my book', 'compute VaR', 'check my exposures', 'should I rebalance', 'stress test this portfolio'",
-    "modes": "construction; risk-audit; rebalance-proposal; stress-test"
-  },
-  "project-start": {
-    "icon": "🚀",
-    "blurb": "Session health check for SA-equipped projects — verifies STAR_ALLIANCE_ROOT, diffs skill versions, reports stale skills",
-    "level": "Foundational",
-    "tabler": "ti-rocket",
-    "triggers": "'start session', 'session start', '/project-start', 'check my skills', 'are my skills up to date', 'health check'",
-    "modes": "Three checks: STAR_ALLIANCE_ROOT resolves → skill version diff → member file present. Reports gaps with one-line fix commands. Never auto-installs."
-  },
-  "relationship-intel": {
-    "icon": "🤝",
-    "blurb": "Turn email traffic into living client relationship intelligence",
-    "level": "Advanced",
-    "tabler": "ti-heart-handshake",
-    "triggers": "'profile my contacts', 'who is at risk of leaving', 'retention tasks', 'update the relationship intelligence'",
-    "modes": "harvest; profile; strategise"
-  },
-  "release-train": {
-    "icon": "🚂",
-    "blurb": "Merge every branch and PR, bump the version, stamp the docs, push",
-    "level": "Intermediate",
-    "tabler": "ti-git-merge",
-    "triggers": "'cut a release', 'merge all branches', 'release X.Y.Z', 'ship it', 'bump the version and push'",
-    "modes": "Lex Council app release; guild self-release"
-  },
-  "scheduled-watch": {
-    "icon": "⏱️",
-    "blurb": "Define a safe-to-resume unattended task on a cron cadence",
-    "level": "Intermediate",
-    "tabler": "ti-clock-play",
-    "triggers": "'schedule this', 'run this daily', 'set up a cron task', 'make this a routine', 'standing watch'",
-    "modes": ""
-  },
-  "spec-driven-development": {
-    "icon": "📜",
-    "blurb": "Build from an executable spec — spec→plan→tasks→implement, each phase gated",
-    "level": "Advanced",
-    "tabler": "ti-list-check",
-    "triggers": "'spec this out', 'spec-driven', 'write a spec first', 'plan before we build', 'turn this into a spec', 'specify the feature', 'break this into tasks', 'what's the MVP slice'",
-    "modes": "specify; clarify; plan; tasks; analyze; implement"
-  },
-  "schema-evolution": {
-    "icon": "🧬",
-    "blurb": "Add an optional field to a data model without breaking any reader",
-    "level": "Advanced",
-    "tabler": "ti-binary-tree-2",
-    "triggers": "'add a field to', 'extend the schema', 'add an optional field', 'evolve the data model', 'thread this through every consumer', 'backward-compatible migration', 'version this record shape', 'add a column without breaking'",
-    "modes": ""
-  },
-  "session-mining": {
-    "icon": "⛏️",
-    "blurb": "Mine past sessions for lessons, verify against the live repo, ship a ranked upgrade plan",
-    "level": "Advanced",
-    "tabler": "ti-pick",
-    "triggers": "'review the last N sessions', 'mine my sessions', 'what did we learn from these sessions', 'what should we upgrade/merge/create from past work', 'audit the sessions for lessons', 'note down skills we can extract', or any retrospective over prior runs. Locates all three session stores, signal-extracts with offset/limit discipline (no blind read), doer-summarizes via MiniMax, STORM-synthesizes, then VERIFIES against the repo to kill every lesson already shipped. Propose-only.",
-    "modes": "Six phases: locate stores → map (session_map.py) → signal-extract (mine_sessions.py, never blind-read) → doer-summarize (MiniMax) → STORM synthesize → verify-against-repo → propose-only register. On-demand companion to skillsmith's daily routine."
-  },
-  "skillsmith": {
-    "icon": "🛠️",
-    "blurb": "Manage, sync, upgrade, and auto-evolve Star Alliance skills",
-    "level": "Advanced",
-    "tabler": "ti-tools",
-    "triggers": "'sync my skills', 'upgrade a skill', 'create a skill', 'install my skills', 'run the skill routine', 'evolve my skills', '/skillsmith'. Scripts in scripts/; procedures in references/.",
-    "modes": "sync: reconcile repo and device by metadata.version, honoring fork+external exceptions. upgrade: bump a skill's version, regenerate the VERSIONS.md registry, run the Cowork-compliance check, add a changelog entry. create: author a new skill via the official skill-creator, then make it upgradeable. r"
-  },
-  "star-alliance-language": {
-    "icon": "🗣️",
-    "blurb": "The guild's shared reading protocol for OKF-tidied repos — read the concept map, not whole files",
-    "level": "Foundational",
-    "tabler": "ti-map-search",
-    "triggers": "automatic — every member orients through it when starting work in a repo. 'read the repo', 'what's in here', 'map this', 'orient me', 'where is X documented'. Universal — rides every member like weapon-utility. The consumer half of the OKF pair (okf produces, this reads).",
-    "modes": "map (default) — one-shot concept map via okf_read.py (frontmatter + cross-links, grouped, index.md first); --dir/--type/--grep narrow; --links walk one concept's graph; --json feed a doer"
-  },
-  "storm-investigation": {
-    "icon": "🌀",
-    "blurb": "Multi-perspective STORM research: 5 personas, contradiction map, peer-reviewed briefing",
-    "level": "Advanced",
-    "tabler": "ti-cyclone",
-    "triggers": "on 'research this topic', 'run STORM', 'STORM this', 'investigate X deeply', 'deep dive on X', 'multi-perspective research', '5 expert perspectives', 'contradiction map', 'give me a research briefing', 'red-team this idea', or research before a decision — writing, investing, negotiating, interviewing, presenting, learning. The Stanford OVAL Lab method (NAACL 2024): one prompt returns the majority view; five contrasting personas catch the blind spots.",
-    "modes": "Inline (default) — run the four prompts in sequence, ~5 min, one briefing; Fan-out — one doer per persona in parallel (MiniMax M3 default, Claude sub-agents/Workflow when tools or structured output needed), then synthesize. Optional source-grounding via web/MCP."
-  },
-  "strategies-review": {
-    "icon": "📋",
-    "blurb": "Reviews pending strategies then promotes to executed and verifies",
-    "level": "Foundational",
-    "tabler": "ti-checklist",
-    "triggers": "",
-    "modes": ""
-  },
-  "supabase": {
-    "icon": "⚡",
-    "blurb": "All-in-one Supabase toolkit spanning database auth storage vectors",
-    "level": "Intermediate",
-    "tabler": "ti-bolt",
-    "triggers": "Supabase products (Database, Auth, Edge Functions, Realtime, Storage, Vectors, Cron, Queues); client libraries and SSR integrations (supabase-js, @supabase/ssr) in Next.js, React, SvelteKit, Astro, Remix; auth issues (login, logout, sessions, JWT, cookies, get",
-    "modes": ""
-  },
-  "supabase-postgres-best-practices": {
-    "icon": "🐘",
-    "blurb": "Postgres performance optimization and best practices from Supabase",
-    "level": "Foundational",
-    "tabler": "ti-database",
-    "triggers": "",
-    "modes": ""
-  },
-  "trading-strategy": {
-    "icon": "🎯",
-    "blurb": "Read-only trading-strategy design: entry/exit rules, sizing, backtest framing",
-    "level": "Advanced",
-    "tabler": "ti-target-arrow",
-    "triggers": "'build a trading strategy', 'design an entry/exit plan', 'backtest this idea', 'how should I size this trade', 'turn this view into a strategy'",
-    "modes": "trend-following; mean-reversion; event/catalyst-driven; systematic rules-based screen"
-  },
-  "transactions-domain-model": {
-    "icon": "💳",
-    "blurb": "Loads Lex Council transactions domain model before any work",
-    "level": "Advanced",
-    "tabler": "ti-credit-card",
-    "triggers": ", transaction templates, or any transaction-related bug, feature, or refactor. Also trigger when the user says \"work on transactions\", \"fix a transaction bug\", \"add a transaction feature\", \"transaction page\", or references any file under finances/. Load silent",
-    "modes": ""
-  },
-  "ultra-brainstorming": {
-    "icon": "🧠",
-    "blurb": "The Strategist's super-planning: fuse members' outputs into one plan across many models",
-    "level": "Master",
-    "tabler": "ti-brain",
-    "triggers": "'ultra-brainstorm this', 'super-plan this', 'synthesize the members' work', 'brainstorm this across models', 'merge these proposals into one plan', 'plan this deeply before we build', or any fan-in where several specialists feed one build. A MODEL ensemble (several thinking models), distinct from storm-investigation's persona ensemble.",
-    "modes": ""
-  },
-  "vault-log-compliance": {
-    "icon": "🛡️",
-    "blurb": "Enforces P8 vault-logging compliance across all backend code",
-    "level": "Intermediate",
-    "tabler": "ti-shield-check",
-    "triggers": ", RPC functions, RLS policies, edge functions, cron jobs), frontend code (components, pages, hooks, mutations, stores), schema changes, or bug fixes — even if the user doesn't explicitly ask for a vault log. Also use when the user says phrases like \"vault log ",
-    "modes": ""
-  },
-  "volume-price-analysis": {
-    "icon": "📊",
-    "blurb": "Anna Coulling's VPA: read volume confirming/contradicting price, the insider cycle, VAP",
-    "level": "Advanced",
-    "tabler": "ti-chart-histogram",
-    "triggers": "'read this chart with volume', 'is this accumulation or distribution', 'why is volume contradicting price', 'what is a selling climax', 'explain volume price analysis'",
-    "modes": "effort vs result; insider cycle (accumulation/distribution/climax); VPA candle signals; volume at price"
-  },
-  "weapon-utility": {
-    "icon": "🗡️",
-    "blurb": "Each member's rule for drawing a weapon: thinkers plan & review, doers execute",
-    "level": "Foundational",
-    "tabler": "ti-swords",
-    "triggers": "automatic — every member consults it before drawing a weapon. 'which weapon', 'which model should X use', 'pick the weapon', 'thinker or doer', 'draw a weapon', 'run the weapon loop', 'how does the member choose its model'. The atomic layer beneath members-formation (which member) and ultra-brainstorming (fuse across models).",
-    "modes": "solo (default) — one weapon at a time: the highest-priority available thinker plans and prompts, the highest-priority available doer executes and returns, the thinker reviews against the plan and re-prompts until it conforms; ultra — when ultra-brainstorming is active, all available thinker weapons fire at once and the top thinker consolidates them into one plan before the doer runs"
-  },
-  "workflow-forge": {
-    "icon": "🗺️",
-    "blurb": "Distil a finished run into a reusable star-map workflow",
-    "level": "Advanced",
-    "tabler": "ti-map-2",
-    "triggers": "'save this as a workflow', 'add this to the star map', 'register a workflow', 'crystallize this formation'",
-    "modes": ""
-  },
-  "python-master": {
-    "icon": "🐍",
-    "blurb": "Build production-grade Python libraries & web apps end to end — 14 merged crafts",
-    "level": "Advanced",
-    "tabler": "ti-brand-python",
-    "triggers": "'set up a python library', 'write pytest tests', 'package for pypi', 'audit python security', 'build a python cli', 'review this python library'",
-    "modes": "project setup; packaging; code quality; testing; docs; api design; cli; performance; security; web-app; git hygiene; release; community; review"
-  }
+ "algorithmic-trading-chan": {
+  "icon": "📈",
+  "blurb": "Ernie Chan's quant doctrine: mean reversion, momentum, backtesting pitfalls, Kelly risk",
+  "level": "Advanced",
+  "tabler": "ti-chart-candle",
+  "triggers": "'explain cointegration', 'how do I size with Kelly', 'why did this backtest lie', 'mean reversion vs momentum', 'teach me Chan's strategies'",
+  "modes": "backtesting integrity; mean reversion; momentum; risk management"
+ },
+ "arsenal-forge": {
+  "icon": "⚔️",
+  "blurb": "Recruit or re-role a weapon — identity, role, wire to loadouts",
+  "level": "Intermediate",
+  "tabler": "ti-swords",
+  "triggers": "'add a weapon', 'recruit a model', 're-skin this weapon', 'change a weapon role', 'arsenal forge'",
+  "modes": ""
+ },
+ "article-creator": {
+  "icon": "📝",
+  "blurb": "End-to-end Insights article creation pushed to production DB",
+  "level": "Foundational",
+  "tabler": "ti-article",
+  "triggers": "on \"new insights post\", \"add it to /insights\", \"make this an article\", \"push to the articles table\", or any request that implies writing rows into articles/articletranslations. This skill exists because the insert has six landmines discovered in production: th",
+  "modes": ""
+ },
+ "bug-fix-workflow": {
+  "icon": "🐛",
+  "blurb": "End-to-end bug triage, reproduction, and root-cause fixing",
+  "level": "Intermediate",
+  "tabler": "ti-bug",
+  "triggers": "gotcha, the INSERT/push pattern (identity PK, trigger-filled names, reporter-uuid lookup, status=1, no notification fires), the \"doesn't work\" reproduction technique, and the rule for WHEN a bug may be marked Fixed (DB fixes now, frontend fixes only after depl",
+  "modes": ""
+ },
+ "claude-code-hooks": {
+  "icon": "🪝",
+  "blurb": "Author Claude Code hooks the right way — fail-open gates and banners",
+  "level": "Advanced",
+  "tabler": "ti-webhook",
+  "triggers": "'write a hook', 'add a PreToolUse hook', 'gate this tool', 'block this command', 'fire a banner on', 'why is my hook blocking', 'fail-open hook', 'test my hook', 'claude code hooks'",
+  "modes": ""
+ },
+ "cleanup": {
+  "icon": "🧹",
+  "blurb": "Multi-mode hygiene: i18n translations, dedup, hardcoded text",
+  "level": "Intermediate",
+  "tabler": "ti-eraser",
+  "triggers": "\\\"run cleanup\\\", \\\"/cleanup\\\", \\\"i18n cleanup\\\", \\\"translate untranslated\\\", \\\"find hardcoded text\\\", \\\"find leaking keys\\\", \\\"raw key paths\\\", \\\"fix dev errors\\\", \\\"check postgres\\\", \\\"run lint\\\", \\\"consolidate code\\\", \\\"check the bundle size\\\", \\\"doc cleanup",
+  "modes": "language (i18n translations); consolidate (i18n key dedup); hardcoded (extract raw UI text to next-intl keys); leaks (i18n keys used in code but missing from JSON); errors (dev log sweep); postgres (Supabase advisors + pg health); lint (ESLint --fix + tsc); consolidate-code (duplicate code detection"
+ },
+ "codex-law-translate": {
+  "icon": "⚖️",
+  "blurb": "Legal codex pipeline: load law, translate to five locales",
+  "level": "Intermediate",
+  "tabler": "ti-gavel",
+  "triggers": "",
+  "modes": ""
+ },
+ "comms-triage": {
+  "icon": "📨",
+  "blurb": "Sweep email, calendar, and WhatsApp into tasks, events, and replies",
+  "level": "Intermediate",
+  "tabler": "ti-inbox",
+  "triggers": "'triage my inbox', 'what needs me today', 'turn my email into tasks', 'sweep my WhatsApp', 'comms triage'",
+  "modes": ""
+ },
+ "conquering-campaign": {
+  "icon": "🚀",
+  "blurb": "Multi-wave campaign orchestrator: audit, build, run mega-work",
+  "level": "Master",
+  "tabler": "ti-flag",
+  "triggers": "ONLY above that bar: 'audit my app', 'build this feature', 'ship this refactor', 'phase this migration', 'proceed in application', 'extend [campaign] to X', 'roll out [pattern] to [surface]', 'apply [v1.X] to [Z]'. Planning asks every question upfront then exe",
+  "modes": "AUDIT (reconcile docs with code/DB), BUILD (multi-phase features/refactors/migrations touching 3+ surfaces), EXTENSION (extends a recent predecessor, reusing its prescan). Gate G0 runs FIRST: work that doesn't clear the bar (3+ INDEPENDENT logical changes — one vertical slice = ONE — OR genuinely mu"
+ },
+ "dashboard-parity": {
+  "icon": "🪞",
+  "blurb": "Prove every change actually renders on the dashboard",
+  "level": "Advanced",
+  "tabler": "ti-device-desktop-check",
+  "triggers": "'is it on the dashboard', 'did it reflect on index.html', 'verify the dashboard', 'dashboard parity', 'did the build land', 'did my change show up'",
+  "modes": ""
+ },
+ "db-rename-sweep": {
+  "icon": "🏷️",
+  "blurb": "Scans database schema for safe table and column renames",
+  "level": "Foundational",
+  "tabler": "ti-database",
+  "triggers": "on \"rename\", \"rename sweep\", \"rename checklist\", \"naming cleanup\", \"change table name\", \"rename this view\", \"prefix the tables\", \"sweep the old name\", \"unify the naming\", or any request that implies a SQL ALTER TABLE ... RENAME / RENAME COLUMN. The skill exist",
+  "modes": ""
+ },
+ "design-language": {
+  "icon": "🗣️",
+  "blurb": "The guild's multi-language voice engine — narrative vocabulary & tone, not visual",
+  "level": "Master",
+  "tabler": "ti-language",
+  "triggers": "'use the X voice', 'make it sound like Fallen Sword', 'guild voice', 'Lex Council tone', 'reskin this copy', 'Erildath'",
+  "modes": "fallen-sword; star-alliance; lex-council"
+ },
+ "design-taste": {
+  "icon": "🎨",
+  "blurb": "The Designer's seven-mode premium taste engine, anti-AI-slop",
+  "level": "Master",
+  "tabler": "ti-brush",
+  "triggers": "'design the UI', 'make it premium', 'pick a style', 'minimalist', 'brutalist', 'add motion', 'write a DESIGN.md', 'redesign this', 'anti-slop'",
+  "modes": "engineer; agency; minimal; brutalist; motion; encode; redesign"
+ },
+ "design-unity": {
+  "icon": "🧬",
+  "blurb": "UI conformity engine — one source of truth, every surface in one design language",
+  "level": "Advanced",
+  "tabler": "ti-color-swatch",
+  "triggers": "'make the UI consistent', 'one source of truth for the UI', 'enforce the design system', 'kill the design drift', 'unify the look', 'audit UI conformity', 'design tokens'",
+  "modes": "establish; audit; reconcile"
+ },
+ "dev-server": {
+  "icon": "🚀",
+  "blurb": "Launches, restarts, and manages your local development server",
+  "level": "Foundational",
+  "tabler": "ti-server",
+  "triggers": "",
+  "modes": ""
+ },
+ "full-output-enforcement": {
+  "icon": "🛡️",
+  "blurb": "Forces complete output with no truncation or placeholders",
+  "level": "Foundational",
+  "tabler": "ti-arrows-maximize",
+  "triggers": "",
+  "modes": ""
+ },
+ "graphify": {
+  "icon": "🕸️",
+  "blurb": "Transforms any input into a navigable knowledge graph",
+  "level": "Master",
+  "tabler": "ti-binary-tree",
+  "triggers": "",
+  "modes": ""
+ },
+ "growth-marketing": {
+  "icon": "📣",
+  "blurb": "Four-mode marketing engine: content/SEO, brand, email, social/paid",
+  "level": "Master",
+  "tabler": "ti-speakerphone",
+  "triggers": "'plan our marketing', 'we need leads', 'fix our positioning', 'content plan', 'SEO plan', 'build an email sequence', 'social plan', 'ad plan', 'go to market', 'growth marketing'. The Herald's craft; composes with article-creator, imagegen-frontend (brand mode), storm-investigation.",
+  "modes": "content-seo (ICP + pain keywords, topic clusters, local SEO, on-page, publish via article-creator); brand-positioning (positioning statement, ICP, value prop, voice, proof bank, imagegen-frontend brand-mode handoff); email-nurture (lead magnets, capture, 4-6 email sequence, re-engagement, bar-compliance); social-paid (channel mix, organic cadence, paid-ads starter, retargeting, tracking)"
+ },
+ "guild-conformity": {
+  "icon": "🔎",
+  "blurb": "Prove the guild repo agrees with itself, then reconcile",
+  "level": "Advanced",
+  "tabler": "ti-checkup-list",
+  "triggers": "'confirm guild conformance', 'run the conformity check', 'reconcile the guild data', 'conformity sweep', 'is everything consistent'",
+  "modes": ""
+ },
+ "guild-log": {
+  "icon": "📓",
+  "blurb": "Logs non-git-visible guild changes via the two-tier pipeline",
+  "level": "Foundational",
+  "tabler": "ti-history",
+  "triggers": "'log this', 'guild log this', 'did you log it?', '/guild-log', or any dashboard/UI/folder change git can't see on its own",
+  "modes": ""
+ },
+ "guild-sync": {
+  "icon": "🔄",
+  "blurb": "Prove the device still matches the repo, then reconcile drift",
+  "level": "Advanced",
+  "tabler": "ti-refresh",
+  "triggers": "'sync the repo with claude', 'is the device up to date', 'what else needs syncing', 'device parity', 'sync rotation', 'check for drift'",
+  "modes": ""
+ },
+ "harness-efficiency": {
+  "icon": "📊",
+  "blurb": "Prove & tune what the harness saves — net tokens, LITE/FULL tier split, offload health",
+  "level": "Advanced",
+  "tabler": "ti-gauge",
+  "triggers": "'efficiency report', 'harness efficiency', 'how much are we saving', 'is the gate working', 'tier split', 'check the offload', 'net tokens saved', 'tune the stakes list', or before/after a routing-gate hook change",
+  "modes": "Report — join usage-log.jsonl + turn-cost.jsonl via efficiency_report.py (net-saved + per-tier breakdown); Watch — hunt the one hard failure (a high-stakes turn that took LITE); Tune — edit the data/harness.json stakes/size policy, then re-run the gate regression matrix"
+ },
+ "high-alert": {
+  "icon": "🚨",
+  "blurb": "Session klaxon: banners on workflow start, skill activation, member duty",
+  "level": "Foundational",
+  "tabler": "ti-alert-triangle",
+  "triggers": "always on, no invocation — fires automatically on workflow start, Skill tool use (hook-enforced), and member formation at routing STEP 1",
+  "modes": ""
+ },
+ "image-to-code": {
+  "icon": "🖼️",
+  "blurb": "Elite pipeline that designs the image, then engineers matching code",
+  "level": "Advanced",
+  "tabler": "ti-code",
+  "triggers": "",
+  "modes": ""
+ },
+ "imagegen-frontend": {
+  "icon": "🖼️",
+  "blurb": "Premium image-generation engine — web sections, mobile app screens, and brand identity, images only",
+  "level": "Master",
+  "tabler": "ti-photo",
+  "triggers": "'generate website design references', 'mock the landing page', 'design the app screens', 'create a brand kit', 'design the logo / identity', 'imagegen'",
+  "modes": "web; mobile; brand"
+ },
+ "impeccable": {
+  "icon": "✨",
+  "blurb": "Polish, critique, distill, and harden any design with Swiss precision",
+  "level": "Intermediate",
+  "tabler": "ti-award",
+  "triggers": "",
+  "modes": ""
+ },
+ "japanese-candlesticks": {
+  "icon": "🕯️",
+  "blurb": "Read & interpret Japanese candlestick charts (Nison) — every reversal, continuation & doji pattern",
+  "level": "Advanced",
+  "tabler": "ti-chart-candle-filled",
+  "triggers": "'what candlestick pattern is this', 'is this a hammer or a doji', 'read this candlestick chart', 'explain bullish engulfing', 'morning star meaning', 'teach me Japanese candlesticks'",
+  "modes": "single-line reversals; multi-line reversals; continuations; the doji family; Western-tool confluence"
+ },
+ "law-harvest": {
+  "icon": "📚",
+  "blurb": "Ingest law PDFs verbatim into the verified Source-Law library",
+  "level": "Intermediate",
+  "tabler": "ti-files",
+  "triggers": "'harvest the laws', 'extract this law', 'process the stock laws', 'identify these law PDFs', 'law harvest'",
+  "modes": ""
+ },
+ "legal-drafting": {
+  "icon": "✒️",
+  "blurb": "Client correspondence and bilingual legal instruments in the firm's register",
+  "level": "Advanced",
+  "tabler": "ti-file-pencil",
+  "triggers": "'draft a client email', 'write this contract', 'draft a declaration', 'write a legal memo', 'bilingual letter'",
+  "modes": ""
+ },
+ "legal-rule-modeling": {
+  "icon": "🧮",
+  "blurb": "Model a governing law into deterministic calculator rules",
+  "level": "Advanced",
+  "tabler": "ti-calculator",
+  "triggers": "'model the law for this calculator', 'extract the calculation rules', 'what are the brackets for X', 'rule model'",
+  "modes": ""
+ },
+ "market-recon": {
+  "icon": "📈",
+  "blurb": "Read-only market, investment, and risk analysis that ships a report",
+  "level": "Advanced",
+  "tabler": "ti-chart-candle",
+  "triggers": "'analyze this investment', 'research this market', 'is this a buy', 'review my portfolio', 'macro read'",
+  "modes": "asset/equity research; single trade-idea; portfolio review; macro/rates read"
+ },
+ "members-formation": {
+  "icon": "🧭",
+  "blurb": "The Butler's routing method: who works, in what arrangement, then crystallize",
+  "level": "Advanced",
+  "tabler": "ti-route",
+  "triggers": "'route this', 'who should handle this', 'form the team', 'distribute the work', 'can these run in parallel', 'coordinate the members', 'plan the dispatch', or any request touching more than one craft. The Butler's one dedicated craft — he is the router, not a specialist.",
+  "modes": ""
+ },
+ "motion-design": {
+  "icon": "🌀",
+  "blurb": "The Designer's easing & timing specialist — exact curves, durations, transform-origins",
+  "level": "Advanced",
+  "tabler": "ti-wave-sine",
+  "triggers": "'animate this', 'add a transition', 'motion for X', 'clean up this animation', 'this feels too fast/slow', 'make it feel more alive', easing, timing, spring vs bezier, bounce",
+  "modes": "evaluate; recommend"
+ },
+ "obsidian-markdown": {
+  "icon": "📝",
+  "blurb": "Edit Obsidian-flavored markdown with wikilinks and callouts",
+  "level": "Foundational",
+  "tabler": "ti-markdown",
+  "triggers": "",
+  "modes": ""
+ },
+ "okf": {
+  "icon": "🧹",
+  "blurb": "Keep the whole repo tidy & conformant to the Open Knowledge Format (OKF v0.1)",
+  "level": "Advanced",
+  "tabler": "ti-file-stack",
+  "triggers": "'tidy the repo', 'OKF', 'make it OKF-conformant', 'run the OKF audit', 'fix frontmatter', 'keep it clean', after any campaign that left files behind. The producer half of the guild's knowledge standard; pairs with star-alliance-language (reader). Enforced mechanically by the okf-gate PreToolUse hook.",
+  "modes": "audit (default) — report non-conformant governed .md; --fix — migrate-first baseline (inject type: + timestamp:, idempotent); enrich — add title/description/tags/cross-links; sweep — place non-md by concept-path & prune orphans"
+ },
+ "performance": {
+  "icon": "⚡",
+  "blurb": "Speed up websites with performance optimization best practices",
+  "level": "Intermediate",
+  "tabler": "ti-gauge",
+  "triggers": "",
+  "modes": ""
+ },
+ "portability-audit": {
+  "icon": "🗺️",
+  "blurb": "Audit how portable a Claude Code project is — maps 6 layers, assigns tier gaps, produces an install plan",
+  "level": "Intermediate",
+  "tabler": "ti-map-check",
+  "triggers": "'audit portability', 'can I use this in another project', 'portability audit', 'what needs to move', 'install plan for project X', '/portability-audit'",
+  "modes": "Six layers: skills → members → arsenal paths → env vars → hooks → workflows. Assigns tier gap per finding; outputs ranked gap list + install.sh command."
+ },
+ "portfolio-risk": {
+  "icon": "🛡️",
+  "blurb": "Book-level portfolio construction and risk metrics (VaR, drawdown, exposure)",
+  "level": "Advanced",
+  "tabler": "ti-shield-half",
+  "triggers": "'review my portfolio', 'what is the risk on my book', 'compute VaR', 'check my exposures', 'should I rebalance', 'stress test this portfolio'",
+  "modes": "construction; risk-audit; rebalance-proposal; stress-test"
+ },
+ "project-start": {
+  "icon": "🚀",
+  "blurb": "Session health check for SA-equipped projects — verifies STAR_ALLIANCE_ROOT, diffs skill versions, reports stale skills",
+  "level": "Foundational",
+  "tabler": "ti-rocket",
+  "triggers": "'start session', 'session start', '/project-start', 'check my skills', 'are my skills up to date', 'health check'",
+  "modes": "Three checks: STAR_ALLIANCE_ROOT resolves → skill version diff → member file present. Reports gaps with one-line fix commands. Never auto-installs."
+ },
+ "relationship-intel": {
+  "icon": "🤝",
+  "blurb": "Turn email traffic into living client relationship intelligence",
+  "level": "Advanced",
+  "tabler": "ti-heart-handshake",
+  "triggers": "'profile my contacts', 'who is at risk of leaving', 'retention tasks', 'update the relationship intelligence'",
+  "modes": "harvest; profile; strategise"
+ },
+ "release-train": {
+  "icon": "🚂",
+  "blurb": "Merge every branch and PR, bump the version, stamp the docs, push",
+  "level": "Intermediate",
+  "tabler": "ti-git-merge",
+  "triggers": "'cut a release', 'merge all branches', 'release X.Y.Z', 'ship it', 'bump the version and push'",
+  "modes": "Lex Council app release; guild self-release"
+ },
+ "scheduled-watch": {
+  "icon": "⏱️",
+  "blurb": "Define a safe-to-resume unattended task on a cron cadence",
+  "level": "Intermediate",
+  "tabler": "ti-clock-play",
+  "triggers": "'schedule this', 'run this daily', 'set up a cron task', 'make this a routine', 'standing watch'",
+  "modes": ""
+ },
+ "spec-driven-development": {
+  "icon": "📜",
+  "blurb": "Build from an executable spec — spec→plan→tasks→implement, each phase gated",
+  "level": "Advanced",
+  "tabler": "ti-list-check",
+  "triggers": "'spec this out', 'spec-driven', 'write a spec first', 'plan before we build', 'turn this into a spec', 'specify the feature', 'break this into tasks', 'what's the MVP slice'",
+  "modes": "specify; clarify; plan; tasks; analyze; implement"
+ },
+ "schema-evolution": {
+  "icon": "🧬",
+  "blurb": "Add an optional field to a data model without breaking any reader",
+  "level": "Advanced",
+  "tabler": "ti-binary-tree-2",
+  "triggers": "'add a field to', 'extend the schema', 'add an optional field', 'evolve the data model', 'thread this through every consumer', 'backward-compatible migration', 'version this record shape', 'add a column without breaking'",
+  "modes": ""
+ },
+ "session-mining": {
+  "icon": "⛏️",
+  "blurb": "Mine past sessions for lessons, verify against the live repo, ship a ranked upgrade plan",
+  "level": "Advanced",
+  "tabler": "ti-pick",
+  "triggers": "'review the last N sessions', 'mine my sessions', 'what did we learn from these sessions', 'what should we upgrade/merge/create from past work', 'audit the sessions for lessons', 'note down skills we can extract', or any retrospective over prior runs. Locates all three session stores, signal-extracts with offset/limit discipline (no blind read), doer-summarizes via MiniMax, STORM-synthesizes, then VERIFIES against the repo to kill every lesson already shipped. Propose-only.",
+  "modes": "Six phases: locate stores → map (session_map.py) → signal-extract (mine_sessions.py, never blind-read) → doer-summarize (MiniMax) → STORM synthesize → verify-against-repo → propose-only register. On-demand companion to skillsmith's daily routine."
+ },
+ "skillsmith": {
+  "icon": "🛠️",
+  "blurb": "Manage, sync, upgrade, and auto-evolve Star Alliance skills",
+  "level": "Advanced",
+  "tabler": "ti-tools",
+  "triggers": "'sync my skills', 'upgrade a skill', 'create a skill', 'install my skills', 'run the skill routine', 'evolve my skills', '/skillsmith'. Scripts in scripts/; procedures in references/.",
+  "modes": "sync: reconcile repo and device by metadata.version, honoring fork+external exceptions. upgrade: bump a skill's version, regenerate the VERSIONS.md registry, run the Cowork-compliance check, add a changelog entry. create: author a new skill via the official skill-creator, then make it upgradeable. r"
+ },
+ "star-alliance-language": {
+  "icon": "🗣️",
+  "blurb": "The guild's shared reading protocol for OKF-tidied repos — read the concept map, not whole files",
+  "level": "Foundational",
+  "tabler": "ti-map-search",
+  "triggers": "automatic — every member orients through it when starting work in a repo. 'read the repo', 'what's in here', 'map this', 'orient me', 'where is X documented'. Universal — rides every member like weapon-utility. The consumer half of the OKF pair (okf produces, this reads).",
+  "modes": "map (default) — one-shot concept map via okf_read.py (frontmatter + cross-links, grouped, index.md first); --dir/--type/--grep narrow; --links walk one concept's graph; --json feed a doer"
+ },
+ "storm-investigation": {
+  "icon": "🌀",
+  "blurb": "Multi-perspective STORM research: 5 personas, contradiction map, peer-reviewed briefing",
+  "level": "Advanced",
+  "tabler": "ti-cyclone",
+  "triggers": "on 'research this topic', 'run STORM', 'STORM this', 'investigate X deeply', 'deep dive on X', 'multi-perspective research', '5 expert perspectives', 'contradiction map', 'give me a research briefing', 'red-team this idea', or research before a decision — writing, investing, negotiating, interviewing, presenting, learning. The Stanford OVAL Lab method (NAACL 2024): one prompt returns the majority view; five contrasting personas catch the blind spots.",
+  "modes": "Inline (default) — run the four prompts in sequence, ~5 min, one briefing; Fan-out — one doer per persona in parallel (MiniMax M3 default, Claude sub-agents/Workflow when tools or structured output needed), then synthesize. Optional source-grounding via web/MCP."
+ },
+ "strategies-review": {
+  "icon": "📋",
+  "blurb": "Reviews pending strategies then promotes to executed and verifies",
+  "level": "Foundational",
+  "tabler": "ti-checklist",
+  "triggers": "",
+  "modes": ""
+ },
+ "supabase": {
+  "icon": "⚡",
+  "blurb": "All-in-one Supabase toolkit spanning database auth storage vectors",
+  "level": "Intermediate",
+  "tabler": "ti-bolt",
+  "triggers": "Supabase products (Database, Auth, Edge Functions, Realtime, Storage, Vectors, Cron, Queues); client libraries and SSR integrations (supabase-js, @supabase/ssr) in Next.js, React, SvelteKit, Astro, Remix; auth issues (login, logout, sessions, JWT, cookies, get",
+  "modes": ""
+ },
+ "supabase-postgres-best-practices": {
+  "icon": "🐘",
+  "blurb": "Postgres performance optimization and best practices from Supabase",
+  "level": "Foundational",
+  "tabler": "ti-database",
+  "triggers": "",
+  "modes": ""
+ },
+ "trading-strategy": {
+  "icon": "🎯",
+  "blurb": "Read-only trading-strategy design: entry/exit rules, sizing, backtest framing",
+  "level": "Advanced",
+  "tabler": "ti-target-arrow",
+  "triggers": "'build a trading strategy', 'design an entry/exit plan', 'backtest this idea', 'how should I size this trade', 'turn this view into a strategy'",
+  "modes": "trend-following; mean-reversion; event/catalyst-driven; systematic rules-based screen"
+ },
+ "transactions-domain-model": {
+  "icon": "💳",
+  "blurb": "Loads Lex Council transactions domain model before any work",
+  "level": "Advanced",
+  "tabler": "ti-credit-card",
+  "triggers": ", transaction templates, or any transaction-related bug, feature, or refactor. Also trigger when the user says \"work on transactions\", \"fix a transaction bug\", \"add a transaction feature\", \"transaction page\", or references any file under finances/. Load silent",
+  "modes": ""
+ },
+ "ultra-brainstorming": {
+  "icon": "🧠",
+  "blurb": "The Strategist's super-planning: fuse members' outputs into one plan across many models",
+  "level": "Master",
+  "tabler": "ti-brain",
+  "triggers": "'ultra-brainstorm this', 'super-plan this', 'synthesize the members' work', 'brainstorm this across models', 'merge these proposals into one plan', 'plan this deeply before we build', or any fan-in where several specialists feed one build. A MODEL ensemble (several thinking models), distinct from storm-investigation's persona ensemble.",
+  "modes": ""
+ },
+ "vault-log-compliance": {
+  "icon": "🛡️",
+  "blurb": "Enforces P8 vault-logging compliance across all backend code",
+  "level": "Intermediate",
+  "tabler": "ti-shield-check",
+  "triggers": ", RPC functions, RLS policies, edge functions, cron jobs), frontend code (components, pages, hooks, mutations, stores), schema changes, or bug fixes — even if the user doesn't explicitly ask for a vault log. Also use when the user says phrases like \"vault log ",
+  "modes": ""
+ },
+ "volume-price-analysis": {
+  "icon": "📊",
+  "blurb": "Anna Coulling's VPA: read volume confirming/contradicting price, the insider cycle, VAP",
+  "level": "Advanced",
+  "tabler": "ti-chart-histogram",
+  "triggers": "'read this chart with volume', 'is this accumulation or distribution', 'why is volume contradicting price', 'what is a selling climax', 'explain volume price analysis'",
+  "modes": "effort vs result; insider cycle (accumulation/distribution/climax); VPA candle signals; volume at price"
+ },
+ "weapon-utility": {
+  "icon": "🗡️",
+  "blurb": "Each member's rule for drawing a weapon: thinkers plan & review, doers execute",
+  "level": "Foundational",
+  "tabler": "ti-swords",
+  "triggers": "automatic — every member consults it before drawing a weapon. 'which weapon', 'which model should X use', 'pick the weapon', 'thinker or doer', 'draw a weapon', 'run the weapon loop', 'how does the member choose its model'. The atomic layer beneath members-formation (which member) and ultra-brainstorming (fuse across models).",
+  "modes": "solo (default) — one weapon at a time: the highest-priority available thinker plans and prompts, the highest-priority available doer executes and returns, the thinker reviews against the plan and re-prompts until it conforms; ultra — when ultra-brainstorming is active, all available thinker weapons fire at once and the top thinker consolidates them into one plan before the doer runs"
+ },
+ "workflow-forge": {
+  "icon": "🗺️",
+  "blurb": "Distil a finished run into a reusable star-map workflow",
+  "level": "Advanced",
+  "tabler": "ti-map-2",
+  "triggers": "'save this as a workflow', 'add this to the star map', 'register a workflow', 'crystallize this formation'",
+  "modes": ""
+ },
+ "python-master": {
+  "icon": "🐍",
+  "blurb": "Build production-grade Python libraries & web apps end to end — 14 merged crafts",
+  "level": "Advanced",
+  "tabler": "ti-brand-python",
+  "triggers": "'set up a python library', 'write pytest tests', 'package for pypi', 'audit python security', 'build a python cli', 'review this python library'",
+  "modes": "project setup; packaging; code quality; testing; docs; api design; cli; performance; security; web-app; git hygiene; release; community; review"
+ },
+ "invariant-inference": {
+  "icon": "🧬",
+  "blurb": "Infer & prove a latent rule from good/bad examples (CEGIS), distilled from LoopInvGen",
+  "level": "Advanced",
+  "tabler": "ti-binary-tree",
+  "triggers": "'infer the invariant', 'what must always hold here', 'learn the rule that separates these cases', 'CEGIS this', 'derive a CHECK/RLS constraint from examples', 'pin down this ambiguous boundary'",
+  "modes": ""
+ }
 }
