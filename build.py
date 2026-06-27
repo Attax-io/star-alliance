@@ -356,6 +356,70 @@ def build_member(agent: dict, meta: dict, errors: list[str]) -> dict:
     }
 
 
+# ── "## Your Weapons" prose table — GENERATED, never hand-edited ──────────────
+# The table inside each member .md duplicates the frontmatter `weapons:` order and
+# the members-meta.json `weaponsDesc` text. Two hand-kept copies = guaranteed drift
+# (8 of 9 members had drifted before this was generated). So the table is now a
+# build artifact: frontmatter loadout + weaponsDesc → rendered here, written back
+# into the .md. Change the loadout in frontmatter, rebuild, the table self-heals.
+# conformity_check.py check WT is the backstop for any hand-edit that skips a build.
+ORDINAL_LABELS = [
+    "1st** — Primary", "2nd** — Secondary", "3rd** — Tertiary", "4th** — Quaternary",
+    "5th** — Quinary", "6th** — Senary", "7th** — Septenary", "8th** — Octonary",
+    "9th** — Nonary", "10th** — Denary",
+]
+
+
+def render_weapons_table(weapons: list[str], wdesc: dict) -> str:
+    """Render the `## Your Weapons` markdown table from loadout order + weaponsDesc."""
+    rows = ["| Priority | Weapon | When to Draw It |", "|---|---|---|"]
+    for i, w in enumerate(weapons):
+        label = f"**{ORDINAL_LABELS[i]}" if i < len(ORDINAL_LABELS) else f"**{i+1}th**"
+        rows.append(f"| {label} | {w} | {wdesc.get(w, '')} |")
+    return "\n".join(rows)
+
+
+def replace_weapons_table(text: str, new_table: str) -> tuple[str, bool]:
+    """Swap the markdown table inside the `## Your Weapons` section for `new_table`,
+    preserving the intro line above it and any prose (e.g. 'How to choose') below."""
+    lines = text.split("\n")
+    start = next((i for i, l in enumerate(lines) if l.strip() == "## Your Weapons"), None)
+    if start is None:
+        return text, False
+    end = next((i for i in range(start + 1, len(lines)) if lines[i].startswith("## ")), len(lines))
+    tstart = tend = None
+    for i in range(start + 1, end):
+        if lines[i].lstrip().startswith("|"):
+            tstart = i if tstart is None else tstart
+            tend = i
+        elif tstart is not None:
+            break  # table block ended
+    if tstart is None:
+        return text, False
+    new_lines = lines[:tstart] + new_table.split("\n") + lines[tend + 1:]
+    return "\n".join(new_lines), True
+
+
+def sync_member_tables(repo: Path, members_meta: dict, check: bool) -> list[str]:
+    """Regenerate every member's `## Your Weapons` table from its loadout. Returns
+    the ids whose table changed. In --check mode, detect but never write."""
+    changed = []
+    for md in iter_agents(repo):
+        mid = md.stem
+        wdesc = members_meta.get(mid, {}).get("weaponsDesc", {})
+        text = md.read_text()
+        fm, _ = split_frontmatter(text)
+        weapons = parse_list_field(fm, "weapons")
+        if not weapons:
+            continue
+        new_text, did = replace_weapons_table(text, render_weapons_table(weapons, wdesc))
+        if did and new_text != text:
+            changed.append(mid)
+            if not check:
+                md.write_text(new_text)
+    return changed
+
+
 def build_members(repo: Path, members_meta: dict, errors: list[str]) -> list[dict]:
     agents = {md.stem: parse_agent(md) for md in iter_agents(repo)}
     # Every agent must have a presentation half, and vice-versa.
