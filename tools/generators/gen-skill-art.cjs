@@ -22,6 +22,10 @@ const STYLE = "fantasy RPG skill icon, Fallen Sword MMORPG style, dark parchment
 
 const SKILLS = [
   {
+    id: "algorithmic-trading-chan",
+    prompt: `${STYLE}. An ancient quant's grimoire open on dark parchment, a glowing golden pendulum swinging back toward a marked equilibrium line on the left page (mean reversion) while a soaring golden arrow trends upward across the right page (momentum), a row of carved candlestick bars etched in gold along the bottom, arcane equations and a balanced brass scale weighing risk in the margin — the master trader's tome of why strategies win`,
+  },
+  {
     id: "harness-efficiency",
     prompt: `${STYLE}. An ornate brass measuring gauge mounted on dark parchment, its needle swinging toward a glowing golden surplus, twin scales weighing a heavy stack of spent gold coins against a far larger hoard saved, a ledger scroll of glowing sigils beside it tallying what was spent versus what was conserved — the instrument that proves the treasury grows`,
   },

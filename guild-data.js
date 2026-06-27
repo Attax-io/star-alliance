@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 65
     },
-    "generated": "2026-06-27T18:24:37Z",
+    "generated": "2026-06-27T18:25:41Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -2072,7 +2072,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "📈",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Ernie Chan's quant doctrine: mean reversion, momentum, backtesting pitfalls, Kelly risk",
       "level": "Advanced",
       "ramp": "teal",
