@@ -1098,3 +1098,18 @@ a.tag.off { text-decoration: none; }
 }
 .skill-md-body .md-table th { background: rgba(255,255,255,.04); color: var(--cyan); font-weight: 600; }
 .skill-md-body .md-table td { color: var(--muted); }
+
+/* ── Star Map: workflow tile hover + workflow detail page ─────────────────── */
+.flow-hint { color: var(--muted); font-size: var(--t-sm); line-height: 1.6; margin: 0 0 var(--s4); }
+.flow-hint strong { color: var(--starlight); font-weight: 600; }
+/* the floating tooltip blurb now carries multi-paragraph workflow briefs */
+.fst-blurb { white-space: pre-line; }
+/* make a flow tile feel double-clickable */
+.flow-tile { cursor: pointer; }
+
+/* Workflow detail page reuses the skill-panel hero; art + md body sizing */
+.wp-art-img { width: 100%; height: 100%; display: block; object-fit: cover; image-rendering: pixelated; }
+.wp-art-emoji { font-size: 72px; line-height: 1; }
+/* the workflow markdown sits directly inside a .section glass — kill the
+   reader's own block padding so it doesn't double up with the section's */
+.skill-panel .section > .skill-md-body { padding: 0; }

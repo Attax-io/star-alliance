@@ -30,6 +30,8 @@ import urllib.parse
 KEY_PATH = os.path.expanduser("~/.config/minimax/m3.key")
 API_URL = "https://api.minimax.io/v1/image_generation"
 MODEL = "image-01"
+# image-01 rejects prompts at or above this length with API error 2013.
+PROMPT_LIMIT = 1500
 
 
 def read_key() -> str:
