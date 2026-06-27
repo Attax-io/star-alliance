@@ -132,8 +132,8 @@
     "blurb": "Four-mode marketing engine: content/SEO, brand, email, social/paid",
     "level": "Master",
     "tabler": "ti-speakerphone",
-    "triggers": "'plan our marketing', 'we need leads', 'fix our positioning', 'content plan', 'SEO plan', 'build an email sequence', 'social plan', 'ad plan', 'go to market', 'growth marketing'. The Herald's craft; composes with article-creator, brandkit, storm-investigation.",
-    "modes": "content-seo (ICP + pain keywords, topic clusters, local SEO, on-page, publish via article-creator); brand-positioning (positioning statement, ICP, value prop, voice, proof bank, brandkit handoff); email-nurture (lead magnets, capture, 4-6 email sequence, re-engagement, bar-compliance); social-paid (channel mix, organic cadence, paid-ads starter, retargeting, tracking)"
+    "triggers": "'plan our marketing', 'we need leads', 'fix our positioning', 'content plan', 'SEO plan', 'build an email sequence', 'social plan', 'ad plan', 'go to market', 'growth marketing'. The Herald's craft; composes with article-creator, imagegen-frontend (brand mode), storm-investigation.",
+    "modes": "content-seo (ICP + pain keywords, topic clusters, local SEO, on-page, publish via article-creator); brand-positioning (positioning statement, ICP, value prop, voice, proof bank, imagegen-frontend brand-mode handoff); email-nurture (lead magnets, capture, 4-6 email sequence, re-engagement, bar-compliance); social-paid (channel mix, organic cadence, paid-ads starter, retargeting, tracking)"
   },
   "guild-conformity": {
     "icon": "🔎",

@@ -54,7 +54,7 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | `growth-marketing` | a campaign by mode — content-seo / brand-positioning / email-nurture / social-paid. One mode per sprint | when a single tactic suffices, or non-marketing work | `storm-investigation` (scout first), `article-creator` |
 | `relationship-intel` | scattered Gmail traffic must become client relationship intelligence | cold/absent mail, or public-market research (→ Merchant) | `growth-marketing` (email-nurture mode) |
 | `article-creator` | long-form marketing content must publish to production, all locales | short missives or social bursts | `growth-marketing` (content-seo), `storm-investigation` |
-| `imagegen-frontend` (`brand`) | you must **brief** the visual identity — define what it must *say* | forging the visuals yourself — that is the Designer's craft | → Designer (always forges the visual) |
+| `imagegen-frontend` | you must **brief** the visual identity (its `brand` mode) — define what it must *say* | forging the visuals yourself — that is the Designer's craft | → Designer (always forges the visual) |
 | `storm-investigation` | before any campaign — ICP, competitor positioning, demand, proof | Merchant's investment scouting or Strategist's engineering plans | `growth-marketing` (especially content-seo) |
 
 **Universal skills — every member carries these; drill them at the edges of every quest:**
