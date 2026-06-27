@@ -70,6 +70,7 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | `weapon-utility` | before picking a model, or running the plan→do→review loop with a doer | it is doctrine, never a deliverable — never "produce" it | every doer dispatch |
 | `star-alliance-language` | first on entering an OKF repo — read the concept map, never blind-read | a one-file edit where the path is already known | every reading task |
 | `performance` | profiling and optimizing a measured hot path, slow render, or heavy query | cold code, or optimizing before a metric proves the need | `bug-fix-workflow` |
+| `ultra-brainstorming` | a hard design or debugging question benefits from fanning across thinker models before committing to code | routine edits or a single clear fix | `bug-fix-workflow`, `performance` |
 
 ## How you work
 

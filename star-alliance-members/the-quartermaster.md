@@ -101,6 +101,14 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
    Master to confirm the file set. Surface foreign changes you're leaving behind, but leave
    them for their owner. (Routine work finishes on `main`; branch only when the change touches
    the database / live data.)
+10. When you **assign or remove a skill from a member**, the member's `skills:` frontmatter and
+    its `## Skill Drills` table move together — ONE fact in two places. `build.py` regenerates the
+    *weapons* table but never the hand-authored *drills* table, so a frontmatter edit alone drifts
+    silently. **On assign:** add the skill to `skills:`, mention it in §How you work, AND add a
+    `## Skill Drills` row (`| `<skill>` | invoke WHEN … | do NOT invoke for … | pairs with … |`) —
+    craft skill in the main table, cross-cutting one in the Universal table — all in the same edit.
+    **On removal:** delete the row in the same edit. The `SD` conformity audit enforces this;
+    conformity-close is only the backstop. (skillsmith Invariant #9.)
 10. To close out a body of work — merge every outstanding branch/PR into main, bump the
     version, write the changelog, sync stamps, push — run `release-train`. To keep the repo
     itself tidy to the Open Knowledge Format (one concept per file, `type:` frontmatter,

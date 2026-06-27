@@ -63,7 +63,19 @@ the bare emoji — this is exactly the `storm-investigation` v1.0.0 miss), or no
    **Reconcile EVERY derived skill-count surface in the same pass — not just the registry.** Adding or removing a skill changes the repo's skill total, which is claimed in **four** hand-maintained places that must all agree: `domains.json` `star-alliance.skills[]` length **and** its `notes` ("… + N skills …"), and **`README.md`** (every `(N skills` mention — there are two: the tree comment and the VERSIONS pointer). `skill_registry.py write` only fixes `VERSIONS.md`'s header line; it does **not** touch README or domains. The conformity-close `DC` check (audit #1) enforces all of these against the real skill-dir count, so a missed README/domains count FAILS the sweep — fix every count when the total moves, or the next sweep is red.
 3. **Assign to member(s)** — add the skill to the adequate guild member's `skills:` frontmatter in
    `star-alliance-members/<member>.md`, **and** mention it in that member's body (§How you work) so the
-   deployed agent actually invokes it.
+   deployed agent actually invokes it, **and add a matching `## Skill Drills` table row** (see the
+   skill↔member invariant below). All three move together — frontmatter without a drill row FAILS the
+   `SD` conformity check (`'<skill>' is carried but has no Skill Drills table row`).
+
+   > **Skill ↔ member invariant (the `SD` check, both directions).** A member's `skills:` frontmatter
+   > and its `## Skill Drills` table are ONE fact in two places — `build.py` regenerates the *weapons*
+   > table but NEVER the *drills* table (it is hand-authored), so the two can silently diverge. Whenever
+   > you **ADD** a skill to a member's loadout, add a drill row in the SAME edit:
+   > `| `<skill>` | invoke WHEN … | do NOT invoke for … | pairs with `<skill>` |` (put a craft skill in
+   > the main table, a cross-cutting one in the "Universal skills" table). Whenever you **REMOVE** a
+   > skill from the loadout, delete its drill row in the same edit. The `SD` audit in
+   > `conformity_check.py` enforces exactly this; conformity-close (Invariant #8) is the backstop, not
+   > the primary guard — get it right at edit time, every time.
 4. **Themed art (Fallen Sword)** — every skill has a `skill-art/<id>.png`. Add a `{ id, prompt }` entry
    to **`gen-skill-art.cjs`** using the shared `STYLE` prefix (dark parchment, gold runic border,
    fantasy RPG icon) + a subject that depicts the skill; end the prompt with `no text, no watermarks`.
