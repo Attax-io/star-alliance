@@ -2,7 +2,7 @@
 name: schema-evolution
 description: "The Architect's craft for evolving a structured data model without breaking what already reads it — adding an optional, backward-compatible field to a JSON (or table) schema and threading it through every consumer in lockstep. The method: add the field as OPTIONAL with a safe default, validate it where it's authored (fatal in the generator) and again at the conformance gate, render/consume it everywhere it should appear, document it in the authoring skill, and PROVE old data with the field absent still passes green. Use when adding a field to a shared data model, versioning a record shape, or making a non-breaking migration across producers and consumers. Triggers: 'add a field to', 'extend the schema', 'add an optional field', 'evolve the data model', 'thread this through every consumer', 'backward-compatible migration', 'version this record shape', 'add a column without breaking'. Differentiate from db-rename-sweep (renames an existing name) and transactions-domain-model (loads one fixed domain)."
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 type: Skill
 
 ---
@@ -50,6 +50,33 @@ do the evolution.
    skill/playbook that authors this model so the next hand knows it exists and its rules. Then the seal:
    run the gate against the *existing* data (field absent on every old record) and confirm **green** —
    the proof that the evolution is backward-compatible, not a hope.
+
+## Consolidation — collapse duplicates onto one source
+
+The mirror of adding a field: a fact already lives in *many* places that have quietly drifted (this is
+how the model armory grew three role tables that disagreed on `sonnet`). Collapsing them onto one source
+of truth is an evolution, not a rename — with its own moves:
+
+- **Adopt, don't create.** Before standing up a new SoT, grep for an existing one (`*registry*`, a
+  `*.json`, a shared loader). An audit that says "there's no central source — create `data/models.json`"
+  is usually wrong: the registry already exists and is half-adopted. Extend the file that is already
+  authoritative. Verify the audit's absence-claims yourself first (see [[verify-multiagent-audit]]).
+- **Let the canonical side win — drift fixes itself.** When you merge a stale copy into the SoT, keep
+  the SoT's value for any field they disagree on. Migrating `app.js`'s hand-keyed `MODELS` onto the
+  registry turned `sonnet: doer` → `both` *for free*, because the registry was right and the copy was
+  the bug.
+- **Extract with a real evaluator, never by hand or by doer.** To pull a JS object literal into JSON,
+  `node -e` eval it; to merge, do it in Python. Transcribing 15 records × 16 fields by eye (or handing
+  it to an LLM doer) drops a field. Machine-extract, machine-merge, diff the result.
+- **Emit, then derive.** The build emits the SoT into the artifact every consumer already loads
+  (`GUILD.models` in `guild-data.js`); each consumer then *derives* (`const MODELS = GUILD.models`)
+  instead of holding a copy. Mind load-timing — the artifact's `<script>` must precede the consumer.
+- **Seal it with anti-drift conformity checks** — the move that makes consolidation *stick*. For every
+  copy you cannot delete (a fail-safe fallback, a cost sidecar, a generated asset, hand-edited prose),
+  add a gate rule that it **equals / is a subset of** the SoT: `_FALLBACK_ROLE == registry`,
+  `usage-keys ⊆ registry`, `art-tile exists per id`, `routing-gate prose == data`. Without them the
+  copies silently re-diverge; with them the gate fails loudly the instant one drifts — the guard that
+  would have caught the original bug.
 
 ## The craft
 
@@ -114,4 +141,5 @@ generator validations added, gate invariants added, consumers threaded vs consum
 Own skill. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new section/move · MAJOR: method contract change). Regenerate `VERSIONS.md` with `python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.
 
 ## Changelog
+- **1.1.0** — New section **Consolidation — collapse duplicates onto one source**: the mirror move of additive evolution, for when a fact already lives in many drifted copies. Five moves — adopt-don't-create (grep for the existing SoT; verify an audit's "create X" claim first), let the canonical side win so drift auto-fixes, machine-extract/merge (never by hand or doer), emit-then-derive (with load-timing care), and seal with anti-drift conformity checks (fallback==source, sidecar⊆source, tile-per-id, prose==data). Mined from the model-armory consolidation that collapsed `app.js` MODELS + three role tables onto `star-alliance-arsenal/models.json`. New section → MINOR.
 - **1.0.0** — Initial release. The Architect's additive-migration method: add an optional field with a safe default, validate at the generator (fatal) and the conformance gate (when-present), render through every consumer, document it in the authoring skill, and prove records without the field still pass green. Mined from the weapon-fields (thinker/doers/ultra) and workflow `class` additions.

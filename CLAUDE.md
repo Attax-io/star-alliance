@@ -32,6 +32,7 @@ _Mined from full session history — 46 sessions hit this; it was the single mos
 - Read a file before editing it (avoids "not read yet" errors); re-read a shared or parallel-touched file immediately before writing if more than ~30s passed.
 - In scheduled or autonomous runs, loop files **one at a time**, not all at once.
 - **Don't trust harness file/page hints** — verify real length from the tool that reads the file (a "60-page" PDF was 331). For PDF text there is no system `pdftotext` and `pip` is PEP 668-blocked: build a scratchpad venv (`python3 -m venv "$SCRATCH/venv" && "$SCRATCH/venv/bin/pip" install -q pypdf`) and extract per-page.
+- **macOS `grep` silently returns NO matches on UTF-8/multibyte files** (e.g. `app.js` with emoji/glyphs) — use `LC_ALL=C grep` or `rg`. Never conclude "content is gone" from one grep miss; confirm with Read/`sed -n 'Np'`. See [[grep-utf8-and-weapon-gate-gotchas]].
 
 ## Guild conduct (every member)
 

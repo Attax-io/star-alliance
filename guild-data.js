@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 62
     },
-    "generated": "2026-06-27T17:08:13Z",
+    "generated": "2026-06-27T17:08:40Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -3648,7 +3648,7 @@ const GUILD = {
         "lines": 103,
         "words": 578
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-quartermaster"
       ]
@@ -3719,7 +3719,7 @@ const GUILD = {
         "lines": 55,
         "words": 262
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-quartermaster"
       ]
