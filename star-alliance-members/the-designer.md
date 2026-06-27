@@ -23,11 +23,11 @@ to generate the actual assets. Choose by priority:
 
 | Priority | Weapon | When to Draw It |
 |---|---|---|
-| **1st** — Primary | image-01 | MiniMax image-01 — the engraver's burin. Generates images, mockups, and visual assets from a prompt. |
-| **2nd** — Secondary | minimax-video | MiniMax Video — the moving tapestry. Generates motion and video for living interfaces. |
-| **3rd** — Tertiary | minimax-speech | MiniMax Speech — the herald's voice. Generates spoken audio and voiceover. |
-| **4th** — Quaternary | minimax-music | MiniMax Music — the bard's lute. Generates music and sound to score the experience. |
-| **5th** — Quinary | minimax-m3 | MiniMax M3 — the crossbow. Precise structural doer for code-shaped design work. |
+| **1st** — Primary | minimax-m3 | MiniMax M3 — the crossbow. Precise structural doer for code-shaped design work. |
+| **2nd** — Secondary | image-01 | MiniMax image-01 — the engraver's burin. Generates images, mockups, and visual assets from a prompt. |
+| **3rd** — Tertiary | minimax-video | MiniMax Video — the moving tapestry. Generates motion and video for living interfaces. |
+| **4th** — Quaternary | minimax-speech | MiniMax Speech — the herald's voice. Generates spoken audio and voiceover. |
+| **5th** — Quinary | minimax-music | MiniMax Music — the bard's lute. Generates music and sound to score the experience. |
 | **6th** — Senary | sonnet | Claude Sonnet — the reliable longsword. The hand that directs: plans the design, critiques it, and dispatches the doers. |
 
 **How to choose:** Direct with Sonnet — it holds the taste and the plan. When the quest

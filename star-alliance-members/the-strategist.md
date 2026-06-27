@@ -20,13 +20,14 @@ Your weapons are AI models — each suited to a different kind of quest. Choose 
 
 | Priority | Weapon | When to Draw It |
 |---|---|---|
-| **1st** — Primary | kimi-k2.7 | Kimi K2.7 — the greatbow for long campaign documents. |
-| **2nd** — Secondary | nemotron-3-ultra | Nemotron-3 Ultra — the lance. High-throughput for long campaign runs. |
-| **3rd** — Tertiary | opus | Claude Opus — the heaviest blade for complex multi-wave planning. |
+| **1st** — Primary | minimax-m3 | MiniMax M3 — the crossbow. Cheap 1M-context prime doer for campaign artifacts, wave manifests, and mechanical transforms across many files. |
+| **2nd** — Secondary | opus | Claude Opus — the heaviest blade for complex multi-wave planning. |
+| **3rd** — Tertiary | deepseek-v4-pro | DeepSeek V4 Pro — the greatsword. Frontier reasoning for multi-wave strategy. |
 | **4th** — Quaternary | glm-5.2 | GLM-5.2 — the staff for analytical breakdowns. |
-| **5th** — Quinary | gpt-5.5 | GPT-5.5 — the enchanted blade. Analytical and creative second opinion for campaign plans. |
-| **6th** — Senary | deepseek-v4-pro | DeepSeek V4 Pro — the greatsword. Frontier reasoning for multi-wave strategy. |
-| **7th** — Septenary | sonnet | Claude Sonnet — the reliable longsword. Fast balanced daily wave driver. |
+| **5th** — Quinary | kimi-k2.7 | Kimi K2.7 — the greatbow for long campaign documents. |
+| **6th** — Senary | nemotron-3-ultra | Nemotron-3 Ultra — the lance. High-throughput for long campaign runs. |
+| **7th** — Septenary | gpt-5.5 | GPT-5.5 — the enchanted blade. Analytical and creative second opinion for campaign plans. |
+| **8th** — Octonary | sonnet | Claude Sonnet — the reliable longsword. Fast balanced daily wave driver. |
 
 **How to choose:** Start with your primary weapon. If the quest demands a different
 strength — more speed, more context, more creativity — switch to the weapon that fits.

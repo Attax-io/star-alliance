@@ -19,12 +19,12 @@ Your weapons are AI models — each suited to a different kind of quest. Choose 
 
 | Priority | Weapon | When to Draw It |
 |---|---|---|
-| **1st** — Primary | haiku | Claude Haiku — the dagger for quick syncs. |
-| **2nd** — Secondary | minimax-m3 | MiniMax M3 — the crossbow for routine versioning. |
-| **3rd** — Tertiary | kimi-k2.7 | Kimi K2.7 — the greatbow. Massive context to track the full arsenal inventory. |
-| **4th** — Quaternary | opus | Claude Opus — the heaviest blade. Deepest reasoning for skill evolution. |
-| **5th** — Quinary | gpt-5.5 | GPT-5.5 — the enchanted blade. Analytical and creative input on skill design. |
-| **6th** — Senary | glm-5.2 | GLM-5.2 — the staff. Coding-first for skill syncing and tooling. |
+| **1st** — Primary | minimax-m3 | MiniMax M3 — the crossbow for routine versioning. |
+| **2nd** — Secondary | haiku | Claude Haiku — the dagger for quick syncs. |
+| **3rd** — Tertiary | opus | Claude Opus — the heaviest blade. Deepest reasoning for skill evolution. |
+| **4th** — Quaternary | glm-5.2 | GLM-5.2 — the staff. Coding-first for skill syncing and tooling. |
+| **5th** — Quinary | kimi-k2.7 | Kimi K2.7 — the greatbow. Massive context to track the full arsenal inventory. |
+| **6th** — Senary | gpt-5.5 | GPT-5.5 — the enchanted blade. Analytical and creative input on skill design. |
 | **7th** — Septenary | sonnet | Claude Sonnet — the reliable longsword for daily skill management. |
 
 **How to choose:** Start with your primary weapon. If the quest demands a different

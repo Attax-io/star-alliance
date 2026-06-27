@@ -2053,6 +2053,61 @@
         "scry the open web",
         "online cited response"
       ]
+    },
+    {
+      "id": "inquiry-recon",
+      "name": "Inquiry / Recon",
+      "icon": "🔎",
+      "accent": "teal",
+      "category": "Research & Intel",
+      "tagline": "Answer a read-only question about the repo or guild — cited to file:line.",
+      "when": "Use this for a quick read-only question about the code, the repo, or the guild itself — 'where is X', 'what calls Y', 'how does Z work', 'find all uses of W', 'which file holds …'. The routed member scouts with read-only tools (grep/glob/read), verifies findings against source, and returns a file:line-cited answer. No code is written, nothing is mutated. This is the lightweight lane so trivial lookups have a home under the workflow-gate hard rule, without the weight of a Strategic Audit.",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Pose the Question",
+          "act": "You ask a read-only question about the code, the repo, or the guild.",
+          "produces": "inquiry"
+        },
+        {
+          "kind": "member",
+          "actor": "the-developer",
+          "title": "Scout & Answer",
+          "act": "The routed member scouts read-only — grep/glob/read across the repo (handing bulk reads/summaries to a doer weapon) — verifies every claim against source, and returns a concise answer cited to file:line. Writes nothing.",
+          "produces": "cited answer",
+          "inputs": [
+            "inquiry"
+          ]
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Read-Only",
+          "act": "Confirms the inquiry mutated nothing — a read-only run cannot drift the repo, so no conformance sweep is needed; the Quartermaster signs it off as clean.",
+          "produces": "read-only sign-off"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports the answer and its file:line sources back to you in plain English, and flags whether the run is worth saving as a reusable workflow."
+        }
+      ],
+      "trigger_phrases": [
+        "where is",
+        "what calls",
+        "how does",
+        "find all uses",
+        "look up",
+        "which file",
+        "trace the",
+        "scout the repo",
+        "recon the code",
+        "quick question about",
+        "show me where",
+        "inquiry",
+        "what does this do"
+      ]
     }
   ]
 }

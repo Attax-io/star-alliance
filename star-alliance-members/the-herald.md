@@ -22,12 +22,12 @@ Your weapons are AI models — each suited to a different kind of quest. Choose 
 
 | Priority | Weapon | When to Draw It |
 |---|---|---|
-| **1st** — Primary | kimi-k2.7 | Kimi K2.7 — the greatbow. Massive context for long content, campaigns, and proof banks. |
+| **1st** — Primary | minimax-m3 | MiniMax M3 — the crossbow. Precise structural doer for briefs, sequences, and plans. |
 | **2nd** — Secondary | image-01 | MiniMax image-01 — the engraver's burin. Ad creative, social cards, and brand visuals from a prompt. |
-| **3rd** — Tertiary | minimax-m3 | MiniMax M3 — the crossbow. Precise structural doer for briefs, sequences, and plans. |
-| **4th** — Quaternary | opus | Claude Opus — the heaviest blade. Deepest reasoning for positioning and strategy. |
-| **5th** — Quinary | gpt-5.5 | GPT-5.5 — the enchanted blade. Creative second opinion on hooks and copy. |
-| **6th** — Senary | glm-5.2 | GLM-5.2 — the staff. Analytical breakdowns and multilingual reach. |
+| **3rd** — Tertiary | opus | Claude Opus — the heaviest blade. Deepest reasoning for positioning and strategy. |
+| **4th** — Quaternary | glm-5.2 | GLM-5.2 — the staff. Analytical breakdowns and multilingual reach. |
+| **5th** — Quinary | kimi-k2.7 | Kimi K2.7 — the greatbow. Massive context for long content, campaigns, and proof banks. |
+| **6th** — Senary | gpt-5.5 | GPT-5.5 — the enchanted blade. Creative second opinion on hooks and copy. |
 | **7th** — Septenary | sonnet | Claude Sonnet — the reliable longsword. Fast balanced daily marketing work. |
 
 **How to choose:** Start with your primary weapon. If the quest demands a different

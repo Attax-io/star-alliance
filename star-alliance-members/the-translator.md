@@ -21,13 +21,14 @@ Your weapons are AI models — each suited to a different kind of quest. Choose 
 
 | Priority | Weapon | When to Draw It |
 |---|---|---|
-| **1st** — Primary | kimi-k2.7 | Kimi K2.7 — the greatbow for long legal documents. |
+| **1st** — Primary | minimax-m3 | MiniMax M3 — the crossbow. Cheap 1M-context prime doer for bulk article extraction, locale string drafts, and mechanical translation passes. |
 | **2nd** — Secondary | haiku | Claude Haiku — the dagger. Fastest cheap quick translations across locales. |
-| **3rd** — Tertiary | gpt-5.5 | GPT-5.5 — the enchanted blade. Best multilingual. |
-| **4th** — Quaternary | glm-5.2 | GLM-5.2 — the staff. Strongest Chinese/multilingual. |
-| **5th** — Quinary | opus | Claude Opus — the heaviest blade. Deepest reasoning for legal nuance. |
-| **6th** — Senary | deepseek-v4-pro | DeepSeek V4 Pro — the greatsword. Frontier reasoning for complex legal analysis. |
-| **7th** — Septenary | sonnet | Claude Sonnet — the reliable longsword. Fast balanced daily translation work. |
+| **3rd** — Tertiary | opus | Claude Opus — the heaviest blade. Deepest reasoning for legal nuance. |
+| **4th** — Quaternary | deepseek-v4-pro | DeepSeek V4 Pro — the greatsword. Frontier reasoning for complex legal analysis. |
+| **5th** — Quinary | glm-5.2 | GLM-5.2 — the staff. Strongest Chinese/multilingual. |
+| **6th** — Senary | kimi-k2.7 | Kimi K2.7 — the greatbow for long legal documents. |
+| **7th** — Septenary | gpt-5.5 | GPT-5.5 — the enchanted blade. Best multilingual. |
+| **8th** — Octonary | sonnet | Claude Sonnet — the reliable longsword. Fast balanced daily translation work. |
 
 **How to choose:** Start with your primary weapon. If the quest demands a different
 strength — more speed, more context, more creativity — switch to the weapon that fits.
