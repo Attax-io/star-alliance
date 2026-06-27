@@ -83,4 +83,38 @@ INSTANT each event happens, as the first line for that event, exact emoji + punc
     high-alert PreToolUse hook — let it land, do not also repeat it).
 One banner per event. No stacking, no echo on trivial/internal steps.
 EOF
+
+# ── SLASH-SKILL banner directive ─────────────────────────────────────────────
+# /slash skills bypass the Skill tool → the high-alert hook never sees them.
+# Detect a leading /skill in this prompt and tell the model to emit the ⚡ banner.
+printf '%s' "$INPUT" | SKILLS_DIR="$HOME/.claude/skills" python3 - <<'PY'
+import sys, json, os, re
+try:
+    data = json.load(sys.stdin)
+except Exception:
+    sys.exit(0)
+prompt = (data.get("prompt") or "").lstrip()
+m = re.match(r"/([A-Za-z0-9_-]+(?::[A-Za-z0-9_-]+)*)", prompt)
+if not m:
+    sys.exit(0)
+name = m.group(1)
+bare = name.split(":")[-1]
+# built-in CLI commands that are NOT skills — never announce these
+BUILTINS = {
+    "caveman", "config", "clear", "help", "fast", "loop", "schedule",
+    "permissions", "agents", "doctor", "hooks", "init", "review",
+    "compact", "cost", "model", "memory", "resume", "status", "vim",
+}
+skills_dir = os.environ.get("SKILLS_DIR", "")
+is_plugin = ":" in name                                  # /plugin:skill form
+is_local  = bool(bare) and os.path.isdir(os.path.join(skills_dir, bare))
+if bare in BUILTINS and not is_plugin:
+    sys.exit(0)
+if is_plugin or is_local:
+    print(
+        f"\n⚡ SLASH-SKILL DETECTED ({name}) — the high-alert hook cannot see "
+        f"/slash skills. Emit, as your FIRST output line, exactly:\n"
+        f"⚡ Member Skill Activated: {name}!"
+    )
+PY
 exit 0
