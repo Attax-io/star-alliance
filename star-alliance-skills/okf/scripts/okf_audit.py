@@ -36,6 +36,54 @@ EXCLUDE_PATH_SUBSTR = (
     "/impeccable/",   # vendored external skill (carries its own multi-agent mirrors)
 )
 
+# ── Layout taxonomy (concept-path placement) ─────────────────────────────────
+# OKF's prose has always promised that NON-markdown files are "tidied by placement
+# and pruning — files live under the concept-path they belong to." `--layout` is
+# the check that finally makes that promise real: it classifies every loose file at
+# the repo ROOT against a target concept-path. Markdown frontmatter is checked
+# elsewhere; this is the orthogonal placement axis.
+#
+# Files that LEGITIMATELY live at repo root — entrypoints, the canonical registry,
+# and the dashboard trio served from root. These never count as misplaced.
+LAYOUT_PINNED = {
+    "README.md", "CLAUDE.md", "VERSIONS.md",            # canonical root docs + registry
+    "index.html", "app.js", "app.css",                  # dashboard, served from repo root
+    "package.json", "package-lock.json",
+}
+# Ordered (regex, target_dir, safety) rules — FIRST match wins. `safety`:
+#   "safe"   — inert content nothing references → a mover may relocate it freely.
+#   "review" — reached by hardcoded paths (hooks in .claude/settings.json, build.py,
+#              serve.cjs, the dashboard, sibling generators) → relocation needs a
+#              path-rewrite sweep, i.e. a gated Phase-2 Architecture Build.
+LAYOUT_RULES = [
+    (r"^(?:STRATEGIST|AUDIT)[-A-Z].*\.md$", "docs/",            "safe"),
+    (r"^gen-.*\.(?:cjs|py)$",               "tools/generators/", "review"),
+    (r"^(?:build|build_guild_log|conformity_check|install|log_event|member_level)\.py$",
+                                            "tools/",            "review"),
+    (r"^guild-data\.js$",                   "data/",             "review"),
+    (r".*\.json$",                          "data/",             "review"),
+]
+
+
+def classify_placement(name: str):
+    """For a ROOT-level filename, return (target_dir, safety) if it is misplaced,
+    or None if it belongs at root (pinned) or carries no rule (left alone).
+    `safety` is 'safe' (free to move) or 'review' (needs a ref-rewrite sweep)."""
+    if name in LAYOUT_PINNED or name.startswith("."):
+        return None
+    for pat, target, safety in LAYOUT_RULES:
+        if re.match(pat, name):
+            return (target, safety)
+    return None  # unclassified root file — advisory only, not flagged
+
+
+def root_loose_files(root: str):
+    """Plain files sitting directly at repo root (no subdir, no dotfiles)."""
+    for fn in sorted(os.listdir(root)):
+        full = os.path.join(root, fn)
+        if os.path.isfile(full) and not fn.startswith("."):
+            yield fn
+
 
 def repo_root():
     here = os.path.dirname(os.path.abspath(__file__))
