@@ -712,6 +712,7 @@ def build_meta(members, skills, domains, workflows, log, members_meta_file=None,
             "skills": len(skills),
             "domains": len(domains),
             "workflows": len(workflows),
+            "hooks": sum(len(h.get("scripts", [])) for h in (hooks or [])),
             "log": log["count"],
         },
     }
