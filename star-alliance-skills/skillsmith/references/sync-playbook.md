@@ -62,11 +62,11 @@ python3 skillsmith/scripts/skill_registry.py write   # regenerate VERSIONS.md
 python3 skillsmith/scripts/skill_registry.py check   # confirm 0 hard violations
 # Conformity-close (Invariant #8) — the Quartermaster's final gate. MUST pass before commit.
 python3 build.py                                     # regenerate guild-data.* from all sources
-python3 conformity_check.py                          # FULL CONFORMITY (exit 0) or fix + re-run
+python3 tools/conformity_check.py                          # FULL CONFORMITY (exit 0) or fix + re-run
 git -C <repo> commit <scoped paths> && git -C <repo> push origin main   # scope to the skill + its regen; never blind `add -A` a co-mingled tree (§L27)
 ```
 
-**Conformity-close (Invariant #8).** `conformity_check.py` is read-only; it audits the whole repo for internal agreement + conformity with every logged `decision` (guild-data↔json parity, `meta.counts`, workflow gates/actors, member arsenal order, and the **K-invariant** skill dirs == `skills-meta.json` == generated skill ids). A sync that **added a skill to the repo** (ADD-TO-REPO) MUST also add its `skills-meta.json` entry + run `build.py`, or the K-check FAILS. Fix any contradiction before committing — never ship one.
+**Conformity-close (Invariant #8).** `tools/conformity_check.py` is read-only; it audits the whole repo for internal agreement + conformity with every logged `decision` (guild-data↔json parity, `meta.counts`, workflow gates/actors, member arsenal order, and the **K-invariant** skill dirs == `skills-meta.json` == generated skill ids). A sync that **added a skill to the repo** (ADD-TO-REPO) MUST also add its `skills-meta.json` entry + run `build.py`, or the K-check FAILS. Fix any contradiction before committing — never ship one.
 
 ## Notes / landmines
 

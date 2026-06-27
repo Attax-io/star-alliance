@@ -15,7 +15,7 @@ A member's level is a **craft-depth meter, not a hierarchy** — it grades the d
 member's arsenal and specialty, exactly as a *skill's* level grades the skill. It is **decoupled from
 standing**: the Butler leads the guild regardless of tier; a low level only says *this member's
 arsenal is deepenable*. Level meters **capability, never usage** (deployment frequency is a separate
-axis — see the plan's Wave 6, not yet built).
+axis — Wave 6, now spec'd below against the deploy ledger, gated until the ledger accrues rows).
 
 ## The law
 
@@ -51,7 +51,7 @@ and logs it.** He cannot confer a tier the checklist doesn't support.
 | **Peak skill** | highest skill level in the arsenal. |
 | **Weapons** | count of models in the kit. |
 | **Profile** | `does[]` + `doesnt[]` non-empty, `summary` present. |
-| **Conformity-clean** | member raises zero `build.py` / `conformity_check.py` warnings. |
+| **Conformity-clean** | member raises zero `build.py` / `tools/conformity_check.py` warnings. |
 
 ## The prerequisite checklists
 
@@ -77,7 +77,7 @@ re-log if the ladder shifts.
 3. **Confer.** `python3 member_level.py promote <member>` — writes the conferred `level` in
    `members-meta.json`, logs a `member-upgrade` entry (before→after in the detail), and runs the
    conformity-close.
-4. **Close.** `python3 build.py` + `python3 conformity_check.py` must report **FULL CONFORMITY** before
+4. **Close.** `python3 build.py` + `python3 tools/conformity_check.py` must report **FULL CONFORMITY** before
    the commit (Invariant #8). The member-level invariant checks `conferred ≤ earned` for everyone.
 
 ## Regression (demotion) — policy (A) honest meter

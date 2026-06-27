@@ -74,7 +74,7 @@ the bare emoji — this is exactly the `storm-investigation` v1.0.0 miss), or no
    > `| `<skill>` | invoke WHEN … | do NOT invoke for … | pairs with `<skill>` |` (put a craft skill in
    > the main table, a cross-cutting one in the "Universal skills" table). Whenever you **REMOVE** a
    > skill from the loadout, delete its drill row in the same edit. The `SD` audit in
-   > `conformity_check.py` enforces exactly this; conformity-close (Invariant #8) is the backstop, not
+   > `tools/conformity_check.py` enforces exactly this; conformity-close (Invariant #8) is the backstop, not
    > the primary guard — get it right at edit time, every time.
 4. **Themed art (Fallen Sword) — the Designer's MANDATORY handoff.** Every skill has a
    `skill-art/<id>.png`; a new skill with none falls back to a bare emoji (the `storm-investigation`
@@ -107,7 +107,7 @@ python3 "$SA/star-alliance-skills/skillsmith/scripts/skill_sync.py" apply --skil
 **Conformity-close (Invariant #8) — the Quartermaster's final gate.** C4 already ran `build.py`; now prove the new skill is reflected everywhere:
 
 ```sh
-python3 "$SA/conformity_check.py"     # FULL CONFORMITY (exit 0) — the K-invariant catches a skill dir not yet in skills-meta / guild-data
+python3 "$SA/tools/conformity_check.py"     # FULL CONFORMITY (exit 0) — the K-invariant catches a skill dir not yet in skills-meta / guild-data
 ```
 
 If it FAILS (e.g. K-check reports `only-dir=[<name>]`), the C4 wiring is incomplete — add the missing `skills-meta.json` / `domains.json` / member / art entry, re-run `build.py`, re-check. Then commit + push (scope to the new skill + its dashboard regen; avoid a blind `add -A` of a co-mingled tree, §L27):
