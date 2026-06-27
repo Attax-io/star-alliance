@@ -3,13 +3,13 @@
 const GUILD = {
   "meta": {
     "name": "Star Alliance",
-    "version": "6.57.71",
+    "version": "6.57.72",
     "versionTiers": {
       "major": 6,
       "minor": 57,
-      "patch": 71
+      "patch": 72
     },
-    "generated": "2026-06-27T23:45:15Z",
+    "generated": "2026-06-27T23:45:36Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -33,7 +33,7 @@ const GUILD = {
       "domains": 3,
       "workflows": 33,
       "hooks": 7,
-      "log": 154
+      "log": 155
     }
   },
   "members": [
@@ -8347,6 +8347,14 @@ const GUILD = {
   "log": {
     "entries": [
       {
+        "id": 95,
+        "date": "2026-06-28",
+        "type": "chore",
+        "title": "Universal 4-seat arsenal Phases 2-4: derived arsenal, Critic on dashboard, swarm pull",
+        "who": "Atta",
+        "detail": "Completed the 4-seat Architecture Build (Brain/Doer/Critic/Bench). Phase 2 (universalize): deleted per-member weapons[] from 9 member .md + all weaponsDesc from members-meta (kills the 4-copy drift class); build.py now DERIVES each member's seats+weapons from the universal seats (models.json) via derive_member_arsenal() — brain = the member's model: (override, default opus), doer=minimax-m3, critic=glm-5.2, bench=every other live text model; conformity_check retired per-member checks A/PD/W/S/WT and rewrote BR (brain must be a registry thinker) — ST (seats valid + critic-family!=brain-family) is the new guard. Phase 3 (dashboard): app.js renders the CRITIC flag (+ .is-critic CSS) alongside BRAIN/DOER from member.seats; GUILD.seats emitted; retired the now-inert per-member weapon-editing UI (grant/revoke/reorder no-op, revoke button removed, hint rewritten) and serve.cjs write paths (setMemberField rejects weapons, createMember no longer writes weapons/weaponsDesc). Phase 4 (swarm): new bench_pull.py selects N bench models for doer-swarm/thinker-swarm; weapon-utility -> 3.0.0 (universal seats doctrine). Validated: build idempotent, FULL CONFORMITY, node --check app.js/serve.cjs, all py_compile; dashboard verified in-browser (Brain/Doer/Critic badges render, no edit controls). Independent grounded review: PASS non-blocking; its flagged stale weapon-edit paths were fixed in this same wave. Builds on Phase 1 (guild-log #94)."
+      },
+      {
         "id": 94,
         "date": "2026-06-28",
         "type": "chore",
@@ -10205,7 +10213,7 @@ const GUILD = {
         "id": "g-650b7781-add-skill-impeccable"
       }
     ],
-    "count": 154
+    "count": 155
   },
   "models": {
     "opus": {
