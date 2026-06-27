@@ -58,7 +58,8 @@
     "okf",
     "star-alliance-language",
     "claude-code-hooks",
-    "schema-evolution"
+    "schema-evolution",
+    "session-mining"
    ],
    "members": [
     "the-butler",
