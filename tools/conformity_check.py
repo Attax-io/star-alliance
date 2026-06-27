@@ -16,6 +16,10 @@ Checks (each maps to a source-of-truth invariant or a logged decision):
   W  weaponsDesc   members-meta weaponsDesc set == member weapons set
   SD skill-drills  every member-carried skill has a `## Skill Drills` table row
   N  counts        guild-data meta.counts == real lengths
+  WART weapon-art  every registry weapon has a weapon-art/<id>.png tile
+  MU usage-sidecar models-usage.json keys ⊆ registry ids
+  FB fallback-sync fail-safe ROLE/CLOUD_TAG dicts == models.json (anti-drift)
+  RG routing-gate  guild-routing-gate.sh member→model prose == guild-data
 """
 import json, re, sys, pathlib
 
@@ -412,6 +416,61 @@ def main():
                 f"UI  app.js line(s) {bare_hits} use bare m.weapons.length — "
                 f"must use effectiveWeapons(m).length so card count matches detail page"
             )
+
+    # === Phase-D registry hardening (audit #2 §8.3) — models.json is the ONE SoT.
+    #     These guard the derive-from-registry contract so a fallback dict, a cost
+    #     sidecar, an art tile, or the routing-gate prose can never SILENTLY drift
+    #     from star-alliance-arsenal/models.json. (cloud_map/smt come from the L check.)
+    try:
+        _regm = json.loads((ROOT / "star-alliance-arsenal" / "models.json").read_text()).get("models", {})
+    except Exception:
+        _regm = {}
+    if _regm:
+        reg_ids = set(_regm)
+        # WART — every registry weapon ships a weapon-art/<id>.png tile (no bare fallback)
+        tileless = sorted(mid for mid in reg_ids
+                          if not (ROOT / "weapon-art" / f"{mid}.png").exists())
+        if tileless:
+            fails.append(f"WART models missing a weapon-art/<id>.png tile: {tileless} "
+                         f"(forge via tools/generators/gen-weapon-art.cjs)")
+        # MU — the cost sidecar (models-usage.json) may only key ids that exist in the registry
+        mu_path = ROOT / "star-alliance-arsenal" / "models-usage.json"
+        if mu_path.exists():
+            mu_ids = {k for k in json.loads(mu_path.read_text()) if k != "_comment"}
+            orphan = sorted(mu_ids - reg_ids)
+            if orphan:
+                fails.append(f"MU models-usage.json keys not in the registry: {orphan} "
+                             f"(cost sidecar drifted from models.json)")
+        # FB — anti-drift: the fail-safe ROLE dicts must equal the registry (media→doer).
+        #      This is the exact guard that would have caught the old app.js sonnet=doer bug.
+        reg_role_norm = {mid: ("doer" if d.get("role") == "media" else d.get("role"))
+                         for mid, d in _regm.items()}
+        for mid, r in _FALLBACK_ROLE.items():
+            if mid == "qwen-3.5":  # legacy alias, not a registry id
+                continue
+            if reg_role_norm.get(mid) != r:
+                fails.append(f"FB conformity _FALLBACK_ROLE[{mid}]={r!r} != registry "
+                             f"{reg_role_norm.get(mid)!r} (fallback drifted from models.json)")
+        missing_fb = sorted(reg_ids - (set(_FALLBACK_ROLE) - {"qwen-3.5"}))
+        if missing_fb:
+            fails.append(f"FB conformity _FALLBACK_ROLE missing registry ids: {missing_fb}")
+        # FB(tags) — summon.py's fallback cloud-tag map (parsed as cloud_map in the L check)
+        #            must equal the registry's cloud_tags exactly.
+        reg_tags = {mid: d["cloud_tag"] for mid, d in _regm.items() if d.get("cloud_tag")}
+        if cloud_map != reg_tags:
+            fails.append(f"FB summon _FALLBACK_CLOUD_TAG {cloud_map} != registry cloud_tags "
+                         f"{reg_tags} (routing fallback drifted from models.json)")
+
+    # === RG — guild-routing-gate.sh member→model prose must match guild-data (lint, not
+    #     generate: the lines are hand-edited doctrine per audit §7.1/C2, just kept honest) ===
+    rg_path = ROOT / ".claude" / "hooks" / "guild-routing-gate.sh"
+    if rg_path.exists():
+        rg_pairs = dict(re.findall(r'(the-[a-z]+)\s*\((opus|sonnet|haiku)\)', rg_path.read_text()))
+        member_model = {m["id"]: m.get("model") for m in g["members"]}
+        for mid, mdl in sorted(rg_pairs.items()):
+            if member_model.get(mid) != mdl:
+                fails.append(f"RG guild-routing-gate.sh says {mid} ({mdl}) but guild-data model is "
+                             f"'{member_model.get(mid)}' (routing-gate drifted from member .md)")
 
     # report
     print("═" * 64)

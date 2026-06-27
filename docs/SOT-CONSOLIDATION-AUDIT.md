@@ -401,7 +401,17 @@ The browser-side consolidation that was actually missing:
 
 **Verified:** `node --check app.js` OK · `python3 build.py` clean · `python3 tools/conformity_check.py` → **FULL CONFORMITY** · dashboard renders **Opus = Thinker + PRIME**, **Sonnet = Both** (was Doer), Haiku = Doer, GPT-5.5 = Thinker+off · no console errors · Arsenal page renders host/tier/meter from the derived data.
 
-### 8.3 Still open (optional, not blocking)
+### 8.3 Phase-D hardening — DONE
 
-- `app.js` `ARSENAL` (display order) and `TIER_RANK` (sort) remain app.js-side **view config** — presentation orderings, not model-identity facts; left intentionally.
-- §7.6 **Phase D** conformity-hardening checks (art-tile-per-id, `models-usage` ⊆ registry, CLOUD_TAG agreement, routing-gate lint) are **not yet added** — recommended next.
+`tools/conformity_check.py` gained four anti-drift checks (verified with teeth — each fires on a seeded mismatch, all green on the real repo):
+
+| Check | Guards |
+|---|---|
+| **WART** | every registry weapon has a `weapon-art/<id>.png` tile (15/15) |
+| **MU** | `models-usage.json` keys ⊆ registry ids (cost sidecar can't drift) |
+| **FB** | the fail-safe `_FALLBACK_ROLE` (conformity) + `_FALLBACK_CLOUD_TAG` (summon) **must equal the registry** — the exact guard that would have caught the original `app.js sonnet=doer` bug |
+| **RG** | `guild-routing-gate.sh` member→model prose == `guild-data` (lint only; the doctrine prose stays hand-edited per §7.1/C2) |
+
+Remaining (intentional, not a defect): `app.js` `ARSENAL` (display order) and `TIER_RANK` (sort) stay app.js-side **view config** — presentation orderings, not model-identity facts.
+
+**Consolidation complete.** One semantic SoT (`star-alliance-arsenal/models.json`), every consumer derives, and conformity now mechanically forbids any copy from drifting.
