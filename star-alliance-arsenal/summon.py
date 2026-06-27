@@ -38,7 +38,7 @@ KNOWN_IDS = sorted(
 )
 
 
-def _passthrough(args):
+def _passthrough(args, token_flag=None):
     """Build the trailing flag/positional portion shared by every backend.
 
     -s VALUE is prepended, --json and -f VALUE are appended, prompt is last.
