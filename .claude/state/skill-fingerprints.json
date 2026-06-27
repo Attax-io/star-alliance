@@ -15,6 +15,10 @@
     "sha": "478f8156e761e290",
     "version": "1.2.0"
   },
+  "chart-patterns": {
+    "sha": "f42d4c4346cc1809",
+    "version": "1.0.0"
+  },
   "claude-code-hooks": {
     "sha": "575f4f5bbe74f75e",
     "version": "1.1.0"
@@ -80,12 +84,12 @@
     "version": "1.2.1"
   },
   "guild-reflection": {
-    "sha": "21800eb63bed2366",
-    "version": "1.0.0"
+    "sha": "f349945ad20bac25",
+    "version": "1.0.1"
   },
   "guild-sync": {
-    "sha": "761c4348f383d1d2",
-    "version": "1.0.0"
+    "sha": "31e234782253c75f",
+    "version": "1.0.1"
   },
   "harness-efficiency": {
     "sha": "b09f4dfd7b504137",
@@ -128,8 +132,8 @@
     "version": "1.0.0"
   },
   "letting-go": {
-    "sha": "c365efba16e00698",
-    "version": "1.0.0"
+    "sha": "0aa53dabeefaa3cf",
+    "version": "1.0.1"
   },
   "market-recon": {
     "sha": "cdc5853a23b68e67",
@@ -140,8 +144,8 @@
     "version": "1.1.1"
   },
   "metamorphosis-check": {
-    "sha": "898d9c36f47f36d5",
-    "version": "1.0.0"
+    "sha": "d5d21e31b54ead03",
+    "version": "1.0.1"
   },
   "motion-design": {
     "sha": "1529be2ae0ae54fe",
@@ -242,6 +246,10 @@
   "vault-log-compliance": {
     "sha": "632e55e4209b5ae8",
     "version": "1.1.0"
+  },
+  "voices-check": {
+    "sha": "7804760321c65358",
+    "version": "1.0.1"
   },
   "volume-price-analysis": {
     "sha": "c9d3c2c489a955a5",

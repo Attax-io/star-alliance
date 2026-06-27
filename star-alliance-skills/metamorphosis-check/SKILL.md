@@ -2,7 +2,7 @@
 name: metamorphosis-check
 description: "A guardrail that catches the most dangerous agent failure: confidently running the OLD playbook after the underlying state has changed. Mined from Kafka's Metamorphosis. An agent that detects a discontinuity in itself — a model swap, a failed/missing tool, a degraded or truncated context, a misread prompt, an MCP gone unavailable — must STOP, name the new state, and rebuild its plan from what it can do NOW, not what it used to do. Forces three written answers first: (1) what did I assume about my inputs/tools/role that may no longer hold? (2) what part of my workflow depends on it? (3) what is the smallest honest first step given the ACTUAL state? Use on session start, after a tool error, after a model/context change, or when output starts contradicting itself. Triggers: 'something changed', 'tool failed', 'unexpected output', 'recheck state', 'did the context drift', 'capability check', 'why is this failing now'. Refuse to mimic a confident pre-change voice when capability drift is detected."
 metadata:
-  version: 1.0.0
+  version: 1.0.1
 type: Skill
 
 ---
@@ -50,3 +50,9 @@ no longer have.
 
 > One-liner: **If you have changed, stop apologizing in the voice of who you were — re-learn what
 > you are before you act.**
+
+## Changelog
+
+| Version | Date | Summary |
+|---|---|---|
+| **1.0.1** | 2026-06-27 | Trimmed `description` under the 1024-char Cowork hard limit (was rejected on install). Triggers and the differentiator clause preserved. |

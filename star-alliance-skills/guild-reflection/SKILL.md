@@ -2,7 +2,7 @@
 name: guild-reflection
 description: "The Quartermaster's self-improvement engine — turn finished work into durable guild upgrades through a structured reflective loop, not just accumulate data. Two modes: CYCLE (after any non-trivial task, run the 6-field loop — what happened, friction signals, evaluate vs intent, root cause, one generalizable rule, a concrete diff to a skill/CLAUDE.md/member; not closed until the action_plan mutates doctrine) and AUDIT (on a cadence: weed skills unused for N cycles, retire 'bad ideas' with falsifying evidence, rebalance member load, write the journal). Use whenever the guild should LEARN from a run, not just finish it. Triggers: 'reflect on this', 'run the reflective cycle', 'guild self-audit', 'what did we learn', 'weed the skills', 'retire bad ideas', 'close the loop', 'self-improve the guild', 'reflection journal'. Distinct from session-mining (mines raw chat history) and skillsmith (syncs/versions skills) — guild-reflection decides WHAT should change and writes the action plan those skills then execute."
 metadata:
-  version: 1.0.0
+  version: 1.0.1
 type: Skill
 
 ---
@@ -99,3 +99,9 @@ nothing.
 
 See `references/recipe.md` for the full step-by-step and `references/self-interrogation.md` for
 the fixed audit questionnaire.
+
+## Changelog
+
+| Version | Date | Summary |
+|---|---|---|
+| **1.0.1** | 2026-06-27 | Trimmed `description` under the 1024-char Cowork hard limit (was rejected on install). Triggers and the differentiator clause preserved. |

@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 66
     },
-    "generated": "2026-06-27T20:09:05Z",
+    "generated": "2026-06-27T20:09:37Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -2978,7 +2978,7 @@ const GUILD = {
     {
       "id": "guild-reflection",
       "name": "guild-reflection",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "icon": "🔁",
       "art": "",
       "artPng": true,
@@ -2994,7 +2994,8 @@ const GUILD = {
         "Mode 1 · CYCLE — run after any non-trivial task",
         "Mode 2 · AUDIT — run on a cadence (weekly / every N sessions)",
         "The journal (persistence is the point)",
-        "Anti-patterns (do not)"
+        "Anti-patterns (do not)",
+        "Changelog"
       ],
       "triggers": "'reflect on this', 'run the reflective cycle', 'guild self-audit', 'what did we learn', 'weed the skills', 'retire bad ideas', 'close the loop', 'self-improve the guild'",
       "modes": "CYCLE | AUDIT",
@@ -3005,8 +3006,8 @@ const GUILD = {
       ],
       "scripts": [],
       "stats": {
-        "lines": 94,
-        "words": 833
+        "lines": 100,
+        "words": 867
       },
       "global": true,
       "members": [
@@ -3502,7 +3503,7 @@ const GUILD = {
     {
       "id": "letting-go",
       "name": "letting-go",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "icon": "🍃",
       "art": "",
       "artPng": true,
@@ -3517,7 +3518,8 @@ const GUILD = {
         "The stuck signals (when to fire)",
         "The five-step routine",
         "The hard rule (auto-terminate)",
-        "What this is not"
+        "What this is not",
+        "Changelog"
       ],
       "triggers": "'I am stuck', 'stop retrying', 'ship the current best', 'we are looping', 'let it go', 'stop over-thinking this', 'good enough'",
       "modes": "",
@@ -3525,8 +3527,8 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 45,
-        "words": 410
+        "lines": 51,
+        "words": 444
       },
       "global": true,
       "members": [
@@ -3613,7 +3615,7 @@ const GUILD = {
     {
       "id": "metamorphosis-check",
       "name": "metamorphosis-check",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "icon": "🦋",
       "art": "",
       "artPng": true,
@@ -3628,7 +3630,8 @@ const GUILD = {
         "When to fire",
         "The three forced answers (write them before proceeding)",
         "The refusal",
-        "Relationship to the guild"
+        "Relationship to the guild",
+        "Changelog"
       ],
       "triggers": "'something changed', 'tool failed', 'unexpected output', 'recheck state', 'did the context drift', 'capability check', 'why is this failing now'",
       "modes": "",
@@ -3636,8 +3639,8 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 45,
-        "words": 374
+        "lines": 51,
+        "words": 408
       },
       "global": true,
       "members": [
@@ -4719,7 +4722,7 @@ const GUILD = {
     {
       "id": "voices-check",
       "name": "voices-check",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "icon": "🗣️",
       "art": "",
       "artPng": true,
@@ -4734,7 +4737,8 @@ const GUILD = {
         "The common sub-voices",
         "The check (run at the top of a non-trivial response)",
         "The Steppenwolf trap (the reason this exists)",
-        "What this is not"
+        "What this is not",
+        "Changelog"
       ],
       "triggers": "'name the voices', 'which voice is leading', 'I am torn between', 'this feels one-sided', 'integrate the perspectives', 'am I over-indexing'",
       "modes": "",
@@ -4742,8 +4746,8 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 43,
-        "words": 358
+        "lines": 49,
+        "words": 392
       },
       "global": true,
       "members": [

@@ -2,7 +2,7 @@
 name: letting-go
 description: "A universal guardrail that kills retry-storms, perfectionism paralysis, and over-deliberation — where an agent stalls clinging to how things SHOULD be instead of acting on reality as it IS. Mined from Leo Babauta's The One Skill. When stuck (repeated retries, replanning the same step, refusing to ship, escalating without new information), run a five-step micro-routine: (1) notice the stuck signal, (2) name the ideal being held, (3) see the harm it causes now — wasted tokens, blocked progress, (4) release it with intent, (5) take the smallest real action on reality. Pairs with a hard rule: loops auto-terminate after N retries with a 'let go and ship the current best' branch rather than spiraling. Use when stuck, looping, over-polishing, or stalling on a decision. Triggers: 'I'm stuck', 'stop retrying', 'ship the current best', 'we're looping', 'let it go', 'stop over-thinking this', 'good enough'. Distinct from guild-reflection (learns AFTER a run) — letting-go intervenes DURING a stuck run."
 metadata:
-  version: 1.0.0
+  version: 1.0.1
 type: Skill
 
 ---
@@ -50,3 +50,9 @@ is "state the blocker in one line and hand back," not "try the same thing a four
   diagnosis, not a stuck loop. Letting-go is for the *same* failure repeating.
 
 > One-liner: **Let go of the ideal; act on reality as it is.**
+
+## Changelog
+
+| Version | Date | Summary |
+|---|---|---|
+| **1.0.1** | 2026-06-27 | Trimmed `description` under the 1024-char Cowork hard limit (was rejected on install). Triggers and the differentiator clause preserved. |
