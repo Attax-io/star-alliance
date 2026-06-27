@@ -122,6 +122,10 @@ const WORKFLOWS = [
     id: "web-oracle",
     prompt: `${STYLE}. A CYAN scrying-orb on a brass far-seer's stand piercing a glowing web of ley-lines that stretch beyond the known map, distant lights of far realms reflected in the glass, an open ledger beneath citing each vision with a runic source-mark, far-sight and verified knowledge drawn from the wider world`,
   },
+  {
+    id: "inquiry-recon",
+    prompt: `${STYLE}. A TEAL enchanted magnifying lens held over the guild's own unrolled archive-map, a glowing teal pin marking one exact found location among rows of indexed runes, a hooded scout's gloved hand tracing a line of text, an open reference tome beneath with a single line lit and a source-mark beside it, quiet read-only reconnaissance of the guild's own records, no weapon drawn`,
+  },
 ];
 
 function postJSON(url, headers, body) {
