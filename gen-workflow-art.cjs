@@ -126,6 +126,10 @@ const WORKFLOWS = [
     id: "inquiry-recon",
     prompt: `${STYLE}. A TEAL enchanted magnifying lens held over the guild's own unrolled archive-map, a glowing teal pin marking one exact found location among rows of indexed runes, a hooded scout's gloved hand tracing a line of text, an open reference tome beneath with a single line lit and a source-mark beside it, quiet read-only reconnaissance of the guild's own records, no weapon drawn`,
   },
+  {
+    id: "conversation",
+    prompt: `${STYLE}. A calm SLATE-GREY hearth-side parley scene, two empty carved chairs facing each other across a low rune-lit table, a single softly glowing speech-glyph hovering between them, the guild banner furled and at rest against the wall, no weapons present, quiet plain counsel and exchange of words`,
+  },
 ];
 
 function postJSON(url, headers, body) {
