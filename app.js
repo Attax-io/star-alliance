@@ -732,16 +732,19 @@ function renderMemberDossier(id) {
   const sharedN = active.filter(isShared).length;
 
   const eff = effectiveWeapons(m);
-  const primeThinkerModel = eff.find((w) => { const r = modelMeta(w.model).role; return r === "thinker" || r === "both"; })?.model;
+  const brainModel = m.model;                                                 // brain = the model the agent RUNS AS (its mind)
+  const primeDoerModel = eff.find((w) => modelMeta(w.model).role === "doer")?.model;  // hands = first doer-role weapon (minimax-m3)
   const weapons = eff.map((w, i) => {
     const mm = modelMeta(w.model);
     const role = mm.role ? ROLE_META[mm.role] : null;
-    const isPrime = w.model === primeThinkerModel;
-    return `<div class="weapon-card${w.added ? " added" : ""}${isPrime ? " prime-thinker" : ""}" draggable="true" data-model="${esc(w.model)}" data-member="${esc(m.id)}" style="--wc:${esc(mm.color)}">
+    const isBrain = w.model === brainModel;
+    const isDoer = w.model === primeDoerModel;
+    return `<div class="weapon-card${w.added ? " added" : ""}${isBrain ? " is-brain" : ""}${isDoer ? " is-doer" : ""}" draggable="true" data-model="${esc(w.model)}" data-member="${esc(m.id)}" style="--wc:${esc(mm.color)}">
       <div class="weapon-thumb-wrap">
         <img class="weapon-thumb" src="weapon-art/${esc(w.model)}.png" alt="${esc(mm.label)}" loading="lazy">
         ${role ? `<img class="weapon-role-pip" src="${esc(role.icon)}" alt="${esc(role.label)}" title="${esc(role.label)}: ${esc(role.rule)}" style="--rc:${esc(role.color)}">` : ""}
-        ${isPrime ? `<span class="weapon-prime-flag" title="Prime thinker — plans the work and reviews the result">PRIME</span>` : ""}
+        ${isBrain ? `<span class="weapon-brain-flag" title="Brain — the model this agent runs as and thinks with">BRAIN</span>` : ""}
+        ${isDoer ? `<span class="weapon-doer-flag" title="Prime doer — the hands that do the bulk execution">DOER</span>` : ""}
         <div class="weapon-thumb-tip">
           <div class="wtt-header">
             <div class="wtt-name">${esc(mm.label)}</div>

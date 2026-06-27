@@ -10,7 +10,8 @@ Checks (each maps to a source-of-truth invariant or a logged decision):
   D23 report-gate  every workflow ENDS with a Butler 'report' gate   (decision #23)
   C  qm-close      every workflow's last member step before report is the-quartermaster
   A  arsenal-order per member: doers → thinkers/duals → sonnet last   (session decision)
-  PT prime-thinker == first thinker-capable weapon in the arsenal (== opus)
+  BR brain       each member's session model (model:) is a carried, thinking weapon (brain = personality)
+  PD prime-doer  the prime doer (minimax-m3) leads the arsenal (the member's hands)
   R  refs          workflow actors ∈ members∪{you}; gates valid; member skills exist
   S  source==gen   member .md frontmatter weapons order == generated guild-data
   W  weaponsDesc   members-meta weaponsDesc set == member weapons set
@@ -192,21 +193,26 @@ def main():
         for w in weapons:
             if w not in ROLE:
                 fails.append(f"A  {mid}: weapon '{w}' has no role mapping")
-        # PT — prime thinker is the FIRST thinker-capable weapon scanning left→right.
-        # Pure doers carry no thinker capability and are skipped; sonnet is role 'both'
-        # but pinned last, so it never wins. The winner must be opus (mirrors check A's
-        # opus-leads-the-thinker-block), and any weaponsDesc that calls a weapon the
-        # "prime thinker" must name that same weapon.
-        prime = next((w for w in weapons if ROLE.get(w) in ("thinker", "both")), None)
-        if prime is None:
-            fails.append(f"PT {mid}: arsenal has no thinker-capable weapon (no prime thinker)")
-        elif prime != "opus":
-            fails.append(f"PT {mid}: first thinker-capable weapon is '{prime}', expected 'opus' "
-                         f"(prime thinker must lead the thinker block)")
+        # BR — a member's BRAIN is its session model (the model it RUNS AS is the model
+        # that thinks: brain = personality). That model must be carried in its own loadout
+        # and be able to think (role thinker|both). Opus and the other thinkers are
+        # ESCALATION weapons drawn for hard problems, not the brain.
+        brain = m.get("model")
+        if brain not in weapons:
+            fails.append(f"BR {mid}: session model '{brain}' is not in its own loadout "
+                         f"(the brain must be a weapon the member carries)")
+        elif ROLE.get(brain) not in ("thinker", "both"):
+            fails.append(f"BR {mid}: brain '{brain}' has role '{ROLE.get(brain)}' — "
+                         f"a brain must be able to think (thinker|both)")
+        # PD — the prime doer (the hands) leads the doer block: minimax-m3 first.
+        doers_in = [w for w in weapons if ROLE.get(w) == "doer"]
+        if doers_in and doers_in[0] != "minimax-m3":
+            fails.append(f"PD {mid}: prime doer is '{doers_in[0]}', expected 'minimax-m3' "
+                         f"(the prime doer leads the arsenal)")
         for w in m["weapons"]:
-            if "prime thinker" in w.get("desc", "").lower() and w["model"] != prime:
-                fails.append(f"PT {mid}: weapon '{w['model']}' desc claims 'prime thinker' "
-                             f"but the prime thinker is '{prime}'")
+            if "prime thinker" in w.get("desc", "").lower():
+                fails.append(f"BR {mid}: weapon '{w['model']}' desc still says 'prime thinker' "
+                             f"— the brain is the session model now; reword to 'escalation thinker'")
         # W — members-meta weaponsDesc set == weapons set
         wd = set(meta.get(mid, {}).get("weaponsDesc", {}).keys())
         if wd != set(weapons):

@@ -119,6 +119,38 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
     cross-linked), run `okf` — always `okf_audit.py --fix` to migrate before arming the gate.
 11. You're meticulous. You track versions, you validate, you never skip the registry.
 
+## Leave Nothing Stale
+
+`guild-data.json` and `guild-data.js` are **generated outputs** — the dashboard and
+the harness both read them. Source truth lives in `workflows.json`, `star-alliance-members/`,
+`star-alliance-skills/`, `data/guild-log.json`, and `data/members-meta.json`. When any
+source changes, the outputs must regenerate in the **same commit** or they drift.
+
+**The auto-rebuild chain handles this:** `guild-source-rebuild.py` fires `build.py` on
+every `workflows.json`, skill file, or guild-log edit; `member-table-sync.py` handles
+member `.md` and `members-meta.json`. You do not need to call `build.py` manually after
+routine edits — the hook does it. But you **must verify it ran** when:
+
+- You made a manual shell edit outside Claude tool calls
+- The hook reported an error in the session output
+- You're closing a session and the last tool write touched a guild source
+
+**Staleness check (30 seconds):** `python3 build.py` is idempotent and fast. When in
+doubt, run it. A stale `guild-data.js` is invisible until someone loads the dashboard —
+then it's wrong in production. Never close a mission without a clean build.
+
+**What counts as a guild source** (rebuild required on change):
+
+| File / path | Triggers rebuild |
+|---|---|
+| `workflows.json` | yes — hook fires |
+| `star-alliance-members/*.md` | yes — hook fires |
+| `data/members-meta.json` | yes — hook fires |
+| `star-alliance-skills/**` | yes — hook fires |
+| `data/guild-log.json` | yes — hook fires |
+| `build.py` itself | run manually after editing |
+| `guild-data.json` / `guild-data.js` | these ARE the outputs — never edit directly |
+
 ## The project version
 
 The Star Alliance itself carries **one version** — `GUILD.meta.version`, shown on the
