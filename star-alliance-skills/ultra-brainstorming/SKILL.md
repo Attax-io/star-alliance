@@ -2,7 +2,7 @@
 name: ultra-brainstorming
 description: "An ASSIGNABLE multi-thinker method — any member who carries it fires ALL his available thinker models at once on the same material, then his prime (highest-priority) thinker reviews every output and synthesizes one opinion. Use to deepen one member's thinking across model diversity, or at a fan-in to fuse several members' inputs into one doer-ready plan. Triggers: 'ultra-brainstorm this', 'super-plan this', 'think this across all models', 'use all my thinkers', 'synthesize the members' work', 'merge these proposals into one plan', 'plan this deeply before we build'. Distinct from storm-investigation (five persona minds on one topic) and members-formation (the Butler's routing): this is a MODEL ensemble — several thinking models, each a different mind — converging into one ranked, peer-reviewed result. It is the thinker fan-out exception named in weapon-utility."
 metadata:
-  version: 1.2.0
+  version: 1.3.0
 type: Skill
 
 ---
@@ -28,19 +28,38 @@ Know what it is *not*:
 - Not **`conquering-campaign`** (multi-wave *execution*). This produces the **plan** the campaign
   then executes.
 
-## When to run it
+## When to run it — MANDATORY for carriers
 
-Two situations call for it:
+**Carrying this skill is an obligation, not an option.** If a member carries `ultra-brainstorming`
+and the task in front of it is **plan-grade or hard-problem work**, the member **must** fire its
+thinker panel — it may not quietly fall back to a single prime thinker. The skill rides these
+carriers today: **the-strategist · the-architect · the-developer · the-herald · the-merchant**.
+Each must use it whenever it does the kind of thinking below.
 
-1. **Within one member** — when a single hard problem deserves more than one reasoning engine, the
-   holding member runs its whole thinker panel at once and lets its prime thinker synthesize. This
-   is the everyday use, available to any member that carries the skill.
-2. **At a fan-in** — when **two or more members** have produced inputs (an Architect's schema sketch,
-   a Designer's UX notes, a Merchant's risk read) that must become **one coherent plan** before a
-   doer can start.
+**"Plan-grade / hard-problem work" — the panel is required when the task is any of:**
+- planning before a build, refactor, or campaign (sequencing, trade-offs, dependency order)
+- architecture or data-model decisions; structural choices with more than one defensible answer
+- a **fan-in** — two or more members' outputs (schema sketch · UX notes · risk read) must become
+  **one coherent plan** before a doer starts
+- risk / investment / go-to-market calls where being wrong is expensive
+- anything where the carrier would otherwise reach for its single prime thinker to *decide*, not
+  just *look up*
 
-If there's only one input *and* a single thinker clearly suffices, don't — that's the Butler's
-formation, not a synthesis. Ultra-brainstorming is for *fusion across minds*, not lookup.
+**Two tiers — scale the fire to the stakes (both still count as "using it"):**
+- **Quick brainstorm** (the default for everyday hard calls): the panel runs, all five phases run,
+  but lightly — short candidates, fast convergence. The point is *more than one mind touched it*.
+- **Full panel** (high-stakes — architecture, irreversible scope, multi-member fan-in, money/risk):
+  the full five-phase treatment with the runner, the convergence map, and the peer-review grade.
+
+**The only legitimate skip is a lookup.** Single-input retrieval, a mechanical/obvious change, or a
+question with one correct answer is **not** plan-grade work — run the single prime thinker, that's
+the Butler's formation. But the skip is **on the record**: a carrier that declines the panel on
+something that *looks* plan-grade states the reason in one line — `single-thinker: <why this is a
+lookup, not a decision>` — exactly as [[weapon-utility]] requires an exception to be justified out
+loud. Silent single-thinking on plan-grade work is a conformity failure, not a shortcut.
+
+Ultra-brainstorming is for *fusion across minds*. A member without the skill runs the default single
+prime thinker; a member **with** it owes the panel on every real decision.
 
 ## In / out
 
@@ -74,6 +93,14 @@ Strategist's; another member runs its own thinkers:
 The panel is **only what is actually reachable** — never name a mind that can't run. Each weapon has a
 doc under [`star-alliance-arsenal/models/`](../../star-alliance-arsenal/models/README.md) (backend ·
 how to pull · how to summon · concurrency). Confirm cloud thinkers with `ollama list` first.
+
+**Quorum floor — two distinct minds or it is not a brainstorm.** The value is *model diversity*, so a
+panel needs **at least two genuinely different reasoning engines** to count. If only one thinker is
+reachable (Free plan with cloud down, every other model unpulled), the brainstorm has **failed to
+form** — do not pass single-model output off as a synthesis. Say so explicitly (`degraded: 1 mind
+reachable — X`), **cap the Phase 5 confidence** accordingly, and either wait for a second mind or hand
+back a single-thinker plan *labelled as such* so the doer knows it was never cross-checked. A fake
+panel that quietly ran one model is worse than an honest single thinker.
 
 Each model returns exactly three things: its **best plan** (3–5 steps) · the **one risk** it weighs
 heaviest · the **one idea no other model would propose**. Diversity is the entire value — different
@@ -148,6 +175,15 @@ member · MAJOR: method contract change). Regenerate `VERSIONS.md` with
 `python3 skillsmith/scripts/skill_registry.py write`, then `python3 build.py`.
 
 ## Changelog
+- **1.3.0** — **Made the panel MANDATORY for carriers + hardened against fake runs.** "When to run
+  it" flipped from discretionary to an obligation: a member that carries this skill **must** fire its
+  thinker panel on plan-grade / hard-problem work (planning, architecture/data-model, fan-in,
+  risk/GTM calls), naming the five current carriers (strategist · architect · developer · herald ·
+  merchant). Added two tiers — **quick brainstorm** (everyday) vs **full panel** (high-stakes) — so
+  the mandate scales to cost and stays adoptable. The only legal skip is a genuine *lookup*, and it
+  now leaves a one-line `single-thinker: <why>` trail per [[weapon-utility]]'s exception-out-loud
+  doctrine. Phase 2 gains a **quorum floor**: <2 distinct reachable minds = the brainstorm failed to
+  form — label it `degraded`, cap Phase 5 confidence, never pass one model off as a synthesis.
 - **1.2.0** — **Made Phase 2 mechanical + concurrency-aware.** Added the `ultra_brainstorm.py`
   runner so the fan-out actually fires (was prose the orchestrator could skip, synthesizing in one
   head). Documented the Ollama Cloud concurrency cap (Free=1/Pro=3/Max=10) as the real cause of

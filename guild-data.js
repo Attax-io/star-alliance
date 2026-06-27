@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 66
     },
-    "generated": "2026-06-27T19:06:00Z",
+    "generated": "2026-06-27T19:08:07Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -3110,7 +3110,7 @@ const GUILD = {
         "lines": 76,
         "words": 819
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-designer",
         "the-herald"
@@ -4311,7 +4311,7 @@ const GUILD = {
     {
       "id": "ultra-brainstorming",
       "name": "ultra-brainstorming",
-      "version": "1.2.0",
+      "version": "1.3.0",
       "icon": "🧠",
       "art": "",
       "artPng": true,
@@ -4323,7 +4323,7 @@ const GUILD = {
       "desc": "An ASSIGNABLE multi-thinker method — any member who carries it fires ALL his available thinker models at once on the same material, then his prime (highest-priority) thinker reviews every output and synthesizes one opinion. Use to deepen one member's thinking across model diversity, or at a fan-in to fuse several members' inputs into one doer-ready plan. Triggers: 'ultra-brainstorm this', 'super-plan this', 'think this across all models', 'use all my thinkers', 'synthesize the members' work', 'merge these proposals into one plan', 'plan this deeply before we build'. Distinct from storm-investigation (five persona minds on one topic) and members-formation (the Butler's routing): this is a MODEL ensemble — several thinking models, each a different mind — converging into one ranked, peer-reviewed result. It is the thinker fan-out exception named in weapon-utility.",
       "intro": "This skill gives any member who carries it one extra power: instead of running a single prime thinker, the member fires all of its available thinker weapons at once on the same material, then its **prime (highest-priority) thinker reviews every output and synthesizes one opinion*. This is exactly th",
       "sections": [
-        "When to run it",
+        "When to run it — MANDATORY for carriers",
         "In / out",
         "The five phases — run in order",
         "Handoff to the doer",
@@ -4338,8 +4338,8 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 154,
-        "words": 1530
+        "lines": 190,
+        "words": 2028
       },
       "global": true,
       "members": [
