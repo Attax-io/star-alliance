@@ -9,7 +9,7 @@
       "scripts": [
         {
           "name": "guild-routing-gate.sh",
-          "plain": "Injects the Star Alliance routing rules into every message you send, so the Butler picks the right member and the right workflow before anyone acts."
+          "plain": "Injects the Star Alliance routing rules into every message you send, so the Butler picks the right member and the right workflow before anyone acts. Proportional: small low-stakes turns get a ~150-token LITE reminder; campaign-grade or high-stakes turns get the full doctrine. Stakes always beats size; unknown → full. Lists live in data/harness.json policy; SA_GATE=full forces uniform."
         }
       ]
     },
@@ -34,27 +34,19 @@
       ]
     },
     {
-      "event": "PostToolUse",
-      "label": "After an Edit Lands",
-      "glyph": "⟳",
-      "fires": "Right after a file is written or edited.",
-      "scripts": [
-        {
-          "name": "member-table-sync.py",
-          "plain": "After editing files, regenerates each member's 'Your Weapons' table from its loadout, so the table can never drift from the truth."
-        },
-        {
-          "name": "autocommit.sh",
-          "plain": "Auto-commits the edited file to git immediately, so nothing is ever lost and you are never asked 'Commit?' (commit only — never pushes)."
-        }
-      ]
-    },
-    {
       "event": "Stop",
       "label": "The Turn Ends",
       "glyph": "✦",
       "fires": "When the guild finishes its reply and the turn closes.",
       "scripts": [
+        {
+          "name": "turn-cost.py",
+          "plain": "Records this turn's real Opus token cost and which routing tier fired (LITE vs FULL) to data/turn-cost.jsonl, so the efficiency report can prove the savings instead of estimating them."
+        },
+        {
+          "name": "turn-finalize.sh",
+          "plain": "Once per turn (not per edit): regenerates member tables only if a loadout source changed, then coalesces ALL the turn's changes into ONE git commit — killing the per-file 'auto: Edit' storm. Commit only; never pushes."
+        },
         {
           "name": "workflow-banner-enforcer.py",
           "plain": "Checks that the finished turn declared a workflow and the right member reported for duty — even on plain-talk turns that fire no tools. Blocks the turn-end if either is missing."

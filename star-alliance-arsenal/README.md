@@ -22,14 +22,19 @@ Run from the repo root (paths below assume that), e.g. `python3 star-alliance-ar
 
 ## summon.py routing
 
+Tags below mirror summon.py's `CLOUD_TAG` exactly (the dispatcher is the source of
+truth) and were verified against `ollama list` on 2026-06-27 — all six bench tags
+are pulled and reachable. They are RESERVE (idle: ~0 ledger calls; minimax-m3 takes
+99% of offload), not broken — kept available, just not advertised as the live doer.
+
 ```
-summon.py minimax-m3 …     → minimax.py
-summon.py glm-5.2 …        → ollama_cloud.py glm-5.2:cloud
-summon.py kimi-k2.7 …      → ollama_cloud.py kimi-k2:cloud        (pull first)
-summon.py deepseek-v4-pro… → ollama_cloud.py deepseek-v3.1:cloud (pull first)
-summon.py nemotron-3-ultra…→ ollama_cloud.py nemotron:cloud      (pull first)
-summon.py qwen3.5 …        → ollama_cloud.py qwen3-coder:cloud    (pull first)
-summon.py gemma4 …         → ollama_cloud.py gemma3:cloud         (pull first)
+summon.py minimax-m3 …     → minimax.py                              (LIVE — 99% of offload)
+summon.py glm-5.2 …        → ollama_cloud.py glm-5.2:cloud           (reserve, pulled)
+summon.py kimi-k2.7 …      → ollama_cloud.py kimi-k2.7-code:cloud    (reserve, pulled)
+summon.py deepseek-v4-pro… → ollama_cloud.py deepseek-v4-pro:cloud   (reserve, pulled)
+summon.py nemotron-3-ultra…→ ollama_cloud.py nemotron-3-super:cloud  (reserve, pulled)
+summon.py qwen3.5 …        → ollama_cloud.py qwen3.5:cloud           (reserve, pulled)
+summon.py gemma4 …         → ollama_cloud.py gemma4:cloud            (reserve, pulled)
 summon.py opus|sonnet|haiku→ "native — use the Task tool" (exit 0)
 summon.py gpt-5.5          → "not provisioned" (exit 69)
 ```
@@ -39,7 +44,8 @@ summon.py gpt-5.5          → "not provisioned" (exit 69)
 `-s <system>` · `--json` (strips ```fences + validates) · `-f <file>` · reads **stdin** if no prompt arg.
 
 - `minimax.py` — key from `$MINIMAX_API_KEY` else `~/.config/minimax/m3.key`; `--max-tokens` default **16000** (never low — reasoning eats the budget → empty output).
-- `ollama_cloud.py` — `--num-predict` default **4096** (same trap); strips `<think>…</think>`. Only `glm-5.2:cloud` is pulled today; other bench tags need `ollama pull` + tag verify.
+- `ollama_cloud.py` — `--num-predict` default **4096** (same trap); strips `<think>…</think>`. All six bench tags above are pulled (verified `ollama list`, 2026-06-27) but RESERVE — minimax-m3 carries ~99% of offload; reactivation is a one-line move back to a live loadout once a bench weapon is actually drawn.
+- `minimax.py --batch <file.jsonl>` — process N prompts over ONE keep-alive connection (one spawn, one TLS handshake) and emit JSONL results in order; `guild/delegate.py:delegate_many()` wraps it. The time win for any fan-out step.
 
 Token usage prints to **stderr**, content to **stdout** — pipe-friendly.
 

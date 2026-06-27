@@ -2,8 +2,14 @@
   "version": 1,
   "weaponStatus": {
     "gpt-5.5": "deactivated",
-    "nemotron-3-ultra": "dark"
+    "glm-5.2": "reserve",
+    "kimi-k2.7": "reserve",
+    "deepseek-v4-pro": "reserve",
+    "nemotron-3-ultra": "reserve",
+    "qwen3.5": "reserve",
+    "gemma4": "reserve"
   },
+  "_weaponStatusNote": "LIVE doer = minimax-m3 (~99% of all 549 ledger offload calls). The six bench weapons are RESERVE: pulled and reachable (verified ollama list 2026-06-27) but idle — kept in loadouts and drawable, just not advertised as the live doer. gpt-5.5 is deactivated (no OpenAI key on device). Reactivate a reserve weapon by drawing it; once it logs real ledger calls, promote it back. Statuses: live (default, omitted) · reserve · deactivated.",
   "members": {
     "the-butler": {
       "name": "The Butler",
