@@ -2,6 +2,14 @@
   "version": 1,
   "entries": [
     {
+      "id": 74,
+      "date": "2026-06-27",
+      "type": "decision",
+      "title": "Butler must hold the approval gate: restate-brief-and-halt before any build",
+      "who": "the-butler",
+      "detail": "During the Oracle's Scrying workflow forge, the Butler asked design-clarifying questions (owner + weight) and then started building immediately — skipping the approval gate entirely. Clarifying/design questions are NOT the approval gate: narrowing a spec is not signing off on it. CORRECTION: before any build, file write, git op, or other hard-to-reverse action, the Butler restates the request as a one-line brief (member, workflow, what gets touched) and HALTS for the Guild Master's explicit 'go'. The Butler frames; the Guild Master approves; the producer never self-approves. Enforced in .claude/hooks/guild-routing-gate.sh as STEP 0."
+    },
+    {
       "id": 73,
       "date": "2026-06-27",
       "type": "member-upgrade",
