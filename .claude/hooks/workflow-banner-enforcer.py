@@ -141,32 +141,35 @@ def main():
         )
         sys.exit(2)
 
-    # 2) The declared workflow's LEAD member must report for duty (⚔).
-    #    The cast is the workflow's own steps[].actor list. We hard-require the lead
-    #    (first member actor); the full roster is surfaced so downstream members —
-    #    notably the closing the-quartermaster — announce as they take the field
-    #    across the workflow's turns. (Persona switches inside one context have no
-    #    tool footprint, so only the lead is mechanically enforceable per turn.)
+    # 2) At least one of the declared workflow's members must report for duty (⚔)
+    #    this turn. The cast is the workflow's own steps[].actor list. A workflow can
+    #    span several turns (the lead acts early, the closing the-quartermaster late),
+    #    so we CANNOT demand a specific member every turn — that false-positives on a
+    #    multi-turn run. The enforceable invariant is: a turn that runs under a declared
+    #    workflow must show at least one of that workflow's members taking the field.
+    #    The full roster is surfaced so each member — notably the closing
+    #    the-quartermaster — announces as it acts. (Persona switches inside one context
+    #    have no tool footprint, so per-turn we can only require ≥1, not the whole cast.)
     roster = rosters.get(declared, [])
     if not roster:
         sys.exit(0)
+    roster_cores = {_core(r) for r in roster}
     announced = {_core(m.group(1)) for m in MEMBER_RE.finditer(text)}
-    lead = roster[0]
-    if _core(lead) in announced or relent:
-        if relent and _core(lead) not in announced:
+    if announced & roster_cores or relent:
+        if relent and not (announced & roster_cores):
             sys.stderr.write(
-                f"[banner-enforcer] lead member '{lead}' never reported after "
+                f"[banner-enforcer] no member of '{declared}' reported after "
                 f"{n_assistant} turns — relenting (anti-brick).\n"
             )
         sys.exit(0)
 
     roster_str = ", ".join(roster)
     sys.stderr.write(
-        f"⚔ MEMBER GATE (turn-end) — workflow '{declared}' was declared but its lead "
-        f"member '{lead}' never reported for duty. Emit the klaxon "
-        f"⚔ Member reports for duty: {lead} using <thinker> and <doer>! the instant that "
-        f"member takes the field. This workflow's full cast (steps[].actor): {roster_str} — "
-        f"each fires ⚔ as it acts (one per member, including the closing the-quartermaster), "
+        f"⚔ MEMBER GATE (turn-end) — workflow '{declared}' was declared but NO member of "
+        f"its cast reported for duty this turn. Emit the klaxon "
+        f"⚔ Member reports for duty: <member> using <thinker> and <doer>! the instant a "
+        f"member takes the field. This workflow's cast (steps[].actor): {roster_str} — each "
+        f"fires ⚔ as it acts (one per member, including the closing the-quartermaster), "
         f"NOT one per workflow.\n"
     )
     sys.exit(2)
