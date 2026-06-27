@@ -680,6 +680,7 @@ function buildConstellation(wf) {
     <path id="flow-path" class="flow-path" d="${pathD}" fill="none"/>
     <g class="cgates">${gateMarkers.join("")}</g>
     <g class="nodes">${nodes}</g>
+    <g class="hookring">${renderHookRing(cx, cy)}</g>
     <g class="you-core-wrap">${youCore}</g>
     <g class="comet-tail">${(() => { const N = 16; let s = ""; for (let k = 0; k < N; k++) { const t = k/(N-1); const r = (5.5*(1-t)+0.8).toFixed(2); const op = (0.6*(1-t)*(1-t)).toFixed(3); const fill = `color-mix(in srgb, var(--accent) ${Math.round(40+t*55)}%, #ffffff)`; s += `<circle class="spark" r="${r}" cx="${cx}" cy="${cy}" style="fill:${fill};opacity:${op}"/>`; } return s; })()}</g>
     <circle class="power-core" r="6" cx="${cx}" cy="${cy}"/>
@@ -941,6 +942,7 @@ function renderStarmapWorkflow(m) {
           <div class="swf-stepnum">Step ${i + 1}</div>
           <div class="swf-title">${esc(step.title)}</div>
           <div class="swf-act">${esc(step.act)}</div>
+          ${stepLoadout(step)}
           ${step.produces ? `<div class="swf-produces">produces → ${esc(step.produces)}</div>` : ""}
           <div class="swf-ctx">${prevLabel ? `After ${esc(prevLabel)} · ` : ""}${nextLabel ? `hands to ${esc(nextLabel)}` : "final step"}</div>
         </div>`;
@@ -950,6 +952,32 @@ function renderStarmapWorkflow(m) {
 
   html += `</div></div>`;
   return html;
+}
+
+// Weapon loadout for a workflow step (optional structured fields: thinker / doers / ultra).
+// Renders nothing when a step declares no weapons — fully backward compatible.
+function modelLabel(id) {
+  return (typeof MODELS !== "undefined" && MODELS[id] && MODELS[id].label) || id;
+}
+function stepLoadout(step) {
+  if (!step || (!step.thinker && !(step.doers && step.doers.length) && !step.ultra)) return "";
+  const parts = [];
+  if (step.ultra) {
+    const prime = step.thinker ? ` → prime ${esc(modelLabel(step.thinker))}` : "";
+    parts.push(`<span class="lo-tag lo-ultra" title="ultra-brainstorming — all of the member's thinker models fire at once; the prime thinker reviews and synthesizes one plan">✦ ultra · all thinkers${prime}</span>`);
+  } else if (step.thinker) {
+    parts.push(`<span class="lo-tag lo-thinker" title="prime thinker — plans the work and reviews the result">🧠 ${esc(modelLabel(step.thinker))}</span>`);
+  }
+  if (Array.isArray(step.doers) && step.doers.length) {
+    const ds = step.doers.map((d) => {
+      const m = (typeof d === "object" && d) ? d.model : d;
+      const c = (typeof d === "object" && d && d.count > 1) ? `<span class="lo-x">×${d.count}</span>` : "";
+      return `${esc(modelLabel(m))}${c}`;
+    }).join(" · ");
+    const parallel = step.doers.length > 1 || step.doers.some((d) => typeof d === "object" && d && d.count > 1);
+    parts.push(`<span class="lo-tag lo-doers" title="doer(s) — execute the thinker's plan${parallel ? "; these run in parallel" : ""}">⚔ ${ds}${parallel ? " · parallel" : ""}</span>`);
+  }
+  return `<div class="swf-loadout">${parts.join("")}</div>`;
 }
 
 // Arsenal / Armory ----------------------------------------------------------
