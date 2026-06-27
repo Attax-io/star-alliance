@@ -89,6 +89,19 @@ def main():
         default=None,
         help='File to attach (passthrough).',
     )
+    parser.add_argument(
+        '--max-tokens',
+        type=int,
+        default=None,
+        help='Max output tokens. Mapped per backend (minimax: --max-tokens, '
+             'cloud: --num-predict). Omit for the backend default.',
+    )
+    parser.add_argument(
+        '--timeout',
+        type=int,
+        default=None,
+        help='HTTP timeout in seconds (passthrough). Omit for backend default.',
+    )
     args = parser.parse_args()
 
     # The backends log real token spend to the delegation ledger keyed by the
