@@ -2,6 +2,7 @@
 
 Importable API:
     delegate(model, prompt, system=None, file=None, timeout=300) -> str
+    delegate_many(prompts, model="minimax-m3", timeout=600) -> list[str | None]
 
 CLI:
     python3 guild/delegate.py <model> "<prompt>" [-s SYSTEM] [-f FILE]
@@ -9,12 +10,16 @@ CLI:
 from __future__ import annotations
 
 import argparse
+import json
+import os
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SUMMON = REPO_ROOT / "star-alliance-arsenal" / "summon.py"
+MINIMAX = REPO_ROOT / "star-alliance-arsenal" / "minimax.py"
 
 
 def delegate(model: str, prompt: str, system: str | None = None,
