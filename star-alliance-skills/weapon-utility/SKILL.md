@@ -52,6 +52,13 @@ The thinker owns the standard; the doer owns the output. Keep the loop **bounded
 doer cannot bring the result into conformity after a few corrected passes, it is treated as
 *can't do this job* — escalate to the **next doer** (see below), not an endless retry.
 
+**Sizing a big doer job.** For large reads/generations (a book chapter, a long extraction), the
+backend default output cap (16k tok) and timeout (180s) will silently truncate. `summon.py` passes
+`--max-tokens` and `--timeout` through to the backend — give the doer room: `summon.py minimax-m3
+-f "$SRC" -s "$SYS" --max-tokens 16000 --timeout 600`. (`--max-tokens` maps per backend — `--max-tokens`
+for minimax, `--num-predict` for the Ollama cloud — summon translates it.) Loop chunks **one at a time**
+and, on review, treat a draft that ends mid-sentence as a truncation → re-run that chunk larger.
+
 ## Drawing the right weapon
 
 A member always draws the **highest-priority available weapon of the kind the job needs**,
