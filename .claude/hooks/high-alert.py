@@ -3,17 +3,33 @@
 # Star Alliance — HIGH-ALERT  (PreToolUse, harness-injected)
 #
 # Fires the session klaxon the instant an observable essential event happens:
-#   • a Skill tool is invoked   →  ⚡ Member Skill Activated: <name>!
+#   • a Skill tool is invoked    →  ⚡ Member Skill Activated: <name>!
 #   • a Workflow tool is invoked →  🗺 Starmap Workflow Started: <name>!
+#   • an Agent/Task tool dispatches a GUILD MEMBER → ⚔ Member reports for duty: <member>!
 #
-# The third banner (⚔ Member reports for duty …) is a routing-STEP-1 decision
-# with no tool footprint, so it stays behavioral — the Butler emits it himself.
+# The ⚔ banner only auto-fires when a REAL sub-agent is spawned whose type is a
+# known guild member (the-developer, the-quartermaster, …). In the single-context
+# mode the members are personas the Butler plays inline — those handoffs have no
+# tool footprint, so the ⚔ for them stays behavioral (the routing-gate klaxon +
+# the turn-end banner-enforcer carry that case). We do NOT fire ⚔ for non-member
+# agent types (Explore, general-purpose, …) — that would be a false klaxon.
 #
 # PreToolUse hooks receive the tool call as JSON on stdin. We emit a
 # non-blocking {"systemMessage": …} banner and ALWAYS exit 0 so we never gate a
 # tool call — high-alert announces, it does not block.
 # ─────────────────────────────────────────────────────────────────────────────
-import sys, json, re
+import sys, os, json, re
+
+
+def guild_member_ids():
+    """Member ids from guild-data.json (source of truth). Empty set on any error."""
+    try:
+        proj = os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
+        g = json.load(open(os.path.join(proj, "guild-data.json")))
+        return {m["id"] for m in g.get("members", [])}
+    except Exception:
+        return set()
+
 
 def main():
     try:
@@ -35,6 +51,11 @@ def main():
             m = re.search(r"name:\s*['\"]([^'\"]+)['\"]", script)
             name = m.group(1) if m else "inline workflow"
         banner = f"\U0001f5fa Starmap Workflow Started: {name}!"
+    elif tool in ("Agent", "Task"):
+        # Only a genuine guild-member dispatch earns the ⚔ klaxon.
+        sub = ti.get("subagent_type") or ti.get("subagentType") or ""
+        if sub in guild_member_ids():
+            banner = f"⚔ Member reports for duty: {sub}!"
 
     if banner:
         print(json.dumps({"systemMessage": banner}))
