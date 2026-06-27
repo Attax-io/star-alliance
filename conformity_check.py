@@ -164,6 +164,21 @@ def main():
         for w in weapons:
             if w not in ROLE:
                 fails.append(f"A  {mid}: weapon '{w}' has no role mapping")
+        # PT — prime thinker is the FIRST thinker-capable weapon scanning left→right.
+        # Pure doers carry no thinker capability and are skipped; sonnet is role 'both'
+        # but pinned last, so it never wins. The winner must be opus (mirrors check A's
+        # opus-leads-the-thinker-block), and any weaponsDesc that calls a weapon the
+        # "prime thinker" must name that same weapon.
+        prime = next((w for w in weapons if ROLE.get(w) in ("thinker", "both")), None)
+        if prime is None:
+            fails.append(f"PT {mid}: arsenal has no thinker-capable weapon (no prime thinker)")
+        elif prime != "opus":
+            fails.append(f"PT {mid}: first thinker-capable weapon is '{prime}', expected 'opus' "
+                         f"(prime thinker must lead the thinker block)")
+        for w in m["weapons"]:
+            if "prime thinker" in w.get("desc", "").lower() and w["model"] != prime:
+                fails.append(f"PT {mid}: weapon '{w['model']}' desc claims 'prime thinker' "
+                             f"but the prime thinker is '{prime}'")
         # W — members-meta weaponsDesc set == weapons set
         wd = set(meta.get(mid, {}).get("weaponsDesc", {}).keys())
         if wd != set(weapons):
