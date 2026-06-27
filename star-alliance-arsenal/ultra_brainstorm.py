@@ -48,15 +48,15 @@ except Exception:  # pragma: no cover - summon must be importable in practice
     CLOUD_TAG = {}
     CLAUDE = {"opus", "sonnet", "haiku"}
 
-# Default panel preference, cheapest/doer-leaning first (weapon-utility order).
-# minimax-m3 is direct-API (always available if keyed); the rest are Ollama cloud.
+# Default panel — the guild's THINKER set. minimax-m3 is direct-API (its own pool,
+# costs no Ollama slot); the rest are Ollama-cloud thinkers. nemotron-3-ultra and
+# qwen3.5 are reserve (not in any member loadout) — pass them via --models if wanted.
 _DEFAULT_ORDER = [
     "minimax-m3",
     "deepseek-v4-pro",
     "glm-5.2",
     "kimi-k2.7",
-    "qwen3.5",
-    "nemotron-3-ultra",
+    "gemma4",
 ]
 
 _PANEL_SYSTEM = (
@@ -136,8 +136,8 @@ def main():
     ap.add_argument("-f", "--file", default=None, help="Read the brief from this file.")
     ap.add_argument("--models", default=None,
                     help="Comma list of model ids to run (default: auto-detect).")
-    ap.add_argument("--max-tokens", type=int, default=4000,
-                    help="Per-thinker budget (default 4000; reasoning models burn "
+    ap.add_argument("--max-tokens", type=int, default=16000,
+                    help="Per-thinker budget (default 16000; reasoning models burn "
                          "the budget on <think> first — low values return empty).")
     ap.add_argument("--timeout", type=int, default=180, help="Per-call HTTP timeout (s).")
     args = ap.parse_args()

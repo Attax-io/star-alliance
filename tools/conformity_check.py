@@ -27,9 +27,9 @@ ROOT = next((p for p in pathlib.Path(__file__).resolve().parents
 ROLE = {
     "opus": "thinker", "gpt-5.5": "thinker", "deepseek-v4-pro": "thinker",
     "glm-5.2": "thinker", "kimi-k2.7": "thinker", "nemotron-3-ultra": "thinker",
-    "qwen3.5": "thinker", "qwen-3.5": "thinker",
+    "qwen3.5": "thinker", "qwen-3.5": "thinker", "gemma4": "thinker",
     "sonnet": "both",
-    "haiku": "doer", "minimax-m3": "doer", "gemma4": "doer",
+    "haiku": "doer", "minimax-m3": "doer",
     "image-01": "doer", "minimax-video": "doer", "minimax-speech": "doer", "minimax-music": "doer",
 }
 
