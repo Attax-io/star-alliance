@@ -162,7 +162,7 @@ def main():
     try:
         from arsenal_usage import log_usage
         model_id = os.environ.get("SA_MODEL_ID") or args.model.replace(":cloud", "")
-        log_usage(model_id, "ollama", pec_s, ec_s)
+        log_usage(model_id, "ollama", pec_s, ec_s, wall_ms=wall_ms)
     except Exception:
         pass
 
