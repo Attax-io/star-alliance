@@ -12,7 +12,7 @@
     ],
     "PreToolUse": [
       {
-        "matcher": "Skill|Workflow",
+        "matcher": "Skill|Workflow|Agent|Task",
         "hooks": [
           {
             "type": "command",
