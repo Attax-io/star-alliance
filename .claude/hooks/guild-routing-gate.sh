@@ -87,10 +87,10 @@ EOF
 # ── SLASH-SKILL banner directive ─────────────────────────────────────────────
 # /slash skills bypass the Skill tool → the high-alert hook never sees them.
 # Detect a leading /skill in this prompt and tell the model to emit the ⚡ banner.
-printf '%s' "$INPUT" | SKILLS_DIR="$HOME/.claude/skills" python3 - <<'PY'
+SA_INPUT="$INPUT" SKILLS_DIR="$HOME/.claude/skills" python3 - <<'PY'
 import sys, json, os, re
 try:
-    data = json.load(sys.stdin)
+    data = json.loads(os.environ.get("SA_INPUT") or "")
 except Exception:
     sys.exit(0)
 prompt = (data.get("prompt") or "").lstrip()
