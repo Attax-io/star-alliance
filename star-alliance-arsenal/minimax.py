@@ -20,6 +20,7 @@ Usage examples:
              "What is 2+2?"
 """
 import argparse
+import http.client
 import json
 import os
 import re
@@ -30,6 +31,8 @@ import urllib.request
 
 
 API_URL = 'https://api.minimax.io/v1/text/chatcompletion_v2'
+API_HOST = 'api.minimax.io'
+API_PATH = '/v1/text/chatcompletion_v2'
 
 
 def resolve_api_key():
