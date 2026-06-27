@@ -687,6 +687,46 @@ function buildConstellation(wf) {
   </svg>`;
 }
 
+// Hook ring — the harness lifecycle hooks (GUILD.hooks) plotted as an arc of
+// markers along the outer orbit. The same ring shows on every workflow's map
+// (hooks fire on all turns). Hover a marker → tooltip lists every hook on that
+// event in plain English. Data source: hooks.json → build.py → GUILD.hooks.
+function renderHookRing(cx, cy) {
+  const events = (typeof GUILD !== "undefined" && GUILD.hooks) || [];
+  if (!events.length) return "";
+  const R = 362;
+  const span = 120, start = -150;                       // top arc, left→right (chronological)
+  const step = events.length > 1 ? span / (events.length - 1) : 0;
+  const pt = (deg) => { const a = deg * Math.PI / 180; return { x: cx + R * Math.cos(a), y: cy + R * Math.sin(a) }; };
+
+  // Faint dashed arc behind the markers, so they read as one ring.
+  const a0 = pt(start), a1 = pt(start + step * (events.length - 1));
+  const arc = events.length > 1
+    ? `<path class="hookring-arc" d="M ${a0.x.toFixed(1)} ${a0.y.toFixed(1)} A ${R} ${R} 0 0 1 ${a1.x.toFixed(1)} ${a1.y.toFixed(1)}" fill="none"/>`
+    : "";
+
+  const markers = events.map((ev, i) => {
+    const p = pt(start + i * step);
+    const name = ev.label || ev.event || "Hook";
+    const scripts = ev.scripts || [];
+    const head = `Fires: ${esc(ev.fires || "")}`;
+    const body = scripts.map((s) => `<b>${esc(s.name)}</b> — ${esc(s.plain)}`).join("<br><br>");
+    const tip = `${head}<br><br>${body}`;
+    const count = scripts.length > 1 ? `<text class="hooknode-badge" x="11" y="-9">${scripts.length}</text>` : "";
+    return `<g class="hooknode" tabindex="0" role="img" aria-label="${esc(name)}: ${esc(String(scripts.length))} hook(s)" data-name="${esc(name)}" data-tip="${tip}" transform="translate(${p.x.toFixed(1)},${p.y.toFixed(1)})">
+      <circle class="hooknode-hit" r="24" fill="transparent"/>
+      <circle class="hooknode-halo" r="15"/>
+      <circle class="hooknode-core" r="11"/>
+      <text class="hooknode-glyph" text-anchor="middle" dominant-baseline="central">${esc(ev.glyph || "⛓")}</text>
+      ${count}
+      <text class="hooknode-label" text-anchor="middle" y="-26">${esc(name)}</text>
+      <title>${esc(name)} — ${esc(String(scripts.length))} hook(s)</title>
+    </g>`;
+  }).join("");
+
+  return `${arc}${markers}`;
+}
+
 // Members -------------------------------------------------------------------
 function renderMembers() {
   return `${viewHead("Roster", "Guild Members",
