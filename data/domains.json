@@ -72,7 +72,9 @@
         "python-master",
         "guild-reflection",
         "letting-go",
-        "metamorphosis-check"
+        "metamorphosis-check",
+        "chart-patterns",
+        "voices-check"
       ],
       "members": [
         "the-butler",
@@ -85,7 +87,7 @@
         "the-merchant",
         "the-quartermaster"
       ],
-      "notes": "The home domain. All 9 guild members + 64 skills live here. Every other domain borrows from this skill pool."
+      "notes": "The home domain. All 9 guild members + 66 skills live here. Every other domain borrows from this skill pool."
     },
     {
       "id": "lex-council-app",

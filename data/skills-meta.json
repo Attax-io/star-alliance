@@ -31,6 +31,14 @@
     "triggers": "gotcha, the INSERT/push pattern (identity PK, trigger-filled names, reporter-uuid lookup, status=1, no notification fires), the \"doesn't work\" reproduction technique, and the rule for WHEN a bug may be marked Fixed (DB fixes now, frontend fixes only after depl",
     "modes": ""
   },
+  "chart-patterns": {
+    "icon": "📐",
+    "blurb": "Identify & read every chart pattern (Bulkowski) — H&S, double/triple tops, triangles, flags, gaps + event patterns, with the odds",
+    "level": "Advanced",
+    "tabler": "ti-chart-line",
+    "triggers": "'what chart pattern is this', 'is this a head and shoulders', 'measure rule for a triangle', 'how reliable is a double bottom', 'read this chart pattern'",
+    "modes": "classic reversal & continuation patterns; event patterns; measure-rule targets; performance odds & ranking; candlestick & volume confluence"
+  },
   "claude-code-hooks": {
     "icon": "🪝",
     "blurb": "Author Claude Code hooks the right way — fail-open gates and banners",
@@ -160,12 +168,12 @@
     "modes": ""
   },
   "guild-reflection": {
-    "icon": "🧩",
-    "blurb": "The Quartermaster's self-improvement engine — turn finished work into durable guild upgrades th",
+    "icon": "🔁",
+    "tabler": "ti-refresh",
     "level": "Advanced",
-    "tabler": "ti-puzzle",
-    "triggers": "'reflect on this', 'run the reflective cycle', 'guild self-audit', 'what did we learn', 'weed the skills', 'retire bad ideas', 'close the loop', 'self-improve the guild', 'reflection journal'",
-    "modes": ""
+    "modes": "CYCLE | AUDIT",
+    "blurb": "The Quartermaster's self-improvement engine: reflect on a run, diagnose the seed, commit a doctrine diff.",
+    "triggers": "'reflect on this', 'run the reflective cycle', 'guild self-audit', 'what did we learn', 'weed the skills', 'retire bad ideas', 'close the loop', 'self-improve the guild'"
   },
   "guild-sync": {
     "icon": "🔄",
@@ -256,12 +264,12 @@
     "modes": ""
   },
   "letting-go": {
-    "icon": "🧩",
-    "blurb": "A universal guardrail skill that kills retry-storms, perfectionism paralysis, and over-delibera",
-    "level": "Advanced",
-    "tabler": "ti-puzzle",
-    "triggers": "'I', ', ', ', ', ', ', 're looping', 'let it go', 'stop over-thinking this', 'good enough'",
-    "modes": ""
+    "icon": "🍃",
+    "tabler": "ti-feather",
+    "level": "Intermediate",
+    "modes": "",
+    "blurb": "Kills retry-storms and perfectionism paralysis: name the ideal, see its harm, release it, act on reality.",
+    "triggers": "'I am stuck', 'stop retrying', 'ship the current best', 'we are looping', 'let it go', 'stop over-thinking this', 'good enough'"
   },
   "market-recon": {
     "icon": "📈",
@@ -280,12 +288,12 @@
     "modes": ""
   },
   "metamorphosis-check": {
-    "icon": "🧩",
-    "blurb": "A guardrail skill that catches the single most dangerous agent failure: confidently running the",
-    "level": "Advanced",
-    "tabler": "ti-puzzle",
-    "triggers": "'something changed', 'tool failed', 'unexpected output', 'recheck state', 'did the context drift', 'capability check', 'why is this failing now'",
-    "modes": ""
+    "icon": "🦋",
+    "tabler": "ti-transform",
+    "level": "Intermediate",
+    "modes": "",
+    "blurb": "Catches the agent running the old playbook on a changed state: stop, name the new state, re-plan.",
+    "triggers": "'something changed', 'tool failed', 'unexpected output', 'recheck state', 'did the context drift', 'capability check', 'why is this failing now'"
   },
   "motion-design": {
     "icon": "🌀",
@@ -486,6 +494,14 @@
     "tabler": "ti-shield-check",
     "triggers": ", RPC functions, RLS policies, edge functions, cron jobs), frontend code (components, pages, hooks, mutations, stores), schema changes, or bug fixes — even if the user doesn't explicitly ask for a vault log. Also use when the user says phrases like \"vault log ",
     "modes": ""
+  },
+  "voices-check": {
+    "icon": "🗣️",
+    "tabler": "ti-messages",
+    "level": "Intermediate",
+    "modes": "",
+    "blurb": "Integrates an agent's competing sub-voices into one coherent answer instead of letting one dominate.",
+    "triggers": "'name the voices', 'which voice is leading', 'I am torn between', 'this feels one-sided', 'integrate the perspectives', 'am I over-indexing'"
   },
   "volume-price-analysis": {
     "icon": "📊",

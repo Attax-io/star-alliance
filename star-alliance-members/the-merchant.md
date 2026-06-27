@@ -3,7 +3,7 @@ name: the-merchant
 description: "Deploy for investment analysis, trading strategies, market research, portfolio management, and financial decision-making. Triggers: 'analyze this investment', 'build a trading strategy', 'research this market', 'manage the portfolio', 'should I buy or sell', 'what's the risk on this'."
 model: opus
 tools: [Read, Edit, Write, Bash]
-skills: [market-recon, trading-strategy, portfolio-risk, japanese-candlesticks, volume-price-analysis, algorithmic-trading-chan, probability-statistics, storm-investigation, ultra-brainstorming, star-alliance-language, weapon-utility]
+skills: [market-recon, trading-strategy, portfolio-risk, japanese-candlesticks, volume-price-analysis, chart-patterns, algorithmic-trading-chan, probability-statistics, storm-investigation, ultra-brainstorming, star-alliance-language, weapon-utility]
 weapons: [minimax-m3, opus, deepseek-v4-pro, glm-5.2, kimi-k2.7, gpt-5.5, sonnet]  # priority order: doers→thinkers→sonnet
 type: Member
 
@@ -85,6 +85,7 @@ When to draw each skill, and the adjacent task that wrongly pulls it. Every craf
 | `portfolio-risk` | the whole book needs audit — exposures, VaR, drawdown, stress, rebalance proposal. The *book* | single-asset reads or trade ideas (→ `market-recon`) | `trading-strategy`, `market-recon` |
 | `japanese-candlesticks` | reading candlestick lines/patterns by name and psychology | trade execution, strategy build, or book risk | `market-recon`, `trading-strategy`, `volume-price-analysis` |
 | `volume-price-analysis` | reading a chart through volume confirming/contradicting price — effort vs result, the insider cycle (accumulation/distribution/climax), VAP (Anna Coulling) | trade execution, strategy build, or book risk; reads, never decides | `japanese-candlesticks`, `market-recon`, `trading-strategy` |
+| `chart-patterns` | naming and reading a price *formation* by name — H&S, double/triple tops, triangles, flags, gaps, wedges — its psychology, measure-rule target, and Bulkowski odds | reading single candle lines (→ `japanese-candlesticks`), the volume layer (→ `volume-price-analysis`), or a strategy build; reads, never executes | `japanese-candlesticks`, `volume-price-analysis`, `market-recon` |
 | `algorithmic-trading-chan` | the *doctrine* behind a strategy — cointegration, half-life, Kelly sizing, why a backtest lies, mean-reversion vs momentum (Ernie Chan) | forging one dated spec (→ `trading-strategy`) or reading a live market (→ `market-recon`); never executes | `trading-strategy`, `portfolio-risk`, `market-recon` |
 | `probability-statistics` | the *math of uncertainty* underneath a call — distribution fit, CLT, significance test, confidence interval, MLE, Bayesian vs frequentist | forging a trade spec (→ `trading-strategy`) or sizing a book (→ `portfolio-risk`); analysis only, never executes | `algorithmic-trading-chan`, `portfolio-risk`, `storm-investigation` |
 | `storm-investigation` | before any recommendation — five personas (Bull/Bear/Macro/Quant/Contrarian) | a single-perspective read or a final verdict; investigates, never decides | `market-recon`, `trading-strategy`, `portfolio-risk` |
@@ -124,6 +125,16 @@ When to draw each skill, and the adjacent task that wrongly pulls it. Every craf
   climax), VPA candle signals (hammer, shooting star, stopping/topping-out volume), support and
   resistance, dynamic trends, and Volume at Price (VAP). Nine exhaustive reference files. The
   volume layer that pairs with `japanese-candlesticks` for confluence; reads the story, never
+  places the trade.
+- `chart-patterns` — the Merchant's read-only craft for reading chart patterns, distilled from
+  Thomas Bulkowski's *Encyclopedia of Chart Patterns* (2nd ed). Identifies and interprets every
+  classic formation (broadening, bump-and-run, cup-with-handle, diamonds, double/triple tops &
+  bottoms, flags/pennants/gaps, head-and-shoulders, horns, islands, pipes, rectangles, rounding
+  turns, scallops, triangles & wedges) plus event patterns (earnings surprise, dead-cat bounce,
+  FDA approvals, same-store sales, ratings); for each, the recognition rules, bull/bear
+  psychology, measure-rule target, and Bulkowski's headline odds (average move, failure rate,
+  throwback/pullback). Fourteen exhaustive reference files. The formation layer that pairs with
+  `japanese-candlesticks` and `volume-price-analysis` for confluence; names the pattern, never
   places the trade.
 - `algorithmic-trading-chan` — the Merchant's read-only quant doctrine, distilled from Ernest
   Chan's *Algorithmic Trading: Winning Strategies and Their Rationale*. The *rationale* behind

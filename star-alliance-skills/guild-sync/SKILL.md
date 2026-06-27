@@ -2,7 +2,7 @@
 name: guild-sync
 description: "The Quartermaster's device-parity craft — one sweep that proves every surface where the on-device install can fall behind the repo source of truth still matches, then reconciles what drifted. Covers four surfaces: skills (repo vs ~/.claude/skills, delegating the compare + install to skillsmith, never re-implementing it), scheduled-tasks (every entry points at the canonical repo path, not a stale rename), members (roster committed), and config (repo .claude tracked, runtime state ignored). Runs guild/device_sync.py read-only by default and only flags HARD drift; --reconcile installs repo-ahead skills via skillsmith. Use to answer 'is the device current' or to close the Sync Rotation workflow. Triggers: 'sync the repo with claude', 'is the device up to date', 'what needs syncing', 'device parity', 'sync rotation', 'check for drift'. Differentiate from skillsmith (skills-only versioning, delegated to here) and guild-conformity (repo-internal cross-reference agreement, not repo-to-device install state)."
 metadata:
-  version: 1.0.0
+  version: 1.0.1
 type: Skill
 
 ---
@@ -85,4 +85,5 @@ each repo-ahead skill, then re-reports clean.
 
 | Version | Date | Summary |
 |---|---|---|
+| **1.0.1** | 2026-06-27 | Authored the missing `guild/device_sync.py` primitive the 1.0.0 contract documented but never shipped (skill was SKILL.md-only and crashed on run). Read-only `--check` sweeps all four surfaces and gates exit only on HARD drift; `--reconcile` delegates repo-ahead skill installs (INSTALL/STAMP buckets) to skillsmith's `skill_sync.py`, never touching FORK/external. Scheduled-task scan flags only real dead `claude-skills` operating paths, not benign prose. Line-buffered output so delegated subprocess writes interleave correctly. |
 | **1.0.0** | 2026-06-27 | Initial release. Device-parity orchestrator over four surfaces (skills/scheduled-tasks/members/config), `guild/device_sync.py` primitive (read-only `--check`, `--reconcile` delegates skill install to skillsmith), and the `Sync Rotation` workflow it closes. Owned by the-quartermaster. Sits between `skillsmith` (skills-only, delegated to) and `guild-conformity` (repo-internal). |

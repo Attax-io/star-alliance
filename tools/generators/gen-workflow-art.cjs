@@ -146,6 +146,14 @@ const WORKFLOWS = [
     id: "local-session",
     prompt: `${STYLE}. An INDIGO summoning-circle on dark parchment from which a spectral scout-hawk of glowing indigo light is dispatched toward the edge of the map and returns clutching a small sealed findings-scroll, a conjurer's rune-marked hand open beneath, a faint mirrored twin of the guild crest showing the session runs apart in isolation, quiet remote reconnaissance by a summoned familiar, no weapon drawn`,
   },
+  {
+    id: "reflective-cycle",
+    prompt: `${STYLE}. An EMERALD-GREEN ouroboros ring of glowing runes circling an open guild-journal, a finished quest-scroll feeding into the loop and emerging as a single bright engraved doctrine-rune stamped onto a skill-tome, an enchanted quill writing the lesson down, the closing of a learning loop, no combat`,
+  },
+  {
+    id: "guild-self-audit",
+    prompt: `${STYLE}. An EMERALD-GREEN polished scrying-mirror reflecting the guild's own rack of skill-blades, a few dull rusted blades flagged with red runes for weeding while bright ones gleam, golden scales weighing member-crests for balance, an open ledger of retired-idea glyphs crossed out, calm self-examination and pruning, no enemy present`,
+  },
 ];
 
 function postJSON(url, headers, body) {

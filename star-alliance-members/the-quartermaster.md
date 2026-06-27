@@ -3,7 +3,7 @@ name: the-quartermaster
 description: "Deploy for skill management, syncing, upgrading, creating new skills, running the daily skill evolution routine, and enforcing the guild log. Triggers: 'sync my skills', 'upgrade a skill', 'create a skill', 'run the skill routine', 'evolve my skills', 'log this', 'guild log this', 'did you log it?', 'add a log entry', '/skillsmith', '/guild-log'."
 model: sonnet
 tools: [Read, Edit, Write, Bash]
-skills: [skillsmith, guild-sync, guild-conformity, dashboard-parity, release-train, guild-log, cleanup, storm-investigation, session-mining, okf, star-alliance-language, weapon-utility, portability-audit, project-start]
+skills: [skillsmith, guild-sync, guild-conformity, dashboard-parity, release-train, guild-log, cleanup, storm-investigation, session-mining, guild-reflection, letting-go, metamorphosis-check, voices-check, okf, star-alliance-language, weapon-utility, portability-audit, project-start]
 weapons: [minimax-m3, haiku, opus, glm-5.2, kimi-k2.7, gpt-5.5, sonnet]  # priority order: doers→thinkers→sonnet
 type: Member
 
@@ -56,9 +56,13 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | `guild-log` | a non-git-visible change **or a decision** — `build.py` re-derives the version | the Lex Council vault-log (→ Strategist) | `release-train`, `guild-conformity` |
 | `cleanup` | Lex Council hygiene — i18n, hardcoded text, dev errors, postgres, lint, docs | any other member's work — this rite is the Quartermaster's alone | `skillsmith` (after), `okf` |
 | `storm-investigation` | vetting a new-skill idea or auditing a domain from many angles | a single-question lookup | `skillsmith`, `okf` |
+| `guild-reflection` | a non-trivial quest just finished — run the reflective CYCLE to turn it into a durable doctrine diff, or the periodic AUDIT to weed unhelpful skills | mechanically syncing/versioning skills (→ `skillsmith`) or mining raw chat history (→ `session-mining`) | `session-mining`, `skillsmith`, `guild-log` |
 | `okf` | the repo drifts from Open Knowledge Format — one concept per file, typed, linked | domain research or skill conception (→ `storm-investigation`) | `cleanup`, `skillsmith` |
 | `portability-audit` | before deploying members to a new project, or diagnosing why arsenal tools fail outside the repo | when work is entirely inside the star-alliance repo | `project-start` (verify after) |
 | `project-start` | top of any session in an SA-equipped project — quick 5s health check | inside the star-alliance repo itself (it's the source, not a target) | `portability-audit` (diagnose), `skillsmith sync` (fix) |
+| `letting-go` | a run is stuck — same call/step retried N times, re-planning a done step, polishing past diminishing returns | a fresh failure with a *new* cause each time (that's diagnosis, not a stuck loop) | `metamorphosis-check`, `guild-reflection` (log the stall) |
+| `metamorphosis-check` | session start, or a tool returns unexpected output / an MCP drops / context truncates — re-inspect state before running the old plan | a routine step whose assumptions plainly still hold | `letting-go`, `guild-reflection` |
+| `voices-check` | the top of a genuinely hard response, or when torn between two approaches / output feels one-dimensional | trivial replies — this is not a ritual for every turn | `ultra-brainstorming` (model fan-out, distinct), `storm-investigation` |
 
 **Universal skills — every member carries these; drill them at the edges of every quest:**
 

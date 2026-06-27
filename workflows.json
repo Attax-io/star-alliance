@@ -2409,6 +2409,131 @@
         "recalibrate harness",
         "harness audit"
       ]
+    },
+    {
+      "id": "reflective-cycle",
+      "name": "Reflective Cycle",
+      "icon": "🔁",
+      "accent": "emerald",
+      "category": "Guild Self",
+      "class": "mutating",
+      "tagline": "Turn a finished task into a durable guild upgrade.",
+      "when": "Run after ANY non-trivial task — anything that touched code, doctrine, a workflow, or hit a retry/correction. Converts the run into a committed doctrine diff instead of throwing the lesson away. The closing half of every serious mission.",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Finish the Work",
+          "act": "A non-trivial task has just completed (code, doctrine, workflow, or a run with retries/corrections).",
+          "produces": "completed run"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Run the 6-Field Cycle",
+          "act": "Invokes guild-reflection (CYCLE mode): description (what ACTUALLY happened) → signals (friction) → evaluation (vs intent) → analysis (root cause, controllable vs not, trace to the SEED) → conclusion (one rule) → action_plan (a concrete diff naming a file). Delegate log/description drafting to a MiniMax doer; keep root-cause judgment in the thinker.",
+          "produces": "reflection record",
+          "inputs": [
+            "completed run"
+          ]
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Commit or File the Diff",
+          "act": "If the action_plan is small + safe, apply the diff to the named skill / CLAUDE.md / member trait now. If large or risky, file it to guild/journal backlog and surface to the Guild Master. Persist the record to guild/journal/cycle-<stamp>.json.",
+          "produces": "applied or filed upgrade",
+          "inputs": [
+            "reflection record"
+          ]
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports what was learned and what changed. HARD RULE: a non-trivial 'done' with an empty action_plan is rejected — valid closes are an applied diff, a filed backlog item, or an explicit 'no change warranted — run was clean'."
+        }
+      ],
+      "trigger_phrases": [
+        "reflective cycle",
+        "reflect on this",
+        "close the loop",
+        "what did we learn",
+        "run the reflection",
+        "self-improve this run",
+        "log the lesson"
+      ]
+    },
+    {
+      "id": "guild-self-audit",
+      "name": "Guild Self-Audit",
+      "icon": "🪞",
+      "accent": "emerald",
+      "category": "Guild Self",
+      "class": "mutating",
+      "tagline": "Cadence sweep that weeds dead skills and retires bad ideas.",
+      "when": "Run on a cadence (weekly or every N sessions) to keep the guild from rotting. Weeds skills that no longer earn their place, retires blocking assumptions with falsifying evidence, rebalances member load, and writes findings to the persistent journal. The recurring backbone of guild self-improvement.",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Call the Audit",
+          "act": "You (or a scheduled routine) trigger the cadence self-audit.",
+          "produces": "audit request"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Load Behavior",
+          "act": "Reads the last N guild/journal cycle records + audit reports, plus usage-log.jsonl and data/turn-cost.jsonl for real behavior. Self-knowledge is evidence-based, never introspective (Shoemaker).",
+          "produces": "behavior snapshot",
+          "inputs": [
+            "audit request"
+          ]
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Weed, Retire, Rebalance, Interrogate",
+          "act": "Invokes guild-reflection (AUDIT mode): (1) weed skills with no productive retrieval in N cycles; (2) retire/replace held assumptions with evidence-for/falsifier/bad-idea-defended, appending to retired-ideas.md; (3) rebalance per-member load vs declared intent; (4) answer the fixed self-interrogation gut-honestly. Delegate scans/tallies to a MiniMax doer.",
+          "produces": "audit findings + proposed diffs",
+          "inputs": [
+            "behavior snapshot"
+          ]
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Apply or Surface",
+          "act": "High-confidence + low-blast-radius diffs applied now; anything touching security/RLS/destructive scope is surfaced, never auto-applied. Writes guild/journal/audit-<stamp>.md and updates memory if a finding earns a durable file.",
+          "produces": "applied upgrades + audit report",
+          "inputs": [
+            "audit findings + proposed diffs"
+          ]
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Guild Conformance",
+          "act": "Runs guild/conformance.py — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
+          "produces": "conformance sign-off"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports the sweep outcome — skills weeded, ideas retired, imbalances flagged, diffs applied vs surfaced — in plain English."
+        }
+      ],
+      "trigger_phrases": [
+        "guild self-audit",
+        "self audit",
+        "weed the skills",
+        "retire bad ideas",
+        "rebalance the guild",
+        "audit the guild",
+        "guild health check",
+        "evolve the guild"
+      ]
     }
   ]
 }

@@ -22,6 +22,14 @@ const STYLE = "fantasy RPG skill icon, Fallen Sword MMORPG style, dark parchment
 
 const SKILLS = [
   {
+    id: "voices-check",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "A skill for integrating an agent's competing internal sub-voices into one coherent response ins", no text, no watermarks`,
+  },
+  {
+    id: "chart-patterns",
+    prompt: `${STYLE}. A master chartist's parchment on dark aged leather: a single glowing golden price-line carving the unmistakable silhouettes of classic chart patterns across it — a head-and-shoulders crest, a double-top twin-peak, a coiling symmetrical triangle, and a breakout flag on its pole — a brass drafting compass and straight-edge measuring a pattern's height to project a dotted golden measure-rule target arrow, faint red-and-green candlestick bars and a small volume histogram along the base, arcane geometry glyphs framing the formations — the read-only craft of naming the shapes the crowd's hope and fear carve into price, no text, no watermarks`,
+  },
+  {
     id: "metamorphosis-check",
     prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "A guardrail skill that catches the single most dangerous agent failure: confidently running the", no text, no watermarks`,
   },
