@@ -1,4 +1,12 @@
 {
+  "a11y-craft": {
+    "icon": "🧩",
+    "blurb": "The Designer's accessibility craft — make WCAG 2.2 AA a gate every surface clears before it shi",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "'is this accessible', 'a11y audit', 'check contrast', 'WCAG', 'fix focus states', 'keyboard navigation', 'make it accessible'",
+    "modes": ""
+  },
   "algorithmic-trading-chan": {
     "icon": "📈",
     "blurb": "Ernie Chan's quant doctrine: mean reversion, momentum, backtesting pitfalls, Kelly risk",
@@ -110,6 +118,14 @@
     "tabler": "ti-brush",
     "triggers": "'design the UI', 'make it premium', 'pick a style', 'minimalist', 'brutalist', 'add motion', 'write a DESIGN.md', 'redesign this', 'anti-slop'",
     "modes": "engineer; agency; minimal; brutalist; motion; encode; redesign"
+  },
+  "design-tokens": {
+    "icon": "🧩",
+    "blurb": "The Designer's token-architecture craft — structure a design-token system that scales, themes",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "'design tokens', 'token architecture', 'set up theming', 'dark mode tokens', 'semantic tokens', 'OKLCH palette', 'W3C design tokens'",
+    "modes": ""
   },
   "design-unity": {
     "icon": "🧬",

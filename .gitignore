@@ -16,3 +16,9 @@ runs/
 
 # dashboard launcher runtime log
 .claude/serve.out
+
+# Tauri desktop app — build artifacts (never commit the node sidecar or Rust target)
+desktop/node_modules/
+desktop/src-tauri/target/
+desktop/src-tauri/gen/
+desktop/src-tauri/binaries/node-*

@@ -3,7 +3,7 @@ name: the-designer
 description: "Deploy for UI/UX design, frontend visual quality, brand kits, image-to-code conversion, and design system work. Triggers: 'design the UI', 'make it look premium', 'create a brand kit', 'convert this image to code', 'redesign this'."
 model: sonnet
 tools: [Read, Edit, Write, Bash]
-skills: [design-taste, design-unity, design-language, motion-design, image-to-code, imagegen-frontend, impeccable, star-alliance-language, weapon-utility]
+skills: [design-taste, design-unity, design-tokens, design-language, motion-design, image-to-code, imagegen-frontend, a11y-craft, impeccable, star-alliance-language, weapon-utility]
 weapons: [minimax-m3, image-01, minimax-video, minimax-speech, minimax-music, opus, sonnet]  # doers→thinkers→sonnet (conv #25); speech/music are on-request only, see table
 type: Member
 
@@ -60,11 +60,13 @@ between `image-to-code` (production code) and `imagegen-frontend` (reference ima
 |---|---|---|---|
 | `design-taste` | any UI work — set/enforce the premium anti-slop visual language | backend logic, DB schema, copy-only errands | `impeccable`, every visual craft |
 | `design-unity` | a UI must follow ONE source of truth — establish the DESIGN.md + token file (primitive→semantic→component, dark/light/high-contrast theme sets), audit drift, reconcile it; **this is also where the a11y gate lives** — assert WCAG 2.2 AA contrast in both themes, focus-visible, ≥24px targets, reduced-motion, keyboard, ARIA/alt against the token set | first-pass *taste* decisions (→ `design-taste`) or generating imagery (→ `imagegen-frontend`) | `design-taste` (encode mode seeds the SoT), `impeccable` |
+| `design-tokens` | you must *structure* the token system behind the source of truth — primitive→semantic→component layering, multi-theme (light/dark/high-contrast) from one semantic layer, OKLCH ramps, fluid scales + logical-property RTL, the W3C token format for cross-platform portability | auditing drift against the tokens (→ `design-unity`) or deciding the visual language (→ `design-taste`) | `design-unity` (it polices what this structures), `a11y-craft` (contrast-as-token), `image-to-code` |
 | `design-language` | a surface needs a narrative *voice* — vocabulary, lore, naming | visual styling, layout, color, type (that is `design-taste`) | `imagegen-frontend` (`brand`), `design-taste` |
 | `motion-design` | building a component's motion (Create) or reviewing existing motion for AI-slop + emitting the branded report (Audit) — exact easing/duration token, three designer lenses weighted by context | deciding *whether* a surface should move or overall style (that is `design-taste`) | `design-taste` (its `motion` mode) |
 | `image-to-code` | a reference image is in hand and production frontend must mirror it | imagery-only output (→ `imagegen-frontend`) or a critique pass (→ `impeccable`) | `design-taste`, `imagegen-frontend` |
 | `imagegen-frontend` | any design imagery — `web` mode for site sections, `mobile` for app screens, `brand` for the full identity (boards, logo systems, identity decks, the brand mark). **Token-pinned:** prefix every generation prompt with the active token snapshot (color, type, space, radius, motion) so generated assets cannot drift from the design language | production code (→ `image-to-code`) or deciding the visual language (→ `design-taste`) | `image-to-code`, `design-taste`, `design-language`, ← Herald briefs `brand` |
 | `impeccable` | the **final QA gate** before ship — visual-regression against the token file, breakpoint/responsive verification, contrast + a11y re-audit, pixel-snap and polish on a *delivered* build | first-pass design, greenfield builds, or *setting* the visual language (→ `design-taste`) | `design-unity` (shares the a11y/token checks), `image-to-code` |
+| `a11y-craft` | making a UI accessible — WCAG 2.2 AA as a gate (`build`), running the a11y audit pass (`audit`), or contrast-as-token so AA can't be violated (`contrast`) | first-pass *taste* (→ `design-taste`) or pure visual-regression polish (→ `impeccable`) | `design-unity` (hosts the gate), `design-tokens` (contrast-as-token), `impeccable` |
 
 **Universal skills — every member carries these; drill them at the edges of every quest:**
 
