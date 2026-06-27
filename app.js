@@ -828,13 +828,28 @@ function renderMemberDossier(id) {
       <div class="panel-grid">
         <div class="section glass">
           <div class="section-title sk-head">
-            <span>Skills carried · ${active.length}${blocked ? ` <span class="blk-note">· ${blocked} blocked</span>` : ""}${added ? ` <span class="add-note">· ${added} added</span>` : ""}</span>
+            <span>General Skills · ${generalIds.length}${blocked ? ` <span class="blk-note">· ${blocked} blocked</span>` : ""}${added ? ` <span class="add-note">· ${added} added</span>` : ""}</span>
             ${memberHasOverrides(m.id) ? `<button class="reset-btn" id="reset-member" data-member="${esc(m.id)}">Reset agent</button>` : ""}
           </div>
-          <p class="skill-hint">Tap a skill's <strong>icon</strong> to block it · <strong>✕</strong> to unassign. Hover for details.</p>
-          <div class="skill-lines">${skills}</div>
+          <p class="skill-hint">Global skills — available in every sector. Tap a skill's <strong>icon</strong> to block it · <strong>✕</strong> to unassign. Hover for details.</p>
+          <div class="skill-lines">${generalIds.length ? generalIds.map(skillLine).join("") : `<p class="empty">No general skills carried.</p>`}</div>
           ${assignPanel}
         </div>
+        ${sectorGroups.map((g) => `
+        <div class="section glass" style="--mc:${esc(g.color || "#888")}">
+          <div class="section-title sk-head">
+            <span>${esc(g.icon || "⬡")} ${esc(g.name)} · ${g.ids.length}</span>
+            <a class="reset-btn" href="#/domains/${esc(g.id)}">View sector →</a>
+          </div>
+          <p class="skill-hint">Sector-specific skills deployed to <strong>${esc(g.name)}</strong>.</p>
+          <div class="skill-lines">${g.ids.map(skillLine).join("")}</div>
+        </div>`).join("")}
+        ${otherIds.length ? `
+        <div class="section glass">
+          <div class="section-title sk-head"><span>⬡ Other · ${otherIds.length}</span></div>
+          <p class="skill-hint">Sector-specific skills not yet deployed to any sector.</p>
+          <div class="skill-lines">${otherIds.map(skillLine).join("")}</div>
+        </div>` : ""}
         <div class="section glass">
           <div class="section-title">Deployment</div>
           <div class="kv">
