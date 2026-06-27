@@ -130,6 +130,10 @@ const WORKFLOWS = [
     id: "conversation",
     prompt: `${STYLE}. A calm SLATE-GREY hearth-side parley scene, two empty carved chairs facing each other across a low rune-lit table, a single softly glowing speech-glyph hovering between them, the guild banner furled and at rest against the wall, no weapons present, quiet plain counsel and exchange of words`,
   },
+  {
+    id: "local-session",
+    prompt: `${STYLE}. An INDIGO summoning-circle on dark parchment from which a spectral scout-hawk of glowing indigo light is dispatched toward the edge of the map and returns clutching a small sealed findings-scroll, a conjurer's rune-marked hand open beneath, a faint mirrored twin of the guild crest showing the session runs apart in isolation, quiet remote reconnaissance by a summoned familiar, no weapon drawn`,
+  },
 ];
 
 function postJSON(url, headers, body) {
