@@ -2,7 +2,7 @@
 name: guild-conformity
 description: "The Quartermaster's craft for proving the whole guild repo agrees with itself and with every logged decision, then reconciling any contradiction at its source. Wraps the read-only conformity_check.py (which emits a contradiction map across members, members-meta, skills, skills-meta, domains, workflows, the guild log, and the generated guild-data) plus fixing each real contradiction at its source of truth and rebuilding with build.py until the check passes clean. It is the closing step of every guild workflow and the spine of the conformity-sweep. Use when a workflow is closing, after any structural change, or when you need proof nothing contradicts. Triggers: 'run the conformity check', 'confirm guild conformance', 'does the repo agree with itself', 'conformity sweep', 'reconcile the guild data', 'is everything consistent'. Differentiate from cleanup (app/i18n hygiene) and skillsmith (skill versioning)."
 metadata:
-  version: 1.3.0
+  version: 1.4.0
 type: Skill
 
 ---
@@ -50,6 +50,28 @@ Keep the rule **narrow**: it must catch the real contradiction without flagging 
 new invariant that raises false positives is worse than the gap it closed — it trains the next
 Quartermaster to ignore the check. Document the tag's meaning in the check's header legend.
 
+### The anti-drift family — locking a consolidation
+
+A recurring, high-value *class* of invariant: when a duplicated fact is collapsed onto one source of
+truth (the Architect's `schema-evolution` consolidation move), every copy you could **not** delete
+becomes a drift risk. Seal each one with a gate rule that ties it back to the source — this is what
+makes a consolidation *stay* consolidated:
+
+- **`fallback == source`** — a fail-safe literal (a hardcoded dict kept so a broken registry never
+  bricks a gate) must equal the registry it shadows. `FB` checks `conformity_check._FALLBACK_ROLE` and
+  `summon._FALLBACK_CLOUD_TAG` against `models.json` — the exact guard that would have caught the
+  `app.js sonnet=doer` bug that started that whole consolidation.
+- **`sidecar ⊆ source`** — an operational side-file (a cost/usage map) may only key ids that exist in
+  the source. `MU` checks `models-usage.json` keys ⊆ registry ids.
+- **`asset exists per id`** — a convention-keyed asset (art tile, generated doc) must exist for every
+  id the source declares. `WART` checks a `weapon-art/<id>.png` per registry weapon.
+- **`prose == data`** — hand-edited doctrine prose that names data (the routing-gate's `member (model)`
+  lines) is **linted, not regenerated**: `RG` checks the pairs match `guild-data`, so the prose stays
+  hand-owned but honest.
+
+Each still earns its negative test (hand-break the copy → confirm the tag fires → revert → green).
+Without these, copies silently re-diverge the moment someone edits one; with them the gate bites loudly.
+
 ## Sharpening the craft
 
 You improve along four rungs, and your measure is the count of clean sweeps versus the contradictions you let leak.
@@ -95,7 +117,7 @@ the harness-efficiency session, where a skill landed in two loadouts with no dri
 sweep-time SD flag caught it.)
 
 ## Versioning
-Own skill. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new mode/section · MAJOR: method contract change). Regenerate `VERSIONS.md` with `python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.
+Own skill. Current: **1.4.0**. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new mode/section · MAJOR: method contract change). Regenerate `VERSIONS.md` with `python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.
 
 ## Member-table consistency check (1.3.0)
 
@@ -115,6 +137,7 @@ python3 conformity_check.py
 **New invariant to watch:** after any member `.md` edit, confirm `build.py` ran (check the PostToolUse chain in `settings.json` — `member-table-sync.py` must appear before `autocommit.sh` so the table is committed with the change, not separately). If `member-table-sync.py` is missing from PostToolUse, flag it as a harness gap and add it before closing.
 
 ## Changelog
+- **1.4.0** — New §The anti-drift family under "Adding a new invariant": names the reusable invariant *class* that locks a source-of-truth consolidation — `fallback == source` (FB), `sidecar ⊆ source` (MU), `asset-per-id` (WART), `prose == data` lint (RG). Each ties a copy you couldn't delete back to the SoT so it can't silently re-diverge; each still earns its negative test. Mined from the model-armory consolidation onto `star-alliance-arsenal/models.json` (the FB check is the guard that would have caught the original `app.js sonnet=doer` bug). Pairs with `schema-evolution` 1.1.0 §Consolidation. New section → MINOR.
 - **1.3.0** — New §Member-table consistency check: documents the `member-table-sync.py` PostToolUse hook invariant, adds explicit `build.py` re-run to the conformity-close checklist, and instructs Quartermaster to verify hook wiring in `settings.json` before closing.
 - **1.2.0** — Added **§Edit-time fast-path (`--member`)** + the matching `conformity_check.py --member <name>` mode: a focused per-member skill↔drill audit (SD forward + R skills-meta + SD **reverse**, catching a stale drill row left after a removal — which the full forward-only SD check missed) the Quartermaster runs the instant a loadout changes, before the full sweep. Primary guard for skillsmith Invariant #9; the conformity-close stays the backstop. New mode + section → MINOR.
 - **1.1.0** — Added **§Adding a new invariant** — the Artisan-rung method for teaching the check to catch a *class* of contradiction, not just an instance: enforce at the source (`build.py`, fatal), re-assert at the gate (`conformity_check.py`, tagged, "when present" for optional fields), and **prove it with a negative test** (hand-break a record → confirm the tag fires → revert → confirm green). Mined from the `WPN`/`CLS`/tightened-`expected_order` rules added this session. New section → MINOR.
