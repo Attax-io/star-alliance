@@ -15,7 +15,14 @@
 # Output on stdout (exit 0) is added to context by Claude Code. Compact on
 # purpose: a few hundred tokens per turn is trivial against one mis-routed task
 # ground out on Opus instead of handed to a Sonnet member's cheap doer.
+#
+# SLASH-SKILL KLAXON FIX: the high-alert PreToolUse hook only fires on the Skill
+# TOOL — but a user-typed /slash skill loads via a <command-name> injection and
+# NEVER calls the Skill tool, so that path went silent. The ⚡ banner is, like the
+# ⚔ and 🗺 banners, MODEL-emitted; here we detect a leading /skill in the prompt
+# and direct the model to emit it as its first line, restoring the klaxon.
 # ─────────────────────────────────────────────────────────────────────────────
+INPUT=$(cat)
 cat <<'EOF'
 ⚔ STAR ALLIANCE ROUTING GATE (harness-injected, binding) — ROUTE before you act.
 The Butler ONLY receives + routes; he does NOT do specialist or doer-grade work himself.
