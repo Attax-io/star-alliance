@@ -29,24 +29,40 @@ import sys, os, json, re
 
 CAP = 3  # max consecutive banner-less assistant turns before we relent (anti-brick)
 BANNER_RE = re.compile(r"Starmap Workflow Started:\s*(.+?)\s*!")
+MEMBER_RE = re.compile(r"Member reports for duty:\s*([^!]+?)(?:\s+using\b|!)", re.I)
 
 
 def project_dir():
     return os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
 
 
-def load_workflow_names():
+def _core(name):
+    """Normalize a member name/id for tolerant matching: 'the-Developer' → 'developer'."""
+    s = re.sub(r"(?i)^the[-\s]+", "", (name or "").strip())
+    return re.sub(r"[^a-z0-9]", "", s.lower())
+
+
+def load_workflows():
+    """Return {name_lower: [member_actor_id, …]} — the cast each workflow names,
+    in step order, excluding `you` and gate steps."""
     path = os.path.join(project_dir(), "workflows.json")
     with open(path) as f:
         data = json.load(f)
     wfs = data.get("workflows", data) if isinstance(data, dict) else data
     seq = list(wfs.values()) if isinstance(wfs, dict) else wfs
-    names = set()
+    out = {}
     for it in seq:
         nm = (it.get("name") or "").strip()
-        if nm:
-            names.add(nm.lower())
-    return names
+        if not nm:
+            continue
+        roster = []
+        for s in it.get("steps", []) or []:
+            if s.get("kind") == "member":
+                actor = s.get("actor")
+                if actor and actor != "you" and actor not in roster:
+                    roster.append(actor)
+        out[nm.lower()] = roster
+    return out
 
 
 def last_user_index(lines):
