@@ -196,15 +196,81 @@ def check_file(path: str, root: str):
     return {"file": rel, "ok": True}
 
 
+def run_layout(root: str, do_fix: bool, as_json: bool) -> int:
+    """Placement audit: flag root-level files that belong under a concept-path.
+    With do_fix, relocate ONLY the 'safe' class via `git mv` (inert files nothing
+    references); 'review' class is reported and deferred to a path-rewrite sweep."""
+    misplaced = []
+    for fn in root_loose_files(root):
+        verdict = classify_placement(fn)
+        if verdict:
+            target, safety = verdict
+            misplaced.append({"file": fn, "target": target + fn, "safety": safety})
+
+    moved, deferred = [], []
+    if do_fix:
+        for m in misplaced:
+            if m["safety"] != "safe":
+                deferred.append(m)
+                continue
+            tdir = os.path.join(root, os.path.dirname(m["target"]))
+            os.makedirs(tdir, exist_ok=True)
+            r = subprocess.run(["git", "mv", m["file"], m["target"]],
+                               cwd=root, capture_output=True, text=True)
+            if r.returncode == 0:
+                moved.append(m)
+            else:  # fall back to a plain move if the file isn't tracked
+                try:
+                    os.replace(os.path.join(root, m["file"]), os.path.join(root, m["target"]))
+                    moved.append(m)
+                except Exception as e:
+                    sys.stderr.write(f"[okf-layout] move failed {m['file']}: {e}\n")
+        moved_names = {m["file"] for m in moved}
+        misplaced = [m for m in misplaced if m["file"] not in moved_names]
+
+    safe_left = [m for m in misplaced if m["safety"] == "safe"]
+    review = [m for m in misplaced if m["safety"] == "review"]
+
+    if as_json:
+        print(json.dumps({
+            "root_files": sum(1 for _ in root_loose_files(root)),
+            "misplaced": len(misplaced), "moved": [m["file"] for m in moved],
+            "safe_unmoved": safe_left, "review_deferred": review,
+        }, indent=2))
+    else:
+        print("OKF layout audit — concept-path placement of root files")
+        if moved:
+            print(f"  moved {len(moved)} safe file(s) → concept-path:")
+            for m in moved:
+                print(f"      {m['file']} → {m['target']}")
+        if safe_left:
+            print(f"  ✗ {len(safe_left)} safe-to-move file(s) still at root (run --layout --fix):")
+            for m in safe_left:
+                print(f"      {m['file']} → {m['target']}")
+        if review:
+            print(f"  ⚠ {len(review)} file(s) need a path-rewrite sweep (Phase-2 Architecture Build):")
+            for m in review:
+                print(f"      {m['file']} → {m['target']}  [review: referenced by hooks/build/serve/dashboard]")
+        if not misplaced and not moved:
+            print("  ✓ every root file is pinned or correctly placed")
+    # Enforce only the 'safe' class — 'review' is advisory until the sweep runs.
+    return 1 if safe_left else 0
+
+
 def main():
     ap = argparse.ArgumentParser(description="OKF conformance audit / fixer")
     ap.add_argument("--fix", action="store_true", help="rewrite non-conformant files to baseline OKF")
     ap.add_argument("--json", action="store_true", help="machine-readable output")
     ap.add_argument("--staged", action="store_true", help="only git-staged files")
     ap.add_argument("--path", help="audit a single file or subtree")
+    ap.add_argument("--layout", action="store_true",
+                    help="placement audit: flag root files that belong under a concept-path "
+                         "(--fix relocates only the safe class)")
     args = ap.parse_args()
 
     root = repo_root()
+    if args.layout:
+        sys.exit(run_layout(root, args.fix, args.json))
     if args.path:
         target = args.path if os.path.isabs(args.path) else os.path.join(root, args.path)
         if os.path.isfile(target):
