@@ -753,25 +753,25 @@ function renderMemberDossier(id) {
     </div>`;
   };
 
-  // Split carried skills into General (global) + one group per sector that lists
-  // the member's non-global skills. Home domain (the whole-pool listing) is excluded
-  // as a sector; the skill's own `global` flag is the General signal.
-  const isGlobalSkill = (sid) => !!(bySkill.get(sid) || {}).global;
+  // Split carried skills into General + one group per sector that lists the skill.
+  // Grouping is by SECTOR MEMBERSHIP (a non-home domain's skills[]), NOT the `global`
+  // flag — `global` only means "installed at ~/.claude/skills" (a deploy fact), so a
+  // globally-installed skill can still be sector-specific (e.g. transactions-domain-model
+  // lives in the global path but belongs to Lex Council App). Home domain (the whole-pool
+  // listing) is excluded as a sector. General = carried skills in no non-home sector.
   const homeDomain = GUILD.domains.reduce(
     (a, b) => ((b.skills || []).length > (a.skills || []).length ? b : a),
     GUILD.domains[0] || {});
-  const generalIds = assigned.filter(isGlobalSkill);
-  const nonGlobalIds = assigned.filter((sid) => !isGlobalSkill(sid));
   const placedInSector = new Set();
   const sectorGroups = GUILD.domains
     .filter((d) => d.id !== (homeDomain && homeDomain.id))
     .map((d) => {
-      const ids = nonGlobalIds.filter((sid) => (d.skills || []).includes(sid));
+      const ids = assigned.filter((sid) => (d.skills || []).includes(sid));
       ids.forEach((id) => placedInSector.add(id));
       return { name: d.name, id: d.id, icon: d.icon, color: d.color, ids };
     })
     .filter((g) => g.ids.length);
-  const otherIds = nonGlobalIds.filter((sid) => !placedInSector.has(sid));
+  const generalIds = assigned.filter((sid) => !placedInSector.has(sid));
 
   const open = assignOpenFor === m.id;
   const pool = open ? GUILD.skills.filter((s) => !assigned.includes(s.id)) : [];
