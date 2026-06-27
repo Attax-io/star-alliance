@@ -22,7 +22,7 @@ star-alliance/
 │   ├── the-quartermaster.md
 │   ├── the-strategist.md
 │   └── the-translator.md
-├── star-alliance-skills/  ← shared skill pool (46 skills, each a directory with SKILL.md)
+├── star-alliance-skills/  ← shared skill pool (50 skills, each a directory with SKILL.md)
 │   ├── article-creator/
 │   ├── brandkit/
 │   ├── ...
@@ -88,6 +88,7 @@ signal. `member_level.py report` shows each member's exact gap to the next tier.
 These skills appear across multiple members — they're the guild's common toolkit:
 
 - `weapon-utility` — carried by **every** member; teaches each how to wield their weapons (the AI models)
+- `star-alliance-language` — carried by **every** member; the read side of the guild's knowledge language, **OKF** (the *Star Alliance Language*). Its producer half, `okf`, is the Quartermaster's alone.
 - `supabase`, `supabase-postgres-best-practices`, `db-rename-sweep` — The Architect and The Developer
 - `bug-fix-workflow` — The Developer and The Strategist
 - `obsidian-markdown` — The Developer and The Translator
@@ -200,4 +201,4 @@ The authoritative gate is **`skill-creator`'s `quick_validate.py` green** on eve
 ## Registry
 
 See [`VERSIONS.md`](VERSIONS.md) for the full skill → version table with word counts and Cowork
-status (46 skills).
+status (48 skills).
