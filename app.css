@@ -583,6 +583,32 @@ kbd {
 .wield-chip.on .wc-dot { opacity: 1; color: var(--wc); }
 .arsenal-toolbar { display: flex; align-items: center; gap: var(--s3); margin-bottom: var(--s4); }
 
+/* ── Arsenal minimal card grid ── */
+.model-grid { grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); gap: var(--s3); }
+.model-card-mini { text-decoration: none; color: inherit; cursor: pointer; padding: 0; overflow: hidden; gap: 0; }
+.model-card-mini .weapon-art-wrap { height: 150px; border-radius: var(--r3) var(--r3) 0 0; }
+.model-card-mini .weapon-art { height: 150px; }
+.model-mini-body { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 5px; }
+.model-mini-role { display: flex; align-items: center; gap: 5px; font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--rc); }
+.role-icon-sm { width: 14px; height: 14px; border-radius: 3px; object-fit: cover; flex: none; }
+.model-mini-name { font-weight: 700; font-size: var(--t-base); line-height: 1.2; }
+.model-mini-foot { display: flex; align-items: center; gap: 6px; margin-top: 2px; }
+.model-card-mini .model-count { margin-left: 0; font-size: 10px; }
+.model-card-mini:hover { border-color: color-mix(in srgb, var(--wc) 70%, var(--line-2)); box-shadow: 0 0 14px color-mix(in srgb, var(--wc) 20%, transparent); }
+
+/* ── Weapon detail panel ── */
+.weapon-panel { display: flex; flex-direction: column; gap: var(--s4); }
+.wp-hero { display: flex; align-items: flex-start; gap: var(--s4); padding: var(--s5); }
+.wp-art { width: 220px; height: 220px; flex: none; border-radius: var(--r3); }
+.wp-art .weapon-art { height: 220px; }
+.wp-meta { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--s3); }
+.wp-title { font-size: var(--t-xl); font-weight: 800; margin: 0; color: var(--starlight); }
+@media (max-width: 640px) {
+  .wp-hero { flex-direction: column; }
+  .wp-art { width: 100%; height: 200px; }
+  .wp-art .weapon-art { height: 200px; }
+}
+
 .skill-lines { display: flex; flex-direction: column; gap: var(--s2); }
 .skill-line { display: flex; align-items: center; gap: var(--s3); padding: var(--s3); border-radius: var(--r2); transition: background var(--dur) var(--ease), opacity var(--dur) var(--ease); }
 .skill-line:hover { background: rgba(255,255,255,.04); }
