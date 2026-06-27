@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 66
     },
-    "generated": "2026-06-27T19:02:23Z",
+    "generated": "2026-06-27T19:02:29Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -2586,7 +2586,7 @@ const GUILD = {
       "ramp": "purple",
       "tabler": "ti-language",
       "src": "own",
-      "desc": "Pick and enforce a project's NARRATIVE VOICE — its vocabulary, lore, naming conventions, and tone of address. This is the words-and-world layer, NOT visual styling: it decides how a thing is *named and spoken*, never how it *looks* (that is `design-taste`). One multi-mode engine holding one verbatim playbook per language; add new languages by dropping a reference in. Languages: fallen-sword (dark-fantasy MMORPG / Erildath); star-alliance (the guild-dev meta-voice — forge, sigil, quest, wave, conformity); lex-council (the legal-finance product voice — vault, codex, ledger, certify, statute). Use when writing copy, UI strings, docs, commit prose, or member dialogue that must sound like a specific world. Triggers: 'use the X voice', 'make it sound like Fallen Sword', 'write this in the guild voice', 'Lex Council tone', 'reskin this copy', 'Erildath', 'pick a design language'. NOT for how the UI looks — that is `design-taste` (visual). NOT for identity/logo — that is `brandkit`.",
+      "desc": "Pick and enforce a project's NARRATIVE VOICE — its vocabulary, lore, naming conventions, and tone of address. This is the words-and-world layer, NOT visual styling: it decides how a thing is *named and spoken*, never how it *looks* (that is `design-taste`). One multi-mode engine holding one verbatim playbook per language; add new languages by dropping a reference in. Languages: fallen-sword (dark-fantasy MMORPG / Erildath); star-alliance (the guild-dev meta-voice — forge, sigil, quest, wave, conformity); lex-council (the legal-finance product voice — vault, codex, ledger, certify, statute). Use when writing copy, UI strings, docs, commit prose, or member dialogue that must sound like a specific world. Triggers: 'use the X voice', 'make it sound like Fallen Sword', 'write this in the guild voice', 'Lex Council tone', 'reskin this copy', 'Erildath', 'pick a design language'. NOT for how the UI looks — that is `design-taste` (visual). NOT for identity/logo — that is `imagegen-frontend` (brand mode).",
       "intro": "This is the one craft for deciding and enforcing how a project sounds and what it calls things. Pick the world a surface should speak in, load that language's playbook, and reskin the copy, strings, docs, and dialogue into one consistent voice. One skill, many languages — add more by dropping a refe",
       "sections": [
         "What it is / is not",
