@@ -62,5 +62,13 @@ STEP 3 · THAT MEMBER DRAWS HIS WEAPONS (weapon-utility):
 Acting as the Butler to do a specialist's job, OR a member doing doer-grade work in its thinker, is the
 EXCEPTION — and must be justified out loud. Tool-access orchestration (git, file writes, MCP) stays with the
 working member's thinker; doers cannot run it.
+
+HIGH-ALERT · SESSION KLAXON (always on, every session) — emit the matching banner the
+INSTANT each event happens, as the first line for that event, exact emoji + punctuation:
+  • STEP 1, member formed →  ⚔ Member reports for duty: <member name> using <thinker weapon(s)> and <doer weapon>!
+  • STEP 2, a workflows.json procedure begins →  🗺 Starmap Workflow Started: <workflow name>!
+  • Any Skill tool fires →  ⚡ Member Skill Activated: <skill name>!  (this one is auto-fired by the
+    high-alert PreToolUse hook — let it land, do not also repeat it).
+One banner per event. No stacking, no echo on trivial/internal steps.
 EOF
 exit 0
