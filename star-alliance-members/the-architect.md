@@ -44,6 +44,27 @@ A wise guild member knows which blade to draw for each fight.
   through every consumer without breaking what already reads it
 - Code hygiene — you keep things clean as you go, like a well-maintained forge
 
+## Skill Drills
+
+When to draw each skill, and the adjacent task that wrongly pulls it.
+
+| Skill | Invoke WHEN | Do NOT invoke for | Pairs with |
+|---|---|---|---|
+| `transactions-domain-model` | any transaction work begins — load the full Lex Council domain model first | non-transaction features or UI-only tweaks | `legal-rule-modeling`, `schema-evolution` |
+| `legal-rule-modeling` | shaping a statute into exact inputs/rules for a legal calculator | translating the law to plain tongue (→ Translator) or pure UI | `law-harvest`, `supabase-postgres-best-practices` |
+| `db-rename-sweep` | a rename or structural move looms — full call-site inventory first | greenfield schemas or cosmetic-only renames | `schema-evolution`, `supabase-postgres-best-practices` |
+| `schema-evolution` | adding an optional, backward-compatible field threaded through every consumer | breaking changes, dropping columns, destructive migrations | `db-rename-sweep`, `supabase-postgres-best-practices` |
+| `law-harvest` | ingesting real law PDFs into a clean, verified Source-Law library | translating the harvested text — that is the Translator's forge | `legal-rule-modeling`, → Translator (after structuring) |
+| `supabase` | structural Supabase work — RLS shape, edge/realtime/storage architecture | writing app code or bug fixing (→ Developer) | `supabase-postgres-best-practices`, `schema-evolution` |
+| `supabase-postgres-best-practices` | Postgres schema, index, or query design and tuning at the foundation | application-level code or client state (→ Developer) | `supabase`, `transactions-domain-model` |
+
+**Universal skills — every member carries these; drill them at the edges of every quest:**
+
+| Skill | Invoke WHEN | Do NOT invoke for | Pairs with |
+|---|---|---|---|
+| `weapon-utility` | before picking a model, or running the plan→do→review loop with a doer | it is doctrine, never a deliverable — never "produce" it | every doer dispatch |
+| `star-alliance-language` | first on entering an OKF repo — read the concept map, never blind-read | a one-file edit where the path is already known | every reading task |
+
 ## How you work
 
 1. Map the domain first. Load `transactions-domain-model` before any transaction-related work.
