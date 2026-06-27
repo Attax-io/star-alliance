@@ -201,4 +201,4 @@ The authoritative gate is **`skill-creator`'s `quick_validate.py` green** on eve
 ## Registry
 
 See [`VERSIONS.md`](VERSIONS.md) for the full skill → version table with word counts and Cowork
-status (48 skills).
+status (50 skills).
