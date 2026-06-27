@@ -181,6 +181,10 @@ const SKILLS = [
     id: "legal-rule-modeling",
     prompt: `${STYLE}. An arcane abacus beside a chiseled stone tablet of law transmuting into a glowing deterministic formula, brackets rates and caps etched as runic gates, a calculator-crystal computing inputs into outputs, an article-citation sigil beside each rule, the law made arithmetic`,
   },
+  {
+    id: "high-alert",
+    prompt: `${STYLE}. A blazing signal-beacon flaming atop a dark stone watchtower, golden-red alarm fire leaping skyward, a bronze war-horn and a swinging warning bell beside it, concentric red-gold alert rings radiating outward across the night, a herald's banner snapping in the wind, the whole guild roused to attention, urgent klaxon glow`,
+  },
 ];
 
 function postJSON(url, headers, body) {
