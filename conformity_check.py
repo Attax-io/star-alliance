@@ -243,25 +243,17 @@ def main():
                 fails.append(f"DC domains notes: '{ss.group(1)} skills' != actual {actual_skills}")
 
     # === SEC — member-page skill split stays self-maintaining (skills-carried widget) ===
-    # The member dossier renders carried skills as General (global flag) + one widget
-    # per sector domain that lists the skill. Two ways that auto-grouping can silently
-    # drift as skills/sectors grow:
-    #   • dead ref  — a domain lists a skill id that no longer exists → HARD FAIL.
-    #   • untagged  — a non-global skill in NO sector domain falls into the catch-all
-    #                 "Other" bucket → NOTE (QM queue): tag global or assign a sector.
-    nonhome_doms = [d for d in doms if d["id"] != "star-alliance"]
-    sector_listed = {sid for d in nonhome_doms for sid in d.get("skills", [])}
+    # The member dossier renders carried skills as General + one widget per sector domain
+    # that lists the skill. Grouping is by SECTOR MEMBERSHIP (a non-home domain's skills[]),
+    # not the `global` install flag. A skill in no non-home sector renders under General by
+    # design, so there is no "untagged" failure mode — only a dead reference can break the
+    # auto-grouping: a domain lists a skill id that no longer exists → HARD FAIL (the sector
+    # widget would render a ghost line).
     for d in doms:
         for sid in d.get("skills", []):
             if sid not in data_ids:
                 fails.append(f"SEC domain '{d['id']}' lists unknown skill '{sid}' "
                              f"(dead ref — member-page sector widget would render a ghost)")
-    untagged = sorted(s["id"] for s in g["skills"]
-                      if not s.get("global") and s["id"] not in sector_listed)
-    if untagged:
-        notes.append(f"member-page skills — {len(untagged)} non-global skill(s) in no sector "
-                     f"→ render under the 'Other' widget; set global:true or add to a sector's "
-                     f"skills[] in domains.json: {', '.join(untagged)}")
 
     # === V — every skill SKILL.md carries a parseable version — audit #1 ===
     for name in sorted(skill_dirs):
