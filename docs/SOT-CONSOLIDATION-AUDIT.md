@@ -420,4 +420,12 @@ The browser-side consolidation that was actually missing:
 
 Remaining (intentional, not a defect): `app.js` `ARSENAL` (display order) and `TIER_RANK` (sort) stay app.js-side **view config** — presentation orderings, not model-identity facts.
 
-**Consolidation complete.** One semantic SoT (`star-alliance-arsenal/models.json`), every consumer derives, and conformity now mechanically forbids any copy from drifting.
+### 8.4 Trailing Phase A/C items — CLOSED (2026-06-27)
+
+The three side-items that had slipped past §8.2/§8.3 are now done:
+
+- **A3** — guild-log decision **#25** reworded: the arsenal-order rationale said "best-first" but `expected_order()` actually **pins each group's prime lead and preserves declared order** within it. Detail corrected to match the code (annotated as a correction; rationale preserved).
+- **C2** — dropped all **11 hand-edited pull-status claims** (`✓ pulled` / `not yet pulled`) from the registry's `call`/`meter` fields; live pull status comes from runtime (`ollama list` / `_pulled`), and they were already self-contradictory.
+- **C4** — `docs/STRATEGIST-AUDIT.md` now carries a **"DATED SNAPSHOT — not a source"** banner (it predates the `the-engineer` fold, the registry consolidation, and brain=session-model).
+
+**Consolidation complete.** One semantic SoT (`star-alliance-arsenal/models.json`), every consumer derives, conformity mechanically forbids any copy from drifting, and every audited item (§6/§7.6 A–D) is either executed, intentionally kept, or reversed-with-reason. Nothing outstanding.
