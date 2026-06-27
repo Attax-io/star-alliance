@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 52,
       "patch": 59
     },
-    "generated": "2026-06-27T03:51:49Z",
+    "generated": "2026-06-27T03:52:56Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "gpt-5.5": "deactivated",
@@ -3187,7 +3187,8 @@ const GUILD = {
         "01-reversal-umbrella.md",
         "02-engulfing-cloud.md",
         "03-stars.md",
-        "04-more-reversals.md"
+        "04-more-reversals.md",
+        "05-continuation.md"
       ],
       "scripts": [],
       "stats": {
@@ -4735,7 +4736,7 @@ const GUILD = {
           "kind": "member",
           "actor": "the-designer",
           "title": "Forge the Sigil",
-          "act": "The Designer forges each new or changed skill's sigil and art, keeping the guild's heraldry consistent across the roster. Skill art is design — it runs through the Designer, no one else.",
+          "act": "MANDATORY for every new skill: the Designer forges its Fallen Sword tile so it ships with real heraldry, never a bare emoji. Add the skill's prompt to gen-skill-art.cjs and run it (or guild/commission_art.py from a brief), then build.py so artPng flips true. Skill art is design — it runs through the Designer, no one else.",
           "produces": "skill sigils",
           "script": "guild/commission_art.py",
           "args": {

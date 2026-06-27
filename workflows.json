@@ -499,7 +499,7 @@
           "kind": "member",
           "actor": "the-designer",
           "title": "Forge the Sigil",
-          "act": "The Designer forges each new or changed skill's sigil and art, keeping the guild's heraldry consistent across the roster. Skill art is design — it runs through the Designer, no one else.",
+          "act": "MANDATORY for every new skill: the Designer forges its Fallen Sword tile so it ships with real heraldry, never a bare emoji. Add the skill's prompt to gen-skill-art.cjs and run it (or guild/commission_art.py from a brief), then build.py so artPng flips true. Skill art is design — it runs through the Designer, no one else.",
           "produces": "skill sigils",
           "script": "guild/commission_art.py",
           "args": {
