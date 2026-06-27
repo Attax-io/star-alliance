@@ -60,6 +60,27 @@ This skill turns that guarantee into a routine.
    *content* reflects when it was written. If a concept names a file/flag/function,
    confirm it still exists before acting on it.
 
+## The repo layout — where each kind of file lives
+
+OKF keeps non-markdown files on a concept-path too (enforced by `okf_audit.py
+--layout`). Since the 2026-06 tidy, a member orienting in this repo can go straight
+to the right folder instead of scanning root:
+
+| you want… | look in |
+|---|---|
+| a build/registry/log **script** | `tools/` (build_guild_log, conformity_check, install, log_event, member_level) |
+| an **art generator** | `tools/generators/` (gen-*.cjs / gen-skill-art.py) |
+| a **data source** (hand-authored inputs) | `data/` (members-meta, skills-meta, domains, harness, hooks, guild-log).json |
+| a **strategist plan / audit** report | `docs/` (STRATEGIST-*, AUDIT-*) |
+| a **member / skill / workflow** concept | `star-alliance-members/`, `star-alliance-skills/<name>/SKILL.md`, `workflows.json` |
+
+**Root contract (stays at root, by design):** `README.md`, `CLAUDE.md`,
+`VERSIONS.md`, the dashboard runtime `index.html` / `app.js` / `app.css`, its
+generated data `guild-data.js` / `guild-data.json`, the repo-root anchor
+`workflows.json`, and the build engine `build.py`. These are entrypoints, generated
+artifacts, or the anchor every script walks up to — not clutter. Everything else
+loose at root is a tidy violation; `okf_audit.py --layout` will name it.
+
 ## When to reach for it
 
 - **Session start in any repo** — orient via the concept map before touching code.
