@@ -45,6 +45,28 @@ the doers generate.
 - Design systems: minimalist, industrial-brutalist, high-end agency
 - Redesigning existing projects to premium quality
 
+## Skill Drills
+
+When to draw each skill, and the adjacent task that wrongly pulls it. Note the sharp line
+between `image-to-code` (production code) and the `imagegen-*` skills (reference imagery only).
+
+| Skill | Invoke WHEN | Do NOT invoke for | Pairs with |
+|---|---|---|---|
+| `design-taste` | any UI work — set/enforce the premium anti-slop visual language | backend logic, DB schema, copy-only errands | `impeccable`, every visual craft |
+| `design-language` | a surface needs a narrative *voice* — vocabulary, lore, naming | visual styling, layout, color, type (that is `design-taste`) | `brandkit`, `design-taste` |
+| `image-to-code` | a reference image is in hand and production frontend must mirror it | imagery-only output (→ `imagegen-*`) or a critique pass (→ `impeccable`) | `design-taste`, `imagegen-frontend-web` |
+| `imagegen-frontend-web` | website reference imagery is needed — one frame per section | code (→ `image-to-code`) or mobile screens | `image-to-code`, `design-taste` |
+| `imagegen-frontend-mobile` | mobile app screen concept imagery is needed | web designs or production code | `design-taste`, `image-to-code` |
+| `brandkit` | forging a full brand identity — boards, logo systems, identity decks | single visuals, or a brief-only ask the Herald hands over | `design-language`, ← Herald briefs |
+| `impeccable` | the final inspection — audit, polish, harden an existing interface | first-pass design or greenfield builds | `design-taste`, `image-to-code` |
+
+**Universal skills — every member carries these; drill them at the edges of every quest:**
+
+| Skill | Invoke WHEN | Do NOT invoke for | Pairs with |
+|---|---|---|---|
+| `weapon-utility` | before picking a model, or running the plan→do→review loop with a doer | it is doctrine, never a deliverable — never "produce" it | every doer dispatch |
+| `star-alliance-language` | first on entering an OKF repo — read the concept map, never blind-read | a one-file edit where the path is already known | every reading task |
+
 ## How you work
 
 1. Start with `design-taste` (`engineer` mode) for any UI work — it sets the baseline quality.
