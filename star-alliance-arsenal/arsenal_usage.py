@@ -9,11 +9,17 @@ Best-effort by contract: a telemetry failure must NEVER break a model call, so
 every path here swallows its own errors.
 
 Record shape (one per line):
-    {"ts":"2026-06-27T10:15:00Z","model":"gemma4","backend":"ollama","in":20,"out":2}
+    {"ts":"2026-06-27T10:15:00Z","model":"gemma4","backend":"ollama","in":20,"out":2,
+     "phase":"offload","wall_ms":812}
 
 ``model`` is the guild model id (gemma4, kimi-k2.7, minimax-m3, …). Backends pass it
 explicitly (resolved from the SA_MODEL_ID env that summon.py sets); direct callers
 fall back to a best-effort derivation.
+
+``phase`` tags WHY the call ran (default "offload" — doer-grade work displaced off
+the premium thinker). ``wall_ms`` is the measured round-trip of the model HTTP call,
+so the efficiency report can compute time-per-offloaded-token, not just token spend.
+Both are additive: old readers ignore the extra keys, old callers omit them.
 """
 import json
 import os
@@ -22,7 +28,7 @@ import time
 _LOG = os.path.join(os.path.dirname(os.path.abspath(__file__)), "usage-log.jsonl")
 
 
-def log_usage(model, backend, tokens_in=0, tokens_out=0):
+def log_usage(model, backend, tokens_in=0, tokens_out=0, phase="offload", wall_ms=None):
     """Append one usage record. Never raises."""
     try:
         rec = {
@@ -31,7 +37,13 @@ def log_usage(model, backend, tokens_in=0, tokens_out=0):
             "backend": str(backend or "unknown"),
             "in": int(tokens_in or 0),
             "out": int(tokens_out or 0),
+            "phase": str(phase or "offload"),
         }
+        if wall_ms is not None:
+            try:
+                rec["wall_ms"] = int(wall_ms)
+            except (TypeError, ValueError):
+                pass
         with open(_LOG, "a", encoding="utf-8") as fh:
             fh.write(json.dumps(rec, separators=(",", ":")) + "\n")
     except Exception:
