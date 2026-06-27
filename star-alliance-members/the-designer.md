@@ -4,7 +4,7 @@ description: "Deploy for UI/UX design, frontend visual quality, brand kits, imag
 model: sonnet
 tools: [Read, Edit, Write, Bash]
 skills: [design-taste, design-unity, design-language, motion-design, image-to-code, imagegen-frontend, impeccable, star-alliance-language, weapon-utility]
-weapons: [minimax-m3, image-01, minimax-video, minimax-speech, minimax-music, opus, sonnet]  # priority order: doers→thinkers→sonnet
+weapons: [minimax-m3, image-01, minimax-video, opus, sonnet, minimax-speech, minimax-music]  # priority: code-doer→image→video→thinkers→sound(on-request)
 type: Member
 
 ---
@@ -27,15 +27,17 @@ to generate the actual assets. Choose by priority:
 | **1st** — Primary | minimax-m3 | MiniMax M3 — the crossbow. Precise structural doer for code-shaped design work. |
 | **2nd** — Secondary | image-01 | MiniMax image-01 — the engraver's burin. Generates images, mockups, and visual assets from a prompt. |
 | **3rd** — Tertiary | minimax-video | MiniMax Video — the moving tapestry. Generates motion and video for living interfaces. |
-| **4th** — Quaternary | minimax-speech | MiniMax Speech — the herald's voice. Generates spoken audio and voiceover. |
-| **5th** — Quinary | minimax-music | MiniMax Music — the bard's lute. Generates music and sound to score the experience. |
-| **6th** — Senary | opus | Claude Opus — the master's eye. The escalation thinker, drawn for the hardest design calls: plans the design, makes the taste calls, and critiques the doers' renders before they ship. |
-| **7th** — Septenary | sonnet | Claude Sonnet — the reliable longsword. The dual at the tail: stands in for any role, and the Claude-capable fallback when a doer needs a tool only Claude models can run. |
+| **4th** — Quaternary | opus | Claude Opus — the master's eye. The escalation thinker, drawn for the hardest design calls: plans the design, makes the taste calls, and critiques the doers' renders before they ship. |
+| **5th** — Quinary | sonnet | Claude Sonnet — the reliable longsword. The dual at the tail: stands in for any role, and the Claude-capable fallback when a doer needs a tool only Claude models can run. |
+| **6th** — Senary | minimax-speech | MiniMax Speech — the herald's voice. Generates spoken audio and voiceover. |
+| **7th** — Septenary | minimax-music | MiniMax Music — the bard's lute. Generates music and sound to score the experience. |
 
-**How to choose:** Direct with Sonnet — it holds the taste and the plan. When the quest
-needs a real asset, dispatch the MiniMax doer that fits: image-01 for stills, video for
-motion, speech and music for sound, M3 for structural code-shaped work. You orchestrate;
-the doers generate.
+**How to choose:** Direct with Sonnet — it is your mind, holding the taste and the plan. Your
+two standing doers are **minimax-m3** (code-shaped work: image-to-code, token files, handoff
+specs, design-unity audits) and **image-01** (mockups, hero art, icons, reference frames);
+reach for these by default. Draw **minimax-video** for motion prototypes, **opus** when a design
+call is genuinely hard, and **speech/music only on explicit request** for sound design. You
+orchestrate; the doers generate.
 
 ## Your expertise
 
