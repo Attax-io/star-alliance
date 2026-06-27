@@ -86,35 +86,29 @@ def resulting_text(tool: str, inp: dict, path: str) -> str:
     return cur
 
 
-def main():
-    try:
-        data = json.load(sys.stdin)
-    except Exception as e:
-        sys.stderr.write(f"[okf-gate] malformed payload, failing open: {e}\n")
-        sys.exit(0)
-
+def check(data):
+    """Pure decision. Returns {"exit":0|2, "stderr":str}."""
     tool = data.get("tool_name", "")
     if tool not in WRITE_TOOLS:
-        sys.exit(0)
+        return {"exit": 0}
 
     inp = data.get("tool_input", {}) or {}
     path = inp.get("file_path") or inp.get("path") or ""
     root = project_dir()
 
     if not is_governed(path, root):
-        sys.exit(0)
+        return {"exit": 0}
 
     try:
         text = resulting_text(tool, inp, path)
     except Exception as e:
-        sys.stderr.write(f"[okf-gate] reconstruct error, failing open: {e}\n")
-        sys.exit(0)
+        return {"exit": 0, "stderr": f"[okf-gate] reconstruct error, failing open: {e}\n"}
 
     if conformant(text):
-        sys.exit(0)
+        return {"exit": 0}
 
     rel = os.path.relpath(path, root) if path else path
-    sys.stderr.write(
+    return {"exit": 2, "stderr": (
         "⛔ OKF GATE — this write would leave a governed knowledge file NON-conformant "
         "to the Open Knowledge Format (OKF v0.1).\n"
         f"   file: {rel}\n"
@@ -127,8 +121,19 @@ def main():
         "       ---\n"
         "   Add it and retry, or run the fixer:\n"
         f"       python3 star-alliance-skills/okf/scripts/okf_audit.py --fix --path {rel}\n"
-    )
-    sys.exit(2)
+    )}
+
+
+def main():
+    try:
+        data = json.load(sys.stdin)
+    except Exception as e:
+        sys.stderr.write(f"[okf-gate] malformed payload, failing open: {e}\n")
+        sys.exit(0)
+    r = check(data)
+    if r.get("stderr"):
+        sys.stderr.write(r["stderr"])
+    sys.exit(r.get("exit", 0))
 
 
 if __name__ == "__main__":

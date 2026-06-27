@@ -110,9 +110,60 @@ def candidate_workflows(prompt, triggers):
     return hits
 
 
-def block(reason):
-    sys.stderr.write(reason)
-    sys.exit(2)
+def check(data):
+    """Pure decision. Returns {"exit":0|2, "stderr":str, "systemMessage":str}.
+    Used by the consolidated dispatcher (sa-pretool.py) and the standalone main()."""
+    tool = data.get("tool_name", "")
+    if tool in EXEMPT:
+        return {"exit": 0}
+
+    transcript = data.get("transcript_path")
+    if not transcript or not os.path.exists(transcript):
+        return {"exit": 0, "stderr": "[workflow-gate] no transcript_path, failing open\n"}
+
+    try:
+        lines = [json.loads(l) for l in open(transcript) if l.strip()]
+        names, triggers = load_workflow_names()
+    except Exception as e:
+        return {"exit": 0, "stderr": f"[workflow-gate] read error, failing open: {e}\n"}
+
+    ui = last_user_index(lines)
+    text = assistant_text_since(lines, ui)
+
+    # Race grace: at the FIRST tool of a turn the banner isn't flushed yet — allow.
+    if not text.strip():
+        return {"exit": 0}
+
+    m = BANNER_RE.search(text)
+    if m:
+        declared = m.group(1).strip()
+        if declared.lower() in names:
+            try:
+                state_dir = os.path.join(project_dir(), ".claude", "state")
+                os.makedirs(state_dir, exist_ok=True)
+                open(os.path.join(state_dir, "last-workflow"), "w").write(declared)
+            except Exception:
+                pass
+            return {"exit": 0}  # valid workflow declared — allow
+        return {"exit": 2, "stderr": (
+            f"⛔ WORKFLOW GATE — you declared '{declared}', which is NOT a registered "
+            f"star-map workflow. Either declare a real one (see workflows.json) or run "
+            f"Workflow Forge to create '{declared}' first: emit "
+            f"🗺 Starmap Workflow Started: Workflow Forge! and forge it, then re-declare.\n"
+        )}
+
+    cands = candidate_workflows(last_user_text(lines, ui), triggers)
+    hint = (
+        f" This prompt matches: {', '.join(cands)}. Emit that banner, or justify out loud why it doesn't fit."
+        if cands
+        else " No existing workflow obviously fits — run Workflow Forge to create one before proceeding."
+    )
+    return {"exit": 2, "stderr": (
+        "⛔ WORKFLOW GATE (HARD RULE) — no star-map workflow declared this turn. "
+        "Every working turn must run inside a workflow. Emit, as your first line, "
+        "🗺 Starmap Workflow Started: <name>! naming a workflow from workflows.json, "
+        "or forge a new one via Workflow Forge if none fits." + hint + "\n"
+    )}
 
 
 def main():
@@ -121,68 +172,10 @@ def main():
     except Exception as e:
         sys.stderr.write(f"[workflow-gate] malformed payload, failing open: {e}\n")
         sys.exit(0)
-
-    tool = data.get("tool_name", "")
-    if tool in EXEMPT:
-        sys.exit(0)
-
-    transcript = data.get("transcript_path")
-    if not transcript or not os.path.exists(transcript):
-        sys.stderr.write("[workflow-gate] no transcript_path, failing open\n")
-        sys.exit(0)
-
-    try:
-        lines = [json.loads(l) for l in open(transcript) if l.strip()]
-        names, triggers = load_workflow_names()
-    except Exception as e:
-        sys.stderr.write(f"[workflow-gate] read error, failing open: {e}\n")
-        sys.exit(0)
-
-    ui = last_user_index(lines)
-    text = assistant_text_since(lines, ui)
-
-    # Race grace: at the FIRST tool of a turn, the current assistant message
-    # (with its banner) is not yet flushed to the transcript — there is no
-    # assistant text since the last user turn. We cannot verify yet, so we allow
-    # this single call. By the 2nd tool the text IS flushed, so a genuinely
-    # un-bannered turn is blocked from its second tool onward. Without this, every
-    # turn's first tool would falsely block and brick the session.
-    if not text.strip():
-        sys.exit(0)
-
-    m = BANNER_RE.search(text)
-
-    if m:
-        declared = m.group(1).strip()
-        if declared.lower() in names:
-            # Persist the declared workflow for precompact-snapshot.py to capture.
-            try:
-                state_dir = os.path.join(project_dir(), ".claude", "state")
-                os.makedirs(state_dir, exist_ok=True)
-                open(os.path.join(state_dir, "last-workflow"), "w").write(declared)
-            except Exception:
-                pass
-            sys.exit(0)  # valid workflow declared — allow
-        block(
-            f"⛔ WORKFLOW GATE — you declared '{declared}', which is NOT a registered "
-            f"star-map workflow. Either declare a real one (see workflows.json) or run "
-            f"Workflow Forge to create '{declared}' first: emit "
-            f"🗺 Starmap Workflow Started: Workflow Forge! and forge it, then re-declare.\n"
-        )
-
-    # No banner at all in this turn → hard block.
-    cands = candidate_workflows(last_user_text(lines, ui), triggers)
-    hint = (
-        f" This prompt matches: {', '.join(cands)}. Emit that banner, or justify out loud why it doesn't fit."
-        if cands
-        else " No existing workflow obviously fits — run Workflow Forge to create one before proceeding."
-    )
-    block(
-        "⛔ WORKFLOW GATE (HARD RULE) — no star-map workflow declared this turn. "
-        "Every working turn must run inside a workflow. Emit, as your first line, "
-        "🗺 Starmap Workflow Started: <name>! naming a workflow from workflows.json, "
-        "or forge a new one via Workflow Forge if none fits." + hint + "\n"
-    )
+    r = check(data)
+    if r.get("stderr"):
+        sys.stderr.write(r["stderr"])
+    sys.exit(r.get("exit", 0))
 
 
 if __name__ == "__main__":

@@ -59,27 +59,22 @@ PATTERNS = [
 CONFIRM_TOKEN = re.compile(r"#\s*sa-confirm\b|(^|\s)SA_CONFIRM=1(\s|$)")
 
 
-def main():
-    try:
-        data = json.load(sys.stdin)
-    except Exception as e:
-        sys.stderr.write(f"[destructive-gate] malformed payload, failing open: {e}\n")
-        sys.exit(0)
-
+def check(data):
+    """Pure decision. Returns {"exit":0|2, "stderr":str}."""
     if data.get("tool_name") != "Bash":
-        sys.exit(0)
+        return {"exit": 0}
 
     cmd = (data.get("tool_input") or {}).get("command", "") or ""
     if not cmd.strip():
-        sys.exit(0)
+        return {"exit": 0}
 
     # Explicit operator confirmation → stand aside (the Guild Master owns the risk).
     if CONFIRM_TOKEN.search(cmd) or os.environ.get("SA_CONFIRM") == "1":
-        sys.exit(0)
+        return {"exit": 0}
 
     for label, pat, why in PATTERNS:
         if pat.search(cmd):
-            sys.stderr.write(
+            return {"exit": 2, "stderr": (
                 "⛔ DESTRUCTIVE-COMMAND GATE — this command is irreversible.\n"
                 f"   Matched: {label}  ({why})\n"
                 f"   Command: {cmd.strip()[:300]}\n"
@@ -87,10 +82,21 @@ def main():
                 "   run it until the Guild Master has explicitly confirmed. Restate the risk,\n"
                 "   get an explicit 'proceed', then re-run with  # sa-confirm  appended\n"
                 "   (or SA_CONFIRM=1) to pass this gate.\n"
-            )
-            sys.exit(2)
+            )}
 
-    sys.exit(0)
+    return {"exit": 0}
+
+
+def main():
+    try:
+        data = json.load(sys.stdin)
+    except Exception as e:
+        sys.stderr.write(f"[destructive-gate] malformed payload, failing open: {e}\n")
+        sys.exit(0)
+    r = check(data)
+    if r.get("stderr"):
+        sys.stderr.write(r["stderr"])
+    sys.exit(r.get("exit", 0))
 
 
 if __name__ == "__main__":

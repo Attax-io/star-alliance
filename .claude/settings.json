@@ -19,47 +19,11 @@
     ],
     "PreToolUse": [
       {
-        "matcher": "Skill|Workflow|Agent|Task",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/high-alert.py\""
-          }
-        ]
-      },
-      {
         "matcher": "*",
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/workflow-gate.py\""
-          }
-        ]
-      },
-      {
-        "matcher": "Write|Edit|MultiEdit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/okf-gate.py\""
-          }
-        ]
-      },
-      {
-        "matcher": "Bash|Task|Agent",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/weapon-gate.py\""
-          }
-        ]
-      },
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/destructive-gate.py\""
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/sa-pretool.py\""
           }
         ]
       }
@@ -70,11 +34,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/member-table-sync.py\""
-          },
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/guild-source-rebuild.py\""
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/build-mark.py\""
           }
         ]
       }

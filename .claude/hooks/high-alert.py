@@ -31,11 +31,8 @@ def guild_member_ids():
         return set()
 
 
-def main():
-    try:
-        data = json.load(sys.stdin)
-    except Exception:
-        return  # malformed payload — stay silent, never block
+def check(data):
+    """Pure decision. Returns {"exit":0, "systemMessage":str} — never blocks."""
     tool = data.get("tool_name", "")
     ti = data.get("tool_input", {}) or {}
     banner = None
@@ -46,19 +43,26 @@ def main():
     elif tool == "Workflow":
         name = ti.get("name")
         if not name:
-            # inline script — pull name from the meta literal
             script = ti.get("script") or ""
             m = re.search(r"name:\s*['\"]([^'\"]+)['\"]", script)
             name = m.group(1) if m else "inline workflow"
         banner = f"\U0001f5fa Starmap Workflow Started: {name}!"
     elif tool in ("Agent", "Task"):
-        # Only a genuine guild-member dispatch earns the ⚔ klaxon.
         sub = ti.get("subagent_type") or ti.get("subagentType") or ""
         if sub in guild_member_ids():
             banner = f"⚔ Member reports for duty: {sub}!"
 
-    if banner:
-        print(json.dumps({"systemMessage": banner}))
+    return {"exit": 0, "systemMessage": banner} if banner else {"exit": 0}
+
+
+def main():
+    try:
+        data = json.load(sys.stdin)
+    except Exception:
+        return  # malformed payload — stay silent, never block
+    r = check(data)
+    if r.get("systemMessage"):
+        print(json.dumps({"systemMessage": r["systemMessage"]}))
 
 if __name__ == "__main__":
     main()

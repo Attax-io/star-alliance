@@ -69,7 +69,11 @@ def known_weapons():
 REMINDER = (
     "⚔ Weapon doctrine — one thinker plans & reviews; it may run ONE OR SEVERAL "
     "doers in parallel (many of one model, or a mix), reviewing each return against "
-    "the plan. Several thinkers at once only under ultra-brainstorming. (weapon-utility)"
+    "the plan. Several thinkers at once only under ultra-brainstorming. "
+    "SIZE THRESHOLD: a MiniMax/Ollama summon costs ~80–100s wall-time — only offload "
+    "doer-grade BULK (≳1.5k tokens of output, or many repetitive transforms). For a "
+    "small job (a few lines, one quick edit), the thinker does it inline; offloading "
+    "it is net-negative. (weapon-utility)"
 )
 
 
@@ -90,47 +94,51 @@ def extract_models(tool, ti):
     return models, retired
 
 
+def check(data):
+    """Pure decision. Returns {"exit":0|2, "stderr":str, "systemMessage":str}."""
+    tool = data.get("tool_name", "")
+    ti = data.get("tool_input", {}) or {}
+    try:
+        models, retired = extract_models(tool, ti)
+    except Exception as e:
+        return {"exit": 0, "stderr": f"[weapon-gate] parse error, failing open: {e}\n"}
+
+    if not models and not retired:
+        return {"exit": 0}  # not a summon — nothing to govern
+
+    if retired:
+        return {"exit": 2, "stderr": (
+            "⛔ WEAPON GATE — that summons MiniMax via the RETIRED Ollama route. "
+            "MiniMax M3 is drawn through its DIRECT sub now: `python3 minimax.py \"…\"` "
+            "or `summon.py minimax-m3`. Re-draw the prime doer directly.\n"
+        )}
+
+    valid = known_weapons()
+    if valid:
+        unknown = [m for m in models if m not in valid]
+        if unknown:
+            return {"exit": 2, "stderr": (
+                f"⛔ WEAPON GATE — no such weapon in the guild arsenal: {sorted(set(unknown))}. "
+                f"Draw a real weapon (one of: {', '.join(sorted(valid))}). "
+                "A member can only wield weapons in its loadout — see weapon-utility.\n"
+            )}
+
+    # Valid summon → non-blocking doctrine reminder (+ doer size-threshold).
+    return {"exit": 0, "systemMessage": REMINDER}
+
+
 def main():
     try:
         data = json.load(sys.stdin)
     except Exception as e:
         sys.stderr.write(f"[weapon-gate] malformed payload, failing open: {e}\n")
         sys.exit(0)
-
-    tool = data.get("tool_name", "")
-    ti = data.get("tool_input", {}) or {}
-
-    try:
-        models, retired = extract_models(tool, ti)
-    except Exception as e:
-        sys.stderr.write(f"[weapon-gate] parse error, failing open: {e}\n")
-        sys.exit(0)
-
-    if not models and not retired:
-        sys.exit(0)  # not a summon — nothing to govern
-
-    if retired:
-        sys.stderr.write(
-            "⛔ WEAPON GATE — that summons MiniMax via the RETIRED Ollama route. "
-            "MiniMax M3 is drawn through its DIRECT sub now: `python3 minimax.py \"…\"` "
-            "or `summon.py minimax-m3`. Re-draw the prime doer directly.\n"
-        )
-        sys.exit(2)
-
-    valid = known_weapons()
-    if valid:
-        unknown = [m for m in models if m not in valid]
-        if unknown:
-            sys.stderr.write(
-                f"⛔ WEAPON GATE — no such weapon in the guild arsenal: {sorted(set(unknown))}. "
-                f"Draw a real weapon (one of: {', '.join(sorted(valid))}). "
-                "A member can only wield weapons in its loadout — see weapon-utility.\n"
-            )
-            sys.exit(2)
-
-    # Valid summon → non-blocking doctrine reminder.
-    print(json.dumps({"systemMessage": REMINDER}))
-    sys.exit(0)
+    r = check(data)
+    if r.get("systemMessage"):
+        print(json.dumps({"systemMessage": r["systemMessage"]}))
+    if r.get("stderr"):
+        sys.stderr.write(r["stderr"])
+    sys.exit(r.get("exit", 0))
 
 
 if __name__ == "__main__":
