@@ -3,7 +3,7 @@
 
 Reads every source of truth and emits ONE data file the dashboard loads:
 
-  guild-data.js    →  const GUILD = { meta, members, skills, domains, log }
+  guild-data.js    →  const GUILD = { meta, members, skills, domains, log, models }
   guild-data.json  →  the same object as pure JSON (non-browser consumers)
 
 Sources
@@ -808,18 +808,25 @@ def build_meta(members, skills, domains, workflows, log, members_meta_file=None,
     }
 
 
-def load_model_roles(repo: Path) -> dict:
-    """Model id -> role ('doer' | 'thinker' | 'both'), parsed from the MODELS armory
-    in app.js (the single source of truth for weapon roles). Empty dict on any error,
-    which makes the weapon-field validation below skip silently (fail open)."""
-    roles: dict[str, str] = {}
+def load_models(repo: Path) -> dict:
+    """The canonical model registry, id -> {role, backend, …, label, color, …}.
+    Source of truth: star-alliance-arsenal/models.json. Emitted into guild-data as
+    GUILD.models so app.js DERIVES its arsenal cards instead of hand-listing them."""
     try:
-        txt = (repo / "app.js").read_text()
-        for m in re.finditer(r'"([a-z0-9.\-]+)":\s*\{[^}]*?role:\s*"(doer|thinker|both)"', txt):
-            roles[m.group(1)] = m.group(2)
+        return json.loads((repo / "star-alliance-arsenal" / "models.json").read_text()).get("models", {})
     except Exception:
-        pass
-    return roles
+        return {}
+
+
+def load_model_roles(repo: Path) -> dict:
+    """Model id -> role for workflow weapon-field validation. DERIVED from the
+    canonical registry (star-alliance-arsenal/models.json), normalizing the media
+    role to 'doer' for ordering — matching conformity_check._load_role. Empty dict
+    on any error makes the validation skip (fail open), but the registry is the one
+    source so this no longer scrapes app.js."""
+    models = load_models(repo)
+    return {mid: ("doer" if d.get("role") == "media" else d.get("role", ""))
+            for mid, d in models.items() if d.get("role")}
 
 
 def validate_step_weapons(wf_id: str, step: dict, members_by_id: dict,
@@ -892,6 +899,7 @@ def assemble(repo: Path) -> tuple[dict, list[str], list[str]]:
         "workflows": workflows,
         "hooks": hooks,
         "log": log,
+        "models": load_models(repo),
     }
     return guild, errors, warnings
 

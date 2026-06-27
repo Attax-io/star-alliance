@@ -20,6 +20,12 @@ timestamp: 2026-06-27T00:00:00Z
 > - **Scope: report only.** Phases A/B/C in §6 are the proposed remediation, **not yet
 >   executed**. Nothing below has been applied.
 >
+> **§8 added (recheck + MIGRATION EXECUTED) — supersedes §3/§4/§6/§7 where they conflict.**
+> A verification pass found §1–§7 materially wrong: the canonical registry **already
+> existed** at `star-alliance-arsenal/models.json`, so "create `data/models.json`" was moot.
+> The real gap (app.js un-migrated + `build.py` regex) has now been **fixed and verified**.
+> Read §8 first; treat §1–§7 as the investigation trail.
+>
 > **§7 added (deep cascade pass) — supersedes §4/§6 where they conflict:**
 > - **"Demote `guild-data.json`" is REVERSED.** It is the Python-side runtime SoT —
 >   `weapon-gate.py` + `high-alert.py` `json.load` it live; deleting it breaks hooks at
@@ -368,3 +374,34 @@ The first audit's Phase A/B/C are re-sequenced around the lockstep dependencies 
 - ~~Generate `guild-routing-gate.sh`~~ → **lint-only (D1)**, prose stays hand-edited. Session-blocking hook; regeneration risk > reward (Fix E).
 
 **Lockstep one-liner:** A is independent; **nothing in C may precede B**; D follows C; F is rejected except its cosmetic relabel (folded into A2). Throughout, keep `serve.cjs` stopped and validate `guild-data.json` before a fresh session so `weapon-gate.py`/`guild-routing-gate.sh`/`workflow-gate`/`okf-gate` don't block.
+
+---
+
+## 8. Recheck correction + migration executed
+
+A verification pass ground-truthed every load-bearing citation in §1–§7 against the code. **The audit's central thesis was wrong:** the consolidation it told us to build **already existed**, and the genuine remaining gap was two items — now fixed and verified.
+
+### 8.1 What the audit got wrong
+
+| Audit claim (§2/§3/§4/§7) | Verified reality |
+|---|---|
+| "Create `data/models.json` as the new semantic SoT." | **The canonical registry already exists** at `star-alliance-arsenal/models.json` (role · backend · cloud_tag · status · pull · weight · kind · summary), with a shared loader `models_registry.py`. weapon-utility changelog **1.7.0** records the consolidation. |
+| "Model identity has ZERO central source; 20 divergent registries." | **There IS a central source.** `summon.py`, `conformity_check.py`, `serve.cjs`, `weapon-gate.py`, `build.py` (weaponStatus), `gen_model_docs.py` **already derive** from it. The "duplicate" dicts (`conformity_check.ROLE`, `summon.CLOUD_TAG`, …) are documented **`_FALLBACK_` fail-safes**, not divergent sources. |
+| "`conformity_check.py` ROLE hardcodes sonnet and contradicts app.js." | **Stale.** It now reads `models_registry.role_map()`; the literal is a fail-safe. Registry says **sonnet = both**. |
+| The lone genuine outlier | **`app.js` MODELS** — the one registry that never joined `models.json`: hand-keyed, still `sonnet: role="doer"`, and `build.py:811 load_model_roles()` still regex-scraped it (fail-open). That is the whole bug behind the original prime-thinker confusion. |
+
+### 8.2 Migration done (Full derive — executed & verified)
+
+The browser-side consolidation that was actually missing:
+
+1. **`star-alliance-arsenal/models.json`** — extended each model with the UI fields (`label, color, tier, host, desc, ollama_desc, call, meter`). `role` kept the registry's value, so **sonnet → `both` for free** (app.js's stale `doer` is gone). `glyph` stays derived from `label`.
+2. **`build.py`** — `load_models()` reads the registry and emits it as `GUILD.models` into `guild-data.js/.json`; `load_model_roles()` repointed to the registry (media→doer), **regex + fail-open deleted**.
+3. **`app.js`** — `MODELS` now derives from `GUILD.models` (media→doer for the pip); `CLOUD_TAG` derives from each model's `cloud_tag` — which **dropped the stale `minimax-m3:cloud`** entry so it matches `summon.py`. The `PRIME` flag (it was never clobbered — that was a BSD-grep locale artifact) is intact.
+4. **Separation kept (§7.3):** routing/keys stay in `summon.py`/providers; live cost stays in `models-usage.json`; `models.json` owns semantic + UI facts only.
+
+**Verified:** `node --check app.js` OK · `python3 build.py` clean · `python3 tools/conformity_check.py` → **FULL CONFORMITY** · dashboard renders **Opus = Thinker + PRIME**, **Sonnet = Both** (was Doer), Haiku = Doer, GPT-5.5 = Thinker+off · no console errors · Arsenal page renders host/tier/meter from the derived data.
+
+### 8.3 Still open (optional, not blocking)
+
+- `app.js` `ARSENAL` (display order) and `TIER_RANK` (sort) remain app.js-side **view config** — presentation orderings, not model-identity facts; left intentionally.
+- §7.6 **Phase D** conformity-hardening checks (art-tile-per-id, `models-usage` ⊆ registry, CLOUD_TAG agreement, routing-gate lint) are **not yet added** — recommended next.
