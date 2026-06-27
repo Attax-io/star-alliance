@@ -146,9 +146,9 @@ Every piece slots into an existing seam:
   fail**: `dueForPromotion` (earned > conferred — the QM's promotion queue) and `overConferred`
   (earned < conferred — a regression that queues a demotion review, §6). Both are loud, neither
   breaks the build. This is deliberate: leveling is QM-gated and human-in-the-loop, so drift belongs
-  in the Quartermaster's queue, not in a gate that would block unrelated commits. `member_level.py
+  in the Quartermaster's queue, not in a gate that would block unrelated commits. `tools/member_level.py
   promote` already blocks bad *promotions* at promote-time, which is where the hard check belongs.
-- **The Quartermaster's operation** → a new `member_level.py` helper + a thin `skillsmith` surface
+- **The Quartermaster's operation** → a new `tools/member_level.py` helper + a thin `skillsmith` surface
   (a `level` mode, or a sub-step of the daily `routine` Stage D). It reports the promotion queue and
   the laggard board, and on `--promote <member>` it verifies the checklist, writes the conferred
   `level`, logs the `member-upgrade` entry, and runs the conformity-close.
@@ -181,11 +181,11 @@ A BUILD campaign, five waves, each independently committable and revertible. Con
 - **Gate:** `--report` shows the §2.3 distribution; conformity-close green.
 
 ### Wave 3 — The Quartermaster's tooling + invariant *(Developer builds, QM owns)*
-- `member_level.py`: `report` (promotion queue + laggard board) and `promote <member>` (verify
+- `tools/member_level.py`: `report` (promotion queue + laggard board) and `promote <member>` (verify
   checklist → write conferred `level` → log `member-upgrade` → conformity-close).
 - `conformity_check.py`: add the *conferred ≤ earned* invariant (fail) + `dueForPromotion` notice.
 - Wire a `level` surface into `skillsmith` (mode or routine sub-step) + a §Changelog/version bump.
-- **Gate:** `member_level.py report` lists Strategist/Designer/etc. as due; conformity-close green.
+- **Gate:** `tools/member_level.py report` lists Strategist/Designer/etc. as due; conformity-close green.
 
 ### Wave 4 — Dashboard surface *(Designer + Developer)*
 - Member tier badge (reusing `rampClass` colors) on cards + roster.
@@ -194,7 +194,7 @@ A BUILD campaign, five waves, each independently committable and revertible. Con
 - **Gate:** dashboard renders all nine tiers + the laggard board; `dashboard` log entry.
 
 ### Wave 5 — Confer the seed levels *(Quartermaster)*
-- Run `member_level.py promote` for each member the checklist supports (the §2.3 ladder), each its
+- Run `tools/member_level.py promote` for each member the checklist supports (the §2.3 ladder), each its
   own logged `member-upgrade`. The guild version pumps once per promotion, automatically.
 - Final conformity-close; Run Summary.
 - **Gate:** conferred == earned for all nine; FULL CONFORMITY; README roster table notes levels.
@@ -237,8 +237,8 @@ After Wave 5 the system self-sustains with no new ceremony:
 
 1. A member's arsenal improves (a skill is added, a skill levels up, a new specialty is forged).
 2. Next `build.py` recomputes `earned`; if it now clears the next tier, the member shows
-   `dueForPromotion` on the dashboard and in `member_level.py report`.
-3. On the Quartermaster's daily `routine` (or on demand), he runs `member_level.py report`, sees the
+   `dueForPromotion` on the dashboard and in `tools/member_level.py report`.
+3. On the Quartermaster's daily `routine` (or on demand), he runs `tools/member_level.py report`, sees the
    queue, verifies the checklist, and `promote`s — one logged entry each.
 4. Conformity-close proves conferred ≤ earned. The guild version pumps. The ledger remembers.
 

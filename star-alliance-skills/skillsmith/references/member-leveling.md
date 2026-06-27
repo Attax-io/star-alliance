@@ -70,11 +70,11 @@ re-log if the ladder shifts.
 
 ## Promotion procedure
 
-1. **Review the queue.** `python3 member_level.py report` — lists members where `earned > conferred`
+1. **Review the queue.** `python3 tools/member_level.py report` — lists members where `earned > conferred`
    (the promotion queue) and the laggard board (lowest tier, most unmet boxes).
 2. **Verify.** Confirm the member's checklist for the next tier is fully met (the report shows each
    box). The script refuses a promotion the checklist doesn't support.
-3. **Confer.** `python3 member_level.py promote <member>` — writes the conferred `level` in
+3. **Confer.** `python3 tools/member_level.py promote <member>` — writes the conferred `level` in
    `members-meta.json`, logs a `member-upgrade` entry (before→after in the detail), and runs the
    conformity-close.
 4. **Close.** `python3 build.py` + `python3 tools/conformity_check.py` must report **FULL CONFORMITY** before
@@ -104,7 +104,7 @@ append-only ledger is the reach signal — no new instrumentation needed; the `d
 - **Recency** = days since that member's most recent deploy.
 - **Tier weight** = sum of deploy tiers (a Tier-3 deploy is "deeper" reach than a Tier-1 skills-only).
 - Surface as a non-blocking `members-meta.json` field (`reach`) + a Reach column in
-  `member_level.py report`, exactly like `conferred`/`earned` — read-only, never a build-breaker.
+  `tools/member_level.py report`, exactly like `conferred`/`earned` — read-only, never a build-breaker.
 
 **Why gated, not built now:** the meter needs real deploy-ledger rows to calibrate the thresholds (an
 empty ledger makes every member reach-0). Build it once the ledger has accrued a few real deploys, so
@@ -113,7 +113,7 @@ axis above ships and stands alone.
 
 ## When to run it
 
-- As a sub-step of the daily `routine` (Stage D): run `member_level.py report`, promote anyone the
+- As a sub-step of the daily `routine` (Stage D): run `tools/member_level.py report`, promote anyone the
   checklist now supports.
 - On demand when a member's arsenal changes (a skill added, a skill leveled up, a specialty forged).
 - The conformity-close already surfaces `dueForPromotion` / `overConferred` after any skill work, so

@@ -36,7 +36,7 @@ The fix is to add **small scripts** that do the boring, repeated steps automatic
 
 Checked the doer's factual claims against the repo before filing:
 
-- ✅ `conformity_check.py`, `build.py`, `build_guild_log.py`, `log_event.py`, `member_level.py` — all **exist** (the proposal correctly reuses them).
+- ✅ `conformity_check.py`, `build.py`, `build_guild_log.py`, `log_event.py`, `tools/member_level.py` — all **exist** (the proposal correctly reuses them).
 - ✅ No `guild/` runner directory exists yet — this is **greenfield**, no conflicts.
 - ✅ **0** of the current workflow steps have any `script` field — confirms workflows are pure prose today, so the additive schema breaks nothing.
 - ⚠️ `bug_reports` table and Gmail/WhatsApp/calendar sources (Tier-2 items #8, #10) belong to the wider Lex Council / MCP surface — those primitives are real but cross into another project's data; scope them carefully if pursued.
