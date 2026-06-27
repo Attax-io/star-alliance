@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 62
     },
-    "generated": "2026-06-27T15:37:39Z",
+    "generated": "2026-06-27T15:38:52Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "gpt-5.5": "deactivated",
@@ -6908,7 +6908,7 @@ const GUILD = {
         "recalibrate harness",
         "harness audit"
       ],
-      "artPng": false
+      "artPng": true
     }
   ],
   "hooks": [
