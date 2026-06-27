@@ -39,11 +39,12 @@ if git -C "$repo_root" diff --cached --quiet -- "$file_path" 2>/dev/null; then
   exit 0
 fi
 
-rel=$(git -C "$repo_root" rev-parse --show-prefix 2>/dev/null)
-base=$(basename "$file_path")
+# Path relative to the repo root, for a readable commit subject.
+rel=$(git -C "$repo_root" ls-files --full-name -- "$file_path" 2>/dev/null | head -1)
+[ -z "$rel" ] && rel=$(basename "$file_path")
 
 git -C "$repo_root" commit --only \
-  -m "auto: ${tool_name} ${rel}${base}" \
+  -m "auto: ${tool_name} ${rel}" \
   -m "Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>" \
   -- "$file_path" \
   >/dev/null 2>&1
