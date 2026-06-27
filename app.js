@@ -751,7 +751,27 @@ function renderMemberDossier(id) {
       <button class="unassign-btn" type="button" data-member="${esc(m.id)}" data-skill="${esc(sid)}"
         title="Unassign from this agent" aria-label="Unassign ${esc(s ? s.name : sid)} from this agent">✕</button>
     </div>`;
-  }).join("");
+  };
+
+  // Split carried skills into General (global) + one group per sector that lists
+  // the member's non-global skills. Home domain (the whole-pool listing) is excluded
+  // as a sector; the skill's own `global` flag is the General signal.
+  const isGlobalSkill = (sid) => !!(bySkill.get(sid) || {}).global;
+  const homeDomain = GUILD.domains.reduce(
+    (a, b) => ((b.skills || []).length > (a.skills || []).length ? b : a),
+    GUILD.domains[0] || {});
+  const generalIds = assigned.filter(isGlobalSkill);
+  const nonGlobalIds = assigned.filter((sid) => !isGlobalSkill(sid));
+  const placedInSector = new Set();
+  const sectorGroups = GUILD.domains
+    .filter((d) => d.id !== (homeDomain && homeDomain.id))
+    .map((d) => {
+      const ids = nonGlobalIds.filter((sid) => (d.skills || []).includes(sid));
+      ids.forEach((id) => placedInSector.add(id));
+      return { name: d.name, id: d.id, icon: d.icon, color: d.color, ids };
+    })
+    .filter((g) => g.ids.length);
+  const otherIds = nonGlobalIds.filter((sid) => !placedInSector.has(sid));
 
   const open = assignOpenFor === m.id;
   const pool = open ? GUILD.skills.filter((s) => !assigned.includes(s.id)) : [];
