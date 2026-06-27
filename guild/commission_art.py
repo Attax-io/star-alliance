@@ -79,20 +79,19 @@ def commission(brief: Path, out: Path, max_iter: int) -> int:
         print("commission_art: degraded gracefully (no image faked). Exit 0.")
         return 0
 
-    # Image backend is reachable: drive summon.py for up to max_iter attempts.
-    # (summon.py returns text; a real image-01 wiring would emit a path/base64 —
-    # we surface whatever it returns and stop on the first non-empty result.)
-    print(f"commission_art: {IMAGE_WEAPON} reachable — commissioning (max-iter={max_iter})")
+    # Image backend reachable: drive imagegen.py for up to max_iter attempts.
+    # imagegen.py forges a real 1024x1024 JPEG-as-png at --out and exits 0.
+    print(f"commission_art: {IMAGE_WEAPON} reachable via imagegen.py — commissioning (max-iter={max_iter})")
     for i in range(1, max_iter + 1):
         proc = subprocess.run(
-            ["python3", str(SUMMON), IMAGE_WEAPON, prompt],
+            ["python3", str(IMAGEGEN), prompt, "-o", str(out)],
             capture_output=True, text=True,
         )
-        if proc.returncode == 0 and (proc.stdout or "").strip():
-            out.write_text(proc.stdout, encoding="utf-8")
-            print(f"commission_art: iteration {i} produced output -> {out}")
+        if proc.returncode == 0 and out.exists() and out.stat().st_size > 0:
+            print(f"commission_art: iteration {i} forged -> {out}")
             return 0
-        print(f"  iteration {i}: no usable output (exit {proc.returncode})")
+        err = (proc.stderr or proc.stdout or "").strip()[:200]
+        print(f"  iteration {i}: no asset (exit {proc.returncode}) {err}")
     print("commission_art: image backend reachable but produced no asset.", file=sys.stderr)
     return 1
 
