@@ -60,6 +60,7 @@ the bare emoji — this is exactly the `storm-investigation` v1.0.0 miss), or no
 1. **`skills-meta.json`** — add the presentation entry: `icon` (emoji), `blurb`, `level`
    (Foundational/Intermediate/Advanced/Master), `tabler` (a `ti-*` class), `triggers`, `modes`.
 2. **`domains.json`** — add the skill `id` to the `star-alliance` home pool (+ any project domain that borrows it); bump the count in that domain's `notes`.
+   **Reconcile EVERY derived skill-count surface in the same pass — not just the registry.** Adding or removing a skill changes the repo's skill total, which is claimed in **four** hand-maintained places that must all agree: `domains.json` `star-alliance.skills[]` length **and** its `notes` ("… + N skills …"), and **`README.md`** (every `(N skills` mention — there are two: the tree comment and the VERSIONS pointer). `skill_registry.py write` only fixes `VERSIONS.md`'s header line; it does **not** touch README or domains. The conformity-close `DC` check (audit #1) enforces all of these against the real skill-dir count, so a missed README/domains count FAILS the sweep — fix every count when the total moves, or the next sweep is red.
 3. **Assign to member(s)** — add the skill to the adequate guild member's `skills:` frontmatter in
    `star-alliance-members/<member>.md`, **and** mention it in that member's body (§How you work) so the
    deployed agent actually invokes it.
