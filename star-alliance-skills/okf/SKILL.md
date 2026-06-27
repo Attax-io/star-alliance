@@ -73,19 +73,22 @@ three ways:
   registry), and the dashboard trio `index.html` / `app.js` / `app.css` (served from
   root). Never flagged.
 - **Concept-path target** — belongs under a folder by kind:
-  | matches | → concept-path | safety |
+  | matches | → concept-path | base tag |
   |---|---|---|
-  | `STRATEGIST-*.md`, `AUDIT-*.md` | `docs/` | **safe** (inert, free to move) |
+  | `STRATEGIST-*.md`, `AUDIT-*.md` | `docs/` | safe |
   | `gen-*.cjs` / `gen-*.py` | `tools/generators/` | review |
   | `build.py`, `conformity_check.py`, `install.py`, `log_event.py`, `member_level.py`, `build_guild_log.py` | `tools/` | review |
   | `*.json` data, `guild-data.js` | `data/` | review |
 - **Unclassified** — no rule; left alone (advisory only).
 
-`safety` is the upgrade's safety contract: **safe** = nothing references it, a mover
-relocates it freely; **review** = reached by hardcoded paths (hooks in
-`.claude/settings.json`, `build.py`, `serve.cjs`, the dashboard, sibling generators),
-so relocation demands a **path-rewrite sweep** — a gated Architecture Build, never a
-blind `git mv`. `--layout --fix` moves the **safe** class only and defers the rest.
+**Safety is computed, never guessed.** The table's *base tag* is only a ceiling: the
+audit runs `git grep` to count inbound references (markdown links, `see X.md`
+pointers, code comments, JSON detail strings) and a file is **safe** only when its
+base tag is `safe` *and* it has **zero** inbound refs. Any reference — or a `review`
+base tag — yields **review**: relocation would strand a link or a hardcoded path, so
+it needs a **path/link-rewrite sweep**, a gated Architecture Build, never a blind
+`git mv`. (This is why a referenced `STRATEGIST-*.md` shows up as review, not safe.)
+`--layout --fix` moves the **safe** class only and defers the rest.
 The single source of truth for the taxonomy is `LAYOUT_PINNED` + `LAYOUT_RULES` in
 `scripts/okf_audit.py`.
 
