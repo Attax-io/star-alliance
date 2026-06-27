@@ -206,7 +206,10 @@ def main() -> int:
     halt_reason = ""
 
     for i, step in enumerate(steps, 1):
-        title = step.get("title") or f"step {i}"
+        # Gate steps carry no `title`; name them by their gate type so the run log
+        # reads e.g. "Approval Gate" / "Certify Gate" instead of a bare "step N".
+        gate_kind = step.get("gate") if (step.get("kind") == "gate" or step.get("gate")) else None
+        title = step.get("title") or (f"{gate_kind.capitalize()} Gate" if isinstance(gate_kind, str) else f"step {i}")
         resolution = resolve_step(step)
         print(f"[{i}/{total}] {title}  ->  ({resolution})")
         summary.append(f"| {i} | {title} | {resolution} |")
