@@ -43,24 +43,30 @@ EXCLUDE_PATH_SUBSTR = (
 # the repo ROOT against a target concept-path. Markdown frontmatter is checked
 # elsewhere; this is the orthogonal placement axis.
 #
-# Files that LEGITIMATELY live at repo root — entrypoints, the canonical registry,
-# and the dashboard trio served from root. These never count as misplaced.
+# The ROOT CONTRACT — files that LEGITIMATELY live at repo root, never misplaced:
+# human-facing entrypoints, the generated dashboard runtime/data the browser loads
+# from root, the repo-root ANCHOR every script walks up to find, and the build engine
+# everything is path-relative to. Moving any of these is not "tidying" — it strands a
+# hardcoded path, the dashboard's <script src>, or root detection itself.
 LAYOUT_PINNED = {
-    "README.md", "CLAUDE.md", "VERSIONS.md",            # canonical root docs + registry
-    "index.html", "app.js", "app.css",                  # dashboard, served from repo root
+    "README.md", "CLAUDE.md", "VERSIONS.md",            # canonical root docs + skill registry
+    "index.html", "app.js", "app.css",                  # dashboard runtime, served from root
+    "guild-data.js", "guild-data.json",                 # generated dashboard data (build.py output; index.html loads guild-data.js)
+    "workflows.json",                                   # repo-root ANCHOR + loaded by the turn-gating hooks (move = session brick)
+    "build.py",                                         # the build engine — root entrypoint everything resolves relative to
     "package.json", "package-lock.json",
 }
 # Ordered (regex, target_dir, safety) rules — FIRST match wins. `safety`:
 #   "safe"   — inert content nothing references → a mover may relocate it freely.
-#   "review" — reached by hardcoded paths (hooks in .claude/settings.json, build.py,
-#              serve.cjs, the dashboard, sibling generators) → relocation needs a
-#              path-rewrite sweep, i.e. a gated Phase-2 Architecture Build.
+#   "review" — reached by hardcoded paths (build.py, serve.cjs, hooks, sibling scripts)
+#              → relocation needs a path-rewrite sweep (a gated Architecture Build).
+# (The 2026-06 reorg moved every match below into its concept-path; these rules now
+#  catch any NEW loose file of the same kind so the root cannot silt up again.)
 LAYOUT_RULES = [
     (r"^(?:STRATEGIST|AUDIT)[-A-Z].*\.md$", "docs/",            "safe"),
     (r"^gen-.*\.(?:cjs|py)$",               "tools/generators/", "review"),
-    (r"^(?:build|build_guild_log|conformity_check|install|log_event|member_level)\.py$",
+    (r"^(?:build_guild_log|conformity_check|install|log_event|member_level)\.py$",
                                             "tools/",            "review"),
-    (r"^guild-data\.js$",                   "data/",             "review"),
     (r".*\.json$",                          "data/",             "review"),
 ]
 
