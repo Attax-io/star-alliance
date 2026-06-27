@@ -352,9 +352,7 @@ kbd {
 .you-core .you-glyph { fill: var(--ink); font-size:12px; font-weight:700; }
 .you-core:hover .you-burst, .you-core:focus-visible .you-burst { filter: drop-shadow(0 0 12px var(--gold)); }
 .you-core:hover .core, .you-core:focus-visible .core { filter: drop-shadow(0 0 13px #fff); }
-@keyframes youspin { to { transform: rotate(360deg); } }
-@keyframes youspin-rev { to { transform: rotate(-360deg); } }
-@keyframes sunbreath { 0%,100% { opacity:.55; } 50% { opacity:.95; } }
+@keyframes youripple { 0% { transform: scale(1); opacity:.85; } 100% { transform: scale(2.7); opacity:0; } }
 .cgate { cursor: pointer; outline: none; }
 .cgate .cgate-shape { fill: color-mix(in srgb, currentColor 22%, transparent); stroke: currentColor; stroke-width:1.5; transition: filter var(--dur) var(--ease); }
 .cgate:hover .cgate-shape, .cgate:focus-visible .cgate-shape { filter: drop-shadow(0 0 8px currentColor); }
