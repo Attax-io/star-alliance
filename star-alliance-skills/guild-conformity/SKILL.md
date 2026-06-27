@@ -2,7 +2,7 @@
 name: guild-conformity
 description: "The Quartermaster's craft for proving the whole guild repo agrees with itself and with every logged decision, then reconciling any contradiction at its source. Wraps the read-only conformity_check.py (which emits a contradiction map across members, members-meta, skills, skills-meta, domains, workflows, the guild log, and the generated guild-data) plus fixing each real contradiction at its source of truth and rebuilding with build.py until the check passes clean. It is the closing step of every guild workflow and the spine of the conformity-sweep. Use when a workflow is closing, after any structural change, or when you need proof nothing contradicts. Triggers: 'run the conformity check', 'confirm guild conformance', 'does the repo agree with itself', 'conformity sweep', 'reconcile the guild data', 'is everything consistent'. Differentiate from cleanup (app/i18n hygiene) and skillsmith (skill versioning)."
 metadata:
-  version: 1.1.0
+  version: 1.2.0
 type: Skill
 
 ---
@@ -73,9 +73,31 @@ Track, always: green-sweep ratio, median rebuilds to green, count of hand-edits 
 - README and domains carry skill-count claims that the check verifies. If you add a skill, update the claim in the same commit, or the next sweep will flag it.
 - Never close a workflow on a red check. "One flag is a known false-positive" is a triage note for the log, not a green light.
 
+## Edit-time fast-path — `conformity_check.py --member <name>`
+
+The full sweep is the *closing* seal, but some drift is cheaper to catch the instant it's made.
+**The moment you assign or remove a skill from a member, run the focused check before moving on:**
+
+```sh
+python3 conformity_check.py --member developer     # or architect, herald, …  (the- prefix optional)
+```
+
+It audits ONLY that one member's skill↔drill coupling — both directions — without the whole-repo
+build + sweep:
+- **SD forward:** every skill in the member's `skills:` frontmatter has a `## Skill Drills` row.
+- **R:** every carried skill exists in `skills-meta.json`.
+- **SD reverse:** no drill row names a skill the member no longer carries (a stale row left after a
+  removal — the failure the full SD check did *not* catch, because it only looks forward).
+
+Exit 0 clean, 1 on drift, fast enough to run after every loadout edit. This is the primary guard for
+the [[skillsmith]] Invariant #9 coupling; the full conformity-close remains the backstop. (Mined from
+the harness-efficiency session, where a skill landed in two loadouts with no drill row and only the
+sweep-time SD flag caught it.)
+
 ## Versioning
 Own skill. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new mode/section · MAJOR: method contract change). Regenerate `VERSIONS.md` with `python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.
 
 ## Changelog
+- **1.2.0** — Added **§Edit-time fast-path (`--member`)** + the matching `conformity_check.py --member <name>` mode: a focused per-member skill↔drill audit (SD forward + R skills-meta + SD **reverse**, catching a stale drill row left after a removal — which the full forward-only SD check missed) the Quartermaster runs the instant a loadout changes, before the full sweep. Primary guard for skillsmith Invariant #9; the conformity-close stays the backstop. New mode + section → MINOR.
 - **1.1.0** — Added **§Adding a new invariant** — the Artisan-rung method for teaching the check to catch a *class* of contradiction, not just an instance: enforce at the source (`build.py`, fatal), re-assert at the gate (`conformity_check.py`, tagged, "when present" for optional fields), and **prove it with a negative test** (hand-break a record → confirm the tag fires → revert → confirm green). Mined from the `WPN`/`CLS`/tightened-`expected_order` rules added this session. New section → MINOR.
 - **1.0.0** — Initial release. The Quartermaster's repo-wide conformity audit and reconcile loop — the closing seal on every workflow.

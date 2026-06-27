@@ -2,7 +2,7 @@
 name: weapon-utility
 description: "Every member's rule for which weapon (model) to draw and how thinker and doer weapons work together. Thinker weapons read, plan, and prompt the doers; doer weapons do the job and return it; the thinker then reviews the result against the plan and re-prompts the doer until it conforms. A member draws the highest-priority AVAILABLE weapon of the kind the job needs — scanning its arsenal left to right. One thinker plans and reviews and may dispatch several doers in parallel (many of one model or a mix); only ultra-brainstorming runs several thinkers at once. Use whenever a member must pick a model, decide thinker-vs-doer, or run the plan → do → review loop. Triggers: 'which weapon', 'which model should X use', 'pick the weapon', 'thinker or doer', 'draw a weapon', 'run the weapon loop', 'how does the member choose its model'. Every member consults this before acting — it is the atomic layer beneath members-formation (which member works) and ultra-brainstorming (fuse several members across models)."
 metadata:
-  version: 1.4.0
+  version: 1.5.0
 type: Skill
 
 ---
@@ -135,6 +135,18 @@ plan** (ultra-brainstorming's converge → synthesize step). That consolidated p
 by one *or several* doers exactly as above. So ultra-brainstorming layers **thinker fan-out** on top
 of the **doer fan-out** that is always available.
 
+**Batching the doer fan-out — one process, one connection.** When the fan-out is many *independent*
+prompts to the **same** prime doer (`minimax-m3`), do not spawn N subprocesses — **batch** them.
+`minimax.py --batch <file.jsonl>` runs all N over ONE keep-alive HTTPS connection (one process spawn,
+one TLS handshake) and emits JSONL results **in input order**; `guild/delegate.py:delegate_many(prompts)`
+wraps it and returns an ordered list, a failed slice coming back `None`. This is the SAME
+plan → do → review loop — the thinker still reviews every return against the plan and re-prompts any
+non-conforming slice — just without the per-call subprocess + handshake tax (wall-clock ≈ one
+round-trip instead of N). Reach for it on any clean N-way split: bulk extraction, per-chunk drafting,
+per-file transforms. Fall back to individual `summon.py` calls when slices need *different* doer
+models, or are genuinely sequential (each depends on the last). The batch path is minimax-only today;
+other backends degrade gracefully to a sequential loop with the same ordered-results contract.
+
 ## Availability — when a weapon counts as drawable
 
 A weapon is **available** only if all hold:
@@ -164,6 +176,7 @@ Own skill. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: 
 rule or mode · MAJOR: a change to the loop or selection contract). Then `python3 build.py`.
 
 ## Changelog
+- **1.5.0** — **Batched doer fan-out.** Named the concrete mechanism behind the always-available doer fan-out: `minimax.py --batch <file.jsonl>` (one process, one keep-alive HTTPS connection, ordered JSONL results) and its wrapper `guild/delegate.py:delegate_many(prompts)` (ordered list, failed slice → `None`). Prior to this the skill preached "fan doers in parallel" (1.2.0) but never pointed at the cheap path, so N-way doer splits kept paying N subprocess spawns + N TLS handshakes. The thinker↔doer review loop is unchanged — batch only removes the per-call tax; minimax-only today, other backends degrade to a sequential loop with the same ordered contract. Mined from the harness-efficiency build (Phase 2). New mechanism doctrine → MINOR.
 - **1.4.0** — **The tool boundary (hard rule).** Added an explicit section stating a doer **returns content as text** and **never invokes tools** — Edit/Write/Bash/git/MCP/computer-use are wielded **only by the thinker** (a Claude model). Splits "write" into *author content* (doer) vs *invoke the write tool* (thinker): doer authors the bytes, thinker reviews then runs `Write`/`Edit` itself to commit — no re-authoring. Forbids the category error of summoning a non-Claude doer to "use" a Claude Code tool; if a slice needs a tool inside the doer's own run, that is the Claude-only-tool case → draw `sonnet`. Closes the-developer's mistake of handing a tool call to a non-Claude model.
 - **1.3.0** — Named `opus` the **prime thinker** (best mind, first thinker in every arsenal) alongside `minimax-m3` the prime doer, and added the **Sonnet Claude-only-tool fallback**: when a doer needs a tool only Claude models can run, draw `sonnet` (the dual at the tail) directly — an expected fall-through, not a failure — so the run never stalls. `conformity_check` now enforces minimax-m3-first, opus-first-thinker, sonnet-last.
 - **1.2.0** — **Parallel doers.** A member's thinker may now dispatch several doer agents at once — many of one doer model or a mix of different doer models — each on an independent slice, with the thinker reviewing every return against the plan. Previously the doer side was strictly one-at-a-time (next doer only on failure); that is now the **floor, not the ceiling**. Thinker stays one-per-member except under [[ultra-brainstorming]], which now layers thinker fan-out on top of the always-available doer fan-out.

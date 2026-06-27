@@ -107,8 +107,10 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
     silently. **On assign:** add the skill to `skills:`, mention it in §How you work, AND add a
     `## Skill Drills` row (`| `<skill>` | invoke WHEN … | do NOT invoke for … | pairs with … |`) —
     craft skill in the main table, cross-cutting one in the Universal table — all in the same edit.
-    **On removal:** delete the row in the same edit. The `SD` conformity audit enforces this;
-    conformity-close is only the backstop. (skillsmith Invariant #9.)
+    **On removal:** delete the row in the same edit. Then run the edit-time fast-path —
+    `python3 conformity_check.py --member <name>` — to catch any drift (forward: undrilled skill;
+    reverse: stale row) before moving on; the full conformity-close is only the backstop.
+    (skillsmith Invariant #9 · guild-conformity `--member` mode.)
 10. To close out a body of work — merge every outstanding branch/PR into main, bump the
     version, write the changelog, sync stamps, push — run `release-train`. To keep the repo
     itself tidy to the Open Knowledge Format (one concept per file, `type:` frontmatter,

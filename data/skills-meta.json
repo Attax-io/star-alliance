@@ -406,5 +406,13 @@
     "tabler": "ti-chart-candle-filled",
     "triggers": "'what candlestick pattern is this', 'is this a hammer or a doji', 'read this candlestick chart', 'explain bullish engulfing', 'morning star meaning', 'teach me Japanese candlesticks'",
     "modes": "single-line reversals; multi-line reversals; continuations; the doji family; Western-tool confluence"
+  },
+  "harness-efficiency": {
+    "icon": "📊",
+    "blurb": "Prove & tune what the harness saves — net tokens, LITE/FULL tier split, offload health",
+    "level": "Advanced",
+    "tabler": "ti-gauge",
+    "triggers": "'efficiency report', 'harness efficiency', 'how much are we saving', 'is the gate working', 'tier split', 'check the offload', 'net tokens saved', 'tune the stakes list', or before/after a routing-gate hook change",
+    "modes": "Report — join usage-log.jsonl + turn-cost.jsonl via efficiency_report.py (net-saved + per-tier breakdown); Watch — hunt the one hard failure (a high-stakes turn that took LITE); Tune — edit the data/harness.json stakes/size policy, then re-run the gate regression matrix"
   }
 }

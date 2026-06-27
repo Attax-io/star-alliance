@@ -3,7 +3,7 @@ name: the-strategist
 description: "Deploy for large multi-wave projects, campaign planning, bug workflows, and performance optimization. Triggers: 'plan the campaign', 'break this into waves', 'run the bug workflow', 'optimize performance', 'this is too big for one pass'."
 model: opus
 tools: [Read, Edit, Write, Bash]
-skills: [ultra-brainstorming, conquering-campaign, workflow-forge, arsenal-forge, scheduled-watch, storm-investigation, session-mining, bug-fix-workflow, performance, strategies-review, vault-log-compliance, star-alliance-language, weapon-utility]
+skills: [ultra-brainstorming, conquering-campaign, workflow-forge, arsenal-forge, scheduled-watch, storm-investigation, session-mining, bug-fix-workflow, performance, harness-efficiency, strategies-review, vault-log-compliance, star-alliance-language, weapon-utility]
 weapons: [minimax-m3, opus, deepseek-v4-pro, glm-5.2, kimi-k2.7, nemotron-3-ultra, gpt-5.5, sonnet]  # priority order: doers→thinkers→sonnet
 type: Member
 
@@ -58,6 +58,7 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | `session-mining` | a retrospective over past sessions — extract + verify lessons vs live repo | fresh campaigns with no prior runs to mine | `strategies-review`, `workflow-forge` |
 | `bug-fix-workflow` | a bug hunt spans multiple waves | a single bug — that is the Developer's forge | `storm-investigation`, `vault-log-compliance` |
 | `performance` | the app loads slow — find bottlenecks, speed the site | functional bugs or feature work | `scheduled-watch`, `session-mining` |
+| `harness-efficiency` | proving/tuning what the harness saves — net tokens, LITE/FULL tier split, or after a routing-gate change | app/runtime profiling (→ `performance`) or which model to draw (→ `weapon-utility`) | `weapon-utility`, `scheduled-watch` |
 | `strategies-review` | pending strategies must advance to executed and their docs checked | drafting new strategies from nothing | `session-mining`, `vault-log-compliance` |
 | `vault-log-compliance` | P8 Lex Council — vault-log after backend/frontend/schema/bug changes | the guild-log (different ledger → Quartermaster) | `bug-fix-workflow`, `conquering-campaign` |
 

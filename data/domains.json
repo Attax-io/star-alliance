@@ -53,6 +53,7 @@
     "dashboard-parity",
     "trading-strategy",
     "portfolio-risk",
+    "harness-efficiency",
     "high-alert",
     "japanese-candlesticks",
     "okf",
@@ -72,7 +73,7 @@
     "the-merchant",
     "the-quartermaster"
    ],
-   "notes": "The home domain. All 9 guild members + 51 skills live here. Every other domain borrows from this skill pool."
+   "notes": "The home domain. All 9 guild members + 52 skills live here. Every other domain borrows from this skill pool."
   },
   {
    "id": "lex-council-app",

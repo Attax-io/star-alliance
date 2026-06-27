@@ -405,5 +405,51 @@ def main():
     return 0
 
 
+def check_member(name):
+    """Fast-path: audit ONE member's skill↔drill coupling right after a loadout edit.
+
+    The cheap guard the Quartermaster runs the instant a member's `skills:` frontmatter
+    changes — long before the full sweep — so the SD drift (skill carried, no drill row,
+    or a stale row for a dropped skill) is caught at EDIT time, not sweep time. Checks,
+    for `the-<name>.md`: every carried skill has a `## Skill Drills` row (SD), every
+    carried skill exists in skills-meta (R), and no drill row names a skill the member no
+    longer carries (the reverse — a stale row left after removal). Exit 0 clean, 1 on drift.
+    """
+    slug = name if name.startswith("the-") else f"the-{name}"
+    md = ROOT / "star-alliance-members" / f"{slug}.md"
+    if not md.exists():
+        print(f"✗ no such member: {md.name}")
+        return 1
+    text = md.read_text()
+    skills = frontmatter_list(text, "skills") or []
+    body = text.split("---", 2)[2] if text.count("---") >= 2 else text
+    try:
+        meta_keys = set(json.loads((ROOT / "data" / "skills-meta.json").read_text()).keys())
+    except Exception:
+        meta_keys = set()
+    fails = []
+    # SD — carried skill with no drill row.
+    for sk in skills:
+        if re.search(r'\|\s*`?' + re.escape(sk) + r'`?\s*\|', body) is None:
+            fails.append(f"SD {slug}: skill '{sk}' carried but has no Skill Drills row "
+                         f"(add `| {sk} | invoke WHEN … | do NOT … | pairs with … |`)")
+        if meta_keys and sk not in meta_keys:
+            fails.append(f"R  {slug}: skill '{sk}' not in skills-meta.json")
+    # Reverse — a drill row for a skill no longer in the loadout (stale after removal).
+    for row_sk in re.findall(r'^\|\s*`([a-z0-9][a-z0-9-]+)`\s*\|', body, re.M):
+        if row_sk in meta_keys and row_sk not in skills:
+            fails.append(f"SD {slug}: stale drill row for '{row_sk}' — not in the "
+                         f"`skills:` loadout (delete the row, or re-add the skill)")
+    if fails:
+        print(f"✗ {slug}: {len(fails)} drift(s):")
+        for f in fails:
+            print(f"   ✗ {f}")
+        return 1
+    print(f"✓ {slug}: skill↔drill coupling holds ({len(skills)} skills, all drilled).")
+    return 0
+
+
 if __name__ == "__main__":
+    if len(sys.argv) >= 3 and sys.argv[1] == "--member":
+        sys.exit(check_member(sys.argv[2]))
     sys.exit(main())

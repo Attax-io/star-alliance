@@ -367,7 +367,7 @@ function parseHash() {
 const ROUTES = {
   map:     { list: renderStarMap,      navKey: "map" },
   members: { list: renderMembers,      detail: renderMemberDossier, navKey: "members" },
-  arsenal: { list: renderArsenal,      navKey: "arsenal" },
+  arsenal: { list: renderArsenal, detail: renderWeaponDetail, navKey: "arsenal" },
   skills:  { list: renderSkills,       detail: renderSkillPanel,    navKey: "skills" },
   domains: { list: renderDomains,      detail: renderSectorDetail,  navKey: "domains" },
   log:     { list: renderLog,          navKey: "log" },
@@ -1036,58 +1036,28 @@ function renderArsenal() {
     const mm = modelMeta(id);
     const off = isWeaponDisabled(id);
     const wielders = GUILD.members.filter((m) => wields(m, id)).length;
-    const wieldCount = GUILD.members.filter((m) => wields(m, id)).length;
-    const dropItems = GUILD.members.map((m) => {
-      const on = wields(m, id);
-      return `<label class="wield-drop-item${on ? " on" : ""}">
-        <input type="checkbox" class="wield-chip" data-member="${esc(m.id)}" data-model="${esc(id)}"${on ? " checked" : ""}>
-        <span class="wc-dot" aria-hidden="true">${on ? "✓" : "＋"}</span>${esc(m.name)}</label>`;
-    }).join("");
-    const chips = `<div class="wield-dropdown">
-      <button class="wield-drop-btn" type="button" data-weapon="${esc(id)}">
-        ${wieldCount > 0 ? `${wieldCount} agent${wieldCount > 1 ? "s" : ""}` : "Assign agents"} <span class="wield-drop-arrow">▾</span>
-      </button>
-      <div class="wield-drop-list">${dropItems}</div>
-    </div>`;
     const role = mm.role ? ROLE_META[mm.role] : null;
-    return `<div class="model-card${off ? " deactivated" : ""}" style="--wc:${esc(mm.color)}">
+    return `<a class="model-card model-card-mini${off ? " deactivated" : ""}" href="#/arsenal/${esc(id)}" style="--wc:${esc(mm.color)}">
       <div class="weapon-art-wrap" data-weapon-color="${esc(mm.color)}" data-weapon-off="${off}">
         <img class="weapon-art${off ? " dimmed" : ""}" src="weapon-gif/${esc(id)}.gif" onerror="this.src='weapon-art/${esc(id)}.png'" alt="${esc(mm.label)} weapon art" loading="lazy">
         <canvas class="weapon-aura-canvas" aria-hidden="true"></canvas>
-        <button class="weapon-power-btn${off ? " off" : ""}" type="button" data-weapon="${esc(id)}"
-          title="${off ? "Reactivate weapon" : "Deactivate weapon"}">⏻</button>
       </div>
-      ${role ? `<div class="weapon-role" style="--rc:${esc(role.color)}">
-        <img class="role-icon" src="${esc(role.icon)}" alt="${esc(role.label)}">
-        <div class="role-info">
-          <span class="role-label">${esc(role.label)}</span>
-          <span class="role-rule">${esc(role.rule)}</span>
+      <div class="model-mini-body">
+        ${role ? `<span class="model-mini-role" style="--rc:${esc(role.color)}" title="${esc(role.label)}: ${esc(role.rule)}">
+          <img class="role-icon-sm" src="${esc(role.icon)}" alt="${esc(role.label)}"> ${esc(role.label)}
+        </span>` : ""}
+        <div class="model-mini-name">${esc(mm.label)}</div>
+        <div class="model-badges">
+          <span class="mb tier">${esc(mm.tier || "Model")}</span>
+          ${mm.host ? `<span class="mb host">${esc(mm.host)}</span>` : ""}
+          ${mm._pulled === true ? `<span class="mb pulled">● pulled</span>` : mm._pulled === false ? `<span class="mb unpulled">○ not pulled</span>` : ""}
         </div>
-      </div>` : ""}
-      <div class="model-head">
-        <span class="weapon-glyph" style="--wc:${esc(mm.color)}">${esc(modelGlyph(id))}</span>
-        <div class="model-id">
-          <div class="model-label">${esc(mm.label)}</div>
-          <div class="model-badges"><span class="mb tier">${esc(mm.tier || "Model")}</span>${mm.host ? `<span class="mb host">${esc(mm.host)}</span>` : ""}${
-            mm._pulled === true ? `<span class="mb pulled">● pulled</span>` :
-            mm._pulled === false ? `<span class="mb unpulled">○ not pulled</span>` : ""}</div>
+        <div class="model-mini-foot">
+          <span class="model-count" title="Agents wielding">${wielders}/${GUILD.members.length} agents</span>
+          ${off ? `<span class="tag off" style="font-size:10px">off</span>` : ""}
         </div>
-        <span class="model-count" title="Agents wielding this model">${wielders}/${GUILD.members.length}</span>
       </div>
-      ${(() => {
-        const L = ledgerFor(id);
-        if (!L || !L.wCalls) return "";
-        return `<div class="model-usage" title="Real spend logged by the arsenal backends this week (7d rolling)">
-          <span class="mu-dot">●</span> ${L.wCalls} call${L.wCalls > 1 ? "s" : ""} · ${fmtK(L.wOut)} out · ${fmtK(L.wIn)} in <span class="mu-win">7d</span></div>`;
-      })()}
-      <p class="model-desc">${esc(mm.desc || "")}</p>
-      ${mm.call ? `<div class="model-call">
-        <div class="mc-head"><span class="mc-label">⚔ How to summon</span></div>
-        <pre class="mc-recipe">${esc(mm.call)}</pre>
-      </div>` : ""}
-      <div class="wield-row">${chips}</div>
-      <p class="model-ollama-desc">${esc(mm.ollama_desc || mm.desc || "")}</p>
-    </div>`;
+    </a>`;
   }).join("");
 
   let liveTag;
@@ -1125,6 +1095,74 @@ function renderArsenal() {
       ${anyOv ? `<span class="tag green">Custom loadouts active</span><button class="reset-btn" id="reset-weapons">Reset all assignments</button>` : ""}
     </div>
     <div class="model-grid">${cards}</div>`;
+}
+
+function renderWeaponDetail(id) {
+  const mm = modelMeta(id);
+  if (!mm || !mm.label) return renderNotFound(`No weapon "${esc(id)}" in the armory.`);
+  const off = isWeaponDisabled(id);
+  const role = mm.role ? ROLE_META[mm.role] : null;
+  const wielders = GUILD.members.filter((m) => wields(m, id));
+  const wieldCount = wielders.length;
+  const dropItems = GUILD.members.map((m) => {
+    const on = wields(m, id);
+    return `<label class="wield-drop-item${on ? " on" : ""}">
+      <input type="checkbox" class="wield-chip" data-member="${esc(m.id)}" data-model="${esc(id)}"${on ? " checked" : ""}>
+      <span class="wc-dot" aria-hidden="true">${on ? "✓" : "＋"}</span>${esc(m.name)}</label>`;
+  }).join("");
+  const chips = `<div class="wield-dropdown">
+    <button class="wield-drop-btn" type="button" data-weapon="${esc(id)}">
+      ${wieldCount > 0 ? `${wieldCount} agent${wieldCount > 1 ? "s" : ""}` : "Assign agents"} <span class="wield-drop-arrow">▾</span>
+    </button>
+    <div class="wield-drop-list">${dropItems}</div>
+  </div>`;
+  const L = ledgerFor(id);
+  const usageHtml = (L && L.wCalls) ? `<div class="section glass">
+    <div class="section-title">Usage · 7d rolling</div>
+    <div class="telemetry">
+      <div class="stat"><b class="count">${L.wCalls}</b><span>Calls</span></div>
+      <div class="stat"><b class="count">${fmtK(L.wOut)}</b><span>Out tokens</span></div>
+      <div class="stat"><b class="count">${fmtK(L.wIn)}</b><span>In tokens</span></div>
+    </div>
+  </div>` : "";
+  const wielderPills = wielders.map((m) => `<a class="ref-pill" href="#/members/${esc(m.id)}" style="--mc:${esc(m.color || "#888")}">
+    <span class="avatar" style="width:26px;height:26px;border-radius:7px">${m.avatar || ""}</span>${esc(m.name)}</a>`).join("") ||
+    `<span class="empty">No agents wield this weapon yet.</span>`;
+
+  return `${crumb("#/arsenal", "Arsenal")}
+    <div class="weapon-panel">
+      <div class="wp-hero glass${off ? " deactivated" : ""}" style="--wc:${esc(mm.color)}">
+        <div class="weapon-art-wrap wp-art" data-weapon-color="${esc(mm.color)}" data-weapon-off="${off}">
+          <img class="weapon-art${off ? " dimmed" : ""}" src="weapon-gif/${esc(id)}.gif" onerror="this.src='weapon-art/${esc(id)}.png'" alt="${esc(mm.label)}" loading="lazy">
+          <canvas class="weapon-aura-canvas" aria-hidden="true"></canvas>
+        </div>
+        <div class="wp-meta">
+          ${role ? `<div class="weapon-role" style="--rc:${esc(role.color)}">
+            <img class="role-icon" src="${esc(role.icon)}" alt="${esc(role.label)}">
+            <div class="role-info"><span class="role-label">${esc(role.label)}</span><span class="role-rule">${esc(role.rule)}</span></div>
+          </div>` : ""}
+          <h1 class="wp-title">${esc(mm.label)}</h1>
+          <div class="model-badges" style="margin-bottom:8px">
+            <span class="mb tier">${esc(mm.tier || "Model")}</span>
+            ${mm.host ? `<span class="mb host">${esc(mm.host)}</span>` : ""}
+            ${mm._pulled === true ? `<span class="mb pulled">● pulled</span>` : mm._pulled === false ? `<span class="mb unpulled">○ not pulled</span>` : ""}
+            ${off ? `<span class="tag off">deactivated</span>` : ""}
+          </div>
+          <p class="model-desc">${esc(mm.desc || "")}</p>
+        </div>
+        <button class="weapon-power-btn${off ? " off" : ""}" type="button" data-weapon="${esc(id)}"
+          title="${off ? "Reactivate weapon" : "Deactivate weapon"}" style="position:relative;align-self:flex-start">⏻</button>
+      </div>
+      ${off ? `<div class="off-banner glass">⏻ Deactivated guild-wide — no agent can wield this weapon. Reactivate to restore.</div>` : ""}
+      ${usageHtml}
+      ${mm.ollama_desc && mm.ollama_desc !== mm.desc ? `<div class="section glass"><div class="section-title">Extended description</div><p class="model-desc" style="color:var(--fg)">${esc(mm.ollama_desc)}</p></div>` : ""}
+      ${mm.call ? `<div class="section glass"><div class="section-title">⚔ How to summon</div><pre class="mc-recipe" style="margin:0">${esc(mm.call)}</pre></div>` : ""}
+      <div class="section glass">
+        <div class="section-title">Agents wielding · ${wieldCount}/${GUILD.members.length}</div>
+        <div class="ref-grid" style="margin-bottom:12px">${wielderPills}</div>
+        <div class="wield-row">${chips}</div>
+      </div>
+    </div>`;
 }
 
 // Skills / Skill Pool -------------------------------------------------------

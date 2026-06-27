@@ -2,7 +2,7 @@
 name: claude-code-hooks
 description: "The Developer's craft for authoring Claude Code hooks — the shell scripts the harness fires on tool and session events to enforce guild standards. Covers the event contract (PreToolUse / PostToolUse / UserPromptSubmit / Stop / SessionStart), reading the tool call as JSON on stdin, exit-code semantics (0 allow, 2 block with stderr fed back to the model), JSON output for non-blocking systemMessage banners and additionalContext, matcher scoping in settings.json, and the cardinal rule: fail open so a broken hook never bricks a session. Use when writing, debugging, or hardening a hook, or wiring an automated 'whenever X happens, do Y' behavior the harness must run. Triggers: 'write a hook', 'add a PreToolUse hook', 'gate this tool', 'block this command', 'fire a banner on', 'why is my hook blocking', 'fail-open hook', 'test my hook', 'claude code hooks'. Differentiate from update-config (settings.json keys/permissions) and skillsmith (skill versioning)."
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 type: Skill
 
 ---
@@ -117,6 +117,14 @@ hooks that block the wrong tool, hooks that hang the session (must be zero).
 - **Test the allow branch too.** It's easy to prove a hook blocks; the dangerous bug is one that
   blocks the *good* case. Pipe both a should-block and a should-allow event and check each exit code.
 
+## Proven patterns (Star Alliance harness)
+
+Three patterns mined from the harness-efficiency build — reach for them when the obvious wiring is wasteful or blind:
+
+- **Per-turn coalescing — move bookkeeping off the per-edit path.** Cosmetic/bookkeeping work (regen a view, commit, sync a table) wired on `PostToolUse: Edit|Write` fires **once per file write** — its cost scales with edit count (the `auto: Edit X` commit storm). If the work is a *view* (a dashboard, a table, a commit), move it to a single **`Stop`** hook that runs **once per turn**: regen only if a relevant source changed (`git status --porcelain | grep …`), then coalesce all the turn's changes into ONE commit (`git add -A` + one `commit`). The view lags the repo by at most one turn — acceptable; the critical path stops paying per edit.
+- **Marker-injection for measurement.** To record something a hook decided (which branch fired, which tier) for a *later* hook to read: have the deciding hook **inject a unique marker string** into its output (a `UserPromptSubmit` hook prints `SA-GATE:LITE` / `SA-GATE:FULL` into context), then a `Stop` hook **greps the turn's transcript** for that marker and logs it alongside the turn's token usage. The transcript is the shared channel between hooks of different events — no extra state file needed.
+- **Proportional injection — tier the output by stakes/size.** A `UserPromptSubmit` hook that injects the SAME heavy doctrine every turn taxes every turn. Classify the prompt against a **policy config** (keyword lists in a JSON file, not buried in shell) on two axes — **stakes** (reversibility/blast-radius) and **size** — and inject a short reminder for clearly-small-and-low-stakes turns, the full doctrine otherwise. **Stakes always beats size; unknown/empty/garbled → heavy (fail-safe).** Gate the whole thing behind an env override (`SA_GATE=full`) so the old uniform behavior is one flag away, and keep the classifier fail-to-heavy: a broken classifier must never *weaken* the gate.
+
 ## Bundled
 
 - `scripts/hook_template.py` — a fail-open PreToolUse skeleton: reads stdin JSON, decides, blocks via
@@ -128,4 +136,5 @@ hooks that block the wrong tool, hooks that hang the session (must be zero).
 Own skill. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new section/template · MAJOR: contract change). Regenerate `VERSIONS.md` with `python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.
 
 ## Changelog
+- **1.1.0** — **Proven patterns section** added, mined from the harness-efficiency build: (1) per-turn coalescing — move view/bookkeeping work off `PostToolUse: Edit|Write` (per-edit) onto a single `Stop` hook (per-turn, one coalesced commit), killing the `auto: Edit` storm; (2) marker-injection — a deciding hook prints a unique marker into context, a later `Stop` hook greps the transcript for it (the transcript is the cross-event channel); (3) proportional injection — tier a `UserPromptSubmit` hook's output by a stakes/size policy config, stakes-beats-size, unknown→heavy, env override + fail-to-heavy classifier. New section → MINOR.
 - **1.0.0** — Initial release. The Developer's craft for authoring Claude Code hooks: the five-event contract, stdin-JSON parsing, exit-code vs JSON-output decisions, matcher scoping, fail-open discipline, and the pipe-a-synthetic-event test loop — with a fail-open template and a two-branch test harness.
