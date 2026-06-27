@@ -1,21 +1,27 @@
 ---
 name: ultra-brainstorming
-description: "The Strategist's super-planning method — fuse the outputs of several members into one doer-ready plan by brainstorming them across several thinking models at once. Use when two or more members have produced inputs (analyses, sketches, proposals, risks) that must become a single coherent plan before any doer can start. Triggers: 'ultra-brainstorm this', 'super-plan this', 'synthesize the members' work', 'brainstorm this across models', 'merge these proposals into one plan', 'plan this deeply before we build', or any fan-in where several specialists feed one build. Distinct from storm-investigation (five persona minds on one topic) and members-formation (the Butler's routing): this is a MODEL ensemble — several thinking models, each a different mind — that converges many members' work into one ranked, peer-reviewed plan handed to the member doing the job."
+description: "An ASSIGNABLE multi-thinker method — any member who carries it fires ALL his available thinker models at once on the same material, then his prime (highest-priority) thinker reviews every output and synthesizes one opinion. Use to deepen one member's thinking across model diversity, or at a fan-in to fuse several members' inputs into one doer-ready plan. Triggers: 'ultra-brainstorm this', 'super-plan this', 'think this across all models', 'use all my thinkers', 'synthesize the members' work', 'merge these proposals into one plan', 'plan this deeply before we build'. Distinct from storm-investigation (five persona minds on one topic) and members-formation (the Butler's routing): this is a MODEL ensemble — several thinking models, each a different mind — converging into one ranked, peer-reviewed result. It is the thinker fan-out exception named in weapon-utility."
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 type: Skill
 
 ---
-# Ultra-Brainstorming — the Strategist's synthesis hub
+# Ultra-Brainstorming — the assignable multi-thinker skill
 
-This is where several members' outputs **converge**, get brainstormed across **several thinking
-models at once**, and leave as **one plan** for the doer. It is the Strategist's deep-planning
-craft, alongside campaign waves.
+This skill gives **any member who carries it** one extra power: instead of running a single
+prime thinker, the member fires **all of its available thinker weapons at once** on the same
+material, then its **prime (highest-priority) thinker reviews every output and synthesizes one
+opinion**. This is exactly the *thinker fan-out exception* named in [[weapon-utility]] — assign
+this skill to a member and that member gains it.
+
+It serves two shapes: **deepen one member's own thinking** across model diversity, or sit at a
+**fan-in** where several members' outputs **converge** and leave as **one plan** for the doer. The
+Strategist carries it for campaign planning, but it rides any member you add it to.
 
 Know what it is *not*:
 
 - Not **`members-formation`** (the Butler's routing — *who* works and in what arrangement). The
-  Butler routes the inputs *to* this synthesis node; here the Strategist fuses them.
+  Butler routes the inputs *to* this synthesis node; here the member holding this skill fuses them.
 - Not **`storm-investigation`** (five *persona* minds researching one topic). This is a **model
   ensemble** — five *thinking models*, each a genuinely different mind, brainstorming the same
   combined material. Personas vary the viewpoint; models vary the reasoning engine.
@@ -24,12 +30,17 @@ Know what it is *not*:
 
 ## When to run it
 
-When **two or more members** have produced inputs — an Architect's schema sketch, a Designer's UX
-notes, a Merchant's risk read, a Developer's feasibility call — and they must become **one coherent
-plan** before a doer can start. Run it at the **fan-in**: many specialists feed it, one plan leaves.
+Two situations call for it:
 
-If there's only one input, or the route is obvious, don't — that's the Butler's formation, not a
-synthesis. Ultra-brainstorming is for *fusion*, not lookup.
+1. **Within one member** — when a single hard problem deserves more than one reasoning engine, the
+   holding member runs its whole thinker panel at once and lets its prime thinker synthesize. This
+   is the everyday use, available to any member that carries the skill.
+2. **At a fan-in** — when **two or more members** have produced inputs (an Architect's schema sketch,
+   a Designer's UX notes, a Merchant's risk read) that must become **one coherent plan** before a
+   doer can start.
+
+If there's only one input *and* a single thinker clearly suffices, don't — that's the Butler's
+formation, not a synthesis. Ultra-brainstorming is for *fusion across minds*, not lookup.
 
 ## In / out
 
@@ -48,8 +59,9 @@ who the doer is. Normalize each input into a common shape — **claim · proposa
 question** — so the models brainstorm the same material, not different formats.
 
 ### Phase 2 — Divergent brainstorm (multi-model — the heart)
-Run **several thinking models** on the same combined inputs, each as an **independent mind**. The
-default panel is the Strategist's thinker weapons:
+Run **all of the holding member's available thinker weapons** on the same combined inputs, each as
+an **independent mind**. The panel is therefore the member's own arsenal — the example below is the
+Strategist's; another member runs its own thinkers:
 
 | Model | The mind it brings |
 |---|---|
@@ -98,8 +110,15 @@ its grade** — the grade is what makes it trustworthy. The plan goes to the **m
 
 The natural shape: **members brainstorm in parallel (fan-out) → Strategist ultra-brainstorm (fan-in
 / synthesis) → doer builds.** In a `members-formation`, this is one member step owned by
-`the-strategist` that *produces* a "synthesized plan." When that pattern recurs, the Butler hands
+the member holding the skill (e.g. `the-strategist`) that *produces* a "synthesized plan." When that pattern recurs, the Butler hands
 the formation to the Quartermaster to crystallize into a star-map workflow.
+
+## Assignment
+
+This skill is **assignable**. Add `ultra-brainstorming` to a member's `skills:` list and that
+member gains the all-thinkers-at-once power — its prime thinker then reviews and forms the final
+opinion. A member without it runs the default single prime thinker (see [[weapon-utility]]). Assign
+it where multi-model depth earns its cost; leave it off members who only ever need one mind.
 
 ## Versioning
 
@@ -108,6 +127,7 @@ member · MAJOR: method contract change). Regenerate `VERSIONS.md` with
 `python3 skillsmith/scripts/skill_registry.py write`, then `python3 build.py`.
 
 ## Changelog
+- **1.1.0** — **Generalized into an assignable multi-thinker skill.** Reframed from "the Strategist's" method to a power any member gains by carrying it: the holding member fires ALL its own available thinker weapons at once and its prime thinker synthesizes one opinion. Added the within-member use (not just cross-member fan-in), an Assignment section, and tied it explicitly to the thinker fan-out exception in [[weapon-utility]]. Panel is now the holding member's own arsenal rather than a fixed Strategist panel.
 - **1.0.0** — Initial release. Five-phase multi-model synthesis: gather & frame, divergent
   multi-model brainstorm (5-thinker panel), convergence map, one-plan synthesis, peer-review gate,
   doer handoff. Differentiated from storm-investigation (persona ensemble) and members-formation

@@ -1,2303 +1,2316 @@
 {
-  "version": 1,
-  "workflows": [
+ "version": 1,
+ "workflows": [
+  {
+   "id": "standard-mission",
+   "name": "Standard Mission",
+   "icon": "🛰️",
+   "accent": "cyan",
+   "category": "Build & Fix",
+   "class": "mutating",
+   "tagline": "The full guild pipeline for serious, multi-step missions.",
+   "when": "Use this when the work is large, multi-disciplinary, or needs several specialists coordinated in waves — the guild's conquering-campaign, planned and driven to completion.",
+   "steps": [
     {
-      "id": "standard-mission",
-      "name": "Standard Mission",
-      "icon": "🛰️",
-      "accent": "cyan",
-      "category": "Build & Fix",
-      "tagline": "The full guild pipeline for serious, multi-step missions.",
-      "when": "Use this when the work is large, multi-disciplinary, or needs several specialists coordinated in waves — the guild's conquering-campaign, planned and driven to completion.",
-      "steps": [
-        {
-          "kind": "member",
-          "actor": "you",
-          "title": "Place the Order",
-          "act": "You describe the mission in plain language so the guild knows what to build.",
-          "produces": "raw request"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Rewrite as Clear Brief",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "cleared brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "raw request"
-          ]
-        },
-        {
-          "kind": "gate",
-          "gate": "approval",
-          "label": "You review and approve the brief before the guild begins planning."
-        },
-        {
-          "kind": "member",
-          "actor": "the-strategist",
-          "title": "Form the Campaign Plan",
-          "act": "Runs `guild/plan.py` — the Strategist's planning step as a runnable primitive.",
-          "produces": "campaign plan",
-          "script": "guild/plan.py",
-          "args": {
-            "template": "campaign"
-          },
-          "inputs": [
-            "cleared brief"
-          ]
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Distribute the Assignments",
-          "act": "The Butler routes each slice of the plan to the right specialist with clear, scoped instructions.",
-          "produces": "routed assignments"
-        },
-        {
-          "kind": "member",
-          "actor": "the-designer",
-          "title": "Design the Interface",
-          "act": "The Designer shapes the visual design and UI for any user-facing part of the mission, so the build has a clear visual target to hit. The guild's only designer — no one else touches the look.",
-          "produces": "design spec"
-        },
-        {
-          "kind": "gate",
-          "gate": "certify",
-          "label": "The Quartermaster certifies the plan and design are buildable, complete, and safe to start construction."
-        },
-        {
-          "kind": "member",
-          "actor": "the-developer",
-          "title": "Implement the Plan",
-          "act": "The Developer writes the code, fixes any bugs, and self-tests everything before handing it back.",
-          "produces": "working implementation"
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Clean Up and Verify",
-          "act": "The Quartermaster runs final cleanup checks and confirms the whole mission works end to end.",
-          "produces": "verified build"
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Guild Conformance",
-          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
-          "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
-        },
-        {
-          "kind": "gate",
-          "gate": "report",
-          "label": "The Butler reports the finished mission — what was built and any follow-ups — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
-        }
-      ],
-      "trigger_phrases": [
-        "standard mission",
-        "full guild pipeline",
-        "conquering campaign",
-        "multi-disciplinary mission",
-        "big coordinated campaign",
-        "wave of specialists"
-      ]
+     "kind": "member",
+     "actor": "you",
+     "title": "Place the Order",
+     "act": "You describe the mission in plain language so the guild knows what to build.",
+     "produces": "raw request"
     },
     {
-      "id": "quick-fix",
-      "name": "Quick Fix",
-      "icon": "⚡",
-      "accent": "green",
-      "category": "Build & Fix",
-      "tagline": "A lean path for small, well-understood changes.",
-      "when": "Use this for small bugs, UI tweaks, or a pasted error to fix (and any of the same class) where planning would only slow things down.",
-      "steps": [
-        {
-          "kind": "member",
-          "actor": "you",
-          "title": "Report the Bug",
-          "act": "You flag a small, well-understood bug or change for the guild to fix.",
-          "produces": "small request"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Clarify the Ask",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "clarified ticket",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "clarify"
-          },
-          "inputs": [
-            "small request"
-          ]
-        },
-        {
-          "kind": "gate",
-          "gate": "approval",
-          "label": "You confirm the fix scope is correct before the Developer starts work."
-        },
-        {
-          "kind": "member",
-          "actor": "the-developer",
-          "title": "Make the Fix",
-          "act": "The Developer applies the smallest correct change and tests it locally before handing it off.",
-          "produces": "applied fix"
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Verify the Fix",
-          "act": "The Quartermaster double-checks the change and confirms nothing else broke in the process.",
-          "produces": "verified fix"
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Guild Conformance",
-          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
-          "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
-        },
-        {
-          "kind": "gate",
-          "gate": "report",
-          "label": "The Butler reports the fix and its verification — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
-        }
-      ],
-      "trigger_phrases": [
-        "quick fix",
-        "small bug",
-        "tiny ui tweak",
-        "pasted error to fix",
-        "minor change",
-        "fast small fix"
-      ]
+     "kind": "member",
+     "actor": "the-butler",
+     "title": "Rewrite as Clear Brief",
+     "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+     "produces": "cleared brief",
+     "script": "guild/frame_brief.py",
+     "args": {
+      "style": "shape"
+     },
+     "inputs": [
+      "raw request"
+     ],
+     "doers": [
+      "minimax-m3"
+     ]
     },
     {
-      "id": "design-sprint",
-      "name": "Design Sprint",
-      "icon": "🎨",
-      "accent": "rose",
-      "category": "Design",
-      "tagline": "From visual concept to shipped UI in one tight sprint.",
-      "when": "Use this when the work centers on UI, UX, brand, or visual quality — including admin/members panel layout redesigns and card/panel consolidation, the most frequent visual work on the app.",
-      "steps": [
-        {
-          "kind": "member",
-          "actor": "you",
-          "title": "Request the Sprint",
-          "act": "You describe the UI or UX problem you want the guild to design around.",
-          "produces": "design request"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Shape the Brief",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "design brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "design request"
-          ]
-        },
-        {
-          "kind": "gate",
-          "gate": "approval",
-          "label": "You approve the design brief before the sprint officially kicks off."
-        },
-        {
-          "kind": "member",
-          "actor": "the-strategist",
-          "title": "Plan the Sprint",
-          "act": "Runs `guild/plan.py` — the Strategist's planning step as a runnable primitive.",
-          "produces": "sprint plan",
-          "script": "guild/plan.py",
-          "args": {
-            "template": "sprint"
-          },
-          "inputs": [
-            "design brief"
-          ]
-        },
-        {
-          "kind": "member",
-          "actor": "the-designer",
-          "title": "Design the Visuals",
-          "act": "The Designer produces the UI/UX mockups, components, and brand treatments for the sprint.",
-          "produces": "design assets"
-        },
-        {
-          "kind": "member",
-          "actor": "the-developer",
-          "title": "Build the Design",
-          "act": "The Developer implements the design faithfully in code, respecting the visual spec.",
-          "produces": "implemented UI"
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Clean Up and Verify",
-          "act": "The Quartermaster polishes the build and verifies the design holds up in real interactions.",
-          "produces": "polished UI"
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Guild Conformance",
-          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
-          "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
-        },
-        {
-          "kind": "gate",
-          "gate": "report",
-          "label": "The Butler reports the design-sprint outcome, with screenshots and notes — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
-        }
-      ],
-      "trigger_phrases": [
-        "design sprint",
-        "ui redesign",
-        "panel layout redesign",
-        "card consolidation",
-        "ux polish",
-        "visual quality pass"
-      ]
+     "kind": "gate",
+     "gate": "approval",
+     "label": "You review and approve the brief before the guild begins planning."
     },
     {
-      "id": "architecture-build",
-      "name": "Architecture Build",
-      "icon": "🏛️",
-      "accent": "blue",
-      "category": "Build & Fix",
-      "tagline": "Schemas, systems, and structural change, done right.",
-      "when": "Use this when the work touches the database, system design, or core architecture — including performance tuning and finance-critical data migrations (plan, dry-run with BEGIN/ROLLBACK, reconcile).",
-      "steps": [
-        {
-          "kind": "member",
-          "actor": "you",
-          "title": "Request the Build",
-          "act": "You describe the system, schema, or architectural change you need the guild to make.",
-          "produces": "architecture request"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Clarify the Ask",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "architecture brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "clarify"
-          },
-          "inputs": [
-            "architecture request"
-          ]
-        },
-        {
-          "kind": "gate",
-          "gate": "approval",
-          "label": "You approve the architecture brief before scoping and structural work begin."
-        },
-        {
-          "kind": "member",
-          "actor": "the-strategist",
-          "title": "Scope the Work",
-          "act": "Runs `guild/plan.py` — the Strategist's planning step as a runnable primitive.",
-          "produces": "scope document",
-          "script": "guild/plan.py",
-          "args": {
-            "template": "scope"
-          },
-          "inputs": [
-            "architecture brief"
-          ]
-        },
-        {
-          "kind": "member",
-          "actor": "the-architect",
-          "title": "Architect the System",
-          "act": "The Architect drafts the system architecture and database schema to satisfy the scope.",
-          "produces": "system blueprint"
-        },
-        {
-          "kind": "gate",
-          "gate": "certify",
-          "label": "The Quartermaster certifies the architecture is sound, consistent, and safe to implement."
-        },
-        {
-          "kind": "member",
-          "actor": "the-developer",
-          "title": "Build Migrations and Code",
-          "act": "The Developer writes the schema migrations and implements the system against the certified design.",
-          "produces": "implemented system"
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Clean Up and Verify",
-          "act": "The Quartermaster runs final checks and confirms the architecture works as intended in production-like conditions.",
-          "produces": "verified system"
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Guild Conformance",
-          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
-          "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
-        },
-        {
-          "kind": "gate",
-          "gate": "report",
-          "label": "The Butler reports the architecture build, its verification, and any caveats — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
-        }
-      ],
-      "trigger_phrases": [
-        "schema design",
-        "database migration",
-        "core architecture",
-        "performance tuning",
-        "structural change",
-        "system design overhaul"
-      ]
+     "kind": "member",
+     "actor": "the-strategist",
+     "title": "Form the Campaign Plan",
+     "act": "Runs `guild/plan.py` — the Strategist's planning step as a runnable primitive.",
+     "produces": "campaign plan",
+     "script": "guild/plan.py",
+     "args": {
+      "template": "campaign"
+     },
+     "inputs": [
+      "cleared brief"
+     ],
+     "thinker": "opus",
+     "ultra": true
     },
     {
-      "id": "legal-codex",
-      "name": "Legal Codex",
-      "icon": "⚖️",
-      "accent": "gold",
-      "category": "Legal",
-      "tagline": "Turn real laws into a clean, multilingual codex.",
-      "when": "Use this to load real laws into the codex and translate them across locales — loop the source laws, load + translate each, and stop at the publish gate (you publish). Fed by Law Harvest — run that first to build the verified source-law library.",
-      "steps": [
-        {
-          "kind": "member",
-          "actor": "you",
-          "title": "Submit the Law",
-          "act": "You point the guild at the real-world law or regulation you need codified.",
-          "produces": "law reference"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Request",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "codex brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "law reference"
-          ]
-        },
-        {
-          "kind": "gate",
-          "gate": "approval",
-          "label": "You confirm the scope of the codex work and the target locales before translation begins."
-        },
-        {
-          "kind": "member",
-          "actor": "the-translator",
-          "title": "Load and Translate",
-          "act": "The Translator ingests the real law and translates it faithfully across each required locale.",
-          "produces": "translated codex"
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Run Publish Check",
-          "act": "The Quartermaster runs the pre-publish check on the codex and signs off on its readiness.",
-          "produces": "ready codex"
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Guild Conformance",
-          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
-          "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
-        },
-        {
-          "kind": "gate",
-          "gate": "report",
-          "label": "The Butler reports the codex summary — locales covered and publication status — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
-        }
-      ],
-      "trigger_phrases": [
-        "load the law",
-        "translate the law",
-        "multilingual legal codex",
-        "translate laws across locales",
-        "codex translation loop",
-        "real laws into the codex"
-      ]
+     "kind": "member",
+     "actor": "the-butler",
+     "title": "Distribute the Assignments",
+     "act": "The Butler routes each slice of the plan to the right specialist with clear, scoped instructions.",
+     "produces": "routed assignments",
+     "doers": [
+      "minimax-m3"
+     ]
     },
     {
-      "id": "market-recon",
-      "name": "Market Recon",
-      "icon": "📈",
-      "accent": "green",
-      "category": "Research & Intel",
-      "tagline": "Read-only trading, investment, and market intelligence.",
-      "when": "Use this for investment, trading, or market research where no code should be written. (For website/SEO/brand audits use Brand Audit.)",
-      "steps": [
-        {
-          "kind": "member",
-          "actor": "you",
-          "title": "Ask the Question",
-          "act": "You pose a research or investment question you want the guild to analyze.",
-          "produces": "research question"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Sharpen the Question",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "research brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "reframe"
-          },
-          "inputs": [
-            "research question"
-          ]
-        },
-        {
-          "kind": "gate",
-          "gate": "approval",
-          "label": "You approve the research brief and confirm the read-only boundary before analysis begins."
-        },
-        {
-          "kind": "member",
-          "actor": "the-merchant",
-          "title": "Analyze Market and Risk",
-          "act": "The Merchant investigates the market, prices, and risk in a read-only analysis pass and writes a report.",
-          "produces": "market report"
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Guild Conformance",
-          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
-          "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
-        },
-        {
-          "kind": "gate",
-          "gate": "report",
-          "label": "The Butler reports the Merchant's market and risk report, with caveats — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
-        }
-      ],
-      "trigger_phrases": [
-        "market recon",
-        "trading research",
-        "investment intel",
-        "market intelligence read-only",
-        "no code market research",
-        "stock and market analysis"
-      ]
+     "kind": "member",
+     "actor": "the-designer",
+     "title": "Design the Interface",
+     "act": "The Designer shapes the visual design and UI for any user-facing part of the mission, so the build has a clear visual target to hit. The guild's only designer — no one else touches the look.",
+     "produces": "design spec"
     },
     {
-      "id": "skill-forge",
-      "name": "Skill Forge",
-      "icon": "🛠️",
-      "accent": "violet",
-      "category": "Guild Self",
-      "tagline": "Keep the guild's skills sharp, synced, and current.",
-      "when": "Use this for guild self-maintenance — skill sync, upgrades, creating a new skill, or turning a one-off task into a reusable skill.",
-      "steps": [
-        {
-          "kind": "member",
-          "actor": "you",
-          "title": "Request Skill Maintenance",
-          "act": "You ask the guild to sync, upgrade, or create skills for the team.",
-          "produces": "maintenance request"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Route the Request",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "routed request",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "classify"
-          },
-          "inputs": [
-            "maintenance request"
-          ]
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Sync and Upgrade Skills",
-          "act": "The Quartermaster syncs, upgrades, or authors the logic and content of the skills that were requested.",
-          "produces": "updated skills"
-        },
-        {
-          "kind": "member",
-          "actor": "the-designer",
-          "title": "Forge the Sigil",
-          "act": "MANDATORY for every new skill: the Designer forges its Fallen Sword tile so it ships with real heraldry, never a bare emoji. Add the skill's prompt to gen-skill-art.cjs and run it (or guild/commission_art.py from a brief), then build.py so artPng flips true. Skill art is design — it runs through the Designer, no one else.",
-          "produces": "skill sigils",
-          "script": "guild/commission_art.py",
-          "args": {
-            "max-iter": 1
-          },
-          "inputs": [
-            "updated skills"
-          ]
-        },
-        {
-          "kind": "member",
-          "actor": "the-developer",
-          "title": "Provide Tooling Support",
-          "act": "The Developer provides any tooling, dev-environment, or knowledge-graph support the skill changes require.",
-          "produces": "ready tooling"
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Guild Conformance",
-          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
-          "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
-        },
-        {
-          "kind": "gate",
-          "gate": "report",
-          "label": "The Butler reports the skill-forge outcome — version changes and tooling status — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
-        }
-      ],
-      "trigger_phrases": [
-        "skill forge",
-        "skill sync",
-        "upgrade the skill",
-        "create a new skill",
-        "reusable skill",
-        "forge a new skill",
-        "teach the",
-        "new skill based on",
-        "create a skill",
-        "forge a skill"
-      ]
+     "kind": "gate",
+     "gate": "certify",
+     "label": "The Quartermaster certifies the plan and design are buildable, complete, and safe to start construction."
     },
     {
-      "id": "guild-log-sync",
-      "name": "Guild Log Sync",
-      "icon": "📜",
-      "accent": "gold",
-      "category": "Hygiene & Release",
-      "tagline": "Sweep recent sessions and backfill any missing guild-log entries.",
-      "when": "Use this to reconcile the guild log after a stretch of work — loop the recent sessions, find changes that never got recorded, and log them. First stage of the release-closeout chain: Guild Log Sync → Hygiene Rotation → Release Train.",
-      "steps": [
-        {
-          "kind": "member",
-          "actor": "you",
-          "title": "Call the Log Sweep",
-          "act": "You ask the guild to loop the recent sessions (today and yesterday) and check the guild log for any change that never got recorded.",
-          "produces": "sweep request"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Restate the Order",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "plain-English brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "restate"
-          },
-          "inputs": [
-            "sweep request"
-          ]
-        },
-        {
-          "kind": "gate",
-          "gate": "approval",
-          "label": "You confirm the Butler understood the order correctly before the sweep begins."
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Scout the Sessions",
-          "act": "The Butler, drawing Sonnet, loops every session from today and yesterday, reads the guild log, runs build_guild_log.py --dry-run to surface git-visible gaps, and inspects non-git artifact work (art PNGs, untracked tooling) to assemble a brief of what is missing.",
-          "produces": "gap brief",
-          "script": "guild/session_scout.py",
-          "args": {
-            "window": "today,yesterday"
-          }
-        },
-        {
-          "kind": "gate",
-          "gate": "certify",
-          "label": "The Quartermaster certifies each candidate entry is real, non-duplicate, and correctly typed before anything is written to the log."
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Log the Missing Entries",
-          "act": "The Quartermaster, drawing MiniMax M3, runs the two-tier pipeline — build_guild_log.py to backfill git-visible commits, log_event.py for the non-git events — then build.py to regenerate the dashboard data.",
-          "produces": "synced guild log"
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Guild Conformance",
-          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
-          "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
-        },
-        {
-          "kind": "gate",
-          "gate": "report",
-          "label": "The Butler reports what was logged — git-tier catch-up plus manual entries — and the new log total — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
-        }
-      ],
-      "trigger_phrases": [
-        "guild log sync",
-        "backfill the guild log",
-        "missing guild log entries",
-        "reconcile the guild log",
-        "sweep recent sessions for log",
-        "first stage closeout chain"
-      ]
+     "kind": "member",
+     "actor": "the-developer",
+     "title": "Implement the Plan",
+     "act": "The Developer writes the code, fixes any bugs, and self-tests everything before handing it back.",
+     "produces": "working implementation",
+     "thinker": "opus",
+     "doers": [
+      {
+       "model": "minimax-m3",
+       "count": 3
+      },
+      "haiku"
+     ]
     },
     {
-      "id": "conformity-sweep",
-      "name": "Conformity Sweep",
-      "icon": "⚖️",
-      "accent": "gold",
-      "category": "Hygiene & Release",
-      "tagline": "The Quartermaster audits the whole repo and proves it agrees with itself — and with every decision on record.",
-      "when": "Use after big changes, or any time you need proof the project is internally consistent and nothing contradicts a logged decision.",
-      "steps": [
-        {
-          "kind": "member",
-          "actor": "you",
-          "title": "Call the Conformity Sweep",
-          "act": "You ask the guild to audit the entire repo for internal conformity and conformity with every decision on record.",
-          "produces": "sweep request"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Restate the Order",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "plain-English brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "restate"
-          },
-          "inputs": [
-            "sweep request"
-          ]
-        },
-        {
-          "kind": "gate",
-          "gate": "approval",
-          "label": "You confirm the Butler understood the sweep correctly before it begins."
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Audit the Whole Repo",
-          "act": "The Quartermaster, drawing MiniMax M3, runs conformity_check.py — reading every source (members, skills, the arsenal, workflows, docs, the guild log) plus the generated guild data, cross-checking every reference and testing each against the logged decisions — to assemble a contradiction map.",
-          "produces": "contradiction map"
-        },
-        {
-          "kind": "gate",
-          "gate": "certify",
-          "label": "The Quartermaster certifies each flagged contradiction is real and not a false positive before any source is touched."
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Reconcile to Conformity",
-          "act": "The Quartermaster fixes each real contradiction at its source of truth, then runs build.py so the generated guild data matches the sources again — leaving the repo in full conformity with itself and with every decision, and re-runs conformity_check.py until it passes clean.",
-          "produces": "conformed repo"
-        },
-        {
-          "kind": "gate",
-          "gate": "report",
-          "label": "The Butler reports what was audited, what conformed, and what was reconciled — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
-        }
-      ],
-      "trigger_phrases": [
-        "conformity sweep",
-        "prove the repo agrees",
-        "internally consistent audit",
-        "quartermaster consistency check",
-        "no decision contradicts",
-        "audit the whole repo"
-      ]
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Clean Up and Verify",
+     "act": "The Quartermaster runs final cleanup checks and confirms the whole mission works end to end.",
+     "produces": "verified build",
+     "doers": [
+      "minimax-m3"
+     ]
     },
     {
-      "id": "okf-tidy",
-      "name": "OKF Tidy",
-      "icon": "🧹",
-      "accent": "gold",
-      "category": "Hygiene & Release",
-      "tagline": "The Quartermaster keeps the whole repo tidy & conformant to the Open Knowledge Format, so every member can read it fast on future runs.",
-      "when": "Use to bring the repo to (or back to) OKF conformance — after a campaign leaves files behind, when frontmatter drifts, or to migrate-first before arming the okf-gate. The producer pass; star-alliance-language is how members then read the result.",
-      "steps": [
-        {
-          "kind": "member",
-          "actor": "you",
-          "title": "Call the Tidy",
-          "act": "You ask the guild to tidy the repo to the Open Knowledge Format standard.",
-          "produces": "tidy request"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Restate the Order",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "plain-English brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "restate"
-          },
-          "inputs": [
-            "tidy request"
-          ]
-        },
-        {
-          "kind": "gate",
-          "gate": "approval",
-          "label": "You confirm the tidy scope before any file is rewritten — a whole-repo frontmatter migration is hard to eyeball after the fact."
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Audit Conformance",
-          "act": "The Quartermaster runs `okf_audit.py` (the okf skill) to report every governed .md lacking YAML frontmatter or a `type:` field, and surveys non-markdown files for orphans and misplacement.",
-          "produces": "non-conformance report"
-        },
-        {
-          "kind": "gate",
-          "gate": "certify",
-          "label": "The Quartermaster certifies the migration is safe — exclusions cover vendored/generated trees and build.py still parses members & skills after frontmatter is injected."
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Migrate, Enrich & Sweep",
-          "act": "The Quartermaster runs `okf_audit.py --fix` (migrate-first baseline), enriches concepts with title/description/tags and cross-links (handing bulk drafting to a doer weapon), places non-md files by concept-path, prunes confirmed dead files, then runs build.py so the dashboard reflects the tidy.",
-          "produces": "OKF-conformant repo"
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Conformance & Gate",
-          "act": "Re-runs `okf_audit.py` until it passes clean, confirms the okf-gate hook is registered in .claude/settings.json, then runs guild-log + guild-conformity so the run leaves the repo agreeing with itself.",
-          "produces": "verified tidy"
-        },
-        {
-          "kind": "gate",
-          "gate": "report",
-          "label": "The Butler reports what was migrated, enriched, swept, and gated — and flags whether the okf-gate is now armed."
-        }
-      ],
-      "trigger_phrases": [
-        "okf",
-        "okf tidy",
-        "tidy the repo",
-        "make it okf-conformant",
-        "run the okf audit",
-        "keep the repo clean",
-        "fix the frontmatter"
-      ]
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Confirm Guild Conformance",
+     "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+     "script": "guild/conformance.py",
+     "produces": "conformance sign-off"
     },
     {
-      "id": "bug-cycle",
-      "name": "Bug Cycle",
-      "icon": "🪲",
-      "accent": "green",
-      "category": "Build & Fix",
-      "tagline": "Pull a reported bug, hunt the real root cause, fix it, and close the loop.",
-      "when": "Use this for bugs filed in the bug_reports table — the daily triage-and-fix loop. The recurring Lex signatures that belong here: a missing i18n message key rendering raw in the UI, a missing DB column, or an RLS / permission-denied error on a view or RPC.",
-      "steps": [
-        {
-          "kind": "member",
-          "actor": "you",
-          "title": "Report or Pull the Bug",
-          "act": "You file a bug, or ask the guild to pull the open rows from the bug_reports table.",
-          "produces": "bug request"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Bug",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "framed bug",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "bug request"
-          ]
-        },
-        {
-          "kind": "gate",
-          "gate": "approval",
-          "label": "You confirm the bug and its scope before the hunt begins."
-        },
-        {
-          "kind": "member",
-          "actor": "the-strategist",
-          "title": "Triage & Reproduce",
-          "act": "The Strategist pulls the row, reads primary_instructions, and reproduces the report to find the true root cause — not just the symptom.",
-          "produces": "triaged root cause"
-        },
-        {
-          "kind": "member",
-          "actor": "the-developer",
-          "title": "Fix at the Root",
-          "act": "The Developer applies the smallest correct fix following project conventions, and self-tests it locally.",
-          "produces": "applied fix"
-        },
-        {
-          "kind": "gate",
-          "gate": "certify",
-          "label": "The Quartermaster certifies the fix genuinely resolves the bug — DB fixes count now; frontend fixes only after deploy — before the status is flipped."
-        },
-        {
-          "kind": "member",
-          "actor": "the-developer",
-          "title": "Close & File Spawn",
-          "act": "The Developer flips the bug_reports row to Fixed and files any new bugs surfaced during the hunt back into the table.",
-          "produces": "closed bug + new tickets"
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Guild Conformance",
-          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
-          "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
-        },
-        {
-          "kind": "gate",
-          "gate": "report",
-          "label": "The Butler reports the bug, its root cause, the fix, and any new bugs filed — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
-        }
-      ],
-      "trigger_phrases": [
-        "bug cycle",
-        "fix the bug report",
-        "triage the bug_reports",
-        "missing i18n key rendering",
-        "rls permission denied on view",
-        "missing db column bug"
-      ]
-    },
-    {
-      "id": "security-sweep",
-      "name": "Security Sweep",
-      "icon": "🛡️",
-      "accent": "blue",
-      "category": "Build & Fix",
-      "tagline": "Audit the database security surface and seal every leak — propose first, apply on sign-off.",
-      "when": "Use this for RLS policies, SECURITY DEFINER RPCs, anon/authenticated grants, and advisor-driven security audits.",
-      "steps": [
-        {
-          "kind": "member",
-          "actor": "you",
-          "title": "Call the Sweep",
-          "act": "You ask the guild to audit the app's security surface for leaks and over-broad access.",
-          "produces": "security request"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Sweep",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "security brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "security request"
-          ]
-        },
-        {
-          "kind": "gate",
-          "gate": "approval",
-          "label": "You confirm the read-only boundary before the audit begins."
-        },
-        {
-          "kind": "member",
-          "actor": "the-strategist",
-          "title": "Scope the Surface",
-          "act": "Runs `guild/plan.py` — the Strategist's planning step as a runnable primitive.",
-          "produces": "audit scope",
-          "script": "guild/plan.py",
-          "args": {
-            "template": "scope"
-          },
-          "inputs": [
-            "security brief"
-          ]
-        },
-        {
-          "kind": "member",
-          "actor": "the-architect",
-          "title": "Hunt the Holes",
-          "act": "The Architect audits the security surface, pulls Supabase advisors, and maps every leak, missing policy, and over-broad grant.",
-          "produces": "vulnerability map"
-        },
-        {
-          "kind": "gate",
-          "gate": "certify",
-          "label": "You sign off on each proposed change before any security fix is applied — nothing is written without explicit approval."
-        },
-        {
-          "kind": "member",
-          "actor": "the-developer",
-          "title": "Seal the Breaches",
-          "act": "The Developer applies the approved RLS/policy/grant fixes and re-proves each gate holds.",
-          "produces": "hardened surface"
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Guild Conformance",
-          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
-          "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
-        },
-        {
-          "kind": "gate",
-          "gate": "report",
-          "label": "The Butler reports what was audited, what was sealed, and any risks deferred — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
-        }
-      ],
-      "trigger_phrases": [
-        "security sweep",
-        "rls policies audit",
-        "security definer rpc",
-        "anon grants audit",
-        "seal the security leak",
-        "supabase security audit"
-      ]
-    },
-    {
-      "id": "cleanup-rotation",
-      "name": "Hygiene Rotation",
-      "icon": "🧹",
-      "accent": "violet",
-      "category": "Hygiene & Release",
-      "tagline": "The Quartermaster runs the full hygiene sweep across every mode.",
-      "when": "Use this for routine hygiene or post-campaign cleanup — i18n, lint, dev-errors, postgres, docs, follow-ups, and consolidating duplicated search/filter/action UI across pages and panels. Middle stage of the release-closeout chain: Guild Log Sync → Hygiene Rotation → Release Train.",
-      "steps": [
-        {
-          "kind": "member",
-          "actor": "you",
-          "title": "Call the Rotation",
-          "act": "You ask the guild to run a hygiene pass — or the post-campaign cleanup for a just-shipped build.",
-          "produces": "cleanup request"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Rotation",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "cleanup brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "cleanup request"
-          ]
-        },
-        {
-          "kind": "gate",
-          "gate": "approval",
-          "label": "You confirm the scope of the sweep before it runs."
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Run the Sweep",
-          "act": "The Quartermaster runs the cleanup skill across every mode — i18n language/hardcoded/leaks, dev-error sweep, lint, postgres advisors, docs, and campaign follow-ups — fixing what's safe and listing the rest.",
-          "produces": "hygiene report",
-          "script": "guild/hygiene_run.py",
-          "args": {
-            "dry-run": true
-          }
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Guild Conformance",
-          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
-          "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
-        },
-        {
-          "kind": "gate",
-          "gate": "report",
-          "label": "The Butler reports what was swept, what was fixed, and what remains as follow-ups — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
-        }
-      ],
-      "trigger_phrases": [
-        "hygiene rotation",
-        "post-campaign cleanup",
-        "consolidate duplicated search filter",
-        "lint and i18n sweep",
-        "quartermaster hygiene pass",
-        "middle stage closeout chain"
-      ]
-    },
-    {
-      "id": "release-train",
-      "name": "Release Train",
-      "icon": "🚂",
-      "accent": "cyan",
-      "category": "Hygiene & Release",
-      "tagline": "Merge every branch and PR, bump the version, and push the release.",
-      "when": "Use this to close out work — merge all branches/PRs into main, bump the version, and push. Final stage of the release-closeout chain: Guild Log Sync → Hygiene Rotation → Release Train.",
-      "steps": [
-        {
-          "kind": "member",
-          "actor": "you",
-          "title": "Call the Release",
-          "act": "You ask the guild to clean up, merge everything outstanding, bump the version, and push.",
-          "produces": "release request"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Release",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "release brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "release request"
-          ]
-        },
-        {
-          "kind": "gate",
-          "gate": "approval",
-          "label": "You confirm the version step and that all branches are safe to merge before the train leaves."
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Gather the Branches",
-          "act": "The Quartermaster merges every outstanding branch and PR into main, resolving conflicts.",
-          "produces": "unified main"
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Bump & Stamp",
-          "act": "The Quartermaster bumps the version, writes the changelog, and syncs every version stamp across the docs.",
-          "produces": "stamped release",
-          "script": "guild/version_bump.py",
-          "args": {
-            "step": "patch"
-          }
-        },
-        {
-          "kind": "gate",
-          "gate": "certify",
-          "label": "The Quartermaster certifies the build is clean and every version stamp is consistent before the push."
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Push the Release",
-          "act": "The Quartermaster commits and pushes the release to the remote.",
-          "produces": "pushed release"
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Guild Conformance",
-          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
-          "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
-        },
-        {
-          "kind": "gate",
-          "gate": "report",
-          "label": "The Butler reports the version shipped, what merged, and the push result — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
-        }
-      ],
-      "trigger_phrases": [
-        "release train",
-        "merge all branches and prs",
-        "bump the version and push",
-        "close out the release",
-        "final stage closeout chain",
-        "ship the release"
-      ]
-    },
-    {
-      "id": "tool-forge",
-      "name": "Tool Forge",
-      "icon": "🧮",
-      "accent": "gold",
-      "category": "Legal",
-      "tagline": "Build a public legal calculator or corporate tool from the governing law.",
-      "when": "Use this to build a public-panel calculator or legal tool (wages, social-insurance, severance, inheritance, customs, land).",
-      "steps": [
-        {
-          "kind": "member",
-          "actor": "you",
-          "title": "Request the Tool",
-          "act": "You describe the legal calculator or tool you want to offer on the public panel.",
-          "produces": "tool request"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Tool",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "tool brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "tool request"
-          ]
-        },
-        {
-          "kind": "gate",
-          "gate": "approval",
-          "label": "You approve the tool concept and its governing law before the build begins."
-        },
-        {
-          "kind": "member",
-          "actor": "the-architect",
-          "title": "Model the Law",
-          "act": "The Architect studies the governing law and models the calculation rules and inputs the tool must honour.",
-          "produces": "rule model"
-        },
-        {
-          "kind": "member",
-          "actor": "the-designer",
-          "title": "Design the Tool",
-          "act": "The Designer shapes the calculator's UI with an inviting, trustworthy layout.",
-          "produces": "tool design"
-        },
-        {
-          "kind": "member",
-          "actor": "the-developer",
-          "title": "Build the Calculator",
-          "act": "The Developer implements the tool, wires the rules, and adds the team-review disclaimer.",
-          "produces": "working tool"
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Guild Conformance",
-          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
-          "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
-        },
-        {
-          "kind": "gate",
-          "gate": "report",
-          "label": "The Butler reports the tool built, the law it honours, and where it lives — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
-        }
-      ],
-      "trigger_phrases": [
-        "tool forge",
-        "build a public calculator",
-        "wage calculator tool",
-        "severance calculator",
-        "corporate legal tool",
-        "public legal calculator"
-      ]
-    },
-    {
-      "id": "legal-draft",
-      "name": "Legal Drafting",
-      "icon": "✒️",
-      "accent": "gold",
-      "category": "Legal",
-      "tagline": "Draft client correspondence and bilingual legal documents in the firm's register.",
-      "when": "Use this to draft client emails, contracts, declarations, or memos — bilingual (AR/FR/EN) where needed.",
-      "steps": [
-        {
-          "kind": "member",
-          "actor": "you",
-          "title": "Submit the Matter",
-          "act": "You describe the correspondence or legal instrument you need drafted.",
-          "produces": "drafting request"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Matter",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "drafting brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "drafting request"
-          ]
-        },
-        {
-          "kind": "gate",
-          "gate": "approval",
-          "label": "You confirm the matter and the target language(s) before drafting begins."
-        },
-        {
-          "kind": "member",
-          "actor": "the-translator",
-          "title": "Draft the Document",
-          "act": "The Translator drafts the correspondence or legal instrument — bilingual where needed — in the firm's register.",
-          "produces": "draft document"
-        },
-        {
-          "kind": "gate",
-          "gate": "certify",
-          "label": "You review the draft for accuracy and tone before it goes out — nothing client-facing is sent without your sign-off."
-        },
-        {
-          "kind": "member",
-          "actor": "the-translator",
-          "title": "Finalize & Format",
-          "act": "The Translator finalizes the document and formats it client-facing, with the bilingual layout in place.",
-          "produces": "final document"
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Guild Conformance",
-          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
-          "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
-        },
-        {
-          "kind": "gate",
-          "gate": "report",
-          "label": "The Butler reports the document drafted, its languages, and what's ready to send — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
-        }
-      ],
-      "trigger_phrases": [
-        "legal drafting",
-        "draft a client email",
-        "bilingual contract draft",
-        "draft a legal memo",
-        "bilingual ar fr en",
-        "draft client correspondence"
-      ]
-    },
-    {
-      "id": "comms-triage",
-      "name": "Comms Triage",
-      "icon": "📨",
-      "accent": "cyan",
-      "category": "Comms & Automation",
-      "tagline": "Sweep email, calendar, and WhatsApp into tasks, events, and replies.",
-      "when": "Use this to triage your inbox and messages — turn what matters into tasks and calendar entries, and prep for meetings.",
-      "steps": [
-        {
-          "kind": "member",
-          "actor": "you",
-          "title": "Call the Triage",
-          "act": "You ask the guild to go through your email, calendar, and WhatsApp and surface what needs you.",
-          "produces": "triage request"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Triage",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "triage brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "triage request"
-          ]
-        },
-        {
-          "kind": "gate",
-          "gate": "approval",
-          "label": "You confirm the scope before the Butler drafts anything or creates events."
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Sweep the Inboxes",
-          "act": "The Butler sweeps email, calendar, and WhatsApp, surfacing what needs a response, a task, or a calendar entry.",
-          "produces": "triage list"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Sort to Tasks & Calendar",
-          "act": "The Butler turns each item into a task or calendar event with a deadline, and drafts replies where useful.",
-          "produces": "tasks + events + drafts"
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Guild Conformance",
-          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
-          "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
-        },
-        {
-          "kind": "gate",
-          "gate": "report",
-          "label": "The Butler reports what needs you, what was scheduled, and the drafts awaiting your send — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
-        }
-      ],
-      "trigger_phrases": [
-        "comms triage",
-        "triage my inbox",
-        "process whatsapp messages",
-        "calendar entries from email",
-        "inbox sweep",
-        "prep for meetings"
-      ]
-    },
-    {
-      "id": "scheduled-routine",
-      "name": "Standing Watch",
-      "icon": "⏱️",
-      "accent": "violet",
-      "category": "Comms & Automation",
-      "tagline": "Define and run an unattended scheduled task on a cron cadence.",
-      "when": "Use this for recurring automations that run unattended on a cron — housekeeping (daily/hourly/weekly), the daily Gmail/WhatsApp reports and reply-drafts, per-matter deadline reminders, colleague-progress nudges, the Supabase advisor, auto-improvement/auto-strategizing, and the law scanners. ~23 such tasks live under ~/Documents/Claude/Scheduled/; this is their shape.",
-      "steps": [
-        {
-          "kind": "member",
-          "actor": "you",
-          "title": "Define the Routine",
-          "act": "You describe the recurring job you want to run on a schedule, unattended.",
-          "produces": "routine request"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Routine",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "routine brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "routine request"
-          ]
-        },
-        {
-          "kind": "gate",
-          "gate": "approval",
-          "label": "You approve the cadence and the unattended scope before the watch is set."
-        },
-        {
-          "kind": "member",
-          "actor": "the-strategist",
-          "title": "Define the Watch",
-          "act": "Runs `guild/plan.py` — the Strategist's planning step as a runnable primitive.",
-          "produces": "routine spec",
-          "script": "guild/plan.py",
-          "args": {
-            "template": "spec"
-          },
-          "inputs": [
-            "routine brief"
-          ]
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Stand the Watch",
-          "act": "On each tick the routine runs unattended via its assigned weapons, does the work, and ends with a plain-English summary.",
-          "produces": "routine run"
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Guild Conformance",
-          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
-          "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
-        },
-        {
-          "kind": "gate",
-          "gate": "report",
-          "label": "The Butler reports what the routine does, its cadence, and the last run's summary — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
-        }
-      ],
-      "trigger_phrases": [
-        "standing watch",
-        "set up a cron",
-        "recurring scheduled task",
-        "housekeeping cron job",
-        "unattended cron automation",
-        "daily scheduled report"
-      ]
-    },
-    {
-      "id": "marketing-audit",
-      "name": "Brand Audit",
-      "icon": "📣",
-      "accent": "rose",
-      "category": "Research & Intel",
-      "tagline": "Audit the public site and brand from a marketing-firm perspective.",
-      "when": "Use this for website/SEO/brand audits and campaign-readiness — the public panel, messaging, reach, and conversion. Led by the Herald, the guild's marketing member.",
-      "steps": [
-        {
-          "kind": "member",
-          "actor": "you",
-          "title": "Call the Recon",
-          "act": "You ask the guild to audit the public panel and brand as a marketing firm would.",
-          "produces": "marketing request"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Recon",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "marketing brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "marketing request"
-          ]
-        },
-        {
-          "kind": "gate",
-          "gate": "approval",
-          "label": "You confirm the audit lens before the recon begins."
-        },
-        {
-          "kind": "member",
-          "actor": "the-herald",
-          "title": "Frame the Lens",
-          "act": "The Herald frames the audit from a marketing-firm perspective — SEO, search-catchability, messaging truth, reach, and the conversion path.",
-          "produces": "audit lens"
-        },
-        {
-          "kind": "member",
-          "actor": "the-herald",
-          "title": "Audit Reach & Message",
-          "act": "The Herald audits the public site's reach, messaging, and conversion, flagging anything off-brand, untrue, or that weakens demand.",
-          "produces": "marketing findings"
-        },
-        {
-          "kind": "member",
-          "actor": "the-designer",
-          "title": "Polish the Public Panel",
-          "act": "The Designer reviews the public site's visual polish and on-brand look — footer, hero, team, pricing — and fixes what's off.",
-          "produces": "visual findings"
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Guild Conformance",
-          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
-          "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
-        },
-        {
-          "kind": "gate",
-          "gate": "report",
-          "label": "The Butler reports the findings, the off-brand/untrue flags, and the campaign-readiness call — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
-        }
-      ],
-      "trigger_phrases": [
-        "brand audit",
-        "seo audit",
-        "website audit",
-        "campaign-readiness check",
-        "public site and brand",
-        "marketing-firm audit"
-      ]
-    },
-    {
-      "id": "art-forge",
-      "name": "Art Forge",
-      "icon": "🖼️",
-      "accent": "rose",
-      "category": "Design",
-      "tagline": "Forge Fallen Sword art — sigils, portraits, weapon and workflow tiles — via MiniMax, gated by the Designer.",
-      "when": "Use this whenever a new visual asset is needed — a member portrait, skill sigil, weapon tile, or workflow sigil.",
-      "steps": [
-        {
-          "kind": "member",
-          "actor": "you",
-          "title": "Request the Art",
-          "act": "You describe the art you need — what it's for, the subject, and any constraints.",
-          "produces": "art request"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Art",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "art brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "art request"
-          ]
-        },
-        {
-          "kind": "gate",
-          "gate": "approval",
-          "label": "You approve the art brief before the forge is lit."
-        },
-        {
-          "kind": "member",
-          "actor": "the-designer",
-          "title": "Draft the Brief",
-          "act": "The Designer sets the art brief — subject, size, theme, palette, and what to avoid — in the Fallen Sword style.",
-          "produces": "art brief"
-        },
-        {
-          "kind": "member",
-          "actor": "the-designer",
-          "title": "Forge via MiniMax",
-          "act": "The Designer commissions the image from the MiniMax doer-weapon, reviews each result, and sends rejects back with deltas until they land.",
-          "produces": "forged art",
-          "script": "guild/commission_art.py",
-          "args": {
-            "max-iter": 1
-          },
-          "inputs": [
-            "art brief"
-          ]
-        },
-        {
-          "kind": "member",
-          "actor": "the-developer",
-          "title": "Wire the Art",
-          "act": "The Developer drops the finals into the right path and rebuilds the dashboard so the art renders.",
-          "produces": "wired art",
-          "script": "build.py"
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Guild Conformance",
-          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
-          "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
-        },
-        {
-          "kind": "gate",
-          "gate": "report",
-          "label": "The Butler reports the art forged, where it lives, and how it renders — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
-        }
-      ],
-      "trigger_phrases": [
-        "art forge",
-        "new member portrait",
-        "weapon tile art",
-        "workflow sigil art",
-        "forge a new sigil",
-        "fallensword art asset"
-      ]
-    },
-    {
-      "id": "arsenal-forge",
-      "name": "Arsenal Forge",
-      "icon": "⚔️",
-      "accent": "blue",
-      "category": "Guild Self",
-      "tagline": "Recruit or re-skin a weapon — art, thinker/doer role, and wiring into every loadout.",
-      "when": "Use this when a new AI model joins the arsenal, or an existing weapon needs re-skinning or re-roleing.",
-      "steps": [
-        {
-          "kind": "member",
-          "actor": "you",
-          "title": "Recruit the Weapon",
-          "act": "You name the model to add or change, and how it should look or behave.",
-          "produces": "weapon request"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Weapon",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "weapon brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "weapon request"
-          ]
-        },
-        {
-          "kind": "gate",
-          "gate": "approval",
-          "label": "You approve the weapon's identity and role before it's forged and wired."
-        },
-        {
-          "kind": "member",
-          "actor": "the-strategist",
-          "title": "Name the Weapon",
-          "act": "The Strategist sets the weapon's identity — model, element, colour, visual metaphor — and its role: thinker, doer, or both.",
-          "produces": "weapon identity"
-        },
-        {
-          "kind": "member",
-          "actor": "the-designer",
-          "title": "Forge the Weapon Art",
-          "act": "The Designer commissions the weapon art via MiniMax and reviews it (runs Art Forge).",
-          "produces": "weapon art",
-          "script": "guild/commission_art.py",
-          "args": {
-            "max-iter": 1
-          },
-          "inputs": [
-            "weapon identity"
-          ]
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Wire to the Arsenal",
-          "act": "The Quartermaster wires the weapon and its role-icon into the arsenal and every member's loadout, in priority order.",
-          "produces": "wired arsenal",
-          "script": "guild/wire.py",
-          "args": {
-            "kind": "weapon"
-          },
-          "inputs": [
-            "weapon identity"
-          ]
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Guild Conformance",
-          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
-          "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
-        },
-        {
-          "kind": "gate",
-          "gate": "report",
-          "label": "The Butler reports the weapon added, its role, and the loadouts updated — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
-        }
-      ],
-      "trigger_phrases": [
-        "arsenal forge",
-        "recruit a new ai model",
-        "wire the model into loadouts",
-        "re-skin a weapon",
-        "add to the arsenal",
-        "re-role the weapon"
-      ]
-    },
-    {
-      "id": "strategic-audit",
-      "name": "Strategic Audit",
-      "icon": "🔮",
-      "accent": "violet",
-      "category": "Guild Self",
-      "tagline": "Convene the multi-model panel, converge the takes, and ship a graded MD audit.",
-      "when": "Use this when you want a deep judgement that ships a document, not code — repo audits, skill-merge analysis, 'does this achieve its goal'.",
-      "steps": [
-        {
-          "kind": "member",
-          "actor": "you",
-          "title": "Pose the Question",
-          "act": "You pose the question to audit — the repo, the roster, a decision, or a body of work.",
-          "produces": "audit question"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Audit",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "audit brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "audit question"
-          ]
-        },
-        {
-          "kind": "gate",
-          "gate": "approval",
-          "label": "You confirm the angles to audit before the panel convenes."
-        },
-        {
-          "kind": "member",
-          "actor": "the-strategist",
-          "title": "Convene the Panel",
-          "act": "Runs `guild/plan.py` — the Strategist's planning step as a runnable primitive.",
-          "produces": "panel",
-          "script": "guild/plan.py",
-          "args": {
-            "template": "panel"
-          },
-          "inputs": [
-            "audit brief"
-          ]
-        },
-        {
-          "kind": "member",
-          "actor": "the-strategist",
-          "title": "Converge & Grade",
-          "act": "The Strategist fires the panel, converges the takes, resolves contradictions, grades the result, and writes the ranked MD audit.",
-          "produces": "graded audit"
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Guild Conformance",
-          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
-          "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
-        },
-        {
-          "kind": "gate",
-          "gate": "report",
-          "label": "The Butler reports the verdict, the ranked findings, and the MD audit written — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
-        }
-      ],
-      "trigger_phrases": [
-        "strategic audit",
-        "multi-model panel audit",
-        "ship a graded audit doc",
-        "converge the multi-model takes",
-        "deep judgement document",
-        "does this achieve its goal",
-        "review the sessions",
-        "review recent sessions",
-        "review the last",
-        "lessons learned",
-        "note lessons",
-        "note down lessons",
-        "audit the repo",
-        "audit the roster",
-        "upgrade skills workflows members"
-      ]
-    },
-    {
-      "id": "workflow-forge",
-      "name": "Workflow Forge",
-      "icon": "🗺️",
-      "accent": "cyan",
-      "category": "Guild Self",
-      "tagline": "Capture a finished run as a reusable star-map workflow.",
-      "when": "Use this when a run is worth repeating — distil it into a named workflow, give it a sigil, and register it.",
-      "steps": [
-        {
-          "kind": "member",
-          "actor": "you",
-          "title": "Flag the Pattern",
-          "act": "You (or the Butler) flag that the just-finished run is worth saving as a star-map workflow.",
-          "produces": "capture request"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Capture",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "capture brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "capture request"
-          ]
-        },
-        {
-          "kind": "gate",
-          "gate": "approval",
-          "label": "You approve capturing this run as a reusable workflow before it's drafted."
-        },
-        {
-          "kind": "member",
-          "actor": "the-strategist",
-          "title": "Draft the Workflow",
-          "act": "The Strategist distils the run into a reusable workflow — name, trigger, members, weapons, and steps.",
-          "produces": "workflow draft"
-        },
-        {
-          "kind": "member",
-          "actor": "the-designer",
-          "title": "Forge the Sigil",
-          "act": "The Designer forges the workflow's Fallen Sword sigil (runs Art Forge).",
-          "produces": "workflow sigil",
-          "script": "guild/commission_art.py",
-          "args": {
-            "max-iter": 1
-          },
-          "inputs": [
-            "workflow draft"
-          ]
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Write to the Star Map",
-          "act": "The Quartermaster writes the new workflow into workflows.json, adds its art prompt, and rebuilds the dashboard.",
-          "produces": "registered workflow",
-          "script": "guild/wire.py",
-          "args": {
-            "kind": "workflow"
-          },
-          "inputs": [
-            "workflow draft"
-          ]
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Guild Conformance",
-          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
-          "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
-        },
-        {
-          "kind": "gate",
-          "gate": "report",
-          "label": "The Butler reports the workflow registered, its sigil, and where it sits on the star map — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
-        }
-      ],
-      "trigger_phrases": [
-        "workflow forge",
-        "save this run as a workflow",
-        "reusable star-map workflow",
-        "distil into a named workflow",
-        "capture the run",
-        "register a new workflow",
-        "create a workflow",
-        "new workflow",
-        "forge a workflow",
-        "capture this as a workflow",
-        "make a starmap workflow",
-        "no workflow fits"
-      ]
-    },
-    {
-      "id": "relationship-intel",
-      "name": "Relationship Intel",
-      "icon": "🤝",
-      "accent": "gold",
-      "category": "Research & Intel",
-      "tagline": "Turn email traffic into living relationship intelligence — win and keep clients.",
-      "when": "Use this to profile contacts from Gmail, log mistakes to avoid, and recommend retention tasks. Resumable and checkpoint-driven; runs as a multi-agent harvest→profile→strategise pipeline.",
-      "steps": [
-        {
-          "kind": "member",
-          "actor": "you",
-          "title": "Call the Sweep",
-          "act": "You ask the guild to sweep your email and update the relationship intelligence.",
-          "produces": "intel request"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Sweep",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "intel brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "intel request"
-          ]
-        },
-        {
-          "kind": "gate",
-          "gate": "approval",
-          "label": "You confirm the window and the commercial scope before the sweep begins."
-        },
-        {
-          "kind": "member",
-          "actor": "the-herald",
-          "title": "Harvest the Threads",
-          "act": "The Herald sweeps Gmail (received and sent) for the window, returning a structured digest per contact — threads, response latency, tone, and commercial signals — saved as a dated harvest digest.",
-          "produces": "relationship digest"
-        },
-        {
-          "kind": "member",
-          "actor": "the-herald",
-          "title": "Profile the Contacts",
-          "act": "The Herald enriches each contact profile — character, how to deal with them from the firm's angle, and mistakes to avoid — without overwriting their live items.",
-          "produces": "contact profiles"
-        },
-        {
-          "kind": "member",
-          "actor": "the-strategist",
-          "title": "Flag Risk & Opportunity",
-          "act": "The Strategist logs the mistakes to avoid, updates the recommended-tasks list, and flags at-risk relationships and opportunities to protect the firm's commercial interest.",
-          "produces": "risk/opportunity flags"
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Guild Conformance",
-          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
-          "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
-        },
-        {
-          "kind": "gate",
-          "gate": "report",
-          "label": "The Butler reports the contacts profiled, the mistakes logged, and the prioritised retention tasks — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
-        }
-      ],
-      "trigger_phrases": [
-        "relationship intel",
-        "profile my contacts from gmail",
-        "client retention tasks",
-        "log mistakes to avoid",
-        "living contact profile",
-        "harvest profile strategise"
-      ]
-    },
-    {
-      "id": "law-harvest",
-      "name": "Law Harvest",
-      "icon": "📚",
-      "accent": "gold",
-      "category": "Legal",
-      "tagline": "Ingest law PDFs into a clean, verified source-law library — the feed for the codex.",
-      "when": "Use this to bring real law PDFs into the library — identify, rename, extract verbatim, verify, and index. Feeds Legal Codex (which then translates and publishes).",
-      "steps": [
-        {
-          "kind": "member",
-          "actor": "you",
-          "title": "Drop the Laws",
-          "act": "You add law PDFs to the Stock Laws folder, or ask the guild to process what's queued.",
-          "produces": "law PDFs"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Harvest",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "harvest brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "law PDFs"
-          ]
-        },
-        {
-          "kind": "gate",
-          "gate": "approval",
-          "label": "You confirm the source folder and scope before the harvest runs."
-        },
-        {
-          "kind": "member",
-          "actor": "the-architect",
-          "title": "Scan & Queue the Stock",
-          "act": "The Architect scans the Stock Laws folder, identifies and renames each misnamed law PDF, resolves conflicts, and queues an extraction task.",
-          "produces": "queued laws"
-        },
-        {
-          "kind": "member",
-          "actor": "the-translator",
-          "title": "Extract Verbatim",
-          "act": "The Translator extracts the queued law verbatim — Arabic canonical, page-ranges intact — into Source Laws.",
-          "produces": "extracted law"
-        },
-        {
-          "kind": "gate",
-          "gate": "certify",
-          "label": "The Quartermaster certifies the extraction is faithful and complete — verbatim, no gaps — before it enters the Source Laws library."
-        },
-        {
-          "kind": "member",
-          "actor": "the-translator",
-          "title": "Index the Harvest",
-          "act": "The Translator updates the Source Laws index and writes the dated harvest digest.",
-          "produces": "indexed harvest"
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Guild Conformance",
-          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
-          "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
-        },
-        {
-          "kind": "gate",
-          "gate": "report",
-          "label": "The Butler reports the laws harvested, verified, and indexed — and what's ready for the codex — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
-        }
-      ],
-      "trigger_phrases": [
-        "law harvest",
-        "ingest law pdfs",
-        "extract verbatim from law pdf",
-        "build the source-law library",
-        "verify and index laws",
-        "feed the codex with laws"
-      ]
-    },
-    {
-      "id": "web-oracle",
-      "name": "Oracle's Scrying",
-      "icon": "🔭",
-      "accent": "cyan",
-      "category": "Research & Intel",
-      "tagline": "Scry the open web for a verified, cited answer to any question.",
-      "when": "Use this when a question needs an answer from the live web — general knowledge, current facts, anything outside the repo or the guild. Triggered when you ask a question with 'search the web' in it. The Strategist fans out searches, cross-checks the strongest sources, and returns a cited answer; no code is written.",
-      "steps": [
-        {
-          "kind": "member",
-          "actor": "you",
-          "title": "Pose the Question",
-          "act": "You ask a question that needs an answer from the live web, with 'search the web' in it.",
-          "produces": "web question"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Query",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "search brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "web question"
-          ]
-        },
-        {
-          "kind": "gate",
-          "gate": "approval",
-          "label": "You confirm the question and its scope before the scrying begins."
-        },
-        {
-          "kind": "member",
-          "actor": "the-strategist",
-          "title": "Scry & Verify the Web",
-          "act": "The Strategist, driving the thinker weapon (web tools stay with the thinker — doers cannot run them), fans out web searches, fetches the strongest sources, adversarially cross-checks the claims, and synthesizes a cited answer.",
-          "produces": "cited answer"
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Guild Conformance",
-          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
-          "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
-        },
-        {
-          "kind": "gate",
-          "gate": "report",
-          "label": "The Butler reports the answer and its sources — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
-        }
-      ],
-      "trigger_phrases": [
-        "search the web",
-        "oracle's scrying",
-        "cited web answer",
-        "live web research",
-        "scry the open web",
-        "online cited response"
-      ]
-    },
-    {
-      "id": "inquiry-recon",
-      "name": "Inquiry / Recon",
-      "icon": "🔎",
-      "accent": "teal",
-      "category": "Research & Intel",
-      "tagline": "Answer a read-only question about the repo or guild — cited to file:line.",
-      "when": "Use this for a quick read-only question about the code, the repo, or the guild itself — 'where is X', 'what calls Y', 'how does Z work', 'find all uses of W', 'which file holds …'. The routed member scouts with read-only tools (grep/glob/read), verifies findings against source, and returns a file:line-cited answer. No code is written, nothing is mutated. This is the lightweight lane so trivial lookups have a home under the workflow-gate hard rule, without the weight of a Strategic Audit.",
-      "steps": [
-        {
-          "kind": "member",
-          "actor": "you",
-          "title": "Pose the Question",
-          "act": "You ask a read-only question about the code, the repo, or the guild.",
-          "produces": "inquiry"
-        },
-        {
-          "kind": "member",
-          "actor": "the-developer",
-          "title": "Scout & Answer",
-          "act": "The routed member scouts read-only — grep/glob/read across the repo (handing bulk reads/summaries to a doer weapon) — verifies every claim against source, and returns a concise answer cited to file:line. Writes nothing.",
-          "produces": "cited answer",
-          "inputs": [
-            "inquiry"
-          ]
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Read-Only",
-          "act": "Confirms the inquiry mutated nothing — a read-only run cannot drift the repo, so no conformance sweep is needed; the Quartermaster signs it off as clean.",
-          "produces": "read-only sign-off"
-        },
-        {
-          "kind": "gate",
-          "gate": "report",
-          "label": "The Butler reports the answer and its file:line sources back to you in plain English, and flags whether the run is worth saving as a reusable workflow."
-        }
-      ],
-      "trigger_phrases": [
-        "where is",
-        "what calls",
-        "how does",
-        "find all uses",
-        "look up",
-        "which file",
-        "trace the",
-        "scout the repo",
-        "recon the code",
-        "quick question about",
-        "show me where",
-        "inquiry",
-        "what does this do"
-      ]
-    },
-    {
-      "id": "local-session",
-      "name": "Local Session",
-      "icon": "🦅",
-      "accent": "indigo",
-      "category": "Research & Intel",
-      "tagline": "Spawn an isolated Claude subagent to scout or work, then verify what it brings back.",
-      "when": "Use this when the task should run in a fresh, isolated local session — 'start a new local session to investigate X', 'spawn a subagent', 'delegate this to a local Claude'. The routed member scopes the brief, spawns a CLAUDE session-doer via the Agent tool (a spawned session must be Claude — MiniMax doers run via summon.py and have NO tool access, so they cannot BE a session), gives it a disjoint scoped task, then verifies its findings against source before reporting. Pick the cheapest Claude doer the member carries: haiku where held (the-developer, the-translator, the-quartermaster), else sonnet.",
-      "steps": [
-        {
-          "kind": "member",
-          "actor": "you",
-          "title": "Pose the Session Task",
-          "act": "You ask for work to run in a fresh, isolated local session — an investigation or a scoped job.",
-          "produces": "session task"
-        },
-        {
-          "kind": "member",
-          "actor": "the-developer",
-          "title": "Scope & Spawn",
-          "act": "The routed member scopes a disjoint brief and spawns a CLAUDE session-doer via the Agent tool — haiku if the member carries it (dev/translator/quartermaster), else sonnet; NEVER MiniMax, whose summon.py doers have no tool access and cannot be a session. The subagent runs its scoped task in isolation and returns structured findings.",
-          "produces": "session findings",
-          "inputs": [
-            "session task"
-          ]
-        },
-        {
-          "kind": "member",
-          "actor": "the-developer",
-          "title": "Review & Synthesize",
-          "act": "The routed member verifies the subagent's findings against source — nothing trusted unverified — and synthesizes the answer.",
-          "produces": "verified result"
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Conformance",
-          "act": "Runs guild/conformance.py if anything was mutated; for a read-only scout, confirms the session touched nothing and closes clean.",
-          "produces": "conformance sign-off"
-        },
-        {
-          "kind": "gate",
-          "gate": "report",
-          "label": "The Butler reports the verified findings and their sources back to you in plain English, and flags whether the run is worth saving as a reusable workflow."
-        }
-      ],
-      "trigger_phrases": [
-        "start a new local session",
-        "new local session",
-        "start a local session",
-        "spawn a subagent",
-        "spawn a local session",
-        "investigate in a separate session",
-        "delegate to a local claude",
-        "run this in a subagent",
-        "local claude doer",
-        "isolated session"
-      ]
-    },
-    {
-      "id": "conversation",
-      "name": "Conversation",
-      "icon": "💬",
-      "accent": "slate",
-      "category": "Comms & Automation",
-      "tagline": "Plain talk — a greeting, an ack, or a meta-question with no specialist lane.",
-      "when": "The catch-all lane for any turn that fits no other workflow: greetings, acknowledgements, thanks, clarifications, and meta-questions about the guild itself. It exists so EVERY turn — even one that fires no tools and writes nothing — can declare a workflow under the turn-end banner gate. The Butler answers directly in plain English; nothing is mutated. If a turn turns out to need real work, route it to the proper specialist lane instead of staying here.",
-      "steps": [
-        {
-          "kind": "member",
-          "actor": "you",
-          "title": "Say the Word",
-          "act": "You greet, acknowledge, or ask a meta-question that fits no specialist lane.",
-          "produces": "utterance"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Answer Plainly",
-          "act": "The Butler answers directly in plain English from what is already known — no tools, no writes, no doer weapons. If the turn actually needs work, he routes it to the proper specialist lane instead.",
-          "produces": "reply",
-          "inputs": [
-            "utterance"
-          ]
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm No-Op",
-          "act": "Confirms the turn mutated nothing — a plain reply cannot drift the repo, so no conformance sweep is needed; signs it off as clean.",
-          "produces": "no-op sign-off"
-        },
-        {
-          "kind": "gate",
-          "gate": "report",
-          "label": "The Butler's plain-English reply IS the report back to you; he flags if the turn should have been a real workflow instead."
-        }
-      ],
-      "trigger_phrases": [
-        "hi",
-        "hello",
-        "hey",
-        "thanks",
-        "thank you",
-        "got it",
-        "okay",
-        "what do you think",
-        "tell me about",
-        "is this a bug",
-        "did you",
-        "explain"
-      ]
+     "kind": "gate",
+     "gate": "report",
+     "label": "The Butler reports the finished mission — what was built and any follow-ups — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
     }
-  ]
+   ],
+   "trigger_phrases": [
+    "standard mission",
+    "full guild pipeline",
+    "conquering campaign",
+    "multi-disciplinary mission",
+    "big coordinated campaign",
+    "wave of specialists"
+   ]
+  },
+  {
+   "id": "quick-fix",
+   "name": "Quick Fix",
+   "icon": "⚡",
+   "accent": "green",
+   "category": "Build & Fix",
+   "class": "mutating",
+   "tagline": "A lean path for small, well-understood changes.",
+   "when": "Use this for small bugs, UI tweaks, or a pasted error to fix (and any of the same class) where planning would only slow things down.",
+   "steps": [
+    {
+     "kind": "member",
+     "actor": "you",
+     "title": "Report the Bug",
+     "act": "You flag a small, well-understood bug or change for the guild to fix.",
+     "produces": "small request"
+    },
+    {
+     "kind": "member",
+     "actor": "the-butler",
+     "title": "Clarify the Ask",
+     "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+     "produces": "clarified ticket",
+     "script": "guild/frame_brief.py",
+     "args": {
+      "style": "clarify"
+     },
+     "inputs": [
+      "small request"
+     ]
+    },
+    {
+     "kind": "gate",
+     "gate": "approval",
+     "label": "You confirm the fix scope is correct before the Developer starts work."
+    },
+    {
+     "kind": "member",
+     "actor": "the-developer",
+     "title": "Make the Fix",
+     "act": "The Developer applies the smallest correct change and tests it locally before handing it off.",
+     "produces": "applied fix"
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Verify the Fix",
+     "act": "The Quartermaster double-checks the change and confirms nothing else broke in the process.",
+     "produces": "verified fix"
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Confirm Guild Conformance",
+     "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+     "script": "guild/conformance.py",
+     "produces": "conformance sign-off"
+    },
+    {
+     "kind": "gate",
+     "gate": "report",
+     "label": "The Butler reports the fix and its verification — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+    }
+   ],
+   "trigger_phrases": [
+    "quick fix",
+    "small bug",
+    "tiny ui tweak",
+    "pasted error to fix",
+    "minor change",
+    "fast small fix"
+   ]
+  },
+  {
+   "id": "design-sprint",
+   "name": "Design Sprint",
+   "icon": "🎨",
+   "accent": "rose",
+   "category": "Design",
+   "class": "mutating",
+   "tagline": "From visual concept to shipped UI in one tight sprint.",
+   "when": "Use this when the work centers on UI, UX, brand, or visual quality — including admin/members panel layout redesigns and card/panel consolidation, the most frequent visual work on the app.",
+   "steps": [
+    {
+     "kind": "member",
+     "actor": "you",
+     "title": "Request the Sprint",
+     "act": "You describe the UI or UX problem you want the guild to design around.",
+     "produces": "design request"
+    },
+    {
+     "kind": "member",
+     "actor": "the-butler",
+     "title": "Shape the Brief",
+     "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+     "produces": "design brief",
+     "script": "guild/frame_brief.py",
+     "args": {
+      "style": "shape"
+     },
+     "inputs": [
+      "design request"
+     ]
+    },
+    {
+     "kind": "gate",
+     "gate": "approval",
+     "label": "You approve the design brief before the sprint officially kicks off."
+    },
+    {
+     "kind": "member",
+     "actor": "the-strategist",
+     "title": "Plan the Sprint",
+     "act": "Runs `guild/plan.py` — the Strategist's planning step as a runnable primitive.",
+     "produces": "sprint plan",
+     "script": "guild/plan.py",
+     "args": {
+      "template": "sprint"
+     },
+     "inputs": [
+      "design brief"
+     ]
+    },
+    {
+     "kind": "member",
+     "actor": "the-designer",
+     "title": "Design the Visuals",
+     "act": "The Designer produces the UI/UX mockups, components, and brand treatments for the sprint.",
+     "produces": "design assets"
+    },
+    {
+     "kind": "member",
+     "actor": "the-developer",
+     "title": "Build the Design",
+     "act": "The Developer implements the design faithfully in code, respecting the visual spec.",
+     "produces": "implemented UI"
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Clean Up and Verify",
+     "act": "The Quartermaster polishes the build and verifies the design holds up in real interactions.",
+     "produces": "polished UI"
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Confirm Guild Conformance",
+     "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+     "script": "guild/conformance.py",
+     "produces": "conformance sign-off"
+    },
+    {
+     "kind": "gate",
+     "gate": "report",
+     "label": "The Butler reports the design-sprint outcome, with screenshots and notes — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+    }
+   ],
+   "trigger_phrases": [
+    "design sprint",
+    "ui redesign",
+    "panel layout redesign",
+    "card consolidation",
+    "ux polish",
+    "visual quality pass"
+   ]
+  },
+  {
+   "id": "architecture-build",
+   "name": "Architecture Build",
+   "icon": "🏛️",
+   "accent": "blue",
+   "category": "Build & Fix",
+   "class": "mutating",
+   "tagline": "Schemas, systems, and structural change, done right.",
+   "when": "Use this when the work touches the database, system design, or core architecture — including performance tuning and finance-critical data migrations (plan, dry-run with BEGIN/ROLLBACK, reconcile).",
+   "steps": [
+    {
+     "kind": "member",
+     "actor": "you",
+     "title": "Request the Build",
+     "act": "You describe the system, schema, or architectural change you need the guild to make.",
+     "produces": "architecture request"
+    },
+    {
+     "kind": "member",
+     "actor": "the-butler",
+     "title": "Clarify the Ask",
+     "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+     "produces": "architecture brief",
+     "script": "guild/frame_brief.py",
+     "args": {
+      "style": "clarify"
+     },
+     "inputs": [
+      "architecture request"
+     ]
+    },
+    {
+     "kind": "gate",
+     "gate": "approval",
+     "label": "You approve the architecture brief before scoping and structural work begin."
+    },
+    {
+     "kind": "member",
+     "actor": "the-strategist",
+     "title": "Scope the Work",
+     "act": "Runs `guild/plan.py` — the Strategist's planning step as a runnable primitive.",
+     "produces": "scope document",
+     "script": "guild/plan.py",
+     "args": {
+      "template": "scope"
+     },
+     "inputs": [
+      "architecture brief"
+     ]
+    },
+    {
+     "kind": "member",
+     "actor": "the-architect",
+     "title": "Architect the System",
+     "act": "The Architect drafts the system architecture and database schema to satisfy the scope.",
+     "produces": "system blueprint"
+    },
+    {
+     "kind": "gate",
+     "gate": "certify",
+     "label": "The Quartermaster certifies the architecture is sound, consistent, and safe to implement."
+    },
+    {
+     "kind": "member",
+     "actor": "the-developer",
+     "title": "Build Migrations and Code",
+     "act": "The Developer writes the schema migrations and implements the system against the certified design.",
+     "produces": "implemented system"
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Clean Up and Verify",
+     "act": "The Quartermaster runs final checks and confirms the architecture works as intended in production-like conditions.",
+     "produces": "verified system"
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Confirm Guild Conformance",
+     "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+     "script": "guild/conformance.py",
+     "produces": "conformance sign-off"
+    },
+    {
+     "kind": "gate",
+     "gate": "report",
+     "label": "The Butler reports the architecture build, its verification, and any caveats — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+    }
+   ],
+   "trigger_phrases": [
+    "schema design",
+    "database migration",
+    "core architecture",
+    "performance tuning",
+    "structural change",
+    "system design overhaul"
+   ]
+  },
+  {
+   "id": "legal-codex",
+   "name": "Legal Codex",
+   "icon": "⚖️",
+   "accent": "gold",
+   "category": "Legal",
+   "class": "mutating",
+   "tagline": "Turn real laws into a clean, multilingual codex.",
+   "when": "Use this to load real laws into the codex and translate them across locales — loop the source laws, load + translate each, and stop at the publish gate (you publish). Fed by Law Harvest — run that first to build the verified source-law library.",
+   "steps": [
+    {
+     "kind": "member",
+     "actor": "you",
+     "title": "Submit the Law",
+     "act": "You point the guild at the real-world law or regulation you need codified.",
+     "produces": "law reference"
+    },
+    {
+     "kind": "member",
+     "actor": "the-butler",
+     "title": "Frame the Request",
+     "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+     "produces": "codex brief",
+     "script": "guild/frame_brief.py",
+     "args": {
+      "style": "shape"
+     },
+     "inputs": [
+      "law reference"
+     ]
+    },
+    {
+     "kind": "gate",
+     "gate": "approval",
+     "label": "You confirm the scope of the codex work and the target locales before translation begins."
+    },
+    {
+     "kind": "member",
+     "actor": "the-translator",
+     "title": "Load and Translate",
+     "act": "The Translator ingests the real law and translates it faithfully across each required locale.",
+     "produces": "translated codex"
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Run Publish Check",
+     "act": "The Quartermaster runs the pre-publish check on the codex and signs off on its readiness.",
+     "produces": "ready codex"
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Confirm Guild Conformance",
+     "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+     "script": "guild/conformance.py",
+     "produces": "conformance sign-off"
+    },
+    {
+     "kind": "gate",
+     "gate": "report",
+     "label": "The Butler reports the codex summary — locales covered and publication status — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+    }
+   ],
+   "trigger_phrases": [
+    "load the law",
+    "translate the law",
+    "multilingual legal codex",
+    "translate laws across locales",
+    "codex translation loop",
+    "real laws into the codex"
+   ]
+  },
+  {
+   "id": "market-recon",
+   "name": "Market Recon",
+   "icon": "📈",
+   "accent": "green",
+   "category": "Research & Intel",
+   "class": "read-only",
+   "tagline": "Read-only trading, investment, and market intelligence.",
+   "when": "Use this for investment, trading, or market research where no code should be written. (For website/SEO/brand audits use Brand Audit.)",
+   "steps": [
+    {
+     "kind": "member",
+     "actor": "you",
+     "title": "Ask the Question",
+     "act": "You pose a research or investment question you want the guild to analyze.",
+     "produces": "research question"
+    },
+    {
+     "kind": "member",
+     "actor": "the-butler",
+     "title": "Sharpen the Question",
+     "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+     "produces": "research brief",
+     "script": "guild/frame_brief.py",
+     "args": {
+      "style": "reframe"
+     },
+     "inputs": [
+      "research question"
+     ]
+    },
+    {
+     "kind": "gate",
+     "gate": "approval",
+     "label": "You approve the research brief and confirm the read-only boundary before analysis begins."
+    },
+    {
+     "kind": "member",
+     "actor": "the-merchant",
+     "title": "Analyze Market and Risk",
+     "act": "The Merchant investigates the market, prices, and risk in a read-only analysis pass and writes a report.",
+     "produces": "market report"
+    },
+    {
+     "kind": "gate",
+     "gate": "report",
+     "label": "The Butler reports the Merchant's market and risk report, with caveats — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+    }
+   ],
+   "trigger_phrases": [
+    "market recon",
+    "trading research",
+    "investment intel",
+    "market intelligence read-only",
+    "no code market research",
+    "stock and market analysis"
+   ]
+  },
+  {
+   "id": "skill-forge",
+   "name": "Skill Forge",
+   "icon": "🛠️",
+   "accent": "violet",
+   "category": "Guild Self",
+   "class": "mutating",
+   "tagline": "Keep the guild's skills sharp, synced, and current.",
+   "when": "Use this for guild self-maintenance — skill sync, upgrades, creating a new skill, or turning a one-off task into a reusable skill.",
+   "steps": [
+    {
+     "kind": "member",
+     "actor": "you",
+     "title": "Request Skill Maintenance",
+     "act": "You ask the guild to sync, upgrade, or create skills for the team.",
+     "produces": "maintenance request"
+    },
+    {
+     "kind": "member",
+     "actor": "the-butler",
+     "title": "Route the Request",
+     "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+     "produces": "routed request",
+     "script": "guild/frame_brief.py",
+     "args": {
+      "style": "classify"
+     },
+     "inputs": [
+      "maintenance request"
+     ]
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Sync and Upgrade Skills",
+     "act": "The Quartermaster syncs, upgrades, or authors the logic and content of the skills that were requested.",
+     "produces": "updated skills"
+    },
+    {
+     "kind": "member",
+     "actor": "the-designer",
+     "title": "Forge the Sigil",
+     "act": "MANDATORY for every new skill: the Designer forges its Fallen Sword tile so it ships with real heraldry, never a bare emoji. Add the skill's prompt to gen-skill-art.cjs and run it (or guild/commission_art.py from a brief), then build.py so artPng flips true. Skill art is design — it runs through the Designer, no one else.",
+     "produces": "skill sigils",
+     "script": "guild/commission_art.py",
+     "args": {
+      "max-iter": 1
+     },
+     "inputs": [
+      "updated skills"
+     ]
+    },
+    {
+     "kind": "member",
+     "actor": "the-developer",
+     "title": "Provide Tooling Support",
+     "act": "The Developer provides any tooling, dev-environment, or knowledge-graph support the skill changes require.",
+     "produces": "ready tooling"
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Confirm Guild Conformance",
+     "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+     "script": "guild/conformance.py",
+     "produces": "conformance sign-off"
+    },
+    {
+     "kind": "gate",
+     "gate": "report",
+     "label": "The Butler reports the skill-forge outcome — version changes and tooling status — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+    }
+   ],
+   "trigger_phrases": [
+    "skill forge",
+    "skill sync",
+    "upgrade the skill",
+    "create a new skill",
+    "reusable skill",
+    "forge a new skill",
+    "teach the",
+    "new skill based on",
+    "create a skill",
+    "forge a skill"
+   ]
+  },
+  {
+   "id": "guild-log-sync",
+   "name": "Guild Log Sync",
+   "icon": "📜",
+   "accent": "gold",
+   "category": "Hygiene & Release",
+   "class": "mutating",
+   "tagline": "Sweep recent sessions and backfill any missing guild-log entries.",
+   "when": "Use this to reconcile the guild log after a stretch of work — loop the recent sessions, find changes that never got recorded, and log them. First stage of the release-closeout chain: Guild Log Sync → Hygiene Rotation → Release Train.",
+   "steps": [
+    {
+     "kind": "member",
+     "actor": "you",
+     "title": "Call the Log Sweep",
+     "act": "You ask the guild to loop the recent sessions (today and yesterday) and check the guild log for any change that never got recorded.",
+     "produces": "sweep request"
+    },
+    {
+     "kind": "member",
+     "actor": "the-butler",
+     "title": "Restate the Order",
+     "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+     "produces": "plain-English brief",
+     "script": "guild/frame_brief.py",
+     "args": {
+      "style": "restate"
+     },
+     "inputs": [
+      "sweep request"
+     ]
+    },
+    {
+     "kind": "gate",
+     "gate": "approval",
+     "label": "You confirm the Butler understood the order correctly before the sweep begins."
+    },
+    {
+     "kind": "member",
+     "actor": "the-butler",
+     "title": "Scout the Sessions",
+     "act": "The Butler, drawing Sonnet, loops every session from today and yesterday, reads the guild log, runs build_guild_log.py --dry-run to surface git-visible gaps, and inspects non-git artifact work (art PNGs, untracked tooling) to assemble a brief of what is missing.",
+     "produces": "gap brief",
+     "script": "guild/session_scout.py",
+     "args": {
+      "window": "today,yesterday"
+     }
+    },
+    {
+     "kind": "gate",
+     "gate": "certify",
+     "label": "The Quartermaster certifies each candidate entry is real, non-duplicate, and correctly typed before anything is written to the log."
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Log the Missing Entries",
+     "act": "The Quartermaster, drawing MiniMax M3, runs the two-tier pipeline — build_guild_log.py to backfill git-visible commits, log_event.py for the non-git events — then build.py to regenerate the dashboard data.",
+     "produces": "synced guild log",
+     "doers": [
+      "minimax-m3"
+     ]
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Confirm Guild Conformance",
+     "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+     "script": "guild/conformance.py",
+     "produces": "conformance sign-off"
+    },
+    {
+     "kind": "gate",
+     "gate": "report",
+     "label": "The Butler reports what was logged — git-tier catch-up plus manual entries — and the new log total — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+    }
+   ],
+   "trigger_phrases": [
+    "guild log sync",
+    "backfill the guild log",
+    "missing guild log entries",
+    "reconcile the guild log",
+    "sweep recent sessions for log",
+    "first stage closeout chain"
+   ]
+  },
+  {
+   "id": "conformity-sweep",
+   "name": "Conformity Sweep",
+   "icon": "⚖️",
+   "accent": "gold",
+   "category": "Hygiene & Release",
+   "class": "mutating",
+   "tagline": "The Quartermaster audits the whole repo and proves it agrees with itself — and with every decision on record.",
+   "when": "Use after big changes, or any time you need proof the project is internally consistent and nothing contradicts a logged decision.",
+   "steps": [
+    {
+     "kind": "member",
+     "actor": "you",
+     "title": "Call the Conformity Sweep",
+     "act": "You ask the guild to audit the entire repo for internal conformity and conformity with every decision on record.",
+     "produces": "sweep request"
+    },
+    {
+     "kind": "member",
+     "actor": "the-butler",
+     "title": "Restate the Order",
+     "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+     "produces": "plain-English brief",
+     "script": "guild/frame_brief.py",
+     "args": {
+      "style": "restate"
+     },
+     "inputs": [
+      "sweep request"
+     ]
+    },
+    {
+     "kind": "gate",
+     "gate": "approval",
+     "label": "You confirm the Butler understood the sweep correctly before it begins."
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Audit the Whole Repo",
+     "act": "The Quartermaster, drawing MiniMax M3, runs conformity_check.py — reading every source (members, skills, the arsenal, workflows, docs, the guild log) plus the generated guild data, cross-checking every reference and testing each against the logged decisions — to assemble a contradiction map.",
+     "produces": "contradiction map"
+    },
+    {
+     "kind": "gate",
+     "gate": "certify",
+     "label": "The Quartermaster certifies each flagged contradiction is real and not a false positive before any source is touched."
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Reconcile to Conformity",
+     "act": "The Quartermaster fixes each real contradiction at its source of truth, then runs build.py so the generated guild data matches the sources again — leaving the repo in full conformity with itself and with every decision, and re-runs conformity_check.py until it passes clean.",
+     "produces": "conformed repo"
+    },
+    {
+     "kind": "gate",
+     "gate": "report",
+     "label": "The Butler reports what was audited, what conformed, and what was reconciled — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+    }
+   ],
+   "trigger_phrases": [
+    "conformity sweep",
+    "prove the repo agrees",
+    "internally consistent audit",
+    "quartermaster consistency check",
+    "no decision contradicts",
+    "audit the whole repo"
+   ]
+  },
+  {
+   "id": "okf-tidy",
+   "name": "OKF Tidy",
+   "icon": "🧹",
+   "accent": "gold",
+   "category": "Hygiene & Release",
+   "class": "mutating",
+   "tagline": "The Quartermaster keeps the whole repo tidy & conformant to the Open Knowledge Format, so every member can read it fast on future runs.",
+   "when": "Use to bring the repo to (or back to) OKF conformance — after a campaign leaves files behind, when frontmatter drifts, or to migrate-first before arming the okf-gate. The producer pass; star-alliance-language is how members then read the result.",
+   "steps": [
+    {
+     "kind": "member",
+     "actor": "you",
+     "title": "Call the Tidy",
+     "act": "You ask the guild to tidy the repo to the Open Knowledge Format standard.",
+     "produces": "tidy request"
+    },
+    {
+     "kind": "member",
+     "actor": "the-butler",
+     "title": "Restate the Order",
+     "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+     "produces": "plain-English brief",
+     "script": "guild/frame_brief.py",
+     "args": {
+      "style": "restate"
+     },
+     "inputs": [
+      "tidy request"
+     ]
+    },
+    {
+     "kind": "gate",
+     "gate": "approval",
+     "label": "You confirm the tidy scope before any file is rewritten — a whole-repo frontmatter migration is hard to eyeball after the fact."
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Audit Conformance",
+     "act": "The Quartermaster runs `okf_audit.py` (the okf skill) to report every governed .md lacking YAML frontmatter or a `type:` field, and surveys non-markdown files for orphans and misplacement.",
+     "produces": "non-conformance report"
+    },
+    {
+     "kind": "gate",
+     "gate": "certify",
+     "label": "The Quartermaster certifies the migration is safe — exclusions cover vendored/generated trees and build.py still parses members & skills after frontmatter is injected."
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Migrate, Enrich & Sweep",
+     "act": "The Quartermaster runs `okf_audit.py --fix` (migrate-first baseline), enriches concepts with title/description/tags and cross-links (handing bulk drafting to a doer weapon), places non-md files by concept-path, prunes confirmed dead files, then runs build.py so the dashboard reflects the tidy.",
+     "produces": "OKF-conformant repo"
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Confirm Conformance & Gate",
+     "act": "Re-runs `okf_audit.py` until it passes clean, confirms the okf-gate hook is registered in .claude/settings.json, then runs guild-log + guild-conformity so the run leaves the repo agreeing with itself.",
+     "produces": "verified tidy"
+    },
+    {
+     "kind": "gate",
+     "gate": "report",
+     "label": "The Butler reports what was migrated, enriched, swept, and gated — and flags whether the okf-gate is now armed."
+    }
+   ],
+   "trigger_phrases": [
+    "okf",
+    "okf tidy",
+    "tidy the repo",
+    "make it okf-conformant",
+    "run the okf audit",
+    "keep the repo clean",
+    "fix the frontmatter"
+   ]
+  },
+  {
+   "id": "bug-cycle",
+   "name": "Bug Cycle",
+   "icon": "🪲",
+   "accent": "green",
+   "category": "Build & Fix",
+   "class": "mutating",
+   "tagline": "Pull a reported bug, hunt the real root cause, fix it, and close the loop.",
+   "when": "Use this for bugs filed in the bug_reports table — the daily triage-and-fix loop. The recurring Lex signatures that belong here: a missing i18n message key rendering raw in the UI, a missing DB column, or an RLS / permission-denied error on a view or RPC.",
+   "steps": [
+    {
+     "kind": "member",
+     "actor": "you",
+     "title": "Report or Pull the Bug",
+     "act": "You file a bug, or ask the guild to pull the open rows from the bug_reports table.",
+     "produces": "bug request"
+    },
+    {
+     "kind": "member",
+     "actor": "the-butler",
+     "title": "Frame the Bug",
+     "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+     "produces": "framed bug",
+     "script": "guild/frame_brief.py",
+     "args": {
+      "style": "shape"
+     },
+     "inputs": [
+      "bug request"
+     ]
+    },
+    {
+     "kind": "gate",
+     "gate": "approval",
+     "label": "You confirm the bug and its scope before the hunt begins."
+    },
+    {
+     "kind": "member",
+     "actor": "the-strategist",
+     "title": "Triage & Reproduce",
+     "act": "The Strategist pulls the row, reads primary_instructions, and reproduces the report to find the true root cause — not just the symptom.",
+     "produces": "triaged root cause"
+    },
+    {
+     "kind": "member",
+     "actor": "the-developer",
+     "title": "Fix at the Root",
+     "act": "The Developer applies the smallest correct fix following project conventions, and self-tests it locally.",
+     "produces": "applied fix"
+    },
+    {
+     "kind": "gate",
+     "gate": "certify",
+     "label": "The Quartermaster certifies the fix genuinely resolves the bug — DB fixes count now; frontend fixes only after deploy — before the status is flipped."
+    },
+    {
+     "kind": "member",
+     "actor": "the-developer",
+     "title": "Close & File Spawn",
+     "act": "The Developer flips the bug_reports row to Fixed and files any new bugs surfaced during the hunt back into the table.",
+     "produces": "closed bug + new tickets"
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Confirm Guild Conformance",
+     "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+     "script": "guild/conformance.py",
+     "produces": "conformance sign-off"
+    },
+    {
+     "kind": "gate",
+     "gate": "report",
+     "label": "The Butler reports the bug, its root cause, the fix, and any new bugs filed — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+    }
+   ],
+   "trigger_phrases": [
+    "bug cycle",
+    "fix the bug report",
+    "triage the bug_reports",
+    "missing i18n key rendering",
+    "rls permission denied on view",
+    "missing db column bug"
+   ]
+  },
+  {
+   "id": "security-sweep",
+   "name": "Security Sweep",
+   "icon": "🛡️",
+   "accent": "blue",
+   "category": "Build & Fix",
+   "class": "mutating",
+   "tagline": "Audit the database security surface and seal every leak — propose first, apply on sign-off.",
+   "when": "Use this for RLS policies, SECURITY DEFINER RPCs, anon/authenticated grants, and advisor-driven security audits.",
+   "steps": [
+    {
+     "kind": "member",
+     "actor": "you",
+     "title": "Call the Sweep",
+     "act": "You ask the guild to audit the app's security surface for leaks and over-broad access.",
+     "produces": "security request"
+    },
+    {
+     "kind": "member",
+     "actor": "the-butler",
+     "title": "Frame the Sweep",
+     "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+     "produces": "security brief",
+     "script": "guild/frame_brief.py",
+     "args": {
+      "style": "shape"
+     },
+     "inputs": [
+      "security request"
+     ]
+    },
+    {
+     "kind": "gate",
+     "gate": "approval",
+     "label": "You confirm the read-only boundary before the audit begins."
+    },
+    {
+     "kind": "member",
+     "actor": "the-strategist",
+     "title": "Scope the Surface",
+     "act": "Runs `guild/plan.py` — the Strategist's planning step as a runnable primitive.",
+     "produces": "audit scope",
+     "script": "guild/plan.py",
+     "args": {
+      "template": "scope"
+     },
+     "inputs": [
+      "security brief"
+     ]
+    },
+    {
+     "kind": "member",
+     "actor": "the-architect",
+     "title": "Hunt the Holes",
+     "act": "The Architect audits the security surface, pulls Supabase advisors, and maps every leak, missing policy, and over-broad grant.",
+     "produces": "vulnerability map"
+    },
+    {
+     "kind": "gate",
+     "gate": "certify",
+     "label": "You sign off on each proposed change before any security fix is applied — nothing is written without explicit approval."
+    },
+    {
+     "kind": "member",
+     "actor": "the-developer",
+     "title": "Seal the Breaches",
+     "act": "The Developer applies the approved RLS/policy/grant fixes and re-proves each gate holds.",
+     "produces": "hardened surface"
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Confirm Guild Conformance",
+     "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+     "script": "guild/conformance.py",
+     "produces": "conformance sign-off"
+    },
+    {
+     "kind": "gate",
+     "gate": "report",
+     "label": "The Butler reports what was audited, what was sealed, and any risks deferred — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+    }
+   ],
+   "trigger_phrases": [
+    "security sweep",
+    "rls policies audit",
+    "security definer rpc",
+    "anon grants audit",
+    "seal the security leak",
+    "supabase security audit"
+   ]
+  },
+  {
+   "id": "cleanup-rotation",
+   "name": "Hygiene Rotation",
+   "icon": "🧹",
+   "accent": "violet",
+   "category": "Hygiene & Release",
+   "class": "mutating",
+   "tagline": "The Quartermaster runs the full hygiene sweep across every mode.",
+   "when": "Use this for routine hygiene or post-campaign cleanup — i18n, lint, dev-errors, postgres, docs, follow-ups, and consolidating duplicated search/filter/action UI across pages and panels. Middle stage of the release-closeout chain: Guild Log Sync → Hygiene Rotation → Release Train.",
+   "steps": [
+    {
+     "kind": "member",
+     "actor": "you",
+     "title": "Call the Rotation",
+     "act": "You ask the guild to run a hygiene pass — or the post-campaign cleanup for a just-shipped build.",
+     "produces": "cleanup request"
+    },
+    {
+     "kind": "member",
+     "actor": "the-butler",
+     "title": "Frame the Rotation",
+     "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+     "produces": "cleanup brief",
+     "script": "guild/frame_brief.py",
+     "args": {
+      "style": "shape"
+     },
+     "inputs": [
+      "cleanup request"
+     ]
+    },
+    {
+     "kind": "gate",
+     "gate": "approval",
+     "label": "You confirm the scope of the sweep before it runs."
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Run the Sweep",
+     "act": "The Quartermaster runs the cleanup skill across every mode — i18n language/hardcoded/leaks, dev-error sweep, lint, postgres advisors, docs, and campaign follow-ups — fixing what's safe and listing the rest.",
+     "produces": "hygiene report",
+     "script": "guild/hygiene_run.py",
+     "args": {
+      "dry-run": true
+     }
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Confirm Guild Conformance",
+     "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+     "script": "guild/conformance.py",
+     "produces": "conformance sign-off"
+    },
+    {
+     "kind": "gate",
+     "gate": "report",
+     "label": "The Butler reports what was swept, what was fixed, and what remains as follow-ups — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+    }
+   ],
+   "trigger_phrases": [
+    "hygiene rotation",
+    "post-campaign cleanup",
+    "consolidate duplicated search filter",
+    "lint and i18n sweep",
+    "quartermaster hygiene pass",
+    "middle stage closeout chain"
+   ]
+  },
+  {
+   "id": "release-train",
+   "name": "Release Train",
+   "icon": "🚂",
+   "accent": "cyan",
+   "category": "Hygiene & Release",
+   "class": "mutating",
+   "tagline": "Merge every branch and PR, bump the version, and push the release.",
+   "when": "Use this to close out work — merge all branches/PRs into main, bump the version, and push. Final stage of the release-closeout chain: Guild Log Sync → Hygiene Rotation → Release Train.",
+   "steps": [
+    {
+     "kind": "member",
+     "actor": "you",
+     "title": "Call the Release",
+     "act": "You ask the guild to clean up, merge everything outstanding, bump the version, and push.",
+     "produces": "release request"
+    },
+    {
+     "kind": "member",
+     "actor": "the-butler",
+     "title": "Frame the Release",
+     "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+     "produces": "release brief",
+     "script": "guild/frame_brief.py",
+     "args": {
+      "style": "shape"
+     },
+     "inputs": [
+      "release request"
+     ]
+    },
+    {
+     "kind": "gate",
+     "gate": "approval",
+     "label": "You confirm the version step and that all branches are safe to merge before the train leaves."
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Gather the Branches",
+     "act": "The Quartermaster merges every outstanding branch and PR into main, resolving conflicts.",
+     "produces": "unified main"
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Bump & Stamp",
+     "act": "The Quartermaster bumps the version, writes the changelog, and syncs every version stamp across the docs.",
+     "produces": "stamped release",
+     "script": "guild/version_bump.py",
+     "args": {
+      "step": "patch"
+     }
+    },
+    {
+     "kind": "gate",
+     "gate": "certify",
+     "label": "The Quartermaster certifies the build is clean and every version stamp is consistent before the push."
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Push the Release",
+     "act": "The Quartermaster commits and pushes the release to the remote.",
+     "produces": "pushed release"
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Confirm Guild Conformance",
+     "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+     "script": "guild/conformance.py",
+     "produces": "conformance sign-off"
+    },
+    {
+     "kind": "gate",
+     "gate": "report",
+     "label": "The Butler reports the version shipped, what merged, and the push result — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+    }
+   ],
+   "trigger_phrases": [
+    "release train",
+    "merge all branches and prs",
+    "bump the version and push",
+    "close out the release",
+    "final stage closeout chain",
+    "ship the release"
+   ]
+  },
+  {
+   "id": "tool-forge",
+   "name": "Tool Forge",
+   "icon": "🧮",
+   "accent": "gold",
+   "category": "Legal",
+   "class": "mutating",
+   "tagline": "Build a public legal calculator or corporate tool from the governing law.",
+   "when": "Use this to build a public-panel calculator or legal tool (wages, social-insurance, severance, inheritance, customs, land).",
+   "steps": [
+    {
+     "kind": "member",
+     "actor": "you",
+     "title": "Request the Tool",
+     "act": "You describe the legal calculator or tool you want to offer on the public panel.",
+     "produces": "tool request"
+    },
+    {
+     "kind": "member",
+     "actor": "the-butler",
+     "title": "Frame the Tool",
+     "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+     "produces": "tool brief",
+     "script": "guild/frame_brief.py",
+     "args": {
+      "style": "shape"
+     },
+     "inputs": [
+      "tool request"
+     ]
+    },
+    {
+     "kind": "gate",
+     "gate": "approval",
+     "label": "You approve the tool concept and its governing law before the build begins."
+    },
+    {
+     "kind": "member",
+     "actor": "the-architect",
+     "title": "Model the Law",
+     "act": "The Architect studies the governing law and models the calculation rules and inputs the tool must honour.",
+     "produces": "rule model"
+    },
+    {
+     "kind": "member",
+     "actor": "the-designer",
+     "title": "Design the Tool",
+     "act": "The Designer shapes the calculator's UI with an inviting, trustworthy layout.",
+     "produces": "tool design"
+    },
+    {
+     "kind": "member",
+     "actor": "the-developer",
+     "title": "Build the Calculator",
+     "act": "The Developer implements the tool, wires the rules, and adds the team-review disclaimer.",
+     "produces": "working tool"
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Confirm Guild Conformance",
+     "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+     "script": "guild/conformance.py",
+     "produces": "conformance sign-off"
+    },
+    {
+     "kind": "gate",
+     "gate": "report",
+     "label": "The Butler reports the tool built, the law it honours, and where it lives — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+    }
+   ],
+   "trigger_phrases": [
+    "tool forge",
+    "build a public calculator",
+    "wage calculator tool",
+    "severance calculator",
+    "corporate legal tool",
+    "public legal calculator"
+   ]
+  },
+  {
+   "id": "legal-draft",
+   "name": "Legal Drafting",
+   "icon": "✒️",
+   "accent": "gold",
+   "category": "Legal",
+   "class": "mutating",
+   "tagline": "Draft client correspondence and bilingual legal documents in the firm's register.",
+   "when": "Use this to draft client emails, contracts, declarations, or memos — bilingual (AR/FR/EN) where needed.",
+   "steps": [
+    {
+     "kind": "member",
+     "actor": "you",
+     "title": "Submit the Matter",
+     "act": "You describe the correspondence or legal instrument you need drafted.",
+     "produces": "drafting request"
+    },
+    {
+     "kind": "member",
+     "actor": "the-butler",
+     "title": "Frame the Matter",
+     "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+     "produces": "drafting brief",
+     "script": "guild/frame_brief.py",
+     "args": {
+      "style": "shape"
+     },
+     "inputs": [
+      "drafting request"
+     ]
+    },
+    {
+     "kind": "gate",
+     "gate": "approval",
+     "label": "You confirm the matter and the target language(s) before drafting begins."
+    },
+    {
+     "kind": "member",
+     "actor": "the-translator",
+     "title": "Draft the Document",
+     "act": "The Translator drafts the correspondence or legal instrument — bilingual where needed — in the firm's register.",
+     "produces": "draft document"
+    },
+    {
+     "kind": "gate",
+     "gate": "certify",
+     "label": "You review the draft for accuracy and tone before it goes out — nothing client-facing is sent without your sign-off."
+    },
+    {
+     "kind": "member",
+     "actor": "the-translator",
+     "title": "Finalize & Format",
+     "act": "The Translator finalizes the document and formats it client-facing, with the bilingual layout in place.",
+     "produces": "final document"
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Confirm Guild Conformance",
+     "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+     "script": "guild/conformance.py",
+     "produces": "conformance sign-off"
+    },
+    {
+     "kind": "gate",
+     "gate": "report",
+     "label": "The Butler reports the document drafted, its languages, and what's ready to send — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+    }
+   ],
+   "trigger_phrases": [
+    "legal drafting",
+    "draft a client email",
+    "bilingual contract draft",
+    "draft a legal memo",
+    "bilingual ar fr en",
+    "draft client correspondence"
+   ]
+  },
+  {
+   "id": "comms-triage",
+   "name": "Comms Triage",
+   "icon": "📨",
+   "accent": "cyan",
+   "category": "Comms & Automation",
+   "class": "mutating",
+   "tagline": "Sweep email, calendar, and WhatsApp into tasks, events, and replies.",
+   "when": "Use this to triage your inbox and messages — turn what matters into tasks and calendar entries, and prep for meetings.",
+   "steps": [
+    {
+     "kind": "member",
+     "actor": "you",
+     "title": "Call the Triage",
+     "act": "You ask the guild to go through your email, calendar, and WhatsApp and surface what needs you.",
+     "produces": "triage request"
+    },
+    {
+     "kind": "member",
+     "actor": "the-butler",
+     "title": "Frame the Triage",
+     "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+     "produces": "triage brief",
+     "script": "guild/frame_brief.py",
+     "args": {
+      "style": "shape"
+     },
+     "inputs": [
+      "triage request"
+     ]
+    },
+    {
+     "kind": "gate",
+     "gate": "approval",
+     "label": "You confirm the scope before the Butler drafts anything or creates events."
+    },
+    {
+     "kind": "member",
+     "actor": "the-butler",
+     "title": "Sweep the Inboxes",
+     "act": "The Butler sweeps email, calendar, and WhatsApp, surfacing what needs a response, a task, or a calendar entry.",
+     "produces": "triage list"
+    },
+    {
+     "kind": "member",
+     "actor": "the-butler",
+     "title": "Sort to Tasks & Calendar",
+     "act": "The Butler turns each item into a task or calendar event with a deadline, and drafts replies where useful.",
+     "produces": "tasks + events + drafts"
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Confirm Guild Conformance",
+     "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+     "script": "guild/conformance.py",
+     "produces": "conformance sign-off"
+    },
+    {
+     "kind": "gate",
+     "gate": "report",
+     "label": "The Butler reports what needs you, what was scheduled, and the drafts awaiting your send — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+    }
+   ],
+   "trigger_phrases": [
+    "comms triage",
+    "triage my inbox",
+    "process whatsapp messages",
+    "calendar entries from email",
+    "inbox sweep",
+    "prep for meetings"
+   ]
+  },
+  {
+   "id": "scheduled-routine",
+   "name": "Standing Watch",
+   "icon": "⏱️",
+   "accent": "violet",
+   "category": "Comms & Automation",
+   "class": "mutating",
+   "tagline": "Define and run an unattended scheduled task on a cron cadence.",
+   "when": "Use this for recurring automations that run unattended on a cron — housekeeping (daily/hourly/weekly), the daily Gmail/WhatsApp reports and reply-drafts, per-matter deadline reminders, colleague-progress nudges, the Supabase advisor, auto-improvement/auto-strategizing, and the law scanners. ~23 such tasks live under ~/Documents/Claude/Scheduled/; this is their shape.",
+   "steps": [
+    {
+     "kind": "member",
+     "actor": "you",
+     "title": "Define the Routine",
+     "act": "You describe the recurring job you want to run on a schedule, unattended.",
+     "produces": "routine request"
+    },
+    {
+     "kind": "member",
+     "actor": "the-butler",
+     "title": "Frame the Routine",
+     "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+     "produces": "routine brief",
+     "script": "guild/frame_brief.py",
+     "args": {
+      "style": "shape"
+     },
+     "inputs": [
+      "routine request"
+     ]
+    },
+    {
+     "kind": "gate",
+     "gate": "approval",
+     "label": "You approve the cadence and the unattended scope before the watch is set."
+    },
+    {
+     "kind": "member",
+     "actor": "the-strategist",
+     "title": "Define the Watch",
+     "act": "Runs `guild/plan.py` — the Strategist's planning step as a runnable primitive.",
+     "produces": "routine spec",
+     "script": "guild/plan.py",
+     "args": {
+      "template": "spec"
+     },
+     "inputs": [
+      "routine brief"
+     ]
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Stand the Watch",
+     "act": "On each tick the routine runs unattended via its assigned weapons, does the work, and ends with a plain-English summary.",
+     "produces": "routine run"
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Confirm Guild Conformance",
+     "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+     "script": "guild/conformance.py",
+     "produces": "conformance sign-off"
+    },
+    {
+     "kind": "gate",
+     "gate": "report",
+     "label": "The Butler reports what the routine does, its cadence, and the last run's summary — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+    }
+   ],
+   "trigger_phrases": [
+    "standing watch",
+    "set up a cron",
+    "recurring scheduled task",
+    "housekeeping cron job",
+    "unattended cron automation",
+    "daily scheduled report"
+   ]
+  },
+  {
+   "id": "marketing-audit",
+   "name": "Brand Audit",
+   "icon": "📣",
+   "accent": "rose",
+   "category": "Research & Intel",
+   "class": "mutating",
+   "tagline": "Audit the public site and brand from a marketing-firm perspective.",
+   "when": "Use this for website/SEO/brand audits and campaign-readiness — the public panel, messaging, reach, and conversion. Led by the Herald, the guild's marketing member.",
+   "steps": [
+    {
+     "kind": "member",
+     "actor": "you",
+     "title": "Call the Recon",
+     "act": "You ask the guild to audit the public panel and brand as a marketing firm would.",
+     "produces": "marketing request"
+    },
+    {
+     "kind": "member",
+     "actor": "the-butler",
+     "title": "Frame the Recon",
+     "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+     "produces": "marketing brief",
+     "script": "guild/frame_brief.py",
+     "args": {
+      "style": "shape"
+     },
+     "inputs": [
+      "marketing request"
+     ]
+    },
+    {
+     "kind": "gate",
+     "gate": "approval",
+     "label": "You confirm the audit lens before the recon begins."
+    },
+    {
+     "kind": "member",
+     "actor": "the-herald",
+     "title": "Frame the Lens",
+     "act": "The Herald frames the audit from a marketing-firm perspective — SEO, search-catchability, messaging truth, reach, and the conversion path.",
+     "produces": "audit lens"
+    },
+    {
+     "kind": "member",
+     "actor": "the-herald",
+     "title": "Audit Reach & Message",
+     "act": "The Herald audits the public site's reach, messaging, and conversion, flagging anything off-brand, untrue, or that weakens demand.",
+     "produces": "marketing findings"
+    },
+    {
+     "kind": "member",
+     "actor": "the-designer",
+     "title": "Polish the Public Panel",
+     "act": "The Designer reviews the public site's visual polish and on-brand look — footer, hero, team, pricing — and fixes what's off.",
+     "produces": "visual findings"
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Confirm Guild Conformance",
+     "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+     "script": "guild/conformance.py",
+     "produces": "conformance sign-off"
+    },
+    {
+     "kind": "gate",
+     "gate": "report",
+     "label": "The Butler reports the findings, the off-brand/untrue flags, and the campaign-readiness call — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+    }
+   ],
+   "trigger_phrases": [
+    "brand audit",
+    "seo audit",
+    "website audit",
+    "campaign-readiness check",
+    "public site and brand",
+    "marketing-firm audit"
+   ]
+  },
+  {
+   "id": "art-forge",
+   "name": "Art Forge",
+   "icon": "🖼️",
+   "accent": "rose",
+   "category": "Design",
+   "class": "mutating",
+   "tagline": "Forge Fallen Sword art — sigils, portraits, weapon and workflow tiles — via MiniMax, gated by the Designer.",
+   "when": "Use this whenever a new visual asset is needed — a member portrait, skill sigil, weapon tile, or workflow sigil.",
+   "steps": [
+    {
+     "kind": "member",
+     "actor": "you",
+     "title": "Request the Art",
+     "act": "You describe the art you need — what it's for, the subject, and any constraints.",
+     "produces": "art request"
+    },
+    {
+     "kind": "member",
+     "actor": "the-butler",
+     "title": "Frame the Art",
+     "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+     "produces": "art brief",
+     "script": "guild/frame_brief.py",
+     "args": {
+      "style": "shape"
+     },
+     "inputs": [
+      "art request"
+     ]
+    },
+    {
+     "kind": "gate",
+     "gate": "approval",
+     "label": "You approve the art brief before the forge is lit."
+    },
+    {
+     "kind": "member",
+     "actor": "the-designer",
+     "title": "Draft the Brief",
+     "act": "The Designer sets the art brief — subject, size, theme, palette, and what to avoid — in the Fallen Sword style.",
+     "produces": "art brief"
+    },
+    {
+     "kind": "member",
+     "actor": "the-designer",
+     "title": "Forge via MiniMax",
+     "act": "The Designer commissions the image from the MiniMax doer-weapon, reviews each result, and sends rejects back with deltas until they land.",
+     "produces": "forged art",
+     "script": "guild/commission_art.py",
+     "args": {
+      "max-iter": 1
+     },
+     "inputs": [
+      "art brief"
+     ]
+    },
+    {
+     "kind": "member",
+     "actor": "the-developer",
+     "title": "Wire the Art",
+     "act": "The Developer drops the finals into the right path and rebuilds the dashboard so the art renders.",
+     "produces": "wired art",
+     "script": "build.py"
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Confirm Guild Conformance",
+     "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+     "script": "guild/conformance.py",
+     "produces": "conformance sign-off"
+    },
+    {
+     "kind": "gate",
+     "gate": "report",
+     "label": "The Butler reports the art forged, where it lives, and how it renders — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+    }
+   ],
+   "trigger_phrases": [
+    "art forge",
+    "new member portrait",
+    "weapon tile art",
+    "workflow sigil art",
+    "forge a new sigil",
+    "fallensword art asset"
+   ]
+  },
+  {
+   "id": "arsenal-forge",
+   "name": "Arsenal Forge",
+   "icon": "⚔️",
+   "accent": "blue",
+   "category": "Guild Self",
+   "class": "mutating",
+   "tagline": "Recruit or re-skin a weapon — art, thinker/doer role, and wiring into every loadout.",
+   "when": "Use this when a new AI model joins the arsenal, or an existing weapon needs re-skinning or re-roleing.",
+   "steps": [
+    {
+     "kind": "member",
+     "actor": "you",
+     "title": "Recruit the Weapon",
+     "act": "You name the model to add or change, and how it should look or behave.",
+     "produces": "weapon request"
+    },
+    {
+     "kind": "member",
+     "actor": "the-butler",
+     "title": "Frame the Weapon",
+     "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+     "produces": "weapon brief",
+     "script": "guild/frame_brief.py",
+     "args": {
+      "style": "shape"
+     },
+     "inputs": [
+      "weapon request"
+     ]
+    },
+    {
+     "kind": "gate",
+     "gate": "approval",
+     "label": "You approve the weapon's identity and role before it's forged and wired."
+    },
+    {
+     "kind": "member",
+     "actor": "the-strategist",
+     "title": "Name the Weapon",
+     "act": "The Strategist sets the weapon's identity — model, element, colour, visual metaphor — and its role: thinker, doer, or both.",
+     "produces": "weapon identity"
+    },
+    {
+     "kind": "member",
+     "actor": "the-designer",
+     "title": "Forge the Weapon Art",
+     "act": "The Designer commissions the weapon art via MiniMax and reviews it (runs Art Forge).",
+     "produces": "weapon art",
+     "script": "guild/commission_art.py",
+     "args": {
+      "max-iter": 1
+     },
+     "inputs": [
+      "weapon identity"
+     ]
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Wire to the Arsenal",
+     "act": "The Quartermaster wires the weapon and its role-icon into the arsenal and every member's loadout, in priority order.",
+     "produces": "wired arsenal",
+     "script": "guild/wire.py",
+     "args": {
+      "kind": "weapon"
+     },
+     "inputs": [
+      "weapon identity"
+     ]
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Confirm Guild Conformance",
+     "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+     "script": "guild/conformance.py",
+     "produces": "conformance sign-off"
+    },
+    {
+     "kind": "gate",
+     "gate": "report",
+     "label": "The Butler reports the weapon added, its role, and the loadouts updated — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+    }
+   ],
+   "trigger_phrases": [
+    "arsenal forge",
+    "recruit a new ai model",
+    "wire the model into loadouts",
+    "re-skin a weapon",
+    "add to the arsenal",
+    "re-role the weapon"
+   ]
+  },
+  {
+   "id": "strategic-audit",
+   "name": "Strategic Audit",
+   "icon": "🔮",
+   "accent": "violet",
+   "category": "Guild Self",
+   "class": "mutating",
+   "tagline": "Convene the multi-model panel, converge the takes, and ship a graded MD audit.",
+   "when": "Use this when you want a deep judgement that ships a document, not code — repo audits, skill-merge analysis, 'does this achieve its goal'.",
+   "steps": [
+    {
+     "kind": "member",
+     "actor": "you",
+     "title": "Pose the Question",
+     "act": "You pose the question to audit — the repo, the roster, a decision, or a body of work.",
+     "produces": "audit question"
+    },
+    {
+     "kind": "member",
+     "actor": "the-butler",
+     "title": "Frame the Audit",
+     "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+     "produces": "audit brief",
+     "script": "guild/frame_brief.py",
+     "args": {
+      "style": "shape"
+     },
+     "inputs": [
+      "audit question"
+     ]
+    },
+    {
+     "kind": "gate",
+     "gate": "approval",
+     "label": "You confirm the angles to audit before the panel convenes."
+    },
+    {
+     "kind": "member",
+     "actor": "the-strategist",
+     "title": "Convene the Panel",
+     "act": "Runs `guild/plan.py` — the Strategist's planning step as a runnable primitive.",
+     "produces": "panel",
+     "script": "guild/plan.py",
+     "args": {
+      "template": "panel"
+     },
+     "inputs": [
+      "audit brief"
+     ]
+    },
+    {
+     "kind": "member",
+     "actor": "the-strategist",
+     "title": "Converge & Grade",
+     "act": "The Strategist fires the panel, converges the takes, resolves contradictions, grades the result, and writes the ranked MD audit.",
+     "produces": "graded audit"
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Confirm Guild Conformance",
+     "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+     "script": "guild/conformance.py",
+     "produces": "conformance sign-off"
+    },
+    {
+     "kind": "gate",
+     "gate": "report",
+     "label": "The Butler reports the verdict, the ranked findings, and the MD audit written — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+    }
+   ],
+   "trigger_phrases": [
+    "strategic audit",
+    "multi-model panel audit",
+    "ship a graded audit doc",
+    "converge the multi-model takes",
+    "deep judgement document",
+    "does this achieve its goal",
+    "review the sessions",
+    "review recent sessions",
+    "review the last",
+    "lessons learned",
+    "note lessons",
+    "note down lessons",
+    "audit the repo",
+    "audit the roster",
+    "upgrade skills workflows members"
+   ]
+  },
+  {
+   "id": "workflow-forge",
+   "name": "Workflow Forge",
+   "icon": "🗺️",
+   "accent": "cyan",
+   "category": "Guild Self",
+   "class": "mutating",
+   "tagline": "Capture a finished run as a reusable star-map workflow.",
+   "when": "Use this when a run is worth repeating — distil it into a named workflow, give it a sigil, and register it.",
+   "steps": [
+    {
+     "kind": "member",
+     "actor": "you",
+     "title": "Flag the Pattern",
+     "act": "You (or the Butler) flag that the just-finished run is worth saving as a star-map workflow.",
+     "produces": "capture request"
+    },
+    {
+     "kind": "member",
+     "actor": "the-butler",
+     "title": "Frame the Capture",
+     "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+     "produces": "capture brief",
+     "script": "guild/frame_brief.py",
+     "args": {
+      "style": "shape"
+     },
+     "inputs": [
+      "capture request"
+     ]
+    },
+    {
+     "kind": "gate",
+     "gate": "approval",
+     "label": "You approve capturing this run as a reusable workflow before it's drafted."
+    },
+    {
+     "kind": "member",
+     "actor": "the-strategist",
+     "title": "Draft the Workflow",
+     "act": "The Strategist distils the run into a reusable workflow — name, trigger, members, weapons, and steps.",
+     "produces": "workflow draft"
+    },
+    {
+     "kind": "member",
+     "actor": "the-designer",
+     "title": "Forge the Sigil",
+     "act": "The Designer forges the workflow's Fallen Sword sigil (runs Art Forge).",
+     "produces": "workflow sigil",
+     "script": "guild/commission_art.py",
+     "args": {
+      "max-iter": 1
+     },
+     "inputs": [
+      "workflow draft"
+     ]
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Write to the Star Map",
+     "act": "The Quartermaster writes the new workflow into workflows.json, adds its art prompt, and rebuilds the dashboard.",
+     "produces": "registered workflow",
+     "script": "guild/wire.py",
+     "args": {
+      "kind": "workflow"
+     },
+     "inputs": [
+      "workflow draft"
+     ]
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Confirm Guild Conformance",
+     "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+     "script": "guild/conformance.py",
+     "produces": "conformance sign-off"
+    },
+    {
+     "kind": "gate",
+     "gate": "report",
+     "label": "The Butler reports the workflow registered, its sigil, and where it sits on the star map — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+    }
+   ],
+   "trigger_phrases": [
+    "workflow forge",
+    "save this run as a workflow",
+    "reusable star-map workflow",
+    "distil into a named workflow",
+    "capture the run",
+    "register a new workflow",
+    "create a workflow",
+    "new workflow",
+    "forge a workflow",
+    "capture this as a workflow",
+    "make a starmap workflow",
+    "no workflow fits"
+   ]
+  },
+  {
+   "id": "relationship-intel",
+   "name": "Relationship Intel",
+   "icon": "🤝",
+   "accent": "gold",
+   "category": "Research & Intel",
+   "class": "read-only",
+   "tagline": "Turn email traffic into living relationship intelligence — win and keep clients.",
+   "when": "Use this to profile contacts from Gmail, log mistakes to avoid, and recommend retention tasks. Resumable and checkpoint-driven; runs as a multi-agent harvest→profile→strategise pipeline.",
+   "steps": [
+    {
+     "kind": "member",
+     "actor": "you",
+     "title": "Call the Sweep",
+     "act": "You ask the guild to sweep your email and update the relationship intelligence.",
+     "produces": "intel request"
+    },
+    {
+     "kind": "member",
+     "actor": "the-butler",
+     "title": "Frame the Sweep",
+     "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+     "produces": "intel brief",
+     "script": "guild/frame_brief.py",
+     "args": {
+      "style": "shape"
+     },
+     "inputs": [
+      "intel request"
+     ]
+    },
+    {
+     "kind": "gate",
+     "gate": "approval",
+     "label": "You confirm the window and the commercial scope before the sweep begins."
+    },
+    {
+     "kind": "member",
+     "actor": "the-herald",
+     "title": "Harvest the Threads",
+     "act": "The Herald sweeps Gmail (received and sent) for the window, returning a structured digest per contact — threads, response latency, tone, and commercial signals — saved as a dated harvest digest.",
+     "produces": "relationship digest"
+    },
+    {
+     "kind": "member",
+     "actor": "the-herald",
+     "title": "Profile the Contacts",
+     "act": "The Herald enriches each contact profile — character, how to deal with them from the firm's angle, and mistakes to avoid — without overwriting their live items.",
+     "produces": "contact profiles"
+    },
+    {
+     "kind": "member",
+     "actor": "the-strategist",
+     "title": "Flag Risk & Opportunity",
+     "act": "The Strategist logs the mistakes to avoid, updates the recommended-tasks list, and flags at-risk relationships and opportunities to protect the firm's commercial interest.",
+     "produces": "risk/opportunity flags"
+    },
+    {
+     "kind": "gate",
+     "gate": "report",
+     "label": "The Butler reports the contacts profiled, the mistakes logged, and the prioritised retention tasks — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+    }
+   ],
+   "trigger_phrases": [
+    "relationship intel",
+    "profile my contacts from gmail",
+    "client retention tasks",
+    "log mistakes to avoid",
+    "living contact profile",
+    "harvest profile strategise"
+   ]
+  },
+  {
+   "id": "law-harvest",
+   "name": "Law Harvest",
+   "icon": "📚",
+   "accent": "gold",
+   "category": "Legal",
+   "class": "mutating",
+   "tagline": "Ingest law PDFs into a clean, verified source-law library — the feed for the codex.",
+   "when": "Use this to bring real law PDFs into the library — identify, rename, extract verbatim, verify, and index. Feeds Legal Codex (which then translates and publishes).",
+   "steps": [
+    {
+     "kind": "member",
+     "actor": "you",
+     "title": "Drop the Laws",
+     "act": "You add law PDFs to the Stock Laws folder, or ask the guild to process what's queued.",
+     "produces": "law PDFs"
+    },
+    {
+     "kind": "member",
+     "actor": "the-butler",
+     "title": "Frame the Harvest",
+     "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+     "produces": "harvest brief",
+     "script": "guild/frame_brief.py",
+     "args": {
+      "style": "shape"
+     },
+     "inputs": [
+      "law PDFs"
+     ]
+    },
+    {
+     "kind": "gate",
+     "gate": "approval",
+     "label": "You confirm the source folder and scope before the harvest runs."
+    },
+    {
+     "kind": "member",
+     "actor": "the-architect",
+     "title": "Scan & Queue the Stock",
+     "act": "The Architect scans the Stock Laws folder, identifies and renames each misnamed law PDF, resolves conflicts, and queues an extraction task.",
+     "produces": "queued laws"
+    },
+    {
+     "kind": "member",
+     "actor": "the-translator",
+     "title": "Extract Verbatim",
+     "act": "The Translator extracts the queued law verbatim — Arabic canonical, page-ranges intact — into Source Laws.",
+     "produces": "extracted law"
+    },
+    {
+     "kind": "gate",
+     "gate": "certify",
+     "label": "The Quartermaster certifies the extraction is faithful and complete — verbatim, no gaps — before it enters the Source Laws library."
+    },
+    {
+     "kind": "member",
+     "actor": "the-translator",
+     "title": "Index the Harvest",
+     "act": "The Translator updates the Source Laws index and writes the dated harvest digest.",
+     "produces": "indexed harvest"
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Confirm Guild Conformance",
+     "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+     "script": "guild/conformance.py",
+     "produces": "conformance sign-off"
+    },
+    {
+     "kind": "gate",
+     "gate": "report",
+     "label": "The Butler reports the laws harvested, verified, and indexed — and what's ready for the codex — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+    }
+   ],
+   "trigger_phrases": [
+    "law harvest",
+    "ingest law pdfs",
+    "extract verbatim from law pdf",
+    "build the source-law library",
+    "verify and index laws",
+    "feed the codex with laws"
+   ]
+  },
+  {
+   "id": "web-oracle",
+   "name": "Oracle's Scrying",
+   "icon": "🔭",
+   "accent": "cyan",
+   "category": "Research & Intel",
+   "class": "read-only",
+   "tagline": "Scry the open web for a verified, cited answer to any question.",
+   "when": "Use this when a question needs an answer from the live web — general knowledge, current facts, anything outside the repo or the guild. Triggered when you ask a question with 'search the web' in it. The Strategist fans out searches, cross-checks the strongest sources, and returns a cited answer; no code is written.",
+   "steps": [
+    {
+     "kind": "member",
+     "actor": "you",
+     "title": "Pose the Question",
+     "act": "You ask a question that needs an answer from the live web, with 'search the web' in it.",
+     "produces": "web question"
+    },
+    {
+     "kind": "member",
+     "actor": "the-butler",
+     "title": "Frame the Query",
+     "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+     "produces": "search brief",
+     "script": "guild/frame_brief.py",
+     "args": {
+      "style": "shape"
+     },
+     "inputs": [
+      "web question"
+     ]
+    },
+    {
+     "kind": "gate",
+     "gate": "approval",
+     "label": "You confirm the question and its scope before the scrying begins."
+    },
+    {
+     "kind": "member",
+     "actor": "the-strategist",
+     "title": "Scry & Verify the Web",
+     "act": "The Strategist, driving the thinker weapon (web tools stay with the thinker — doers cannot run them), fans out web searches, fetches the strongest sources, adversarially cross-checks the claims, and synthesizes a cited answer.",
+     "produces": "cited answer"
+    },
+    {
+     "kind": "gate",
+     "gate": "report",
+     "label": "The Butler reports the answer and its sources — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+    }
+   ],
+   "trigger_phrases": [
+    "search the web",
+    "oracle's scrying",
+    "cited web answer",
+    "live web research",
+    "scry the open web",
+    "online cited response"
+   ]
+  },
+  {
+   "id": "inquiry-recon",
+   "name": "Inquiry / Recon",
+   "icon": "🔎",
+   "accent": "teal",
+   "category": "Research & Intel",
+   "class": "read-only",
+   "tagline": "Answer a read-only question about the repo or guild — cited to file:line.",
+   "when": "Use this for a quick read-only question about the code, the repo, or the guild itself — 'where is X', 'what calls Y', 'how does Z work', 'find all uses of W', 'which file holds …'. The routed member scouts with read-only tools (grep/glob/read), verifies findings against source, and returns a file:line-cited answer. No code is written, nothing is mutated. This is the lightweight lane so trivial lookups have a home under the workflow-gate hard rule, without the weight of a Strategic Audit.",
+   "steps": [
+    {
+     "kind": "member",
+     "actor": "you",
+     "title": "Pose the Question",
+     "act": "You ask a read-only question about the code, the repo, or the guild.",
+     "produces": "inquiry"
+    },
+    {
+     "kind": "member",
+     "actor": "the-developer",
+     "title": "Scout & Answer",
+     "act": "The routed member scouts read-only — grep/glob/read across the repo (handing bulk reads/summaries to a doer weapon) — verifies every claim against source, and returns a concise answer cited to file:line. Writes nothing.",
+     "produces": "cited answer",
+     "inputs": [
+      "inquiry"
+     ]
+    },
+    {
+     "kind": "gate",
+     "gate": "report",
+     "label": "The Butler reports the answer and its file:line sources back to you in plain English, and flags whether the run is worth saving as a reusable workflow."
+    }
+   ],
+   "trigger_phrases": [
+    "where is",
+    "what calls",
+    "how does",
+    "find all uses",
+    "look up",
+    "which file",
+    "trace the",
+    "scout the repo",
+    "recon the code",
+    "quick question about",
+    "show me where",
+    "inquiry",
+    "what does this do"
+   ]
+  },
+  {
+   "id": "local-session",
+   "name": "Local Session",
+   "icon": "🦅",
+   "accent": "indigo",
+   "category": "Research & Intel",
+   "class": "mutating",
+   "tagline": "Spawn an isolated Claude subagent to scout or work, then verify what it brings back.",
+   "when": "Use this when the task should run in a fresh, isolated local session — 'start a new local session to investigate X', 'spawn a subagent', 'delegate this to a local Claude'. The routed member scopes the brief, spawns a CLAUDE session-doer via the Agent tool (a spawned session must be Claude — MiniMax doers run via summon.py and have NO tool access, so they cannot BE a session), gives it a disjoint scoped task, then verifies its findings against source before reporting. Pick the cheapest Claude doer the member carries: haiku where held (the-developer, the-translator, the-quartermaster), else sonnet.",
+   "steps": [
+    {
+     "kind": "member",
+     "actor": "you",
+     "title": "Pose the Session Task",
+     "act": "You ask for work to run in a fresh, isolated local session — an investigation or a scoped job.",
+     "produces": "session task"
+    },
+    {
+     "kind": "member",
+     "actor": "the-developer",
+     "title": "Scope & Spawn",
+     "act": "The routed member scopes a disjoint brief and spawns a CLAUDE session-doer via the Agent tool — haiku if the member carries it (dev/translator/quartermaster), else sonnet; NEVER MiniMax, whose summon.py doers have no tool access and cannot be a session. The subagent runs its scoped task in isolation and returns structured findings.",
+     "produces": "session findings",
+     "inputs": [
+      "session task"
+     ]
+    },
+    {
+     "kind": "member",
+     "actor": "the-developer",
+     "title": "Review & Synthesize",
+     "act": "The routed member verifies the subagent's findings against source — nothing trusted unverified — and synthesizes the answer.",
+     "produces": "verified result"
+    },
+    {
+     "kind": "member",
+     "actor": "the-quartermaster",
+     "title": "Confirm Conformance",
+     "act": "Runs guild/conformance.py if anything was mutated; for a read-only scout, confirms the session touched nothing and closes clean.",
+     "produces": "conformance sign-off"
+    },
+    {
+     "kind": "gate",
+     "gate": "report",
+     "label": "The Butler reports the verified findings and their sources back to you in plain English, and flags whether the run is worth saving as a reusable workflow."
+    }
+   ],
+   "trigger_phrases": [
+    "start a new local session",
+    "new local session",
+    "start a local session",
+    "spawn a subagent",
+    "spawn a local session",
+    "investigate in a separate session",
+    "delegate to a local claude",
+    "run this in a subagent",
+    "local claude doer",
+    "isolated session"
+   ]
+  },
+  {
+   "id": "conversation",
+   "name": "Conversation",
+   "icon": "💬",
+   "accent": "slate",
+   "category": "Comms & Automation",
+   "class": "read-only",
+   "tagline": "Plain talk — a greeting, an ack, or a meta-question with no specialist lane.",
+   "when": "The catch-all lane for any turn that fits no other workflow: greetings, acknowledgements, thanks, clarifications, and meta-questions about the guild itself. It exists so EVERY turn — even one that fires no tools and writes nothing — can declare a workflow under the turn-end banner gate. The Butler answers directly in plain English; nothing is mutated. If a turn turns out to need real work, route it to the proper specialist lane instead of staying here.",
+   "steps": [
+    {
+     "kind": "member",
+     "actor": "you",
+     "title": "Say the Word",
+     "act": "You greet, acknowledge, or ask a meta-question that fits no specialist lane.",
+     "produces": "utterance"
+    },
+    {
+     "kind": "member",
+     "actor": "the-butler",
+     "title": "Answer Plainly",
+     "act": "The Butler answers directly in plain English from what is already known — no tools, no writes, no doer weapons. If the turn actually needs work, he routes it to the proper specialist lane instead.",
+     "produces": "reply",
+     "inputs": [
+      "utterance"
+     ]
+    },
+    {
+     "kind": "gate",
+     "gate": "report",
+     "label": "The Butler's plain-English reply IS the report back to you; he flags if the turn should have been a real workflow instead."
+    }
+   ],
+   "trigger_phrases": [
+    "hi",
+    "hello",
+    "hey",
+    "thanks",
+    "thank you",
+    "got it",
+    "okay",
+    "what do you think",
+    "tell me about",
+    "is this a bug",
+    "did you",
+    "explain"
+   ]
+  }
+ ]
 }

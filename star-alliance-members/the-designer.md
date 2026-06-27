@@ -4,7 +4,7 @@ description: "Deploy for UI/UX design, frontend visual quality, brand kits, imag
 model: sonnet
 tools: [Read, Edit, Write, Bash]
 skills: [design-taste, design-language, image-to-code, imagegen-frontend-web, imagegen-frontend-mobile, brandkit, impeccable, star-alliance-language, weapon-utility]
-weapons: [minimax-m3, image-01, minimax-video, minimax-speech, minimax-music, sonnet]  # priority order: doers→thinkers→sonnet
+weapons: [minimax-m3, image-01, minimax-video, minimax-speech, minimax-music, opus, sonnet]  # priority order: doers→thinkers→sonnet
 type: Member
 
 ---
@@ -29,7 +29,8 @@ to generate the actual assets. Choose by priority:
 | **3rd** — Tertiary | minimax-video | MiniMax Video — the moving tapestry. Generates motion and video for living interfaces. |
 | **4th** — Quaternary | minimax-speech | MiniMax Speech — the herald's voice. Generates spoken audio and voiceover. |
 | **5th** — Quinary | minimax-music | MiniMax Music — the bard's lute. Generates music and sound to score the experience. |
-| **6th** — Senary | sonnet | Claude Sonnet — the reliable longsword. The hand that directs: plans the design, critiques it, and dispatches the doers. |
+| **6th** — Senary | opus | Claude Opus — the master's eye. The prime thinker: plans the design, makes the taste calls, and critiques the doers' renders before they ship. |
+| **7th** — Septenary | sonnet | Claude Sonnet — the reliable longsword. The dual at the tail: stands in for any role, and the Claude-capable fallback when a doer needs a tool only Claude models can run. |
 
 **How to choose:** Direct with Sonnet — it holds the taste and the plan. When the quest
 needs a real asset, dispatch the MiniMax doer that fits: image-01 for stills, video for

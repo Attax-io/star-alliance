@@ -212,6 +212,10 @@ def cmd_write(repo: Path):
     prefix = f"{rel}/" if rel else ""
     rows = [(name, measure(f)) for name, f in iter_skills(skills_root)]
     out = []
+    # OKF frontmatter — VERSIONS.md is itself a governed knowledge file in the Star
+    # Alliance Language; emit a `type:` block so the OKF audit/gate see it as conformant.
+    out.append("---\ntype: Document\ntitle: Skill Version Registry\n"
+               "description: Canonical version + Cowork-compliance status of every Star Alliance skill.\n---")
     out.append("# Skill Version Registry\n")
     out.append("Canonical version + Cowork-compliance status of every skill. **Source of truth is\n"
                "`metadata.version`** in each skill's `SKILL.md` frontmatter (a top-level `version:` is rejected by\n"

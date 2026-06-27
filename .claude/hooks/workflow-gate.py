@@ -34,7 +34,11 @@ import sys, os, json, re
 #   Workflow      — invoking it inherently STARTS a workflow (high-alert announces it)
 #   Skill         — slash-skills are user-initiated entry points; each maps to a procedure
 #   AskUserQuestion / ExitPlanMode — pre-work clarification / planning, not execution
-EXEMPT = {"Workflow", "Skill", "AskUserQuestion", "ExitPlanMode"}
+# Read-only / inspection tools are exempt: looking around (reading files, running
+# read-only bash, searching) is not "work" and should never require a workflow
+# banner. The gate still bites on the work-producing tools (Edit/Write/Task/...).
+EXEMPT = {"Workflow", "Skill", "AskUserQuestion", "ExitPlanMode",
+          "Read", "Bash", "Grep", "Glob", "LS", "NotebookRead", "WebFetch", "WebSearch"}
 
 BANNER_RE = re.compile(r"Starmap Workflow Started:\s*(.+?)\s*!")
 

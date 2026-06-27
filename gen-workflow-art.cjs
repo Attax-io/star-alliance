@@ -67,6 +67,10 @@ const WORKFLOWS = [
     prompt: `${STYLE}. A SAPPHIRE-BLUE warded shield wall over a vault door, glowing ward-runes scanning for cracks, a few breaches sealing with blue light, a vigilant defensive sweep across a fortress gate`,
   },
   {
+    id: "okf-tidy",
+    prompt: `${STYLE}. A GOLD enchanted broom-and-quill sweeping an aged repository of leather-bound tomes into perfect order, each tome stamped with a glowing rune-label of its kind on the spine, cross-link threads of gold light connecting them, the Open Knowledge crest seal above, methodical scholarly tidiness and clean frontmatter`,
+  },
+  {
     id: "cleanup-rotation",
     prompt: `${STYLE}. A VIOLET enchanted broom of light sweeping glowing debris and tangled threads off an aged parchment ledger, runes snapping into clean alignment, methodical housekeeping across many small modes`,
   },

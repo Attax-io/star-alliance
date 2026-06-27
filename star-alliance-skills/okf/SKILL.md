@@ -3,7 +3,7 @@ name: okf
 type: Skill
 description: Keep the whole Star Alliance repo tidy and conformant to the Open Knowledge Format (OKF v0.1) — one concept per markdown file, each carrying a `type:` frontmatter, cross-linked, with non-knowledge files swept and placed by concept-path. The Quartermaster's repo-hygiene standard. Use when the user says 'tidy the repo', 'OKF', 'keep it clean', 'make it OKF-conformant', 'run the OKF audit', 'fix frontmatter', or after any campaign that left new files behind. Pairs with star-alliance-language (the reader half).
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 ---
 
 # OKF — Open Knowledge Format hygiene
@@ -13,6 +13,10 @@ this to keep the *entire* repo tidy and conformant to the **Open Knowledge Forma
 (OKF v0.1)** — Google Cloud's vendor-neutral spec for representing knowledge as a
 directory of markdown files. Its companion is **star-alliance-language**, the
 *reader* half every other member uses to consume what this skill produces.
+
+> **OKF *is* the Star Alliance Language** — the guild's one knowledge standard from here
+> on. The Quartermaster **produces** in it (this skill); every member **reads** it back via
+> [[star-alliance-language]]. One format spoken across every member, skill, and doc.
 
 ## What OKF requires (the whole spec, one screen)
 
@@ -95,3 +99,8 @@ guarantee real — producer and consumer share one contract, exactly as OKF inte
 - Don't put frontmatter in non-markdown files — tidy those by placement, not YAML.
 - Don't widen scope into `impeccable/` or `node_modules/` — they're vendored.
 - Don't hand-bump the project version; `guild-log` the work and `build.py` does it.
+
+## Changelog
+- **1.1.0** — Declared canonical: **OKF is the Star Alliance Language**, the guild's single knowledge format — Quartermaster-produced, read by every member via [[star-alliance-language]]. The `skill_registry.py` generator now emits OKF frontmatter on `VERSIONS.md`, so the whole repo (members, skills, docs, registries) audits 100% conformant.
+- **1.0.0** — Initial release. The producer half of the guild knowledge standard (OKF v0.1): one concept per file, `type:` frontmatter, cross-links, audit + `--fix`.
+

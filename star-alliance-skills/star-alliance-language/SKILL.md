@@ -3,7 +3,7 @@ name: star-alliance-language
 type: Skill
 description: The guild's shared reading protocol for OKF-tidied repos — how every member quickly, cheaply, and reliably takes in a repo the Quartermaster has kept conformant, on future runs. Read the concept map first (frontmatter + cross-links), open only the few concepts the task needs, never blind-read. Universal — rides every member, like weapon-utility. Use whenever a member starts work in a repo, needs to find where knowledge lives, or asks 'read the repo', 'what's in here', 'map this', 'orient me', 'where is X documented'.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 ---
 
 # Star Alliance Language — the OKF reading protocol
@@ -16,6 +16,9 @@ OKF's producer/consumer split.
 
 **Universal.** Like `weapon-utility`, this skill rides *every* member. Any member
 beginning work in a repo orients through this protocol first.
+
+> **This is the read side of the Star Alliance Language ([[okf]]).** OKF is the format the
+> Quartermaster keeps; this is how every member speaks it back. Canonical, guild-wide.
 
 ## Why this exists
 
@@ -84,3 +87,8 @@ flag it to the Quartermaster rather than working around it.
 - Don't blind-read the repo when one `okf_read.py` call gives you the map.
 - Don't full-read a body the frontmatter already answered.
 - Don't enforce or fix conformance here — that's the producer skill's job.
+
+## Changelog
+- **1.1.0** — Declared canonical: the **reader half of the Star Alliance Language ([[okf]])** — rides every member, the way the guild consumes its one knowledge format.
+- **1.0.0** — Initial release. The consumer half of the guild knowledge standard: map-first reading via `okf_read.py`, never blind full-reads.
+
