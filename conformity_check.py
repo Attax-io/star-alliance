@@ -10,6 +10,7 @@ Checks (each maps to a source-of-truth invariant or a logged decision):
   D23 report-gate  every workflow ENDS with a Butler 'report' gate   (decision #23)
   C  qm-close      every workflow's last member step before report is the-quartermaster
   A  arsenal-order per member: doers → thinkers/duals → sonnet last   (session decision)
+  PT prime-thinker == first thinker-capable weapon in the arsenal (== opus)
   R  refs          workflow actors ∈ members∪{you}; gates valid; member skills exist
   S  source==gen   member .md frontmatter weapons order == generated guild-data
   W  weaponsDesc   members-meta weaponsDesc set == member weapons set
@@ -34,9 +35,16 @@ MEDIA_WEAPONS = {"image-01", "minimax-video", "minimax-speech", "minimax-music"}
 
 
 def expected_order(weapons):
-    """doers (best-first) + thinkers&duals minus sonnet (best-first) + sonnet."""
+    """Canonical arsenal order:
+       prime doer (minimax-m3, cheapest) first → other doers → prime thinker (opus,
+       best) first → other thinkers → sonnet last (universal Claude-tool fallback).
+       Relative order within the 'other doers' / 'other thinkers' groups is preserved."""
     doers = [w for w in weapons if ROLE.get(w) == "doer"]
+    if "minimax-m3" in doers:  # prime doer always leads
+        doers = ["minimax-m3"] + [w for w in doers if w != "minimax-m3"]
     thinkers = [w for w in weapons if ROLE.get(w) in ("thinker", "both") and w != "sonnet"]
+    if "opus" in thinkers:     # prime thinker always leads the thinker block
+        thinkers = ["opus"] + [w for w in thinkers if w != "opus"]
     tail = ["sonnet"] if "sonnet" in weapons else []
     return doers + thinkers + tail
 
@@ -102,16 +110,48 @@ def main():
                 a = s.get("actor")
                 if a != "you" and a not in members:
                     fails.append(f"R  {wid}: unknown actor '{a}'")
+                # WPN — structured weapon fields (optional) stay valid: thinker is a
+                # thinker-role weapon in the actor's loadout; doers are doer-role and in
+                # loadout; ultra only if the actor carries ultra-brainstorming.
+                if a in members:
+                    am = members[a]
+                    loadout = {w["model"] for w in am.get("weapons", [])}
+                    th = s.get("thinker")
+                    if th is not None and (ROLE.get(th) not in ("thinker", "both") or th not in loadout):
+                        fails.append(f"WPN {wid}: step '{s.get('title','?')}' thinker '{th}' "
+                                     f"is not a thinker-role weapon in {a}'s loadout")
+                    for d in (s.get("doers") or []):
+                        model = d.get("model") if isinstance(d, dict) else d
+                        cnt = d.get("count", 1) if isinstance(d, dict) else 1
+                        if not isinstance(cnt, int) or cnt < 1:
+                            fails.append(f"WPN {wid}: step '{s.get('title','?')}' doer '{model}' bad count {cnt!r}")
+                        if ROLE.get(model) not in ("doer", "both") or model not in loadout:
+                            fails.append(f"WPN {wid}: step '{s.get('title','?')}' doer '{model}' "
+                                         f"is not a doer-role weapon in {a}'s loadout")
+                    if s.get("ultra") and "ultra-brainstorming" not in am.get("skills", []):
+                        fails.append(f"WPN {wid}: step '{s.get('title','?')}' ultra=true but "
+                                     f"{a} lacks the ultra-brainstorming skill")
             elif s.get("kind") == "gate":
                 if s.get("gate") not in {"approval", "certify", "report"}:
                     fails.append(f"R  {wid}: unknown gate '{s.get('gate')}'")
             else:
                 fails.append(f"R  {wid}: unknown step kind '{s.get('kind')}'")
         # C — last member step before the final report gate is the-quartermaster
+        wf_class = wf.get("class", "mutating")
+        if wf_class not in ("mutating", "read-only"):
+            fails.append(f"CLS {wid}: unknown class '{wf_class}' (expected mutating | read-only)")
         member_steps = [s for s in steps if s.get("kind") == "member"]
-        if member_steps and member_steps[-1].get("actor") != "the-quartermaster":
-            fails.append(f"C  {wid}: closes with '{member_steps[-1].get('actor')}', "
+        # C — the Quartermaster conformance-close is required only for MUTATING workflows
+        # (those that change guild artifacts). Read-only/advisory workflows end at the
+        # Butler's report with the worker as the last member step — no ceremonial close.
+        if wf_class != "read-only" and member_steps and member_steps[-1].get("actor") != "the-quartermaster":
+            fails.append(f"C  {wid}: mutating workflow closes with '{member_steps[-1].get('actor')}', "
                          f"not the-quartermaster (conformance-close convention)")
+        # read-only workflows must NOT end on a Quartermaster close — the worker is the
+        # last member step; a trailing Quartermaster is the ceremonial no-op we removed.
+        if wf_class == "read-only" and member_steps and member_steps[-1].get("actor") == "the-quartermaster":
+            fails.append(f"C  {wid}: read-only workflow closes with a Quartermaster step "
+                         f"(a no-op conformance close — remove it; the Butler report is the deliverable)")
 
     # per-member checks
     for mid, m in members.items():
