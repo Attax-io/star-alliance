@@ -48,24 +48,17 @@
         ]
       }
     ],
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write|MultiEdit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/member-table-sync.py\""
-          },
-          {
-            "type": "command",
-            "command": "sh \"$CLAUDE_PROJECT_DIR/.claude/hooks/autocommit.sh\""
-          }
-        ]
-      }
-    ],
     "Stop": [
       {
         "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/turn-cost.py\""
+          },
+          {
+            "type": "command",
+            "command": "sh \"$CLAUDE_PROJECT_DIR/.claude/hooks/turn-finalize.sh\""
+          },
           {
             "type": "command",
             "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/workflow-banner-enforcer.py\""
