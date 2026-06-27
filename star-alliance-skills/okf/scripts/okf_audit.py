@@ -65,15 +65,32 @@ LAYOUT_RULES = [
 ]
 
 
-def classify_placement(name: str):
-    """For a ROOT-level filename, return (target_dir, safety) if it is misplaced,
-    or None if it belongs at root (pinned) or carries no rule (left alone).
-    `safety` is 'safe' (free to move) or 'review' (needs a ref-rewrite sweep)."""
+def count_refs(name: str, root: str) -> int:
+    """How many OTHER tracked files mention this filename (markdown links, `see X.md`
+    pointers, code comments, JSON detail strings). Inbound refs are what make a move
+    unsafe — any one would go stale. Uses `git grep` so it only counts the tracked
+    integrity surface and is fast on a big repo."""
+    r = subprocess.run(["git", "grep", "-I", "-l", "-F", name],
+                       cwd=root, capture_output=True, text=True)
+    if r.returncode not in (0, 1):  # 0=hits, 1=no hits; anything else = git error
+        return -1  # unknown → caller treats as 'not provably safe'
+    hits = [ln for ln in r.stdout.splitlines() if ln.strip() and os.path.basename(ln.strip()) != name]
+    return len(hits)
+
+
+def classify_placement(name: str, root: str):
+    """For a ROOT-level filename, return (target_path, safety, refs) if misplaced, or
+    None if it belongs at root (pinned) or carries no rule. `safety` is computed, not
+    guessed: a rule's base tag is 'safe' ONLY when the file has zero inbound refs;
+    any reference (or a rule tagged 'review') downgrades it to 'review' — a move that
+    needs a path/link-rewrite sweep."""
     if name in LAYOUT_PINNED or name.startswith("."):
         return None
-    for pat, target, safety in LAYOUT_RULES:
+    for pat, target, base in LAYOUT_RULES:
         if re.match(pat, name):
-            return (target, safety)
+            refs = count_refs(name, root)
+            safety = "safe" if (base == "safe" and refs == 0) else "review"
+            return (target + name, safety, refs)
     return None  # unclassified root file — advisory only, not flagged
 
 
