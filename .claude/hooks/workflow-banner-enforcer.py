@@ -170,7 +170,11 @@ def main():
             "🗺 Starmap Workflow Started: <name>! naming a workflow from workflows.json "
             "(use 'Conversation' for a plain greeting/ack/meta-question, 'Inquiry / Recon' "
             "for a read-only question about the code or guild), then give your answer. "
-            "If none fits, run Workflow Forge to create one.\n"
+            "If none fits, run Workflow Forge to create one. "
+            "IMPORTANT — BOTH gates are checked in the same pass: in this SAME reply you "
+            "must ALSO emit a ⚔ Member reports for duty: <member> using <thinker> and "
+            "<doer>! banner for a member of that workflow's cast. Emit both banners at "
+            "once or you will be re-prompted again for the one you drop.\n"
         )
         sys.exit(2)
 
