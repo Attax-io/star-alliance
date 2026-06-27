@@ -414,5 +414,21 @@
     "tabler": "ti-gauge",
     "triggers": "'efficiency report', 'harness efficiency', 'how much are we saving', 'is the gate working', 'tier split', 'check the offload', 'net tokens saved', 'tune the stakes list', or before/after a routing-gate hook change",
     "modes": "Report — join usage-log.jsonl + turn-cost.jsonl via efficiency_report.py (net-saved + per-tier breakdown); Watch — hunt the one hard failure (a high-stakes turn that took LITE); Tune — edit the data/harness.json stakes/size policy, then re-run the gate regression matrix"
+  },
+  "portability-audit": {
+    "icon": "🗺️",
+    "blurb": "Audit how portable a Claude Code project is — maps 6 layers, assigns tier gaps, produces an install plan",
+    "level": "Intermediate",
+    "tabler": "ti-map-check",
+    "triggers": "'audit portability', 'can I use this in another project', 'portability audit', 'what needs to move', 'install plan for project X', '/portability-audit'",
+    "modes": "Six layers: skills → members → arsenal paths → env vars → hooks → workflows. Assigns tier gap per finding; outputs ranked gap list + install.sh command."
+  },
+  "project-start": {
+    "icon": "🚀",
+    "blurb": "Session health check for SA-equipped projects — verifies STAR_ALLIANCE_ROOT, diffs skill versions, reports stale skills",
+    "level": "Foundational",
+    "tabler": "ti-rocket",
+    "triggers": "'start session', 'session start', '/project-start', 'check my skills', 'are my skills up to date', 'health check'",
+    "modes": "Three checks: STAR_ALLIANCE_ROOT resolves → skill version diff → member file present. Reports gaps with one-line fix commands. Never auto-installs."
   }
 }

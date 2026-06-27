@@ -3,7 +3,7 @@ name: the-quartermaster
 description: "Deploy for skill management, syncing, upgrading, creating new skills, running the daily skill evolution routine, and enforcing the guild log. Triggers: 'sync my skills', 'upgrade a skill', 'create a skill', 'run the skill routine', 'evolve my skills', 'log this', 'guild log this', 'did you log it?', 'add a log entry', '/skillsmith', '/guild-log'."
 model: sonnet
 tools: [Read, Edit, Write, Bash]
-skills: [skillsmith, guild-conformity, dashboard-parity, release-train, guild-log, cleanup, storm-investigation, session-mining, okf, star-alliance-language, weapon-utility]
+skills: [skillsmith, guild-conformity, dashboard-parity, release-train, guild-log, cleanup, storm-investigation, session-mining, okf, star-alliance-language, weapon-utility, portability-audit, project-start]
 weapons: [minimax-m3, haiku, opus, glm-5.2, kimi-k2.7, gpt-5.5, sonnet]  # priority order: doers→thinkers→sonnet
 type: Member
 
@@ -56,6 +56,8 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | `cleanup` | Lex Council hygiene — i18n, hardcoded text, dev errors, postgres, lint, docs | any other member's work — this rite is the Quartermaster's alone | `skillsmith` (after), `okf` |
 | `storm-investigation` | vetting a new-skill idea or auditing a domain from many angles | a single-question lookup | `skillsmith`, `okf` |
 | `okf` | the repo drifts from Open Knowledge Format — one concept per file, typed, linked | domain research or skill conception (→ `storm-investigation`) | `cleanup`, `skillsmith` |
+| `portability-audit` | before deploying members to a new project, or diagnosing why arsenal tools fail outside the repo | when work is entirely inside the star-alliance repo | `project-start` (verify after) |
+| `project-start` | top of any session in an SA-equipped project — quick 5s health check | inside the star-alliance repo itself (it's the source, not a target) | `portability-audit` (diagnose), `skillsmith sync` (fix) |
 
 **Universal skills — every member carries these; drill them at the edges of every quest:**
 

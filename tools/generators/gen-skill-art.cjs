@@ -213,6 +213,14 @@ const SKILLS = [
     id: "session-mining",
     prompt: `${STYLE}. A dwarven runesmith's pickaxe of glowing gold striking a deep vein of crystal memory-shards in a dark cavern wall, each struck shard floating up as a luminous scroll-fragment of a past chronicle, a set of scales beside the vein weighing the true shards against false ones — the dull already-known shards crumbling to dust while the rare new ones rise glowing, an arcane ledger open below catching the verified findings in gold ink, the craft of mining old chronicles for lessons and proving which still matter`,
   },
+  {
+    id: "portability-audit",
+    prompt: `${STYLE}. A weathered cartographer's map unfurling across a stone table, six glowing rune-layers stacked above it like translucent strata — skills, members, arsenal tools, env vars, hooks, workflows — each layer either blazing gold-green where intact or cracked red where broken, a quill annotating gap markers in crimson ink beside a sealed travel chest ready for deployment, the craft of mapping what moves and what breaks before a guild deploys to new territory, no text, no watermarks`,
+  },
+  {
+    id: "project-start",
+    prompt: `${STYLE}. A guild sentinel standing at the gate of a new fortress at dawn, lantern raised to check a glowing checklist etched into the stonework — three runes lighting up green as the check passes: a shield rune for the root path, a sword-rack rune for skill versions, a banner rune for member presence — a sunrise breaking over the parapets behind, the craft of a fast dawn-check before the day's work begins, no text, no watermarks`,
+  },
 ];
 
 function postJSON(url, headers, body) {

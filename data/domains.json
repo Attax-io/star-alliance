@@ -60,7 +60,9 @@
     "star-alliance-language",
     "claude-code-hooks",
     "schema-evolution",
-    "session-mining"
+    "session-mining",
+    "portability-audit",
+    "project-start"
    ],
    "members": [
     "the-butler",
@@ -73,7 +75,7 @@
     "the-merchant",
     "the-quartermaster"
    ],
-   "notes": "The home domain. All 9 guild members + 52 skills live here. Every other domain borrows from this skill pool."
+   "notes": "The home domain. All 9 guild members + 54 skills live here. Every other domain borrows from this skill pool."
   },
   {
    "id": "lex-council-app",
