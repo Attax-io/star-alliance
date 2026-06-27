@@ -78,4 +78,5 @@ Track, always: rebuild-before-claim rate, DOM-confirmed rate, blank/stale tiles 
 Own skill. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new mode/section · MAJOR: method contract change). Regenerate `VERSIONS.md` with `python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.
 
 ## Changelog
+- **1.1.0** — Added **§Headless render smoke-harness** — a buildless node+`vm` crash-sweep that loads the real `guild-data.js` + `app.js` over a DOM stub and runs every renderer against all members/skills/domains, catching a crash in any surface (not just the one you opened) in milliseconds before spending a browser. Documents the inject-the-driver-inside-the-IIFE trick (the renderers aren't global) and per-record assertion so a bad record names itself. The fast pre-filter ahead of the DOM-and-screenshot proof. New section → MINOR.
 - **1.0.0** — Initial release. The Quartermaster's last-mile check: prove every change reaches the rendered dashboard at index.html — rebuild, assert in guild-data.js, confirm in the live DOM, screenshot.
