@@ -42,6 +42,9 @@ def _passthrough(args):
     """Build the trailing flag/positional portion shared by every backend.
 
     -s VALUE is prepended, --json and -f VALUE are appended, prompt is last.
+
+    token_flag names the backend's max-output flag (minimax: --max-tokens,
+    ollama_cloud: --num-predict); --timeout is shared across both backends.
     """
     parts = []
     if args.system is not None:
@@ -50,6 +53,10 @@ def _passthrough(args):
         parts.append('--json')
     if args.file is not None:
         parts += ['-f', args.file]
+    if getattr(args, 'max_tokens', None) is not None and token_flag:
+        parts += [token_flag, str(args.max_tokens)]
+    if getattr(args, 'timeout', None) is not None:
+        parts += ['--timeout', str(args.timeout)]
     if args.prompt is not None:
         parts.append(args.prompt)
     return parts
