@@ -42,5 +42,15 @@ _Mined from full session history — 46 sessions hit this; it was the single mos
 - **Read the vault/memory logs before continuing** work started in a prior session.
 - Save user **confirmations and wins** as feedback memories, not only corrections.
 - **Log errors loudly** — never silently swallow them.
-- **Confirm destructive git ops** (`reset --hard`, force push) before executing.
+- **Confirm destructive git ops** (`reset --hard`, force push) before executing. This is now **mechanically enforced** by the destructive-command gate (`.claude/hooks/destructive-gate.py`, PreToolUse·Bash): `rm -rf`, force-push, `reset --hard`, `git clean -f`, `checkout .`/`restore .`, `DROP`/`TRUNCATE`/unscoped `DELETE`, `kubectl delete`, `docker rm -f`/prune, `mkfs`, `dd of=/`, raw-disk `>`, `chmod -R 777` all hard-block. After an explicit **`proceed`**, re-run with `# sa-confirm` appended (or `SA_CONFIRM=1`) to pass.
+- **Confusion Protocol** — for high-stakes ambiguity (architecture · data model · destructive scope · missing context), STOP. Name the confusion in one sentence, present 2–3 options with trade-offs, and ask. The Butler does this at STEP 0: if it can't produce a clean one-line restatement, it emits the options instead of rubber-stamping a misread task. Not for routine/obvious changes.
 - On **MCP unavailability**, never fabricate a write — reconnect or fall back to non-write ops; when a dispatch channel is disabled, log intent verbatim and don't call the tool.
+
+## Harness tools (Skills Pool audit, 2026-06)
+
+Standalone harness aids adopted from the gstack/harness-books mining — see [[skills-pool-strategic-audit-2026-06]]:
+
+- **Independent verification** (`.claude/hooks/verify-gate.py`, Stop·blocking, **opt-in**) — HARNESS-BOOKS 9.9: never let the implementer grade its own work. When **armed** (`touch .claude/state/verify-gate-armed`), a turn that changed source code can't close until a **different** member/model has reviewed the diff and the pass is recorded: `python3 .claude/hooks/verify_hash.py > .claude/state/verify-pass`. Runs **before** `turn-finalize.sh`, so a block prevents that round's commit — forward-fix only, never un-commit. Bypass one turn with `SA_SKIP_VERIFY=1`.
+- **Context checkpoint** — `python3 .claude/context/context_save.py "<summary>" [--decisions …] [--remaining …]` snapshots git state + decisions + remaining work; `context_restore.py [--list|<stamp>]` resumes a cold session. Transient handoff, distinct from durable memory files.
+- **Learnings journal** — `python3 .claude/context/learn.py add|search|list` — append-only "didn't we fix this before?" recall in `.claude/state/learnings.jsonl`. Promote a recurring learning into a real memory file when it earns its place.
+- **Skill fingerprints** — `python3 .claude/tools/skill_fingerprint.py [--check]` writes/diffs a content hash per skill so sync reinstalls only what actually changed (Codex doctrine; complements [[guild-sync]]).

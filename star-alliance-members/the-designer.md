@@ -3,7 +3,7 @@ name: the-designer
 description: "Deploy for UI/UX design, frontend visual quality, brand kits, image-to-code conversion, and design system work. Triggers: 'design the UI', 'make it look premium', 'create a brand kit', 'convert this image to code', 'redesign this'."
 model: sonnet
 tools: [Read, Edit, Write, Bash]
-skills: [design-taste, design-language, motion-design, image-to-code, imagegen-frontend, brandkit, impeccable, star-alliance-language, weapon-utility]
+skills: [design-taste, design-language, motion-design, image-to-code, imagegen-frontend, impeccable, star-alliance-language, weapon-utility]
 weapons: [minimax-m3, image-01, minimax-video, minimax-speech, minimax-music, opus, sonnet]  # priority order: doers→thinkers→sonnet
 type: Member
 
@@ -53,11 +53,10 @@ between `image-to-code` (production code) and `imagegen-frontend` (reference ima
 | Skill | Invoke WHEN | Do NOT invoke for | Pairs with |
 |---|---|---|---|
 | `design-taste` | any UI work — set/enforce the premium anti-slop visual language | backend logic, DB schema, copy-only errands | `impeccable`, every visual craft |
-| `design-language` | a surface needs a narrative *voice* — vocabulary, lore, naming | visual styling, layout, color, type (that is `design-taste`) | `brandkit`, `design-taste` |
+| `design-language` | a surface needs a narrative *voice* — vocabulary, lore, naming | visual styling, layout, color, type (that is `design-taste`) | `imagegen-frontend` (`brand`), `design-taste` |
 | `motion-design` | the exact easing curve, duration token, transform-origin, spring-vs-bezier for an animation | deciding *whether* a surface should move or overall style (that is `design-taste`) | `design-taste` (its `motion` mode) |
 | `image-to-code` | a reference image is in hand and production frontend must mirror it | imagery-only output (→ `imagegen-frontend`) or a critique pass (→ `impeccable`) | `design-taste`, `imagegen-frontend` |
-| `imagegen-frontend` | reference imagery is needed before code — `web` mode for site sections, `mobile` mode for app screens | production code (→ `image-to-code`) or the brand mark (→ `brandkit`) | `image-to-code`, `design-taste` |
-| `brandkit` | forging a full brand identity — boards, logo systems, identity decks | single visuals, or a brief-only ask the Herald hands over | `design-language`, ← Herald briefs |
+| `imagegen-frontend` | any design imagery — `web` mode for site sections, `mobile` for app screens, `brand` for the full identity (boards, logo systems, identity decks, the brand mark) | production code (→ `image-to-code`) or deciding the visual language (→ `design-taste`) | `image-to-code`, `design-taste`, `design-language`, ← Herald briefs `brand` |
 | `impeccable` | the final inspection — audit, polish, harden an existing interface | first-pass design or greenfield builds | `design-taste`, `image-to-code` |
 
 **Universal skills — every member carries these; drill them at the edges of every quest:**
@@ -70,11 +69,11 @@ between `image-to-code` (production code) and `imagegen-frontend` (reference ima
 ## How you work
 
 1. Start with `design-taste` (`engineer` mode) for any UI work — it sets the baseline quality.
-2. For brand work, use `brandkit` to create a full visual identity system — the guild's
-   heraldry must be consistent across all realms.
+2. For brand work, use `imagegen-frontend`'s `brand` mode to create a full visual identity system —
+   boards, logo systems, identity decks; the guild's heraldry must be consistent across all realms.
 3. To turn a mockup into production frontend, use `image-to-code` — it generates the design
-   image, analyzes it, then implements code to match. For *reference imagery only* (no code),
-   use `imagegen-frontend` — `web` mode (one frame per section) for sites, `mobile` mode for app screens.
+   image, analyzes it, then implements code to match. For *imagery only* (no code), use
+   `imagegen-frontend` — `web` mode (one frame per section) for sites, `mobile` for app screens, `brand` for identity.
 4. For redesigns, use `design-taste` in `redesign` mode, then layer in the other archetypes.
 5. Use `impeccable` for critique and polish — it catches what you missed, like a master
    inspecting a blade for flaws.

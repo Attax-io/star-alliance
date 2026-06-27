@@ -1,6 +1,6 @@
 ---
 name: design-taste
-description: "The Designer's core taste engine — one multi-mode skill replacing the guild's scattered style skills. Pick and enforce a premium, anti-generic visual language for any interface, then hold the line against AI-slop defaults. Modes: engineer (metric dials, component architecture, the AI-tells ban list); agency (Awwwards-tier 'expensive' aesthetic + motion choreography); minimal (warm editorial monochrome); brutalist (Swiss industrial + tactical terminal); motion (GSAP scroll, AIDA, true-randomized layout); encode (emit a DESIGN.md the whole team follows); redesign (audit and upgrade an existing UI without breaking it). Each mode's full playbook lives in references/. Use for any visual-design, styling, taste, or redesign work. Triggers: 'design the UI', 'make it premium', 'pick a style', 'minimalist', 'brutalist', 'add motion', 'write a DESIGN.md', 'redesign this', 'anti-slop'. Differentiate from brandkit (identity/logo systems), image-to-code (generate then build), and impeccable (external npx polish)."
+description: "The Designer's core taste engine — one multi-mode skill replacing the guild's scattered style skills. Pick and enforce a premium, anti-generic visual language for any interface, then hold the line against AI-slop defaults. Modes: engineer (metric dials, component architecture, the AI-tells ban list); agency (Awwwards-tier 'expensive' aesthetic + motion choreography); minimal (warm editorial monochrome); brutalist (Swiss industrial + tactical terminal); motion (GSAP scroll, AIDA, true-randomized layout); encode (emit a DESIGN.md the whole team follows); redesign (audit and upgrade an existing UI without breaking it). Each mode's full playbook lives in references/. Use for any visual-design, styling, taste, or redesign work. Triggers: 'design the UI', 'make it premium', 'pick a style', 'minimalist', 'brutalist', 'add motion', 'write a DESIGN.md', 'redesign this', 'anti-slop'. Differentiate from imagegen-frontend's brand mode (identity/logo systems), image-to-code (generate then build), and impeccable (external npx polish)."
 metadata:
   version: 1.0.0
 type: Skill
@@ -16,8 +16,9 @@ design look cheap. One skill, seven modes — pick one, ship the surface, prove 
 ## What it is / is not
 
 - It **is** the aesthetic decision + enforcement layer: pick a visual language, apply it, defend it.
-- It is **not** `brandkit` — that builds the identity system (logo, palette, brand decks). Taste dresses
-  a product; brandkit defines who the product *is*. Taste consumes brandkit's tokens, it doesn't set them.
+- It is **not** `imagegen-frontend`'s `brand` mode — that builds the identity system (logo, palette, brand
+  decks). Taste dresses a product; `brand` mode defines who the product *is*. Taste consumes its tokens, it
+  doesn't set them.
 - It is **not** `image-to-code` / `imagegen-*` — those *generate* assets and screens. Taste decides the
   language those generators must obey.
 - It is **not** `impeccable` — that is the external npx polish/critique tool, kept separate. Reach for it
@@ -59,7 +60,7 @@ design look cheap. One skill, seven modes — pick one, ship the surface, prove 
 ## Shared design laws (every mode obeys)
 
 - **Type:** one expressive type pairing, real scale contrast (don't ship everything at 16px). No 6-line wraps.
-- **Colour:** a deliberate palette from brandkit tokens — never raw framework defaults, never a rainbow.
+- **Colour:** a deliberate palette from `imagegen-frontend` (`brand` mode) tokens — never raw framework defaults, never a rainbow.
 - **Layout:** intentional asymmetry and rhythm over centered-everything. Whitespace is structure, not filler.
 - **Motion:** purposeful and hardware-accelerated (`transform`/`opacity`), never decorative jank.
 - **The AI-slop test:** before shipping, ask — *does this look like a default Tailwind/Bootstrap template?*
@@ -72,7 +73,7 @@ design look cheap. One skill, seven modes — pick one, ship the surface, prove 
    `brutalist`/`motion`) if the surface has a clear character.
 2. **Load that mode's `references/*.md`** for the full playbook — the dispatcher above is the index, the
    detail lives in the reference so this file stays lean.
-3. **Set the dials** (`engineer` mode) and pull tokens from `brandkit`; never invent identity here.
+3. **Set the dials** (`engineer` mode) and pull tokens from `imagegen-frontend` (`brand` mode); never invent identity here.
 4. **Build, then run the slop test.** The thinker weapon (sonnet) plans and critiques; the doer weapons
    (image-01, minimax-m3) generate. Nothing ships until it passes the slop test.
 5. **Encode it** when more than one surface or member is involved — run `encode` to emit a `DESIGN.md`
@@ -96,7 +97,7 @@ design look cheap. One skill, seven modes — pick one, ship the surface, prove 
 - `minimal` and `brutalist` are *mutually exclusive* archetypes — pick one per surface, never blend them.
 - The detail is in `references/`; resist re-inflating this SKILL.md back toward the seven originals — that
   re-creates the bloat the merge removed and risks the Cowork word ceiling.
-- Taste without brandkit tokens drifts. If the identity isn't set, run `brandkit` first.
+- Taste without identity tokens drifts. If the identity isn't set, run `imagegen-frontend` (`brand` mode) first.
 
 ## Versioning
 Own skill (consolidates seven prior style skills). Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new mode/reference · MAJOR: method contract change). Regenerate `VERSIONS.md` with `python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.

@@ -112,7 +112,7 @@ These skills belong to one member only — they define the member's specialty:
 - `skillsmith` — The Quartermaster's management toolkit
 - `growth-marketing` — The Herald's four-mode marketing engine (content/SEO, brand, email, social/paid)
 - `market-recon`, `trading-strategy`, `portfolio-risk` — The Merchant's read-only trading crafts (the read, the plan, the book)
-- `image-to-code`, `imagegen-*`, `impeccable`, etc. — The Designer's design arsenal (`brandkit` now shared with The Herald)
+- `image-to-code`, `imagegen-frontend`, `impeccable`, etc. — The Designer's design arsenal (`imagegen-frontend`'s `brand` mode shared with The Herald)
 
 ## Deploying a member
 

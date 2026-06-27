@@ -21,8 +21,8 @@ dropping a `references/*.md` in.
   how a thing **looks**. The two are orthogonal axes: `design-taste` dresses the pixels, `design-language`
   scripts the words. A surface usually wants both, but you pick them separately. **If the request is about
   appearance, style, or "make it premium" — that is `design-taste`, not this skill.**
-- It is **NOT** `brandkit` — that defines identity (logo, palette, the brand *system*). A language consumes
-  an established identity's terms; it doesn't mint the brand.
+- It is **NOT** `imagegen-frontend`'s `brand` mode — that defines identity (logo, palette, the brand *system*).
+  A language consumes an established identity's terms; it doesn't mint the brand.
 
 ## The languages
 
@@ -96,4 +96,4 @@ the git root via the `VERSIONS.md`+`.git` marker), then `python3 build.py`.
 - **1.0.0** — Initial release. Generalises `fallen-sword-design-language` into a multi-language voice engine;
   the original Fallen Sword playbook preserved verbatim under `references/fallen-sword.md` as mode #1, joined
   by `star-alliance` (guild-dev meta-voice) and `lex-council` (product voice). Distinct from `design-taste`
-  (visual) and `brandkit` (identity).
+  (visual) and `imagegen-frontend`'s `brand` mode (identity).

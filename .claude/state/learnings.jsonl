@@ -1,1 +1,3 @@
 {"ts": "2026-06-27T18:57:13Z", "branch": "main", "tags": ["harness", "context"], "text": "Claude Code hooks cannot rewrite tool_results; HEADROOM needs a proxy"}
+{"ts": "2026-06-27T19:02:11Z", "branch": "main", "tags": ["harness", "git", "verify"], "text": "verify_hash must use 'git status --porcelain -uall' \u2014 plain porcelain collapses untracked files in NEW dirs into a dir entry with no extension, hiding source files from the verify gate"}
+{"ts": "2026-06-27T19:02:11Z", "branch": "main", "tags": ["harness", "git"], "text": "Star Alliance commits at EACH Stop via turn-finalize.sh (git add -A) AND per-file via autocommit.sh; verify-gate sits before turn-finalize so a block stops that round's commit (no un-commit)"}

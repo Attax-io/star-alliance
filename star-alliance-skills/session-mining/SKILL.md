@@ -13,7 +13,7 @@ description: >-
   every 'lesson' already shipped. Output is propose-only (apply-gate OFF). The on-demand companion to
   skillsmith's daily routine; uses storm-investigation to synthesize.
 metadata:
-  version: 1.2.0
+  version: 1.3.0
 type: Skill
 
 ---
@@ -55,6 +55,13 @@ corrections/requests + assistant proposals/gap-flags), deduped, optionally `--ca
 `--min-bytes` to drop stubs. The default keyword sets target guild/skill mining; override with
 `--user-kw`/`--asst-kw` for another lens (bugs, decisions, naming). Output is small enough to Read
 directly.
+
+**Incremental re-mining (`--cache <path>`).** Stores only grow — re-running over the same window
+re-regexes every transcript from scratch. Pass `--cache mine.cache` and each transcript's extracted
+signal is memoized by `size:mtime`; an unchanged `.jsonl` is reused, never reopened. Re-runs over a
+mostly-static window drop from seconds to ~tens of ms (measured 3.5s → 0.05s, 579/579 hits, output
+byte-identical). The cache is fingerprinted by `--user-kw`/`--asst-kw`/`--cap` — change any of them
+and it rebuilds itself, so a stale cache can never serve wrong-lens lines. Safe to delete anytime.
 
 ### Phase 3 — Summarize (doer-grade → MiniMax)
 For a big window, shard the digest and fan **MiniMax M3** over the shards (per `weapon-utility` /
