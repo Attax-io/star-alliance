@@ -52,7 +52,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`legal-drafting`](star-alliance-skills/legal-drafting/SKILL.md) | 1.0.0 | own | 122 / 935 | 1156 / 55 | ✓ lean | The Translator's craft for drafting client correspondence and bilingual (Arabic/French/Eng… |
 | [`legal-rule-modeling`](star-alliance-skills/legal-rule-modeling/SKILL.md) | 1.0.0 | own | 133 / 931 | 1447 / 65 | ✓ lean | The Architect's craft for modelling a governing law into the exact calculation rules and i… |
 | [`market-recon`](star-alliance-skills/market-recon/SKILL.md) | 1.0.0 | own | 127 / 914 | 1115 / 56 | ✓ lean | The Merchant's craft for read-only market, investment, and risk analysis that ships a writ… |
-| [`members-formation`](star-alliance-skills/members-formation/SKILL.md) | 1.0.2 | own | 132 / 825 | 1356 / 152 | ✓ lean | The Butler's routing method — turn any mission into a formation: which member owns each sl… |
+| [`members-formation`](star-alliance-skills/members-formation/SKILL.md) | 1.1.0 | own | 141 / 883 | 1775 / 179 | ✓ lean | The Butler's routing method — match an incoming request to the right star-map workflow in … |
 | [`obsidian-markdown`](star-alliance-skills/obsidian-markdown/SKILL.md) | 1.0.0 | own | 36 / 262 | 610 / 164 | ✓ lean | Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, a… |
 | [`performance`](star-alliance-skills/performance/SKILL.md) | 1.0.3 | vendored | 32 / 219 | 1418 / 372 | ✓ lean | Optimize web performance for faster loading and better user experience |
 | [`portfolio-risk`](star-alliance-skills/portfolio-risk/SKILL.md) | 0.1.0 | own | 129 / 1005 | 834 / 56 | ✓ lean | The Merchant's craft for read-only, book-level portfolio construction and risk measurement… |

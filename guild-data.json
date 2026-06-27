@@ -1,13 +1,13 @@
 {
   "meta": {
     "name": "Star Alliance",
-    "version": "6.52.59",
+    "version": "6.52.61",
     "versionTiers": {
       "major": 6,
       "minor": 52,
-      "patch": 59
+      "patch": 61
     },
-    "generated": "2026-06-27T07:48:36Z",
+    "generated": "2026-06-27T09:54:58Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "gpt-5.5": "deactivated",
@@ -17,8 +17,8 @@
       "members": 9,
       "skills": 46,
       "domains": 3,
-      "workflows": 26,
-      "log": 131
+      "workflows": 27,
+      "log": 136
     }
   },
   "members": [
@@ -3353,7 +3353,7 @@
     {
       "id": "members-formation",
       "name": "members-formation",
-      "version": "1.0.2",
+      "version": "1.1.0",
       "icon": "🧭",
       "art": "",
       "artPng": true,
@@ -3362,17 +3362,15 @@
       "ramp": "teal",
       "tabler": "ti-route",
       "src": "own",
-      "desc": "The Butler's routing method — turn any mission into a formation: which member owns each slice, whether members work simultaneously or step by step, and where the gates fall. Use when the Butler receives an order and must decide who handles what and in what arrangement. Triggers: 'route this', 'who should handle this', 'form the team', 'distribute the work', 'can these run in parallel', 'coordinate the members', 'plan the dispatch', or any request touching more than one craft. Produces a formation (members + arrangement + gates) that, when the same sequence is worth repeating, the Quartermaster crystallizes into a star-map workflow in workflows.json. Skills are how each member works; workflows are how members work together; this skill is how the Butler decides the arrangement — it produces workflows, it is not one.",
-      "intro": "This is how the Butler decides who works, and in what arrangement. It is the Butler's one dedicated craft: he is not a specialist, he is the router.",
+      "desc": "The Butler's routing method — match an incoming request to the right star-map workflow in `workflows.json` and follow it. The Butler does not assemble a fresh team per mission; each workflow already names its members and their arrangement, so routing is a *selection* problem: read the request, scan the workflows' triggers, pick the one that fits, follow its steps. Use when the Butler receives an order and must decide which workflow to run. Triggers: 'route this', 'which workflow', 'who should handle this', 'how do we run this', 'pick the workflow', 'what's the play', or any incoming order that must be matched to a procedure. Only when NO existing workflow fits does the Butler fall back to forming a fresh formation (members + arrangement + gates) and hand it to the Quartermaster's Workflow Forge to crystallize. Workflow-selection first; formation-building is the fallback.",
+      "intro": "This is how the Butler decides which workflow to run. It is the Butler's one dedicated craft: he is not a specialist, he is the router.",
       "sections": [
-        "What a formation is",
-        "The roster you route to — one dedicated craft each",
-        "The method — five steps",
-        "Parallel vs. sequential — the heart",
-        "Formation patterns — the vocabulary",
-        "The gates — guild standard, baked in",
-        "Crystallizing a formation into a star-map workflow",
-        "How the Butler runs it",
+        "The primary method — workflow selection (five steps)",
+        "The workflow catalogue — what to match against",
+        "When no workflow fits — fall back to forming a formation",
+        "The gates — guild standard, baked into every workflow",
+        "Crystallizing a fallback formation into a star-map workflow",
+        "How the Butler runs it — the full loop",
         "Versioning",
         "Changelog"
       ],
@@ -3384,8 +3382,8 @@
       ],
       "scripts": [],
       "stats": {
-        "lines": 151,
-        "words": 1356
+        "lines": 178,
+        "words": 1775
       },
       "global": true,
       "members": [
@@ -6368,10 +6366,115 @@
         "what does this do"
       ],
       "artPng": true
+    },
+    {
+      "id": "conversation",
+      "name": "Conversation",
+      "icon": "💬",
+      "accent": "slate",
+      "category": "Comms & Automation",
+      "tagline": "Plain talk — a greeting, an ack, or a meta-question with no specialist lane.",
+      "when": "The catch-all lane for any turn that fits no other workflow: greetings, acknowledgements, thanks, clarifications, and meta-questions about the guild itself. It exists so EVERY turn — even one that fires no tools and writes nothing — can declare a workflow under the turn-end banner gate. The Butler answers directly in plain English; nothing is mutated. If a turn turns out to need real work, route it to the proper specialist lane instead of staying here.",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Say the Word",
+          "act": "You greet, acknowledge, or ask a meta-question that fits no specialist lane.",
+          "produces": "utterance"
+        },
+        {
+          "kind": "member",
+          "actor": "the-butler",
+          "title": "Answer Plainly",
+          "act": "The Butler answers directly in plain English from what is already known — no tools, no writes, no doer weapons. If the turn actually needs work, he routes it to the proper specialist lane instead.",
+          "produces": "reply",
+          "inputs": [
+            "utterance"
+          ]
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm No-Op",
+          "act": "Confirms the turn mutated nothing — a plain reply cannot drift the repo, so no conformance sweep is needed; signs it off as clean.",
+          "produces": "no-op sign-off"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler's plain-English reply IS the report back to you; he flags if the turn should have been a real workflow instead."
+        }
+      ],
+      "trigger_phrases": [
+        "hi",
+        "hello",
+        "hey",
+        "thanks",
+        "thank you",
+        "got it",
+        "okay",
+        "what do you think",
+        "tell me about",
+        "is this a bug",
+        "did you",
+        "explain"
+      ],
+      "artPng": true
     }
   ],
   "log": {
     "entries": [
+      {
+        "id": 81,
+        "date": "2026-06-27",
+        "type": "chore",
+        "title": "race guard: banner-enforcer no longer false-blocks turns read before transcript flush",
+        "who": "the-developer",
+        "detail": "workflow-banner-enforcer.py (Stop hook) read the transcript .jsonl before the finished assistant turn was flushed, so it saw no assistant text, found no banner, and hard-blocked fully-compliant replies (the banner IS text) — masked only by the CAP=3 relent. Fix: if there is no assistant text since the last user message, the turn isn't judgeable yet → fail open (exit 0). A real answer always carries text, so this only catches the flush race, never a genuine miss. Member gate + workflow gate stay fully strict."
+      },
+      {
+        "id": 80,
+        "date": "2026-06-27",
+        "type": "chore",
+        "title": "⚡ skill klaxon now fires for /slash skills (guild-routing-gate.sh)",
+        "who": "the-developer",
+        "detail": "high-alert.py only fires the ⚡ 'Member Skill Activated' banner on the Skill TOOL, but a user-typed /slash skill loads via a <command-name> injection and never calls the tool, so that path was silent. Fix: guild-routing-gate.sh (UserPromptSubmit) now parses the prompt for a leading /skill, validates it (local ~/.claude/skills dir OR /plugin:skill namespaced form, with a builtin denylist for /caveman /config /loop etc.), and directs the model to emit the ⚡ banner as its first line — same model-emitted pattern as ⚔/🗺. Payload passed via env var (SA_INPUT), not stdin, because python3 - <<heredoc steals stdin for the script."
+      },
+      {
+        "id": 79,
+        "date": "2026-06-27",
+        "type": "decision",
+        "title": "⚔ banner fires per MEMBER from the workflow cast — not one per workflow",
+        "who": "the-developer",
+        "detail": "The ⚔ 'Member reports for duty' banner was prose-only (high-alert.py never fired it) and worded as a single STEP-1 event, so a multi-member workflow announced only its lead; the closing the-quartermaster (and any mid specialist) acted silently. Fix: (1) guild-routing-gate.sh klaxon reworded — ⚔ is per-member, per step, derived from the workflow's own steps[].actor (skip you+gates), explicitly multiple banners per multi-member workflow. (2) high-alert.py now also fires ⚔ on a real Agent/Task dispatch, but ONLY when subagent_type is a known guild-member id (no false klaxon for Explore/general-purpose). (3) workflow-banner-enforcer.py derives the cast from the declared workflow and blocks a working turn where NO cast member reported (≥1 required; the whole cast can't be forced per-turn because in-context persona switches have no tool footprint, and a workflow spans turns). Full per-member firing stays behavioral, backed by the ≥1 gate + auto-fire on genuine dispatch.",
+        "ref": [
+          "the-quartermaster"
+        ]
+      },
+      {
+        "id": 78,
+        "date": "2026-06-27",
+        "type": "decision",
+        "title": "EVERY turn runs inside a workflow — enforced at turn-end (Stop), not just on tools",
+        "who": "the-developer",
+        "detail": "workflow-gate.py is PreToolUse — it only bit a TOOL call, so a turn that fired zero tools (a plain answer, a greeting) escaped the 'every turn runs in a workflow' rule entirely. Fix: a new Stop hook workflow-banner-enforcer.py scans the finished turn for a valid 🗺 Starmap Workflow Started: <name>! naming a real workflows.json entry; missing → hard block (exit 2), CAP=3 anti-brick relent so a turn can never loop-freeze. Added a catch-all 'Conversation' workflow (you→the-butler→the-quartermaster→report) so greeting/ack/meta turns have a real lane; inquiry-recon covers read-only code/guild questions. Hooks load at session start, so it bites from the next session.",
+        "ref": [
+          "the-butler"
+        ]
+      },
+      {
+        "id": 77,
+        "date": "2026-06-27",
+        "type": "decision",
+        "title": "Member weapon tables are GENERATED from the loadout, never hand-kept",
+        "who": "the-developer",
+        "detail": "The '## Your Weapons' table in each member .md duplicated the frontmatter weapons: order + members-meta.json weaponsDesc — two hand-kept copies, so 8 of 9 members had drifted (4 dropped minimax-m3 entirely). Fix: build.py now renders the table from loadout order + weaponsDesc and writes it back into the .md (self-heals every build); conformity_check.py check WT asserts table order+desc == loadout (backstop for hand-edits); a PostToolUse member-table-sync.py hook runs build.py whenever a member .md or members-meta.json is edited, before autocommit, so a loadout change can never leave a stale table. Changing which weapon a member uses = edit frontmatter weapons: only; the table follows. Upgrading weapon-utility (behavior) is untouched and still propagates to all members.",
+        "ref": [
+          "weapon-utility",
+          "the-developer"
+        ]
+      },
       {
         "id": 76,
         "date": "2026-06-27",
@@ -8016,6 +8119,6 @@
         "id": "g-325a46a5-add-skill-conquering-campaign"
       }
     ],
-    "count": 131
+    "count": 136
   }
 }

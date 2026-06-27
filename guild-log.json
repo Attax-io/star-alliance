@@ -2,6 +2,56 @@
   "version": 1,
   "entries": [
     {
+      "id": 81,
+      "date": "2026-06-27",
+      "type": "chore",
+      "title": "race guard: banner-enforcer no longer false-blocks turns read before transcript flush",
+      "who": "the-developer",
+      "detail": "workflow-banner-enforcer.py (Stop hook) read the transcript .jsonl before the finished assistant turn was flushed, so it saw no assistant text, found no banner, and hard-blocked fully-compliant replies (the banner IS text) — masked only by the CAP=3 relent. Fix: if there is no assistant text since the last user message, the turn isn't judgeable yet → fail open (exit 0). A real answer always carries text, so this only catches the flush race, never a genuine miss. Member gate + workflow gate stay fully strict."
+    },
+    {
+      "id": 80,
+      "date": "2026-06-27",
+      "type": "chore",
+      "title": "⚡ skill klaxon now fires for /slash skills (guild-routing-gate.sh)",
+      "who": "the-developer",
+      "detail": "high-alert.py only fires the ⚡ 'Member Skill Activated' banner on the Skill TOOL, but a user-typed /slash skill loads via a <command-name> injection and never calls the tool, so that path was silent. Fix: guild-routing-gate.sh (UserPromptSubmit) now parses the prompt for a leading /skill, validates it (local ~/.claude/skills dir OR /plugin:skill namespaced form, with a builtin denylist for /caveman /config /loop etc.), and directs the model to emit the ⚡ banner as its first line — same model-emitted pattern as ⚔/🗺. Payload passed via env var (SA_INPUT), not stdin, because python3 - <<heredoc steals stdin for the script."
+    },
+    {
+      "id": 79,
+      "date": "2026-06-27",
+      "type": "decision",
+      "title": "⚔ banner fires per MEMBER from the workflow cast — not one per workflow",
+      "who": "the-developer",
+      "detail": "The ⚔ 'Member reports for duty' banner was prose-only (high-alert.py never fired it) and worded as a single STEP-1 event, so a multi-member workflow announced only its lead; the closing the-quartermaster (and any mid specialist) acted silently. Fix: (1) guild-routing-gate.sh klaxon reworded — ⚔ is per-member, per step, derived from the workflow's own steps[].actor (skip you+gates), explicitly multiple banners per multi-member workflow. (2) high-alert.py now also fires ⚔ on a real Agent/Task dispatch, but ONLY when subagent_type is a known guild-member id (no false klaxon for Explore/general-purpose). (3) workflow-banner-enforcer.py derives the cast from the declared workflow and blocks a working turn where NO cast member reported (≥1 required; the whole cast can't be forced per-turn because in-context persona switches have no tool footprint, and a workflow spans turns). Full per-member firing stays behavioral, backed by the ≥1 gate + auto-fire on genuine dispatch.",
+      "ref": [
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": 78,
+      "date": "2026-06-27",
+      "type": "decision",
+      "title": "EVERY turn runs inside a workflow — enforced at turn-end (Stop), not just on tools",
+      "who": "the-developer",
+      "detail": "workflow-gate.py is PreToolUse — it only bit a TOOL call, so a turn that fired zero tools (a plain answer, a greeting) escaped the 'every turn runs in a workflow' rule entirely. Fix: a new Stop hook workflow-banner-enforcer.py scans the finished turn for a valid 🗺 Starmap Workflow Started: <name>! naming a real workflows.json entry; missing → hard block (exit 2), CAP=3 anti-brick relent so a turn can never loop-freeze. Added a catch-all 'Conversation' workflow (you→the-butler→the-quartermaster→report) so greeting/ack/meta turns have a real lane; inquiry-recon covers read-only code/guild questions. Hooks load at session start, so it bites from the next session.",
+      "ref": [
+        "the-butler"
+      ]
+    },
+    {
+      "id": 77,
+      "date": "2026-06-27",
+      "type": "decision",
+      "title": "Member weapon tables are GENERATED from the loadout, never hand-kept",
+      "who": "the-developer",
+      "detail": "The '## Your Weapons' table in each member .md duplicated the frontmatter weapons: order + members-meta.json weaponsDesc — two hand-kept copies, so 8 of 9 members had drifted (4 dropped minimax-m3 entirely). Fix: build.py now renders the table from loadout order + weaponsDesc and writes it back into the .md (self-heals every build); conformity_check.py check WT asserts table order+desc == loadout (backstop for hand-edits); a PostToolUse member-table-sync.py hook runs build.py whenever a member .md or members-meta.json is edited, before autocommit, so a loadout change can never leave a stale table. Changing which weapon a member uses = edit frontmatter weapons: only; the table follows. Upgrading weapon-utility (behavior) is untouched and still propagates to all members.",
+      "ref": [
+        "weapon-utility",
+        "the-developer"
+      ]
+    },
+    {
       "id": 76,
       "date": "2026-06-27",
       "type": "chore",
