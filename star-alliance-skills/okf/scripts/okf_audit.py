@@ -265,9 +265,10 @@ def run_layout(root: str, do_fix: bool, as_json: bool) -> int:
             for m in safe_left:
                 print(f"      {m['file']} → {m['target']}")
         if review:
-            print(f"  ⚠ {len(review)} file(s) need a path-rewrite sweep (Phase-2 Architecture Build):")
+            print(f"  ⚠ {len(review)} file(s) need a path/link-rewrite sweep (Phase-2 Architecture Build):")
             for m in review:
-                print(f"      {m['file']} → {m['target']}  [review: referenced by hooks/build/serve/dashboard]")
+                why = "ref-count unknown" if m["refs"] < 0 else f"{m['refs']} inbound ref(s)"
+                print(f"      {m['file']} → {m['target']}  [review: {why}]")
         if not misplaced and not moved:
             print("  ✓ every root file is pinned or correctly placed")
     # Enforce only the 'safe' class — 'review' is advisory until the sweep runs.
