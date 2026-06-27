@@ -47,6 +47,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`imagegen-frontend-mobile`](star-alliance-skills/imagegen-frontend-mobile/SKILL.md) | 1.0.0 | own | 87 / 638 | 6460 / 1463 | ○ large | Elite mobile app image-generation skill for creating premium, app-native screen concepts a… |
 | [`imagegen-frontend-web`](star-alliance-skills/imagegen-frontend-web/SKILL.md) | 1.0.0 | own | 90 / 661 | 5724 / 985 | ○ large | Elite frontend image-direction skill for generating premium, conversion-aware website desi… |
 | [`impeccable`](star-alliance-skills/impeccable/SKILL.md) | 3.0.7 | external | 118 / 895 | 1793 / 173 | ✓ lean | Use when the user wants to design, redesign, shape, critique, audit, polish, clarify, dist… |
+| [`japanese-candlesticks`](star-alliance-skills/japanese-candlesticks/SKILL.md) | 1.0.0 | own | 163 / 1290 | 965 / 61 | ✗ desc>1024 | The Merchant's read-only craft for reading and interpreting Japanese candlestick charts, d… |
 | [`law-harvest`](star-alliance-skills/law-harvest/SKILL.md) | 1.0.0 | own | 149 / 979 | 1152 / 64 | ✓ lean | The shared Architect + Translator craft for ingesting real law PDFs into a clean, verified… |
 | [`legal-drafting`](star-alliance-skills/legal-drafting/SKILL.md) | 1.0.0 | own | 122 / 935 | 1156 / 55 | ✓ lean | The Translator's craft for drafting client correspondence and bilingual (Arabic/French/Eng… |
 | [`legal-rule-modeling`](star-alliance-skills/legal-rule-modeling/SKILL.md) | 1.0.0 | own | 133 / 931 | 1447 / 65 | ✓ lean | The Architect's craft for modelling a governing law into the exact calculation rules and i… |
@@ -70,4 +71,4 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`weapon-utility`](star-alliance-skills/weapon-utility/SKILL.md) | 1.1.0 | own | 152 / 922 | 960 / 115 | ✓ lean | Every member's rule for which weapon (model) to draw and how thinker and doer weapons work… |
 | [`workflow-forge`](star-alliance-skills/workflow-forge/SKILL.md) | 1.0.0 | own | 153 / 997 | 1078 / 60 | ✓ lean | The Strategist's craft for distilling a finished run into a reusable star-map workflow in … |
 
-_45 skills — 38 lean · 6 large (installable, over the 500-line ideal) · 1 near the word ceiling · 0 hard violations._
+_46 skills — 38 lean · 6 large (installable, over the 500-line ideal) · 1 near the word ceiling · 1 hard violations._

@@ -358,5 +358,13 @@
     "tabler": "ti-map-2",
     "triggers": "'save this as a workflow', 'add this to the star map', 'register a workflow', 'crystallize this formation'",
     "modes": ""
+  },
+  "japanese-candlesticks": {
+    "icon": "🕯️",
+    "blurb": "Read & interpret Japanese candlestick charts (Nison) — every reversal, continuation & doji pattern",
+    "level": "Advanced",
+    "tabler": "ti-chart-candle-filled",
+    "triggers": "'what candlestick pattern is this', 'is this a hammer or a doji', 'read this candlestick chart', 'explain bullish engulfing', 'morning star meaning', 'teach me Japanese candlesticks'",
+    "modes": "single-line reversals; multi-line reversals; continuations; the doji family; Western-tool confluence"
   }
 }

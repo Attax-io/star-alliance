@@ -500,7 +500,14 @@
           "actor": "the-designer",
           "title": "Forge the Sigil",
           "act": "The Designer forges each new or changed skill's sigil and art, keeping the guild's heraldry consistent across the roster. Skill art is design — it runs through the Designer, no one else.",
-          "produces": "skill sigils"
+          "produces": "skill sigils",
+          "script": "guild/commission_art.py",
+          "args": {
+            "max-iter": 1
+          },
+          "inputs": [
+            "updated skills"
+          ]
         },
         {
           "kind": "member",
@@ -564,7 +571,11 @@
           "actor": "the-butler",
           "title": "Scout the Sessions",
           "act": "The Butler, drawing Sonnet, loops every session from today and yesterday, reads the guild log, runs build_guild_log.py --dry-run to surface git-visible gaps, and inspects non-git artifact work (art PNGs, untracked tooling) to assemble a brief of what is missing.",
-          "produces": "gap brief"
+          "produces": "gap brief",
+          "script": "guild/session_scout.py",
+          "args": {
+            "window": "today,yesterday"
+          }
         },
         {
           "kind": "gate",
@@ -853,7 +864,11 @@
           "actor": "the-quartermaster",
           "title": "Run the Sweep",
           "act": "The Quartermaster runs the cleanup skill across every mode — i18n language/hardcoded/leaks, dev-error sweep, lint, postgres advisors, docs, and campaign follow-ups — fixing what's safe and listing the rest.",
-          "produces": "hygiene report"
+          "produces": "hygiene report",
+          "script": "guild/hygiene_run.py",
+          "args": {
+            "dry-run": true
+          }
         },
         {
           "kind": "member",
@@ -917,7 +932,11 @@
           "actor": "the-quartermaster",
           "title": "Bump & Stamp",
           "act": "The Quartermaster bumps the version, writes the changelog, and syncs every version stamp across the docs.",
-          "produces": "stamped release"
+          "produces": "stamped release",
+          "script": "guild/version_bump.py",
+          "args": {
+            "step": "patch"
+          }
         },
         {
           "kind": "gate",
@@ -1339,14 +1358,22 @@
           "actor": "the-designer",
           "title": "Forge via MiniMax",
           "act": "The Designer commissions the image from the MiniMax doer-weapon, reviews each result, and sends rejects back with deltas until they land.",
-          "produces": "forged art"
+          "produces": "forged art",
+          "script": "guild/commission_art.py",
+          "args": {
+            "max-iter": 1
+          },
+          "inputs": [
+            "art brief"
+          ]
         },
         {
           "kind": "member",
           "actor": "the-developer",
           "title": "Wire the Art",
           "act": "The Developer drops the finals into the right path and rebuilds the dashboard so the art renders.",
-          "produces": "wired art"
+          "produces": "wired art",
+          "script": "build.py"
         },
         {
           "kind": "member",
@@ -1410,14 +1437,28 @@
           "actor": "the-designer",
           "title": "Forge the Weapon Art",
           "act": "The Designer commissions the weapon art via MiniMax and reviews it (runs Art Forge).",
-          "produces": "weapon art"
+          "produces": "weapon art",
+          "script": "guild/commission_art.py",
+          "args": {
+            "max-iter": 1
+          },
+          "inputs": [
+            "weapon identity"
+          ]
         },
         {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Wire to the Arsenal",
           "act": "The Quartermaster wires the weapon and its role-icon into the arsenal and every member's loadout, in priority order.",
-          "produces": "wired arsenal"
+          "produces": "wired arsenal",
+          "script": "guild/wire.py",
+          "args": {
+            "kind": "weapon"
+          },
+          "inputs": [
+            "weapon identity"
+          ]
         },
         {
           "kind": "member",
@@ -1552,14 +1593,28 @@
           "actor": "the-designer",
           "title": "Forge the Sigil",
           "act": "The Designer forges the workflow's Fallen Sword sigil (runs Art Forge).",
-          "produces": "workflow sigil"
+          "produces": "workflow sigil",
+          "script": "guild/commission_art.py",
+          "args": {
+            "max-iter": 1
+          },
+          "inputs": [
+            "workflow draft"
+          ]
         },
         {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Write to the Star Map",
           "act": "The Quartermaster writes the new workflow into workflows.json, adds its art prompt, and rebuilds the dashboard.",
-          "produces": "registered workflow"
+          "produces": "registered workflow",
+          "script": "guild/wire.py",
+          "args": {
+            "kind": "workflow"
+          },
+          "inputs": [
+            "workflow draft"
+          ]
         },
         {
           "kind": "member",
