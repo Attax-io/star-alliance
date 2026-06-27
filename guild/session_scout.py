@@ -104,6 +104,9 @@ def main() -> int:
                       help="Report what would be logged/rebuilt; write nothing (default)")
     mode.add_argument("--apply", action="store_true",
                       help="Actually run the log + rebuild chain")
+    # Tolerate the workflow-runner's file rails (this step uses neither).
+    ap.add_argument("--in", dest="_in", default=None, help=argparse.SUPPRESS)
+    ap.add_argument("--out", dest="_out", default=None, help=argparse.SUPPRESS)
     args = ap.parse_args()
 
     # Default is dry-run unless --apply is given.
