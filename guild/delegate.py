@@ -50,6 +50,73 @@ def delegate(model: str, prompt: str, system: str | None = None,
     return (proc.stdout or "").strip()
 
 
+def delegate_many(prompts, model: str = "minimax-m3",
+                  system: str | None = None, timeout: int = 600) -> list:
+    """Run N prompts through ONE process when the backend supports batching.
+
+    For minimax-m3 this uses ``minimax.py --batch`` — one subprocess spawn and one
+    keep-alive HTTPS connection for the whole fan-out, instead of N spawns and N
+    fresh handshakes. Results are returned IN ORDER as a list of strings; a prompt
+    that failed comes back as ``None`` (the caller filters/decides). Falls back to
+    a sequential ``delegate`` loop for any non-batch backend, so call sites need no
+    branching. A single prompt short-circuits to one ``delegate`` call.
+    """
+    prompts = list(prompts)
+    if not prompts:
+        return []
+    if len(prompts) == 1:
+        try:
+            return [delegate(model, prompts[0], system=system, timeout=timeout)]
+        except RuntimeError:
+            return [None]
+
+    if model != "minimax-m3" or not MINIMAX.exists():
+        # No batch backend → sequential, but keep the ordered-with-None contract.
+        out = []
+        for p in prompts:
+            try:
+                out.append(delegate(model, p, system=system, timeout=timeout))
+            except RuntimeError:
+                out.append(None)
+        return out
+
+    # Write a JSONL spec and invoke minimax.py --batch once.
+    tmp = tempfile.NamedTemporaryFile("w", suffix=".jsonl", delete=False, encoding="utf-8")
+    try:
+        for p in prompts:
+            spec = {"prompt": p}
+            if system:
+                spec["system"] = system
+            tmp.write(json.dumps(spec, ensure_ascii=False) + "\n")
+        tmp.close()
+        env = dict(os.environ, SA_MODEL_ID="minimax-m3")
+        try:
+            proc = subprocess.run(
+                ["python3", str(MINIMAX), "--batch", tmp.name],
+                capture_output=True, text=True, timeout=timeout, env=env,
+            )
+        except subprocess.TimeoutExpired:
+            return [None] * len(prompts)
+        results = [None] * len(prompts)
+        for line in (proc.stdout or "").splitlines():
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                rec = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            i = rec.get("i")
+            if isinstance(i, int) and 0 <= i < len(results) and rec.get("ok"):
+                results[i] = (rec.get("content") or "").strip()
+        return results
+    finally:
+        try:
+            os.unlink(tmp.name)
+        except OSError:
+            pass
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Call a model via summon.py")
     ap.add_argument("model", help="Model id (e.g. minimax-m3)")
