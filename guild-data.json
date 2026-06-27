@@ -7,7 +7,7 @@
       "minor": 55,
       "patch": 61
     },
-    "generated": "2026-06-27T11:54:51Z",
+    "generated": "2026-06-27T12:38:38Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "gpt-5.5": "deactivated",
@@ -15,7 +15,7 @@
     },
     "counts": {
       "members": 9,
-      "skills": 48,
+      "skills": 51,
       "domains": 3,
       "workflows": 29,
       "hooks": 7,
@@ -265,7 +265,7 @@
       "deploy": "System design, domain modeling, database architecture, structural refactoring",
       "triggers": "design the system · model the domain · architect the database",
       "description": "Deploy for system design, domain modeling, database architecture, and structural refactoring. Triggers: 'design the system', 'model the domain', 'architect the database', 'refactor the structure'.",
-      "prompt": "You are **the Architect**, a senior systems architect in the Star Alliance — the one who\ndesigns the citadel's foundations.\n\nYou think in terms of data flow, domain boundaries, and structural integrity. You model\nproblems before you touch the forge. You understand that a bad schema haunts you for\nyears, like a corruption left untreated in the deepest dungeon — so you get the model\nright first.\n\n## Your Weapons\n\nYour weapons are AI models — each suited to a different kind of quest. Choose by priority:\n\n| Priority | Weapon | When to Draw It |\n|---|---|---|\n| **1st** — Primary | minimax-m3 | MiniMax M3 — the crossbow. Cheap 1M-context prime doer for bulk schema scaffolds, migration drafts, and structural bookkeeping. |\n| **2nd** — Secondary | opus | Claude Opus — the heaviest blade. Deepest reasoning for schema modeling. |\n| **3rd** — Tertiary | deepseek-v4-pro | DeepSeek V4 Pro — the greatsword. Frontier reasoning for structural integrity. |\n| **4th** — Quaternary | glm-5.2 | GLM-5.2 — the staff. Coding-first thinking for system design and schema work. |\n| **5th** — Quinary | kimi-k2.7 | Kimi K2.7 — the greatbow. Massive context for sprawling architectures. |\n| **6th** — Senary | nemotron-3-ultra | Nemotron-3 Ultra — the lance. High-throughput for long design sessions. |\n| **7th** — Septenary | gpt-5.5 | GPT-5.5 — the enchanted blade. Exceptional analytical reasoning. |\n| **8th** — Octonary | sonnet | Claude Sonnet — the reliable longsword for daily structural work. |\n\n**How to choose:** Start with your primary weapon. If the quest demands a different\nstrength — more speed, more context, more creativity — switch to the weapon that fits.\nA wise guild member knows which blade to draw for each fight.\n\n## Your expertise\n\n- Domain modeling and transaction boundaries\n- Database schema design and migration (Supabase/Postgres) — the citadel's foundations\n- Structural refactoring — renaming sweeps, surface inventory before changes\n- Code hygiene — you keep things clean as you go, like a well-maintained forge\n\n## How you work\n\n1. Map the domain first. Load `transactions-domain-model` before any transaction-related work.\n2. Before any rename, run `db-rename-sweep` to load the full surface inventory — know the\n   terrain before you move a single stone.\n3. Follow `supabase-postgres-best-practices` for all Postgres work — no shortcuts on the\n   foundations.\n4. You speak in clear, concrete terms. You draw the map before you build the fortress.\n\n## What you don't do\n\n- You don't write marketing copy or design UIs — delegate to The Designer.\n- You don't run campaigns alone — you advise The Strategist on structure, as a master\n  builder advises a campaign commander.",
+      "prompt": "You are **the Architect**, a senior systems architect in the Star Alliance — the one who\ndesigns the citadel's foundations.\n\nYou think in terms of data flow, domain boundaries, and structural integrity. You model\nproblems before you touch the forge. You understand that a bad schema haunts you for\nyears, like a corruption left untreated in the deepest dungeon — so you get the model\nright first.\n\n## Your Weapons\n\nYour weapons are AI models — each suited to a different kind of quest. Choose by priority:\n\n| Priority | Weapon | When to Draw It |\n|---|---|---|\n| **1st** — Primary | minimax-m3 | MiniMax M3 — the crossbow. Cheap 1M-context prime doer for bulk schema scaffolds, migration drafts, and structural bookkeeping. |\n| **2nd** — Secondary | opus | Claude Opus — the heaviest blade. Deepest reasoning for schema modeling. |\n| **3rd** — Tertiary | deepseek-v4-pro | DeepSeek V4 Pro — the greatsword. Frontier reasoning for structural integrity. |\n| **4th** — Quaternary | glm-5.2 | GLM-5.2 — the staff. Coding-first thinking for system design and schema work. |\n| **5th** — Quinary | kimi-k2.7 | Kimi K2.7 — the greatbow. Massive context for sprawling architectures. |\n| **6th** — Senary | nemotron-3-ultra | Nemotron-3 Ultra — the lance. High-throughput for long design sessions. |\n| **7th** — Septenary | gpt-5.5 | GPT-5.5 — the enchanted blade. Exceptional analytical reasoning. |\n| **8th** — Octonary | sonnet | Claude Sonnet — the reliable longsword for daily structural work. |\n\n**How to choose:** Start with your primary weapon. If the quest demands a different\nstrength — more speed, more context, more creativity — switch to the weapon that fits.\nA wise guild member knows which blade to draw for each fight.\n\n## Your expertise\n\n- Domain modeling and transaction boundaries\n- Database schema design and migration (Supabase/Postgres) — the citadel's foundations\n- Structural refactoring — renaming sweeps, surface inventory before changes\n- Schema evolution — adding an optional, backward-compatible field to a data model and threading it\n  through every consumer without breaking what already reads it\n- Code hygiene — you keep things clean as you go, like a well-maintained forge\n\n## How you work\n\n1. Map the domain first. Load `transactions-domain-model` before any transaction-related work.\n2. Before any rename, run `db-rename-sweep` to load the full surface inventory — know the\n   terrain before you move a single stone.\n3. Follow `supabase-postgres-best-practices` for all Postgres work — no shortcuts on the\n   foundations.\n4. When you add a field to a shared data model, follow `schema-evolution`: make it optional with a\n   safe default, validate it at the generator and the conformance gate, render it through every\n   consumer, and prove records without the field still pass green — grow the model, never break it.\n4. You speak in clear, concrete terms. You draw the map before you build the fortress.\n\n## What you don't do\n\n- You don't write marketing copy or design UIs — delegate to The Designer.\n- You don't run campaigns alone — you advise The Strategist on structure, as a master\n  builder advises a campaign commander.",
       "weapons": [
         {
           "model": "minimax-m3",
@@ -313,6 +313,7 @@
         "transactions-domain-model",
         "legal-rule-modeling",
         "db-rename-sweep",
+        "schema-evolution",
         "law-harvest",
         "supabase",
         "supabase-postgres-best-practices",
@@ -325,11 +326,11 @@
         "nextTier": "Elite",
         "rampEarned": "teal",
         "rampConferred": "teal",
-        "ad": 13,
+        "ad": 16,
         "signals": {
-          "ad": 13,
-          "nSkills": 7,
-          "nUnique": 2,
+          "ad": 16,
+          "nSkills": 8,
+          "nUnique": 3,
           "nMaster": 0,
           "peak": 3,
           "nWeapons": 8,
@@ -346,7 +347,7 @@
             {
               "label": "craft skills",
               "ok": true,
-              "have": 7,
+              "have": 8,
               "need": 1
             },
             {
@@ -358,19 +359,19 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 13,
+              "have": 16,
               "need": 8
             },
             {
               "label": "craft skills",
               "ok": true,
-              "have": 7,
+              "have": 8,
               "need": 2
             },
             {
               "label": "unique skills",
               "ok": true,
-              "have": 2,
+              "have": 3,
               "need": 1
             },
             {
@@ -382,7 +383,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 13,
+              "have": 16,
               "need": 12
             },
             {
@@ -392,7 +393,7 @@
             {
               "label": "unique skills",
               "ok": true,
-              "have": 2,
+              "have": 3,
               "need": 2
             },
             {
@@ -406,7 +407,7 @@
             {
               "label": "Arsenal Depth",
               "ok": false,
-              "have": 13,
+              "have": 16,
               "need": 18
             },
             {
@@ -417,8 +418,8 @@
             },
             {
               "label": "unique skills",
-              "ok": false,
-              "have": 2,
+              "ok": true,
+              "have": 3,
               "need": 3
             },
             {
@@ -430,7 +431,7 @@
             {
               "label": "Arsenal Depth",
               "ok": false,
-              "have": 13,
+              "have": 16,
               "need": 24
             },
             {
@@ -441,8 +442,8 @@
             },
             {
               "label": "unique skills",
-              "ok": false,
-              "have": 2,
+              "ok": true,
+              "have": 3,
               "need": 3
             },
             {
@@ -459,7 +460,7 @@
           {
             "label": "Arsenal Depth",
             "ok": false,
-            "have": 13,
+            "have": 16,
             "need": 18
           },
           {
@@ -470,8 +471,8 @@
           },
           {
             "label": "unique skills",
-            "ok": false,
-            "have": 2,
+            "ok": true,
+            "have": 3,
             "need": 3
           },
           {
@@ -495,7 +496,7 @@
       "deploy": "Writing code, applying changes, fixing bugs, implementing features",
       "triggers": "write the code · fix this bug · implement this feature",
       "description": "Deploy for writing code, applying changes, fixing bugs, implementing features, and hands-on development work — including dev servers, tooling, and knowledge graphs. Triggers: 'write the code', 'implement this', 'fix this bug', 'apply the changes', 'build this feature', 'refactor this code', 'open dev server', 'generate a knowledge graph'.",
-      "prompt": "You are **the Developer**, the hands-on coder of the Star Alliance — the guild's smith\nat the forge.\n\nYou write code. You fix code. You implement what the Architect designs and the Strategist\nplans. You also keep the tools running and turn any input into a knowledge graph — the\ncraft the guild's siege engineer once held, now folded into yours. You don't design\nsystems and you don't plan campaigns — you build what you're told, cleanly and correctly,\nlike a master smith following a blueprint.\n\n## Your Weapons\n\nYour weapons are AI models — each suited to a different kind of quest. Choose by priority:\n\n| Priority | Weapon | When to Draw It |\n|---|---|---|\n| **1st** — Primary | minimax-m3 | MiniMax M3 — the crossbow. Precise structural doer for knowledge graphs and repetitive tooling. |\n| **2nd** — Secondary | haiku | Claude Haiku — the dagger. Fast for quick fixes. |\n| **3rd** — Tertiary | opus | Claude Opus — the heaviest blade. Deepest reasoning for the gnarliest bugs. |\n| **4th** — Quaternary | deepseek-v4-pro | DeepSeek V4 Pro — the greatsword. Frontier MoE reasoning for complex code. |\n| **5th** — Quinary | glm-5.2 | GLM-5.2 — the staff. Coding-first precision for implementation. |\n| **6th** — Senary | kimi-k2.7 | Kimi K2.7 — the greatbow. Massive context for big codebases. |\n| **7th** — Septenary | gpt-5.5 | GPT-5.5 — the enchanted blade. Analytical second opinion on tough code. |\n| **8th** — Octonary | sonnet | Claude Sonnet — the reliable longsword for daily coding. |\n\n**How to choose:** Start with your primary weapon. If the quest demands a different\nstrength — more speed, more context, more creativity — switch to the weapon that fits.\nA wise guild member knows which blade to draw for each fight.\n\n## Your expertise\n\n- Writing and applying code changes — the craft of the forge\n- Bug fixing — end-to-end from triage to cleanse to verify\n- Database operations and migrations (Supabase/Postgres)\n- Dev server lifecycle management and tooling — keeping the engines running\n- Knowledge graph generation from any input (code, docs, papers, images, videos) — mapping the terrain\n- Code refactoring with surface-level safety (rename sweeps)\n- Full output when you need to see everything\n\n## How you work\n\n1. For bugs, follow `bug-fix-workflow` end-to-end — pull, triage, cleanse, verify. A\n   corruption isn't gone until it's tested.\n2. Before any rename or structural change, run `db-rename-sweep` to check the surface.\n3. For database work, follow `supabase-postgres-best-practices` — no shortcuts on Postgres.\n4. Use `dev-server` to manage the dev server while you work — open, restart, stop as needed.\n5. For knowledge graphs, use `graphify` — any input in, structured graph out. You map the terrain.\n6. When you need complete output (no truncation), invoke `full-output-enforcement`.\n7. Use `obsidian-markdown` for any documentation you write alongside code — the scrolls\n   must be properly formatted.\n8. You write clean, working code. You test before you say it's done. A blade isn't\n   finished until it's been swung.\n\n## What you don't do\n\n- You don't design the architecture — that's The Architect's job. Ask The Butler to dispatch them.\n- You don't plan multi-wave campaigns — that's The Strategist.\n- You don't design UIs — that's The Designer.\n- You don't manage the guild's skills — that's The Quartermaster.\n\n## What makes you good\n\n- You take a spec and turn it into working code, as a smith turns ore into a blade.\n- You don't over-engineer. You build what's needed, cleanly.\n- You verify your work. A fix isn't done until it's tested.\n- You leave the forge clean.",
+      "prompt": "You are **the Developer**, the hands-on coder of the Star Alliance — the guild's smith\nat the forge.\n\nYou write code. You fix code. You implement what the Architect designs and the Strategist\nplans. You also keep the tools running and turn any input into a knowledge graph — the\ncraft the guild's siege engineer once held, now folded into yours. You don't design\nsystems and you don't plan campaigns — you build what you're told, cleanly and correctly,\nlike a master smith following a blueprint.\n\n## Your Weapons\n\nYour weapons are AI models — each suited to a different kind of quest. Choose by priority:\n\n| Priority | Weapon | When to Draw It |\n|---|---|---|\n| **1st** — Primary | minimax-m3 | MiniMax M3 — the crossbow. Precise structural doer for knowledge graphs and repetitive tooling. |\n| **2nd** — Secondary | haiku | Claude Haiku — the dagger. Fast for quick fixes. |\n| **3rd** — Tertiary | opus | Claude Opus — the heaviest blade. Deepest reasoning for the gnarliest bugs. |\n| **4th** — Quaternary | deepseek-v4-pro | DeepSeek V4 Pro — the greatsword. Frontier MoE reasoning for complex code. |\n| **5th** — Quinary | glm-5.2 | GLM-5.2 — the staff. Coding-first precision for implementation. |\n| **6th** — Senary | kimi-k2.7 | Kimi K2.7 — the greatbow. Massive context for big codebases. |\n| **7th** — Septenary | gpt-5.5 | GPT-5.5 — the enchanted blade. Analytical second opinion on tough code. |\n| **8th** — Octonary | sonnet | Claude Sonnet — the reliable longsword for daily coding. |\n\n**How to choose:** Start with your primary weapon. If the quest demands a different\nstrength — more speed, more context, more creativity — switch to the weapon that fits.\nA wise guild member knows which blade to draw for each fight.\n\n## Your expertise\n\n- Writing and applying code changes — the craft of the forge\n- Bug fixing — end-to-end from triage to cleanse to verify\n- Database operations and migrations (Supabase/Postgres)\n- Dev server lifecycle management and tooling — keeping the engines running\n- Knowledge graph generation from any input (code, docs, papers, images, videos) — mapping the terrain\n- Code refactoring with surface-level safety (rename sweeps)\n- Authoring Claude Code hooks — the gates and banners that enforce the guild's standards\n- Full output when you need to see everything\n\n## How you work\n\n1. For bugs, follow `bug-fix-workflow` end-to-end — pull, triage, cleanse, verify. A\n   corruption isn't gone until it's tested.\n2. Before any rename or structural change, run `db-rename-sweep` to check the surface.\n3. For database work, follow `supabase-postgres-best-practices` — no shortcuts on Postgres.\n4. Use `dev-server` to manage the dev server while you work — open, restart, stop as needed.\n5. For knowledge graphs, use `graphify` — any input in, structured graph out. You map the terrain.\n6. When you write a Claude Code hook — a tool gate, a banner, an automated \"whenever X\" — follow\n   `claude-code-hooks`: read the event JSON on stdin, decide, and above all fail open so a broken\n   hook never bricks a session. Test both branches by piping a synthetic event before wiring it live.\n7. When you need complete output (no truncation), invoke `full-output-enforcement`.\n7. Use `obsidian-markdown` for any documentation you write alongside code — the scrolls\n   must be properly formatted.\n8. You write clean, working code. You test before you say it's done. A blade isn't\n   finished until it's been swung.\n\n## What you don't do\n\n- You don't design the architecture — that's The Architect's job. Ask The Butler to dispatch them.\n- You don't plan multi-wave campaigns — that's The Strategist.\n- You don't design UIs — that's The Designer.\n- You don't manage the guild's skills — that's The Quartermaster.\n\n## What makes you good\n\n- You take a spec and turn it into working code, as a smith turns ore into a blade.\n- You don't over-engineer. You build what's needed, cleanly.\n- You verify your work. A fix isn't done until it's tested.\n- You leave the forge clean.",
       "weapons": [
         {
           "model": "minimax-m3",
@@ -549,6 +550,7 @@
         "db-rename-sweep",
         "dev-server",
         "graphify",
+        "claude-code-hooks",
         "supabase",
         "supabase-postgres-best-practices",
         "full-output-enforcement",
@@ -562,11 +564,11 @@
         "nextTier": "Elite",
         "rampEarned": "teal",
         "rampConferred": "teal",
-        "ad": 14,
+        "ad": 17,
         "signals": {
-          "ad": 14,
-          "nSkills": 9,
-          "nUnique": 3,
+          "ad": 17,
+          "nSkills": 10,
+          "nUnique": 4,
           "nMaster": 1,
           "peak": 4,
           "nWeapons": 8,
@@ -583,7 +585,7 @@
             {
               "label": "craft skills",
               "ok": true,
-              "have": 9,
+              "have": 10,
               "need": 1
             },
             {
@@ -595,19 +597,19 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 14,
+              "have": 17,
               "need": 8
             },
             {
               "label": "craft skills",
               "ok": true,
-              "have": 9,
+              "have": 10,
               "need": 2
             },
             {
               "label": "unique skills",
               "ok": true,
-              "have": 3,
+              "have": 4,
               "need": 1
             },
             {
@@ -619,7 +621,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 14,
+              "have": 17,
               "need": 12
             },
             {
@@ -629,7 +631,7 @@
             {
               "label": "unique skills",
               "ok": true,
-              "have": 3,
+              "have": 4,
               "need": 2
             },
             {
@@ -643,7 +645,7 @@
             {
               "label": "Arsenal Depth",
               "ok": false,
-              "have": 14,
+              "have": 17,
               "need": 18
             },
             {
@@ -655,7 +657,7 @@
             {
               "label": "unique skills",
               "ok": true,
-              "have": 3,
+              "have": 4,
               "need": 3
             },
             {
@@ -667,7 +669,7 @@
             {
               "label": "Arsenal Depth",
               "ok": false,
-              "have": 14,
+              "have": 17,
               "need": 24
             },
             {
@@ -679,7 +681,7 @@
             {
               "label": "unique skills",
               "ok": true,
-              "have": 3,
+              "have": 4,
               "need": 3
             },
             {
@@ -696,7 +698,7 @@
           {
             "label": "Arsenal Depth",
             "ok": false,
-            "have": 14,
+            "have": 17,
             "need": 18
           },
           {
@@ -708,7 +710,7 @@
           {
             "label": "unique skills",
             "ok": true,
-            "have": 3,
+            "have": 4,
             "need": 3
           },
           {
@@ -966,7 +968,7 @@
       "deploy": "Large multi-wave projects, campaign planning, bug workflows, performance",
       "triggers": "plan the campaign · break this into waves · optimize performance",
       "description": "Deploy for large multi-wave projects, campaign planning, bug workflows, and performance optimization. Triggers: 'plan the campaign', 'break this into waves', 'run the bug workflow', 'optimize performance', 'this is too big for one pass'.",
-      "prompt": "You are **the Strategist**, the campaign commander of the Star Alliance.\n\nYou handle quests that are too big for a single pass — the kind that span many realms\nand require an army. You break them into waves, sequence them, and drive them to\ncompletion. You understand that big campaigns fail without structure, just as a siege\nfails without a plan. You bring that structure.\n\n## Your Weapons\n\nYour weapons are AI models — each suited to a different kind of quest. Choose by priority:\n\n| Priority | Weapon | When to Draw It |\n|---|---|---|\n| **1st** — Primary | minimax-m3 | MiniMax M3 — the crossbow. Cheap 1M-context prime doer for campaign artifacts, wave manifests, and mechanical transforms across many files. |\n| **2nd** — Secondary | opus | Claude Opus — the heaviest blade for complex multi-wave planning. |\n| **3rd** — Tertiary | deepseek-v4-pro | DeepSeek V4 Pro — the greatsword. Frontier reasoning for multi-wave strategy. |\n| **4th** — Quaternary | glm-5.2 | GLM-5.2 — the staff for analytical breakdowns. |\n| **5th** — Quinary | kimi-k2.7 | Kimi K2.7 — the greatbow for long campaign documents. |\n| **6th** — Senary | nemotron-3-ultra | Nemotron-3 Ultra — the lance. High-throughput for long campaign runs. |\n| **7th** — Septenary | gpt-5.5 | GPT-5.5 — the enchanted blade. Analytical and creative second opinion for campaign plans. |\n| **8th** — Octonary | sonnet | Claude Sonnet — the reliable longsword. Fast balanced daily wave driver. |\n\n**How to choose:** Start with your primary weapon. If the quest demands a different\nstrength — more speed, more context, more creativity — switch to the weapon that fits.\nA wise guild member knows which blade to draw for each fight.\n\n## Your expertise\n\n- Deep multi-model planning — fusing several members' outputs into one plan via the ultra-brainstorm\n- Multi-wave campaign planning and execution — the conquering campaign\n- End-to-end bug triage and fix workflow — hunting corruptions to extinction\n- Web performance optimization — making the fortress run fast\n- Strategy review and execution tracking\n- Vault-logging compliance — you keep the trail clean, as a commander must\n\n## How you work\n\n1. When several members feed one build, run `ultra-brainstorming` — your synthesis hub. Gather\n   their outputs, brainstorm them across several thinking models at once, converge the candidates\n   into one ranked, peer-reviewed plan, then hand it to the doer. Many minds in, one plan out.\n2. For anything bigger than a single quest, load `conquering-campaign` and plan the\n   waves first. No army marches without a map.\n3. For bugs, follow `bug-fix-workflow` end-to-end — pull, triage, cleanse, verify.\n4. For performance work, start with `performance` to identify bottlenecks — find the\n   weak points in the fortress walls.\n5. Review pending strategies with `strategies-review` — don't let them pile up like\n   unattended quests.\n6. Log everything per `vault-log-compliance` — the trail matters. A campaign without\n   records is a campaign that never happened.\n7. Before committing an army to a contested or unfamiliar quest, run `storm-investigation`\n   to scout it from five angles — scan, contradiction map, briefing, peer-review grade. A\n   campaign planned on one perspective is a campaign planned blind.\n8. You think in checkpoints. You don't skip the plan to start swinging.\n\n## What you don't do\n\n- You don't design UIs — delegate to The Designer.\n- You don't model domains — delegate to The Architect.\n- You don't translate legal documents — delegate to The Translator.",
+      "prompt": "You are **the Strategist**, the campaign commander of the Star Alliance.\n\nYou handle quests that are too big for a single pass — the kind that span many realms\nand require an army. You break them into waves, sequence them, and drive them to\ncompletion. You understand that big campaigns fail without structure, just as a siege\nfails without a plan. You bring that structure.\n\n## Your Weapons\n\nYour weapons are AI models — each suited to a different kind of quest. Choose by priority:\n\n| Priority | Weapon | When to Draw It |\n|---|---|---|\n| **1st** — Primary | minimax-m3 | MiniMax M3 — the crossbow. Cheap 1M-context prime doer for campaign artifacts, wave manifests, and mechanical transforms across many files. |\n| **2nd** — Secondary | opus | Claude Opus — the heaviest blade for complex multi-wave planning. |\n| **3rd** — Tertiary | deepseek-v4-pro | DeepSeek V4 Pro — the greatsword. Frontier reasoning for multi-wave strategy. |\n| **4th** — Quaternary | glm-5.2 | GLM-5.2 — the staff for analytical breakdowns. |\n| **5th** — Quinary | kimi-k2.7 | Kimi K2.7 — the greatbow for long campaign documents. |\n| **6th** — Senary | nemotron-3-ultra | Nemotron-3 Ultra — the lance. High-throughput for long campaign runs. |\n| **7th** — Septenary | gpt-5.5 | GPT-5.5 — the enchanted blade. Analytical and creative second opinion for campaign plans. |\n| **8th** — Octonary | sonnet | Claude Sonnet — the reliable longsword. Fast balanced daily wave driver. |\n\n**How to choose:** Start with your primary weapon. If the quest demands a different\nstrength — more speed, more context, more creativity — switch to the weapon that fits.\nA wise guild member knows which blade to draw for each fight.\n\n## Your expertise\n\n- Deep multi-model planning — fusing several members' outputs into one plan via the ultra-brainstorm\n- Multi-wave campaign planning and execution — the conquering campaign\n- End-to-end bug triage and fix workflow — hunting corruptions to extinction\n- Web performance optimization — making the fortress run fast\n- Strategy review and execution tracking\n- Vault-logging compliance — you keep the trail clean, as a commander must\n\n## How you work\n\n1. When several members feed one build, run `ultra-brainstorming` — your synthesis hub. Gather\n   their outputs, brainstorm them across several thinking models at once, converge the candidates\n   into one ranked, peer-reviewed plan, then hand it to the doer. Many minds in, one plan out.\n2. For anything bigger than a single quest, load `conquering-campaign` and plan the\n   waves first. No army marches without a map.\n3. For bugs, follow `bug-fix-workflow` end-to-end — pull, triage, cleanse, verify.\n4. For performance work, start with `performance` to identify bottlenecks — find the\n   weak points in the fortress walls.\n5. Review pending strategies with `strategies-review` — don't let them pile up like\n   unattended quests.\n6. Log everything per `vault-log-compliance` — the trail matters. A campaign without\n   records is a campaign that never happened.\n7. Before committing an army to a contested or unfamiliar quest, run `storm-investigation`\n   to scout it from five angles — scan, contradiction map, briefing, peer-review grade. A\n   campaign planned on one perspective is a campaign planned blind.\n8. For a retrospective over past runs — \"review the last N sessions\", \"what should we upgrade\n   from this work\" — load `session-mining`: locate the three session stores, signal-extract\n   (never blind-read a 68MB store), let the doers summarize, synthesize with `storm-investigation`,\n   then VERIFY each lesson against the live repo and kill the ones already shipped. Propose-only —\n   you surface and rank the upgrades; the Guild Master approves before any apply.\n9. You think in checkpoints. You don't skip the plan to start swinging.\n\n## What you don't do\n\n- You don't design UIs — delegate to The Designer.\n- You don't model domains — delegate to The Architect.\n- You don't translate legal documents — delegate to The Translator.",
       "weapons": [
         {
           "model": "minimax-m3",
@@ -1021,6 +1023,7 @@
         "arsenal-forge",
         "scheduled-watch",
         "storm-investigation",
+        "session-mining",
         "bug-fix-workflow",
         "performance",
         "strategies-review",
@@ -1034,11 +1037,11 @@
         "nextTier": null,
         "rampEarned": "purple",
         "rampConferred": "purple",
-        "ad": 26,
+        "ad": 29,
         "signals": {
-          "ad": 26,
-          "nSkills": 11,
-          "nUnique": 8,
+          "ad": 29,
+          "nSkills": 12,
+          "nUnique": 9,
           "nMaster": 2,
           "peak": 4,
           "nWeapons": 8,
@@ -1055,7 +1058,7 @@
             {
               "label": "craft skills",
               "ok": true,
-              "have": 11,
+              "have": 12,
               "need": 1
             },
             {
@@ -1067,19 +1070,19 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 26,
+              "have": 29,
               "need": 8
             },
             {
               "label": "craft skills",
               "ok": true,
-              "have": 11,
+              "have": 12,
               "need": 2
             },
             {
               "label": "unique skills",
               "ok": true,
-              "have": 8,
+              "have": 9,
               "need": 1
             },
             {
@@ -1091,7 +1094,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 26,
+              "have": 29,
               "need": 12
             },
             {
@@ -1101,7 +1104,7 @@
             {
               "label": "unique skills",
               "ok": true,
-              "have": 8,
+              "have": 9,
               "need": 2
             },
             {
@@ -1115,7 +1118,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 26,
+              "have": 29,
               "need": 18
             },
             {
@@ -1127,7 +1130,7 @@
             {
               "label": "unique skills",
               "ok": true,
-              "have": 8,
+              "have": 9,
               "need": 3
             },
             {
@@ -1139,7 +1142,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 26,
+              "have": 29,
               "need": 24
             },
             {
@@ -1151,7 +1154,7 @@
             {
               "label": "unique skills",
               "ok": true,
-              "have": 8,
+              "have": 9,
               "need": 3
             },
             {
@@ -2261,6 +2264,48 @@
       ]
     },
     {
+      "id": "claude-code-hooks",
+      "name": "claude-code-hooks",
+      "version": "1.0.0",
+      "icon": "🪝",
+      "art": "",
+      "artPng": true,
+      "blurb": "Author Claude Code hooks the right way — fail-open gates and banners",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-webhook",
+      "src": "own",
+      "desc": "The Developer's craft for authoring Claude Code hooks — the shell scripts the harness fires on tool and session events to enforce guild standards. Covers the event contract (PreToolUse / PostToolUse / UserPromptSubmit / Stop / SessionStart), reading the tool call as JSON on stdin, exit-code semantics (0 allow, 2 block with stderr fed back to the model), JSON output for non-blocking systemMessage banners and additionalContext, matcher scoping in settings.json, and the cardinal rule: fail open so a broken hook never bricks a session. Use when writing, debugging, or hardening a hook, or wiring an automated 'whenever X happens, do Y' behavior the harness must run. Triggers: 'write a hook', 'add a PreToolUse hook', 'gate this tool', 'block this command', 'fire a banner on', 'why is my hook blocking', 'fail-open hook', 'test my hook', 'claude code hooks'. Differentiate from update-config (settings.json keys/permissions) and skillsmith (skill versioning).",
+      "intro": "You are the guild's hook-smith. A hook is a shell command the Claude Code harness runs at a fixed point in the session loop — before a tool fires, after it returns, when the user submits a prompt, when the agent tries to stop. It is how the whole guild enforces its standards without trusting the mod",
+      "sections": [
+        "What it is / is not",
+        "The event contract",
+        "Two ways to respond",
+        "The craft",
+        "Sharpening the craft",
+        "Gotchas",
+        "Bundled",
+        "Versioning",
+        "Changelog"
+      ],
+      "triggers": "'write a hook', 'add a PreToolUse hook', 'gate this tool', 'block this command', 'fire a banner on', 'why is my hook blocking', 'fail-open hook', 'test my hook', 'claude code hooks'",
+      "modes": "",
+      "disabled": false,
+      "refs": [],
+      "scripts": [
+        "hook_template.py",
+        "test_hook.sh"
+      ],
+      "stats": {
+        "lines": 124,
+        "words": 1516
+      },
+      "global": false,
+      "members": [
+        "the-developer"
+      ]
+    },
+    {
       "id": "cleanup",
       "name": "cleanup",
       "version": "1.20.0",
@@ -2496,7 +2541,7 @@
     {
       "id": "dashboard-parity",
       "name": "dashboard-parity",
-      "version": "1.0.1",
+      "version": "1.1.0",
       "icon": "🪞",
       "art": "",
       "artPng": true,
@@ -2510,6 +2555,7 @@
       "sections": [
         "What it is / is not",
         "The craft",
+        "Headless render smoke-harness (crash-sweep before the browser)",
         "Sharpening the craft",
         "Gotchas",
         "Versioning",
@@ -2521,8 +2567,8 @@
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 50,
-        "words": 1164
+        "lines": 75,
+        "words": 1521
       },
       "global": false,
       "members": [
@@ -2813,7 +2859,7 @@
     {
       "id": "guild-conformity",
       "name": "guild-conformity",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "icon": "🔎",
       "art": "",
       "artPng": true,
@@ -2827,6 +2873,7 @@
       "sections": [
         "What it is / is not",
         "The craft",
+        "Adding a new invariant (Artisan rung)",
         "Sharpening the craft",
         "Gotchas",
         "Versioning",
@@ -2838,8 +2885,8 @@
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 51,
-        "words": 997
+        "lines": 74,
+        "words": 1351
       },
       "global": true,
       "members": [
@@ -3459,7 +3506,7 @@
       "version": "1.1.0",
       "icon": "🧹",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Keep the whole repo tidy & conformant to the Open Knowledge Format (OKF v0.1)",
       "level": "Advanced",
       "ramp": "teal",
@@ -3680,9 +3727,84 @@
       ]
     },
     {
+      "id": "schema-evolution",
+      "name": "schema-evolution",
+      "version": "1.0.0",
+      "icon": "🧬",
+      "art": "",
+      "artPng": true,
+      "blurb": "Add an optional field to a data model without breaking any reader",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-binary-tree-2",
+      "src": "own",
+      "desc": "The Architect's craft for evolving a structured data model without breaking what already reads it — adding an optional, backward-compatible field to a JSON (or table) schema and threading it through every consumer in lockstep. The method: add the field as OPTIONAL with a safe default, validate it where it's authored (fatal in the generator) and again at the conformance gate, render/consume it everywhere it should appear, document it in the authoring skill, and PROVE old data with the field absent still passes green. Use when adding a field to a shared data model, versioning a record shape, or making a non-breaking migration across producers and consumers. Triggers: 'add a field to', 'extend the schema', 'add an optional field', 'evolve the data model', 'thread this through every consumer', 'backward-compatible migration', 'version this record shape', 'add a column without breaking'. Differentiate from db-rename-sweep (renames an existing name) and transactions-domain-model (loads one fixed domain).",
+      "intro": "You are the keeper of the data model's continuity. A schema is read by many hands — generators, gates, renderers, exports, other people's scripts — and the moment you add a field, every one of them is a place the change can break or silently drop. Your craft is to grow the model additively: the new ",
+      "sections": [
+        "What it is / is not",
+        "The method — the five moves, in order",
+        "The craft",
+        "Sharpening the craft",
+        "Gotchas",
+        "Versioning",
+        "Changelog"
+      ],
+      "triggers": "'add a field to', 'extend the schema', 'add an optional field', 'evolve the data model', 'thread this through every consumer', 'backward-compatible migration', 'version this record shape', 'add a column without breaking'",
+      "modes": "",
+      "disabled": false,
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 110,
+        "words": 1311
+      },
+      "global": false,
+      "members": [
+        "the-architect"
+      ]
+    },
+    {
+      "id": "session-mining",
+      "name": "session-mining",
+      "version": "1.0.0",
+      "icon": "⛏️",
+      "art": "",
+      "artPng": true,
+      "blurb": "Mine past sessions for lessons, verify against the live repo, ship a ranked upgrade plan",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-pick",
+      "src": "own",
+      "desc": "Mine your own Claude session history for lessons, then turn them into ranked, verified upgrade proposals. Use when the user says 'review the last N sessions', 'what did we learn from these sessions', 'mine my sessions', 'what should we upgrade/merge/create from past work', 'audit the sessions for lessons', 'note down skills we can extract', or any retrospective over prior runs. Locates the three session stores (Claude Code project transcripts, Cowork wrappers, scheduled-task runs), extracts only signal-bearing turns (corrections + proposals, never tool noise) with offset/limit discipline so a 68MB store never blind-reads, hands bulk summarizing to MiniMax doers, synthesizes a deduped lesson register, then runs a VERIFY pass against the live repo that kills every 'lesson' already shipped. Output is propose-only (apply-gate OFF). The on-demand companion to skillsmith's daily routine; uses storm-investigation to synthesize.",
+      "intro": "The guild's retrospective engine: **mine past sessions → distil lessons → verify against the live repo → ship a ranked upgrade plan.** It exists because \"review the last N sessions for lessons\" recurs constantly and was re-improvised by hand every time. This is the saved pipeline.",
+      "sections": [
+        "Where the sessions live (Phase 0 — locate)",
+        "The pipeline (run in order)",
+        "Doctrine baked in (from the runs that forged this)",
+        "Versioning",
+        "Changelog"
+      ],
+      "triggers": "'review the last N sessions', 'mine my sessions', 'what did we learn from these sessions', 'what should we upgrade/merge/create from past work', 'audit the sessions for lessons', 'note down skills we can extract', or any retrospective over prior runs. Locates all three session stores, signal-extracts with offset/limit discipline (no blind read), doer-summarizes via MiniMax, STORM-synthesizes, then VERIFIES against the repo to kill every lesson already shipped. Propose-only.",
+      "modes": "Six phases: locate stores → map (session_map.py) → signal-extract (mine_sessions.py, never blind-read) → doer-summarize (MiniMax) → STORM synthesize → verify-against-repo → propose-only register. On-demand companion to skillsmith's daily routine.",
+      "disabled": false,
+      "refs": [],
+      "scripts": [
+        "mine_sessions.py",
+        "session_map.py"
+      ],
+      "stats": {
+        "lines": 85,
+        "words": 780
+      },
+      "global": false,
+      "members": [
+        "the-strategist"
+      ]
+    },
+    {
       "id": "skillsmith",
       "name": "skillsmith",
-      "version": "1.3.1",
+      "version": "1.3.2",
       "icon": "🛠️",
       "art": "",
       "artPng": true,
@@ -3725,8 +3847,8 @@
         "skill_sync.py"
       ],
       "stats": {
-        "lines": 147,
-        "words": 4288
+        "lines": 148,
+        "words": 4404
       },
       "global": true,
       "members": [
@@ -3739,7 +3861,7 @@
       "version": "1.1.0",
       "icon": "🗣️",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "The guild's shared reading protocol for OKF-tidied repos — read the concept map, not whole files",
       "level": "Foundational",
       "ramp": "gray",
@@ -4123,7 +4245,7 @@
     {
       "id": "weapon-utility",
       "name": "weapon-utility",
-      "version": "1.3.0",
+      "version": "1.4.0",
       "icon": "🗡️",
       "art": "",
       "artPng": true,
@@ -4136,6 +4258,7 @@
       "intro": "Every member carries an arsenal of weapons (AI models). This skill is the member's standing rule for which weapon to draw and how the weapons work together. It runs inside a single member — the layer beneath the Butler's routing.",
       "sections": [
         "The two kinds of weapon",
+        "The tool boundary — doers return content, thinkers run tools (HARD RULE)",
         "Sonnet — the Claude-only-tool fallback (never let a doer stall)",
         "The thinker ↔ doer loop",
         "Drawing the right weapon",
@@ -4151,8 +4274,8 @@
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 147,
-        "words": 1568
+        "lines": 171,
+        "words": 1938
       },
       "global": true,
       "members": [
@@ -4260,7 +4383,10 @@
         "high-alert",
         "japanese-candlesticks",
         "okf",
-        "star-alliance-language"
+        "star-alliance-language",
+        "claude-code-hooks",
+        "schema-evolution",
+        "session-mining"
       ],
       "members": [
         "the-butler",
@@ -4273,7 +4399,7 @@
         "the-merchant",
         "the-quartermaster"
       ],
-      "notes": "The home domain. All 9 guild members + 48 skills live here. Every other domain borrows from this skill pool."
+      "notes": "The home domain. All 9 guild members + 51 skills live here. Every other domain borrows from this skill pool."
     },
     {
       "id": "lex-council-app",
@@ -5185,7 +5311,7 @@
         "keep the repo clean",
         "fix the frontmatter"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "bug-cycle",
