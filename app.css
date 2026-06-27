@@ -378,7 +378,7 @@ kbd {
 @keyframes pulse { 0%,100% { transform: scale(1); opacity:.14; } 50% { transform: scale(1.18); opacity:.26; } }
 @media (prefers-reduced-motion: reduce) {
   .power-core, .comet-tail { display:none; }
-  .starmap .node .halo, .you-core .halo, .you-core .you-burst { animation:none; }
+  .starmap .node .halo, .you-core .halo, .you-core .you-burst, .you-core .you-aura { animation:none; }
 }
 
 /* ── 7. Members ───────────────────────────────────────────────────────────── */
