@@ -2,6 +2,30 @@
   "version": 1,
   "entries": [
     {
+      "id": 93,
+      "date": "2026-06-27",
+      "type": "chore",
+      "title": "design-unity field run on Lex Council App: conformity audit + no-hardcoded-color lint guard",
+      "who": "the-designer",
+      "detail": "Ran design-unity establish/audit on the Lex Council App (separate repo, not git-visible here). Confirmed a healthy multi-layer single source of truth (packages/md/src/tokens -> globals.css -> DESIGN.md). Of 408 raw-hex hits, ~97 are INTENTIONAL theme-flat dark-mode-contrast locks (the navy/gold token flips in dark mode; these stay fixed for AA) — a naive hex-to-token sweep would have broken dark mode. Wrote docs/ui-ux/design-unity-audit.md backlog; wired a theme-flat-aware no-hardcoded-color ESLint rule (apps/web/eslint.design.config.js + npm run lint:colors), non-blocking until the backlog clears. No app component code changed. Lesson folded into design-unity 1.1.0 (audit Step 0 subtracts intentional locks before counting drift).",
+      "ref": [
+        "design-unity",
+        "the-designer"
+      ]
+    },
+    {
+      "id": 92,
+      "date": "2026-06-27",
+      "type": "decision",
+      "title": "Kept impeccable standalone — a 23-command npm external, not foldable into design-taste",
+      "who": "the-quartermaster",
+      "detail": "During the Designer skill merge the Guild Master approved folding impeccable into design-taste. Ground-truth before acting: impeccable is a 23-command npm-published product (npx impeccable) with a CLI anti-pattern detector, Chrome extension, and release pipeline; its ~15 platform-mirror dirs are load-bearing (npx skills reads them directly). Folding would destroy ~20 capabilities; stripping the dirs breaks its installer. Rejected the fold; kept it standalone (skillsmith already skips externals). Merge proceeded on the 3 imagegen skills only.",
+      "ref": [
+        "the-designer",
+        "impeccable"
+      ]
+    },
+    {
       "id": 91,
       "date": "2026-06-27",
       "type": "member-upgrade",
@@ -1034,6 +1058,30 @@
     {
       "date": "2026-06-27",
       "type": "skill-upgrade",
+      "title": "Upgrade volume-price-analysis to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "volume-price-analysis"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "ed772ec6",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "Add skill: volume-price-analysis",
+      "who": "Atta",
+      "ref": [
+        "volume-price-analysis"
+      ],
+      "commit": "ed772ec6",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
       "title": "Upgrade dashboard-parity to 1.0.0",
       "who": "Atta",
       "ref": [
@@ -1053,6 +1101,395 @@
         "dashboard-parity"
       ],
       "commit": "ed4a310a",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade chart-patterns to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "chart-patterns"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "eba20ff0",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "Add skill: chart-patterns",
+      "who": "Atta",
+      "ref": [
+        "chart-patterns"
+      ],
+      "commit": "eba20ff0",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade motion-design: 1.0.0 → 2.0.0",
+      "who": "Atta",
+      "ref": [
+        "motion-design"
+      ],
+      "from": "1.0.0",
+      "to": "2.0.0",
+      "commit": "c2274942",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "member-upgrade",
+      "title": "Update member: the-translator",
+      "who": "Atta",
+      "ref": [
+        "the-translator"
+      ],
+      "commit": "c2274942",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade invariant-inference to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "invariant-inference"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "a9a2571a",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "Add skill: invariant-inference",
+      "who": "Atta",
+      "ref": [
+        "invariant-inference"
+      ],
+      "commit": "a9a2571a",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Bulk skill upgrades: 5 skills",
+      "who": "Atta",
+      "ref": [
+        "guild-reflection",
+        "letting-go",
+        "metamorphosis-check",
+        "skillsmith",
+        "voices-check"
+      ],
+      "commit": "8801993b",
+      "bulk": true,
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "Add skill: guild-reflection",
+      "who": "Atta",
+      "ref": [
+        "guild-reflection"
+      ],
+      "commit": "8801993b",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "Add skill: letting-go",
+      "who": "Atta",
+      "ref": [
+        "letting-go"
+      ],
+      "commit": "8801993b",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "Add skill: metamorphosis-check",
+      "who": "Atta",
+      "ref": [
+        "metamorphosis-check"
+      ],
+      "commit": "8801993b",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "Add skill: voices-check",
+      "who": "Atta",
+      "ref": [
+        "voices-check"
+      ],
+      "commit": "8801993b",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade letting-go to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "letting-go"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "82f7609a",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade metamorphosis-check to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "metamorphosis-check"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "82f7609a",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade voices-check to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "voices-check"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "82f7609a",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade guild-sync to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "guild-sync"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "577d2037",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "Add skill: guild-sync",
+      "who": "Atta",
+      "ref": [
+        "guild-sync"
+      ],
+      "commit": "577d2037",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade probability-statistics to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "probability-statistics"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "311ec672",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "Add skill: probability-statistics",
+      "who": "Atta",
+      "ref": [
+        "probability-statistics"
+      ],
+      "commit": "311ec672",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade python-master to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "python-master"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "30d356c2",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "Add skill: python-master",
+      "who": "Atta",
+      "ref": [
+        "python-master"
+      ],
+      "commit": "30d356c2",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade harness-efficiency to 1.2.0",
+      "who": "Atta",
+      "ref": [
+        "harness-efficiency"
+      ],
+      "from": "",
+      "to": "1.2.0",
+      "commit": "26fd81fc",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade spec-driven-development to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "spec-driven-development"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "26d66913",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "Add skill: spec-driven-development",
+      "who": "Atta",
+      "ref": [
+        "spec-driven-development"
+      ],
+      "commit": "26d66913",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade design-taste to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "design-taste"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "0f5a01d0",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "member-upgrade",
+      "title": "Update member: the-herald",
+      "who": "Atta",
+      "ref": [
+        "the-herald"
+      ],
+      "commit": "0f5a01d0",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade algorithmic-trading-chan to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "algorithmic-trading-chan"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "0e93f1e5",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "Add skill: algorithmic-trading-chan",
+      "who": "Atta",
+      "ref": [
+        "algorithmic-trading-chan"
+      ],
+      "commit": "0e93f1e5",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade session-mining: 1.1.0 → 1.2.0",
+      "who": "Atta",
+      "ref": [
+        "session-mining"
+      ],
+      "from": "1.1.0",
+      "to": "1.2.0",
+      "commit": "0a0d49af",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade imagegen-frontend to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "imagegen-frontend"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "023e57ca",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "Add skill: imagegen-frontend",
+      "who": "Atta",
+      "ref": [
+        "imagegen-frontend"
+      ],
+      "commit": "023e57ca",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade design-unity to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "design-unity"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "019b41ca",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "Add skill: design-unity",
+      "who": "Atta",
+      "ref": [
+        "design-unity"
+      ],
+      "commit": "019b41ca",
       "_derived": true
     },
     {
@@ -1352,402 +1789,6 @@
         "impeccable"
       ],
       "commit": "650b7781",
-      "_derived": true
-    },
-    {
-      "date": "2026-06-26",
-      "type": "skill-upgrade",
-      "title": "Upgrade design-language to 1.0.0",
-      "who": "Atta",
-      "ref": [
-        "design-language"
-      ],
-      "from": "",
-      "to": "1.0.0",
-      "commit": "57f995db",
-      "_derived": true
-    },
-    {
-      "date": "2026-06-26",
-      "type": "skill-create",
-      "title": "Add skill: design-language",
-      "who": "Atta",
-      "ref": [
-        "design-language"
-      ],
-      "commit": "57f995db",
-      "_derived": true
-    },
-    {
-      "date": "2026-06-26",
-      "type": "member-upgrade",
-      "title": "Update member: the-designer",
-      "who": "Atta",
-      "ref": [
-        "the-designer"
-      ],
-      "commit": "57f995db",
-      "_derived": true
-    },
-    {
-      "date": "2026-06-26",
-      "type": "skill-upgrade",
-      "title": "Upgrade guild-log to 1.1.0",
-      "who": "Atta",
-      "ref": [
-        "guild-log"
-      ],
-      "from": "",
-      "to": "1.1.0",
-      "commit": "13983c21",
-      "_derived": true
-    },
-    {
-      "date": "2026-06-24",
-      "type": "member-create",
-      "title": "Add member: the-butler",
-      "who": "Atta",
-      "ref": [
-        "the-butler"
-      ],
-      "commit": "c0926053",
-      "_derived": true
-    },
-    {
-      "date": "2026-06-24",
-      "type": "member-create",
-      "title": "Add member: the-developer",
-      "who": "Atta",
-      "ref": [
-        "the-developer"
-      ],
-      "commit": "c0926053",
-      "_derived": true
-    },
-    {
-      "date": "2026-06-24",
-      "type": "member-create",
-      "title": "Add member: the-merchant",
-      "who": "Atta",
-      "ref": [
-        "the-merchant"
-      ],
-      "commit": "c0926053",
-      "_derived": true
-    },
-    {
-      "date": "2026-06-24",
-      "type": "member-create",
-      "title": "Bulk member additions: 6 members",
-      "who": "Atta",
-      "ref": [
-        "the-architect",
-        "the-designer",
-        "the-engineer",
-        "the-quartermaster",
-        "the-strategist",
-        "the-translator"
-      ],
-      "commit": "861e5ad0",
-      "bulk": true,
-      "_derived": true
-    },
-    {
-      "date": "2026-06-24",
-      "type": "skill-create",
-      "title": "Add skill: fallen-sword-design-language",
-      "who": "Atta",
-      "ref": [
-        "fallen-sword-design-language"
-      ],
-      "commit": "841be007",
-      "_derived": true
-    },
-    {
-      "date": "2026-06-24",
-      "type": "member-upgrade",
-      "title": "Bulk member updates: 9 members",
-      "who": "Atta",
-      "ref": [
-        "the-architect",
-        "the-butler",
-        "the-designer",
-        "the-developer",
-        "the-engineer",
-        "the-merchant",
-        "the-quartermaster",
-        "the-strategist",
-        "the-translator"
-      ],
-      "commit": "841be007",
-      "bulk": true,
-      "_derived": true
-    },
-    {
-      "date": "2026-06-24",
-      "type": "dashboard",
-      "title": "Rename project: claude-skills → Star Alliance",
-      "who": "Atta",
-      "commit": "494d3cba",
-      "_derived": true
-    },
-    {
-      "date": "2026-06-22",
-      "type": "skill-upgrade",
-      "title": "Upgrade codex-law-translate: 1.0.0 → 1.1.0",
-      "who": "skillsmith",
-      "ref": [
-        "codex-law-translate"
-      ],
-      "from": "1.0.0",
-      "to": "1.1.0",
-      "commit": "0136b934",
-      "_derived": true
-    },
-    {
-      "date": "2026-06-21",
-      "type": "skill-upgrade",
-      "title": "Upgrade conquering-campaign: 3.8.2 → 3.8.3",
-      "who": "skillsmith",
-      "ref": [
-        "conquering-campaign"
-      ],
-      "from": "3.8.2",
-      "to": "3.8.3",
-      "commit": "22a3b06d",
-      "_derived": true
-    },
-    {
-      "date": "2026-06-20",
-      "type": "skill-upgrade",
-      "title": "Upgrade db-rename-sweep: 1.0.0 → 1.1.0",
-      "who": "skillsmith",
-      "ref": [
-        "db-rename-sweep"
-      ],
-      "from": "1.0.0",
-      "to": "1.1.0",
-      "commit": "f32957e8",
-      "_derived": true
-    },
-    {
-      "date": "2026-06-20",
-      "type": "skill-upgrade",
-      "title": "Upgrade skillsmith: 1.0.0 → 1.1.0",
-      "who": "Atta",
-      "ref": [
-        "skillsmith"
-      ],
-      "from": "1.0.0",
-      "to": "1.1.0",
-      "commit": "bf33c85b",
-      "_derived": true
-    },
-    {
-      "date": "2026-06-20",
-      "type": "skill-upgrade",
-      "title": "Upgrade transactions-domain-model: 1.0.0 → 1.1.0",
-      "who": "skillsmith",
-      "ref": [
-        "transactions-domain-model"
-      ],
-      "from": "1.0.0",
-      "to": "1.1.0",
-      "commit": "a7a9ea42",
-      "_derived": true
-    },
-    {
-      "date": "2026-06-20",
-      "type": "skill-upgrade",
-      "title": "Upgrade vault-log-compliance: 1.0.0 → 1.1.0",
-      "who": "skillsmith",
-      "ref": [
-        "vault-log-compliance"
-      ],
-      "from": "1.0.0",
-      "to": "1.1.0",
-      "commit": "a374848c",
-      "_derived": true
-    },
-    {
-      "date": "2026-06-20",
-      "type": "skill-upgrade",
-      "title": "Upgrade dev-server: 1.0.0 → 1.1.0",
-      "who": "skillsmith",
-      "ref": [
-        "dev-server"
-      ],
-      "from": "1.0.0",
-      "to": "1.1.0",
-      "commit": "a139a48e",
-      "_derived": true
-    },
-    {
-      "date": "2026-06-20",
-      "type": "skill-upgrade",
-      "title": "Upgrade bug-fix-workflow: 1.0.0 → 1.1.1",
-      "who": "skillsmith",
-      "ref": [
-        "bug-fix-workflow"
-      ],
-      "from": "1.0.0",
-      "to": "1.1.1",
-      "commit": "5c0bb977",
-      "_derived": true
-    },
-    {
-      "date": "2026-06-19",
-      "type": "skill-upgrade",
-      "title": "Upgrade cleanup: 1.14.1 → 1.17.0",
-      "who": "Atta",
-      "ref": [
-        "cleanup"
-      ],
-      "from": "1.14.1",
-      "to": "1.17.0",
-      "commit": "f0e64820",
-      "_derived": true
-    },
-    {
-      "date": "2026-06-15",
-      "type": "skill-upgrade",
-      "title": "Bulk skill upgrades: 28 skills",
-      "who": "Atta",
-      "ref": [
-        "article-creator",
-        "brandkit",
-        "bug-fix-workflow",
-        "cleanup",
-        "codex-law-translate",
-        "conquering-campaign",
-        "db-rename-sweep",
-        "design-taste-frontend",
-        "dev-server",
-        "full-output-enforcement",
-        "gpt-taste",
-        "graphify",
-        "high-end-visual-design",
-        "image-to-code",
-        "imagegen-frontend-mobile",
-        "imagegen-frontend-web",
-        "industrial-brutalist-ui",
-        "minimalist-ui",
-        "obsidian-markdown",
-        "performance",
-        "redesign-existing-projects",
-        "skillsmith",
-        "stitch-design-taste",
-        "strategies-review",
-        "supabase",
-        "supabase-postgres-best-practices",
-        "transactions-domain-model",
-        "vault-log-compliance"
-      ],
-      "commit": "5102cc10",
-      "bulk": true,
-      "_derived": true
-    },
-    {
-      "date": "2026-06-15",
-      "type": "skill-upgrade",
-      "title": "Upgrade performance to \"1.0\"",
-      "who": "Atta",
-      "ref": [
-        "performance"
-      ],
-      "from": "",
-      "to": "\"1.0\"",
-      "commit": "1bdb90f3",
-      "_derived": true
-    },
-    {
-      "date": "2026-06-13",
-      "type": "skill-upgrade",
-      "title": "Upgrade supabase to \"0.1.2\"",
-      "who": "Atta",
-      "ref": [
-        "supabase"
-      ],
-      "from": "",
-      "to": "\"0.1.2\"",
-      "commit": "fbf5b2c1",
-      "_derived": true
-    },
-    {
-      "date": "2026-06-13",
-      "type": "skill-upgrade",
-      "title": "Upgrade supabase-postgres-best-practices to \"1.1.1\"",
-      "who": "Atta",
-      "ref": [
-        "supabase-postgres-best-practices"
-      ],
-      "from": "",
-      "to": "\"1.1.1\"",
-      "commit": "fbf5b2c1",
-      "_derived": true
-    },
-    {
-      "date": "2026-06-13",
-      "type": "skill-create",
-      "title": "Bulk skill additions: 9 skills",
-      "who": "Atta",
-      "ref": [
-        "article-creator",
-        "cleanup",
-        "db-rename-sweep",
-        "impeccable",
-        "strategies-review",
-        "supabase",
-        "supabase-postgres-best-practices",
-        "transactions-domain-model",
-        "vault-log-compliance"
-      ],
-      "commit": "fbf5b2c1",
-      "bulk": true,
-      "_derived": true
-    },
-    {
-      "date": "2026-06-12",
-      "type": "skill-create",
-      "title": "Add skill: codex-law-translate",
-      "who": "Atta",
-      "ref": [
-        "codex-law-translate"
-      ],
-      "commit": "074dbafe",
-      "_derived": true
-    },
-    {
-      "date": "2026-06-09",
-      "type": "skill-create",
-      "title": "Add skill: bug-fix-workflow",
-      "who": "Atta",
-      "ref": [
-        "bug-fix-workflow"
-      ],
-      "commit": "325f3a26",
-      "_derived": true
-    },
-    {
-      "date": "2026-05-31",
-      "type": "skill-create",
-      "title": "Add skill: cleanup",
-      "who": "Atta",
-      "ref": [
-        "cleanup"
-      ],
-      "commit": "bcd97544",
-      "_derived": true
-    },
-    {
-      "date": "2026-05-29",
-      "type": "skill-create",
-      "title": "Add skill: conquering-campaign",
-      "who": "Atta",
-      "ref": [
-        "conquering-campaign"
-      ],
-      "commit": "325a46a5",
       "_derived": true
     }
   ],

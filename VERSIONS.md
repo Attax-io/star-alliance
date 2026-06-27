@@ -72,6 +72,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`performance`](star-alliance-skills/performance/SKILL.md) | 1.0.3 | vendored | 32 / 219 | 1418 / 371 | ✓ lean | Optimize web performance for faster loading and better user experience |
 | [`portability-audit`](star-alliance-skills/portability-audit/SKILL.md) | 1.0.0 | own | 75 / 481 | 578 / 104 | ✓ lean | Audit how portable a Claude Code project is — maps every layer (skills, members, hooks, en… |
 | [`portfolio-risk`](star-alliance-skills/portfolio-risk/SKILL.md) | 0.1.0 | own | 129 / 1005 | 834 / 55 | ✓ lean | The Merchant's craft for read-only, book-level portfolio construction and risk measurement… |
+| [`price-action`](star-alliance-skills/price-action/SKILL.md) | 1.0.0 | own | 141 / 1001 | 1084 / 63 | ✓ lean | The Merchant's read-only craft for reading price action and market structure, distilled fr… |
 | [`probability-statistics`](star-alliance-skills/probability-statistics/SKILL.md) | 1.0.0 | own | 117 / 1000 | 1139 / 65 | ✓ lean | The Merchant's read-only craft for probability and statistics, distilled from Evans & Rose… |
 | [`project-start`](star-alliance-skills/project-start/SKILL.md) | 1.0.0 | own | 55 / 375 | 262 / 56 | ✓ lean | Start-of-session health check for projects that have Star Alliance members deployed |
 | [`python-master`](star-alliance-skills/python-master/SKILL.md) | 1.0.0 | own | 134 / 1020 | 431 / 47 | ✓ lean | The Developer's craft for building production-grade Python libraries and web apps end to e… |
@@ -96,4 +97,4 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`weapon-utility`](star-alliance-skills/weapon-utility/SKILL.md) | 2.1.0 | own | 166 / 1009 | 3516 / 256 | ✓ lean | Every member's rule for which weapon (model) to draw and how thinker and doer weapons work… |
 | [`workflow-forge`](star-alliance-skills/workflow-forge/SKILL.md) | 1.3.0 | own | 153 / 997 | 1701 / 102 | ✓ lean | The Strategist's craft for distilling a finished run into a reusable star-map workflow in … |
 
-_66 skills — 61 lean · 4 large (installable, over the 500-line ideal) · 1 near the word ceiling · 0 hard violations._
+_67 skills — 62 lean · 4 large (installable, over the 500-line ideal) · 1 near the word ceiling · 0 hard violations._

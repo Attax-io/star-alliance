@@ -22,6 +22,10 @@ const STYLE = "fantasy RPG skill icon, Fallen Sword MMORPG style, dark parchment
 
 const SKILLS = [
   {
+    id: "price-action",
+    prompt: `${STYLE}. A master tape-reader's parchment on dark aged leather: a single luminous golden price-line flowing across it in clear market structure — a strong rising impulse leg, a shallow pullback, then another impulse, resolving into a balanced sideways trading range bounded by two glowing horizontal rails, with a breakout arrow piercing one rail at the right edge — beneath the line two opposing currents of tiny gold and shadow arrows (buyers vs sellers) showing the order-flow imbalance, a brass spyglass and a balance-scale weighing the two sides, faint runic glyphs framing the regimes — the read-only craft of reading the shifting balance written in the bars, no text, no watermarks`,
+  },
+  {
     id: "voices-check",
     prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "A skill for integrating an agent's competing internal sub-voices into one coherent response ins", no text, no watermarks`,
   },

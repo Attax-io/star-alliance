@@ -343,6 +343,14 @@
     "triggers": "'review my portfolio', 'what is the risk on my book', 'compute VaR', 'check my exposures', 'should I rebalance', 'stress test this portfolio'",
     "modes": "construction; risk-audit; rebalance-proposal; stress-test"
   },
+  "price-action": {
+    "icon": "🌊",
+    "blurb": "Read price action & market structure (Grimes) — trends, ranges, regime interfaces, the order-flow imbalance behind the bars",
+    "level": "Advanced",
+    "tabler": "ti-chart-line",
+    "triggers": "'read this price action', 'is this a pullback or a reversal', 'what is the market structure here', 'is this trend strong', 'teach me price action'",
+    "modes": "the market cycle & four trades; trend structure; trading ranges; regime interfaces (breakout/reversal/failed reversal); confirmation tools; trade & risk management; trader psychology"
+  },
   "probability-statistics": {
     "icon": "🎲",
     "blurb": "Read-only probability & statistics — distributions, inference, testing, Bayes",

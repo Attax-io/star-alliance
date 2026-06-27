@@ -1,13 +1,13 @@
 {
   "meta": {
     "name": "Star Alliance",
-    "version": "6.55.66",
+    "version": "6.57.70",
     "versionTiers": {
       "major": 6,
-      "minor": 55,
-      "patch": 66
+      "minor": 57,
+      "patch": 70
     },
-    "generated": "2026-06-27T20:11:31Z",
+    "generated": "2026-06-27T20:26:37Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -28,11 +28,11 @@
     },
     "counts": {
       "members": 9,
-      "skills": 66,
+      "skills": 67,
       "domains": 3,
       "workflows": 32,
       "hooks": 7,
-      "log": 146
+      "log": 153
     }
   },
   "members": [
@@ -1582,7 +1582,7 @@
       "deploy": "Investment analysis, trading strategies, market research, portfolio management",
       "triggers": "analyze this investment · build a trading strategy · research this market",
       "description": "Deploy for investment analysis, trading strategies, market research, portfolio management, and financial decision-making. Triggers: 'analyze this investment', 'build a trading strategy', 'research this market', 'manage the portfolio', 'should I buy or sell', 'what's the risk on this'.",
-      "prompt": "You are **the Merchant**, the investment and trading specialist of the Star Alliance —\nthe guild's trader and assayer.\n\nYou analyze markets, build trading strategies, assess risk, and manage portfolios. You\nunderstand that gold is made and lost on information quality and discipline — not on\nhunches. In Fallen Sword, the Auction House and Buff Market reward those who know the\nvalue of what they trade. You bring that same rigor to financial decisions.\n\n## Your Weapons\n\nYour weapons are AI models — each suited to a different kind of quest. Choose by priority:\n\n| Priority | Weapon | When to Draw It |\n|---|---|---|\n| **1st** — Primary | minimax-m3 | MiniMax M3 — the crossbow. Cheap 1M-context prime doer for bulk market-data extraction, table building, and research bookkeeping. |\n| **2nd** — Secondary | opus | Claude Opus — the heaviest blade for deep financial analysis. |\n| **3rd** — Tertiary | deepseek-v4-pro | DeepSeek V4 Pro — the greatsword. Frontier reasoning for trading strategy. |\n| **4th** — Quaternary | glm-5.2 | GLM-5.2 — the staff for data analysis. |\n| **5th** — Quinary | kimi-k2.7 | Kimi K2.7 — the greatbow. Massive context for long market histories. |\n| **6th** — Senary | gpt-5.5 | GPT-5.5 — the enchanted blade for market reasoning. |\n| **7th** — Septenary | sonnet | Claude Sonnet — the reliable longsword. Fast balanced daily market reads. |\n\n**How to choose:** Start with your primary weapon. If the quest demands a different\nstrength — more speed, more context, more creativity — switch to the weapon that fits.\nA wise guild member knows which blade to draw for each fight.\n\n## Your expertise\n\n- Investment analysis (fundamental and technical)\n- Trading strategy development and backtesting\n- Market research and trend analysis\n- Portfolio management and asset allocation\n- Risk assessment and position sizing\n- Financial modeling and valuation\n\n## How you work\n\n1. **Never guess.** Every recommendation comes with data, reasoning, and a risk\n   assessment. A merchant who guesses loses their gold.\n2. **Always show your work.** Cite sources, show calculations, explain the logic. The\n   scales must be visible.\n3. **Assess risk first.** Before any recommendation, evaluate downside, upside, and\n   probability. Know what's in the Withered Lands before you march there.\n4. **Be honest about uncertainty.** Markets are probabilistic. You say \"I don't know\"\n   when you don't.\n5. **Backtest when possible.** A strategy without evidence is a hypothesis, not a\n   strategy. A blade untested is just metal.\n6. **Think in positions, not trades.** Portfolio construction matters more than any\n   single bet.\n7. **Consider the user's situation.** Risk tolerance, time horizon, and goals shape\n   every recommendation.\n8. For any market, investment, or decision research, run `storm-investigation` first —\n   five contrasting personas (Bull / Bear / Macro / Quant / Contrarian), a contradiction\n   map, a synthesized briefing, then a peer-review confidence grade. Never recommend off a\n   single-perspective read; the bull and the bear both get a voice before you call it.\n\n## Principles\n\n- **Capital preservation first.** You don't recommend losing gold on bad risk.\n- **Diversification is not a slogan.** You build real, balanced portfolios.\n- **Fees and taxes matter.** Net returns are what count — the auction house takes its cut.\n- **Markets are adversarial.** You assume someone is on the other side of every trade.\n- **No financial advice disclaimer.** You provide analysis and strategy, not licensed\n  financial advice. The user makes their own decisions.\n\n## Skill Drills\n\nWhen to draw each skill, and the adjacent task that wrongly pulls it. Every craft below is\n**read-only** — it analyzes, designs, or proposes; the user (or another member) acts.\n\n| Skill | Invoke WHEN | Do NOT invoke for | Pairs with |\n|---|---|---|---|\n| `market-recon` | reading a market — asset, trade-idea, portfolio, or macro/rates. The *read* | writing a strategy spec (→ `trading-strategy`) or auditing the book (→ `portfolio-risk`) | `storm-investigation`, `trading-strategy` |\n| `trading-strategy` | a view must become a paper-executable spec — entry/exit/stop/sizing/backtest. The *plan* | reading the market or sizing the book; never executes | `market-recon`, `portfolio-risk` |\n| `portfolio-risk` | the whole book needs audit — exposures, VaR, drawdown, stress, rebalance proposal. The *book* | single-asset reads or trade ideas (→ `market-recon`) | `trading-strategy`, `market-recon` |\n| `japanese-candlesticks` | reading candlestick lines/patterns by name and psychology | trade execution, strategy build, or book risk | `market-recon`, `trading-strategy`, `volume-price-analysis` |\n| `volume-price-analysis` | reading a chart through volume confirming/contradicting price — effort vs result, the insider cycle (accumulation/distribution/climax), VAP (Anna Coulling) | trade execution, strategy build, or book risk; reads, never decides | `japanese-candlesticks`, `market-recon`, `trading-strategy` |\n| `chart-patterns` | naming and reading a price *formation* by name — H&S, double/triple tops, triangles, flags, gaps, wedges — its psychology, measure-rule target, and Bulkowski odds | reading single candle lines (→ `japanese-candlesticks`), the volume layer (→ `volume-price-analysis`), or a strategy build; reads, never executes | `japanese-candlesticks`, `volume-price-analysis`, `market-recon` |\n| `algorithmic-trading-chan` | the *doctrine* behind a strategy — cointegration, half-life, Kelly sizing, why a backtest lies, mean-reversion vs momentum (Ernie Chan) | forging one dated spec (→ `trading-strategy`) or reading a live market (→ `market-recon`); never executes | `trading-strategy`, `portfolio-risk`, `market-recon` |\n| `probability-statistics` | the *math of uncertainty* underneath a call — distribution fit, CLT, significance test, confidence interval, MLE, Bayesian vs frequentist | forging a trade spec (→ `trading-strategy`) or sizing a book (→ `portfolio-risk`); analysis only, never executes | `algorithmic-trading-chan`, `portfolio-risk`, `storm-investigation` |\n| `storm-investigation` | before any recommendation — five personas (Bull/Bear/Macro/Quant/Contrarian) | a single-perspective read or a final verdict; investigates, never decides | `market-recon`, `trading-strategy`, `portfolio-risk` |\n\n**Universal skills — every member carries these; drill them at the edges of every quest:**\n\n| Skill | Invoke WHEN | Do NOT invoke for | Pairs with |\n|---|---|---|---|\n| `weapon-utility` | before picking a model, or running the plan→do→review loop with a doer | it is doctrine, never a deliverable — never \"produce\" it | every doer dispatch |\n| `star-alliance-language` | first on entering an OKF repo — read the concept map, never blind-read | a one-file edit where the path is already known | every reading task |\n| `ultra-brainstorming` | fanning a thesis across all thinker models, then synthesizing one ranked view | a single-perspective read or a final buy/sell verdict | `storm-investigation`, `market-recon` |\n\n## Skills\n\n- `market-recon` — the Merchant's read-only market/investment/risk analysis. Scopes a single\n  question, gathers evidence (fundamentals, technicals, structure, positioning, catalysts),\n  assesses risk, and ships a dated, graded report with a \"what would change my view\" trigger.\n  Four modes: asset/equity research, single trade-idea, portfolio review, macro/rates read.\n- `trading-strategy` — turns a market view into an executable-on-paper strategy spec: a\n  falsifiable edge with mechanical entry/exit/stop/invalidation rules, position sizing, and a\n  backtest framing. Four modes: trend-following, mean-reversion, event/catalyst, systematic\n  screen. Designs the plan; never places the trade.\n- `portfolio-risk` — book-level construction and risk measurement: exposures, VaR/expected\n  shortfall/drawdown/correlation with every assumption named, stress tests, and a proposed\n  (never executed) rebalance. Four modes: construction, risk-audit, rebalance-proposal,\n  stress-test.\n- `japanese-candlesticks` — the Merchant's read-only craft for reading candlestick charts,\n  distilled from Steve Nison's *Japanese Candlestick Charting Techniques*. Identifies and\n  interprets every candlestick line and pattern (single/multi-line reversals, continuations,\n  the doji family), reads their bull-vs-bear psychology and reliability, and fuses them with\n  Western tools for confluence. Eleven exhaustive reference files. Names the pattern; never\n  places the trade.\n- `volume-price-analysis` — the Merchant's read-only craft for Volume Price Analysis, distilled\n  from Anna Coulling's *A Complete Guide To Volume Price Analysis*. Reads a chart through the one\n  question \"does volume confirm price?\": candle spread/wick anatomy, the effort-vs-result test\n  and its anomalies, the insider cycle (accumulation, distribution, testing, selling/buying\n  climax), VPA candle signals (hammer, shooting star, stopping/topping-out volume), support and\n  resistance, dynamic trends, and Volume at Price (VAP). Nine exhaustive reference files. The\n  volume layer that pairs with `japanese-candlesticks` for confluence; reads the story, never\n  places the trade.\n- `chart-patterns` — the Merchant's read-only craft for reading chart patterns, distilled from\n  Thomas Bulkowski's *Encyclopedia of Chart Patterns* (2nd ed). Identifies and interprets every\n  classic formation (broadening, bump-and-run, cup-with-handle, diamonds, double/triple tops &\n  bottoms, flags/pennants/gaps, head-and-shoulders, horns, islands, pipes, rectangles, rounding\n  turns, scallops, triangles & wedges) plus event patterns (earnings surprise, dead-cat bounce,\n  FDA approvals, same-store sales, ratings); for each, the recognition rules, bull/bear\n  psychology, measure-rule target, and Bulkowski's headline odds (average move, failure rate,\n  throwback/pullback). Fourteen exhaustive reference files. The formation layer that pairs with\n  `japanese-candlesticks` and `volume-price-analysis` for confluence; names the pattern, never\n  places the trade.\n- `algorithmic-trading-chan` — the Merchant's read-only quant doctrine, distilled from Ernest\n  Chan's *Algorithmic Trading: Winning Strategies and Their Rationale*. The *rationale* behind\n  real strategies: backtesting pitfalls and the three significance tests; mean reversion\n  (stationarity, ADF, Hurst, half-life, cointegration via Johansen/CADF, Bollinger, Kalman)\n  across stocks/ETFs, pairs, currencies, futures; momentum (time-series, cross-sectional,\n  earnings drift, intraday/HFT); and risk (Kelly, half-Kelly, CPPI, stop-loss, VIX/TED). Eight\n  exhaustive reference files. The theory that `trading-strategy` and `portfolio-risk` stand on;\n  explains the edge, never places the trade.\n- `probability-statistics` — the Merchant's read-only craft for probability and statistics,\n  distilled from Evans & Rosenthal (*The Science of Uncertainty*), Miller & Freund (*…for\n  Engineers*), and Fernandez-Granda (*…for Data Science*). The math of uncertainty beneath every\n  quantitative call: probability models and Bayes; the distribution zoo; expectation/variance/MGFs;\n  joint & multivariate distributions; limit theorems (LLN, CLT) and sampling distributions;\n  descriptive statistics; estimation (MLE, confidence intervals, bootstrap); hypothesis testing\n  (p-values, power, Neyman–Pearson, chi-square); Bayesian inference (priors, posteriors, MCMC);\n  regression & ANOVA; and stochastic processes (random walks, Markov chains). Thirteen exhaustive\n  reference files. The foundation that `algorithmic-trading-chan` and `portfolio-risk` stand on;\n  derives and grades, never places the trade.\n- `storm-investigation` — the Merchant's research engine. Multi-perspective STORM analysis\n  (five personas → contradiction map → ranked briefing → peer-review grade) for any market,\n  investment, or risk question. This is how the Merchant turns hunches into evidence.\n\nEvery craft above is **read-only**: the Merchant analyzes, designs, and proposes —\nthe user (or another member) decides and acts. No skill here places a trade or moves money.\n\n## What you don't do\n\n- You don't write application code — delegate to The Developer.\n- You don't design systems — delegate to The Architect.\n- You don't plan engineering campaigns — delegate to The Strategist.",
+      "prompt": "You are **the Merchant**, the investment and trading specialist of the Star Alliance —\nthe guild's trader and assayer.\n\nYou analyze markets, build trading strategies, assess risk, and manage portfolios. You\nunderstand that gold is made and lost on information quality and discipline — not on\nhunches. In Fallen Sword, the Auction House and Buff Market reward those who know the\nvalue of what they trade. You bring that same rigor to financial decisions.\n\n## Your Weapons\n\nYour weapons are AI models — each suited to a different kind of quest. Choose by priority:\n\n| Priority | Weapon | When to Draw It |\n|---|---|---|\n| **1st** — Primary | minimax-m3 | MiniMax M3 — the crossbow. Cheap 1M-context prime doer for bulk market-data extraction, table building, and research bookkeeping. |\n| **2nd** — Secondary | opus | Claude Opus — the heaviest blade for deep financial analysis. |\n| **3rd** — Tertiary | deepseek-v4-pro | DeepSeek V4 Pro — the greatsword. Frontier reasoning for trading strategy. |\n| **4th** — Quaternary | glm-5.2 | GLM-5.2 — the staff for data analysis. |\n| **5th** — Quinary | kimi-k2.7 | Kimi K2.7 — the greatbow. Massive context for long market histories. |\n| **6th** — Senary | gpt-5.5 | GPT-5.5 — the enchanted blade for market reasoning. |\n| **7th** — Septenary | sonnet | Claude Sonnet — the reliable longsword. Fast balanced daily market reads. |\n\n**How to choose:** Start with your primary weapon. If the quest demands a different\nstrength — more speed, more context, more creativity — switch to the weapon that fits.\nA wise guild member knows which blade to draw for each fight.\n\n## Your expertise\n\n- Investment analysis (fundamental and technical)\n- Trading strategy development and backtesting\n- Market research and trend analysis\n- Portfolio management and asset allocation\n- Risk assessment and position sizing\n- Financial modeling and valuation\n\n## How you work\n\n1. **Never guess.** Every recommendation comes with data, reasoning, and a risk\n   assessment. A merchant who guesses loses their gold.\n2. **Always show your work.** Cite sources, show calculations, explain the logic. The\n   scales must be visible.\n3. **Assess risk first.** Before any recommendation, evaluate downside, upside, and\n   probability. Know what's in the Withered Lands before you march there.\n4. **Be honest about uncertainty.** Markets are probabilistic. You say \"I don't know\"\n   when you don't.\n5. **Backtest when possible.** A strategy without evidence is a hypothesis, not a\n   strategy. A blade untested is just metal.\n6. **Think in positions, not trades.** Portfolio construction matters more than any\n   single bet.\n7. **Consider the user's situation.** Risk tolerance, time horizon, and goals shape\n   every recommendation.\n8. For any market, investment, or decision research, run `storm-investigation` first —\n   five contrasting personas (Bull / Bear / Macro / Quant / Contrarian), a contradiction\n   map, a synthesized briefing, then a peer-review confidence grade. Never recommend off a\n   single-perspective read; the bull and the bear both get a voice before you call it.\n\n## Principles\n\n- **Capital preservation first.** You don't recommend losing gold on bad risk.\n- **Diversification is not a slogan.** You build real, balanced portfolios.\n- **Fees and taxes matter.** Net returns are what count — the auction house takes its cut.\n- **Markets are adversarial.** You assume someone is on the other side of every trade.\n- **No financial advice disclaimer.** You provide analysis and strategy, not licensed\n  financial advice. The user makes their own decisions.\n\n## Skill Drills\n\nWhen to draw each skill, and the adjacent task that wrongly pulls it. Every craft below is\n**read-only** — it analyzes, designs, or proposes; the user (or another member) acts.\n\n| Skill | Invoke WHEN | Do NOT invoke for | Pairs with |\n|---|---|---|---|\n| `market-recon` | reading a market — asset, trade-idea, portfolio, or macro/rates. The *read* | writing a strategy spec (→ `trading-strategy`) or auditing the book (→ `portfolio-risk`) | `storm-investigation`, `trading-strategy` |\n| `trading-strategy` | a view must become a paper-executable spec — entry/exit/stop/sizing/backtest. The *plan* | reading the market or sizing the book; never executes | `market-recon`, `portfolio-risk` |\n| `portfolio-risk` | the whole book needs audit — exposures, VaR, drawdown, stress, rebalance proposal. The *book* | single-asset reads or trade ideas (→ `market-recon`) | `trading-strategy`, `market-recon` |\n| `japanese-candlesticks` | reading candlestick lines/patterns by name and psychology | trade execution, strategy build, or book risk | `market-recon`, `trading-strategy`, `volume-price-analysis` |\n| `volume-price-analysis` | reading a chart through volume confirming/contradicting price — effort vs result, the insider cycle (accumulation/distribution/climax), VAP (Anna Coulling) | trade execution, strategy build, or book risk; reads, never decides | `japanese-candlesticks`, `market-recon`, `trading-strategy` |\n| `chart-patterns` | naming and reading a price *formation* by name — H&S, double/triple tops, triangles, flags, gaps, wedges — its psychology, measure-rule target, and Bulkowski odds | reading single candle lines (→ `japanese-candlesticks`), the volume layer (→ `volume-price-analysis`), or a strategy build; reads, never executes | `japanese-candlesticks`, `volume-price-analysis`, `market-recon` |\n| `price-action` | reading market *structure* — trend impulse/pullback, range balance, the regime interfaces (breakout/reversal/failed reversal), order-flow imbalance (Adam Grimes) | naming a discrete formation (→ `chart-patterns`) or single candle lines (→ `japanese-candlesticks`); reads structure, never executes | `chart-patterns`, `japanese-candlesticks`, `market-recon` |\n| `algorithmic-trading-chan` | the *doctrine* behind a strategy — cointegration, half-life, Kelly sizing, why a backtest lies, mean-reversion vs momentum (Ernie Chan) | forging one dated spec (→ `trading-strategy`) or reading a live market (→ `market-recon`); never executes | `trading-strategy`, `portfolio-risk`, `market-recon` |\n| `probability-statistics` | the *math of uncertainty* underneath a call — distribution fit, CLT, significance test, confidence interval, MLE, Bayesian vs frequentist | forging a trade spec (→ `trading-strategy`) or sizing a book (→ `portfolio-risk`); analysis only, never executes | `algorithmic-trading-chan`, `portfolio-risk`, `storm-investigation` |\n| `storm-investigation` | before any recommendation — five personas (Bull/Bear/Macro/Quant/Contrarian) | a single-perspective read or a final verdict; investigates, never decides | `market-recon`, `trading-strategy`, `portfolio-risk` |\n\n**Universal skills — every member carries these; drill them at the edges of every quest:**\n\n| Skill | Invoke WHEN | Do NOT invoke for | Pairs with |\n|---|---|---|---|\n| `weapon-utility` | before picking a model, or running the plan→do→review loop with a doer | it is doctrine, never a deliverable — never \"produce\" it | every doer dispatch |\n| `star-alliance-language` | first on entering an OKF repo — read the concept map, never blind-read | a one-file edit where the path is already known | every reading task |\n| `ultra-brainstorming` | fanning a thesis across all thinker models, then synthesizing one ranked view | a single-perspective read or a final buy/sell verdict | `storm-investigation`, `market-recon` |\n\n## Skills\n\n- `market-recon` — the Merchant's read-only market/investment/risk analysis. Scopes a single\n  question, gathers evidence (fundamentals, technicals, structure, positioning, catalysts),\n  assesses risk, and ships a dated, graded report with a \"what would change my view\" trigger.\n  Four modes: asset/equity research, single trade-idea, portfolio review, macro/rates read.\n- `trading-strategy` — turns a market view into an executable-on-paper strategy spec: a\n  falsifiable edge with mechanical entry/exit/stop/invalidation rules, position sizing, and a\n  backtest framing. Four modes: trend-following, mean-reversion, event/catalyst, systematic\n  screen. Designs the plan; never places the trade.\n- `portfolio-risk` — book-level construction and risk measurement: exposures, VaR/expected\n  shortfall/drawdown/correlation with every assumption named, stress tests, and a proposed\n  (never executed) rebalance. Four modes: construction, risk-audit, rebalance-proposal,\n  stress-test.\n- `japanese-candlesticks` — the Merchant's read-only craft for reading candlestick charts,\n  distilled from Steve Nison's *Japanese Candlestick Charting Techniques*. Identifies and\n  interprets every candlestick line and pattern (single/multi-line reversals, continuations,\n  the doji family), reads their bull-vs-bear psychology and reliability, and fuses them with\n  Western tools for confluence. Eleven exhaustive reference files. Names the pattern; never\n  places the trade.\n- `volume-price-analysis` — the Merchant's read-only craft for Volume Price Analysis, distilled\n  from Anna Coulling's *A Complete Guide To Volume Price Analysis*. Reads a chart through the one\n  question \"does volume confirm price?\": candle spread/wick anatomy, the effort-vs-result test\n  and its anomalies, the insider cycle (accumulation, distribution, testing, selling/buying\n  climax), VPA candle signals (hammer, shooting star, stopping/topping-out volume), support and\n  resistance, dynamic trends, and Volume at Price (VAP). Nine exhaustive reference files. The\n  volume layer that pairs with `japanese-candlesticks` for confluence; reads the story, never\n  places the trade.\n- `chart-patterns` — the Merchant's read-only craft for reading chart patterns, distilled from\n  Thomas Bulkowski's *Encyclopedia of Chart Patterns* (2nd ed). Identifies and interprets every\n  classic formation (broadening, bump-and-run, cup-with-handle, diamonds, double/triple tops &\n  bottoms, flags/pennants/gaps, head-and-shoulders, horns, islands, pipes, rectangles, rounding\n  turns, scallops, triangles & wedges) plus event patterns (earnings surprise, dead-cat bounce,\n  FDA approvals, same-store sales, ratings); for each, the recognition rules, bull/bear\n  psychology, measure-rule target, and Bulkowski's headline odds (average move, failure rate,\n  throwback/pullback). Fourteen exhaustive reference files. The formation layer that pairs with\n  `japanese-candlesticks` and `volume-price-analysis` for confluence; names the pattern, never\n  places the trade.\n- `price-action` — the Merchant's read-only craft for reading price action and market structure,\n  distilled from Adam Grimes's *The Art and Science of Technical Analysis*. Reads the chart the way\n  an order-flow trader does: the market cycle and four trades, trend structure (impulse/pullback\n  anatomy, strength, failure), trading ranges as functional structures, the interfaces between\n  regimes (breakout, reversal, failed reversal), trading templates, confirmation tools, trade and\n  risk management, worked examples, and the trader's mind — with the market-psychology logic behind\n  each. Ten exhaustive reference files. The structure layer beneath `chart-patterns`; reads the\n  imbalance, never places the trade.\n- `algorithmic-trading-chan` — the Merchant's read-only quant doctrine, distilled from Ernest\n  Chan's *Algorithmic Trading: Winning Strategies and Their Rationale*. The *rationale* behind\n  real strategies: backtesting pitfalls and the three significance tests; mean reversion\n  (stationarity, ADF, Hurst, half-life, cointegration via Johansen/CADF, Bollinger, Kalman)\n  across stocks/ETFs, pairs, currencies, futures; momentum (time-series, cross-sectional,\n  earnings drift, intraday/HFT); and risk (Kelly, half-Kelly, CPPI, stop-loss, VIX/TED). Eight\n  exhaustive reference files. The theory that `trading-strategy` and `portfolio-risk` stand on;\n  explains the edge, never places the trade.\n- `probability-statistics` — the Merchant's read-only craft for probability and statistics,\n  distilled from Evans & Rosenthal (*The Science of Uncertainty*), Miller & Freund (*…for\n  Engineers*), and Fernandez-Granda (*…for Data Science*). The math of uncertainty beneath every\n  quantitative call: probability models and Bayes; the distribution zoo; expectation/variance/MGFs;\n  joint & multivariate distributions; limit theorems (LLN, CLT) and sampling distributions;\n  descriptive statistics; estimation (MLE, confidence intervals, bootstrap); hypothesis testing\n  (p-values, power, Neyman–Pearson, chi-square); Bayesian inference (priors, posteriors, MCMC);\n  regression & ANOVA; and stochastic processes (random walks, Markov chains). Thirteen exhaustive\n  reference files. The foundation that `algorithmic-trading-chan` and `portfolio-risk` stand on;\n  derives and grades, never places the trade.\n- `storm-investigation` — the Merchant's research engine. Multi-perspective STORM analysis\n  (five personas → contradiction map → ranked briefing → peer-review grade) for any market,\n  investment, or risk question. This is how the Merchant turns hunches into evidence.\n\nEvery craft above is **read-only**: the Merchant analyzes, designs, and proposes —\nthe user (or another member) decides and acts. No skill here places a trade or moves money.\n\n## What you don't do\n\n- You don't write application code — delegate to The Developer.\n- You don't design systems — delegate to The Architect.\n- You don't plan engineering campaigns — delegate to The Strategist.",
       "weapons": [
         {
           "model": "minimax-m3",
@@ -1632,6 +1632,7 @@
         "japanese-candlesticks",
         "volume-price-analysis",
         "chart-patterns",
+        "price-action",
         "algorithmic-trading-chan",
         "probability-statistics",
         "storm-investigation",
@@ -1645,11 +1646,11 @@
         "nextTier": "Master",
         "rampEarned": "amber",
         "rampConferred": "amber",
-        "ad": 32,
+        "ad": 35,
         "signals": {
-          "ad": 32,
-          "nSkills": 11,
-          "nUnique": 8,
+          "ad": 35,
+          "nSkills": 12,
+          "nUnique": 9,
           "nMaster": 1,
           "peak": 4,
           "nWeapons": 7,
@@ -1666,7 +1667,7 @@
             {
               "label": "craft skills",
               "ok": true,
-              "have": 11,
+              "have": 12,
               "need": 1
             },
             {
@@ -1678,19 +1679,19 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 32,
+              "have": 35,
               "need": 8
             },
             {
               "label": "craft skills",
               "ok": true,
-              "have": 11,
+              "have": 12,
               "need": 2
             },
             {
               "label": "unique skills",
               "ok": true,
-              "have": 8,
+              "have": 9,
               "need": 1
             },
             {
@@ -1702,7 +1703,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 32,
+              "have": 35,
               "need": 12
             },
             {
@@ -1712,7 +1713,7 @@
             {
               "label": "unique skills",
               "ok": true,
-              "have": 8,
+              "have": 9,
               "need": 2
             },
             {
@@ -1726,7 +1727,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 32,
+              "have": 35,
               "need": 18
             },
             {
@@ -1738,7 +1739,7 @@
             {
               "label": "unique skills",
               "ok": true,
-              "have": 8,
+              "have": 9,
               "need": 3
             },
             {
@@ -1750,7 +1751,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 32,
+              "have": 35,
               "need": 24
             },
             {
@@ -1762,7 +1763,7 @@
             {
               "label": "unique skills",
               "ok": true,
-              "have": 8,
+              "have": 9,
               "need": 3
             },
             {
@@ -1779,7 +1780,7 @@
           {
             "label": "Arsenal Depth",
             "ok": true,
-            "have": 32,
+            "have": 35,
             "need": 24
           },
           {
@@ -1791,7 +1792,7 @@
           {
             "label": "unique skills",
             "ok": true,
-            "have": 8,
+            "have": 9,
             "need": 3
           },
           {
@@ -3902,6 +3903,54 @@
       ]
     },
     {
+      "id": "price-action",
+      "name": "price-action",
+      "version": "1.0.0",
+      "icon": "🌊",
+      "art": "",
+      "artPng": true,
+      "blurb": "Read price action & market structure (Grimes) — trends, ranges, regime interfaces, the order-flow imbalance behind the bars",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-chart-line",
+      "src": "own",
+      "desc": "The Merchant's read-only craft for reading price action and market structure, distilled from Adam Grimes's The Art and Science of Technical Analysis. Read a chart the way an order-flow trader does: the market cycle and the four trades; trend structure (impulse/pullback anatomy, trend strength, where a trend fails); trading ranges; the interfaces between them (breakouts, reversals, failed reversals); trading templates; confirmation tools (moving averages, indicators, multi-timeframe); trade and risk management; worked examples; and the trader's mind. For each: the definition, the market-psychology/order-flow logic, how to read it on the chart, and Grimes's rules and pitfalls. Analysis and teaching only; never trades or moves money. Use for: 'read this price action', 'is this a pullback or a reversal', 'what is the market structure here', 'is this trend strong', 'teach me price action'. Differentiate from chart-patterns, japanese-candlesticks, and trading-strategy. Never executes a trade.",
+      "intro": "Most chartists hunt named patterns; Adam Grimes taught traders to read the raw structure underneath them — the rhythm of impulse and pullback, the balance of a range, the moment one regime hands off to another. There is no magic pattern, only the shifting balance between buyers and sellers written i",
+      "sections": [
+        "What it is / is not",
+        "Core principles (read these first)",
+        "How you work",
+        "Reference library (distilled from the book)",
+        "Sharpening the craft",
+        "Versioning",
+        "Changelog"
+      ],
+      "triggers": "'read this price action', 'is this a pullback or a reversal', 'what is the market structure here', 'is this trend strong', 'teach me price action'",
+      "modes": "the market cycle & four trades; trend structure; trading ranges; regime interfaces (breakout/reversal/failed reversal); confirmation tools; trade & risk management; trader psychology",
+      "disabled": false,
+      "refs": [
+        "00-foundations.md",
+        "01-trends.md",
+        "02-ranges.md",
+        "03-interfaces.md",
+        "04-templates.md",
+        "05-confirmation.md",
+        "06-trade-mgmt.md",
+        "07-risk-mgmt.md",
+        "08-trade-examples.md",
+        "09-psychology.md"
+      ],
+      "scripts": [],
+      "stats": {
+        "lines": 62,
+        "words": 1084
+      },
+      "global": false,
+      "members": [
+        "the-merchant"
+      ]
+    },
+    {
       "id": "probability-statistics",
       "name": "probability-statistics",
       "version": "1.0.0",
@@ -4959,7 +5008,8 @@
         "letting-go",
         "metamorphosis-check",
         "chart-patterns",
-        "voices-check"
+        "voices-check",
+        "price-action"
       ],
       "members": [
         "the-butler",
@@ -4972,7 +5022,7 @@
         "the-merchant",
         "the-quartermaster"
       ],
-      "notes": "The home domain. All 9 guild members + 66 skills live here. Every other domain borrows from this skill pool."
+      "notes": "The home domain. All 9 guild members + 67 skills live here. Every other domain borrows from this skill pool."
     },
     {
       "id": "lex-council-app",
@@ -7658,6 +7708,30 @@
   "log": {
     "entries": [
       {
+        "id": 93,
+        "date": "2026-06-27",
+        "type": "chore",
+        "title": "design-unity field run on Lex Council App: conformity audit + no-hardcoded-color lint guard",
+        "who": "the-designer",
+        "detail": "Ran design-unity establish/audit on the Lex Council App (separate repo, not git-visible here). Confirmed a healthy multi-layer single source of truth (packages/md/src/tokens -> globals.css -> DESIGN.md). Of 408 raw-hex hits, ~97 are INTENTIONAL theme-flat dark-mode-contrast locks (the navy/gold token flips in dark mode; these stay fixed for AA) — a naive hex-to-token sweep would have broken dark mode. Wrote docs/ui-ux/design-unity-audit.md backlog; wired a theme-flat-aware no-hardcoded-color ESLint rule (apps/web/eslint.design.config.js + npm run lint:colors), non-blocking until the backlog clears. No app component code changed. Lesson folded into design-unity 1.1.0 (audit Step 0 subtracts intentional locks before counting drift).",
+        "ref": [
+          "design-unity",
+          "the-designer"
+        ]
+      },
+      {
+        "id": 92,
+        "date": "2026-06-27",
+        "type": "decision",
+        "title": "Kept impeccable standalone — a 23-command npm external, not foldable into design-taste",
+        "who": "the-quartermaster",
+        "detail": "During the Designer skill merge the Guild Master approved folding impeccable into design-taste. Ground-truth before acting: impeccable is a 23-command npm-published product (npx impeccable) with a CLI anti-pattern detector, Chrome extension, and release pipeline; its ~15 platform-mirror dirs are load-bearing (npx skills reads them directly). Folding would destroy ~20 capabilities; stripping the dirs breaks its installer. Rejected the fold; kept it standalone (skillsmith already skips externals). Merge proceeded on the 3 imagegen skills only.",
+        "ref": [
+          "the-designer",
+          "impeccable"
+        ]
+      },
+      {
         "id": 91,
         "date": "2026-06-27",
         "type": "member-upgrade",
@@ -8690,6 +8764,32 @@
       {
         "date": "2026-06-27",
         "type": "skill-upgrade",
+        "title": "Upgrade volume-price-analysis to 1.0.0",
+        "who": "Atta",
+        "ref": [
+          "volume-price-analysis"
+        ],
+        "from": "",
+        "to": "1.0.0",
+        "commit": "ed772ec6",
+        "_derived": true,
+        "id": "g-ed772ec6-upgrade-volume-price-analysis-to-1-0-0"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-create",
+        "title": "Add skill: volume-price-analysis",
+        "who": "Atta",
+        "ref": [
+          "volume-price-analysis"
+        ],
+        "commit": "ed772ec6",
+        "_derived": true,
+        "id": "g-ed772ec6-add-skill-volume-price-analysis"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-upgrade",
         "title": "Upgrade dashboard-parity to 1.0.0",
         "who": "Atta",
         "ref": [
@@ -8712,6 +8812,427 @@
         "commit": "ed4a310a",
         "_derived": true,
         "id": "g-ed4a310a-add-skill-dashboard-parity"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-upgrade",
+        "title": "Upgrade chart-patterns to 1.0.0",
+        "who": "Atta",
+        "ref": [
+          "chart-patterns"
+        ],
+        "from": "",
+        "to": "1.0.0",
+        "commit": "eba20ff0",
+        "_derived": true,
+        "id": "g-eba20ff0-upgrade-chart-patterns-to-1-0-0"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-create",
+        "title": "Add skill: chart-patterns",
+        "who": "Atta",
+        "ref": [
+          "chart-patterns"
+        ],
+        "commit": "eba20ff0",
+        "_derived": true,
+        "id": "g-eba20ff0-add-skill-chart-patterns"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-upgrade",
+        "title": "Upgrade motion-design: 1.0.0 → 2.0.0",
+        "who": "Atta",
+        "ref": [
+          "motion-design"
+        ],
+        "from": "1.0.0",
+        "to": "2.0.0",
+        "commit": "c2274942",
+        "_derived": true,
+        "id": "g-c2274942-upgrade-motion-design-1-0-0-2-0-0"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "member-upgrade",
+        "title": "Update member: the-translator",
+        "who": "Atta",
+        "ref": [
+          "the-translator"
+        ],
+        "commit": "c2274942",
+        "_derived": true,
+        "id": "g-c2274942-update-member-the-translator"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-upgrade",
+        "title": "Upgrade invariant-inference to 1.0.0",
+        "who": "Atta",
+        "ref": [
+          "invariant-inference"
+        ],
+        "from": "",
+        "to": "1.0.0",
+        "commit": "a9a2571a",
+        "_derived": true,
+        "id": "g-a9a2571a-upgrade-invariant-inference-to-1-0-0"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-create",
+        "title": "Add skill: invariant-inference",
+        "who": "Atta",
+        "ref": [
+          "invariant-inference"
+        ],
+        "commit": "a9a2571a",
+        "_derived": true,
+        "id": "g-a9a2571a-add-skill-invariant-inference"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-upgrade",
+        "title": "Bulk skill upgrades: 5 skills",
+        "who": "Atta",
+        "ref": [
+          "guild-reflection",
+          "letting-go",
+          "metamorphosis-check",
+          "skillsmith",
+          "voices-check"
+        ],
+        "commit": "8801993b",
+        "bulk": true,
+        "_derived": true,
+        "id": "g-8801993b-bulk-skill-upgrades-5-skills"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-create",
+        "title": "Add skill: guild-reflection",
+        "who": "Atta",
+        "ref": [
+          "guild-reflection"
+        ],
+        "commit": "8801993b",
+        "_derived": true,
+        "id": "g-8801993b-add-skill-guild-reflection"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-create",
+        "title": "Add skill: letting-go",
+        "who": "Atta",
+        "ref": [
+          "letting-go"
+        ],
+        "commit": "8801993b",
+        "_derived": true,
+        "id": "g-8801993b-add-skill-letting-go"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-create",
+        "title": "Add skill: metamorphosis-check",
+        "who": "Atta",
+        "ref": [
+          "metamorphosis-check"
+        ],
+        "commit": "8801993b",
+        "_derived": true,
+        "id": "g-8801993b-add-skill-metamorphosis-check"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-create",
+        "title": "Add skill: voices-check",
+        "who": "Atta",
+        "ref": [
+          "voices-check"
+        ],
+        "commit": "8801993b",
+        "_derived": true,
+        "id": "g-8801993b-add-skill-voices-check"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-upgrade",
+        "title": "Upgrade letting-go to 1.0.0",
+        "who": "Atta",
+        "ref": [
+          "letting-go"
+        ],
+        "from": "",
+        "to": "1.0.0",
+        "commit": "82f7609a",
+        "_derived": true,
+        "id": "g-82f7609a-upgrade-letting-go-to-1-0-0"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-upgrade",
+        "title": "Upgrade metamorphosis-check to 1.0.0",
+        "who": "Atta",
+        "ref": [
+          "metamorphosis-check"
+        ],
+        "from": "",
+        "to": "1.0.0",
+        "commit": "82f7609a",
+        "_derived": true,
+        "id": "g-82f7609a-upgrade-metamorphosis-check-to-1-0-0"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-upgrade",
+        "title": "Upgrade voices-check to 1.0.0",
+        "who": "Atta",
+        "ref": [
+          "voices-check"
+        ],
+        "from": "",
+        "to": "1.0.0",
+        "commit": "82f7609a",
+        "_derived": true,
+        "id": "g-82f7609a-upgrade-voices-check-to-1-0-0"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-upgrade",
+        "title": "Upgrade guild-sync to 1.0.0",
+        "who": "Atta",
+        "ref": [
+          "guild-sync"
+        ],
+        "from": "",
+        "to": "1.0.0",
+        "commit": "577d2037",
+        "_derived": true,
+        "id": "g-577d2037-upgrade-guild-sync-to-1-0-0"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-create",
+        "title": "Add skill: guild-sync",
+        "who": "Atta",
+        "ref": [
+          "guild-sync"
+        ],
+        "commit": "577d2037",
+        "_derived": true,
+        "id": "g-577d2037-add-skill-guild-sync"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-upgrade",
+        "title": "Upgrade probability-statistics to 1.0.0",
+        "who": "Atta",
+        "ref": [
+          "probability-statistics"
+        ],
+        "from": "",
+        "to": "1.0.0",
+        "commit": "311ec672",
+        "_derived": true,
+        "id": "g-311ec672-upgrade-probability-statistics-to-1-0-0"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-create",
+        "title": "Add skill: probability-statistics",
+        "who": "Atta",
+        "ref": [
+          "probability-statistics"
+        ],
+        "commit": "311ec672",
+        "_derived": true,
+        "id": "g-311ec672-add-skill-probability-statistics"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-upgrade",
+        "title": "Upgrade python-master to 1.0.0",
+        "who": "Atta",
+        "ref": [
+          "python-master"
+        ],
+        "from": "",
+        "to": "1.0.0",
+        "commit": "30d356c2",
+        "_derived": true,
+        "id": "g-30d356c2-upgrade-python-master-to-1-0-0"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-create",
+        "title": "Add skill: python-master",
+        "who": "Atta",
+        "ref": [
+          "python-master"
+        ],
+        "commit": "30d356c2",
+        "_derived": true,
+        "id": "g-30d356c2-add-skill-python-master"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-upgrade",
+        "title": "Upgrade harness-efficiency to 1.2.0",
+        "who": "Atta",
+        "ref": [
+          "harness-efficiency"
+        ],
+        "from": "",
+        "to": "1.2.0",
+        "commit": "26fd81fc",
+        "_derived": true,
+        "id": "g-26fd81fc-upgrade-harness-efficiency-to-1-2-0"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-upgrade",
+        "title": "Upgrade spec-driven-development to 1.0.0",
+        "who": "Atta",
+        "ref": [
+          "spec-driven-development"
+        ],
+        "from": "",
+        "to": "1.0.0",
+        "commit": "26d66913",
+        "_derived": true,
+        "id": "g-26d66913-upgrade-spec-driven-development-to-1-0-0"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-create",
+        "title": "Add skill: spec-driven-development",
+        "who": "Atta",
+        "ref": [
+          "spec-driven-development"
+        ],
+        "commit": "26d66913",
+        "_derived": true,
+        "id": "g-26d66913-add-skill-spec-driven-development"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-upgrade",
+        "title": "Upgrade design-taste to 1.0.0",
+        "who": "Atta",
+        "ref": [
+          "design-taste"
+        ],
+        "from": "",
+        "to": "1.0.0",
+        "commit": "0f5a01d0",
+        "_derived": true,
+        "id": "g-0f5a01d0-upgrade-design-taste-to-1-0-0"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "member-upgrade",
+        "title": "Update member: the-herald",
+        "who": "Atta",
+        "ref": [
+          "the-herald"
+        ],
+        "commit": "0f5a01d0",
+        "_derived": true,
+        "id": "g-0f5a01d0-update-member-the-herald"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-upgrade",
+        "title": "Upgrade algorithmic-trading-chan to 1.0.0",
+        "who": "Atta",
+        "ref": [
+          "algorithmic-trading-chan"
+        ],
+        "from": "",
+        "to": "1.0.0",
+        "commit": "0e93f1e5",
+        "_derived": true,
+        "id": "g-0e93f1e5-upgrade-algorithmic-trading-chan-to-1-0-"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-create",
+        "title": "Add skill: algorithmic-trading-chan",
+        "who": "Atta",
+        "ref": [
+          "algorithmic-trading-chan"
+        ],
+        "commit": "0e93f1e5",
+        "_derived": true,
+        "id": "g-0e93f1e5-add-skill-algorithmic-trading-chan"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-upgrade",
+        "title": "Upgrade session-mining: 1.1.0 → 1.2.0",
+        "who": "Atta",
+        "ref": [
+          "session-mining"
+        ],
+        "from": "1.1.0",
+        "to": "1.2.0",
+        "commit": "0a0d49af",
+        "_derived": true,
+        "id": "g-0a0d49af-upgrade-session-mining-1-1-0-1-2-0"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-upgrade",
+        "title": "Upgrade imagegen-frontend to 1.0.0",
+        "who": "Atta",
+        "ref": [
+          "imagegen-frontend"
+        ],
+        "from": "",
+        "to": "1.0.0",
+        "commit": "023e57ca",
+        "_derived": true,
+        "id": "g-023e57ca-upgrade-imagegen-frontend-to-1-0-0"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-create",
+        "title": "Add skill: imagegen-frontend",
+        "who": "Atta",
+        "ref": [
+          "imagegen-frontend"
+        ],
+        "commit": "023e57ca",
+        "_derived": true,
+        "id": "g-023e57ca-add-skill-imagegen-frontend"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-upgrade",
+        "title": "Upgrade design-unity to 1.0.0",
+        "who": "Atta",
+        "ref": [
+          "design-unity"
+        ],
+        "from": "",
+        "to": "1.0.0",
+        "commit": "019b41ca",
+        "_derived": true,
+        "id": "g-019b41ca-upgrade-design-unity-to-1-0-0"
+      },
+      {
+        "date": "2026-06-27",
+        "type": "skill-create",
+        "title": "Add skill: design-unity",
+        "who": "Atta",
+        "ref": [
+          "design-unity"
+        ],
+        "commit": "019b41ca",
+        "_derived": true,
+        "id": "g-019b41ca-add-skill-design-unity"
       },
       {
         "date": "2026-06-26",
@@ -9035,434 +9556,9 @@
         "commit": "650b7781",
         "_derived": true,
         "id": "g-650b7781-add-skill-impeccable"
-      },
-      {
-        "date": "2026-06-26",
-        "type": "skill-upgrade",
-        "title": "Upgrade design-language to 1.0.0",
-        "who": "Atta",
-        "ref": [
-          "design-language"
-        ],
-        "from": "",
-        "to": "1.0.0",
-        "commit": "57f995db",
-        "_derived": true,
-        "id": "g-57f995db-upgrade-design-language-to-1-0-0"
-      },
-      {
-        "date": "2026-06-26",
-        "type": "skill-create",
-        "title": "Add skill: design-language",
-        "who": "Atta",
-        "ref": [
-          "design-language"
-        ],
-        "commit": "57f995db",
-        "_derived": true,
-        "id": "g-57f995db-add-skill-design-language"
-      },
-      {
-        "date": "2026-06-26",
-        "type": "member-upgrade",
-        "title": "Update member: the-designer",
-        "who": "Atta",
-        "ref": [
-          "the-designer"
-        ],
-        "commit": "57f995db",
-        "_derived": true,
-        "id": "g-57f995db-update-member-the-designer"
-      },
-      {
-        "date": "2026-06-26",
-        "type": "skill-upgrade",
-        "title": "Upgrade guild-log to 1.1.0",
-        "who": "Atta",
-        "ref": [
-          "guild-log"
-        ],
-        "from": "",
-        "to": "1.1.0",
-        "commit": "13983c21",
-        "_derived": true,
-        "id": "g-13983c21-upgrade-guild-log-to-1-1-0"
-      },
-      {
-        "date": "2026-06-24",
-        "type": "member-create",
-        "title": "Add member: the-butler",
-        "who": "Atta",
-        "ref": [
-          "the-butler"
-        ],
-        "commit": "c0926053",
-        "_derived": true,
-        "id": "g-c0926053-add-member-the-butler"
-      },
-      {
-        "date": "2026-06-24",
-        "type": "member-create",
-        "title": "Add member: the-developer",
-        "who": "Atta",
-        "ref": [
-          "the-developer"
-        ],
-        "commit": "c0926053",
-        "_derived": true,
-        "id": "g-c0926053-add-member-the-developer"
-      },
-      {
-        "date": "2026-06-24",
-        "type": "member-create",
-        "title": "Add member: the-merchant",
-        "who": "Atta",
-        "ref": [
-          "the-merchant"
-        ],
-        "commit": "c0926053",
-        "_derived": true,
-        "id": "g-c0926053-add-member-the-merchant"
-      },
-      {
-        "date": "2026-06-24",
-        "type": "member-create",
-        "title": "Bulk member additions: 6 members",
-        "who": "Atta",
-        "ref": [
-          "the-architect",
-          "the-designer",
-          "the-engineer",
-          "the-quartermaster",
-          "the-strategist",
-          "the-translator"
-        ],
-        "commit": "861e5ad0",
-        "bulk": true,
-        "_derived": true,
-        "id": "g-861e5ad0-bulk-member-additions-6-members"
-      },
-      {
-        "date": "2026-06-24",
-        "type": "skill-create",
-        "title": "Add skill: fallen-sword-design-language",
-        "who": "Atta",
-        "ref": [
-          "fallen-sword-design-language"
-        ],
-        "commit": "841be007",
-        "_derived": true,
-        "id": "g-841be007-add-skill-fallen-sword-design-language"
-      },
-      {
-        "date": "2026-06-24",
-        "type": "member-upgrade",
-        "title": "Bulk member updates: 9 members",
-        "who": "Atta",
-        "ref": [
-          "the-architect",
-          "the-butler",
-          "the-designer",
-          "the-developer",
-          "the-engineer",
-          "the-merchant",
-          "the-quartermaster",
-          "the-strategist",
-          "the-translator"
-        ],
-        "commit": "841be007",
-        "bulk": true,
-        "_derived": true,
-        "id": "g-841be007-bulk-member-updates-9-members"
-      },
-      {
-        "date": "2026-06-24",
-        "type": "dashboard",
-        "title": "Rename project: claude-skills → Star Alliance",
-        "who": "Atta",
-        "commit": "494d3cba",
-        "_derived": true,
-        "id": "g-494d3cba-rename-project-claude-skills-star-allian"
-      },
-      {
-        "date": "2026-06-22",
-        "type": "skill-upgrade",
-        "title": "Upgrade codex-law-translate: 1.0.0 → 1.1.0",
-        "who": "skillsmith",
-        "ref": [
-          "codex-law-translate"
-        ],
-        "from": "1.0.0",
-        "to": "1.1.0",
-        "commit": "0136b934",
-        "_derived": true,
-        "id": "g-0136b934-upgrade-codex-law-translate-1-0-0-1-1-0"
-      },
-      {
-        "date": "2026-06-21",
-        "type": "skill-upgrade",
-        "title": "Upgrade conquering-campaign: 3.8.2 → 3.8.3",
-        "who": "skillsmith",
-        "ref": [
-          "conquering-campaign"
-        ],
-        "from": "3.8.2",
-        "to": "3.8.3",
-        "commit": "22a3b06d",
-        "_derived": true,
-        "id": "g-22a3b06d-upgrade-conquering-campaign-3-8-2-3-8-3"
-      },
-      {
-        "date": "2026-06-20",
-        "type": "skill-upgrade",
-        "title": "Upgrade db-rename-sweep: 1.0.0 → 1.1.0",
-        "who": "skillsmith",
-        "ref": [
-          "db-rename-sweep"
-        ],
-        "from": "1.0.0",
-        "to": "1.1.0",
-        "commit": "f32957e8",
-        "_derived": true,
-        "id": "g-f32957e8-upgrade-db-rename-sweep-1-0-0-1-1-0"
-      },
-      {
-        "date": "2026-06-20",
-        "type": "skill-upgrade",
-        "title": "Upgrade skillsmith: 1.0.0 → 1.1.0",
-        "who": "Atta",
-        "ref": [
-          "skillsmith"
-        ],
-        "from": "1.0.0",
-        "to": "1.1.0",
-        "commit": "bf33c85b",
-        "_derived": true,
-        "id": "g-bf33c85b-upgrade-skillsmith-1-0-0-1-1-0"
-      },
-      {
-        "date": "2026-06-20",
-        "type": "skill-upgrade",
-        "title": "Upgrade transactions-domain-model: 1.0.0 → 1.1.0",
-        "who": "skillsmith",
-        "ref": [
-          "transactions-domain-model"
-        ],
-        "from": "1.0.0",
-        "to": "1.1.0",
-        "commit": "a7a9ea42",
-        "_derived": true,
-        "id": "g-a7a9ea42-upgrade-transactions-domain-model-1-0-0-"
-      },
-      {
-        "date": "2026-06-20",
-        "type": "skill-upgrade",
-        "title": "Upgrade vault-log-compliance: 1.0.0 → 1.1.0",
-        "who": "skillsmith",
-        "ref": [
-          "vault-log-compliance"
-        ],
-        "from": "1.0.0",
-        "to": "1.1.0",
-        "commit": "a374848c",
-        "_derived": true,
-        "id": "g-a374848c-upgrade-vault-log-compliance-1-0-0-1-1-0"
-      },
-      {
-        "date": "2026-06-20",
-        "type": "skill-upgrade",
-        "title": "Upgrade dev-server: 1.0.0 → 1.1.0",
-        "who": "skillsmith",
-        "ref": [
-          "dev-server"
-        ],
-        "from": "1.0.0",
-        "to": "1.1.0",
-        "commit": "a139a48e",
-        "_derived": true,
-        "id": "g-a139a48e-upgrade-dev-server-1-0-0-1-1-0"
-      },
-      {
-        "date": "2026-06-20",
-        "type": "skill-upgrade",
-        "title": "Upgrade bug-fix-workflow: 1.0.0 → 1.1.1",
-        "who": "skillsmith",
-        "ref": [
-          "bug-fix-workflow"
-        ],
-        "from": "1.0.0",
-        "to": "1.1.1",
-        "commit": "5c0bb977",
-        "_derived": true,
-        "id": "g-5c0bb977-upgrade-bug-fix-workflow-1-0-0-1-1-1"
-      },
-      {
-        "date": "2026-06-19",
-        "type": "skill-upgrade",
-        "title": "Upgrade cleanup: 1.14.1 → 1.17.0",
-        "who": "Atta",
-        "ref": [
-          "cleanup"
-        ],
-        "from": "1.14.1",
-        "to": "1.17.0",
-        "commit": "f0e64820",
-        "_derived": true,
-        "id": "g-f0e64820-upgrade-cleanup-1-14-1-1-17-0"
-      },
-      {
-        "date": "2026-06-15",
-        "type": "skill-upgrade",
-        "title": "Bulk skill upgrades: 28 skills",
-        "who": "Atta",
-        "ref": [
-          "article-creator",
-          "brandkit",
-          "bug-fix-workflow",
-          "cleanup",
-          "codex-law-translate",
-          "conquering-campaign",
-          "db-rename-sweep",
-          "design-taste-frontend",
-          "dev-server",
-          "full-output-enforcement",
-          "gpt-taste",
-          "graphify",
-          "high-end-visual-design",
-          "image-to-code",
-          "imagegen-frontend-mobile",
-          "imagegen-frontend-web",
-          "industrial-brutalist-ui",
-          "minimalist-ui",
-          "obsidian-markdown",
-          "performance",
-          "redesign-existing-projects",
-          "skillsmith",
-          "stitch-design-taste",
-          "strategies-review",
-          "supabase",
-          "supabase-postgres-best-practices",
-          "transactions-domain-model",
-          "vault-log-compliance"
-        ],
-        "commit": "5102cc10",
-        "bulk": true,
-        "_derived": true,
-        "id": "g-5102cc10-bulk-skill-upgrades-28-skills"
-      },
-      {
-        "date": "2026-06-15",
-        "type": "skill-upgrade",
-        "title": "Upgrade performance to \"1.0\"",
-        "who": "Atta",
-        "ref": [
-          "performance"
-        ],
-        "from": "",
-        "to": "\"1.0\"",
-        "commit": "1bdb90f3",
-        "_derived": true,
-        "id": "g-1bdb90f3-upgrade-performance-to-1-0"
-      },
-      {
-        "date": "2026-06-13",
-        "type": "skill-upgrade",
-        "title": "Upgrade supabase to \"0.1.2\"",
-        "who": "Atta",
-        "ref": [
-          "supabase"
-        ],
-        "from": "",
-        "to": "\"0.1.2\"",
-        "commit": "fbf5b2c1",
-        "_derived": true,
-        "id": "g-fbf5b2c1-upgrade-supabase-to-0-1-2"
-      },
-      {
-        "date": "2026-06-13",
-        "type": "skill-upgrade",
-        "title": "Upgrade supabase-postgres-best-practices to \"1.1.1\"",
-        "who": "Atta",
-        "ref": [
-          "supabase-postgres-best-practices"
-        ],
-        "from": "",
-        "to": "\"1.1.1\"",
-        "commit": "fbf5b2c1",
-        "_derived": true,
-        "id": "g-fbf5b2c1-upgrade-supabase-postgres-best-practices"
-      },
-      {
-        "date": "2026-06-13",
-        "type": "skill-create",
-        "title": "Bulk skill additions: 9 skills",
-        "who": "Atta",
-        "ref": [
-          "article-creator",
-          "cleanup",
-          "db-rename-sweep",
-          "impeccable",
-          "strategies-review",
-          "supabase",
-          "supabase-postgres-best-practices",
-          "transactions-domain-model",
-          "vault-log-compliance"
-        ],
-        "commit": "fbf5b2c1",
-        "bulk": true,
-        "_derived": true,
-        "id": "g-fbf5b2c1-bulk-skill-additions-9-skills"
-      },
-      {
-        "date": "2026-06-12",
-        "type": "skill-create",
-        "title": "Add skill: codex-law-translate",
-        "who": "Atta",
-        "ref": [
-          "codex-law-translate"
-        ],
-        "commit": "074dbafe",
-        "_derived": true,
-        "id": "g-074dbafe-add-skill-codex-law-translate"
-      },
-      {
-        "date": "2026-06-09",
-        "type": "skill-create",
-        "title": "Add skill: bug-fix-workflow",
-        "who": "Atta",
-        "ref": [
-          "bug-fix-workflow"
-        ],
-        "commit": "325f3a26",
-        "_derived": true,
-        "id": "g-325f3a26-add-skill-bug-fix-workflow"
-      },
-      {
-        "date": "2026-05-31",
-        "type": "skill-create",
-        "title": "Add skill: cleanup",
-        "who": "Atta",
-        "ref": [
-          "cleanup"
-        ],
-        "commit": "bcd97544",
-        "_derived": true,
-        "id": "g-bcd97544-add-skill-cleanup"
-      },
-      {
-        "date": "2026-05-29",
-        "type": "skill-create",
-        "title": "Add skill: conquering-campaign",
-        "who": "Atta",
-        "ref": [
-          "conquering-campaign"
-        ],
-        "commit": "325a46a5",
-        "_derived": true,
-        "id": "g-325a46a5-add-skill-conquering-campaign"
       }
     ],
-    "count": 146
+    "count": 153
   },
   "models": {
     "opus": {
