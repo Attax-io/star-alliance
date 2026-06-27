@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 65
     },
-    "generated": "2026-06-27T18:16:01Z",
+    "generated": "2026-06-27T18:17:53Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -2194,7 +2194,7 @@ const GUILD = {
     {
       "id": "bug-fix-workflow",
       "name": "bug-fix-workflow",
-      "version": "1.1.4",
+      "version": "1.2.0",
       "icon": "🐛",
       "art": "",
       "artPng": true,
@@ -2222,8 +2222,8 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 235,
-        "words": 2145
+        "lines": 254,
+        "words": 2388
       },
       "global": true,
       "members": [
@@ -2923,6 +2923,7 @@ const GUILD = {
         "Tuning the levers",
         "When the data is thin",
         "Where it sits",
+        "The doctrine behind the levers",
         "Versioning",
         "New metrics (1.1.0)",
         "Changelog"
@@ -2935,8 +2936,8 @@ const GUILD = {
       ],
       "scripts": [],
       "stats": {
-        "lines": 119,
-        "words": 1062
+        "lines": 142,
+        "words": 1303
       },
       "global": true,
       "members": [

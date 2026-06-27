@@ -91,6 +91,25 @@ arsenal usage-log.jsonl    →  records every offload call + wall_ms
 Pairs with [[weapon-utility]] (offload is where the bench tokens come from) and the
 [[scheduled-watch]] skill (run this weekly and alert on a regression rather than checking by hand).
 
+## The doctrine behind the levers
+
+The gate, the offload, and the net-saved number exist to serve a small set of harness-engineering
+principles — *why* cheap-by-design works, not just *whether* it does. They are distilled into
+**`references/harness-doctrine.md`** (from *Harness Engineering: A Design Guide to Claude Code*),
+guild-framed and efficiency-read:
+
+- **Context is a budget, not a library** — layer memory by lifetime; keep `MEMORY.md` an index under
+  its caps; make compact a controlled reboot, not a recap. Caps premium-token growth per turn.
+- **The error path is the main path** — design recovery, retry-caps, and anti-loop guards up front;
+  on max-output-tokens, continue, don't re-summarize. Stops silent token burn from failure replays.
+- **Verification must be independent** — never let the implementer grade itself; verify in a separate
+  stage/role. An independent verify by a cheap doer beats a wrong premium turn.
+- **Multi-agent partitions uncertainty** — isolate state and roles (research / implement / verify /
+  synthesize); parallelism's real win is smaller contexts and clearer boundaries.
+
+Read it when tuning the policy, reviewing a hook change, or arguing *why* a turn should have been LITE.
+It is the conceptual backbone; the levers above are how this skill measures the result.
+
 ## Versioning
 Own skill. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new check or lever ·
 MAJOR: a change to what counts as a regression). Regenerate `VERSIONS.md` via
@@ -118,6 +137,10 @@ python3 tools/efficiency_report.py --cache        # cache hit-rate (cache_read /
 6. **Cache hit-rate.** `cache_read / (cache_read + cache_create)` below 0.6 means the cache is thrashing — prompts are changing too much between turns or the 5-min TTL is expiring. Investigate turn cadence.
 
 ## Changelog
+- **1.2.0** — Added `references/harness-doctrine.md` (distilled from *Harness Engineering: A Design
+  Guide to Claude Code*) + a "doctrine behind the levers" section: context-as-budget, error-path-as-
+  main-path, independent verification, multi-agent partitioning — each with its token/time read. Gives
+  the measurement instrument its conceptual backbone.
 - **1.1.0** — B1 tier sidecar fix: `tier` now reliable. H2 wall_ms: real latency now in every record. New `--latency` and `--cache` flags documented. Updated "read each run" section with 3 new checks.
 - **1.0.0** — Initial release. The Strategist's craft for proving and tuning harness efficiency: read
   `usage-log.jsonl` + `turn-cost.jsonl` via `efficiency_report.py`, watch the net trend + LITE/FULL

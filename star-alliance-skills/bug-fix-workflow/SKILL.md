@@ -2,7 +2,7 @@
 name: bug-fix-workflow
 description: The Lex Council end-to-end bug workflow — pull reports from the bug_reports table, triage their status, investigate + reproduce the real root cause, fix following project conventions, flip each row to Fixed once the fix is genuinely live, AND file (push) new bugs it surfaces back into the table. Use whenever the user says "pull the bugs", "work the bugs", "fix the bugs", "triage bugs", "what bugs are open", or any phrasing about pulling / triaging / fixing / closing reported bugs — OR to push/file bugs: "file a bug", "log this as a bug", "push these as bugs", "file the bugs you find". Loads the bug_reports schema, the status-code conventions, the status-trigger gotcha, the INSERT/push pattern (identity PK, trigger-filled names, reporter-uuid lookup, status=1, no notification fires), the "doesn't work" reproduction technique, and the rule for WHEN a bug may be marked Fixed (DB fixes now, frontend fixes only after deploy).
 metadata:
-  version: 1.1.4
+  version: 1.2.0
 type: Skill
 
 ---
@@ -152,6 +152,21 @@ A pure status flip is **operational data maintenance** (like clicking the bugs a
 
 ## Step 3 — Investigate (before any fix)
 
+**Step 3.0 — Load prior knowledge first ("didn't we fix this before?").** Before re-deriving a root
+cause, spend ~30s pulling what the guild already knows about this symptom — re-debugging a known issue
+is the most common wasted hour. Check, in order, and cite any hit in your investigation note:
+
+- **Memory** — `~/.claude/.../memory/MEMORY.md` index for a feedback/project entry on this area; a
+  recalled fix or gotcha often names the exact file/trigger to look at.
+- **Vault logs** — `grep` `docs/vault-logs/` (and its `INDEX.md`) for the symptom, the table, the RPC,
+  or the component. A sibling-bug log usually carries the live root cause and the repro that found it.
+- **Prior `bug_reports` rows** — query the table for earlier reports with the same symptom/area (any
+  status). A row already `Fixed` for the same path means this is a regression or an incomplete fix —
+  read that fix before writing a new one.
+
+If a prior entry already explains the cause, jump straight to reproduce-to-confirm (step 4 below) rather
+than re-running the full Explore fan-out. Only fan out when prior knowledge is genuinely silent.
+
 For each bug worth fixing:
 
 1. **Translate** the report; restate the expected vs. actual behavior in one line.
@@ -229,6 +244,10 @@ Never mark a bug Fixed because the code is written; mark it Fixed because a user
 
 ## Changelog
 
+- **1.2.0** (2026-06-27) — Added **Step 3.0 — Load prior knowledge first** (ported from the gstack
+  `investigate` context-load pattern): check memory → vault logs → prior `bug_reports` rows for the same
+  symptom before re-deriving a root cause, and skip the Explore fan-out when a prior entry already
+  explains it. Stops the most common wasted hour — re-debugging a known issue.
 - **1.1.4** (2026-06-26) — Added a **Common Lex bug signatures** callout (missing i18n message key
   rendering raw, missing DB column, RLS/permission-denied) — the three signatures that recurred most
   across the MacBook-Air session mine, each pointed at its matching probe. Doc-only; no schema change.
