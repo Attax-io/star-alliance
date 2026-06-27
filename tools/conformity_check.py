@@ -189,10 +189,16 @@ def main():
     # per-member: it's the session model the member runs as.
     for mid, m in members.items():
         # BR — the brain (session model) must be a registry weapon that can think.
+        # A NULL/missing brain is itself a fail: build.py emits top-level "model": null
+        # while seats.brain silently falls back to the seat default — an inconsistent
+        # member. Every member must declare its own session model (model:) in frontmatter.
         brain = m.get("model")
-        if brain and brain not in ROLE:
+        if not brain:
+            fails.append(f"BR {mid}: no session model (model:) declared — every member "
+                         f"must name its own brain (falling back to the seat default is inconsistent)")
+        elif brain not in ROLE:
             fails.append(f"BR {mid}: brain '{brain}' has no role mapping in the registry")
-        elif brain and ROLE.get(brain) not in ("thinker", "both"):
+        elif ROLE.get(brain) not in ("thinker", "both"):
             fails.append(f"BR {mid}: brain '{brain}' has role '{ROLE.get(brain)}' — "
                          f"a brain must be able to think (thinker|both)")
         # R — member skills exist in skills-meta

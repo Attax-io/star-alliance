@@ -326,7 +326,7 @@ def iter_agents(repo: Path):
         yield md
 
 
-def derive_member_arsenal(brain_model, seats: dict, models: dict):
+def derive_member_arsenal(brain_model, seats: dict, models: dict, errors: list[str] | None = None):
     """Project the UNIVERSAL arsenal for one member from the seats SoT (models.json).
     Phase 2 of the 4-seat build: per-member loadouts are gone — the brain is the
     member's session model (an override of seats.brain), and Doer/Critic/Bench are
@@ -340,6 +340,14 @@ def derive_member_arsenal(brain_model, seats: dict, models: dict):
     brain = brain_model or dflt("brain")
     doer = dflt("doer")
     critic = dflt("critic")
+    # Build-time ST guard (defense-in-depth; conformity_check ST is the sweep backstop):
+    # a stale/typo'd seat default silently yields an empty desc() body + a mislabeled tag
+    # below, never an error. Fail loud instead. Bench is NOT checked here — it is built from
+    # models.items() just below, so every bench id is a registry key by construction.
+    if errors is not None:
+        for seat, mid in (("brain", brain), ("doer", doer), ("critic", critic)):
+            if mid and mid not in models:
+                errors.append(f"seat '{seat}' default '{mid}' is not a models.json key")
     held = {m for m in (brain, doer, critic) if m}
     bench = [mid for mid, d in models.items()
              if d.get("kind", "text") in ("text", "media")
@@ -352,14 +360,29 @@ def derive_member_arsenal(brain_model, seats: dict, models: dict):
         "critic": {"model": critic},
         "bench":  bench,
     }
-    seat_of = {brain: "Brain", doer: "Doer", critic: "Critic"}
+    # seat→tag map with explicit precedence (Brain > Doer > Critic) so a model that
+    # fills two seats keeps its identity tag instead of last-write-wins clobbering it.
+    # A genuine collision (e.g. a member whose brain == the doer/critic default) is a
+    # misconfig worth surfacing, so log it loud rather than silently mislabel.
+    seat_of = {}
+    for seat_mid, label in ((brain, "Brain"), (doer, "Doer"), (critic, "Critic")):
+        if not seat_mid:
+            continue
+        if seat_mid not in seat_of:
+            seat_of[seat_mid] = label
+        elif errors is not None:
+            errors.append(f"seat model '{seat_mid}' fills two roles "
+                          f"({seat_of[seat_mid]}+{label}) — tag collision, kept {seat_of[seat_mid]}")
+    # The dual-role model (role:"both" — sonnet today) sits last and is never duped.
+    # Derive it from the registry so a rename can't silently break the ordering.
+    dual = next((mid for mid, d in models.items() if d.get("role") == "both"), None)
     ordered, seen = [], set()
     for m in [doer, brain, critic] + bench:
-        if m and m not in seen and m != "sonnet":
+        if m and m not in seen and m != dual:
             seen.add(m)
             ordered.append(m)
-    if "sonnet" in models and "sonnet" not in seen:  # dual sits last, never duped
-        ordered.append("sonnet")
+    if dual and dual not in seen:  # dual sits last, never duped
+        ordered.append(dual)
 
     def desc(mid):
         d = models.get(mid, {})
@@ -373,7 +396,7 @@ def derive_member_arsenal(brain_model, seats: dict, models: dict):
 def build_member(agent: dict, meta: dict, errors: list[str], seats: dict, models: dict) -> dict:
     mid = agent["id"]
     brain = agent.get("model")
-    seats_obj, weapons = derive_member_arsenal(brain, seats, models)
+    seats_obj, weapons = derive_member_arsenal(brain, seats, models, errors)
     return {
         "id": mid,
         "name": meta.get("name", mid),
