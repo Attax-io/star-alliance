@@ -42,6 +42,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`growth-marketing`](star-alliance-skills/growth-marketing/SKILL.md) | 1.0.0 | own | 108 / 829 | 2490 / 98 | ✓ lean | The Herald's marketing craft — turn a business's invisibility into a repeatable demand eng… |
 | [`guild-conformity`](star-alliance-skills/guild-conformity/SKILL.md) | 1.0.0 | own | 130 / 916 | 997 / 53 | ✓ lean | The Quartermaster's craft for proving the whole guild repo agrees with itself and with eve… |
 | [`guild-log`](star-alliance-skills/guild-log/SKILL.md) | 1.2.1 | own | 118 / 801 | 2454 / 232 | ✓ lean | Enforce logging of non-git-visible changes to the Star Alliance guild log |
+| [`high-alert`](star-alliance-skills/high-alert/SKILL.md) | 1.0.0 | own | 88 / 577 | 292 / 30 | ✓ lean | The guild's session-event klaxon |
 | [`image-to-code`](star-alliance-skills/image-to-code/SKILL.md) | 1.0.0 | own | 80 / 555 | 5735 / 1226 | ○ large | Elite website image-to-code skill for Codex |
 | [`imagegen-frontend-mobile`](star-alliance-skills/imagegen-frontend-mobile/SKILL.md) | 1.0.0 | own | 87 / 638 | 6460 / 1463 | ○ large | Elite mobile app image-generation skill for creating premium, app-native screen concepts a… |
 | [`imagegen-frontend-web`](star-alliance-skills/imagegen-frontend-web/SKILL.md) | 1.0.0 | own | 90 / 661 | 5724 / 985 | ○ large | Elite frontend image-direction skill for generating premium, conversion-aware website desi… |
@@ -66,7 +67,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`transactions-domain-model`](star-alliance-skills/transactions-domain-model/SKILL.md) | 1.3.1 | own | 108 / 951 | 3263 / 400 | ✓ lean | Loads the complete Lex Council transactions domain model before any transaction-related wo… |
 | [`ultra-brainstorming`](star-alliance-skills/ultra-brainstorming/SKILL.md) | 1.0.0 | own | 128 / 865 | 926 / 109 | ✓ lean | The Strategist's super-planning method — fuse the outputs of several members into one doer… |
 | [`vault-log-compliance`](star-alliance-skills/vault-log-compliance/SKILL.md) | 1.1.0 | own | 128 / 807 | 1445 / 120 | ✓ lean | Enforces P8 vault-logging compliance for Lex Council |
-| [`weapon-utility`](star-alliance-skills/weapon-utility/SKILL.md) | 1.0.0 | own | 152 / 922 | 926 / 110 | ✓ lean | Every member's rule for which weapon (model) to draw and how thinker and doer weapons work… |
+| [`weapon-utility`](star-alliance-skills/weapon-utility/SKILL.md) | 1.1.0 | own | 152 / 922 | 960 / 115 | ✓ lean | Every member's rule for which weapon (model) to draw and how thinker and doer weapons work… |
 | [`workflow-forge`](star-alliance-skills/workflow-forge/SKILL.md) | 1.0.0 | own | 153 / 997 | 1078 / 60 | ✓ lean | The Strategist's craft for distilling a finished run into a reusable star-map workflow in … |
 
-_44 skills — 37 lean · 6 large (installable, over the 500-line ideal) · 1 near the word ceiling · 0 hard violations._
+_45 skills — 38 lean · 6 large (installable, over the 500-line ideal) · 1 near the word ceiling · 0 hard violations._

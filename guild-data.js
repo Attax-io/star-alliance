@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 52,
       "patch": 59
     },
-    "generated": "2026-06-27T03:27:03Z",
+    "generated": "2026-06-27T03:33:44Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "gpt-5.5": "deactivated",
@@ -86,7 +86,8 @@ const GUILD = {
       "skills": [
         "members-formation",
         "comms-triage",
-        "weapon-utility"
+        "weapon-utility",
+        "high-alert"
       ],
       "levelInfo": {
         "earned": "Foundational",
@@ -94,11 +95,11 @@ const GUILD = {
         "nextTier": "Intermediate",
         "rampEarned": "gray",
         "rampConferred": "gray",
-        "ad": 5,
+        "ad": 6,
         "signals": {
-          "ad": 5,
-          "nSkills": 2,
-          "nUnique": 2,
+          "ad": 6,
+          "nSkills": 3,
+          "nUnique": 3,
           "nMaster": 0,
           "peak": 3,
           "nWeapons": 8,
@@ -115,7 +116,7 @@ const GUILD = {
             {
               "label": "craft skills",
               "ok": true,
-              "have": 2,
+              "have": 3,
               "need": 1
             },
             {
@@ -127,19 +128,19 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": false,
-              "have": 5,
+              "have": 6,
               "need": 8
             },
             {
               "label": "craft skills",
               "ok": true,
-              "have": 2,
+              "have": 3,
               "need": 2
             },
             {
               "label": "unique skills",
               "ok": true,
-              "have": 2,
+              "have": 3,
               "need": 1
             },
             {
@@ -151,7 +152,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": false,
-              "have": 5,
+              "have": 6,
               "need": 12
             },
             {
@@ -161,7 +162,7 @@ const GUILD = {
             {
               "label": "unique skills",
               "ok": true,
-              "have": 2,
+              "have": 3,
               "need": 2
             },
             {
@@ -175,7 +176,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": false,
-              "have": 5,
+              "have": 6,
               "need": 18
             },
             {
@@ -186,8 +187,8 @@ const GUILD = {
             },
             {
               "label": "unique skills",
-              "ok": false,
-              "have": 2,
+              "ok": true,
+              "have": 3,
               "need": 3
             },
             {
@@ -199,7 +200,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": false,
-              "have": 5,
+              "have": 6,
               "need": 24
             },
             {
@@ -210,8 +211,8 @@ const GUILD = {
             },
             {
               "label": "unique skills",
-              "ok": false,
-              "have": 2,
+              "ok": true,
+              "have": 3,
               "need": 3
             },
             {
@@ -228,19 +229,19 @@ const GUILD = {
           {
             "label": "Arsenal Depth",
             "ok": false,
-            "have": 5,
+            "have": 6,
             "need": 8
           },
           {
             "label": "craft skills",
             "ok": true,
-            "have": 2,
+            "have": 3,
             "need": 2
           },
           {
             "label": "unique skills",
             "ok": true,
-            "have": 2,
+            "have": 3,
             "need": 1
           },
           {
@@ -2897,7 +2898,9 @@ const GUILD = {
         "words": 292
       },
       "global": false,
-      "members": []
+      "members": [
+        "the-butler"
+      ]
     },
     {
       "id": "image-to-code",
