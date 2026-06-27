@@ -110,6 +110,7 @@ flag it to the Quartermaster rather than working around it.
 - Don't enforce or fix conformance here — that's the producer skill's job.
 
 ## Changelog
+- **1.2.0** — Added **The repo layout** map so every member reading the repo knows the post-tidy concept-paths (`tools/`, `tools/generators/`, `data/`, `docs/`) and the pinned root contract. Mirrors the okf 1.2.0 `--layout` placement standard ([[okf]]); rides every member, so all of them learn the new shape at once.
 - **1.1.0** — Declared canonical: the **reader half of the Star Alliance Language ([[okf]])** — rides every member, the way the guild consumes its one knowledge format.
 - **1.0.0** — Initial release. The consumer half of the guild knowledge standard: map-first reading via `okf_read.py`, never blind full-reads.
 
