@@ -6,25 +6,87 @@
 #   members-formation (which MEMBER works) → workflows (which procedure) →
 #   weapon-utility (which WEAPON inside that member) — but none were ENFORCED.
 # The orchestrator kept acting as the Butler AND doing every specialist's job
-# AND the doer-grade work itself, all inline on one premium model. The Butler is
-# only the first point of contact + router; he must hand specialist work to the
-# right member, who follows the fitting workflow and draws his own weapons.
+# AND the doer-grade work itself, all inline on one premium model.
 #
-# This hook injects all three layers as a binding checklist on EVERY task, so the
-# routing decision is unmissable at the moment it's made — not buried in a doc.
-# Output on stdout (exit 0) is added to context by Claude Code. Compact on
-# purpose: a few hundred tokens per turn is trivial against one mis-routed task
-# ground out on Opus instead of handed to a Sonnet member's cheap doer.
+# PHASE 1 — PROPORTIONAL GATE. The old hook injected the SAME ~1,331-token
+# campaign-grade doctrine on EVERY turn, whether a typo fix or a 12-wave campaign.
+# It now governs on two axes — STAKES (reversibility/blast-radius) and SIZE — and
+# injects one of two tiers:
+#   • LITE (~150 tokens): clearly-small AND clearly-low-stakes turns.
+#   • FULL (~1,331 tokens): everything else, including ALL high-stakes turns.
+# Stakes ALWAYS wins over size: a one-line edit to a migration is small but
+# high-stakes and takes FULL + halt. Unknown/empty/garbled → FULL (fail-safe).
+# The keyword/size lists are POLICY, in data/harness.json → "policy"; edit there,
+# not here. Override: SA_GATE=full forces the old uniform behavior instantly;
+# SA_GATE=lite forces LITE (testing only).
 #
-# SLASH-SKILL KLAXON FIX: the high-alert PreToolUse hook only fires on the Skill
-# TOOL — but a user-typed /slash skill loads via a <command-name> injection and
-# NEVER calls the Skill tool, so that path went silent. The ⚡ banner is, like the
-# ⚔ and 🗺 banners, MODEL-emitted; here we detect a leading /skill in the prompt
-# and direct the model to emit it as its first line, restoring the klaxon.
+# Each block carries a marker line — SA-GATE:LITE / SA-GATE:FULL — so the
+# turn-cost Stop hook can record which tier fired and prove the savings (Phase 0).
+#
+# SLASH-SKILL KLAXON FIX (unchanged): a user-typed /slash skill loads via a
+# <command-name> injection and never calls the Skill tool, so the ⚡ banner went
+# silent. We detect a leading /skill and direct the model to emit it.
 # ─────────────────────────────────────────────────────────────────────────────
 INPUT=$(cat)
+
+# ── Tier classifier ──────────────────────────────────────────────────────────
+# Reads the prompt + data/harness.json policy; prints LITE or FULL. Fails to
+# FULL on ANY ambiguity or error — a broken classifier must never WEAKEN the gate.
+TIER=$(SA_INPUT="$INPUT" SA_GATE="${SA_GATE:-}" PROJ="${CLAUDE_PROJECT_DIR:-$(pwd)}" python3 - <<'PY'
+import os, json, sys
+gate = os.environ.get("SA_GATE", "").strip().lower()
+if gate == "full":
+    print("FULL"); sys.exit(0)
+if gate == "lite":
+    print("LITE"); sys.exit(0)
+try:
+    data = json.loads(os.environ.get("SA_INPUT") or "")
+    prompt = (data.get("prompt") or "")
+except Exception:
+    print("FULL"); sys.exit(0)
+p = prompt.lower().strip()
+if not p:
+    print("FULL"); sys.exit(0)
+proj = os.environ.get("PROJ", "")
+try:
+    pol = json.load(open(os.path.join(proj, "data", "harness.json"))).get("policy", {})
+except Exception:
+    pol = {}
+stakes = pol.get("stakes_keywords", [])
+small = pol.get("size_small_signals", [])
+large = pol.get("size_large_signals", [])
+# Stakes always wins over size.
+if any(k in p for k in stakes):
+    print("FULL"); sys.exit(0)
+has_small = any(k in p for k in small)
+has_large = any(k in p for k in large)
+short = len(p) <= 240
+# Only clearly-small AND clearly-low-stakes AND short → LITE. Else FULL.
+print("LITE" if (has_small and not has_large and short) else "FULL")
+PY
+)
+
+if [ "$TIER" = "LITE" ]; then
 cat <<'EOF'
-⚔ STAR ALLIANCE ROUTING GATE (harness-injected, binding) — ROUTE before you act.
+⚔ STAR ALLIANCE ROUTING GATE — LITE (small, low-stakes turn).  [SA-GATE:LITE]
+This looks like a quick, easily-reversible change. Proportional path:
+  • ROUTE to ONE specialist (code→the-developer · db→the-architect · UI→the-designer
+    · skills/log→the-quartermaster · law→the-translator). The Butler only routes.
+  • If it IS a quick, low-stakes fix → declare, as your FIRST line,
+    🗺 Starmap Workflow Started: Quick Fix!  then emit the member's
+    ⚔ Member reports for duty: <member> using <thinker> and <doer>!  and proceed —
+    no approval halt needed for a trivially-reversible edit.
+  • Hand any doer-grade bulk/transform work to a cheap doer
+    (python3 star-alliance-arsenal/summon.py minimax-m3 "<prompt>").
+  • ESCALATE TO FULL + HALT the instant the task actually touches anything
+    high-stakes — migrations, git push/force, prod/deploy, RLS/secrets, renames,
+    deletes, or mass/multi-file edits. When unsure, treat as high-stakes: restate
+    a one-line brief and wait for "go". Stakes beats size, always.
+The 🗺 banner is the gate key: no banner → every work tool is blocked.
+EOF
+else
+cat <<'EOF'
+⚔ STAR ALLIANCE ROUTING GATE (harness-injected, binding) — ROUTE before you act.  [SA-GATE:FULL]
 The Butler ONLY receives + routes; he does NOT do specialist or doer-grade work himself.
 
 STEP 0 · HOLD THE APPROVAL GATE — before ANY build, file write, git op, or other
@@ -89,6 +151,7 @@ INSTANT each event happens, as the first line for that event, exact emoji + punc
     high-alert PreToolUse hook — let it land, do not also repeat it).
 One banner per event (per member, per skill, per workflow). No stacking, no echo on trivial/internal steps.
 EOF
+fi
 
 # ── SLASH-SKILL banner directive ─────────────────────────────────────────────
 # /slash skills bypass the Skill tool → the high-alert hook never sees them.
