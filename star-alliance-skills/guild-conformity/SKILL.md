@@ -1,6 +1,6 @@
 ---
 name: guild-conformity
-description: "The Quartermaster's craft for proving the whole guild repo agrees with itself and with every logged decision, then reconciling any contradiction at its source. Wraps the read-only conformity_check.py (which emits a contradiction map across members, members-meta, skills, skills-meta, domains, workflows, the guild log, and the generated guild-data) plus fixing each real contradiction at its source of truth and rebuilding with build.py until the check passes clean. It is the closing step of every guild workflow and the spine of the conformity-sweep. Use when a workflow is closing, after any structural change, or when you need proof nothing contradicts. Triggers: 'run the conformity check', 'confirm guild conformance', 'does the repo agree with itself', 'conformity sweep', 'reconcile the guild data', 'is everything consistent'. Differentiate from cleanup (app/i18n hygiene) and skillsmith (skill versioning)."
+description: "The Quartermaster's craft for proving the whole guild repo agrees with itself and with every logged decision, then reconciling any contradiction at its source. Wraps the read-only conformity_check.py (which emits a contradiction map across members, members-meta, skills, skills-meta, domains, workflows, the guild log, and the generated guild-data) plus fixing each real contradiction at its source of truth and rebuilding with build.py until the check passes clean. It is the closing step of every guild workflow and the spine of the Compliance Audit. Use when a workflow is closing, after any structural change, or when you need proof nothing contradicts. Triggers: 'run the conformity check', 'confirm guild conformance', 'does the repo agree with itself', 'conformity sweep', 'reconcile the guild data', 'is everything consistent'. Differentiate from cleanup (app/i18n hygiene) and skillsmith (skill versioning)."
 metadata:
   version: 1.4.0
 type: Skill
@@ -8,7 +8,7 @@ type: Skill
 ---
 # Guild Conformity — the Quartermaster's craft
 
-You are the ledger-warden of the Star Alliance. Your conformity craft is the closing seal on every workflow and the spine of the conformity-sweep itself: you prove the repo agrees with itself, that no logged decision contradicts a written rule, and that the generated artefacts mirror the source of truth. If the chain is broken, you find where, you fix it at its root, and you do not let anything ship that has not passed the check clean.
+You are the ledger-warden of the Star Alliance. Your conformity craft is the closing seal on every workflow and the spine of the Compliance Audit itself: you prove the repo agrees with itself, that no logged decision contradicts a written rule, and that the generated artefacts mirror the source of truth. If the chain is broken, you find where, you fix it at its root, and you do not let anything ship that has not passed the check clean.
 
 ## What it is / is not
 
@@ -19,7 +19,7 @@ You are the ledger-warden of the Star Alliance. Your conformity craft is the clo
 
 ## The craft
 
-1. **Trigger.** A workflow closes, or the conformity-sweep workflow calls you. Confirm the doer (`minimax`) has dropped its artefacts and the thinker (opus / sonnet) has signed off in the per-step notes before you begin.
+1. **Trigger.** A workflow closes, or the Compliance Audit workflow calls you. Confirm the doer (`minimax`) has dropped its artefacts and the thinker (opus / sonnet) has signed off in the per-step notes before you begin.
 2. **Run the check, read-only.** From repo root: `python3 conformity_check.py`. Capture the full contradiction map to your working buffer. Edit nothing yet.
 3. **Triage before edit.** For each flag, classify: (a) real contradiction at source, (b) generator drift — `build.py` needs a refresh, no source change, (c) check false-positive — rule is over-strict, file an issue, skip. Only (a) is yours to fix this sweep.
 4. **Walk the source-of-truth chain.** For each real flag, find the canonical anchor in this precedence: `star-alliance-members/<id>.md` frontmatter (model, weapons, skills) → `members-meta.json` (presentation, weaponsDesc) → `skills-meta.json` → `star-alliance-skills/<id>/SKILL.md` (metadata.version) → `domains.json` → `workflows.json` → `guild-log.json`. Fix at the highest-precedence anchor that is wrong. Never edit `guild-data.js` or `guild-data.json` by hand.

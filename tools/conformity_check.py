@@ -3,7 +3,7 @@
 and conformity with every decision on record (guild-log type:decision).
 
 Read-only. Prints a PASS/FAIL map and exits 1 on any contradiction. The Quartermaster
-runs this as the spine of the `conformity-sweep` star-map workflow.
+runs this as the spine of the `compliance-audit` star-map workflow.
 
 Checks (each maps to a source-of-truth invariant or a logged decision):
   P  parity        guild-data.js  ==  guild-data.json

@@ -415,16 +415,22 @@ const ID_RE = /^[a-z0-9-]+$/;          // skills, domains, workflows
 const MODEL_ID_RE = /^[A-Za-z0-9._-]+$/;  // model ids carry dots (gpt-5.5)
 
 // Read JSON, .bak the raw text, hand the parsed doc to mutate(doc) → doc|Error,
-// write it back pretty-printed. Synchronous: these files are all small.
+// write it back pretty-printed. Synchronous: these files are all small. Preserves
+// the file's existing indent unit (domains.json is 1-space, the rest 2-space) and
+// literal-unicode style (emoji kept literal), so an edit's diff stays scoped to
+// the one entity that actually changed.
 function editJsonFile(file, mutate, cb) {
   let raw, doc;
   try { raw = fs.readFileSync(file, 'utf8'); doc = JSON.parse(raw); } catch (e) { return cb(e); }
   let next;
   try { next = mutate(doc); } catch (e) { return cb(e); }
   if (next instanceof Error) return cb(next);
+  const im = raw.match(/\n([ ]+)\S/);
+  const indent = im ? im[1].length : 2;
+  const eol = raw.endsWith('\n') ? '\n' : '';   // preserve the file's EOF style
   try {
     fs.writeFileSync(file + '.bak', raw);
-    fs.writeFileSync(file, JSON.stringify(next || doc, null, 2) + '\n');
+    fs.writeFileSync(file, JSON.stringify(next || doc, null, indent) + eol);
   } catch (e) { return cb(e); }
   cb(null);
 }

@@ -200,6 +200,116 @@ async function createMemberUI() {
   else alert("Create failed \u2014 member may exist, or the dev server is off.");
 }
 
+/* \u2500\u2500 Control panel: generic CRUD for skills \u00b7 sectors \u00b7 models \u00b7 workflows \u00b7 log \u2500\u2500
+   Field edits ride the same contenteditable\u2192focusout path as members, via a
+   [data-edit] hook. Each maps to one /api/save kind (see serve.cjs dispatchSave).
+   Structural ops (create/delete) reload so the freshly-rebuilt guild-data.js
+   repaints. On file:// (no dev server) writes no-op silently \u2014 read-only mode. */
+function editPayload(kind, ent, field, text) {
+  switch (kind) {
+    case "skill":    return field === "body" ? { kind: "skill-body", skill: ent, text }
+                                              : { kind: "skill-meta", skill: ent, fields: { [field]: text } };
+    case "domain":   return { kind: "domain-upsert", domain: { id: ent, [field]: text } };
+    case "model":    return { kind: "model-upsert", id: ent, fields: { [field]: text } };
+    case "workflow": return { kind: "workflow-upsert", workflow: { id: ent, [field]: text } };
+    default:         return null;
+  }
+}
+async function saveGenericEdit(el) {
+  const kind = el.dataset.edit, ent = el.dataset.ent, field = el.dataset.field;
+  if (!kind || !ent || !field) return;
+  const text = (el.innerText || el.textContent || "").trim();
+  if (el.dataset.last === text) return;               // unchanged \u2192 no write
+  const payload = editPayload(kind, ent, field, text);
+  if (!payload) return;
+  const ok = await postSave(payload);
+  el.classList.toggle("edit-unsaved", !ok);
+  if (ok) el.dataset.last = text;                     // server confirmed \u2192 new baseline
+}
+async function createEntity(kind) {
+  const id = (prompt("New " + kind + " id (kebab-case):") || "").trim();
+  if (!id) return;
+  if (!/^[a-z0-9-]+$/.test(id)) { alert("id must be kebab-case [a-z0-9-]"); return; }
+  let payload, dest;
+  if (kind === "skill") {
+    const name = (prompt("Skill name:", id) || id).trim();
+    payload = { kind: "skill-create", skill: id, opts: { name, description: name } };
+    dest = "#/skills/" + id;
+  } else if (kind === "domain") {
+    const name = (prompt("Sector name:", id) || id).trim();
+    payload = { kind: "domain-upsert", domain: { id, name, tagline: "", icon: "\ud83d\udef0", color: "#7c8aa0", skills: [] } };
+    dest = "#/domains/" + id;
+  } else if (kind === "workflow") {
+    const name = (prompt("Workflow name:", id) || id).trim();
+    payload = { kind: "workflow-upsert", workflow: { id, name, category: "Build & Fix", tagline: "", steps: [] } };
+    dest = "#/map";
+  } else if (kind === "model") {
+    const label = (prompt("Model label:", id) || id).trim();
+    payload = { kind: "model-upsert", id, fields: { role: "doer", label, color: "#7c8aa0", status: "live", backend: "ollama" } };
+    dest = "#/arsenal/" + id;
+  } else return;
+  if (await postSave(payload)) { location.hash = dest; location.reload(); }
+  else alert("Create failed \u2014 it may exist, or the dev server is off.");
+}
+async function deleteEntity(kind, id, backHash) {
+  const label = { skill: "skill", domain: "sector", workflow: "workflow", model: "weapon" }[kind] || kind;
+  if (!confirm("Delete " + label + " \u201c" + id + "\u201d? Source files are backed up (.bak) and the guild rebuilds.")) return;
+  const payload = kind === "skill"    ? { kind: "skill-delete", skill: id }
+                : kind === "domain"   ? { kind: "domain-delete", id }
+                : kind === "workflow" ? { kind: "workflow-delete", id }
+                : kind === "model"    ? { kind: "model-delete", id } : null;
+  if (!payload) return;
+  if (await postSave(payload)) { location.hash = backHash || "#/map"; location.reload(); }
+  else alert("Delete failed \u2014 is the dev server running?");
+}
+async function appendLogUI() {
+  const TYPES = ["decision", "chore", "dashboard", "structure", "skill-upgrade", "member-upgrade", "workflow"];
+  const type = (prompt("Log type (" + TYPES.join(" / ") + "):", "decision") || "").trim();
+  if (!type) return;
+  if (!TYPES.includes(type) && !confirm("\u201c" + type + "\u201d is non-standard \u2014 file anyway?")) return;
+  const title = (prompt("Title:") || "").trim(); if (!title) return;
+  const detail = (prompt("Detail (optional):", "") || "").trim();
+  if (await postSave({ kind: "log-append", entry: { type, title, detail, who: "Guild Master" } })) location.reload();
+  else alert("Log append failed \u2014 is the dev server running?");
+}
+
+/* \u2500\u2500 Server status pill + on-demand rebuild. Injected into the topbar at boot.
+   Tells the operator whether edits hit disk (LIVE) or are read-only (file://). */
+async function fetchStatus() {
+  try { const r = await fetch("/api/status", { cache: "no-store" }); return await r.json(); }
+  catch (_) { return null; }
+}
+function paintStatus(st) {
+  const host = byId("cp-status"); if (!host) return;
+  if (st && st.live) {
+    const when = st.lastBuild ? new Date(st.lastBuild).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "\u2014";
+    host.className = "cp-status live";
+    host.innerHTML = `<span class="cp-dot" aria-hidden="true"></span><span class="cp-txt">LIVE \u00b7 built ${esc(when)}</span>` +
+      `<button id="cp-rebuild" class="cp-rebuild" type="button" title="Re-run build.py now">\u21bb</button>`;
+    host.title = "Dev server connected \u2014 edits write to source files. Version " + (st.version || "?");
+  } else {
+    host.className = "cp-status ro";
+    host.innerHTML = `<span class="cp-dot" aria-hidden="true"></span><span class="cp-txt">READ-ONLY</span>`;
+    host.title = "No dev server (file://). Edits stay in this tab only \u2014 run: node .claude/serve.cjs";
+  }
+}
+async function rebuildNow() {
+  const btn = byId("cp-rebuild"); if (btn) { btn.disabled = true; btn.textContent = "\u2026"; }
+  try { await fetch("/api/rebuild", { method: "POST" }); } catch (_) {}
+  location.reload();
+}
+function initStatus() {
+  let host = byId("cp-status");
+  if (!host) {
+    const actions = document.querySelector(".topbar-actions");
+    if (!actions) return;
+    host = document.createElement("div");
+    host.id = "cp-status";
+    actions.insertBefore(host, actions.firstChild);
+  }
+  fetchStatus().then(paintStatus);
+}
+
 // Guild-wide weapon kill switch — a deactivated weapon is hidden from all agent loadouts.
 let disabledWeapons = [];
 try { disabledWeapons = JSON.parse(localStorage.getItem("sa-disabled-weapons") || "[]") || []; } catch (_) { disabledWeapons = []; }
@@ -492,6 +602,7 @@ function renderStarMap(query) {
     </div>
     <p class="flow-hint">Hover a star for its role · pick a workflow below to trace it on the map · <strong>Read more</strong> opens the active workflow's full page.</p>
     ${unknown ? `<div class="flow-note">Unknown flow — showing the default.</div>` : ""}
+    <div class="cp-toolbar"><button class="cp-new" data-new="workflow" type="button">+ New workflow</button></div>
     ${flowChips(wf.id)}`;
 }
 
@@ -537,14 +648,19 @@ function renderWorkflowPage(id) {
       <div class="sp-hero glass">
         <div class="sp-icon${w.artPng ? " art" : ""}">${pic}</div>
         <div class="sp-meta">
-          <h1 class="sp-title">${esc(w.name)}</h1>
+          <h1 class="sp-title editable" contenteditable="true" spellcheck="false"
+              data-edit="workflow" data-ent="${esc(w.id)}" data-field="name" data-last="${esc(w.name)}">${esc(w.name)}</h1>
           <div class="sp-tags">
             ${w.category ? `<span class="tag cyan">${esc(w.category)}</span>` : ""}
             ${w.class ? `<span class="tag">${esc(w.class)}</span>` : ""}
           </div>
-          <p class="sp-blurb">${esc(w.tagline || "")}</p>
+          <p class="sp-blurb editable" contenteditable="true" spellcheck="false"
+             data-edit="workflow" data-ent="${esc(w.id)}" data-field="tagline" data-last="${esc(w.tagline || "")}">${esc(w.tagline || "")}</p>
         </div>
-        <a class="ref-pill" href="#/map?flow=${esc(w.id)}" style="--mc:${accent}" title="Trace this workflow on the Star Map">✦ View on map</a>
+        <div class="sp-actions">
+          <a class="ref-pill" href="#/map?flow=${esc(w.id)}" style="--mc:${accent}" title="Trace this workflow on the Star Map">✦ View on map</a>
+          <button class="cp-del" data-del="workflow" data-ent="${esc(w.id)}" data-back="#/map" type="button">Delete</button>
+        </div>
       </div>
       <div class="telemetry glass">
         <div class="stat"><b class="count">${stepCount}</b><span>Steps</span></div>
@@ -1021,7 +1137,10 @@ function ledgerFor(id) {
 }
 function renderArsenal() {
   const anyOv = Object.keys(weaponOv).length;
-  const cards = ARSENAL.map((id) => {
+  // Curated order first, then any registry model not in it (e.g. just created via
+  // the control panel) so new weapons are never hidden by the fixed ARSENAL list.
+  const order = [...ARSENAL, ...Object.keys(MODELS).filter((id) => !ARSENAL.includes(id))];
+  const cards = order.map((id) => {
     const mm = modelMeta(id);
     const off = isWeaponDisabled(id);
     const wielders = GUILD.members.filter((m) => wields(m, id)).length;
@@ -1082,6 +1201,7 @@ function renderArsenal() {
     <div class="arsenal-toolbar">
       ${liveTag}
       ${anyOv ? `<span class="tag green">Custom loadouts active</span><button class="reset-btn" id="reset-weapons">Reset all assignments</button>` : ""}
+      <button class="cp-new" data-new="model" type="button">+ New weapon</button>
     </div>
     <div class="model-grid">${cards}</div>`;
 }
@@ -1130,17 +1250,22 @@ function renderWeaponDetail(id) {
             <img class="role-icon" src="${esc(role.icon)}" alt="${esc(role.label)}">
             <div class="role-info"><span class="role-label">${esc(role.label)}</span><span class="role-rule">${esc(role.rule)}</span></div>
           </div>` : ""}
-          <h1 class="wp-title">${esc(mm.label)}</h1>
+          <h1 class="wp-title editable" contenteditable="true" spellcheck="false"
+              data-edit="model" data-ent="${esc(id)}" data-field="label" data-last="${esc(mm.label)}">${esc(mm.label)}</h1>
           <div class="model-badges" style="margin-bottom:8px">
             <span class="mb tier">${esc(mm.tier || "Model")}</span>
             ${mm.host ? `<span class="mb host">${esc(mm.host)}</span>` : ""}
             ${mm._pulled === true ? `<span class="mb pulled">● pulled</span>` : mm._pulled === false ? `<span class="mb unpulled">○ not pulled</span>` : ""}
             ${off ? `<span class="tag off">deactivated</span>` : ""}
           </div>
-          <p class="model-desc">${esc(mm.desc || "")}</p>
+          <p class="model-desc editable" contenteditable="true" spellcheck="false"
+             data-edit="model" data-ent="${esc(id)}" data-field="desc" data-last="${esc(mm.desc || "")}">${esc(mm.desc || "")}</p>
         </div>
-        <button class="weapon-power-btn${off ? " off" : ""}" type="button" data-weapon="${esc(id)}"
-          title="${off ? "Reactivate weapon" : "Deactivate weapon"}" style="position:relative;align-self:flex-start">⏻</button>
+        <div class="sp-actions" style="align-self:flex-start">
+          <button class="weapon-power-btn${off ? " off" : ""}" type="button" data-weapon="${esc(id)}"
+            title="${off ? "Reactivate weapon" : "Deactivate weapon"}" style="position:relative">⏻</button>
+          <button class="cp-del" data-del="model" data-ent="${esc(id)}" data-back="#/arsenal" type="button">Delete</button>
+        </div>
       </div>
       ${off ? `<div class="off-banner glass">⏻ Deactivated guild-wide — no agent can wield this weapon. Reactivate to restore.</div>` : ""}
       ${usageHtml}
@@ -1170,6 +1295,7 @@ function renderSkills(query) {
   const cards = GUILD.skills.map(skillCard).join("");
 
   return `${viewHead("Inventory", "Skill Pool", `${GUILD.skills.length} skills shared across the guild.`)}
+    <div class="cp-toolbar"><button class="cp-new" data-new="skill" type="button">+ New skill</button></div>
     <div class="filter-bar glass">
       <label class="search-field"><span class="si" aria-hidden="true">⌕</span>
         <input id="f-q" type="search" placeholder="Search skills…" aria-label="Search skills" value="${esc(q)}"></label>
@@ -1345,11 +1471,17 @@ function renderSkillPanel(id) {
             ${off ? `<span class="tag off">deactivated guild-wide</span>` : ""}
           </div>
           <p class="sp-blurb">${esc(s.desc || s.blurb)}</p>
+          <p class="sp-blurb editable" contenteditable="true" spellcheck="false"
+             data-edit="skill" data-ent="${esc(s.id)}" data-field="blurb" data-last="${esc(s.blurb || "")}"
+             title="Card blurb — edit to write skills-meta.json">${esc(s.blurb || "")}</p>
         </div>
-        <button class="deactivate-toggle${off ? " on" : ""}" id="deactivate-toggle" type="button" data-skill="${esc(s.id)}"
-          aria-pressed="${off}" title="${off ? "Reactivate this skill for the whole guild" : "Deactivate this skill for every agent"}">
-          ⏻ ${off ? "Reactivate skill" : "Deactivate skill"}
-        </button>
+        <div class="sp-actions">
+          <button class="deactivate-toggle${off ? " on" : ""}" id="deactivate-toggle" type="button" data-skill="${esc(s.id)}"
+            aria-pressed="${off}" title="${off ? "Reactivate this skill for the whole guild" : "Deactivate this skill for every agent"}">
+            ⏻ ${off ? "Reactivate skill" : "Deactivate skill"}
+          </button>
+          <button class="cp-del" data-del="skill" data-ent="${esc(s.id)}" data-back="#/skills" type="button">Delete skill</button>
+        </div>
       </div>
       ${off ? `<div class="off-banner glass">⏻ Deactivated guild-wide — every agent's copy is inert, it counts as 0 carriers everywhere, and it's dropped from the Star Map. Reactivate to restore.</div>` : ""}
       <div class="telemetry glass">
@@ -1380,6 +1512,7 @@ function renderSkillPanel(id) {
 // Domains / Sectors ---------------------------------------------------------
 function renderDomains() {
   return `${viewHead("Sectors", "Project Domains", `${GUILD.domains.length} domains drawing from the shared skill pool.`)}
+    <div class="cp-toolbar"><button class="cp-new" data-new="domain" type="button">+ New sector</button></div>
     <div class="grid sector-grid">${GUILD.domains.map(sectorCard).join("")}</div>`;
 }
 
@@ -1416,15 +1549,18 @@ function renderSectorDetail(id) {
       <div class="dossier-hero glass">
         <div class="sector-icon" style="font-size:40px;width:76px;height:76px">${esc(d.icon)}</div>
         <div class="dh-meta">
-          <h1 class="dh-name">${esc(d.name)}</h1>
-          <div class="dh-role">${esc(d.tagline)}</div>
+          <h1 class="dh-name editable" contenteditable="true" spellcheck="false"
+              data-edit="domain" data-ent="${esc(d.id)}" data-field="name" data-last="${esc(d.name)}">${esc(d.name)}</h1>
+          <div class="dh-role editable" contenteditable="true" spellcheck="false"
+              data-edit="domain" data-ent="${esc(d.id)}" data-field="tagline" data-last="${esc(d.tagline)}">${esc(d.tagline)}</div>
           <div class="dh-tags">
             <span class="tag cyan">${pluralize(d.skills.length, "skill")}</span>
             <span class="tag">${pluralize(d.members.length, "member")}</span>
           </div>
-          ${d.notes ? `<p class="dh-summary">${esc(d.notes)}</p>` : ""}
+          ${d.notes ? `<p class="dh-summary editable" contenteditable="true" spellcheck="false" data-edit="domain" data-ent="${esc(d.id)}" data-field="notes" data-last="${esc(d.notes)}">${esc(d.notes)}</p>` : ""}
           ${d.path ? `<p class="path">${esc(d.path)}</p>` : ""}
         </div>
+        <button class="cp-del" data-del="domain" data-ent="${esc(d.id)}" data-back="#/domains" type="button">Delete</button>
       </div>
       <div class="section glass"><div class="section-title">Linked skills · ${d.skills.length}</div><div class="ref-grid">${skills}</div></div>
       <div class="section glass"><div class="section-title">Members in sector · ${d.members.length}</div><div class="ref-grid">${members}</div></div>
@@ -1440,6 +1576,7 @@ function renderLog(query) {
   const entries = logEntries.map(logEntry).join("");
 
   return `${viewHead("Activity", "Guild Log", `${logEntries.length} recorded changes to the guild.`)}
+    <div class="cp-toolbar"><button class="cp-new" id="log-new" type="button">+ Append log entry</button></div>
     <div class="filter-bar glass">
       <div class="seg" id="f-logtype" role="group" aria-label="Filter by type">${seg}</div>
       <span class="filter-meta"><span id="log-count" class="count"></span></span>
@@ -1763,12 +1900,18 @@ function paletteGo(i) {
 
 /* ── 10. Delegated listeners + init ───────────────────────────────────────── */
 app.addEventListener("focusout", (e) => {
-  const el = e.target && e.target.closest && e.target.closest("[data-medit]");
-  if (el) saveMemberEdit(el);
+  const m = e.target && e.target.closest && e.target.closest("[data-medit]");
+  if (m) { saveMemberEdit(m); return; }
+  const g = e.target && e.target.closest && e.target.closest("[data-edit]");
+  if (g) saveGenericEdit(g);
 });
 app.addEventListener("click", (e) => {
   const mdel = e.target.closest("#member-delete"); if (mdel) { e.preventDefault(); deleteMemberUI(mdel.dataset.member); return; }
   const mnew = e.target.closest("#member-new"); if (mnew) { e.preventDefault(); createMemberUI(); return; }
+  // Control panel: generic create / delete / log-append affordances.
+  const cnew = e.target.closest("[data-new]"); if (cnew) { e.preventDefault(); createEntity(cnew.dataset.new); return; }
+  const cdel = e.target.closest("[data-del]"); if (cdel) { e.preventDefault(); deleteEntity(cdel.dataset.del, cdel.dataset.ent, cdel.dataset.back); return; }
+  const lnew = e.target.closest("#log-new"); if (lnew) { e.preventDefault(); appendLogUI(); return; }
   const srcBtn = e.target.closest("#f-src button");
   if (srcBtn) { pressSeg(byId("f-src"), srcBtn); filterSkills(); return; }
   const logBtn = e.target.closest("#f-logtype button");
@@ -1977,6 +2120,13 @@ window.addEventListener("hashchange", onRoute);
 if (!location.hash) location.replace("#/map");
 onRoute();
 setFooter();
+
+// Control-panel status pill lives in the topbar (outside #app) — wire its rebuild
+// button at the document level and paint LIVE/READ-ONLY on boot.
+document.addEventListener("click", (e) => {
+  if (e.target.closest("#cp-rebuild")) { e.preventDefault(); rebuildNow(); }
+});
+initStatus();
 
 // ── Fallen Sword skill tooltip ──────────────────────────────────────────────
 const fsTip = document.createElement("div");

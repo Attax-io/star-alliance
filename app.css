@@ -175,6 +175,30 @@ kbd {
 .palette-trigger .pt-label { font-size: var(--t-sm); }
 .nav-toggle { display: none; font-size: 20px; color: var(--muted); padding: 4px 10px; border-radius: var(--r2); }
 
+/* ── Control-panel status pill (topbar). LIVE = dev server up, edits hit disk;
+      READ-ONLY = file://, edits stay in-tab. */
+.cp-status { display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono);
+  font-size: var(--t-xs); letter-spacing: .08em; padding: 3px 9px; border-radius: var(--pill);
+  border: 1px solid var(--line-2); color: var(--muted); white-space: nowrap; user-select: none; }
+.cp-status .cp-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--faint); flex: none; }
+.cp-status.live { color: var(--mint, #6ee7b7); border-color: color-mix(in srgb, var(--mint, #6ee7b7) 45%, transparent); }
+.cp-status.live .cp-dot { background: var(--mint, #6ee7b7); box-shadow: 0 0 8px var(--mint, #6ee7b7); }
+.cp-status.ro { color: var(--faint); }
+.cp-status.ro .cp-dot { background: var(--rose); }
+.cp-rebuild { font: inherit; font-size: var(--t-xs); line-height: 1; color: inherit; background: none;
+  border: 0; cursor: pointer; padding: 0 0 0 2px; opacity: .8; }
+.cp-rebuild:hover { opacity: 1; transform: rotate(90deg); transition: transform var(--dur) var(--ease); }
+.cp-rebuild:disabled { cursor: default; opacity: .5; }
+
+/* ── Create / delete affordances (skills · sectors · weapons · workflows · log). */
+.cp-new, .cp-del { font-family: var(--mono); font-size: var(--t-xs); letter-spacing: .04em;
+  border-radius: var(--pill); padding: 4px 11px; cursor: pointer; background: none; }
+.cp-new { color: var(--cyan); border: 1px solid color-mix(in srgb, var(--cyan) 40%, transparent); }
+.cp-new:hover { background: rgba(61,240,255,.12); }
+.cp-del { color: var(--rose); border: 1px solid rgba(255,107,138,.4); }
+.cp-del:hover { background: rgba(255,107,138,.16); }
+.cp-toolbar { display: flex; justify-content: flex-end; gap: var(--s2); margin-bottom: var(--s4); }
+
 #app { display: block; max-width: 1240px; margin: 0 auto; padding: var(--s7) var(--s5) var(--s8); min-height: 60vh; }
 
 .footer { max-width: 1240px; margin: 0 auto; padding: var(--s5); color: var(--faint); font-size: var(--t-xs); font-family: var(--mono); letter-spacing: .04em; }

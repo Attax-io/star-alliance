@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 62
     },
-    "generated": "2026-06-27T17:38:42Z",
+    "generated": "2026-06-27T17:50:54Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -2864,8 +2864,8 @@ const GUILD = {
       "ramp": "teal",
       "tabler": "ti-checkup-list",
       "src": "own",
-      "desc": "The Quartermaster's craft for proving the whole guild repo agrees with itself and with every logged decision, then reconciling any contradiction at its source. Wraps the read-only conformity_check.py (which emits a contradiction map across members, members-meta, skills, skills-meta, domains, workflows, the guild log, and the generated guild-data) plus fixing each real contradiction at its source of truth and rebuilding with build.py until the check passes clean. It is the closing step of every guild workflow and the spine of the conformity-sweep. Use when a workflow is closing, after any structural change, or when you need proof nothing contradicts. Triggers: 'run the conformity check', 'confirm guild conformance', 'does the repo agree with itself', 'conformity sweep', 'reconcile the guild data', 'is everything consistent'. Differentiate from cleanup (app/i18n hygiene) and skillsmith (skill versioning).",
-      "intro": "You are the ledger-warden of the Star Alliance. Your conformity craft is the closing seal on every workflow and the spine of the conformity-sweep itself: you prove the repo agrees with itself, that no logged decision contradicts a written rule, and that the generated artefacts mirror the source of t",
+      "desc": "The Quartermaster's craft for proving the whole guild repo agrees with itself and with every logged decision, then reconciling any contradiction at its source. Wraps the read-only conformity_check.py (which emits a contradiction map across members, members-meta, skills, skills-meta, domains, workflows, the guild log, and the generated guild-data) plus fixing each real contradiction at its source of truth and rebuilding with build.py until the check passes clean. It is the closing step of every guild workflow and the spine of the Compliance Audit. Use when a workflow is closing, after any structural change, or when you need proof nothing contradicts. Triggers: 'run the conformity check', 'confirm guild conformance', 'does the repo agree with itself', 'conformity sweep', 'reconcile the guild data', 'is everything consistent'. Differentiate from cleanup (app/i18n hygiene) and skillsmith (skill versioning).",
+      "intro": "You are the ledger-warden of the Star Alliance. Your conformity craft is the closing seal on every workflow and the spine of the Compliance Audit itself: you prove the repo agrees with itself, that no logged decision contradicts a written rule, and that the generated artefacts mirror the source of t",
       "sections": [
         "What it is / is not",
         "The craft",
@@ -2884,7 +2884,7 @@ const GUILD = {
       "scripts": [],
       "stats": {
         "lines": 137,
-        "words": 2131
+        "words": 2133
       },
       "global": true,
       "members": [
@@ -3943,6 +3943,7 @@ const GUILD = {
       "refs": [
         "cowork-limits.md",
         "create-playbook.md",
+        "deploy-playbook.md",
         "member-leveling.md",
         "routine-ledger",
         "routine-playbook.md",
