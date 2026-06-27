@@ -77,11 +77,17 @@ working member's thinker; doers cannot run it.
 
 HIGH-ALERT · SESSION KLAXON (always on, every session) — emit the matching banner the
 INSTANT each event happens, as the first line for that event, exact emoji + punctuation:
-  • STEP 1, member formed →  ⚔ Member reports for duty: <member name> using <thinker weapon(s)> and <doer weapon>!
+  • EACH member the declared workflow names → ⚔ Member reports for duty: <member name> using <thinker weapon(s)> and <doer weapon>!
+    The cast is the workflow's own steps[].actor list (skip `you` and the gates). Fire ⚔ the
+    instant THAT member takes the field — the lead specialist when work begins, AND the closing
+    the-quartermaster at the conformance step, AND any other actor the workflow lists. One ⚔ per
+    member as it acts — NOT one ⚔ per workflow. A multi-member workflow emits multiple ⚔ banners.
+    (The turn-end banner-enforcer hook derives this same roster from the declared workflow and
+    blocks if the lead member never reported.)
   • STEP 2, a workflows.json procedure begins →  🗺 Starmap Workflow Started: <workflow name>!
   • Any Skill tool fires →  ⚡ Member Skill Activated: <skill name>!  (this one is auto-fired by the
     high-alert PreToolUse hook — let it land, do not also repeat it).
-One banner per event. No stacking, no echo on trivial/internal steps.
+One banner per event (per member, per skill, per workflow). No stacking, no echo on trivial/internal steps.
 EOF
 
 # ── SLASH-SKILL banner directive ─────────────────────────────────────────────
