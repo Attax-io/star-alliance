@@ -1,0 +1,25 @@
+{
+  "_comment": "CANONICAL arsenal model registry — the ONE source of truth for per-weapon facts. Consumers DERIVE from this; never hand-copy. Readers: summon.py (cloud_tag/role/known-ids), conformity_check.py (role), .claude/hooks/weapon-gate.py (known weapons), .claude/serve.cjs (weight), build.py (weaponStatus → guild-data), gen_model_docs.py (docs). role: doer|thinker|both|media. backend: claude|minimax-direct|ollama-cloud|openai-direct|minimax-media. status: live|reserve|deactivated. cloud_tag/pull null when N/A. weight = serve.cjs usage estimate (Claude families estimated separately).",
+  "version": 1,
+  "models": {
+    "opus":   { "role": "thinker", "backend": "claude", "cloud_tag": null, "status": "live", "pull": null, "weight": null, "kind": "text", "summary": "Deepest structural reasoning — the prime thinker for hard plans." },
+    "sonnet": { "role": "both",    "backend": "claude", "cloud_tag": null, "status": "live", "pull": null, "weight": null, "kind": "text", "summary": "Balanced thinker + Claude-capable fallback — last in every arsenal." },
+    "haiku":  { "role": "doer",    "backend": "claude", "cloud_tag": null, "status": "live", "pull": null, "weight": null, "kind": "text", "summary": "Fastest, cheapest Claude — quick mechanical reasoning." },
+
+    "minimax-m3": { "role": "doer", "backend": "minimax-direct", "cloud_tag": null, "status": "live", "pull": null, "weight": 1.0, "kind": "text", "summary": "The prime doer. Direct MiniMax cloud sub for bulk generation/transform." },
+
+    "deepseek-v4-pro":  { "role": "thinker", "backend": "ollama-cloud", "cloud_tag": "deepseek-v4-pro:cloud", "status": "reserve", "pull": "ollama pull deepseek-v4-pro:cloud", "weight": 0.5, "kind": "text", "summary": "Frontier multi-step reasoning — long dependency chains." },
+    "glm-5.2":          { "role": "thinker", "backend": "ollama-cloud", "cloud_tag": "glm-5.2:cloud", "status": "reserve", "pull": "ollama pull glm-5.2:cloud", "weight": 0.7, "kind": "text", "summary": "A different analytical frame — where others over-fit." },
+    "kimi-k2.7":        { "role": "thinker", "backend": "ollama-cloud", "cloud_tag": "kimi-k2.7-code:cloud", "status": "reserve", "pull": "ollama pull kimi-k2.7-code:cloud", "weight": 0.5, "kind": "text", "summary": "Long-context coherence across large inputs." },
+    "nemotron-3-ultra": { "role": "thinker", "backend": "ollama-cloud", "cloud_tag": "nemotron-3-super:cloud", "status": "reserve", "pull": "ollama pull nemotron-3-super:cloud", "weight": 0.4, "kind": "text", "summary": "NVIDIA reasoning bench — alternate engine. Reserve: in no loadout." },
+    "qwen3.5":          { "role": "thinker", "backend": "ollama-cloud", "cloud_tag": "qwen3.5:cloud", "status": "reserve", "pull": "ollama pull qwen3.5:cloud", "weight": 0.4, "kind": "text", "summary": "Strong general/coding bench. Reserve: in no loadout." },
+    "gemma4":           { "role": "thinker", "backend": "ollama-cloud", "cloud_tag": "gemma4:cloud", "status": "reserve", "pull": "ollama pull gemma4:cloud", "weight": 0.3, "kind": "text", "summary": "Light, fast thinker — cheap second mind, esp. content/marketing (the-herald)." },
+
+    "gpt-5.5": { "role": "thinker", "backend": "openai-direct", "cloud_tag": null, "status": "deactivated", "pull": null, "weight": 0.2, "kind": "text", "summary": "OpenAI-direct second opinion. Deactivated — no key on device; kept in loadouts on purpose." },
+
+    "image-01":       { "role": "media", "backend": "minimax-media", "cloud_tag": null, "status": "live", "pull": null, "weight": null, "kind": "media", "summary": "Text→image forge. Forged every skill-art/*.png tile." },
+    "minimax-video":  { "role": "media", "backend": "minimax-media", "cloud_tag": null, "status": "live", "pull": null, "weight": null, "kind": "media", "summary": "Text→video (async). No helper yet." },
+    "minimax-speech": { "role": "media", "backend": "minimax-media", "cloud_tag": null, "status": "live", "pull": null, "weight": null, "kind": "media", "summary": "Text→speech (TTS). No helper yet." },
+    "minimax-music":  { "role": "media", "backend": "minimax-media", "cloud_tag": null, "status": "live", "pull": null, "weight": null, "kind": "media", "summary": "Text→music. No helper yet." }
+  }
+}

@@ -300,49 +300,6 @@ kbd {
   margin-bottom: var(--s4);
 }
 
-/* flow meta header */
-.flow-meta {
-  display: flex; align-items: center; gap: var(--s4);
-  padding: var(--s5);
-  margin-bottom: var(--s5);
-  border-left: 3px solid var(--accent);
-}
-.flow-meta .fm-icon { font-size: 28px; line-height: 1; }
-.flow-meta .fm-tagline { color: var(--starlight); font-size: var(--t-lg); font-weight: 600; }
-.flow-meta .fm-when { color: var(--muted); font-size: var(--t-sm); margin-top: 4px; }
-.flow-meta .fm-when-label {
-  text-transform: uppercase;
-  font-size: var(--t-xs);
-  letter-spacing: .12em;
-  color: color-mix(in srgb, var(--accent) 80%, var(--muted));
-  font-family: var(--mono);
-  margin-right: 6px;
-}
-
-.flow-meta .fm-scripts {
-  display: flex; align-items: center; flex-wrap: wrap; gap: 6px;
-  margin-top: 8px;
-}
-.fm-script-chips { display: flex; flex-wrap: wrap; gap: 5px; }
-.script-chip {
-  display: inline-flex; align-items: center; gap: 5px;
-  padding: 2px 8px; border-radius: 12px;
-  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
-  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
-  cursor: default; transition: background 0.15s;
-}
-.script-chip:hover {
-  background: color-mix(in srgb, var(--accent) 20%, var(--surface));
-}
-.script-chip-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--accent); flex-shrink: 0;
-}
-.script-chip code {
-  font-family: var(--mono); font-size: var(--t-xs);
-  color: color-mix(in srgb, var(--accent) 90%, var(--starlight));
-}
-
 /* constellation reborn + power core + hover tooltip */
 .starmap-wrap { position: relative; padding: var(--s5); }
 .starmap { width: 100%; max-width: 820px; margin: 0 auto; display: block; aspect-ratio: 1/1; overflow: visible; }
