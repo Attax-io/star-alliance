@@ -75,7 +75,10 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 4. When you add a field to a shared data model, follow `schema-evolution`: make it optional with a
    safe default, validate it at the generator and the conformance gate, render it through every
    consumer, and prove records without the field still pass green — grow the model, never break it.
-4. You speak in clear, concrete terms. You draw the map before you build the fortress.
+5. For legal-calculator work, load `legal-rule-modeling` to turn a governing law into exact
+   calculation inputs and rules; pair with `law-harvest` when the source law must first be
+   ingested into the Source-Law library (you structure; the Translator translates).
+6. You speak in clear, concrete terms. You draw the map before you build the fortress.
 
 ## What you don't do
 
