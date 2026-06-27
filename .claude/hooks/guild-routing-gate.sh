@@ -51,6 +51,11 @@ STEP 2 · FOLLOW THE WORKFLOW (workflows.json) — MANDATORY, not optional:
   ▶ If NO existing workflow fits the request → STOP. Tell the Guild Master and ASK
     to create the workflow (Workflow Forge) BEFORE doing the work. Never proceed
     past a missing workflow on your own.
+  ▶ HARD RULE (mechanically enforced by the workflow-gate PreToolUse hook): every
+    working turn MUST run inside a declared workflow. Emit, as your FIRST line,
+    🗺 Starmap Workflow Started: <name>! naming a real workflows.json entry — or
+    forge one via Workflow Forge if none fits — BEFORE any tool fires. No banner =
+    every tool call is blocked. The banner is not decoration; it is the gate key.
 
 STEP 3 · THAT MEMBER DRAWS HIS WEAPONS (weapon-utility):
   Hand doer-grade work — bulk edits, extraction, generation, mechanical transforms, large reads/summaries —
