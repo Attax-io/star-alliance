@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Conformity Sweep — audit the whole Star Alliance repo for internal conformity
+"""Conformity check — audit the whole Star Alliance repo for internal conformity
 and conformity with every decision on record (guild-log type:decision).
 
 Read-only. Prints a PASS/FAIL map and exits 1 on any contradiction. The Quartermaster

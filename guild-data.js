@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 65
     },
-    "generated": "2026-06-27T18:01:26Z",
+    "generated": "2026-06-27T18:02:00Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
