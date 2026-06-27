@@ -726,7 +726,7 @@ function renderMemberDossier(id) {
     </div>`;
   }).join("");
 
-  const skills = assigned.map((sid) => {
+  const skillLine = (sid) => {
     const s = bySkill.get(sid);
     const off = isDisabled(sid);
     const blk = isBlocked(m.id, sid);
