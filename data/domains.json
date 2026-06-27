@@ -65,7 +65,8 @@
         "project-start",
         "algorithmic-trading-chan",
         "guild-sync",
-        "volume-price-analysis"
+        "volume-price-analysis",
+        "python-master"
       ],
       "members": [
         "the-butler",
@@ -78,7 +79,7 @@
         "the-merchant",
         "the-quartermaster"
       ],
-      "notes": "The home domain. All 9 guild members + 57 skills live here. Every other domain borrows from this skill pool."
+      "notes": "The home domain. All 9 guild members + 58 skills live here. Every other domain borrows from this skill pool."
     },
     {
       "id": "lex-council-app",

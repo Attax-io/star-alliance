@@ -454,5 +454,13 @@
     "tabler": "ti-map-2",
     "triggers": "'save this as a workflow', 'add this to the star map', 'register a workflow', 'crystallize this formation'",
     "modes": ""
+  },
+  "python-master": {
+    "icon": "🐍",
+    "blurb": "Build production-grade Python libraries & web apps end to end — 14 merged crafts",
+    "level": "Advanced",
+    "tabler": "ti-brand-python",
+    "triggers": "'set up a python library', 'write pytest tests', 'package for pypi', 'audit python security', 'build a python cli', 'review this python library'",
+    "modes": "project setup; packaging; code quality; testing; docs; api design; cli; performance; security; web-app; git hygiene; release; community; review"
   }
 }

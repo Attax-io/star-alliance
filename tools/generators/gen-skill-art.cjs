@@ -22,6 +22,10 @@ const STYLE = "fantasy RPG skill icon, Fallen Sword MMORPG style, dark parchment
 
 const SKILLS = [
   {
+    id: "python-master",
+    prompt: `${STYLE}. A great emerald-and-gold serpent (python) coiled protectively around a master smith's anvil on dark parchment, its scales etched with glowing runic code-glyphs, a forge-hammer and an open blueprint-scroll of interlocking modular gears resting on the anvil, fourteen tiny golden craft-sigils orbiting the coil like a constellation (a flask for tests, a quill for docs, a shield for security, a gear for tooling), a sealed package crate stamped with gold wax at the base — the master craft of forging flawless Python`,
+  },
+  {
     id: "volume-price-analysis",
     prompt: `${STYLE}. A towering set of glowing golden volume bars rising beneath a row of carved red-and-green candlestick bars on dark parchment, a great brass balance-scale at center weighing "effort" (a heavy volume bar) against "result" (a price candle) with one pan tipping to reveal a hidden cloaked insider figure pulling strings below the chart, a horizontal volume-at-price histogram glowing along the right edge — the art of reading what the smart money cannot hide`,
   },
@@ -98,12 +102,8 @@ const SKILLS = [
     prompt: `${STYLE}. Left side: a vivid fantasy landscape painting on canvas. Right side: the same image dissolving into glowing golden rune-script on parchment scrolls. A wizard's hand holds a transmutation orb at center where image becomes code, clear split transformation, dramatic arcane glow`,
   },
   {
-    id: "imagegen-frontend-mobile",
-    prompt: `${STYLE}. A glowing rectangular arcane tablet — like a magical smartphone — held upright, vivid fantasy artwork materializing on its crystal screen from summoning sparks, the tablet framed in ornate gold runes, clearly a handheld magical device generating images`,
-  },
-  {
-    id: "imagegen-frontend-web",
-    prompt: `${STYLE}. A grand arcane viewing portal framed in carved stone, magical image conjuring itself within from swirling violet and teal energy, web of glowing threads radiating from the frame`,
+    id: "imagegen-frontend",
+    prompt: `${STYLE}. A grand arcane viewing portal framed in carved stone beside a glowing rectangular arcane tablet, both conjuring vivid fantasy interface artwork from swirling violet and teal summoning energy, web of glowing threads radiating outward — a dual device for both grand portals and handheld screens`,
   },
   {
     id: "impeccable",

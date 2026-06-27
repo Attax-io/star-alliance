@@ -3,7 +3,7 @@ name: the-developer
 description: "Deploy for writing code, applying changes, fixing bugs, implementing features, and hands-on development work — including dev servers, tooling, and knowledge graphs. Triggers: 'write the code', 'implement this', 'fix this bug', 'apply the changes', 'build this feature', 'refactor this code', 'open dev server', 'generate a knowledge graph'."
 model: sonnet
 tools: [Read, Edit, Write, Bash]
-skills: [bug-fix-workflow, db-rename-sweep, dev-server, graphify, claude-code-hooks, supabase, supabase-postgres-best-practices, full-output-enforcement, obsidian-markdown, performance, ultra-brainstorming, star-alliance-language, weapon-utility]
+skills: [bug-fix-workflow, db-rename-sweep, dev-server, graphify, claude-code-hooks, supabase, supabase-postgres-best-practices, full-output-enforcement, obsidian-markdown, performance, python-master, ultra-brainstorming, star-alliance-language, weapon-utility]
 weapons: [minimax-m3, haiku, opus, deepseek-v4-pro, glm-5.2, kimi-k2.7, gpt-5.5, sonnet]  # priority order: doers→thinkers→sonnet
 type: Member
 
@@ -62,6 +62,7 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | `supabase-postgres-best-practices` | writing, reviewing, or tuning Postgres queries, indexes, perf | full Supabase app features (→ `supabase`) or fresh schema design (→ Architect) | `supabase`, `db-rename-sweep` |
 | `full-output-enforcement` | output must be exhaustive, untruncated, free of placeholders | brief replies, or design/strategy talk (→ Architect/Strategist) | `bug-fix-workflow`, `graphify` |
 | `obsidian-markdown` | dev docs in Obsidian md — wikilinks, callouts, properties | long-form strategy docs (→ Strategist) or graph ingestion (→ `graphify`) | `graphify` |
+| `python-master` | building a Python library or service — setup, packaging, typing, tests, docs, API/CLI, profiling, security audit, release, or full review | JS/TS or non-Python work, or web-app UI (→ Designer) | `performance`, `supabase`, `full-output-enforcement` |
 
 **Universal skills — every member carries these; drill them at the edges of every quest:**
 
