@@ -720,7 +720,7 @@ function renderHookRing(cx, cy) {
     return `<g class="hooknode" tabindex="0" role="img" aria-label="${esc(name)}: ${esc(String(scripts.length))} hook(s)" data-name="${esc(name)}" data-tip="${tip}" transform="translate(${p.x.toFixed(1)},${p.y.toFixed(1)})">
       <circle class="hooknode-hit" r="24" fill="transparent"/>
       <circle class="hooknode-halo" r="15"/>
-      <circle class="hooknode-core" r="11"/>
+      <polygon class="hooknode-core" points="0,-13 11.3,6.5 -11.3,6.5"/>
       <text class="hooknode-glyph" text-anchor="middle" dominant-baseline="central">${esc(ev.glyph || "⛓")}</text>
       ${count}
       <text class="hooknode-label" text-anchor="middle" y="-26">${esc(name)}</text>
