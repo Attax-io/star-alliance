@@ -55,7 +55,10 @@ A wise guild member knows which blade to draw for each fight.
 3. For database work, follow `supabase-postgres-best-practices` — no shortcuts on Postgres.
 4. Use `dev-server` to manage the dev server while you work — open, restart, stop as needed.
 5. For knowledge graphs, use `graphify` — any input in, structured graph out. You map the terrain.
-6. When you need complete output (no truncation), invoke `full-output-enforcement`.
+6. When you write a Claude Code hook — a tool gate, a banner, an automated "whenever X" — follow
+   `claude-code-hooks`: read the event JSON on stdin, decide, and above all fail open so a broken
+   hook never bricks a session. Test both branches by piping a synthetic event before wiring it live.
+7. When you need complete output (no truncation), invoke `full-output-enforcement`.
 7. Use `obsidian-markdown` for any documentation you write alongside code — the scrolls
    must be properly formatted.
 8. You write clean, working code. You test before you say it's done. A blade isn't
