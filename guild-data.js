@@ -3,13 +3,13 @@
 const GUILD = {
   "meta": {
     "name": "Star Alliance",
-    "version": "6.57.70",
+    "version": "6.57.71",
     "versionTiers": {
       "major": 6,
       "minor": 57,
-      "patch": 70
+      "patch": 71
     },
-    "generated": "2026-06-27T22:31:29Z",
+    "generated": "2026-06-27T22:36:18Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -33,7 +33,7 @@ const GUILD = {
       "domains": 3,
       "workflows": 33,
       "hooks": 7,
-      "log": 153
+      "log": 154
     }
   },
   "members": [
@@ -7848,6 +7848,14 @@ const GUILD = {
   "log": {
     "entries": [
       {
+        "id": 94,
+        "date": "2026-06-28",
+        "type": "chore",
+        "title": "Strategic Audit harness-fix: gpt-5.5 fully removed + verify-gate loop fixed",
+        "who": "Atta",
+        "detail": "Audit of the whole harness (hooks/arsenal/members/skills/turn-lifecycle) executed as a multi-wave fix. (1) verify-gate 'triple response' loop ROOT-CAUSED + fixed: it had no per-turn baseline (fired on any dirty tree incl. pre-existing files) and turn-finalize (a sibling Stop hook) committed regardless, so its 'nothing committed while blocked' claim was false. Fix: turn-start.py snapshots a source fingerprint (.claude/state/verify-baseline); verify-gate stands aside when cur==baseline and fails open if the baseline is missing; turn-finalize now honors the gate (commits nothing while blocked). (2) turn-cost tier bug (45% 'unknown') fixed: dedup via the turn-start sentinel (one record/turn across blocking re-prompts) + stop deleting last-tier. (3) gpt-5.5 REMOVED from every live surface: models.json, summon.py, conformity_check.py, gen_model_docs.py, 7 member loadouts + members-meta, 9 agents (regen), weapon-utility + ultra-brainstorming live prose, both READMEs, app.js (ARSENAL + TIER_RANK — ghost-tile bug), serve.cjs fallback+comment, gen-weapon-art/gif.cjs, and deleted weapon-art/gpt-5.5.png + models/gpt-5.5.md; only historical records (changelogs, guild-log, docs/) retain it. (4) Dead hooks archived to .claude/hooks/.deprecated/ (autocommit.sh, member-table-sync.py, guild-source-rebuild.py) + README; stale prose in guild-conformity (1.4.2) + the-quartermaster rewritten to the real build-mark->turn-finalize chain. (5) Token diet: LITE policy retuned (size_short_chars + conversational small-signals; explain-prompts now LITE, stakes still FULL), weapon-gate reminder once/turn, minimax 401/403 auth message. (6) Readable commits: turn-finalize subject now leads with the workflow name. weapon-utility 2.1.1, ultra-brainstorming 1.3.1 bumped. Independent multi-agent adversarial review (4 reviewers) caught the app.js ghost-tile miss (macOS grep skipped its null-byte content); re-verified PASS. build --check idempotent, conformity FULL."
+      },
+      {
         "id": 93,
         "date": "2026-06-27",
         "type": "chore",
@@ -9698,7 +9706,7 @@ const GUILD = {
         "id": "g-650b7781-add-skill-impeccable"
       }
     ],
-    "count": 153
+    "count": 154
   },
   "models": {
     "opus": {
