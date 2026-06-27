@@ -6,7 +6,7 @@ metadata:
 type: Skill
 
 ---
-# skillsmith — manage, sync, upgrade, create & auto-evolve Star Alliance skills (v1.3.0)
+# skillsmith — manage, sync, upgrade, create & auto-evolve Star Alliance skills (v1.5.0)
 
 The control panel for the `star-alliance` repo. It keeps every skill **versioned**,
 **Cowork-installable**, and **in sync** between the git repo and the on-device copies — and it
