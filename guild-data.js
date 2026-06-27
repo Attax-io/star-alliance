@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 65
     },
-    "generated": "2026-06-27T18:12:47Z",
+    "generated": "2026-06-27T18:13:23Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -3469,7 +3469,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🌀",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "The Designer's easing & timing specialist — exact curves, durations, transform-origins",
       "level": "Advanced",
       "ramp": "teal",
