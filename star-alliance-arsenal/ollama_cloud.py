@@ -110,6 +110,7 @@ def main():
         method="POST",
     )
 
+    _t0 = time.monotonic()
     try:
         with urllib.request.urlopen(req, timeout=args.timeout) as resp:
             raw = resp.read().decode("utf-8")
