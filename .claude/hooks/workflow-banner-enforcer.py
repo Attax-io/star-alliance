@@ -65,8 +65,30 @@ def load_workflows():
     return out
 
 
+def _is_stop_feedback(content):
+    """True if this user message is injected Stop-hook feedback — a re-invocation
+    nudge WITHIN one logical turn, not a fresh Guild Master turn. The harness
+    records hook block output as a plain (non-tool_result) user message, so without
+    this check `last_user_index` advances onto it and the inspection window collapses
+    to the single retry: banners never accumulate across re-invokes and the anti-brick
+    CAP freezes at n_assistant=1. Both bugs trace back here."""
+    if isinstance(content, str):
+        s = content
+    elif isinstance(content, list):
+        s = " ".join(
+            b.get("text", "") for b in content
+            if isinstance(b, dict) and b.get("type") == "text"
+        )
+    else:
+        return False
+    return s.lstrip().startswith("Stop hook feedback")
+
+
 def last_user_index(lines):
-    """Index of the last REAL user turn (not a tool_result-only message)."""
+    """Index of the last REAL user turn — not a tool_result-only message, and not
+    injected Stop-hook feedback (see _is_stop_feedback). Skipping both keeps the
+    inspection window anchored to the Guild Master's actual prompt so assistant text
+    accumulates across every re-invocation of the turn."""
     idx = -1
     for i, o in enumerate(lines):
         if o.get("type") != "user":
@@ -75,8 +97,9 @@ def last_user_index(lines):
         is_tool_result = isinstance(c, list) and any(
             isinstance(b, dict) and b.get("type") == "tool_result" for b in c
         )
-        if not is_tool_result:
-            idx = i
+        if is_tool_result or _is_stop_feedback(c):
+            continue
+        idx = i
     return idx
 
 
