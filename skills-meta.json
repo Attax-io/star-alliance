@@ -1,4 +1,12 @@
 {
+  "arsenal-forge": {
+    "icon": "⚔️",
+    "blurb": "Recruit or re-role a weapon — identity, role, wire to loadouts",
+    "level": "Intermediate",
+    "tabler": "ti-swords",
+    "triggers": "'add a weapon', 'recruit a model', 're-skin this weapon', 'change a weapon role', 'arsenal forge'",
+    "modes": ""
+  },
   "article-creator": {
     "icon": "📝",
     "blurb": "End-to-end Insights article creation pushed to production DB",
@@ -39,6 +47,14 @@
     "triggers": "",
     "modes": ""
   },
+  "comms-triage": {
+    "icon": "📨",
+    "blurb": "Sweep email, calendar, and WhatsApp into tasks, events, and replies",
+    "level": "Intermediate",
+    "tabler": "ti-inbox",
+    "triggers": "'triage my inbox', 'what needs me today', 'turn my email into tasks', 'sweep my WhatsApp', 'comms triage'",
+    "modes": ""
+  },
   "conquering-campaign": {
     "icon": "🚀",
     "blurb": "Multi-wave campaign orchestrator: audit, build, run mega-work",
@@ -63,6 +79,22 @@
     "triggers": "on \"rename\", \"rename sweep\", \"rename checklist\", \"naming cleanup\", \"change table name\", \"rename this view\", \"prefix the tables\", \"sweep the old name\", \"unify the naming\", or any request that implies a SQL ALTER TABLE ... RENAME / RENAME COLUMN. The skill exist",
     "modes": ""
   },
+  "design-language": {
+    "icon": "🗣️",
+    "blurb": "The guild's multi-language voice engine — narrative vocabulary & tone, not visual",
+    "level": "Master",
+    "tabler": "ti-language",
+    "triggers": "'use the X voice', 'make it sound like Fallen Sword', 'guild voice', 'Lex Council tone', 'reskin this copy', 'Erildath'",
+    "modes": "fallen-sword; star-alliance; lex-council"
+  },
+  "design-taste": {
+    "icon": "🎨",
+    "blurb": "The Designer's seven-mode premium taste engine, anti-AI-slop",
+    "level": "Master",
+    "tabler": "ti-brush",
+    "triggers": "'design the UI', 'make it premium', 'pick a style', 'minimalist', 'brutalist', 'add motion', 'write a DESIGN.md', 'redesign this', 'anti-slop'",
+    "modes": "engineer; agency; minimal; brutalist; motion; encode; redesign"
+  },
   "dev-server": {
     "icon": "🚀",
     "blurb": "Launches, restarts, and manages your local development server",
@@ -85,6 +117,38 @@
     "level": "Master",
     "tabler": "ti-binary-tree",
     "triggers": "",
+    "modes": ""
+  },
+  "growth-marketing": {
+    "icon": "📣",
+    "blurb": "Four-mode marketing engine: content/SEO, brand, email, social/paid",
+    "level": "Master",
+    "tabler": "ti-speakerphone",
+    "triggers": "'plan our marketing', 'we need leads', 'fix our positioning', 'content plan', 'SEO plan', 'build an email sequence', 'social plan', 'ad plan', 'go to market', 'growth marketing'. The Herald's craft; composes with article-creator, brandkit, storm-investigation.",
+    "modes": "content-seo (ICP + pain keywords, topic clusters, local SEO, on-page, publish via article-creator); brand-positioning (positioning statement, ICP, value prop, voice, proof bank, brandkit handoff); email-nurture (lead magnets, capture, 4-6 email sequence, re-engagement, bar-compliance); social-paid (channel mix, organic cadence, paid-ads starter, retargeting, tracking)"
+  },
+  "guild-conformity": {
+    "icon": "🔎",
+    "blurb": "Prove the guild repo agrees with itself, then reconcile",
+    "level": "Advanced",
+    "tabler": "ti-checkup-list",
+    "triggers": "'confirm guild conformance', 'run the conformity check', 'reconcile the guild data', 'conformity sweep', 'is everything consistent'",
+    "modes": ""
+  },
+  "guild-log": {
+    "icon": "📓",
+    "blurb": "Logs non-git-visible guild changes via the two-tier pipeline",
+    "level": "Foundational",
+    "tabler": "ti-history",
+    "triggers": "'log this', 'guild log this', 'did you log it?', '/guild-log', or any dashboard/UI/folder change git can't see on its own",
+    "modes": ""
+  },
+  "high-alert": {
+    "icon": "🚨",
+    "blurb": "Session klaxon: banners on workflow start, skill activation, member duty",
+    "level": "Foundational",
+    "tabler": "ti-alert-triangle",
+    "triggers": "always on, no invocation — fires automatically on workflow start, Skill tool use (hook-enforced), and member formation at routing STEP 1",
     "modes": ""
   },
   "image-to-code": {
@@ -119,6 +183,46 @@
     "triggers": "",
     "modes": ""
   },
+  "law-harvest": {
+    "icon": "📚",
+    "blurb": "Ingest law PDFs verbatim into the verified Source-Law library",
+    "level": "Intermediate",
+    "tabler": "ti-files",
+    "triggers": "'harvest the laws', 'extract this law', 'process the stock laws', 'identify these law PDFs', 'law harvest'",
+    "modes": ""
+  },
+  "legal-drafting": {
+    "icon": "✒️",
+    "blurb": "Client correspondence and bilingual legal instruments in the firm's register",
+    "level": "Advanced",
+    "tabler": "ti-file-pencil",
+    "triggers": "'draft a client email', 'write this contract', 'draft a declaration', 'write a legal memo', 'bilingual letter'",
+    "modes": ""
+  },
+  "legal-rule-modeling": {
+    "icon": "🧮",
+    "blurb": "Model a governing law into deterministic calculator rules",
+    "level": "Advanced",
+    "tabler": "ti-calculator",
+    "triggers": "'model the law for this calculator', 'extract the calculation rules', 'what are the brackets for X', 'rule model'",
+    "modes": ""
+  },
+  "market-recon": {
+    "icon": "📈",
+    "blurb": "Read-only market, investment, and risk analysis that ships a report",
+    "level": "Advanced",
+    "tabler": "ti-chart-candle",
+    "triggers": "'analyze this investment', 'research this market', 'is this a buy', 'review my portfolio', 'macro read'",
+    "modes": "asset/equity research; single trade-idea; portfolio review; macro/rates read"
+  },
+  "members-formation": {
+    "icon": "🧭",
+    "blurb": "The Butler's routing method: who works, in what arrangement, then crystallize",
+    "level": "Advanced",
+    "tabler": "ti-route",
+    "triggers": "'route this', 'who should handle this', 'form the team', 'distribute the work', 'can these run in parallel', 'coordinate the members', 'plan the dispatch', or any request touching more than one craft. The Butler's one dedicated craft — he is the router, not a specialist.",
+    "modes": ""
+  },
   "obsidian-markdown": {
     "icon": "📝",
     "blurb": "Edit Obsidian-flavored markdown with wikilinks and callouts",
@@ -133,6 +237,38 @@
     "level": "Intermediate",
     "tabler": "ti-gauge",
     "triggers": "",
+    "modes": ""
+  },
+  "portfolio-risk": {
+    "icon": "🛡️",
+    "blurb": "Book-level portfolio construction and risk metrics (VaR, drawdown, exposure)",
+    "level": "Advanced",
+    "tabler": "ti-shield-half",
+    "triggers": "'review my portfolio', 'what is the risk on my book', 'compute VaR', 'check my exposures', 'should I rebalance', 'stress test this portfolio'",
+    "modes": "construction; risk-audit; rebalance-proposal; stress-test"
+  },
+  "relationship-intel": {
+    "icon": "🤝",
+    "blurb": "Turn email traffic into living client relationship intelligence",
+    "level": "Advanced",
+    "tabler": "ti-heart-handshake",
+    "triggers": "'profile my contacts', 'who is at risk of leaving', 'retention tasks', 'update the relationship intelligence'",
+    "modes": "harvest; profile; strategise"
+  },
+  "release-train": {
+    "icon": "🚂",
+    "blurb": "Merge every branch and PR, bump the version, stamp the docs, push",
+    "level": "Intermediate",
+    "tabler": "ti-git-merge",
+    "triggers": "'cut a release', 'merge all branches', 'release X.Y.Z', 'ship it', 'bump the version and push'",
+    "modes": "Lex Council app release; guild self-release"
+  },
+  "scheduled-watch": {
+    "icon": "⏱️",
+    "blurb": "Define a safe-to-resume unattended task on a cron cadence",
+    "level": "Intermediate",
+    "tabler": "ti-clock-play",
+    "triggers": "'schedule this', 'run this daily', 'set up a cron task', 'make this a routine', 'standing watch'",
     "modes": ""
   },
   "skillsmith": {
@@ -159,14 +295,6 @@
     "triggers": "",
     "modes": ""
   },
-  "supabase-postgres-best-practices": {
-    "icon": "🐘",
-    "blurb": "Postgres performance optimization and best practices from Supabase",
-    "level": "Foundational",
-    "tabler": "ti-database",
-    "triggers": "",
-    "modes": ""
-  },
   "supabase": {
     "icon": "⚡",
     "blurb": "All-in-one Supabase toolkit spanning database auth storage vectors",
@@ -175,44 +303,28 @@
     "triggers": "Supabase products (Database, Auth, Edge Functions, Realtime, Storage, Vectors, Cron, Queues); client libraries and SSR integrations (supabase-js, @supabase/ssr) in Next.js, React, SvelteKit, Astro, Remix; auth issues (login, logout, sessions, JWT, cookies, get",
     "modes": ""
   },
+  "supabase-postgres-best-practices": {
+    "icon": "🐘",
+    "blurb": "Postgres performance optimization and best practices from Supabase",
+    "level": "Foundational",
+    "tabler": "ti-database",
+    "triggers": "",
+    "modes": ""
+  },
+  "trading-strategy": {
+    "icon": "🎯",
+    "blurb": "Read-only trading-strategy design: entry/exit rules, sizing, backtest framing",
+    "level": "Advanced",
+    "tabler": "ti-target-arrow",
+    "triggers": "'build a trading strategy', 'design an entry/exit plan', 'backtest this idea', 'how should I size this trade', 'turn this view into a strategy'",
+    "modes": "trend-following; mean-reversion; event/catalyst-driven; systematic rules-based screen"
+  },
   "transactions-domain-model": {
     "icon": "💳",
     "blurb": "Loads Lex Council transactions domain model before any work",
     "level": "Advanced",
     "tabler": "ti-credit-card",
     "triggers": ", transaction templates, or any transaction-related bug, feature, or refactor. Also trigger when the user says \"work on transactions\", \"fix a transaction bug\", \"add a transaction feature\", \"transaction page\", or references any file under finances/. Load silent",
-    "modes": ""
-  },
-  "vault-log-compliance": {
-    "icon": "🛡️",
-    "blurb": "Enforces P8 vault-logging compliance across all backend code",
-    "level": "Intermediate",
-    "tabler": "ti-shield-check",
-    "triggers": ", RPC functions, RLS policies, edge functions, cron jobs), frontend code (components, pages, hooks, mutations, stores), schema changes, or bug fixes — even if the user doesn't explicitly ask for a vault log. Also use when the user says phrases like \"vault log ",
-    "modes": ""
-  },
-  "design-language": {
-    "icon": "🗣️",
-    "blurb": "The guild's multi-language voice engine — narrative vocabulary & tone, not visual",
-    "level": "Master",
-    "tabler": "ti-language",
-    "triggers": "'use the X voice', 'make it sound like Fallen Sword', 'guild voice', 'Lex Council tone', 'reskin this copy', 'Erildath'",
-    "modes": "fallen-sword; star-alliance; lex-council"
-  },
-  "guild-log": {
-    "icon": "📓",
-    "blurb": "Logs non-git-visible guild changes via the two-tier pipeline",
-    "level": "Foundational",
-    "tabler": "ti-history",
-    "triggers": "'log this', 'guild log this', 'did you log it?', '/guild-log', or any dashboard/UI/folder change git can't see on its own",
-    "modes": ""
-  },
-  "members-formation": {
-    "icon": "🧭",
-    "blurb": "The Butler's routing method: who works, in what arrangement, then crystallize",
-    "level": "Advanced",
-    "tabler": "ti-route",
-    "triggers": "'route this', 'who should handle this', 'form the team', 'distribute the work', 'can these run in parallel', 'coordinate the members', 'plan the dispatch', or any request touching more than one craft. The Butler's one dedicated craft — he is the router, not a specialist.",
     "modes": ""
   },
   "ultra-brainstorming": {
@@ -223,6 +335,14 @@
     "triggers": "'ultra-brainstorm this', 'super-plan this', 'synthesize the members' work', 'brainstorm this across models', 'merge these proposals into one plan', 'plan this deeply before we build', or any fan-in where several specialists feed one build. A MODEL ensemble (several thinking models), distinct from storm-investigation's persona ensemble.",
     "modes": ""
   },
+  "vault-log-compliance": {
+    "icon": "🛡️",
+    "blurb": "Enforces P8 vault-logging compliance across all backend code",
+    "level": "Intermediate",
+    "tabler": "ti-shield-check",
+    "triggers": ", RPC functions, RLS policies, edge functions, cron jobs), frontend code (components, pages, hooks, mutations, stores), schema changes, or bug fixes — even if the user doesn't explicitly ask for a vault log. Also use when the user says phrases like \"vault log ",
+    "modes": ""
+  },
   "weapon-utility": {
     "icon": "🗡️",
     "blurb": "Each member's rule for drawing a weapon: thinkers plan & review, doers execute",
@@ -231,54 +351,6 @@
     "triggers": "automatic — every member consults it before drawing a weapon. 'which weapon', 'which model should X use', 'pick the weapon', 'thinker or doer', 'draw a weapon', 'run the weapon loop', 'how does the member choose its model'. The atomic layer beneath members-formation (which member) and ultra-brainstorming (fuse across models).",
     "modes": "solo (default) — one weapon at a time: the highest-priority available thinker plans and prompts, the highest-priority available doer executes and returns, the thinker reviews against the plan and re-prompts until it conforms; ultra — when ultra-brainstorming is active, all available thinker weapons fire at once and the top thinker consolidates them into one plan before the doer runs"
   },
-  "growth-marketing": {
-    "icon": "📣",
-    "blurb": "Four-mode marketing engine: content/SEO, brand, email, social/paid",
-    "level": "Master",
-    "tabler": "ti-speakerphone",
-    "triggers": "'plan our marketing', 'we need leads', 'fix our positioning', 'content plan', 'SEO plan', 'build an email sequence', 'social plan', 'ad plan', 'go to market', 'growth marketing'. The Herald's craft; composes with article-creator, brandkit, storm-investigation.",
-    "modes": "content-seo (ICP + pain keywords, topic clusters, local SEO, on-page, publish via article-creator); brand-positioning (positioning statement, ICP, value prop, voice, proof bank, brandkit handoff); email-nurture (lead magnets, capture, 4-6 email sequence, re-engagement, bar-compliance); social-paid (channel mix, organic cadence, paid-ads starter, retargeting, tracking)"
-  },
-  "guild-conformity": {
-    "icon": "🔎",
-    "blurb": "Prove the guild repo agrees with itself, then reconcile",
-    "level": "Advanced",
-    "tabler": "ti-checkup-list",
-    "triggers": "'confirm guild conformance', 'run the conformity check', 'reconcile the guild data', 'conformity sweep', 'is everything consistent'",
-    "modes": ""
-  },
-  "market-recon": {
-    "icon": "📈",
-    "blurb": "Read-only market, investment, and risk analysis that ships a report",
-    "level": "Advanced",
-    "tabler": "ti-chart-candle",
-    "triggers": "'analyze this investment', 'research this market', 'is this a buy', 'review my portfolio', 'macro read'",
-    "modes": "asset/equity research; single trade-idea; portfolio review; macro/rates read"
-  },
-  "legal-drafting": {
-    "icon": "✒️",
-    "blurb": "Client correspondence and bilingual legal instruments in the firm's register",
-    "level": "Advanced",
-    "tabler": "ti-file-pencil",
-    "triggers": "'draft a client email', 'write this contract', 'draft a declaration', 'write a legal memo', 'bilingual letter'",
-    "modes": ""
-  },
-  "relationship-intel": {
-    "icon": "🤝",
-    "blurb": "Turn email traffic into living client relationship intelligence",
-    "level": "Advanced",
-    "tabler": "ti-heart-handshake",
-    "triggers": "'profile my contacts', 'who is at risk of leaving', 'retention tasks', 'update the relationship intelligence'",
-    "modes": "harvest; profile; strategise"
-  },
-  "release-train": {
-    "icon": "🚂",
-    "blurb": "Merge every branch and PR, bump the version, stamp the docs, push",
-    "level": "Intermediate",
-    "tabler": "ti-git-merge",
-    "triggers": "'cut a release', 'merge all branches', 'release X.Y.Z', 'ship it', 'bump the version and push'",
-    "modes": "Lex Council app release; guild self-release"
-  },
   "workflow-forge": {
     "icon": "🗺️",
     "blurb": "Distil a finished run into a reusable star-map workflow",
@@ -286,69 +358,5 @@
     "tabler": "ti-map-2",
     "triggers": "'save this as a workflow', 'add this to the star map', 'register a workflow', 'crystallize this formation'",
     "modes": ""
-  },
-  "arsenal-forge": {
-    "icon": "⚔️",
-    "blurb": "Recruit or re-role a weapon — identity, role, wire to loadouts",
-    "level": "Intermediate",
-    "tabler": "ti-swords",
-    "triggers": "'add a weapon', 'recruit a model', 're-skin this weapon', 'change a weapon role', 'arsenal forge'",
-    "modes": ""
-  },
-  "scheduled-watch": {
-    "icon": "⏱️",
-    "blurb": "Define a safe-to-resume unattended task on a cron cadence",
-    "level": "Intermediate",
-    "tabler": "ti-clock-play",
-    "triggers": "'schedule this', 'run this daily', 'set up a cron task', 'make this a routine', 'standing watch'",
-    "modes": ""
-  },
-  "law-harvest": {
-    "icon": "📚",
-    "blurb": "Ingest law PDFs verbatim into the verified Source-Law library",
-    "level": "Intermediate",
-    "tabler": "ti-files",
-    "triggers": "'harvest the laws', 'extract this law', 'process the stock laws', 'identify these law PDFs', 'law harvest'",
-    "modes": ""
-  },
-  "comms-triage": {
-    "icon": "📨",
-    "blurb": "Sweep email, calendar, and WhatsApp into tasks, events, and replies",
-    "level": "Intermediate",
-    "tabler": "ti-inbox",
-    "triggers": "'triage my inbox', 'what needs me today', 'turn my email into tasks', 'sweep my WhatsApp', 'comms triage'",
-    "modes": ""
-  },
-  "legal-rule-modeling": {
-    "icon": "🧮",
-    "blurb": "Model a governing law into deterministic calculator rules",
-    "level": "Advanced",
-    "tabler": "ti-calculator",
-    "triggers": "'model the law for this calculator', 'extract the calculation rules', 'what are the brackets for X', 'rule model'",
-    "modes": ""
-  },
-  "design-taste": {
-    "icon": "🎨",
-    "blurb": "The Designer's seven-mode premium taste engine, anti-AI-slop",
-    "level": "Master",
-    "tabler": "ti-brush",
-    "triggers": "'design the UI', 'make it premium', 'pick a style', 'minimalist', 'brutalist', 'add motion', 'write a DESIGN.md', 'redesign this', 'anti-slop'",
-    "modes": "engineer; agency; minimal; brutalist; motion; encode; redesign"
-  },
-  "trading-strategy": {
-    "icon": "🎯",
-    "blurb": "Read-only trading-strategy design: entry/exit rules, sizing, backtest framing",
-    "level": "Advanced",
-    "tabler": "ti-target-arrow",
-    "triggers": "'build a trading strategy', 'design an entry/exit plan', 'backtest this idea', 'how should I size this trade', 'turn this view into a strategy'",
-    "modes": "trend-following; mean-reversion; event/catalyst-driven; systematic rules-based screen"
-  },
-  "portfolio-risk": {
-    "icon": "🛡️",
-    "blurb": "Book-level portfolio construction and risk metrics (VaR, drawdown, exposure)",
-    "level": "Advanced",
-    "tabler": "ti-shield-half",
-    "triggers": "'review my portfolio', 'what is the risk on my book', 'compute VaR', 'check my exposures', 'should I rebalance', 'stress test this portfolio'",
-    "modes": "construction; risk-audit; rebalance-proposal; stress-test"
   }
 }

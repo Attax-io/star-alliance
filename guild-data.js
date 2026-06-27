@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 52,
       "patch": 59
     },
-    "generated": "2026-06-27T03:15:55Z",
+    "generated": "2026-06-27T03:27:03Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "gpt-5.5": "deactivated",
@@ -17,7 +17,7 @@ const GUILD = {
     },
     "counts": {
       "members": 9,
-      "skills": 44,
+      "skills": 45,
       "domains": 3,
       "workflows": 25,
       "log": 131
@@ -2869,6 +2869,37 @@ const GUILD = {
       ]
     },
     {
+      "id": "high-alert",
+      "name": "high-alert",
+      "version": "1.0.0",
+      "icon": "🚨",
+      "art": "",
+      "artPng": false,
+      "blurb": "Session klaxon: banners on workflow start, skill activation, member duty",
+      "level": "Foundational",
+      "ramp": "gray",
+      "tabler": "ti-alert-triangle",
+      "src": "own",
+      "desc": "The guild's session-event klaxon. The Butler and every member emit a one-line BANNER the instant an essential session event happens, so the Guild Master never misses it. Three banners: Starmap Workflow Started (a workflows.json procedure begins), Member Skill Activated (any Skill tool fires — hook-enforced via high-alert.py), and Member reports for duty (a member is formed at routing STEP 1, naming its thinker + doer weapons). Always on, every session, no toggle. Triggers automatically — no invocation needed; this skill documents the standing alert contract and its hook.",
+      "intro": "You are the high-alert skill. You exist so the Guild Master never misses an essential session event. The Butler (and any member) emits the matching banner the instant the event happens. Banner goes out first, prose after.",
+      "sections": [
+        "The three banners",
+        "When each fires",
+        "Rules"
+      ],
+      "triggers": "always on, no invocation — fires automatically on workflow start, Skill tool use (hook-enforced), and member formation at routing STEP 1",
+      "modes": "",
+      "disabled": false,
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 29,
+        "words": 292
+      },
+      "global": false,
+      "members": []
+    },
+    {
       "id": "image-to-code",
       "name": "image-to-code",
       "version": "1.0.0",
@@ -4075,7 +4106,8 @@ const GUILD = {
         "design-taste",
         "dashboard-parity",
         "trading-strategy",
-        "portfolio-risk"
+        "portfolio-risk",
+        "high-alert"
       ],
       "members": [
         "the-butler",
@@ -4088,7 +4120,7 @@ const GUILD = {
         "the-merchant",
         "the-quartermaster"
       ],
-      "notes": "The home domain. All 9 guild members + 44 skills live here. Every other domain borrows from this skill pool."
+      "notes": "The home domain. All 9 guild members + 45 skills live here. Every other domain borrows from this skill pool."
     },
     {
       "id": "lex-council-app",
