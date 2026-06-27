@@ -1,8 +1,14 @@
 # Crystallizing a formation into a star-map workflow
 
-A **formation** is a live routing decision the Butler makes for one mission. A **workflow** is a
-formation that proved worth keeping — saved into `workflows.json` so the guild can run it again
-without re-deciding. This file is the bridge: how a formation becomes a conformant workflow.
+> **This is the fallback path.** The Butler's primary job is to *select* an existing workflow from
+> `workflows.json` and follow it — see `SKILL.md`. He only forms a fresh formation when **no**
+> existing workflow fits the request. This file covers that case: turning a fresh formation into a
+> new, conformant workflow via **Workflow Forge**.
+
+A **formation** is a live routing decision the Butler makes for one mission when nothing on the star
+map fits. A **workflow** is a formation that proved worth keeping — saved into `workflows.json` so
+the guild can run it again without re-deciding. This file is the bridge: how a formation becomes a
+conformant workflow.
 
 > The Butler **produces** the formation and **hands it off**. The Quartermaster (via `skillsmith`)
 > **writes** `workflows.json` and regenerates the dashboard. Keep that split — the Butler does not
