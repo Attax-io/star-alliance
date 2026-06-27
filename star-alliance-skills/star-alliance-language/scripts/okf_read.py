@@ -25,7 +25,7 @@
 import sys, os, re, json, argparse
 
 EXCLUDE_DIR_PARTS = {
-    ".git", "node_modules", "__pycache__", ".venv", "venv",
+    ".git", ".claude", "worktrees", "node_modules", "__pycache__", ".venv", "venv",
     "scratchpad", "routine-logs", "routine-ledger",
 }
 EXCLUDE_PATH_SUBSTR = ("/impeccable/",)
