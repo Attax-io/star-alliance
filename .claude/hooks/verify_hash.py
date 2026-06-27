@@ -43,7 +43,9 @@ def main():
     os.chdir(root)
 
     files = []
-    for line in run(["git", "status", "--porcelain"]).splitlines():
+    # -uall expands untracked files individually; plain --porcelain collapses a
+    # brand-new directory into one entry with no extension, hiding its source files.
+    for line in run(["git", "status", "--porcelain", "-uall"]).splitlines():
         path = line[3:].strip()
         if " -> " in path:                      # renamed: take the destination
             path = path.split(" -> ")[-1].strip()
