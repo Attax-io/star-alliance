@@ -672,11 +672,16 @@ function buildConstellation(wf) {
   }
 
   const dur = (waypoints.length * 1.1).toFixed(1);
-  // Sovereign mark — a radiant SUN behind the ✦: a round body (high inner radius)
-  // ringed by 12 short triangular rays, distinct from every round member node.
-  const burst = (() => { const o = 28, inr = 19, N = 12; const p = [];
-    for (let k = 0; k < N * 2; k++) { const r = k % 2 ? inr : o; const a = (-90 + k * (180 / N)) * Math.PI / 180;
-      p.push(`${(r * Math.cos(a)).toFixed(1)},${(r * Math.sin(a)).toFixed(1)}`); } return p.join(" "); })();
+  // Sovereign mark — a radiant SUN behind the ✦: a round body crowned by SMOOTH
+  // wavy corona lobes (sine-modulated radius, densely sampled → no sharp points),
+  // distinct from every round member node.
+  const corona = (mid, amp, N, ph) => { const p = [], S = 160;
+    for (let k = 0; k < S; k++) { const a = (k / S) * 2 * Math.PI - Math.PI / 2;
+      const r = mid + amp * Math.cos(N * a + ph);
+      p.push(`${(r * Math.cos(a)).toFixed(1)},${(r * Math.sin(a)).toFixed(1)}`); }
+    return p.join(" "); };
+  const burst  = corona(23, 6, 10, 0);                    // inner corona — rounded sun lobes
+  const burst2 = corona(28, 4.5, 10, Math.PI / 10);       // outer aura — offset, counter-spins
   const youCore = `<g class="you-core" transform="translate(${cx},${cy})" tabindex="0" role="img" aria-label="You · Guild Master" data-name="You · Guild Master" data-tip="The Guild Master and prompter. Every mission begins with your order — the Butler turns it into a clear brief for your approval — and ends when the guild reports the finished work back to you."><circle class="halo" r="32"/><polygon class="you-burst" points="${burst}"/><circle class="you-coreglow" r="14"/><circle class="core" r="8"/><text class="you-glyph" text-anchor="middle" dominant-baseline="central">✦</text><title>You — where every mission begins and ends</title></g>`;
 
   return `<svg class="starmap" viewBox="0 0 800 800" data-core-dur="${dur}" role="group" aria-label="${esc(wf.name)} workflow over the guild constellation">
