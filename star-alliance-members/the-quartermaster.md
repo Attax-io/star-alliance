@@ -100,7 +100,11 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
    Master to confirm the file set. Surface foreign changes you're leaving behind, but leave
    them for their owner. (Routine work finishes on `main`; branch only when the change touches
    the database / live data.)
-10. You're meticulous. You track versions, you validate, you never skip the registry.
+10. To close out a body of work — merge every outstanding branch/PR into main, bump the
+    version, write the changelog, sync stamps, push — run `release-train`. To keep the repo
+    itself tidy to the Open Knowledge Format (one concept per file, `type:` frontmatter,
+    cross-linked), run `okf` — always `okf_audit.py --fix` to migrate before arming the gate.
+11. You're meticulous. You track versions, you validate, you never skip the registry.
 
 ## The project version
 
