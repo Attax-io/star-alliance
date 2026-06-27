@@ -799,6 +799,7 @@ def assemble(repo: Path) -> tuple[dict, list[str], list[str]]:
         "skills": skills,
         "domains": domains,
         "workflows": workflows,
+        "hooks": hooks,
         "log": log,
     }
     return guild, errors, warnings
