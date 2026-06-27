@@ -60,7 +60,34 @@ directory of markdown files. Its companion is **star-alliance-language**, the
   a `.py`), but by *placement and pruning*: files live under the concept-path they
   belong to, orphans/dead artifacts are swept, and the move is recorded in the
   guild log. The markdown is the knowledge surface; the rest of the repo is kept
-  orderly around it.
+  orderly around it. **This is no longer prose-only — `okf_audit.py --layout`
+  enforces it** (see the layout taxonomy below).
+
+## Layout taxonomy — where each kind of file belongs
+
+The frontmatter audit governs markdown *content*; the **`--layout`** audit governs
+*placement* of every loose file at the repo **root**. A file is classified one of
+three ways:
+
+- **Pinned** — legitimately at root: `README.md`, `CLAUDE.md`, `VERSIONS.md` (the
+  registry), and the dashboard trio `index.html` / `app.js` / `app.css` (served from
+  root). Never flagged.
+- **Concept-path target** — belongs under a folder by kind:
+  | matches | → concept-path | safety |
+  |---|---|---|
+  | `STRATEGIST-*.md`, `AUDIT-*.md` | `docs/` | **safe** (inert, free to move) |
+  | `gen-*.cjs` / `gen-*.py` | `tools/generators/` | review |
+  | `build.py`, `conformity_check.py`, `install.py`, `log_event.py`, `member_level.py`, `build_guild_log.py` | `tools/` | review |
+  | `*.json` data, `guild-data.js` | `data/` | review |
+- **Unclassified** — no rule; left alone (advisory only).
+
+`safety` is the upgrade's safety contract: **safe** = nothing references it, a mover
+relocates it freely; **review** = reached by hardcoded paths (hooks in
+`.claude/settings.json`, `build.py`, `serve.cjs`, the dashboard, sibling generators),
+so relocation demands a **path-rewrite sweep** — a gated Architecture Build, never a
+blind `git mv`. `--layout --fix` moves the **safe** class only and defers the rest.
+The single source of truth for the taxonomy is `LAYOUT_PINNED` + `LAYOUT_RULES` in
+`scripts/okf_audit.py`.
 
 ## How you work
 
