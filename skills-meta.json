@@ -391,6 +391,14 @@
     "triggers": "'add a field to', 'extend the schema', 'add an optional field', 'evolve the data model', 'thread this through every consumer', 'backward-compatible migration', 'version this record shape', 'add a column without breaking'",
     "modes": ""
   },
+  "session-mining": {
+    "icon": "⛏️",
+    "blurb": "Mine past sessions for lessons, verify against the live repo, ship a ranked upgrade plan",
+    "level": "Advanced",
+    "tabler": "ti-pick",
+    "triggers": "'review the last N sessions', 'mine my sessions', 'what did we learn from these sessions', 'what should we upgrade/merge/create from past work', 'audit the sessions for lessons', 'note down skills we can extract', or any retrospective over prior runs. Locates all three session stores, signal-extracts with offset/limit discipline (no blind read), doer-summarizes via MiniMax, STORM-synthesizes, then VERIFIES against the repo to kill every lesson already shipped. Propose-only.",
+    "modes": "Six phases: locate stores → map (session_map.py) → signal-extract (mine_sessions.py, never blind-read) → doer-summarize (MiniMax) → STORM synthesize → verify-against-repo → propose-only register. On-demand companion to skillsmith's daily routine."
+  },
   "japanese-candlesticks": {
     "icon": "🕯️",
     "blurb": "Read & interpret Japanese candlestick charts (Nison) — every reversal, continuation & doji pattern",
