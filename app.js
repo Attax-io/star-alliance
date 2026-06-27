@@ -844,12 +844,6 @@ function renderMemberDossier(id) {
           <p class="skill-hint">Sector-specific skills deployed to <strong>${esc(g.name)}</strong>.</p>
           <div class="skill-lines">${g.ids.map(skillLine).join("")}</div>
         </div>`).join("")}
-        ${otherIds.length ? `
-        <div class="section glass">
-          <div class="section-title sk-head"><span>⬡ Other · ${otherIds.length}</span></div>
-          <p class="skill-hint">Sector-specific skills not yet deployed to any sector.</p>
-          <div class="skill-lines">${otherIds.map(skillLine).join("")}</div>
-        </div>` : ""}
         <div class="section glass">
           <div class="section-title">Deployment</div>
           <div class="kv">
