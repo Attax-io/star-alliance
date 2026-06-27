@@ -1,0 +1,409 @@
+#!/usr/bin/env python3
+"""Conformity Sweep — audit the whole Star Alliance repo for internal conformity
+and conformity with every decision on record (guild-log type:decision).
+
+Read-only. Prints a PASS/FAIL map and exits 1 on any contradiction. The Quartermaster
+runs this as the spine of the `conformity-sweep` star-map workflow.
+
+Checks (each maps to a source-of-truth invariant or a logged decision):
+  P  parity        guild-data.js  ==  guild-data.json
+  D23 report-gate  every workflow ENDS with a Butler 'report' gate   (decision #23)
+  C  qm-close      every workflow's last member step before report is the-quartermaster
+  A  arsenal-order per member: doers → thinkers/duals → sonnet last   (session decision)
+  PT prime-thinker == first thinker-capable weapon in the arsenal (== opus)
+  R  refs          workflow actors ∈ members∪{you}; gates valid; member skills exist
+  S  source==gen   member .md frontmatter weapons order == generated guild-data
+  W  weaponsDesc   members-meta weaponsDesc set == member weapons set
+  SD skill-drills  every member-carried skill has a `## Skill Drills` table row
+  N  counts        guild-data meta.counts == real lengths
+"""
+import json, re, sys, pathlib
+
+ROOT = next((p for p in pathlib.Path(__file__).resolve().parents
+             if (p / "VERSIONS.md").exists() and (p / ".git").exists()),
+            pathlib.Path(__file__).resolve().parent)
+
+# role per model id, mirrored from MODELS in app.js. sonnet is "both" but forced last.
+ROLE = {
+    "opus": "thinker", "gpt-5.5": "thinker", "deepseek-v4-pro": "thinker",
+    "glm-5.2": "thinker", "kimi-k2.7": "thinker", "nemotron-3-ultra": "thinker",
+    "qwen3.5": "thinker", "qwen-3.5": "thinker",
+    "sonnet": "both",
+    "haiku": "doer", "minimax-m3": "doer", "gemma4": "doer",
+    "image-01": "doer", "minimax-video": "doer", "minimax-speech": "doer", "minimax-music": "doer",
+}
+
+CLAUDE_NATIVE = {"opus", "sonnet", "haiku"}
+MEDIA_WEAPONS = {"image-01", "minimax-video", "minimax-speech", "minimax-music"}
+
+
+def expected_order(weapons):
+    """Canonical arsenal order:
+       prime doer (minimax-m3, cheapest) first → other doers → prime thinker (opus,
+       best) first → other thinkers → sonnet last (universal Claude-tool fallback).
+       Relative order within the 'other doers' / 'other thinkers' groups is preserved."""
+    doers = [w for w in weapons if ROLE.get(w) == "doer"]
+    if "minimax-m3" in doers:  # prime doer always leads
+        doers = ["minimax-m3"] + [w for w in doers if w != "minimax-m3"]
+    thinkers = [w for w in weapons if ROLE.get(w) in ("thinker", "both") and w != "sonnet"]
+    if "opus" in thinkers:     # prime thinker always leads the thinker block
+        thinkers = ["opus"] + [w for w in thinkers if w != "opus"]
+    tail = ["sonnet"] if "sonnet" in weapons else []
+    return doers + thinkers + tail
+
+
+def frontmatter_list(text, key):
+    m = re.search(rf'^{key}:\s*\[([^\]]*)\]', text, re.M)
+    if not m:
+        return None
+    return [x.strip() for x in m.group(1).split(",") if x.strip()]
+
+
+def _parse_weapons_table(text):
+    """Return [(model, desc), …] from the `## Your Weapons` table, or None if absent.
+    Columns are: | Priority | Weapon | When to Draw It |."""
+    lines = text.split("\n")
+    try:
+        start = next(i for i, l in enumerate(lines) if l.strip() == "## Your Weapons")
+    except StopIteration:
+        return None
+    end = next((i for i in range(start + 1, len(lines)) if lines[i].startswith("## ")), len(lines))
+    rows = []
+    for l in lines[start + 1:end]:
+        if not l.lstrip().startswith("|"):
+            continue
+        cells = [c.strip() for c in l.strip().strip("|").split("|")]
+        if len(cells) != 3:
+            continue
+        if cells[0] == "Priority" or set(cells[1]) <= set("-: "):
+            continue  # header row / separator
+        rows.append((cells[1], cells[2]))
+    return rows or None
+
+
+def main():
+    fails = []
+    notes = []
+
+    g = json.loads((ROOT / "guild-data.json").read_text())
+    members = {m["id"]: m for m in g["members"]}
+    skills_meta = json.loads((ROOT / "skills-meta.json").read_text())
+    skill_ids = set(skills_meta.keys())
+    meta = json.loads((ROOT / "members-meta.json").read_text())["members"]
+    log = json.loads((ROOT / "guild-log.json").read_text())["entries"]
+    decisions = [e for e in log if e.get("type") == "decision"]
+
+    # P — guild-data.js == guild-data.json
+    js = (ROOT / "guild-data.js").read_text()
+    mo = re.search(r'\{.*\}', js, re.S)
+    if not mo or json.loads(mo.group(0)) != g:
+        fails.append("P  parity: guild-data.js does NOT match guild-data.json (rerun build.py)")
+
+    # workflow-level checks
+    for wf in g["workflows"]:
+        wid = wf["id"]
+        steps = wf["steps"]
+        # D23 — ends with report gate
+        last = steps[-1] if steps else {}
+        if last.get("kind") != "gate" or last.get("gate") != "report":
+            fails.append(f"D23 {wid}: does not END with a 'report' gate (decision #23)")
+        # R — actors + gates resolve
+        for s in steps:
+            if s.get("kind") == "member":
+                a = s.get("actor")
+                if a != "you" and a not in members:
+                    fails.append(f"R  {wid}: unknown actor '{a}'")
+                # WPN — structured weapon fields (optional) stay valid: thinker is a
+                # thinker-role weapon in the actor's loadout; doers are doer-role and in
+                # loadout; ultra only if the actor carries ultra-brainstorming.
+                if a in members:
+                    am = members[a]
+                    loadout = {w["model"] for w in am.get("weapons", [])}
+                    th = s.get("thinker")
+                    if th is not None and (ROLE.get(th) not in ("thinker", "both") or th not in loadout):
+                        fails.append(f"WPN {wid}: step '{s.get('title','?')}' thinker '{th}' "
+                                     f"is not a thinker-role weapon in {a}'s loadout")
+                    for d in (s.get("doers") or []):
+                        model = d.get("model") if isinstance(d, dict) else d
+                        cnt = d.get("count", 1) if isinstance(d, dict) else 1
+                        if not isinstance(cnt, int) or cnt < 1:
+                            fails.append(f"WPN {wid}: step '{s.get('title','?')}' doer '{model}' bad count {cnt!r}")
+                        if ROLE.get(model) not in ("doer", "both") or model not in loadout:
+                            fails.append(f"WPN {wid}: step '{s.get('title','?')}' doer '{model}' "
+                                         f"is not a doer-role weapon in {a}'s loadout")
+                    if s.get("ultra") and "ultra-brainstorming" not in am.get("skills", []):
+                        fails.append(f"WPN {wid}: step '{s.get('title','?')}' ultra=true but "
+                                     f"{a} lacks the ultra-brainstorming skill")
+            elif s.get("kind") == "gate":
+                if s.get("gate") not in {"approval", "certify", "report"}:
+                    fails.append(f"R  {wid}: unknown gate '{s.get('gate')}'")
+            else:
+                fails.append(f"R  {wid}: unknown step kind '{s.get('kind')}'")
+        # C — last member step before the final report gate is the-quartermaster
+        wf_class = wf.get("class", "mutating")
+        if wf_class not in ("mutating", "read-only"):
+            fails.append(f"CLS {wid}: unknown class '{wf_class}' (expected mutating | read-only)")
+        member_steps = [s for s in steps if s.get("kind") == "member"]
+        # C — the Quartermaster conformance-close is required only for MUTATING workflows
+        # (those that change guild artifacts). Read-only/advisory workflows end at the
+        # Butler's report with the worker as the last member step — no ceremonial close.
+        if wf_class != "read-only" and member_steps and member_steps[-1].get("actor") != "the-quartermaster":
+            fails.append(f"C  {wid}: mutating workflow closes with '{member_steps[-1].get('actor')}', "
+                         f"not the-quartermaster (conformance-close convention)")
+        # read-only workflows must NOT end on a Quartermaster close — the worker is the
+        # last member step; a trailing Quartermaster is the ceremonial no-op we removed.
+        if wf_class == "read-only" and member_steps and member_steps[-1].get("actor") == "the-quartermaster":
+            fails.append(f"C  {wid}: read-only workflow closes with a Quartermaster step "
+                         f"(a no-op conformance close — remove it; the Butler report is the deliverable)")
+
+    # per-member checks
+    for mid, m in members.items():
+        weapons = [w["model"] for w in m["weapons"]]
+        # A — arsenal order rule
+        exp = expected_order(weapons)
+        if weapons != exp:
+            fails.append(f"A  {mid}: arsenal order {weapons} != expected {exp}")
+        # unknown roles
+        for w in weapons:
+            if w not in ROLE:
+                fails.append(f"A  {mid}: weapon '{w}' has no role mapping")
+        # PT — prime thinker is the FIRST thinker-capable weapon scanning left→right.
+        # Pure doers carry no thinker capability and are skipped; sonnet is role 'both'
+        # but pinned last, so it never wins. The winner must be opus (mirrors check A's
+        # opus-leads-the-thinker-block), and any weaponsDesc that calls a weapon the
+        # "prime thinker" must name that same weapon.
+        prime = next((w for w in weapons if ROLE.get(w) in ("thinker", "both")), None)
+        if prime is None:
+            fails.append(f"PT {mid}: arsenal has no thinker-capable weapon (no prime thinker)")
+        elif prime != "opus":
+            fails.append(f"PT {mid}: first thinker-capable weapon is '{prime}', expected 'opus' "
+                         f"(prime thinker must lead the thinker block)")
+        for w in m["weapons"]:
+            if "prime thinker" in w.get("desc", "").lower() and w["model"] != prime:
+                fails.append(f"PT {mid}: weapon '{w['model']}' desc claims 'prime thinker' "
+                             f"but the prime thinker is '{prime}'")
+        # W — members-meta weaponsDesc set == weapons set
+        wd = set(meta.get(mid, {}).get("weaponsDesc", {}).keys())
+        if wd != set(weapons):
+            fails.append(f"W  {mid}: weaponsDesc {sorted(wd)} != weapons {sorted(weapons)}")
+        # R — member skills exist in skills-meta
+        for sk in m.get("skills", []):
+            if sk not in skill_ids:
+                fails.append(f"R  {mid}: skill '{sk}' not in skills-meta")
+        # S — source .md weapons order == generated
+        md = ROOT / "star-alliance-members" / f"{mid}.md"
+        if md.exists():
+            src = frontmatter_list(md.read_text(), "weapons")
+            if src is not None and src != weapons:
+                fails.append(f"S  {mid}: .md weapons {src} != generated {weapons}")
+        # WT — prose "## Your Weapons" table == loadout order + weaponsDesc
+        #      (the table is generated by build.py; a hand-edit that skips a build
+        #       is the only way it drifts — this is the backstop. See decision log.)
+        if md.exists():
+            wd = meta.get(mid, {}).get("weaponsDesc", {})
+            rows = _parse_weapons_table(md.read_text())
+            if rows is not None:
+                table_models = [r[0] for r in rows]
+                if table_models != weapons:
+                    fails.append(f"WT {mid}: Your Weapons table order {table_models} "
+                                 f"!= loadout {weapons} (rerun build.py)")
+                else:
+                    for model, desc in rows:
+                        if desc != wd.get(model, ""):
+                            fails.append(f"WT {mid}: table desc for '{model}' != weaponsDesc "
+                                         f"(rerun build.py)")
+
+    # U — weapon-utility is foundational: every member must carry it (session decision)
+    if "weapon-utility" in skill_ids:
+        for mid, m in members.items():
+            if "weapon-utility" not in m.get("skills", []):
+                fails.append(f"U  {mid}: missing foundational skill 'weapon-utility' (every member must carry it)")
+
+    # SD — Skill Drills coverage: every skill a member carries must be DRILLED in that
+    # member's `## Skill Drills` table — i.e. appear as a table ROW (matched by the
+    # `| <skill> |` cell). The frontmatter `skills:` list declares what the member wields;
+    # the drills table declares WHEN/when-NOT to wield each. A carried-but-undrilled skill
+    # is a coverage hole the member would have no firing doctrine for → HARD FAIL.
+    for md in sorted((ROOT / "star-alliance-members").glob("the-*.md")):
+        text = md.read_text()
+        skills = frontmatter_list(text, "skills")
+        if skills is None:
+            continue  # no skills frontmatter → nothing to drill
+        body = text.split("---", 2)[2] if text.count("---") >= 2 else text
+        for sk in skills:
+            if re.search(r'\|\s*`?' + re.escape(sk) + r'`?\s*\|', body) is None:
+                fails.append(f"SD {md.stem}: skill '{sk}' is carried but has no Skill Drills "
+                             f"table row (add a `| {sk} | ... |` drill)")
+
+    # T — every type build.py explicitly classifies must be loggable via log_event.py
+    def _set(text, name):
+        mo = re.search(rf'{name}\s*=\s*\{{([^}}]*)\}}', text)
+        return set(re.findall(r'"([^"]+)"', mo.group(1))) if mo else set()
+    bp = (ROOT / "build.py").read_text()
+    le = (ROOT / "tools" / "log_event.py").read_text()
+    classified = _set(bp, "VERSION_MAJOR_TYPES") | _set(bp, "VERSION_MINOR_TYPES") | _set(bp, "VERSION_IGNORE_TYPES")
+    loggable = _set(le, "VALID_TYPES")
+    orphan = classified - loggable
+    if orphan:
+        fails.append(f"T  build.py classifies {sorted(orphan)} but log_event.py cannot log them")
+
+    # K — skill dirs == skills-meta keys == generated skill ids (no orphan/uncounted skills)
+    skill_dirs = {d.name for d in (ROOT / "star-alliance-skills").iterdir()
+                  if d.is_dir() and (d / "SKILL.md").exists()}
+    meta_keys = set(skills_meta.keys())
+    data_ids = {s["id"] for s in g["skills"]}
+    if skill_dirs != meta_keys:
+        fails.append(f"K  skill dirs vs skills-meta differ: only-dir={sorted(skill_dirs - meta_keys)} "
+                     f"only-meta={sorted(meta_keys - skill_dirs)}")
+    if skill_dirs != data_ids:
+        fails.append(f"K  skill dirs vs guild-data differ: only-dir={sorted(skill_dirs - data_ids)} "
+                     f"only-data={sorted(data_ids - skill_dirs)}")
+
+    # ART — every skill ships with a Fallen Sword tile (never a bare-emoji fallback)
+    artless = sorted(s for s in skill_dirs
+                     if not (ROOT / "skill-art" / f"{s}.png").exists())
+    if artless:
+        fails.append(f"ART skills missing a skill-art/<id>.png tile: {artless} "
+                     f"(forge via tools/generators/gen-skill-art.cjs + build.py)")
+
+    # VER — every skill has a VERSIONS.md registry row whose version matches its SKILL.md
+    versions_txt = (ROOT / "VERSIONS.md").read_text()
+    ver_rows = dict(re.findall(
+        r'\|\s*\[`([^`]+)`\][^|]*\|\s*([0-9]+\.[0-9]+\.[0-9]+)\s*\|', versions_txt))
+    for s in sorted(skill_dirs):
+        smd = (ROOT / "star-alliance-skills" / s / "SKILL.md").read_text()
+        vm = re.search(r'^\s*version:\s*([0-9]+\.[0-9]+\.[0-9]+)', smd, re.M)
+        skill_ver = vm.group(1) if vm else None
+        if s not in ver_rows:
+            fails.append(f"VER {s}: no row in VERSIONS.md "
+                         f"(regen: star-alliance-skills/skillsmith/scripts/skill_registry.py write)")
+        elif skill_ver and ver_rows[s] != skill_ver:
+            fails.append(f"VER {s}: VERSIONS.md says {ver_rows[s]} but SKILL.md is {skill_ver}")
+
+    # G — gen-workflow-art.cjs has a prompt entry for every workflow (art can be forged)
+    gen = (ROOT / "tools/generators/gen-workflow-art.cjs")
+    if gen.exists():
+        gen_ids = set(re.findall(r'id:\s*"([^"]+)"', gen.read_text()))
+        uncovered = {w["id"] for w in g["workflows"]} - gen_ids
+        if uncovered:
+            fails.append(f"G  tools/generators/gen-workflow-art.cjs missing art prompt for {sorted(uncovered)}")
+
+    # N — counts
+    counts = g.get("meta", {}).get("counts", {})
+    real = {"members": len(g["members"]), "skills": len(g["skills"]), "workflows": len(g["workflows"])}
+    for k, v in real.items():
+        if counts.get(k) != v:
+            fails.append(f"N  counts.{k}={counts.get(k)} != real {v}")
+
+    # === DC — doc count claims match reality (README + domains) — audit #1 ===
+    actual_skills = len(skill_dirs)
+    readme_txt = (ROOT / "README.md").read_text()
+    for mobj in re.finditer(r'\((\d+)\s+skills', readme_txt):
+        if int(mobj.group(1)) != actual_skills:
+            fails.append(f"DC README claims {mobj.group(1)} skills, actual {actual_skills}")
+    doms = json.loads((ROOT / "domains.json").read_text())["domains"]
+    home = next((d for d in doms if d["id"] == "star-alliance"), None)
+    if home:
+        if len(home["skills"]) != actual_skills:
+            fails.append(f"DC domains star-alliance lists {len(home['skills'])} skills, actual {actual_skills}")
+        if len(home["members"]) != real["members"]:
+            fails.append(f"DC domains star-alliance lists {len(home['members'])} members, actual {real['members']}")
+        note = home.get("notes", "")
+        for mm in re.finditer(r'(\d+)\s+guild members', note):
+            if int(mm.group(1)) != real["members"]:
+                fails.append(f"DC domains notes: '{mm.group(1)} guild members' != actual {real['members']}")
+        for ss in re.finditer(r'(\d+)\s+skills', note):
+            if int(ss.group(1)) != actual_skills:
+                fails.append(f"DC domains notes: '{ss.group(1)} skills' != actual {actual_skills}")
+
+    # === SEC — member-page skill split stays self-maintaining (skills-carried widget) ===
+    # The member dossier renders carried skills as General + one widget per sector domain
+    # that lists the skill. Grouping is by SECTOR MEMBERSHIP (a non-home domain's skills[]),
+    # not the `global` install flag. A skill in no non-home sector renders under General by
+    # design, so there is no "untagged" failure mode — only a dead reference can break the
+    # auto-grouping: a domain lists a skill id that no longer exists → HARD FAIL (the sector
+    # widget would render a ghost line).
+    for d in doms:
+        for sid in d.get("skills", []):
+            if sid not in data_ids:
+                fails.append(f"SEC domain '{d['id']}' lists unknown skill '{sid}' "
+                             f"(dead ref — member-page sector widget would render a ghost)")
+
+    # === V — every skill SKILL.md carries a parseable version — audit #1 ===
+    for name in sorted(skill_dirs):
+        txt = (ROOT / "star-alliance-skills" / name / "SKILL.md").read_text()
+        if not re.search(r'(?m)^[ \t]*version:\s*\S+', txt):
+            fails.append(f"V  skill '{name}' has no version in SKILL.md (metadata.version required)")
+
+    # === L — weapon routability (hard) + liveness (NOTE) — audit #1/#2 ===
+    smt = (ROOT / "star-alliance-arsenal" / "summon.py").read_text()
+    cloud_map = dict(re.findall(r"'([^']+)':\s*'([^']+:cloud)'", smt))
+    routable = set(CLAUDE_NATIVE) | set(cloud_map) | MEDIA_WEAPONS | {"minimax-m3"}
+    if "gpt-5.5" in smt:
+        routable.add("gpt-5.5")
+    all_weapons = {w for m in members.values() for w in (x["model"] for x in m["weapons"])}
+    for w in sorted(all_weapons - routable):
+        fails.append(f"L  weapon '{w}' in a loadout is not routable by summon.py or Claude-native")
+    # liveness — best-effort, NOTE only (never a hard fail; it is environment-dependent)
+    import os as _os
+    import subprocess as _sp
+    try:
+        _ol = _sp.run(["ollama", "list"], capture_output=True, text=True, timeout=10).stdout
+        pulled = {ln.split()[0] for ln in _ol.splitlines()[1:] if ln.strip()}
+    except Exception:
+        pulled = set()
+    live = set(CLAUDE_NATIVE)
+    for w, tag in cloud_map.items():
+        if tag in pulled:
+            live.add(w)
+    if (pathlib.Path.home() / ".config" / "minimax" / "m3.key").exists() or _os.environ.get("MINIMAX_API_KEY"):
+        live |= {"minimax-m3"} | MEDIA_WEAPONS
+    dead = sorted(all_weapons - live)
+    if dead:
+        notes.append(f"weapon liveness — NOT firing on this device: {', '.join(dead)}")
+        for w in dead:
+            users = sorted(mid for mid, m in members.items() if w in (x["model"] for x in m["weapons"]))
+            notes.append(f"  '{w}' declared by {len(users)} member(s): {', '.join(users)}")
+
+    # member leveling — promotion queue + regression review (NOTES, never blocking).
+    # Leveling is Quartermaster-gated and human-in-the-loop, so drift belongs in the
+    # QM's queue, not the build gate. See STRATEGIST-MEMBER-LEVELING.md §3.
+    due = [(mid, m) for mid, m in members.items() if m.get("levelInfo", {}).get("dueForPromotion")]
+    over = [(mid, m) for mid, m in members.items() if m.get("levelInfo", {}).get("overConferred")]
+    if due:
+        notes.append(f"member levels — {len(due)} DUE for promotion (Quartermaster: python3 member_level.py promote):")
+        for mid, m in due:
+            notes.append(f"  ↑ {mid}: conferred {m['conferred']} → earned {m['levelInfo']['earned']}")
+    if over:
+        notes.append(f"member levels — {len(over)} OVER-conferred (arsenal regressed; review demotion, policy A):")
+        for mid, m in over:
+            notes.append(f"  ↓ {mid}: conferred {m['conferred']} > earned {m['levelInfo']['earned']}")
+
+    # report
+    print("═" * 64)
+    print(" CONFORMITY SWEEP — Star Alliance repo")
+    print("═" * 64)
+    print(f" decisions on record : {len(decisions)}")
+    for d in decisions:
+        print(f"   #{d['id']} {d['title']}")
+    print(f" members={real['members']}  skills={real['skills']}  workflows={real['workflows']}  "
+          f"version={g.get('meta',{}).get('version')}")
+    print("─" * 64)
+    if notes:
+        print(" NOTES (non-blocking):")
+        for n in notes:
+            print(f"   • {n}")
+        print("─" * 64)
+    if fails:
+        print(f" ✗ {len(fails)} CONTRADICTION(S):")
+        for f in fails:
+            print(f"   ✗ {f}")
+        print("═" * 64)
+        return 1
+    print(" ✓ FULL CONFORMITY — every cross-reference and decision holds.")
+    print("═" * 64)
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
