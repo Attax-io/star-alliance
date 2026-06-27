@@ -4,7 +4,7 @@ Canonical version + Cowork-compliance status of every skill. **Source of truth i
 `metadata.version`** in each skill's `SKILL.md` frontmatter (a top-level `version:` is rejected by
 the Agent Skills frontmatter validator — only `name, description, license, allowed-tools, metadata,
 compatibility` are allowed). This table mirrors it. Regenerate with
-`python3 skillsmith/scripts/skill_registry.py write`.
+`python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write`.
 
 ## Cowork limits
 
