@@ -130,6 +130,8 @@ def main():
         )
         sys.exit(4)
 
+    wall_ms = int((time.monotonic() - _t0) * 1000)
+
     try:
         data = json.loads(raw)
     except json.JSONDecodeError as e:
