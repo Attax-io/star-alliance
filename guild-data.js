@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 52,
       "patch": 59
     },
-    "generated": "2026-06-27T06:14:12Z",
+    "generated": "2026-06-27T07:37:52Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "gpt-5.5": "deactivated",
@@ -4333,6 +4333,14 @@ const GUILD = {
           "label": "The Butler reports the finished mission — what was built and any follow-ups — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ],
+      "trigger_phrases": [
+        "standard mission",
+        "full guild pipeline",
+        "conquering campaign",
+        "multi-disciplinary mission",
+        "big coordinated campaign",
+        "wave of specialists"
+      ],
       "artPng": true
     },
     {
@@ -4397,6 +4405,14 @@ const GUILD = {
           "gate": "report",
           "label": "The Butler reports the fix and its verification — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
+      ],
+      "trigger_phrases": [
+        "quick fix",
+        "small bug",
+        "tiny ui tweak",
+        "pasted error to fix",
+        "minor change",
+        "fast small fix"
       ],
       "artPng": true
     },
@@ -4483,6 +4499,14 @@ const GUILD = {
           "gate": "report",
           "label": "The Butler reports the design-sprint outcome, with screenshots and notes — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
+      ],
+      "trigger_phrases": [
+        "design sprint",
+        "ui redesign",
+        "panel layout redesign",
+        "card consolidation",
+        "ux polish",
+        "visual quality pass"
       ],
       "artPng": true
     },
@@ -4575,6 +4599,14 @@ const GUILD = {
           "label": "The Butler reports the architecture build, its verification, and any caveats — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ],
+      "trigger_phrases": [
+        "schema design",
+        "database migration",
+        "core architecture",
+        "performance tuning",
+        "structural change",
+        "system design overhaul"
+      ],
       "artPng": true
     },
     {
@@ -4640,6 +4672,14 @@ const GUILD = {
           "label": "The Butler reports the codex summary — locales covered and publication status — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ],
+      "trigger_phrases": [
+        "load the law",
+        "translate the law",
+        "multilingual legal codex",
+        "translate laws across locales",
+        "codex translation loop",
+        "real laws into the codex"
+      ],
       "artPng": true
     },
     {
@@ -4697,6 +4737,14 @@ const GUILD = {
           "gate": "report",
           "label": "The Butler reports the Merchant's market and risk report, with caveats — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
+      ],
+      "trigger_phrases": [
+        "market recon",
+        "trading research",
+        "investment intel",
+        "market intelligence read-only",
+        "no code market research",
+        "stock and market analysis"
       ],
       "artPng": true
     },
@@ -4772,6 +4820,18 @@ const GUILD = {
           "label": "The Butler reports the skill-forge outcome — version changes and tooling status — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ],
+      "trigger_phrases": [
+        "skill forge",
+        "skill sync",
+        "upgrade the skill",
+        "create a new skill",
+        "reusable skill",
+        "forge a new skill",
+        "teach the",
+        "new skill based on",
+        "create a skill",
+        "forge a skill"
+      ],
       "artPng": true
     },
     {
@@ -4846,6 +4906,14 @@ const GUILD = {
           "label": "The Butler reports what was logged — git-tier catch-up plus manual entries — and the new log total — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ],
+      "trigger_phrases": [
+        "guild log sync",
+        "backfill the guild log",
+        "missing guild log entries",
+        "reconcile the guild log",
+        "sweep recent sessions for log",
+        "first stage closeout chain"
+      ],
       "artPng": true
     },
     {
@@ -4907,6 +4975,14 @@ const GUILD = {
           "gate": "report",
           "label": "The Butler reports what was audited, what conformed, and what was reconciled — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
+      ],
+      "trigger_phrases": [
+        "conformity sweep",
+        "prove the repo agrees",
+        "internally consistent audit",
+        "quartermaster consistency check",
+        "no decision contradicts",
+        "audit the whole repo"
       ],
       "artPng": true
     },
@@ -4984,6 +5060,14 @@ const GUILD = {
           "gate": "report",
           "label": "The Butler reports the bug, its root cause, the fix, and any new bugs filed — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
+      ],
+      "trigger_phrases": [
+        "bug cycle",
+        "fix the bug report",
+        "triage the bug_reports",
+        "missing i18n key rendering",
+        "rls permission denied on view",
+        "missing db column bug"
       ],
       "artPng": true
     },
@@ -5069,6 +5153,14 @@ const GUILD = {
           "label": "The Butler reports what was audited, what was sealed, and any risks deferred — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ],
+      "trigger_phrases": [
+        "security sweep",
+        "rls policies audit",
+        "security definer rpc",
+        "anon grants audit",
+        "seal the security leak",
+        "supabase security audit"
+      ],
       "artPng": true
     },
     {
@@ -5130,6 +5222,14 @@ const GUILD = {
           "gate": "report",
           "label": "The Butler reports what was swept, what was fixed, and what remains as follow-ups — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
+      ],
+      "trigger_phrases": [
+        "hygiene rotation",
+        "post-campaign cleanup",
+        "consolidate duplicated search filter",
+        "lint and i18n sweep",
+        "quartermaster hygiene pass",
+        "middle stage closeout chain"
       ],
       "artPng": true
     },
@@ -5212,6 +5312,14 @@ const GUILD = {
           "label": "The Butler reports the version shipped, what merged, and the push result — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ],
+      "trigger_phrases": [
+        "release train",
+        "merge all branches and prs",
+        "bump the version and push",
+        "close out the release",
+        "final stage closeout chain",
+        "ship the release"
+      ],
       "artPng": true
     },
     {
@@ -5284,6 +5392,14 @@ const GUILD = {
           "label": "The Butler reports the tool built, the law it honours, and where it lives — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ],
+      "trigger_phrases": [
+        "tool forge",
+        "build a public calculator",
+        "wage calculator tool",
+        "severance calculator",
+        "corporate legal tool",
+        "public legal calculator"
+      ],
       "artPng": true
     },
     {
@@ -5354,6 +5470,14 @@ const GUILD = {
           "label": "The Butler reports the document drafted, its languages, and what's ready to send — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ],
+      "trigger_phrases": [
+        "legal drafting",
+        "draft a client email",
+        "bilingual contract draft",
+        "draft a legal memo",
+        "bilingual ar fr en",
+        "draft client correspondence"
+      ],
       "artPng": true
     },
     {
@@ -5418,6 +5542,14 @@ const GUILD = {
           "gate": "report",
           "label": "The Butler reports what needs you, what was scheduled, and the drafts awaiting your send — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
+      ],
+      "trigger_phrases": [
+        "comms triage",
+        "triage my inbox",
+        "process whatsapp messages",
+        "calendar entries from email",
+        "inbox sweep",
+        "prep for meetings"
       ],
       "artPng": true
     },
@@ -5491,6 +5623,14 @@ const GUILD = {
           "label": "The Butler reports what the routine does, its cadence, and the last run's summary — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ],
+      "trigger_phrases": [
+        "standing watch",
+        "set up a cron",
+        "recurring scheduled task",
+        "housekeeping cron job",
+        "unattended cron automation",
+        "daily scheduled report"
+      ],
       "artPng": true
     },
     {
@@ -5562,6 +5702,14 @@ const GUILD = {
           "gate": "report",
           "label": "The Butler reports the findings, the off-brand/untrue flags, and the campaign-readiness call — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
+      ],
+      "trigger_phrases": [
+        "brand audit",
+        "seo audit",
+        "website audit",
+        "campaign-readiness check",
+        "public site and brand",
+        "marketing-firm audit"
       ],
       "artPng": true
     },
@@ -5642,6 +5790,14 @@ const GUILD = {
           "gate": "report",
           "label": "The Butler reports the art forged, where it lives, and how it renders — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
+      ],
+      "trigger_phrases": [
+        "art forge",
+        "new member portrait",
+        "weapon tile art",
+        "workflow sigil art",
+        "forge a new sigil",
+        "fallensword art asset"
       ],
       "artPng": true
     },
@@ -5729,6 +5885,14 @@ const GUILD = {
           "label": "The Butler reports the weapon added, its role, and the loadouts updated — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ],
+      "trigger_phrases": [
+        "arsenal forge",
+        "recruit a new ai model",
+        "wire the model into loadouts",
+        "re-skin a weapon",
+        "add to the arsenal",
+        "re-role the weapon"
+      ],
       "artPng": true
     },
     {
@@ -5800,6 +5964,23 @@ const GUILD = {
           "gate": "report",
           "label": "The Butler reports the verdict, the ranked findings, and the MD audit written — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
+      ],
+      "trigger_phrases": [
+        "strategic audit",
+        "multi-model panel audit",
+        "ship a graded audit doc",
+        "converge the multi-model takes",
+        "deep judgement document",
+        "does this achieve its goal",
+        "review the sessions",
+        "review recent sessions",
+        "review the last",
+        "lessons learned",
+        "note lessons",
+        "note down lessons",
+        "audit the repo",
+        "audit the roster",
+        "upgrade skills workflows members"
       ],
       "artPng": true
     },
@@ -5887,6 +6068,20 @@ const GUILD = {
           "label": "The Butler reports the workflow registered, its sigil, and where it sits on the star map — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ],
+      "trigger_phrases": [
+        "workflow forge",
+        "save this run as a workflow",
+        "reusable star-map workflow",
+        "distil into a named workflow",
+        "capture the run",
+        "register a new workflow",
+        "create a workflow",
+        "new workflow",
+        "forge a workflow",
+        "capture this as a workflow",
+        "make a starmap workflow",
+        "no workflow fits"
+      ],
       "artPng": true
     },
     {
@@ -5958,6 +6153,14 @@ const GUILD = {
           "gate": "report",
           "label": "The Butler reports the contacts profiled, the mistakes logged, and the prioritised retention tasks — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
+      ],
+      "trigger_phrases": [
+        "relationship intel",
+        "profile my contacts from gmail",
+        "client retention tasks",
+        "log mistakes to avoid",
+        "living contact profile",
+        "harvest profile strategise"
       ],
       "artPng": true
     },
@@ -6036,6 +6239,14 @@ const GUILD = {
           "label": "The Butler reports the laws harvested, verified, and indexed — and what's ready for the codex — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ],
+      "trigger_phrases": [
+        "law harvest",
+        "ingest law pdfs",
+        "extract verbatim from law pdf",
+        "build the source-law library",
+        "verify and index laws",
+        "feed the codex with laws"
+      ],
       "artPng": true
     },
     {
@@ -6093,6 +6304,14 @@ const GUILD = {
           "gate": "report",
           "label": "The Butler reports the answer and its sources — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
+      ],
+      "trigger_phrases": [
+        "search the web",
+        "oracle's scrying",
+        "cited web answer",
+        "live web research",
+        "scry the open web",
+        "online cited response"
       ],
       "artPng": true
     }
