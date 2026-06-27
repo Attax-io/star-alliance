@@ -61,7 +61,7 @@ def check_minimax(ping):
             add("minimax.ping", FAIL, str(e)[:120], "check key validity / network")
 
 
-def check_ollama(ping):
+def check_ollama():
     if shutil.which("ollama") is None:
         add("ollama.cli", WARN, "ollama not on PATH",
             "install ollama, or ignore if Ollama weapons unused")
