@@ -25,7 +25,7 @@ star-alliance/
 ├── star-alliance-skills/  ← shared skill pool (57 skills, each a directory with SKILL.md)
 │   ├── algorithmic-trading-chan/
 │   ├── article-creator/
-│   ├── brandkit/
+│   ├── bug-fix-workflow/
 │   ├── ...
 │   └── skillsmith/        ← the quartermaster's toolkit (manages skills + members)
 ├── build.py              ← one generator: skills + agents + *-meta.json → guild-data.js
