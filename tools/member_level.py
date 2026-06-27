@@ -142,7 +142,7 @@ def log_promotion(mid, name, frm, to):
 
 def conformity_close():
     subprocess.run([sys.executable, "build.py"], cwd=ROOT, capture_output=True, text=True)
-    r = subprocess.run([sys.executable, "conformity_check.py"], cwd=ROOT, capture_output=True, text=True)
+    r = subprocess.run([sys.executable, "tools/conformity_check.py"], cwd=ROOT, capture_output=True, text=True)
     print(r.stdout.rstrip())
     if r.returncode != 0:
         sys.exit("✗ conformity-close FAILED — fix before committing.")
