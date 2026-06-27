@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 62
     },
-    "generated": "2026-06-27T17:13:46Z",
+    "generated": "2026-06-27T17:20:20Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -32,7 +32,7 @@ const GUILD = {
       "members": 9,
       "skills": 54,
       "domains": 3,
-      "workflows": 30,
+      "workflows": 29,
       "hooks": 7,
       "log": 141
     }
@@ -5285,46 +5285,65 @@ const GUILD = {
       "artPng": true
     },
     {
-      "id": "conformity-sweep",
-      "name": "Conformity Sweep",
+      "id": "compliance-audit",
+      "name": "Compliance Audit",
       "icon": "⚖️",
       "accent": "gold",
       "category": "Hygiene & Release",
       "class": "mutating",
-      "tagline": "The Quartermaster audits the whole repo and proves it agrees with itself — and with every decision on record.",
-      "when": "Use after big changes, or any time you need proof the project is internally consistent and nothing contradicts a logged decision.",
+      "tagline": "The Quartermaster runs the full compliance pass — OKF frontmatter tidy then guild conformity check — leaving the repo agreeing with itself and every logged decision.",
+      "when": "Use after big changes, when frontmatter drifts, or any time you need proof the project is OKF-conformant and internally consistent. Replaces running Conformity Sweep and OKF Tidy separately. Pass mode=okf or mode=conformity to run only one pass.",
       "steps": [
         {
           "kind": "member",
           "actor": "you",
-          "title": "Call the Conformity Sweep",
-          "act": "You ask the guild to audit the entire repo for internal conformity and conformity with every decision on record.",
-          "produces": "sweep request"
+          "title": "Call the Compliance Audit",
+          "act": "You ask the guild to run the full compliance pass — OKF tidy and/or guild conformity — or name a specific mode (okf | conformity | both, default both).",
+          "produces": "audit request"
         },
         {
           "kind": "member",
           "actor": "the-butler",
-          "title": "Restate the Order",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "plain-English brief",
+          "title": "Frame the Scope",
+          "act": "Runs  — confirms which modes to run and restates the scope so both you and the Quartermaster are aligned before anything is written.",
+          "produces": "scoped brief",
           "script": "guild/frame_brief.py",
           "args": {
             "style": "restate"
           },
           "inputs": [
-            "sweep request"
+            "audit request"
           ]
         },
         {
           "kind": "gate",
           "gate": "approval",
-          "label": "You confirm the Butler understood the sweep correctly before it begins."
+          "label": "You confirm the scope before any file is rewritten — a whole-repo frontmatter migration is hard to eyeball after the fact."
         },
         {
           "kind": "member",
           "actor": "the-quartermaster",
-          "title": "Audit the Whole Repo",
-          "act": "The Quartermaster, drawing MiniMax M3, runs conformity_check.py — reading every source (members, skills, the arsenal, workflows, docs, the guild log) plus the generated guild data, cross-checking every reference and testing each against the logged decisions — to assemble a contradiction map.",
+          "title": "OKF Audit (skip if mode=conformity)",
+          "act": "Runs  to report every governed .md lacking YAML frontmatter or a  field, and surveys non-markdown files for orphans and misplacement.",
+          "produces": "OKF non-conformance report"
+        },
+        {
+          "kind": "gate",
+          "gate": "certify",
+          "label": "The Quartermaster certifies the OKF migration is safe — exclusions cover vendored/generated trees and build.py still parses members & skills after frontmatter is injected."
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "OKF Migrate & Sweep (skip if mode=conformity)",
+          "act": "Runs , enriches concepts with title/description/tags and cross-links (handing bulk drafting to a doer weapon), places non-md files by concept-path, prunes confirmed dead files, then runs build.py. Re-runs until it passes clean. Confirms okf-gate hook is registered in .claude/settings.json.",
+          "produces": "OKF-conformant repo"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Conformity Audit (skip if mode=okf)",
+          "act": "Drawing MiniMax M3, runs conformity_check.py — reading every source (members, skills, arsenal, workflows, docs, guild log) plus generated guild data, cross-checking every reference and testing each against logged decisions — to assemble a contradiction map.",
           "produces": "contradiction map"
         },
         {
@@ -5335,104 +5354,41 @@ const GUILD = {
         {
           "kind": "member",
           "actor": "the-quartermaster",
-          "title": "Reconcile to Conformity",
-          "act": "The Quartermaster fixes each real contradiction at its source of truth, then runs build.py so the generated guild data matches the sources again — leaving the repo in full conformity with itself and with every decision, and re-runs conformity_check.py until it passes clean.",
+          "title": "Reconcile & Rebuild (skip if mode=okf)",
+          "act": "Fixes each real contradiction at its source of truth, runs build.py so the generated guild data matches the sources again, re-runs conformity_check.py until it passes clean.",
           "produces": "conformed repo"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Guild Conformance",
+          "act": "Runs  — wraps conformity_check.py, writes a signoff markdown. Runs guild-log to record the pass.",
+          "produces": "conformance signoff",
+          "script": "guild/conformance.py"
         },
         {
           "kind": "gate",
           "gate": "report",
-          "label": "The Butler reports what was audited, what conformed, and what was reconciled — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+          "label": "The Butler reports what was audited, migrated, reconciled, and gated — OKF status and conformity status both, with a flag for whether the okf-gate is now armed."
         }
       ],
       "trigger_phrases": [
+        "compliance audit",
         "conformity sweep",
         "prove the repo agrees",
         "internally consistent audit",
         "quartermaster consistency check",
         "no decision contradicts",
-        "audit the whole repo"
-      ],
-      "artPng": true
-    },
-    {
-      "id": "okf-tidy",
-      "name": "OKF Tidy",
-      "icon": "🧹",
-      "accent": "gold",
-      "category": "Hygiene & Release",
-      "class": "mutating",
-      "tagline": "The Quartermaster keeps the whole repo tidy & conformant to the Open Knowledge Format, so every member can read it fast on future runs.",
-      "when": "Use to bring the repo to (or back to) OKF conformance — after a campaign leaves files behind, when frontmatter drifts, or to migrate-first before arming the okf-gate. The producer pass; star-alliance-language is how members then read the result.",
-      "steps": [
-        {
-          "kind": "member",
-          "actor": "you",
-          "title": "Call the Tidy",
-          "act": "You ask the guild to tidy the repo to the Open Knowledge Format standard.",
-          "produces": "tidy request"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Restate the Order",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "plain-English brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "restate"
-          },
-          "inputs": [
-            "tidy request"
-          ]
-        },
-        {
-          "kind": "gate",
-          "gate": "approval",
-          "label": "You confirm the tidy scope before any file is rewritten — a whole-repo frontmatter migration is hard to eyeball after the fact."
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Audit Conformance",
-          "act": "The Quartermaster runs `okf_audit.py` (the okf skill) to report every governed .md lacking YAML frontmatter or a `type:` field, and surveys non-markdown files for orphans and misplacement.",
-          "produces": "non-conformance report"
-        },
-        {
-          "kind": "gate",
-          "gate": "certify",
-          "label": "The Quartermaster certifies the migration is safe — exclusions cover vendored/generated trees and build.py still parses members & skills after frontmatter is injected."
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Migrate, Enrich & Sweep",
-          "act": "The Quartermaster runs `okf_audit.py --fix` (migrate-first baseline), enriches concepts with title/description/tags and cross-links (handing bulk drafting to a doer weapon), places non-md files by concept-path, prunes confirmed dead files, then runs build.py so the dashboard reflects the tidy.",
-          "produces": "OKF-conformant repo"
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Conformance & Gate",
-          "act": "Re-runs `okf_audit.py` until it passes clean, confirms the okf-gate hook is registered in .claude/settings.json, then runs guild-log + guild-conformity so the run leaves the repo agreeing with itself.",
-          "produces": "verified tidy"
-        },
-        {
-          "kind": "gate",
-          "gate": "report",
-          "label": "The Butler reports what was migrated, enriched, swept, and gated — and flags whether the okf-gate is now armed."
-        }
-      ],
-      "trigger_phrases": [
+        "audit the whole repo",
         "okf",
         "okf tidy",
         "tidy the repo",
         "make it okf-conformant",
         "run the okf audit",
-        "keep the repo clean",
-        "fix the frontmatter"
+        "fix the frontmatter",
+        "keep the repo clean"
       ],
-      "artPng": true
+      "artPng": false
     },
     {
       "id": "bug-cycle",
