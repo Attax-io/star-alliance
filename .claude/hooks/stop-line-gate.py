@@ -63,7 +63,8 @@ def _assistant_text_since(lines, start):
         if o.get("type") != "assistant":
             continue
         for b in o.get("message", {}).get("content", []):
-            if isinstance(b, dict) and b.get("type") == "text":
+            # accept text + output_text blocks (host-coupling resilience)
+            if isinstance(b, dict) and b.get("type") in ("text", "output_text"):
                 out.append(b.get("text", ""))
     return "\n".join(out)
 
@@ -92,8 +93,11 @@ def check(data):
 
     ui = _last_user_index(lines)
     text = _assistant_text_since(lines, ui)
+    # Race grace: at the FIRST tool of a turn the assistant text isn't flushed yet
+    # (same grace workflow-gate uses). Once AC is declared it persists for the whole
+    # turn — _assistant_text_since collects ALL turn text, so edit #2 still sees it.
     if not text.strip():
-        return {"exit": 0}                      # race grace: first tool of turn
+        return {"exit": 0}
 
     if AC_RE.search(text):
         return {"exit": 0}                      # acceptance criteria declared
