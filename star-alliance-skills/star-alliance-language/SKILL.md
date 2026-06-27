@@ -3,7 +3,7 @@ name: star-alliance-language
 type: Skill
 description: The guild's shared reading protocol for OKF-tidied repos — how every member quickly, cheaply, and reliably takes in a repo the Quartermaster has kept conformant, on future runs. Read the concept map first (frontmatter + cross-links), open only the few concepts the task needs, never blind-read. Universal — rides every member, like weapon-utility. Use whenever a member starts work in a repo, needs to find where knowledge lives, or asks 'read the repo', 'what's in here', 'map this', 'orient me', 'where is X documented'.
 metadata:
-  version: 1.1.0
+  version: 1.2.0
 ---
 
 # Star Alliance Language — the OKF reading protocol
