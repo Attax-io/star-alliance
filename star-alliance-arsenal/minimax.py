@@ -139,7 +139,9 @@ def main():
 
     api_key = resolve_api_key()
     messages = build_messages(args.system, prompt)
+    _t0 = time.monotonic()
     data = post_chat(api_key, args.model, messages, args.max_tokens, args.timeout)
+    wall_ms = int((time.monotonic() - _t0) * 1000)
 
     usage = data.get('usage') or {}
     total = usage.get('total_tokens')
@@ -154,7 +156,7 @@ def main():
         if c_tok is None and total is not None:
             c_tok = total - (p_tok or 0)
         model_id = os.environ.get('SA_MODEL_ID') or 'minimax-m3'
-        log_usage(model_id, 'minimax', p_tok or 0, c_tok or 0)
+        log_usage(model_id, 'minimax', p_tok or 0, c_tok or 0, wall_ms=wall_ms)
     except Exception:
         pass
 
