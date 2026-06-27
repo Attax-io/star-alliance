@@ -143,11 +143,23 @@ function mergeUsage(claude) {
   return out;
 }
 
+// Per-model usage weights — DERIVED from the canonical registry
+// (star-alliance-arsenal/models.json). Literal fallback only if it can't be read.
+function loadModelWeights() {
+  const fallback = { 'minimax-m3': 1.0, 'glm-5.2': 0.7, 'kimi-k2.7': 0.5, 'deepseek-v4-pro': 0.5, 'nemotron-3-ultra': 0.4, 'qwen3.5': 0.4, 'gemma4': 0.3, 'gpt-5.5': 0.2 };
+  try {
+    const reg = JSON.parse(fs.readFileSync(path.join(ROOT, 'star-alliance-arsenal', 'models.json'), 'utf8'));
+    const w = {};
+    for (const [id, d] of Object.entries(reg.models || {})) if (d && d.weight != null) w[id] = d.weight;
+    return Object.keys(w).length ? w : fallback;
+  } catch (e) { return fallback; }
+}
+
 // Estimated 0..1 consumption per model — drafted by MiniMax M3. Pure: recomputes
 // on every call from the live Claude window-activity signal (orchestrator burn ⇒
 // the doers are working), weighted per model. Claude families get a REAL fill.
 function estimateUsage(claude, caps) {
-  const WEIGHT = { 'minimax-m3': 1.0, 'glm-5.2': 0.7, 'kimi-k2.7': 0.5, 'deepseek-v4-pro': 0.5, 'nemotron-3-ultra': 0.4, 'qwen3.5': 0.4, 'gemma4': 0.3, 'gpt-5.5': 0.2 };
+  const WEIGHT = loadModelWeights();
   const CLAUDE_DEFAULT = { opus: 2000, sonnet: 4000, haiku: 8000 };
   const CLAUDE_FAMILY = ['opus', 'sonnet', 'haiku'];
   const clamp01 = (x) => Math.max(0, Math.min(1, x || 0));

@@ -1,32 +1,31 @@
 ---
 type: Index
 title: Arsenal model docs
-description: Per-weapon pull + summon reference.
+description: Per-weapon pull + summon reference (generated from models.json).
 timestamp: 2026-06-27T00:00:00Z
 ---
 
 # Arsenal — model docs
 
-One file per weapon: backend, how to pull, how to summon, concurrency.
-Dispatcher is [summon.py](../summon.py); cloud backend [ollama_cloud.py](../ollama_cloud.py).
+One file per weapon, **generated from [models.json](../models.json)** — the canonical registry. Edit the registry, run `gen_model_docs.py`. Dispatcher: [summon.py](../summon.py).
 
-| Weapon | Kind | Status |
-|---|---|---|
-| [opus](opus.md) | text | LIVE |
-| [sonnet](sonnet.md) | text | LIVE |
-| [haiku](haiku.md) | text | LIVE |
-| [minimax-m3](minimax-m3.md) | text | LIVE |
-| [glm-5.2](glm-5.2.md) | text | LIVE (reserve) |
-| [kimi-k2.7](kimi-k2.7.md) | text | LIVE (reserve) |
-| [deepseek-v4-pro](deepseek-v4-pro.md) | text | LIVE (reserve) |
-| [nemotron-3-ultra](nemotron-3-ultra.md) | text | LIVE (reserve) |
-| [qwen3.5](qwen3.5.md) | text | LIVE (reserve) |
-| [gemma4](gemma4.md) | text | LIVE (reserve) |
-| [gpt-5.5](gpt-5.5.md) | text | DEACTIVATED |
-| [image-01](image-01.md) | media | LIVE |
-| [minimax-video](minimax-video.md) | media | LIVE |
-| [minimax-speech](minimax-speech.md) | media | LIVE |
-| [minimax-music](minimax-music.md) | media | LIVE |
+| Weapon | Role | Backend | Status |
+|---|---|---|---|
+| [opus](opus.md) | thinker | claude | live |
+| [sonnet](sonnet.md) | both | claude | live |
+| [haiku](haiku.md) | doer | claude | live |
+| [minimax-m3](minimax-m3.md) | doer | minimax-direct | live |
+| [deepseek-v4-pro](deepseek-v4-pro.md) | thinker | ollama-cloud | reserve |
+| [glm-5.2](glm-5.2.md) | thinker | ollama-cloud | reserve |
+| [kimi-k2.7](kimi-k2.7.md) | thinker | ollama-cloud | reserve |
+| [nemotron-3-ultra](nemotron-3-ultra.md) | thinker | ollama-cloud | reserve |
+| [qwen3.5](qwen3.5.md) | thinker | ollama-cloud | reserve |
+| [gemma4](gemma4.md) | thinker | ollama-cloud | reserve |
+| [gpt-5.5](gpt-5.5.md) | thinker | openai-direct | deactivated |
+| [image-01](image-01.md) | media | minimax-media | live |
+| [minimax-video](minimax-video.md) | media | minimax-media | live |
+| [minimax-speech](minimax-speech.md) | media | minimax-media | live |
+| [minimax-music](minimax-music.md) | media | minimax-media | live |
 
 ## Concurrency (cloud)
 

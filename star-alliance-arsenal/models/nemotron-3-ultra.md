@@ -1,16 +1,16 @@
 ---
 type: Reference
 title: nemotron-3-ultra
-description: How to pull and summon the nemotron-3-ultra weapon.
+description: How to pull and summon the nemotron-3-ultra weapon (generated from models.json).
 timestamp: 2026-06-27T00:00:00Z
 ---
 
 # nemotron-3-ultra
 
 **Status:** LIVE (reserve) — pulled & reachable  
-**Kind:** text
+**Role:** thinker · **Backend:** ollama-cloud · **Kind:** text
 
-NVIDIA reasoning bench — alternate engine.
+NVIDIA reasoning bench — alternate engine. Reserve: in no loadout.
 
 ## Backend
 
@@ -26,7 +26,7 @@ Verify: `ollama list | grep nemotron-3-super`
 ## How to summon
 
 ```
-python3 star-alliance-arsenal/summon.py nemotron-3-ultra "<prompt>" --max-tokens 4000
+python3 star-alliance-arsenal/summon.py nemotron-3-ultra "<prompt>" --max-tokens 16000
 ```
 Flags: `-s <system>` · `--json` · `-f <file>` · `--timeout <s>`.
 
@@ -43,4 +43,4 @@ Ollama Cloud caps **concurrent models** by plan — **Free = 1**, Pro = 3, Max =
 - **`minimax-m3` (direct API) is the prime DOER**; the Ollama bench (incl. `gemma4` since weapon-utility 1.7.0) is read as **thinkers**. Separate pools — Claude (Task) + MiniMax-direct overlap the Ollama panel freely.
 - **glm-5.2 confirmed alive** 2026-06-27 (returned `GLM_ALIVE`). A 'glm missing' scare was a truncated `ollama list | head` — it is pulled.
 
-> Index: [models/README.md](README.md) · dispatcher: [summon.py](../summon.py) · cloud backend: [ollama_cloud.py](../ollama_cloud.py)
+> Generated from [models.json](../models.json) by `gen_model_docs.py`. Edit the registry, not this file. Dispatcher: [summon.py](../summon.py) · cloud backend: [ollama_cloud.py](../ollama_cloud.py)

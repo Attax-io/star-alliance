@@ -21,7 +21,12 @@ import os
 import subprocess
 import sys
 
-CLOUD_TAG = {
+HERE = os.path.dirname(os.path.abspath(__file__))
+
+# Canonical model facts live in models.json (read via models_registry). The
+# literals below are a FAIL-SAFE only — used if the registry can't be read so a
+# broken file never bricks dispatch. Edit models.json, not these.
+_FALLBACK_CLOUD_TAG = {
     'glm-5.2': 'glm-5.2:cloud',
     'kimi-k2.7': 'kimi-k2.7-code:cloud',
     'deepseek-v4-pro': 'deepseek-v4-pro:cloud',
@@ -29,13 +34,21 @@ CLOUD_TAG = {
     'qwen3.5': 'qwen3.5:cloud',
     'gemma4': 'gemma4:cloud',
 }
-CLAUDE = {'opus', 'sonnet', 'haiku'}
+_FALLBACK_CLAUDE = {'opus', 'sonnet', 'haiku'}
 
-HERE = os.path.dirname(os.path.abspath(__file__))
+if HERE not in sys.path:
+    sys.path.insert(0, HERE)
+try:
+    import models_registry as _reg
+    CLOUD_TAG = _reg.cloud_tags() or _FALLBACK_CLOUD_TAG
+    CLAUDE = _reg.claude_ids() or _FALLBACK_CLAUDE
+    _KNOWN = _reg.known_ids()
+except Exception:
+    CLOUD_TAG = _FALLBACK_CLOUD_TAG
+    CLAUDE = _FALLBACK_CLAUDE
+    _KNOWN = set()
 
-KNOWN_IDS = sorted(
-    {'minimax-m3', 'gpt-5.5'} | set(CLOUD_TAG) | CLAUDE
-)
+KNOWN_IDS = sorted(_KNOWN | {'minimax-m3', 'gpt-5.5'} | set(CLOUD_TAG) | CLAUDE)
 
 
 def _passthrough(args, token_flag=None):

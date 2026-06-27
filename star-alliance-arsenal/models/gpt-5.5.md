@@ -1,16 +1,16 @@
 ---
 type: Reference
 title: gpt-5.5
-description: How to pull and summon the gpt-5.5 weapon.
+description: How to pull and summon the gpt-5.5 weapon (generated from models.json).
 timestamp: 2026-06-27T00:00:00Z
 ---
 
 # gpt-5.5
 
-**Status:** DEACTIVATED — no OpenAI key on device (Atta, 2026-06-26)  
-**Kind:** text
+**Status:** DEACTIVATED — no key on device (kept in loadouts on purpose)  
+**Role:** thinker · **Backend:** openai-direct · **Kind:** text
 
-OpenAI-direct second opinion. Kept in loadouts on purpose; reactivate with a key.
+OpenAI-direct second opinion. Deactivated — no key on device; kept in loadouts on purpose.
 
 ## Backend
 
@@ -26,4 +26,4 @@ _None._ Set an OpenAI API key on the device and wire the OpenAI-direct backend i
 summon.py gpt-5.5   # -> "DEACTIVATED", exit 69
 ```
 
-> Index: [models/README.md](README.md) · dispatcher: [summon.py](../summon.py) · cloud backend: [ollama_cloud.py](../ollama_cloud.py)
+> Generated from [models.json](../models.json) by `gen_model_docs.py`. Edit the registry, not this file. Dispatcher: [summon.py](../summon.py) · cloud backend: [ollama_cloud.py](../ollama_cloud.py)

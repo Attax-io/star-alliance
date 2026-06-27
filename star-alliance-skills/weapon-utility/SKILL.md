@@ -24,7 +24,10 @@ Know what it is *not*:
 
 ## The two kinds of weapon
 
-Every weapon has a **role** (set in `MODELS`, app.js): `doer`, `thinker`, or `both`.
+Every weapon has a **role** (`doer`, `thinker`, or `both`) — the canonical source is the
+arsenal registry [`star-alliance-arsenal/models.json`](../../star-alliance-arsenal/models.json),
+from which `summon.py`, `conformity_check.py`, the weapon-gate hook, and the dashboard all derive.
+Edit the registry, never hand-list. The lists below are a human-readable mirror.
 
 - **Thinker weapons** — the **mind**. They *read, plan, and prompt the doer on what to do*,
   then *review what comes back*. A thinker never does the bulk work itself; it directs.
@@ -171,7 +174,7 @@ members-formation   →   which MEMBER works (the Butler routes)
 ```
 
 Every member loads this skill, because every member carries an arsenal. It reads the arsenal
-order set by decision #25 and the roles in `MODELS`; it changes neither.
+order set by decision #25 and the roles in the registry (`models.json`); it changes neither.
 
 ## Versioning
 
@@ -202,8 +205,11 @@ python3 tools/efficiency_report.py   # shows median in/out tokens split by lite 
   doer, so the Ollama bench is read as thinkers. `conformity_check.ROLE` updated to match. Also
   enforced **≤ 3 Ollama thinkers per member** (best-3-by-craft): trimmed `nemotron-3-ultra` from
   butler/architect/strategist/merchant and `qwen3.5` from butler; added `gemma4` to the-herald.
-  `nemotron-3-ultra`/`qwen3.5` stay valid reserve weapons, just not in any loadout. New role
-  classification → MINOR.
+  `nemotron-3-ultra`/`qwen3.5` stay valid reserve weapons, just not in any loadout. Also
+  **consolidated all model facts into one registry** `star-alliance-arsenal/models.json` (role ·
+  backend · cloud_tag · status · pull · weight); `summon.py`, `conformity_check.py`, the
+  weapon-gate hook, `serve.cjs`, `build.py`, and the model docs now all DERIVE from it instead of
+  hand-copying. New role classification → MINOR.
 - **1.6.0** — New §Cost-per-tier baseline: documents how to read the now-reliable tier split in `efficiency_report.py`, defines decision rules for tier calibration (when to loosen small-signals vs leave it), and restates the safety-first order (stakes check before any model-mix change). Depends on B1 sidecar fix (turn-cost.jsonl `tier` field now reliable). New doctrine → MINOR.
 - **1.5.0** — **Batched doer fan-out.** Named the concrete mechanism behind the always-available doer fan-out: `minimax.py --batch <file.jsonl>` (one process, one keep-alive HTTPS connection, ordered JSONL results) and its wrapper `guild/delegate.py:delegate_many(prompts)` (ordered list, failed slice → `None`). Prior to this the skill preached "fan doers in parallel" (1.2.0) but never pointed at the cheap path, so N-way doer splits kept paying N subprocess spawns + N TLS handshakes. The thinker↔doer review loop is unchanged — batch only removes the per-call tax; minimax-only today, other backends degrade to a sequential loop with the same ordered contract. Mined from the harness-efficiency build (Phase 2). New mechanism doctrine → MINOR.
 - **1.4.0** — **The tool boundary (hard rule).** Added an explicit section stating a doer **returns content as text** and **never invokes tools** — Edit/Write/Bash/git/MCP/computer-use are wielded **only by the thinker** (a Claude model). Splits "write" into *author content* (doer) vs *invoke the write tool* (thinker): doer authors the bytes, thinker reviews then runs `Write`/`Edit` itself to commit — no re-authoring. Forbids the category error of summoning a non-Claude doer to "use" a Claude Code tool; if a slice needs a tool inside the doer's own run, that is the Claude-only-tool case → draw `sonnet`. Closes the-developer's mistake of handing a tool call to a non-Claude model.

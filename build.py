@@ -771,6 +771,23 @@ def derive_version(log: dict) -> tuple[str, dict]:
     return f"{major}.{minor}.{patch}", {"major": major, "minor": minor, "patch": patch}
 
 
+def load_weapon_status(members_meta_file=None) -> dict:
+    """Weapon status map — DERIVED from the canonical registry
+    (star-alliance-arsenal/models.json). Falls back to members-meta.json's
+    legacy weaponStatus if the registry can't be read."""
+    try:
+        import pathlib
+        reg = json.loads((pathlib.Path(__file__).resolve().parent
+                          / "star-alliance-arsenal" / "models.json").read_text())
+        status = {mid: d.get("status", "") for mid, d in reg.get("models", {}).items()
+                  if d.get("status")}
+        if status:
+            return status
+    except Exception:
+        pass
+    return (members_meta_file or {}).get("weaponStatus", {})
+
+
 def build_meta(members, skills, domains, workflows, log, members_meta_file=None, hooks=None) -> dict:
     version, version_tiers = derive_version(log)
     return {
@@ -779,7 +796,7 @@ def build_meta(members, skills, domains, workflows, log, members_meta_file=None,
         "versionTiers": version_tiers,
         "generated": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
         "schemaVersion": SCHEMA_VERSION,
-        "weaponStatus": (members_meta_file or {}).get("weaponStatus", {}),
+        "weaponStatus": load_weapon_status(members_meta_file),
         "counts": {
             "members": len(members),
             "skills": len(skills),

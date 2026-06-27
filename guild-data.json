@@ -7,16 +7,24 @@
       "minor": 55,
       "patch": 62
     },
-    "generated": "2026-06-27T15:41:11Z",
+    "generated": "2026-06-27T15:52:07Z",
     "schemaVersion": 3,
     "weaponStatus": {
-      "gpt-5.5": "deactivated",
+      "opus": "live",
+      "sonnet": "live",
+      "haiku": "live",
+      "minimax-m3": "live",
+      "deepseek-v4-pro": "reserve",
       "glm-5.2": "reserve",
       "kimi-k2.7": "reserve",
-      "deepseek-v4-pro": "reserve",
       "nemotron-3-ultra": "reserve",
       "qwen3.5": "reserve",
-      "gemma4": "reserve"
+      "gemma4": "reserve",
+      "gpt-5.5": "deactivated",
+      "image-01": "live",
+      "minimax-video": "live",
+      "minimax-speech": "live",
+      "minimax-music": "live"
     },
     "counts": {
       "members": 9,
@@ -4309,8 +4317,8 @@
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 213,
-        "words": 2592
+        "lines": 219,
+        "words": 2662
       },
       "global": true,
       "members": [

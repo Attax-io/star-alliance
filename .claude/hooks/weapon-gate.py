@@ -39,19 +39,31 @@ def project_dir():
 
 
 def known_weapons():
-    """Union of every member's drawable weapons, from guild-data.json (source of
-    truth). Empty set on any error → the validity check is skipped (fail open)."""
+    """Every valid weapon id: the canonical registry (star-alliance-arsenal/
+    models.json) UNION every member's loadout (guild-data.json). The registry
+    covers RESERVE weapons that sit in no loadout (e.g. nemotron-3-ultra,
+    qwen3.5) so they stay summonable. Empty set on any error → check skipped
+    (fail open)."""
+    ids = set()
+    root = project_dir()
+    # 1. canonical registry — the source of truth for what weapons EXIST.
     try:
-        g = json.load(open(os.path.join(project_dir(), "guild-data.json")))
-        ids = set()
+        reg = json.load(open(os.path.join(
+            root, "star-alliance-arsenal", "models.json")))
+        ids |= set(reg.get("models", {}).keys())
+    except Exception:
+        pass
+    # 2. union member loadouts (covers anything not yet in the registry).
+    try:
+        g = json.load(open(os.path.join(root, "guild-data.json")))
         for m in g.get("members", []):
             for w in m.get("weapons", []) or []:
                 wid = w.get("model") if isinstance(w, dict) else w
                 if wid:
                     ids.add(wid)
-        return ids
     except Exception:
-        return set()
+        pass
+    return ids
 
 
 REMINDER = (

@@ -1,14 +1,14 @@
 ---
 type: Reference
 title: kimi-k2.7
-description: How to pull and summon the kimi-k2.7 weapon.
+description: How to pull and summon the kimi-k2.7 weapon (generated from models.json).
 timestamp: 2026-06-27T00:00:00Z
 ---
 
 # kimi-k2.7
 
 **Status:** LIVE (reserve) — pulled & reachable  
-**Kind:** text
+**Role:** thinker · **Backend:** ollama-cloud · **Kind:** text
 
 Long-context coherence across large inputs.
 
@@ -26,7 +26,7 @@ Verify: `ollama list | grep kimi-k2.7-code`
 ## How to summon
 
 ```
-python3 star-alliance-arsenal/summon.py kimi-k2.7 "<prompt>" --max-tokens 4000
+python3 star-alliance-arsenal/summon.py kimi-k2.7 "<prompt>" --max-tokens 16000
 ```
 Flags: `-s <system>` · `--json` · `-f <file>` · `--timeout <s>`.
 
@@ -43,4 +43,4 @@ Ollama Cloud caps **concurrent models** by plan — **Free = 1**, Pro = 3, Max =
 - **`minimax-m3` (direct API) is the prime DOER**; the Ollama bench (incl. `gemma4` since weapon-utility 1.7.0) is read as **thinkers**. Separate pools — Claude (Task) + MiniMax-direct overlap the Ollama panel freely.
 - **glm-5.2 confirmed alive** 2026-06-27 (returned `GLM_ALIVE`). A 'glm missing' scare was a truncated `ollama list | head` — it is pulled.
 
-> Index: [models/README.md](README.md) · dispatcher: [summon.py](../summon.py) · cloud backend: [ollama_cloud.py](../ollama_cloud.py)
+> Generated from [models.json](../models.json) by `gen_model_docs.py`. Edit the registry, not this file. Dispatcher: [summon.py](../summon.py) · cloud backend: [ollama_cloud.py](../ollama_cloud.py)

@@ -40,12 +40,21 @@ OLLAMA_MAX_CONCURRENT=1 python3 star-alliance-arsenal/summon.py glm-5.2 "…"   
 OLLAMA_MAX_CONCURRENT=3 python3 star-alliance-arsenal/summon.py glm-5.2 "…"   # Pro
 ```
 
+## Canonical registry — `models.json`
+
+**[`models.json`](models.json) is the ONE source of truth** for per-weapon facts:
+`role · backend · cloud_tag · status · pull · weight · summary`. Everything else
+DERIVES from it — `summon.py` (tags/known-ids via `models_registry.py`),
+`conformity_check.py` (roles), the weapon-gate hook (known weapons), `serve.cjs`
+(ledger weights), `build.py` (`weaponStatus` → guild-data), and the per-weapon docs
+under [`models/`](models/README.md) (regenerate with `python3 gen_model_docs.py`).
+**Edit the registry, never hand-copy** into those consumers.
+
 ## summon.py routing
 
-Tags below mirror summon.py's `CLOUD_TAG` exactly (the dispatcher is the source of
-truth) and were verified against `ollama list` on 2026-06-27 — all six bench tags
-are pulled and reachable. They are RESERVE (idle: ~0 ledger calls; minimax-m3 takes
-99% of offload), not broken — kept available, just not advertised as the live doer.
+Tags below mirror `models.json` `cloud_tag` (summon derives `CLOUD_TAG` from it) and
+were verified against `ollama list` on 2026-06-27 — all bench tags pulled & reachable.
+They are RESERVE (idle: ~0 ledger calls; minimax-m3 takes 99% of offload), not broken.
 
 ```
 summon.py minimax-m3 …     → minimax.py                              (LIVE — 99% of offload)

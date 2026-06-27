@@ -23,8 +23,10 @@ ROOT = next((p for p in pathlib.Path(__file__).resolve().parents
              if (p / "VERSIONS.md").exists() and (p / ".git").exists()),
             pathlib.Path(__file__).resolve().parent)
 
-# role per model id, mirrored from MODELS in app.js. sonnet is "both" but forced last.
-ROLE = {
+# role per model id — DERIVED from the canonical registry
+# (star-alliance-arsenal/models.json). The literal below is a FAIL-SAFE only.
+# Media weapons are normalized to "doer" for arsenal ordering; sonnet "both" forced last.
+_FALLBACK_ROLE = {
     "opus": "thinker", "gpt-5.5": "thinker", "deepseek-v4-pro": "thinker",
     "glm-5.2": "thinker", "kimi-k2.7": "thinker", "nemotron-3-ultra": "thinker",
     "qwen3.5": "thinker", "qwen-3.5": "thinker", "gemma4": "thinker",
@@ -32,6 +34,25 @@ ROLE = {
     "haiku": "doer", "minimax-m3": "doer",
     "image-01": "doer", "minimax-video": "doer", "minimax-speech": "doer", "minimax-music": "doer",
 }
+
+
+def _load_role():
+    try:
+        arsenal = str(ROOT / "star-alliance-arsenal")
+        if arsenal not in sys.path:
+            sys.path.insert(0, arsenal)
+        import models_registry as _reg
+        rm = _reg.role_map()
+        if not rm:
+            return dict(_FALLBACK_ROLE)
+        norm = {mid: ("doer" if r == "media" else r) for mid, r in rm.items()}
+        norm.setdefault("qwen-3.5", "thinker")  # legacy alias kept for old refs
+        return norm
+    except Exception:
+        return dict(_FALLBACK_ROLE)
+
+
+ROLE = _load_role()
 
 CLAUDE_NATIVE = {"opus", "sonnet", "haiku"}
 MEDIA_WEAPONS = {"image-01", "minimax-video", "minimax-speech", "minimax-music"}

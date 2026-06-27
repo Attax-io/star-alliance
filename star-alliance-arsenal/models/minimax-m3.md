@@ -1,16 +1,16 @@
 ---
 type: Reference
 title: minimax-m3
-description: How to pull and summon the minimax-m3 weapon.
+description: How to pull and summon the minimax-m3 weapon (generated from models.json).
 timestamp: 2026-06-27T00:00:00Z
 ---
 
 # minimax-m3
 
-**Status:** LIVE — carries ~99% of guild offload  
-**Kind:** text
+**Status:** LIVE  
+**Role:** doer · **Backend:** minimax-direct · **Kind:** text
 
-The default doer. Direct MiniMax cloud sub for bulk generation/transform.
+The prime doer. Direct MiniMax cloud sub for bulk generation/transform.
 
 ## Backend
 
@@ -25,8 +25,8 @@ _None._ Direct API. Needs a key at `~/.config/minimax/m3.key` (or `$MINIMAX_API_
 ```
 python3 star-alliance-arsenal/summon.py minimax-m3 "<prompt>"
 ```
-Or direct: `python3 star-alliance-arsenal/minimax.py "<prompt>"`. Default `--max-tokens` **16000**. `--batch <file.jsonl>` for one-connection fan-out.
+Default `--max-tokens` 16000. `minimax.py --batch <file.jsonl>` for one-connection fan-out.
 
 Direct API — **not** subject to the Ollama concurrency cap; its own rate limits apply.
 
-> Index: [models/README.md](README.md) · dispatcher: [summon.py](../summon.py) · cloud backend: [ollama_cloud.py](../ollama_cloud.py)
+> Generated from [models.json](../models.json) by `gen_model_docs.py`. Edit the registry, not this file. Dispatcher: [summon.py](../summon.py) · cloud backend: [ollama_cloud.py](../ollama_cloud.py)
