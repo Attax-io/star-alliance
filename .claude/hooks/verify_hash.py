@@ -23,9 +23,17 @@ import sys
 SRC_EXT = {".py", ".js", ".ts", ".tsx", ".jsx", ".mjs", ".cjs", ".sh",
            ".sql", ".go", ".rs", ".rb", ".php", ".vue", ".svelte", ".css"}
 
+# GENERATED outputs (written by build.py) carry source extensions but are NOT
+# authored code — independently reviewing machine output is noise, and it would
+# fire the gate on turns that only touched a skill/art tile (the build regenerates
+# these as a side effect). Exclude them so the gate keys on AUTHORED source only.
+GENERATED = {"guild-data.js", "skill-md.js", "workflow-md.js"}
+
 
 def is_source(path):
     if path.startswith(".claude/state/"):
+        return False
+    if os.path.basename(path) in GENERATED:
         return False
     _, ext = os.path.splitext(path)
     return ext in SRC_EXT

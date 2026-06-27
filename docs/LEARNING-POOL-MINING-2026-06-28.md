@@ -14,6 +14,19 @@ Goal: distill lessons from each item → flag concrete upgrade routes for Star A
 Mining strategy: read the **docs** in each repo (README / AGENTS.md / CLAUDE.md / SKILL.md /
 spec docs) — not the source tree. PDFs handled per source-distillation recipe where new.
 
+**Coverage:** 15 top-level items. 11 new repos mined (docs-read, not benchmarked); 4 dirs
+(`Archive`, `Self learning`, `probability skill`, `design-motion-principles`) skipped as
+already-absorbed — confirmed vs MEMORY.md (self-learning-doctrine, probability-statistics-skill,
+motion-design-two-mode; trading PDFs → existing trading skills). Nothing tested/measured — every
+`[x] MINED` = documentation read only.
+**Evidence note:** all performance numbers below (e.g. codebase-memory-mcp "10×/2.1×") are
+**vendor-reported**, not independently measured — verify before adoption.
+**Ranking criterion:** synthesis table ordered by the "prose-doctrine → enforced-mechanism" through-line
+first, then effort-to-leverage; not pure ROI. Re-sort by ROI before committing a build slate.
+
+**Independent review (different model):** MiniMax M3 reviewed this doc 2026-06-28 → *Accept*: fulfills
+intent, no fabrication, no harmful instruction; flagged auditability gaps now addressed above.
+
 ---
 
 ## ✅ CHECKPOINT TRACKER (resume here if interrupted)
