@@ -1,8 +1,8 @@
 ---
 name: weapon-utility
-description: "Every member's rule for which weapon (model) to draw and how thinker and doer weapons work together. Thinker weapons read, plan, and prompt the doers; doer weapons do the job and return it; the thinker then reviews the result against the plan and re-prompts the doer until it conforms. A member draws the highest-priority AVAILABLE weapon of the kind the job needs — scanning its arsenal left to right — and wields one weapon at a time, unless ultra-brainstorming is active. Use whenever a member must pick a model, decide thinker-vs-doer, or run the plan → do → review loop. Triggers: 'which weapon', 'which model should X use', 'pick the weapon', 'thinker or doer', 'draw a weapon', 'run the weapon loop', 'how does the member choose its model'. Every member consults this before acting — it is the atomic layer beneath members-formation (which member works) and ultra-brainstorming (fuse several members across models)."
+description: "Every member's rule for which weapon (model) to draw and how thinker and doer weapons work together. Thinker weapons read, plan, and prompt the doers; doer weapons do the job and return it; the thinker then reviews the result against the plan and re-prompts the doer until it conforms. A member draws the highest-priority AVAILABLE weapon of the kind the job needs — scanning its arsenal left to right. One thinker plans and reviews and may dispatch several doers in parallel (many of one model or a mix); only ultra-brainstorming runs several thinkers at once. Use whenever a member must pick a model, decide thinker-vs-doer, or run the plan → do → review loop. Triggers: 'which weapon', 'which model should X use', 'pick the weapon', 'thinker or doer', 'draw a weapon', 'run the weapon loop', 'how does the member choose its model'. Every member consults this before acting — it is the atomic layer beneath members-formation (which member works) and ultra-brainstorming (fuse several members across models)."
 metadata:
-  version: 1.1.1
+  version: 1.3.0
 type: Skill
 
 ---
@@ -28,14 +28,55 @@ Every weapon has a **role** (set in `MODELS`, app.js): `doer`, `thinker`, or `bo
 
 - **Thinker weapons** — the **mind**. They *read, plan, and prompt the doer on what to do*,
   then *review what comes back*. A thinker never does the bulk work itself; it directs.
+  `opus` is the **prime thinker** — the best mind, and therefore the **first thinker in every
+  arsenal**. The prime thinker is just whichever thinker leads the block; with `opus` present it
+  is always `opus`.
   (`opus`, `gpt-5.5`, `deepseek-v4-pro`, `glm-5.2`, `kimi-k2.7`, `nemotron-3-ultra`, `qwen3.5`.
   `sonnet` can think too.)
 - **Doer weapons** — the **hands**. They *take the thinker's prompt, do the job, and return it*.
   A doer never decides strategy; it executes. `minimax-m3` is the **prime doer** — every member's
   first-drawn hand. (`minimax-m3`, `haiku`, `gemma4`, and the MiniMax forge doers
   `image-01`/`video`/`speech`/`music`.)
-- **Dual weapons** (`both`) — only `sonnet` remains dual: the universal last-resort weapon for
-  **either** role. It sits at the tail of every arsenal.
+- **Dual weapon** (`both`) — only `sonnet` remains dual, and it sits **last in every arsenal** for
+  two reasons: it is the universal last-resort for **either** role, AND it is the guild's
+  **Claude-capable fallback** for tools no other doer can run — see *Sonnet, the Claude-only-tool
+  fallback* below.
+
+## The tool boundary — doers return content, thinkers run tools (HARD RULE)
+
+A doer **does not invoke tools**. It takes the thinker's prompt, generates the work, and
+**returns it as text**. That is all a doer can do. Edit, Write, Bash, git, MCP, computer-use —
+every Claude Code tool — are wielded **only by the thinker** (a Claude model: the prime thinker,
+or `sonnet`/`haiku` as the Claude-capable hand). The thinker is the only weapon holding the buttons.
+
+So "write" splits two ways, and the split is the rule:
+
+- **Author content** — compose the bytes, burn the generation tokens → **the doer's job**.
+- **Invoke the write tool** — paste those finished bytes to disk via `Edit`/`Write` → **the thinker's job**.
+
+The loop is therefore: thinker plans → doer **returns the new file content as text** → thinker
+**reviews it, then runs `Write`/`Edit` itself** to commit it. The thinker does **not** re-author —
+step is a mechanical copy of the doer's output into the tool call. Bad doer output → thinker
+**re-prompts the doer**, never authors the content itself.
+
+**Never hand a tool call to a non-Claude doer.** A non-Claude doer (`minimax-m3`, `gemma4`, the
+Ollama bench) physically **cannot** call a Claude Code tool — summoning one to "use Write / use
+the MCP / run the edit" is a category error and will fail. If a slice genuinely needs a tool inside
+the doer's own run (not just content the thinker can commit), that is the Claude-only-tool case →
+draw `sonnet` (next section). Otherwise: doer authors the bytes, thinker pushes the button.
+
+## Sonnet — the Claude-only-tool fallback (never let a doer stall)
+
+Some tools can be wielded **only by Claude models** — native Claude tool-use, computer-use, and
+certain MCP servers that a non-Claude weapon physically cannot call. The prime doer `minimax-m3`
+(and the other non-Claude doers) will simply be **unable** to run such a tool.
+
+When a doer's task requires a Claude-only tool, **draw `sonnet`** — the dual at the tail, present
+in *every* arsenal for exactly this purpose — and run that slice on it. Treat this as a **direct,
+expected fall-through, not a failure or an escalation loop**: you are not retrying a broken doer,
+you are picking the only weapon that *can* hold the tool. The run continues without interruption.
+(Where a member also carries `haiku`, that Claude doer can run such tools too; `sonnet` is the
+**guaranteed** fallback because it is in every arsenal.)
 
 ## The thinker ↔ doer loop
 
@@ -76,17 +117,23 @@ Because the arsenal is ordered **doers → thinkers/duals → Sonnet last**, the
 literally the first weapon in the list, and the leftmost thinker is the first weapon after the
 doer block. The order is the priority — no separate ranking needed.
 
-## One weapon at a time — and the ultra-brainstorming exception
+## One thinker, one-or-many doers — and the ultra-brainstorming exception
 
-By default a member wields **exactly one weapon at a time**: one thinker plans, hands to one
-doer, reviews, delivers.
+By default a member runs **exactly one thinker** — the prime thinker plans, reviews, and owns the
+standard. But that thinker may put **one *or several* doers to work at once.** When the job splits
+into independent slices, the thinker **fans the work across multiple doer agents in parallel** —
+several instances of the *same* doer model, or a *mix* of different doer models — and reviews each
+return against the plan, re-prompting or escalating any slice that doesn't conform. **One doer is
+the floor, not the ceiling**; parallel doers are the norm whenever the work divides cleanly.
+Splitting is the thinker's call: only fan out work that is genuinely independent — truly sequential
+work stays a single doer.
 
-**Exception — when [[ultra-brainstorming]] is active**, a member fires **all of its available
-thinker weapons at once** on the same material. The **highest-priority available thinker** then
-**consolidates** every thinker's output into **one plan** (this is ultra-brainstorming's
-converge → synthesize step) before that single plan is prompted to the doer. Only the
-**thinkers** fan out; the doer still runs one weapon at a time on the consolidated plan, and
-the thinker↔doer review loop is unchanged.
+**Exception — when [[ultra-brainstorming]] is active**, the *thinker* side also fans out: the
+member fires **all of its available thinker weapons at once** on the same material, and the
+**highest-priority available thinker** then **consolidates** every thinker's output into **one
+plan** (ultra-brainstorming's converge → synthesize step). That consolidated plan is then executed
+by one *or several* doers exactly as above. So ultra-brainstorming layers **thinker fan-out** on top
+of the **doer fan-out** that is always available.
 
 ## Availability — when a weapon counts as drawable
 
@@ -104,7 +151,7 @@ the same kind.
 
 ```
 members-formation   →   which MEMBER works (the Butler routes)
-   ultra-brainstorming →  fuse several members across models (the Strategist, on fan-in)
+   ultra-brainstorming →  fire ALL a member's thinkers at once (any member who holds it)
       weapon-utility   →  which WEAPON inside one member + the thinker↔doer loop  ← here
 ```
 
@@ -117,6 +164,8 @@ Own skill. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: 
 rule or mode · MAJOR: a change to the loop or selection contract). Then `python3 build.py`.
 
 ## Changelog
+- **1.3.0** — Named `opus` the **prime thinker** (best mind, first thinker in every arsenal) alongside `minimax-m3` the prime doer, and added the **Sonnet Claude-only-tool fallback**: when a doer needs a tool only Claude models can run, draw `sonnet` (the dual at the tail) directly — an expected fall-through, not a failure — so the run never stalls. `conformity_check` now enforces minimax-m3-first, opus-first-thinker, sonnet-last.
+- **1.2.0** — **Parallel doers.** A member's thinker may now dispatch several doer agents at once — many of one doer model or a mix of different doer models — each on an independent slice, with the thinker reviewing every return against the plan. Previously the doer side was strictly one-at-a-time (next doer only on failure); that is now the **floor, not the ceiling**. Thinker stays one-per-member except under [[ultra-brainstorming]], which now layers thinker fan-out on top of the always-available doer fan-out.
 - **1.1.1** — Added **"Sizing a big doer job"** to the thinker↔doer loop: for large reads/generations the backend default output cap (16k) and timeout (180s) silently truncate, so pass `--max-tokens`/`--timeout` through `summon.py` (now translated per backend — `--max-tokens` for minimax, `--num-predict` for cloud), loop chunks one at a time, and treat a mid-sentence draft as truncation → re-run larger. Mined from the `japanese-candlesticks` source-distillation run.
 - **1.1.0** — Thinker-bench reclass. `glm-5.2`, `kimi-k2.7`, `nemotron-3-ultra`, `qwen3.5` moved
   from doer/dual → **thinker** (join `opus`, `gpt-5.5`, `deepseek-v4-pro`). `minimax-m3` named the
