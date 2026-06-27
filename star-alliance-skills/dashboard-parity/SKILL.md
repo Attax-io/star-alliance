@@ -27,6 +27,30 @@ You are the keeper of the looking-glass. A change is not done when the source fi
 6. **Sweep the propagation failure modes** (see Gotchas) — the ways a change reaches the file but not the screen.
 7. **Log and hand off.** Record what you verified — the delta, that it is in `guild-data.js`, that the DOM shows it, and the screenshot — so the Butler's report can claim *"reflected on the dashboard"* with proof, not hope.
 
+## Headless render smoke-harness (crash-sweep before the browser)
+
+The DOM check in step 4 proves *one* surface paints. But a data change can crash a *different*
+renderer you didn't open — a member with a new field, a skill the card-builder chokes on. Before
+spending a browser, run every renderer against all the data headlessly and catch the crash in
+milliseconds. The harness is buildless, like the dashboard:
+
+1. **Load the real code in a `vm`, with a DOM stub.** In a node script, build a minimal `document`
+   stub (`createElement`/`querySelector`/`appendChild` returning chainable no-op nodes, an
+   `innerHTML` setter), then `vm.runInNewContext` over `guild-data.js` + `app.js` so the *actual*
+   renderers run, not a reimplementation. The point is to exercise shipped code.
+2. **Inject the test inside the IIFE.** `app.js` wraps its renderers in an IIFE, so they aren't on
+   the global object. Append your driver to the source *before* running it in the vm — call each
+   renderer (`renderMembers`, `renderSkills`, `renderDomains`, …) over every member / skill / domain
+   in `GUILD`, inside the same closure. Reaching them from outside is the part that doesn't work; the
+   inject-inside trick is what makes it work.
+3. **Assert no throw, per record.** Wrap each renderer call per-item so one bad record names itself
+   (`renderSkill("schema-evolution") threw: …`) instead of aborting the sweep. Green = every renderer
+   survived every record. This is the cheap gate you run *before* `preview_start`.
+
+It does not replace the DOM-and-screenshot proof (step 4–5) — a renderer can run clean and still paint
+wrong. It's the fast pre-filter that turns "open the browser and discover a crash" into "the harness
+named the broken record in 200ms." Run it after `build.py`, before the visual pass.
+
 ## Sharpening the craft
 
 You improve along four rungs, and your measure is the count of changes confirmed on-screen versus the ones you declared done that the Guild Master then could not see.
