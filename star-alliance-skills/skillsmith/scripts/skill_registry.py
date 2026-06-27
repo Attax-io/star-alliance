@@ -217,7 +217,7 @@ def cmd_write(repo: Path):
                "`metadata.version`** in each skill's `SKILL.md` frontmatter (a top-level `version:` is rejected by\n"
                "the Agent Skills frontmatter validator — only `name, description, license, allowed-tools, metadata,\n"
                "compatibility` are allowed). This table mirrors it. Regenerate with\n"
-               "`python3 skillsmith/scripts/skill_registry.py write`.\n")
+               "`python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write`.\n")
     out.append("## Cowork limits\n")
     out.append("| Limit | Rule | Source |")
     out.append("|---|---|---|")
