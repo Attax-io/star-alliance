@@ -4,7 +4,8 @@ description: >-
   Mine your own Claude session history for lessons, then turn them into ranked, verified upgrade
   proposals. Use when the user says 'review the last N sessions', 'what did we learn from these
   sessions', 'mine my sessions', 'what should we upgrade/merge/create from past work', 'audit the
-  sessions for lessons', 'note down skills we can extract', or any retrospective over prior runs.
+  sessions for lessons', or any retrospective over prior runs. Also CHECKPOINT: 'save my progress',
+  'checkpoint this', 'where was I', 'resume where I left off' — saves/reads working context.
   Locates the three session stores (Claude Code project transcripts, Cowork wrappers, scheduled-task
   runs), extracts only signal-bearing turns (corrections + proposals, never tool noise) with
   offset/limit discipline so a 68MB store never blind-reads, hands bulk summarizing to MiniMax doers,

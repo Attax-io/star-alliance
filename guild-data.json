@@ -7,7 +7,7 @@
       "minor": 55,
       "patch": 65
     },
-    "generated": "2026-06-27T18:18:52Z",
+    "generated": "2026-06-27T18:20:15Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -3902,7 +3902,7 @@
       "ramp": "teal",
       "tabler": "ti-pick",
       "src": "own",
-      "desc": "Mine your own Claude session history for lessons, then turn them into ranked, verified upgrade proposals. Use when the user says 'review the last N sessions', 'what did we learn from these sessions', 'mine my sessions', 'what should we upgrade/merge/create from past work', 'audit the sessions for lessons', 'note down skills we can extract', or any retrospective over prior runs. Locates the three session stores (Claude Code project transcripts, Cowork wrappers, scheduled-task runs), extracts only signal-bearing turns (corrections + proposals, never tool noise) with offset/limit discipline so a 68MB store never blind-reads, hands bulk summarizing to MiniMax doers, synthesizes a deduped lesson register, then runs a VERIFY pass against the live repo that kills every 'lesson' already shipped. Output is propose-only (apply-gate OFF). The on-demand companion to skillsmith's daily routine; uses storm-investigation to synthesize.",
+      "desc": "Mine your own Claude session history for lessons, then turn them into ranked, verified upgrade proposals. Use when the user says 'review the last N sessions', 'what did we learn from these sessions', 'mine my sessions', 'what should we upgrade/merge/create from past work', 'audit the sessions for lessons', or any retrospective over prior runs. Also CHECKPOINT: 'save my progress', 'checkpoint this', 'where was I', 'resume where I left off' — saves/reads working context. Locates the three session stores (Claude Code project transcripts, Cowork wrappers, scheduled-task runs), extracts only signal-bearing turns (corrections + proposals, never tool noise) with offset/limit discipline so a 68MB store never blind-reads, hands bulk summarizing to MiniMax doers, synthesizes a deduped lesson register, then runs a VERIFY pass against the live repo that kills every 'lesson' already shipped. Output is propose-only (apply-gate OFF). The on-demand companion to skillsmith's daily routine; uses storm-investigation to synthesize.",
       "intro": "The guild's retrospective engine: **mine past sessions → distil lessons → verify against the live repo → ship a ranked upgrade plan.** It exists because \"review the last N sessions for lessons\" recurs constantly and was re-improvised by hand every time. This is the saved pipeline.",
       "sections": [
         "Where the sessions live (Phase 0 — locate)",
