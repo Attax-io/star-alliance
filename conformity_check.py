@@ -48,6 +48,28 @@ def frontmatter_list(text, key):
     return [x.strip() for x in m.group(1).split(",") if x.strip()]
 
 
+def _parse_weapons_table(text):
+    """Return [(model, desc), …] from the `## Your Weapons` table, or None if absent.
+    Columns are: | Priority | Weapon | When to Draw It |."""
+    lines = text.split("\n")
+    try:
+        start = next(i for i, l in enumerate(lines) if l.strip() == "## Your Weapons")
+    except StopIteration:
+        return None
+    end = next((i for i in range(start + 1, len(lines)) if lines[i].startswith("## ")), len(lines))
+    rows = []
+    for l in lines[start + 1:end]:
+        if not l.lstrip().startswith("|"):
+            continue
+        cells = [c.strip() for c in l.strip().strip("|").split("|")]
+        if len(cells) != 3:
+            continue
+        if cells[0] == "Priority" or set(cells[1]) <= set("-: "):
+            continue  # header row / separator
+        rows.append((cells[1], cells[2]))
+    return rows or None
+
+
 def main():
     fails = []
     notes = []
