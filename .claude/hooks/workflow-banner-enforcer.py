@@ -135,6 +135,18 @@ def main():
         sys.stderr.write(f"[banner-enforcer] read error, failing open: {e}\n")
         sys.exit(0)
 
+    # B3 — tier-awareness: LITE turns are conversational/low-stakes by definition.
+    # Over-firing on them trains members to ignore the klaxon (worse than no gate).
+    # Read the sidecar written by guild-routing-gate.sh (same file turn-cost.py uses,
+    # but we do NOT delete it here — turn-cost.py owns the lifecycle).
+    tier_file = os.path.join(project_dir(), ".claude", "state", "last-tier")
+    try:
+        current_tier = open(tier_file).read().strip().lower() if os.path.exists(tier_file) else "full"
+    except Exception:
+        current_tier = "full"
+    if current_tier == "lite":
+        sys.exit(0)  # LITE turns exempt — no work-tool enforcement needed
+
     ui = last_user_index(lines)
     text, n_assistant = assistant_blocks_since(lines, ui)
 

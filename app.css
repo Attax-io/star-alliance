@@ -319,6 +319,30 @@ kbd {
   margin-right: 6px;
 }
 
+.flow-meta .fm-scripts {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 6px;
+  margin-top: 8px;
+}
+.fm-script-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.script-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 2px 8px; border-radius: 12px;
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  cursor: default; transition: background 0.15s;
+}
+.script-chip:hover {
+  background: color-mix(in srgb, var(--accent) 20%, var(--surface));
+}
+.script-chip-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent); flex-shrink: 0;
+}
+.script-chip code {
+  font-family: var(--mono); font-size: var(--t-xs);
+  color: color-mix(in srgb, var(--accent) 90%, var(--starlight));
+}
+
 /* constellation reborn + power core + hover tooltip */
 .starmap-wrap { position: relative; padding: var(--s5); }
 .starmap { width: 100%; max-width: 820px; margin: 0 auto; display: block; aspect-ratio: 1/1; overflow: visible; }

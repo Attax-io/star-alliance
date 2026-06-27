@@ -111,6 +111,17 @@ def main():
                 tier = m.group(1).lower()
                 break
 
+    # H2 — compute wall_ms from turn-start.py sidecar (UserPromptSubmit stamps it).
+    wall_ms = None
+    start_file = pathlib.Path(project_dir()) / ".claude" / "state" / "turn-start"
+    if start_file.exists():
+        try:
+            start_ts = float(start_file.read_text().strip())
+            wall_ms = int((time.time() - start_ts) * 1000)
+            start_file.unlink()
+        except Exception:
+            pass
+
     rec = {
         "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "tier": tier,
@@ -120,6 +131,8 @@ def main():
         "cache_read": cache_read,
         "cache_create": cache_create,
     }
+    if wall_ms is not None:
+        rec["wall_ms"] = wall_ms
 
     try:
         out_dir = os.path.join(project_dir(), "data")

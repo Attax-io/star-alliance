@@ -155,6 +155,13 @@ def main():
     if m:
         declared = m.group(1).strip()
         if declared.lower() in names:
+            # Persist the declared workflow for precompact-snapshot.py to capture.
+            try:
+                state_dir = os.path.join(project_dir(), ".claude", "state")
+                os.makedirs(state_dir, exist_ok=True)
+                open(os.path.join(state_dir, "last-workflow"), "w").write(declared)
+            except Exception:
+                pass
             sys.exit(0)  # valid workflow declared — allow
         block(
             f"⛔ WORKFLOW GATE — you declared '{declared}', which is NOT a registered "

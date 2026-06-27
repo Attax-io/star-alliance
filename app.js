@@ -548,6 +548,21 @@ function renderStarMap(query) {
       <div class="fm-body">
         <div class="fm-tagline">${esc(wf.tagline || "")}</div>
         <div class="fm-when"><span class="fm-when-label">When</span> ${esc(wf.when || "")}</div>
+        ${(() => {
+          const scriptMap = new Map();
+          wf.steps.forEach((s, i) => {
+            if (!s.script) return;
+            if (!scriptMap.has(s.script)) scriptMap.set(s.script, []);
+            scriptMap.get(s.script).push({ idx: i + 1, title: s.title || "", produces: s.produces || "" });
+          });
+          if (!scriptMap.size) return "";
+          const chips = [...scriptMap.entries()].map(([path, usages]) => {
+            const short = path.replace("guild/", "").replace(".py", "");
+            const tip = usages.map(u => `Step ${u.idx}: ${u.title}${u.produces ? " → " + u.produces : ""}`).join(" · ");
+            return `<span class="script-chip" data-tip="${esc(tip)}" onmouseenter="showTip(this,event.clientX,event.clientY)" onmousemove="showTip(this,event.clientX,event.clientY)" onmouseleave="hideTip()"><span class="script-chip-dot"></span><code>${esc(short)}</code></span>`;
+          }).join("");
+          return `<div class="fm-scripts"><span class="fm-when-label">Scripts</span><div class="fm-script-chips">${chips}</div></div>`;
+        })()}
       </div>
     </div>
     <div class="starmap-wrap glass" style="--accent:${accent}">

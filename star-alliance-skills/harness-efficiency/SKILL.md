@@ -2,7 +2,7 @@
 name: harness-efficiency
 description: "The Strategist's craft for proving the Star Alliance harness actually saves tokens and time, then tuning the levers that do it. Joins the two Phase-0 measurement streams via tools/efficiency_report.py — usage-log.jsonl (every offloaded model call, with phase + wall_ms) and data/turn-cost.jsonl (per-turn Opus tokens + which routing tier fired) — into a net-saved figure and a LITE-vs-FULL per-turn breakdown, watches for the one safety regression that matters (a high-stakes turn that took the cheap LITE gate path), and recommends edits to the stakes/size policy in data/harness.json. Use to answer how much the harness is saving, whether the proportional routing gate works, or before and after a hook change to the gate. Triggers: 'efficiency report', 'harness efficiency', 'how much are we saving', 'is the gate working', 'tier split', 'check the offload', 'net tokens saved', 'tune the stakes list'. Differentiate from performance (app hot-path profiling) and weapon-utility (which model a member draws)."
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 type: Skill
 
 ---
