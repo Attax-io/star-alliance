@@ -107,33 +107,67 @@ def main():
 
     try:
         lines = [json.loads(l) for l in open(transcript) if l.strip()]
-        names = load_workflow_names()
+        rosters = load_workflows()
     except Exception as e:
         sys.stderr.write(f"[banner-enforcer] read error, failing open: {e}\n")
         sys.exit(0)
 
     ui = last_user_index(lines)
     text, n_assistant = assistant_blocks_since(lines, ui)
+    relent = n_assistant >= CAP  # anti-brick: stop blocking after CAP banner-less turns
 
+    # 1) A valid workflow must be declared this turn.
+    declared = None
     for m in BANNER_RE.finditer(text):
-        if m.group(1).strip().lower() in names:
-            sys.exit(0)  # a valid workflow was declared this turn — allow
+        nm = m.group(1).strip().lower()
+        if nm in rosters:
+            declared = nm
+            break
 
-    if n_assistant >= CAP:
+    if declared is None:
+        if relent:
+            sys.stderr.write(
+                f"[banner-enforcer] no valid workflow banner after {n_assistant} turns — "
+                f"relenting to avoid a block loop. Declare one next turn.\n"
+            )
+            sys.exit(0)
         sys.stderr.write(
-            f"[banner-enforcer] no valid workflow banner after {n_assistant} turns — "
-            f"relenting to avoid a block loop. Declare one next turn.\n"
+            "⛔ WORKFLOW GATE (turn-end) — this turn ended without declaring a star-map "
+            "workflow. EVERY turn must run inside one. Emit, as your FIRST line, "
+            "🗺 Starmap Workflow Started: <name>! naming a workflow from workflows.json "
+            "(use 'Conversation' for a plain greeting/ack/meta-question, 'Inquiry / Recon' "
+            "for a read-only question about the code or guild), then give your answer. "
+            "If none fits, run Workflow Forge to create one.\n"
         )
+        sys.exit(2)
+
+    # 2) The declared workflow's LEAD member must report for duty (⚔).
+    #    The cast is the workflow's own steps[].actor list. We hard-require the lead
+    #    (first member actor); the full roster is surfaced so downstream members —
+    #    notably the closing the-quartermaster — announce as they take the field
+    #    across the workflow's turns. (Persona switches inside one context have no
+    #    tool footprint, so only the lead is mechanically enforceable per turn.)
+    roster = rosters.get(declared, [])
+    if not roster:
+        sys.exit(0)
+    announced = {_core(m.group(1)) for m in MEMBER_RE.finditer(text)}
+    lead = roster[0]
+    if _core(lead) in announced or relent:
+        if relent and _core(lead) not in announced:
+            sys.stderr.write(
+                f"[banner-enforcer] lead member '{lead}' never reported after "
+                f"{n_assistant} turns — relenting (anti-brick).\n"
+            )
         sys.exit(0)
 
-    # Hard block: the turn cannot end without declaring a workflow.
+    roster_str = ", ".join(roster)
     sys.stderr.write(
-        "⛔ WORKFLOW GATE (turn-end) — this turn ended without declaring a star-map "
-        "workflow. EVERY turn must run inside one. Emit, as your FIRST line, "
-        "🗺 Starmap Workflow Started: <name>! naming a workflow from workflows.json "
-        "(use 'Conversation' for a plain greeting/ack/meta-question, 'Inquiry / Recon' "
-        "for a read-only question about the code or guild), then give your answer. "
-        "If none fits, run Workflow Forge to create one.\n"
+        f"⚔ MEMBER GATE (turn-end) — workflow '{declared}' was declared but its lead "
+        f"member '{lead}' never reported for duty. Emit the klaxon "
+        f"⚔ Member reports for duty: {lead} using <thinker> and <doer>! the instant that "
+        f"member takes the field. This workflow's full cast (steps[].actor): {roster_str} — "
+        f"each fires ⚔ as it acts (one per member, including the closing the-quartermaster), "
+        f"NOT one per workflow.\n"
     )
     sys.exit(2)
 
