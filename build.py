@@ -698,7 +698,7 @@ def derive_version(log: dict) -> tuple[str, dict]:
     return f"{major}.{minor}.{patch}", {"major": major, "minor": minor, "patch": patch}
 
 
-def build_meta(members, skills, domains, workflows, log, members_meta_file=None) -> dict:
+def build_meta(members, skills, domains, workflows, log, members_meta_file=None, hooks=None) -> dict:
     version, version_tiers = derive_version(log)
     return {
         "name": "Star Alliance",
