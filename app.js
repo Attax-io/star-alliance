@@ -672,7 +672,12 @@ function buildConstellation(wf) {
   }
 
   const dur = (waypoints.length * 1.1).toFixed(1);
-  const youCore = `<g class="you-core" transform="translate(${cx},${cy})" tabindex="0" role="img" aria-label="You · Guild Master" data-name="You · Guild Master" data-tip="The Guild Master and prompter. Every mission begins with your order — the Butler turns it into a clear brief for your approval — and ends when the guild reports the finished work back to you."><circle class="halo" r="22"/><circle class="core" r="10"/><text class="you-glyph" text-anchor="middle" dominant-baseline="central">✦</text><title>You — where every mission begins and ends</title></g>`;
+  // Sovereign mark — an 8-spike radiant starburst behind the ✦ (16 vertices,
+  // alternating long/short radius), distinct from every round member node.
+  const burst = (() => { const o = 27, inr = 11, N = 8; const p = [];
+    for (let k = 0; k < N * 2; k++) { const r = k % 2 ? inr : o; const a = (-90 + k * (180 / N)) * Math.PI / 180;
+      p.push(`${(r * Math.cos(a)).toFixed(1)},${(r * Math.sin(a)).toFixed(1)}`); } return p.join(" "); })();
+  const youCore = `<g class="you-core" transform="translate(${cx},${cy})" tabindex="0" role="img" aria-label="You · Guild Master" data-name="You · Guild Master" data-tip="The Guild Master and prompter. Every mission begins with your order — the Butler turns it into a clear brief for your approval — and ends when the guild reports the finished work back to you."><circle class="halo" r="32"/><polygon class="you-burst" points="${burst}"/><circle class="you-coreglow" r="14"/><circle class="core" r="8"/><text class="you-glyph" text-anchor="middle" dominant-baseline="central">✦</text><title>You — where every mission begins and ends</title></g>`;
 
   return `<svg class="starmap" viewBox="0 0 800 800" data-core-dur="${dur}" role="group" aria-label="${esc(wf.name)} workflow over the guild constellation">
     <g class="orbits" aria-hidden="true">${orbits}</g>
