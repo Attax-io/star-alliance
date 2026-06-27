@@ -98,7 +98,7 @@ def main():
     # 1. minimax-m3 -> local minimax.py (prompt is trailing positional).
     if args.model_id == 'minimax-m3':
         cmd = [sys.executable, os.path.join(HERE, 'minimax.py')]
-        cmd += _passthrough(args)
+        cmd += _passthrough(args, token_flag='--max-tokens')
         sys.exit(subprocess.run(cmd, env=env).returncode)
 
     # 2. CLOUD_TAG models -> ollama_cloud.py with the cloud tag FIRST,
