@@ -212,6 +212,15 @@ def main() -> int:
         summary.append(f"| {i} | {title} | {resolution} |")
 
         if resolution == "human":
+            # A gate is a hard human-approval checkpoint: the runner MUST halt and
+            # await a human "go" — it can never be skipped. A passive human step
+            # (actor `you`, e.g. "Place the Order") just continues.
+            if step.get("kind") == "gate" or step.get("gate"):
+                halted = True
+                halt_reason = (f"step {i} '{title}' — approval gate: "
+                               f"{step.get('label') or 'awaiting human go'}")
+                print(f"  ⏸ {halt_reason}")
+                break
             continue
 
         try:
