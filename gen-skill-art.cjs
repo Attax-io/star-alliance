@@ -189,6 +189,14 @@ const SKILLS = [
     id: "high-alert",
     prompt: `${STYLE}. A blazing signal-beacon flaming atop a dark stone watchtower, golden-red alarm fire leaping skyward, a bronze war-horn and a swinging warning bell beside it, concentric red-gold alert rings radiating outward across the night, a herald's banner snapping in the wind, the whole guild roused to attention, urgent klaxon glow`,
   },
+  {
+    id: "okf",
+    prompt: `${STYLE}. A GOLD enchanted broom-and-quill setting a scriptorium of leather-bound tomes into flawless order, each tome stamped with a glowing rune-label of its kind on the spine, threads of gold light cross-linking one tome to the next, a single concept inscribed per page, loose stray scrolls being swept into their proper shelf-slots, the Open Knowledge crest seal above, methodical scholarly hygiene and clean frontmatter`,
+  },
+  {
+    id: "star-alliance-language",
+    prompt: `${STYLE}. A hooded guild-reader at a lectern unrolling a luminous concept-map of an ordered library, glowing rune-labels and gold cross-link threads charting where each knowledge lives, only three tomes pulled open and softly lit while the rest rest shelved and dim, an eye-of-orientation sigil above guiding the gaze, swift cheap reliable reading with no blind full-read, the quiet reader's-protocol counterpart to the gold tidying crest`,
+  },
 ];
 
 function postJSON(url, headers, body) {
