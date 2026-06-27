@@ -54,7 +54,7 @@ Edit the registry, never hand-list. The lists below are a human-readable mirror.
 
 A doer **does not invoke tools**. It takes the thinker's prompt, generates the work, and
 **returns it as text**. That is all a doer can do. Edit, Write, Bash, git, MCP, computer-use —
-every Claude Code tool — are wielded **only by the thinker** (a Claude model: the prime thinker,
+every Claude Code tool — are wielded **only by the thinker** (a Claude model: the brain,
 or `sonnet`/`haiku` as the Claude-capable hand). The thinker is the only weapon holding the buttons.
 
 So "write" splits two ways, and the split is the rule:
@@ -134,8 +134,8 @@ doer block. The order is the priority — no separate ranking needed.
 
 ## One thinker, one-or-many doers — and the ultra-brainstorming exception
 
-By default a member runs **exactly one thinker** — the prime thinker plans, reviews, and owns the
-standard. But that thinker may put **one *or several* doers to work at once.** When the job splits
+By default a member runs **exactly one thinker** — the brain plans, reviews, and owns the
+standard. But that brain may put **one *or several* doers to work at once.** When the job splits
 into independent slices, the thinker **fans the work across multiple doer agents in parallel** —
 several instances of the *same* doer model, or a *mix* of different doer models — and reviews each
 return against the plan, re-prompting or escalating any slice that doesn't conform. **One doer is

@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 62
     },
-    "generated": "2026-06-27T17:25:39Z",
+    "generated": "2026-06-27T17:30:33Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -34,7 +34,7 @@ const GUILD = {
       "domains": 3,
       "workflows": 29,
       "hooks": 7,
-      "log": 141
+      "log": 142
     }
   },
   "members": [
@@ -4392,7 +4392,7 @@ const GUILD = {
       "scripts": [],
       "stats": {
         "lines": 230,
-        "words": 3060
+        "words": 3058
       },
       "global": true,
       "members": [
@@ -7006,6 +7006,14 @@ const GUILD = {
   "log": {
     "entries": [
       {
+        "id": 87,
+        "date": "2026-06-27",
+        "type": "decision",
+        "title": "Brain = personality: a member's thinker is its session model, not arsenal-leading opus",
+        "who": "the-architect",
+        "detail": "Reverses the earlier 'prime thinker = first thinker weapon = opus' decision. A member's BRAIN is now its session model (model: in the .md) — the live Claude model that actually thinks, orchestrates, and holds the tools in a session: sonnet for the 5 sonnet-run members, opus for the 4 opus-run. The other arsenal thinkers (opus included, for sonnet-run members) are ESCALATION weapons the brain delegates to, not the member's identity. UI: per-member weapon cards now flag BRAIN (the session-model weapon, purple) and DOER (the prime doer minimax-m3, orange); a thinker carries no flag unless the member runs as it. conformity_check.py PT check (==opus) replaced by BR (session model is a carried thinking weapon) + PD (prime doer leads). weapon-utility -> 2.0.0. Why: in Claude Code the session model IS the live brain, so calling opus the brain was fiction and bred the recurring 'why sonnet when prime is opus' confusion. Brain=runs-as removes the mismatch at the root and loses nothing — opus stays a reachable escalation weapon."
+      },
+      {
         "id": 86,
         "date": "2026-06-27",
         "type": "decision",
@@ -8750,7 +8758,7 @@ const GUILD = {
         "id": "g-325a46a5-add-skill-conquering-campaign"
       }
     ],
-    "count": 141
+    "count": 142
   },
   "models": {
     "opus": {

@@ -81,7 +81,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`transactions-domain-model`](star-alliance-skills/transactions-domain-model/SKILL.md) | 1.3.1 | own | 108 / 951 | 3263 / 399 | ✓ lean | Loads the complete Lex Council transactions domain model before any transaction-related wo… |
 | [`ultra-brainstorming`](star-alliance-skills/ultra-brainstorming/SKILL.md) | 1.2.0 | own | 129 / 873 | 1530 / 155 | ✓ lean | An ASSIGNABLE multi-thinker method — any member who carries it fires ALL his available thi… |
 | [`vault-log-compliance`](star-alliance-skills/vault-log-compliance/SKILL.md) | 1.1.0 | own | 128 / 807 | 1445 / 119 | ✓ lean | Enforces P8 vault-logging compliance for Lex Council |
-| [`weapon-utility`](star-alliance-skills/weapon-utility/SKILL.md) | 1.8.0 | own | 166 / 1009 | 2872 / 227 | ✓ lean | Every member's rule for which weapon (model) to draw and how thinker and doer weapons work… |
+| [`weapon-utility`](star-alliance-skills/weapon-utility/SKILL.md) | 2.0.0 | own | 166 / 1009 | 3058 / 231 | ✓ lean | Every member's rule for which weapon (model) to draw and how thinker and doer weapons work… |
 | [`workflow-forge`](star-alliance-skills/workflow-forge/SKILL.md) | 1.3.0 | own | 153 / 997 | 1701 / 102 | ✓ lean | The Strategist's craft for distilling a finished run into a reusable star-map workflow in … |
 
 _54 skills — 47 lean · 6 large (installable, over the 500-line ideal) · 1 near the word ceiling · 0 hard violations._

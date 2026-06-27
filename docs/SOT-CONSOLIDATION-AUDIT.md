@@ -134,9 +134,15 @@ derive from it or be deleted.
 
 ---
 
-## 5. DECISION (LOCKED): prime thinker = the WEAPON, by arrangement
+## 5. DECISION: prime thinker = the WEAPON, by arrangement
 
-**Guild Master's ruling:** a member's prime thinker is **the highest-priority thinker
+> **⚠ SUPERSEDED by guild-log decision #87 (Brain = personality).** This §5 ruling was later
+> reversed: a member's **brain is its session model** (`model:`), not the arsenal-leading opus.
+> The other thinkers (opus included, for sonnet-run members) are **escalation weapons**. The UI now
+> flags **BRAIN** (session-model weapon) + **DOER** (prime doer), and `conformity_check.py` replaced
+> the `PT` (==opus) check with `BR`+`PD`. Kept below as the original reasoning trail.
+
+**Guild Master's ruling (original, now superseded):** a member's prime thinker is **the highest-priority thinker
 model based on its arsenal arrangement** — the first weapon whose role ∈ {thinker, both},
 scanning the loadout left→right. If opus is the first thinker on the left, opus it is.
 **Not** the session model.
