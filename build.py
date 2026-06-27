@@ -459,6 +459,15 @@ def load_workflows(repo: Path) -> list[dict]:
     return workflows
 
 
+def load_hooks(repo: Path) -> list[dict]:
+    """Harness lifecycle hooks surfaced on the Star Map ring (hooks.json).
+    Hand-authored plain-English mirror of .claude/settings.json `hooks`."""
+    p = repo / "hooks.json"
+    if not p.exists():
+        return []
+    return json.loads(p.read_text()).get("hooks", [])
+
+
 def load_log(repo: Path) -> dict:
     p = repo / "guild-log.json"
     if not p.exists():
@@ -621,13 +630,17 @@ def mark_global_skills(skills: list[dict], warnings: list[str]) -> None:
 
 def validate(members: list[dict], skills: list[dict], domains: list[dict],
              workflows: list[dict],
-             errors: list[str], warnings: list[str]) -> None:
+             errors: list[str], warnings: list[str],
+             model_roles: dict | None = None) -> None:
     skill_ids = {s["id"] for s in skills}
     member_ids = {m["id"] for m in members}
 
     # Hard: workflow steps must have a known kind and resolve to known entities.
     for wf in workflows:
         wf_id = wf["id"]
+        wf_class = wf.get("class", "mutating")
+        if wf_class not in ("mutating", "read-only"):
+            errors.append(f"workflow '{wf_id}' has unknown class '{wf_class}' (expected mutating | read-only)")
         for step in wf.get("steps", []):
             kind = step.get("kind")
             if kind not in {"member", "gate"}:
@@ -637,6 +650,9 @@ def validate(members: list[dict], skills: list[dict], domains: list[dict],
                 actor = step.get("actor")
                 if actor != "you" and actor not in member_ids:
                     errors.append(f"workflow '{wf_id}' step references unknown member '{actor}'")
+                validate_step_weapons(wf_id, step,
+                                      {m["id"]: m for m in members},
+                                      model_roles or {}, errors)
             elif kind == "gate":
                 gate = step.get("gate")
                 if gate not in {"approval", "certify", "report"}:
@@ -701,6 +717,61 @@ def build_meta(members, skills, domains, workflows, log, members_meta_file=None)
     }
 
 
+def load_model_roles(repo: Path) -> dict:
+    """Model id -> role ('doer' | 'thinker' | 'both'), parsed from the MODELS armory
+    in app.js (the single source of truth for weapon roles). Empty dict on any error,
+    which makes the weapon-field validation below skip silently (fail open)."""
+    roles: dict[str, str] = {}
+    try:
+        txt = (repo / "app.js").read_text()
+        for m in re.finditer(r'"([a-z0-9.\-]+)":\s*\{[^}]*?role:\s*"(doer|thinker|both)"', txt):
+            roles[m.group(1)] = m.group(2)
+    except Exception:
+        pass
+    return roles
+
+
+def validate_step_weapons(wf_id: str, step: dict, members_by_id: dict,
+                          model_roles: dict, errors: list[str]) -> None:
+    """Enforce the structured weapon fields on a member step:
+       thinker (thinker-role + in loadout), doers (doer-role + in loadout),
+       ultra (actor must carry ultra-brainstorming). All fields are OPTIONAL —
+       a step without them is valid (backward compatible). model_roles empty → skip."""
+    actor = step.get("actor")
+    if actor == "you" or actor not in members_by_id:
+        return
+    mem = members_by_id[actor]
+    loadout = {w["model"] if isinstance(w, dict) else w for w in mem.get("weapons", [])}
+    where = f"workflow '{wf_id}' step '{step.get('title', '?')}' (actor {actor})"
+
+    th = step.get("thinker")
+    if th is not None:
+        if model_roles and model_roles.get(th) not in ("thinker", "both"):
+            errors.append(f"{where}: thinker '{th}' is not a thinker-role weapon")
+        if th not in loadout:
+            errors.append(f"{where}: thinker '{th}' is not in {actor}'s loadout")
+
+    doers = step.get("doers")
+    if doers is not None:
+        if not isinstance(doers, list) or not doers:
+            errors.append(f"{where}: 'doers' must be a non-empty list")
+        else:
+            for d in doers:
+                model = d.get("model") if isinstance(d, dict) else d
+                cnt = d.get("count", 1) if isinstance(d, dict) else 1
+                if not isinstance(cnt, int) or cnt < 1:
+                    errors.append(f"{where}: doer '{model}' has invalid count {cnt!r}")
+                if model_roles and model_roles.get(model) not in ("doer", "both"):
+                    errors.append(f"{where}: doer '{model}' is not a doer-role weapon")
+                if model not in loadout:
+                    errors.append(f"{where}: doer '{model}' is not in {actor}'s loadout")
+
+    if step.get("ultra"):
+        if "ultra-brainstorming" not in mem.get("skills", []):
+            errors.append(f"{where}: ultra=true but {actor} does not carry the "
+                          f"ultra-brainstorming skill")
+
+
 def assemble(repo: Path) -> tuple[dict, list[str], list[str]]:
     errors: list[str] = []
     warnings: list[str] = []
@@ -713,11 +784,12 @@ def assemble(repo: Path) -> tuple[dict, list[str], list[str]]:
     members = build_members(repo, members_meta, errors)
     domains = load_domains(repo)
     workflows = load_workflows(repo)
+    model_roles = load_model_roles(repo)
     log = load_log(repo)
 
     compute_reverse_indices(members, skills)
     mark_global_skills(skills, warnings)
-    validate(members, skills, domains, workflows, errors, warnings)
+    validate(members, skills, domains, workflows, errors, warnings, model_roles)
     compute_member_levels(members, skills, errors, warnings)
 
     guild = {
