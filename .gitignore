@@ -10,3 +10,6 @@ __pycache__/
 
 # Runtime delegation-ledger data (real token spend per doer call)
 star-alliance-arsenal/usage-log.jsonl
+
+# Workflow-runner runtime output (artifacts, signoffs, summaries)
+runs/
