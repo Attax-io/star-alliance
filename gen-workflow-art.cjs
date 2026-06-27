@@ -118,6 +118,10 @@ const WORKFLOWS = [
     id: "law-harvest",
     prompt: `${STYLE}. A GOLD harvest of scroll-laws gathered from a field of stacked tomes into an ordered library shelf, a sickle of light separating named from unnamed scrolls, verbatim glyphs extracted onto clean pages`,
   },
+  {
+    id: "web-oracle",
+    prompt: `${STYLE}. A CYAN scrying-orb on a brass far-seer's stand piercing a glowing web of ley-lines that stretch beyond the known map, distant lights of far realms reflected in the glass, an open ledger beneath citing each vision with a runic source-mark, far-sight and verified knowledge drawn from the wider world`,
+  },
 ];
 
 function postJSON(url, headers, body) {

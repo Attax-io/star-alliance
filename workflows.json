@@ -1489,6 +1489,55 @@
           "label": "The Butler reports the laws harvested, verified, and indexed — and what's ready for the codex — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
         }
       ]
+    },
+    {
+      "id": "web-oracle",
+      "name": "Oracle's Scrying",
+      "icon": "🔭",
+      "accent": "cyan",
+      "category": "Research & Intel",
+      "tagline": "Scry the open web for a verified, cited answer to any question.",
+      "when": "Use this when a question needs an answer from the live web — general knowledge, current facts, anything outside the repo or the guild. Triggered when you ask a question with 'search the web' in it. The Strategist fans out searches, cross-checks the strongest sources, and returns a cited answer; no code is written.",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Pose the Question",
+          "act": "You ask a question that needs an answer from the live web, with 'search the web' in it.",
+          "produces": "web question"
+        },
+        {
+          "kind": "member",
+          "actor": "the-butler",
+          "title": "Frame the Query",
+          "act": "The Butler restates the question as a focused, answerable search brief — scope, what counts as a good answer — and routes it to the Strategist.",
+          "produces": "search brief"
+        },
+        {
+          "kind": "gate",
+          "gate": "approval",
+          "label": "You confirm the question and its scope before the scrying begins."
+        },
+        {
+          "kind": "member",
+          "actor": "the-strategist",
+          "title": "Scry & Verify the Web",
+          "act": "The Strategist, driving the thinker weapon (web tools stay with the thinker — doers cannot run them), fans out web searches, fetches the strongest sources, adversarially cross-checks the claims, and synthesizes a cited answer.",
+          "produces": "cited answer"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Guild Conformance",
+          "act": "Before the Butler reports back, the Quartermaster runs a repo-wide conformance pass — reconciling members, skills, the arsenal, workflows, docs, and the generated guild data against one another — and confirms this run left nothing contradicting anywhere in the project.",
+          "produces": "conformance sign-off"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports the answer and its sources — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+        }
+      ]
     }
   ]
 }
