@@ -2,7 +2,7 @@
 name: weapon-utility
 description: "Every member's rule for which weapon (model) to draw and how thinker and doer weapons work together. Thinker weapons read, plan, and prompt the doers; doer weapons do the job and return it; the thinker then reviews the result against the plan and re-prompts the doer until it conforms. A member draws the highest-priority AVAILABLE weapon of the kind the job needs — scanning its arsenal left to right. One thinker plans and reviews and may dispatch several doers in parallel (many of one model or a mix); only ultra-brainstorming runs several thinkers at once. Use whenever a member must pick a model, decide thinker-vs-doer, or run the plan → do → review loop. Triggers: 'which weapon', 'which model should X use', 'pick the weapon', 'thinker or doer', 'draw a weapon', 'run the weapon loop', 'how does the member choose its model'. Every member consults this before acting — it is the atomic layer beneath members-formation (which member works) and ultra-brainstorming (fuse several members across models)."
 metadata:
-  version: 1.7.0
+  version: 1.8.0
 type: Skill
 
 ---
@@ -112,6 +112,12 @@ and, on review, treat a draft that ends mid-sentence as a truncation → re-run 
 A member always draws the **highest-priority available weapon of the kind the job needs**,
 scanning its arsenal **left → right** (left = highest priority, per decision #25).
 
+- **First ask: does the job need a *weapon* at all?** An exact, mechanical transform — a
+  field-preserving JSON merge, pulling a literal out of source, a deterministic rename — is a
+  **script, not a summon.** An LLM (doer *or* thinker) will silently drop a field or reword a value on
+  a precision-critical merge; a `node -e` eval to extract + a Python merge will not. Draw a model only
+  when the work is **generative or judgemental** (authoring prose, designing, reasoning). When the
+  answer is deterministic, write the script and review its diff — the cheapest, safest move of all.
 - **Needs a thinker** → take the **leftmost available** thinker weapon (first weapon that can
   think). If it is unavailable, take the next thinker to its right. Exhausted → fall through to
   `sonnet`.
@@ -200,6 +206,7 @@ python3 tools/efficiency_report.py   # shows median in/out tokens split by lite 
 **The safety check always wins:** before adjusting any `size_small_signals`, verify zero high-stakes turns in the LITE column (a migration, git push, deploy in a LITE-tagged turn is the hard failure). Stakes keyword list in `data/harness.json` is immutable until safety is confirmed.
 
 ## Changelog
+- **1.8.0** — **Draw no weapon — script it.** New lead rule in §Drawing the right weapon: before picking a thinker or doer, ask whether the job needs a *model* at all. An exact, mechanical transform (field-preserving JSON merge, literal extraction, deterministic rename) is a **script**, not a summon — an LLM doer *or* thinker silently drops a field or rewords a value on a precision-critical merge, where a `node -e` eval + Python merge will not. Draw a model only for generative/judgemental work. Mined from the model-armory consolidation, where the 15×16-field registry merge was done by script (not minimax) precisely to avoid transcription loss. New selection rule → MINOR.
 - **1.7.0** — **`gemma4` reclassed doer → thinker.** It now joins the thinker bench (light, fast
   second mind, esp. content/marketing) — the guild leans on `minimax-m3` (direct API) as the prime
   doer, so the Ollama bench is read as thinkers. `conformity_check.ROLE` updated to match. Also

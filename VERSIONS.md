@@ -46,7 +46,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`full-output-enforcement`](star-alliance-skills/full-output-enforcement/SKILL.md) | 1.0.0 | own | 25 / 203 | 382 / 46 | ✓ lean | Overrides default LLM truncation behavior |
 | [`graphify`](star-alliance-skills/graphify/SKILL.md) | 1.0.0 | own | 35 / 225 | 5904 / 1025 | ○ large | any input (code, docs, papers, images, videos) to knowledge graph |
 | [`growth-marketing`](star-alliance-skills/growth-marketing/SKILL.md) | 1.0.0 | own | 108 / 829 | 2490 / 97 | ✓ lean | The Herald's marketing craft — turn a business's invisibility into a repeatable demand eng… |
-| [`guild-conformity`](star-alliance-skills/guild-conformity/SKILL.md) | 1.3.0 | own | 130 / 916 | 1803 / 115 | ✓ lean | The Quartermaster's craft for proving the whole guild repo agrees with itself and with eve… |
+| [`guild-conformity`](star-alliance-skills/guild-conformity/SKILL.md) | 1.4.0 | own | 130 / 916 | 2131 / 138 | ✓ lean | The Quartermaster's craft for proving the whole guild repo agrees with itself and with eve… |
 | [`guild-log`](star-alliance-skills/guild-log/SKILL.md) | 1.2.1 | own | 118 / 801 | 2454 / 231 | ✓ lean | Enforce logging of non-git-visible changes to the Star Alliance guild log |
 | [`harness-efficiency`](star-alliance-skills/harness-efficiency/SKILL.md) | 1.1.0 | own | 150 / 1010 | 1062 / 120 | ✓ lean | The Strategist's craft for proving the Star Alliance harness actually saves tokens and tim… |
 | [`high-alert`](star-alliance-skills/high-alert/SKILL.md) | 1.0.0 | own | 88 / 577 | 292 / 29 | ✓ lean | The guild's session-event klaxon |
@@ -81,7 +81,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`transactions-domain-model`](star-alliance-skills/transactions-domain-model/SKILL.md) | 1.3.1 | own | 108 / 951 | 3263 / 399 | ✓ lean | Loads the complete Lex Council transactions domain model before any transaction-related wo… |
 | [`ultra-brainstorming`](star-alliance-skills/ultra-brainstorming/SKILL.md) | 1.2.0 | own | 129 / 873 | 1530 / 155 | ✓ lean | An ASSIGNABLE multi-thinker method — any member who carries it fires ALL his available thi… |
 | [`vault-log-compliance`](star-alliance-skills/vault-log-compliance/SKILL.md) | 1.1.0 | own | 128 / 807 | 1445 / 119 | ✓ lean | Enforces P8 vault-logging compliance for Lex Council |
-| [`weapon-utility`](star-alliance-skills/weapon-utility/SKILL.md) | 1.7.0 | own | 166 / 1009 | 2662 / 220 | ✓ lean | Every member's rule for which weapon (model) to draw and how thinker and doer weapons work… |
+| [`weapon-utility`](star-alliance-skills/weapon-utility/SKILL.md) | 1.8.0 | own | 166 / 1009 | 2872 / 227 | ✓ lean | Every member's rule for which weapon (model) to draw and how thinker and doer weapons work… |
 | [`workflow-forge`](star-alliance-skills/workflow-forge/SKILL.md) | 1.3.0 | own | 153 / 997 | 1701 / 102 | ✓ lean | The Strategist's craft for distilling a finished run into a reusable star-map workflow in … |
 
 _54 skills — 47 lean · 6 large (installable, over the 500-line ideal) · 1 near the word ceiling · 0 hard violations._

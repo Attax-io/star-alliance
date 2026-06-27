@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 62
     },
-    "generated": "2026-06-27T17:08:40Z",
+    "generated": "2026-06-27T17:13:46Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -2855,7 +2855,7 @@ const GUILD = {
     {
       "id": "guild-conformity",
       "name": "guild-conformity",
-      "version": "1.3.0",
+      "version": "1.4.0",
       "icon": "🔎",
       "art": "",
       "artPng": true,
@@ -2883,8 +2883,8 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 114,
-        "words": 1803
+        "lines": 137,
+        "words": 2131
       },
       "global": true,
       "members": [
@@ -4361,7 +4361,7 @@ const GUILD = {
     {
       "id": "weapon-utility",
       "name": "weapon-utility",
-      "version": "1.7.0",
+      "version": "1.8.0",
       "icon": "🗡️",
       "art": "",
       "artPng": true,
@@ -4391,8 +4391,8 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 219,
-        "words": 2662
+        "lines": 226,
+        "words": 2872
       },
       "global": true,
       "members": [
