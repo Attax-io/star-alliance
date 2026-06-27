@@ -335,6 +335,14 @@
     "triggers": "'schedule this', 'run this daily', 'set up a cron task', 'make this a routine', 'standing watch'",
     "modes": ""
   },
+  "spec-driven-development": {
+    "icon": "📜",
+    "blurb": "Build from an executable spec — spec→plan→tasks→implement, each phase gated",
+    "level": "Advanced",
+    "tabler": "ti-list-check",
+    "triggers": "'spec this out', 'spec-driven', 'write a spec first', 'plan before we build', 'turn this into a spec', 'specify the feature', 'break this into tasks', 'what's the MVP slice'",
+    "modes": "specify; clarify; plan; tasks; analyze; implement"
+  },
   "schema-evolution": {
     "icon": "🧬",
     "blurb": "Add an optional field to a data model without breaking any reader",

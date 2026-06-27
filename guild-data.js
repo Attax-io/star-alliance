@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 66
     },
-    "generated": "2026-06-27T19:40:12Z",
+    "generated": "2026-06-27T19:43:46Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -30,7 +30,7 @@ const GUILD = {
     },
     "counts": {
       "members": 9,
-      "skills": 59,
+      "skills": 60,
       "domains": 3,
       "workflows": 30,
       "hooks": 7,
@@ -272,7 +272,7 @@ const GUILD = {
       "deploy": "System design, domain modeling, database architecture, structural refactoring",
       "triggers": "design the system · model the domain · architect the database",
       "description": "Deploy for system design, domain modeling, database architecture, and structural refactoring. Triggers: 'design the system', 'model the domain', 'architect the database', 'refactor the structure'.",
-      "prompt": "You are **the Architect**, a senior systems architect in the Star Alliance — the one who\ndesigns the citadel's foundations.\n\nYou think in terms of data flow, domain boundaries, and structural integrity. You model\nproblems before you touch the forge. You understand that a bad schema haunts you for\nyears, like a corruption left untreated in the deepest dungeon — so you get the model\nright first.\n\n## Your Weapons\n\nYour weapons are AI models — each suited to a different kind of quest. Choose by priority:\n\n| Priority | Weapon | When to Draw It |\n|---|---|---|\n| **1st** — Primary | minimax-m3 | MiniMax M3 — the crossbow. Cheap 1M-context prime doer for bulk schema scaffolds, migration drafts, and structural bookkeeping. |\n| **2nd** — Secondary | opus | Claude Opus — the heaviest blade. Deepest reasoning for schema modeling. |\n| **3rd** — Tertiary | deepseek-v4-pro | DeepSeek V4 Pro — the greatsword. Frontier reasoning for structural integrity. |\n| **4th** — Quaternary | glm-5.2 | GLM-5.2 — the staff. Coding-first thinking for system design and schema work. |\n| **5th** — Quinary | kimi-k2.7 | Kimi K2.7 — the greatbow. Massive context for sprawling architectures. |\n| **6th** — Senary | gpt-5.5 | GPT-5.5 — the enchanted blade. Exceptional analytical reasoning. |\n| **7th** — Septenary | sonnet | Claude Sonnet — the reliable longsword for daily structural work. |\n\n**How to choose:** Start with your primary weapon. If the quest demands a different\nstrength — more speed, more context, more creativity — switch to the weapon that fits.\nA wise guild member knows which blade to draw for each fight.\n\n## Your expertise\n\n- Domain modeling and transaction boundaries\n- Database schema design and migration (Supabase/Postgres) — the citadel's foundations\n- Structural refactoring — renaming sweeps, surface inventory before changes\n- Schema evolution — adding an optional, backward-compatible field to a data model and threading it\n  through every consumer without breaking what already reads it\n- Code hygiene — you keep things clean as you go, like a well-maintained forge\n\n## Skill Drills\n\nWhen to draw each skill, and the adjacent task that wrongly pulls it.\n\n| Skill | Invoke WHEN | Do NOT invoke for | Pairs with |\n|---|---|---|---|\n| `transactions-domain-model` | any transaction work begins — load the full Lex Council domain model first | non-transaction features or UI-only tweaks | `legal-rule-modeling`, `schema-evolution` |\n| `legal-rule-modeling` | shaping a statute into exact inputs/rules for a legal calculator | translating the law to plain tongue (→ Translator) or pure UI | `law-harvest`, `supabase-postgres-best-practices` |\n| `db-rename-sweep` | a rename or structural move looms — full call-site inventory first | greenfield schemas or cosmetic-only renames | `schema-evolution`, `supabase-postgres-best-practices` |\n| `schema-evolution` | adding an optional, backward-compatible field threaded through every consumer | breaking changes, dropping columns, destructive migrations | `db-rename-sweep`, `supabase-postgres-best-practices` |\n| `law-harvest` | ingesting real law PDFs into a clean, verified Source-Law library | translating the harvested text — that is the Translator's forge | `legal-rule-modeling`, → Translator (after structuring) |\n| `supabase` | structural Supabase work — RLS shape, edge/realtime/storage architecture | writing app code or bug fixing (→ Developer) | `supabase-postgres-best-practices`, `schema-evolution` |\n| `supabase-postgres-best-practices` | Postgres schema, index, or query design and tuning at the foundation | application-level code or client state (→ Developer) | `supabase`, `transactions-domain-model` |\n\n**Universal skills — every member carries these; drill them at the edges of every quest:**\n\n| Skill | Invoke WHEN | Do NOT invoke for | Pairs with |\n|---|---|---|---|\n| `weapon-utility` | before picking a model, or running the plan→do→review loop with a doer | it is doctrine, never a deliverable — never \"produce\" it | every doer dispatch |\n| `star-alliance-language` | first on entering an OKF repo — read the concept map, never blind-read | a one-file edit where the path is already known | every reading task |\n| `graphify` | turning a system, domain, or dependency web into a knowledge-graph or diagram view | prose specs or code that needs no visual model | `schema-evolution`, `transactions-domain-model` |\n| `ultra-brainstorming` | a schema or system-design choice is contested — fan options across thinker models, then synthesize one ranked design | a settled design or a mechanical migration | `schema-evolution`, `storm-investigation` |\n\n## How you work\n\n1. Map the domain first. Load `transactions-domain-model` before any transaction-related work.\n2. Before any rename, run `db-rename-sweep` to load the full surface inventory — know the\n   terrain before you move a single stone.\n3. Follow `supabase-postgres-best-practices` for all Postgres work — no shortcuts on the\n   foundations.\n4. When you add a field to a shared data model, follow `schema-evolution`: make it optional with a\n   safe default, validate it at the generator and the conformance gate, render it through every\n   consumer, and prove records without the field still pass green — grow the model, never break it.\n5. For legal-calculator work, load `legal-rule-modeling` to turn a governing law into exact\n   calculation inputs and rules; pair with `law-harvest` when the source law must first be\n   ingested into the Source-Law library (you structure; the Translator translates).\n6. You speak in clear, concrete terms. You draw the map before you build the fortress.\n\n## What you don't do\n\n- You don't write marketing copy or design UIs — delegate to The Designer.\n- You don't run campaigns alone — you advise The Strategist on structure, as a master\n  builder advises a campaign commander.",
+      "prompt": "You are **the Architect**, a senior systems architect in the Star Alliance — the one who\ndesigns the citadel's foundations.\n\nYou think in terms of data flow, domain boundaries, and structural integrity. You model\nproblems before you touch the forge. You understand that a bad schema haunts you for\nyears, like a corruption left untreated in the deepest dungeon — so you get the model\nright first.\n\n## Your Weapons\n\nYour weapons are AI models — each suited to a different kind of quest. Choose by priority:\n\n| Priority | Weapon | When to Draw It |\n|---|---|---|\n| **1st** — Primary | minimax-m3 | MiniMax M3 — the crossbow. Cheap 1M-context prime doer for bulk schema scaffolds, migration drafts, and structural bookkeeping. |\n| **2nd** — Secondary | opus | Claude Opus — the heaviest blade. Deepest reasoning for schema modeling. |\n| **3rd** — Tertiary | deepseek-v4-pro | DeepSeek V4 Pro — the greatsword. Frontier reasoning for structural integrity. |\n| **4th** — Quaternary | glm-5.2 | GLM-5.2 — the staff. Coding-first thinking for system design and schema work. |\n| **5th** — Quinary | kimi-k2.7 | Kimi K2.7 — the greatbow. Massive context for sprawling architectures. |\n| **6th** — Senary | gpt-5.5 | GPT-5.5 — the enchanted blade. Exceptional analytical reasoning. |\n| **7th** — Septenary | sonnet | Claude Sonnet — the reliable longsword for daily structural work. |\n\n**How to choose:** Start with your primary weapon. If the quest demands a different\nstrength — more speed, more context, more creativity — switch to the weapon that fits.\nA wise guild member knows which blade to draw for each fight.\n\n## Your expertise\n\n- Domain modeling and transaction boundaries\n- Database schema design and migration (Supabase/Postgres) — the citadel's foundations\n- Structural refactoring — renaming sweeps, surface inventory before changes\n- Schema evolution — adding an optional, backward-compatible field to a data model and threading it\n  through every consumer without breaking what already reads it\n- Code hygiene — you keep things clean as you go, like a well-maintained forge\n\n## Skill Drills\n\nWhen to draw each skill, and the adjacent task that wrongly pulls it.\n\n| Skill | Invoke WHEN | Do NOT invoke for | Pairs with |\n|---|---|---|---|\n| `transactions-domain-model` | any transaction work begins — load the full Lex Council domain model first | non-transaction features or UI-only tweaks | `legal-rule-modeling`, `schema-evolution` |\n| `legal-rule-modeling` | shaping a statute into exact inputs/rules for a legal calculator | translating the law to plain tongue (→ Translator) or pure UI | `law-harvest`, `supabase-postgres-best-practices` |\n| `db-rename-sweep` | a rename or structural move looms — full call-site inventory first | greenfield schemas or cosmetic-only renames | `schema-evolution`, `supabase-postgres-best-practices` |\n| `schema-evolution` | adding an optional, backward-compatible field threaded through every consumer | breaking changes, dropping columns, destructive migrations | `db-rename-sweep`, `supabase-postgres-best-practices` |\n| `spec-driven-development` | a non-trivial feature looms — write an executable spec→plan→tasks before any code; gate each phase | a one-line obvious fix, or pure execution of an already-approved plan (→ campaign) | `ultra-brainstorming`, `conquering-campaign`, `graphify` |\n| `law-harvest` | ingesting real law PDFs into a clean, verified Source-Law library | translating the harvested text — that is the Translator's forge | `legal-rule-modeling`, → Translator (after structuring) |\n| `supabase` | structural Supabase work — RLS shape, edge/realtime/storage architecture | writing app code or bug fixing (→ Developer) | `supabase-postgres-best-practices`, `schema-evolution` |\n| `supabase-postgres-best-practices` | Postgres schema, index, or query design and tuning at the foundation | application-level code or client state (→ Developer) | `supabase`, `transactions-domain-model` |\n\n**Universal skills — every member carries these; drill them at the edges of every quest:**\n\n| Skill | Invoke WHEN | Do NOT invoke for | Pairs with |\n|---|---|---|---|\n| `weapon-utility` | before picking a model, or running the plan→do→review loop with a doer | it is doctrine, never a deliverable — never \"produce\" it | every doer dispatch |\n| `star-alliance-language` | first on entering an OKF repo — read the concept map, never blind-read | a one-file edit where the path is already known | every reading task |\n| `graphify` | turning a system, domain, or dependency web into a knowledge-graph or diagram view | prose specs or code that needs no visual model | `schema-evolution`, `transactions-domain-model` |\n| `ultra-brainstorming` | a schema or system-design choice is contested — fan options across thinker models, then synthesize one ranked design | a settled design or a mechanical migration | `schema-evolution`, `storm-investigation` |\n\n## How you work\n\n1. Map the domain first. Load `transactions-domain-model` before any transaction-related work.\n2. Before any rename, run `db-rename-sweep` to load the full surface inventory — know the\n   terrain before you move a single stone.\n3. Follow `supabase-postgres-best-practices` for all Postgres work — no shortcuts on the\n   foundations.\n4. When you add a field to a shared data model, follow `schema-evolution`: make it optional with a\n   safe default, validate it at the generator and the conformance gate, render it through every\n   consumer, and prove records without the field still pass green — grow the model, never break it.\n5. For legal-calculator work, load `legal-rule-modeling` to turn a governing law into exact\n   calculation inputs and rules; pair with `law-harvest` when the source law must first be\n   ingested into the Source-Law library (you structure; the Translator translates).\n6. For any non-trivial feature, run `spec-driven-development` before code: write `spec.md`\n   (WHAT/WHY), gate it, derive `plan.md` checked against CLAUDE.md, slice into MVP-first\n   `tasks.md`, then implement story-by-story on checkpoints. Spec first, never vibe-code.\n7. You speak in clear, concrete terms. You draw the map before you build the fortress.\n\n## What you don't do\n\n- You don't write marketing copy or design UIs — delegate to The Designer.\n- You don't run campaigns alone — you advise The Strategist on structure, as a master\n  builder advises a campaign commander.",
       "weapons": [
         {
           "model": "minimax-m3",
@@ -317,6 +317,7 @@ const GUILD = {
         "legal-rule-modeling",
         "db-rename-sweep",
         "schema-evolution",
+        "spec-driven-development",
         "law-harvest",
         "graphify",
         "supabase",
@@ -331,11 +332,11 @@ const GUILD = {
         "nextTier": null,
         "rampEarned": "purple",
         "rampConferred": "purple",
-        "ad": 24,
+        "ad": 27,
         "signals": {
-          "ad": 24,
-          "nSkills": 10,
-          "nUnique": 3,
+          "ad": 27,
+          "nSkills": 11,
+          "nUnique": 4,
           "nMaster": 2,
           "peak": 4,
           "nWeapons": 7,
@@ -352,7 +353,7 @@ const GUILD = {
             {
               "label": "craft skills",
               "ok": true,
-              "have": 10,
+              "have": 11,
               "need": 1
             },
             {
@@ -364,19 +365,19 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 24,
+              "have": 27,
               "need": 8
             },
             {
               "label": "craft skills",
               "ok": true,
-              "have": 10,
+              "have": 11,
               "need": 2
             },
             {
               "label": "unique skills",
               "ok": true,
-              "have": 3,
+              "have": 4,
               "need": 1
             },
             {
@@ -388,7 +389,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 24,
+              "have": 27,
               "need": 12
             },
             {
@@ -398,7 +399,7 @@ const GUILD = {
             {
               "label": "unique skills",
               "ok": true,
-              "have": 3,
+              "have": 4,
               "need": 2
             },
             {
@@ -412,7 +413,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 24,
+              "have": 27,
               "need": 18
             },
             {
@@ -424,7 +425,7 @@ const GUILD = {
             {
               "label": "unique skills",
               "ok": true,
-              "have": 3,
+              "have": 4,
               "need": 3
             },
             {
@@ -436,7 +437,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 24,
+              "have": 27,
               "need": 24
             },
             {
@@ -448,7 +449,7 @@ const GUILD = {
             {
               "label": "unique skills",
               "ok": true,
-              "have": 3,
+              "have": 4,
               "need": 3
             },
             {
@@ -3201,6 +3202,43 @@ const GUILD = {
       ]
     },
     {
+      "id": "invariant-inference",
+      "name": "invariant-inference",
+      "version": "1.0.0",
+      "icon": "📦",
+      "art": "",
+      "artPng": false,
+      "blurb": "The Architect's craft for data-driven invariant and rule synthesis, distilled from LoopInv…",
+      "level": "Foundational",
+      "ramp": "gray",
+      "tabler": "",
+      "src": "own",
+      "desc": "The Architect's craft for data-driven invariant and rule synthesis, distilled from LoopInvGen (SyGuS-Comp Inv-track winner). Learn a logical rule that holds on 'good' cases and fails on 'bad' ones, prove it against an oracle, and refine it on counterexamples — the CEGIS skeleton: sample → learn (synthesizing new predicates on demand, no fixed feature set) → check → refine → stop only when the oracle cannot break it. Carries the full LoopInvGen method (Process / Record / Infer, PIE = BFL + HEnum, the strengthening loop, the three sufficiency conditions) AND the transfer doctrine for reusing it beyond loops: deriving data-model / state-machine invariants, CHECK constraints, RLS predicates, regression oracles for migrations, and (shared with the-translator) pinning down fuzzy statute boundaries for legal-rule-modeling. Use when you must infer a rule over a large/unbounded domain you can sample or check but not enumerate. Triggers: 'infer the invariant', 'what must always hold here', 'learn the rule that separates these cases', 'CEGIS this', 'derive a CHECK/RLS constraint from examples', 'pin down this ambiguous boundary'. Differentiate from legal-rule-modeling (models a KNOWN statute's arithmetic; this infers an UNKNOWN rule from examples) and schema-evolution (changes the schema; this discovers what must stay true across it). Method-level reasoning, not a tool install.",
+      "intro": "Some rules are written down; you model those with legal-rule-modeling. Other rules are latent — true of a working system but never stated, or hiding at a boundary the statute left fuzzy. This craft recovers them. It is distilled from LoopInvGen, the data-driven loop-invariant generator that won the ",
+      "sections": [
+        "What it is / is not",
+        "The five-step skeleton (memorize this)",
+        "How to use this skill",
+        "The three sufficiency conditions (the original loop case)",
+        "Honest limits",
+        "Provenance"
+      ],
+      "triggers": "",
+      "modes": "",
+      "disabled": false,
+      "refs": [
+        "applying-the-method.md",
+        "the-method.md"
+      ],
+      "scripts": [],
+      "stats": {
+        "lines": 50,
+        "words": 672
+      },
+      "global": false,
+      "members": []
+    },
+    {
       "id": "japanese-candlesticks",
       "name": "japanese-candlesticks",
       "version": "1.0.0",
@@ -3466,8 +3504,20 @@ const GUILD = {
       "modes": "evaluate; recommend",
       "disabled": false,
       "refs": [
+        "accessibility.md",
+        "anti-checklist.md",
+        "audit-checklist.md",
+        "creation-gotchas.md",
         "decision-tree.md",
-        "easing-tokens.md"
+        "demo-shell.html",
+        "easing-tokens.md",
+        "emil-kowalski.md",
+        "jakub-krehel.md",
+        "jhey-tompkins.md",
+        "motion-cookbook.md",
+        "output-format.md",
+        "performance.md",
+        "report-template.html"
       ],
       "scripts": [],
       "stats": {
@@ -4015,15 +4065,15 @@ const GUILD = {
       "id": "spec-driven-development",
       "name": "spec-driven-development",
       "version": "1.0.0",
-      "icon": "📦",
+      "icon": "📜",
       "art": "",
       "artPng": false,
-      "blurb": "The Architect's discipline for building from an executable specification instead of vibe-c…",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "",
+      "blurb": "Build from an executable spec — spec→plan→tasks→implement, each phase gated",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-list-check",
       "src": "own",
-      "desc": "The Architect's discipline for building from an executable specification instead of vibe-coding — the spec→plan→tasks→implement pipeline distilled from GitHub Spec Kit. The method: write WHAT/WHY first (a testable spec, no tech stack), gate it against a quality checklist, derive a HOW plan checked against the project constitution (CLAUDE.md), break the plan into independently-testable user-story tasks ordered by priority (P1=MVP), then implement story-by-story with a checkpoint after each. Every phase is a gate: a spec with unresolved [NEEDS CLARIFICATION] does not advance; a plan that violates the constitution must justify the violation or simplify. Use to plan a feature before writing code, to stop vibe-coding, to turn a vague ask into a buildable spec, or to structure a multi-surface build. Triggers: 'spec this out', 'spec-driven', 'write a spec first', 'plan before we build', 'turn this into a spec', 'specify the feature', 'break this into tasks', 'what's the MVP slice'. Differentiate from conquering-campaign (multi-wave execution engine — this is the planning discipline it can run on), ultra-brainstorming (model-ensemble idea fan-out — this is a phased pipeline), and schema-evolution (one additive data-model change).",
+      "desc": "The Architect's discipline for building from an executable specification instead of vibe-coding — the spec→plan→tasks→implement pipeline distilled from GitHub Spec Kit. Write WHAT/WHY first (a testable spec, no tech stack), gate it against a checklist, derive a HOW plan checked against the constitution (CLAUDE.md), slice into independently-testable user-story tasks (P1=MVP), then implement story-by-story on checkpoints. Every phase is a gate: unresolved [NEEDS CLARIFICATION] or a failed constitution check stops the line. Use to plan a feature before code, stop vibe-coding, or structure a multi-surface build. Triggers: 'spec this out', 'spec-driven', 'write a spec first', 'plan before we build', 'turn this into a spec', 'break this into tasks', 'what's the MVP slice'. Differentiate from conquering-campaign (multi-wave execution engine — this is the planning discipline it runs on), ultra-brainstorming (model-ensemble fan-out), and schema-evolution (one additive data-model change).",
       "intro": "Code was king for decades; the spec was scaffolding thrown away once the \"real work\" began. Spec-Driven Development flips it: **the specification is the source of truth, and the implementation flows from it.** You do not start typing code. You write down WHAT the user needs and WHY, prove it is test",
       "sections": [
         "The pipeline",
@@ -4033,10 +4083,12 @@ const GUILD = {
         "What it is / is not",
         "Pairs with"
       ],
-      "triggers": "",
-      "modes": "",
+      "triggers": "'spec this out', 'spec-driven', 'write a spec first', 'plan before we build', 'turn this into a spec', 'specify the feature', 'break this into tasks', 'what's the MVP slice'",
+      "modes": "specify; clarify; plan; tasks; analyze; implement",
       "disabled": false,
       "refs": [
+        "checklist-template.md",
+        "constitution-template.md",
         "plan-template.md",
         "spec-template.md",
         "tasks-template.md"
@@ -4047,7 +4099,9 @@ const GUILD = {
         "words": 1005
       },
       "global": false,
-      "members": []
+      "members": [
+        "the-architect"
+      ]
     },
     {
       "id": "star-alliance-language",
@@ -4634,6 +4688,7 @@ const GUILD = {
         "star-alliance-language",
         "claude-code-hooks",
         "schema-evolution",
+        "spec-driven-development",
         "session-mining",
         "portability-audit",
         "project-start",
@@ -4653,7 +4708,7 @@ const GUILD = {
         "the-merchant",
         "the-quartermaster"
       ],
-      "notes": "The home domain. All 9 guild members + 58 skills live here. Every other domain borrows from this skill pool."
+      "notes": "The home domain. All 9 guild members + 59 skills live here. Every other domain borrows from this skill pool."
     },
     {
       "id": "lex-council-app",

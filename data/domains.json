@@ -60,6 +60,7 @@
         "star-alliance-language",
         "claude-code-hooks",
         "schema-evolution",
+        "spec-driven-development",
         "session-mining",
         "portability-audit",
         "project-start",
@@ -79,7 +80,7 @@
         "the-merchant",
         "the-quartermaster"
       ],
-      "notes": "The home domain. All 9 guild members + 58 skills live here. Every other domain borrows from this skill pool."
+      "notes": "The home domain. All 9 guild members + 59 skills live here. Every other domain borrows from this skill pool."
     },
     {
       "id": "lex-council-app",
