@@ -35,8 +35,8 @@ def armed():
 
 
 def target_path(data):
-    ti = data.get("tool_input", {}) or {}
-    return ti.get("file_path") or ti.get("path") or ""
+    ti = data.get("tool_input", {})
+    return (ti.get("file_path") or ti.get("path") or "").rstrip("/")
 
 
 def is_source(path):

@@ -83,7 +83,8 @@ def check_registry():
     if not check_file("models.registry", reg, "single source of truth for model facts"):
         return
     try:
-        data = json.load(open(reg))
+        with open(reg) as fh:
+            data = json.load(fh)
         models = data if isinstance(data, list) else data.get("models", data)
         count = len(models) if hasattr(models, "__len__") else 0
         add("models.registry.parse", PASS, f"{count} model entries", "")
@@ -103,7 +104,7 @@ def main():
     args = ap.parse_args()
 
     check_minimax(args.ping)
-    check_ollama(args.ping)
+    check_ollama()
     check_summon()
     check_registry()
 
