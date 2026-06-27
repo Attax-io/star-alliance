@@ -17,7 +17,7 @@ star-alliance/
 │   ├── the-quartermaster.md
 │   ├── the-strategist.md
 │   └── the-translator.md
-├── star-alliance-skills/  ← shared skill pool (44 skills, each a directory with SKILL.md)
+├── star-alliance-skills/  ← shared skill pool (45 skills, each a directory with SKILL.md)
 │   ├── article-creator/
 │   ├── brandkit/
 │   ├── ...
