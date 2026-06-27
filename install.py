@@ -51,7 +51,10 @@ import sys
 from pathlib import Path
 
 # --- reuse skillsmith's battle-tested bits (single source of truth) -------------
-_HERE = Path(__file__).resolve().parent
+# Repo root (walk up to the pinned VERSIONS.md + .git), so this works from tools/.
+_HERE = next((p for p in Path(__file__).resolve().parents
+              if (p / "VERSIONS.md").exists() and (p / ".git").exists()),
+             Path(__file__).resolve().parent)
 sys.path.insert(0, str(_HERE / "star-alliance-skills" / "skillsmith" / "scripts"))
 try:
     import skill_sync  # type: ignore
