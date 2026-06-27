@@ -111,6 +111,10 @@ const WORKFLOWS = [
     prompt: `${STYLE}. A VIOLET scrying orb ringed by five glowing council-flames converging into a single graded verdict-scroll, a multi-mind panel weighed and ranked into one judgement`,
   },
   {
+    id: "harness-calibration",
+    prompt: `${STYLE}. An AMBER guild instrument-bench with hook-levers, dial gauges, and a glowing measurement scroll, a technician's hand tuning a precision gear while efficiency-runes light up green one by one`,
+  },
+  {
     id: "workflow-forge",
     prompt: `${STYLE}. A CYAN celestial cartographer's table where a finished mission-route is being engraved as a new constellation onto the star map, a fresh workflow sigil set among the stars`,
   },
