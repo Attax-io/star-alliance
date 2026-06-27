@@ -742,6 +742,83 @@
       ]
     },
     {
+      "id": "okf-tidy",
+      "name": "OKF Tidy",
+      "icon": "🧹",
+      "accent": "gold",
+      "category": "Hygiene & Release",
+      "tagline": "The Quartermaster keeps the whole repo tidy & conformant to the Open Knowledge Format, so every member can read it fast on future runs.",
+      "when": "Use to bring the repo to (or back to) OKF conformance — after a campaign leaves files behind, when frontmatter drifts, or to migrate-first before arming the okf-gate. The producer pass; star-alliance-language is how members then read the result.",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Call the Tidy",
+          "act": "You ask the guild to tidy the repo to the Open Knowledge Format standard.",
+          "produces": "tidy request"
+        },
+        {
+          "kind": "member",
+          "actor": "the-butler",
+          "title": "Restate the Order",
+          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
+          "produces": "plain-English brief",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "restate"
+          },
+          "inputs": [
+            "tidy request"
+          ]
+        },
+        {
+          "kind": "gate",
+          "gate": "approval",
+          "label": "You confirm the tidy scope before any file is rewritten — a whole-repo frontmatter migration is hard to eyeball after the fact."
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Audit Conformance",
+          "act": "The Quartermaster runs `okf_audit.py` (the okf skill) to report every governed .md lacking YAML frontmatter or a `type:` field, and surveys non-markdown files for orphans and misplacement.",
+          "produces": "non-conformance report"
+        },
+        {
+          "kind": "gate",
+          "gate": "certify",
+          "label": "The Quartermaster certifies the migration is safe — exclusions cover vendored/generated trees and build.py still parses members & skills after frontmatter is injected."
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Migrate, Enrich & Sweep",
+          "act": "The Quartermaster runs `okf_audit.py --fix` (migrate-first baseline), enriches concepts with title/description/tags and cross-links (handing bulk drafting to a doer weapon), places non-md files by concept-path, prunes confirmed dead files, then runs build.py so the dashboard reflects the tidy.",
+          "produces": "OKF-conformant repo"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Conformance & Gate",
+          "act": "Re-runs `okf_audit.py` until it passes clean, confirms the okf-gate hook is registered in .claude/settings.json, then runs guild-log + guild-conformity so the run leaves the repo agreeing with itself.",
+          "produces": "verified tidy"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports what was migrated, enriched, swept, and gated — and flags whether the okf-gate is now armed."
+        }
+      ],
+      "trigger_phrases": [
+        "okf",
+        "okf tidy",
+        "tidy the repo",
+        "make it okf-conformant",
+        "run the okf audit",
+        "keep the repo clean",
+        "fix the frontmatter"
+      ]
+    },
+    {
       "id": "bug-cycle",
       "name": "Bug Cycle",
       "icon": "🪲",
