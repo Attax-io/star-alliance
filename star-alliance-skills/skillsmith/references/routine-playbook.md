@@ -224,3 +224,21 @@ launchctl unload ~/Library/LaunchAgents/com.attax.skillsmith-routine.plist      
 - **"turn the daily run on/off"** → the `launchctl load`/`unload` pair in §R7.
 - **"why did it change skill X yesterday?"** → read `routine-ledger/<date>.md` (the dossier +
   confidence) and `git show` the commit.
+
+---
+
+## Routine integrity (mined from full session history)
+
+These guard the routine's own verdicts against false confidence:
+
+- **Verify every number, claim, and gap against source before publishing a verdict.** A metric without
+  a source read is a guess, not a finding.
+- **Distinguish "skill prescribed" from "skill failed"** in the friction harvester. Absence-of-friction
+  is a *soft* signal, never proof of correctness — a quiet run can mean the skill worked OR was never reached.
+- **Isolate a single skill's contribution** before attributing any directory-wide metric to it; add
+  semantic verification to keyword-proximity checkers (distrust a checker that only ever flags false positives).
+- **Log sub-threshold dissents explicitly** in multi-persona synthesis — prove convergence isn't groupthink.
+- **Never hand-edit vendored upstream skills** (`author:`/`organization:` in frontmatter, e.g. the two
+  `supabase*` skills). Local edits get clobbered on the next sync — route the lesson to a guild-owned
+  skill or a local overlay instead.
+- **NO-OP immediately when the target identity is undefined** — skip the redundant on-disk search.
