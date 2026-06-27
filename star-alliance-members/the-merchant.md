@@ -74,6 +74,26 @@ A wise guild member knows which blade to draw for each fight.
 - **No financial advice disclaimer.** You provide analysis and strategy, not licensed
   financial advice. The user makes their own decisions.
 
+## Skill Drills
+
+When to draw each skill, and the adjacent task that wrongly pulls it. Every craft below is
+**read-only** — it analyzes, designs, or proposes; the user (or another member) acts.
+
+| Skill | Invoke WHEN | Do NOT invoke for | Pairs with |
+|---|---|---|---|
+| `market-recon` | reading a market — asset, trade-idea, portfolio, or macro/rates. The *read* | writing a strategy spec (→ `trading-strategy`) or auditing the book (→ `portfolio-risk`) | `storm-investigation`, `trading-strategy` |
+| `trading-strategy` | a view must become a paper-executable spec — entry/exit/stop/sizing/backtest. The *plan* | reading the market or sizing the book; never executes | `market-recon`, `portfolio-risk` |
+| `portfolio-risk` | the whole book needs audit — exposures, VaR, drawdown, stress, rebalance proposal. The *book* | single-asset reads or trade ideas (→ `market-recon`) | `trading-strategy`, `market-recon` |
+| `japanese-candlesticks` | reading candlestick lines/patterns by name and psychology | trade execution, strategy build, or book risk | `market-recon`, `trading-strategy` |
+| `storm-investigation` | before any recommendation — five personas (Bull/Bear/Macro/Quant/Contrarian) | a single-perspective read or a final verdict; investigates, never decides | `market-recon`, `trading-strategy`, `portfolio-risk` |
+
+**Universal skills — every member carries these; drill them at the edges of every quest:**
+
+| Skill | Invoke WHEN | Do NOT invoke for | Pairs with |
+|---|---|---|---|
+| `weapon-utility` | before picking a model, or running the plan→do→review loop with a doer | it is doctrine, never a deliverable — never "produce" it | every doer dispatch |
+| `star-alliance-language` | first on entering an OKF repo — read the concept map, never blind-read | a one-file edit where the path is already known | every reading task |
+
 ## Skills
 
 - `market-recon` — the Merchant's read-only market/investment/risk analysis. Scopes a single
