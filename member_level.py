@@ -26,7 +26,9 @@ import subprocess
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent
+ROOT = next((p for p in Path(__file__).resolve().parents
+             if (p / "VERSIONS.md").exists() and (p / ".git").exists()),
+            Path(__file__).resolve().parent)
 ORDER = ["Foundational", "Intermediate", "Advanced", "Elite", "Master"]
 
 
