@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 65
     },
-    "generated": "2026-06-27T18:09:38Z",
+    "generated": "2026-06-27T18:11:11Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -30,7 +30,7 @@ const GUILD = {
     },
     "counts": {
       "members": 9,
-      "skills": 54,
+      "skills": 55,
       "domains": 3,
       "workflows": 29,
       "hooks": 7,
@@ -3490,6 +3490,47 @@ const GUILD = {
       ]
     },
     {
+      "id": "motion-design",
+      "name": "motion-design",
+      "version": "1.0.0",
+      "icon": "📦",
+      "art": "",
+      "artPng": false,
+      "blurb": "Specialist motion engine for UI — picks the exact easing curve, duration token, transform-…",
+      "level": "Foundational",
+      "ramp": "gray",
+      "tabler": "",
+      "src": "own",
+      "desc": "Specialist motion engine for UI — picks the exact easing curve, duration token, transform-origin, and spring-vs-bezier call for any animation, by interaction purpose and frequency. The deep counterpart to design-taste's broad `motion` mode: design-taste DECIDES whether/where a surface gets motion; motion-design SPECIFIES the precise curve and timing. Every animation needs a job — if it has no job, it recommends none. Carries a decision-tree (enter/exit · morph · time-based · hover · keyboard · gesture) and a full easing+duration token set (ease-out/in-out families, --dur-1..5), plus performance (compositor-only props, will-change, blur budget) and prefers-reduced-motion accessibility. Triggers: 'animate this', 'add a transition', 'motion for X', 'clean up this animation', 'this feels too fast/slow', 'make it feel more alive/natural', questions about easing, timing, micro-interactions, spring vs bezier, bounce. NOT for whether a design should have motion at all or overall visual style — that is design-taste.",
+      "intro": "Design intentional, purposeful motion for product UI. This skill evaluates an animation's need and recommends specific easing curves, durations, transform-origins, and implementation approaches based on interaction frequency and purpose.",
+      "sections": [
+        "Process",
+        "Output Format",
+        "Animation Recommendation",
+        "Example",
+        "Animation Recommendation",
+        "Tips for Best Results",
+        "Resources",
+        "Gotchas",
+        "Versioning",
+        "Changelog"
+      ],
+      "triggers": "",
+      "modes": "",
+      "disabled": false,
+      "refs": [
+        "decision-tree.md",
+        "easing-tokens.md"
+      ],
+      "scripts": [],
+      "stats": {
+        "lines": 132,
+        "words": 758
+      },
+      "global": false,
+      "members": []
+    },
+    {
       "id": "obsidian-markdown",
       "name": "obsidian-markdown",
       "version": "1.0.0",
@@ -4362,7 +4403,7 @@ const GUILD = {
     {
       "id": "weapon-utility",
       "name": "weapon-utility",
-      "version": "2.0.0",
+      "version": "2.1.0",
       "icon": "🗡️",
       "art": "",
       "artPng": true,
@@ -4380,6 +4421,7 @@ const GUILD = {
         "The thinker ↔ doer loop",
         "Drawing the right weapon",
         "One thinker, one-or-many doers — and the ultra-brainstorming exception",
+        "Swarm dispatch — weighted fan-out, mid-flight reroute, stable coordinator",
         "Availability — when a weapon counts as drawable",
         "Where it sits",
         "Versioning",
@@ -4392,8 +4434,8 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 230,
-        "words": 3058
+        "lines": 255,
+        "words": 3516
       },
       "global": true,
       "members": [

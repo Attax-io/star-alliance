@@ -71,7 +71,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`scheduled-watch`](star-alliance-skills/scheduled-watch/SKILL.md) | 1.0.0 | own | 134 / 909 | 1030 / 48 | ✓ lean | The Strategist's craft for defining an unattended task that runs on a cron cadence and res… |
 | [`schema-evolution`](star-alliance-skills/schema-evolution/SKILL.md) | 1.1.0 | own | 152 / 1013 | 1750 / 139 | ✓ lean | The Architect's craft for evolving a structured data model without breaking what already r… |
 | [`session-mining`](star-alliance-skills/session-mining/SKILL.md) | 1.1.0 | own | 134 / 934 | 959 / 116 | ✓ lean | Mine your own Claude session history for lessons, then turn them into ranked, verified upg… |
-| [`skillsmith`](star-alliance-skills/skillsmith/SKILL.md) | 1.5.1 | own | 132 / 987 | 5254 / 165 | ○ large | Manage, sync, upgrade, create, and auto-evolve Star Alliance skills across the star-allian… |
+| [`skillsmith`](star-alliance-skills/skillsmith/SKILL.md) | 1.5.1 | own | 132 / 987 | 5253 / 165 | ○ large | Manage, sync, upgrade, create, and auto-evolve Star Alliance skills across the star-allian… |
 | [`star-alliance-language`](star-alliance-skills/star-alliance-language/SKILL.md) | 1.2.0 | own | 84 / 522 | 912 / 111 | ✓ lean | The guild's shared reading protocol for OKF-tidied repos — how every member quickly, cheap… |
 | [`storm-investigation`](star-alliance-skills/storm-investigation/SKILL.md) | 1.0.0 | own | 113 / 866 | 919 / 94 | ✓ lean | Multi-perspective deep-research method (Stanford STORM, NAACL 2024) for any topic — run fi… |
 | [`strategies-review`](star-alliance-skills/strategies-review/SKILL.md) | 1.0.0 | own | 12 / 72 | 297 / 44 | ✓ lean | Review pending strategies and move them to executed then check the docs. |
@@ -81,7 +81,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`transactions-domain-model`](star-alliance-skills/transactions-domain-model/SKILL.md) | 1.3.1 | own | 108 / 951 | 3263 / 399 | ✓ lean | Loads the complete Lex Council transactions domain model before any transaction-related wo… |
 | [`ultra-brainstorming`](star-alliance-skills/ultra-brainstorming/SKILL.md) | 1.2.0 | own | 129 / 873 | 1530 / 155 | ✓ lean | An ASSIGNABLE multi-thinker method — any member who carries it fires ALL his available thi… |
 | [`vault-log-compliance`](star-alliance-skills/vault-log-compliance/SKILL.md) | 1.1.0 | own | 128 / 807 | 1445 / 119 | ✓ lean | Enforces P8 vault-logging compliance for Lex Council |
-| [`weapon-utility`](star-alliance-skills/weapon-utility/SKILL.md) | 2.0.0 | own | 166 / 1009 | 3058 / 231 | ✓ lean | Every member's rule for which weapon (model) to draw and how thinker and doer weapons work… |
+| [`weapon-utility`](star-alliance-skills/weapon-utility/SKILL.md) | 2.1.0 | own | 166 / 1009 | 3516 / 256 | ✓ lean | Every member's rule for which weapon (model) to draw and how thinker and doer weapons work… |
 | [`workflow-forge`](star-alliance-skills/workflow-forge/SKILL.md) | 1.3.0 | own | 153 / 997 | 1701 / 102 | ✓ lean | The Strategist's craft for distilling a finished run into a reusable star-map workflow in … |
 
 _54 skills — 46 lean · 7 large (installable, over the 500-line ideal) · 1 near the word ceiling · 0 hard violations._

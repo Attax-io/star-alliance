@@ -2,7 +2,7 @@
 name: weapon-utility
 description: "Every member's rule for which weapon (model) to draw and how thinker and doer weapons work together. Thinker weapons read, plan, and prompt the doers; doer weapons do the job and return it; the thinker then reviews the result against the plan and re-prompts the doer until it conforms. A member draws the highest-priority AVAILABLE weapon of the kind the job needs — scanning its arsenal left to right. One thinker plans and reviews and may dispatch several doers in parallel (many of one model or a mix); only ultra-brainstorming runs several thinkers at once. Use whenever a member must pick a model, decide thinker-vs-doer, or run the plan → do → review loop. Triggers: 'which weapon', 'which model should X use', 'pick the weapon', 'thinker or doer', 'draw a weapon', 'run the weapon loop', 'how does the member choose its model'. Every member consults this before acting — it is the atomic layer beneath members-formation (which member works) and ultra-brainstorming (fuse several members across models)."
 metadata:
-  version: 2.0.0
+  version: 2.1.0
 type: Skill
 
 ---
@@ -162,6 +162,30 @@ per-file transforms. Fall back to individual `summon.py` calls when slices need 
 models, or are genuinely sequential (each depends on the last). The batch path is minimax-only today;
 other backends degrade gracefully to a sequential loop with the same ordered-results contract.
 
+## Swarm dispatch — weighted fan-out, mid-flight reroute, stable coordinator
+
+Mined from **SWARM Parallelism** ([Ryabinin et al. 2023](https://arxiv.org/abs/2301.11913), `yandex-research/swarm`) —
+training huge models over **unreliable, heterogeneous, preemptible** nodes. Three of its ideas
+sharpen the doer fan-out above.
+
+**Fan out weighted by throughput, not in equal rounds.** Mixed doer pools self-balance when slices route by
+probability proportional to each doer's measured speed and reliability — faster peers pull more weight, slower
+peers take the tail. Give `minimax-m3` the bulk of any fan-out. Hand slices to a second doer only when it cuts
+wall-clock; weight the split by the doers' actual throughput, not by slice count. Heterogeneous hardware is the
+feature: the load finds its own balance, do not pre-flatten it.
+
+**A `None` slice is a preempted peer, not a dead job.** SWARM's invariant: a worker can vanish mid-batch and
+the run continues — its slice reroutes to another peer in the same stage, no restart. Treat every `None` in the
+`delegate_many` result the same way: do not fail the whole fan-out. Re-dispatch JUST that slice, same plan,
+same prompt, to the next doer to the right. Fallback is per-slice and mid-flight, not per-job and pre-flight.
+Only when the doer pool is exhausted FOR THAT SLICE does the failure bubble up to the thinker.
+
+**The thinker is the stable coordinator; doers are swappable workers.** SWARM pins its DHT and monitor on a
+cheap reliable node while GPU peers churn in and out. That IS the thinker/doer split: the thinker (Claude brain)
+is always reachable, holds the plan, holds the tool buttons. Doers are the preemptible layer — replaceable,
+droppable, reroutable. Never put the plan, the tool calls, or the join logic on a doer. They vanish; the thinker
+must not.
+
 ## Availability — when a weapon counts as drawable
 
 A weapon is **available** only if all hold:
@@ -209,6 +233,7 @@ python3 tools/efficiency_report.py   # shows median in/out tokens split by lite 
 **The safety check always wins:** before adjusting any `size_small_signals`, verify zero high-stakes turns in the LITE column (a migration, git push, deploy in a LITE-tagged turn is the hard failure). Stakes keyword list in `data/harness.json` is immutable until safety is confirmed.
 
 ## Changelog
+- **2.1.0** — **Swarm dispatch (mined from SWARM Parallelism, `yandex-research/swarm`).** New §Swarm dispatch maps three ideas from training over unreliable/heterogeneous/preemptible nodes onto the doer fan-out: **(1) throughput-weighted fan-out** — split a mixed doer pool ∝ each doer's measured speed/reliability (give `minimax-m3` the bulk), not round-robin; heterogeneity self-balances. **(2) mid-flight slice reroute** — a `None` in the `delegate_many` result is a *preempted peer, not a dead job*: re-dispatch that one slice to the next doer right (same plan/prompt), the left→right doer-fallback applied at SLICE granularity mid-flight instead of whole-job; only an exhausted pool for that slice fails up to the thinker. Closes the prior gap where the skill cited `delegate_many`'s `None` contract (1.5.0) but gave no doctrine for handling it. **(3) stable-coordinator / swappable-workers** — names the *why* behind reroute: the thinker (Claude brain) is SWARM's stable cheap monitor (always reachable, holds plan + tool buttons); doers are the preemptible GPU peers — never put the plan or tool calls on a weapon that can vanish. New dispatch doctrine → MINOR.
 - **2.0.0** — **Brain = personality (the model the member runs as).** Redefines the member's mind: the **brain is its session model** (`model:`) — the live model that actually thinks and orchestrates in a session — NOT "whichever thinker leads the arsenal." `opus` and the other thinkers are reframed as **escalation weapons** the brain delegates to, not the member's identity. The dashboard now flags the **BRAIN** (session-model weapon) and the **DOER** (prime doer, `minimax-m3`) on each member's cards; `conformity_check.py` replaces the `PT` (prime-thinker==opus) check with **`BR`** (the session model is a carried, thinking weapon) + **`PD`** (prime doer leads). Supersedes the §5 "prime thinker = first thinker weapon = opus" decision. Selection-contract change → MAJOR.
 - **1.8.0** — **Draw no weapon — script it.** New lead rule in §Drawing the right weapon: before picking a thinker or doer, ask whether the job needs a *model* at all. An exact, mechanical transform (field-preserving JSON merge, literal extraction, deterministic rename) is a **script**, not a summon — an LLM doer *or* thinker silently drops a field or rewords a value on a precision-critical merge, where a `node -e` eval + Python merge will not. Draw a model only for generative/judgemental work. Mined from the model-armory consolidation, where the 15×16-field registry merge was done by script (not minimax) precisely to avoid transcription loss. New selection rule → MINOR.
 - **1.7.0** — **`gemma4` reclassed doer → thinker.** It now joins the thinker bench (light, fast
