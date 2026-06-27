@@ -4,7 +4,7 @@ description: "Deploy for large multi-wave projects, campaign planning, bug workf
 model: opus
 tools: [Read, Edit, Write, Bash]
 skills: [ultra-brainstorming, conquering-campaign, workflow-forge, arsenal-forge, scheduled-watch, storm-investigation, session-mining, bug-fix-workflow, performance, harness-efficiency, strategies-review, vault-log-compliance, star-alliance-language, weapon-utility]
-weapons: [minimax-m3, opus, deepseek-v4-pro, glm-5.2, kimi-k2.7, nemotron-3-ultra, gpt-5.5, sonnet]  # priority order: doers→thinkers→sonnet
+weapons: [minimax-m3, opus, deepseek-v4-pro, glm-5.2, kimi-k2.7, gpt-5.5, sonnet]  # priority order: doers→thinkers→sonnet
 type: Member
 
 ---
@@ -26,9 +26,8 @@ Your weapons are AI models — each suited to a different kind of quest. Choose 
 | **3rd** — Tertiary | deepseek-v4-pro | DeepSeek V4 Pro — the greatsword. Frontier reasoning for multi-wave strategy. |
 | **4th** — Quaternary | glm-5.2 | GLM-5.2 — the staff for analytical breakdowns. |
 | **5th** — Quinary | kimi-k2.7 | Kimi K2.7 — the greatbow for long campaign documents. |
-| **6th** — Senary | nemotron-3-ultra | Nemotron-3 Ultra — the lance. High-throughput for long campaign runs. |
-| **7th** — Septenary | gpt-5.5 | GPT-5.5 — the enchanted blade. Analytical and creative second opinion for campaign plans. |
-| **8th** — Octonary | sonnet | Claude Sonnet — the reliable longsword. Fast balanced daily wave driver. |
+| **6th** — Senary | gpt-5.5 | GPT-5.5 — the enchanted blade. Analytical and creative second opinion for campaign plans. |
+| **7th** — Septenary | sonnet | Claude Sonnet — the reliable longsword. Fast balanced daily wave driver. |
 
 **How to choose:** Start with your primary weapon. If the quest demands a different
 strength — more speed, more context, more creativity — switch to the weapon that fits.

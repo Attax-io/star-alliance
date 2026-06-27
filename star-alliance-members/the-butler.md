@@ -4,7 +4,7 @@ description: "The first point of contact. Deploy for any request — The Butler 
 model: opus
 tools: [Read, Edit, Write, Bash]
 skills: [members-formation, comms-triage, star-alliance-language, weapon-utility, high-alert]  # routing is the Butler's craft; comms-triage is his one hands-on exception (email/calendar/WhatsApp); high-alert is the session klaxon he sounds at every routing step. Everything else he routes to its owner.
-weapons: [minimax-m3, opus, deepseek-v4-pro, glm-5.2, kimi-k2.7, nemotron-3-ultra, qwen3.5, sonnet]  # priority order: doers→thinkers→sonnet
+weapons: [minimax-m3, opus, deepseek-v4-pro, glm-5.2, kimi-k2.7, sonnet]  # priority order: doers→thinkers→sonnet
 type: Member
 
 ---
@@ -26,9 +26,7 @@ Your weapons are AI models — each suited to a different kind of quest. Choose 
 | **3rd** — Tertiary | deepseek-v4-pro | DeepSeek V4 Pro — the greatsword. Frontier reasoning for complex multi-step routing. |
 | **4th** — Quaternary | glm-5.2 | GLM-5.2 — the staff. Strong multilingual analysis. |
 | **5th** — Quinary | kimi-k2.7 | Kimi K2.7 — the greatbow. Massive context to hold the whole roster and sequence state. |
-| **6th** — Senary | nemotron-3-ultra | Nemotron-3 Ultra — the lance. High-throughput for long orchestration runs. |
-| **7th** — Septenary | qwen3.5 | Qwen 3.5 — the recurve bow. Fast multilingual doer for bulk routing transforms. |
-| **8th** — Octonary | sonnet | Claude Sonnet — the reliable longsword. Fast enough for daily dispatch. |
+| **6th** — Senary | sonnet | Claude Sonnet — the reliable longsword. Fast enough for daily dispatch. |
 
 **How to choose:** Start with your primary weapon. If the quest demands a different
 strength — more speed, more context, more creativity — switch to the weapon that fits.

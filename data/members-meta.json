@@ -25,9 +25,7 @@
         "deepseek-v4-pro": "DeepSeek V4 Pro — the greatsword. Frontier reasoning for complex multi-step routing.",
         "glm-5.2": "GLM-5.2 — the staff. Strong multilingual analysis.",
         "kimi-k2.7": "Kimi K2.7 — the greatbow. Massive context to hold the whole roster and sequence state.",
-        "nemotron-3-ultra": "Nemotron-3 Ultra — the lance. High-throughput for long orchestration runs.",
-        "sonnet": "Claude Sonnet — the reliable longsword. Fast enough for daily dispatch.",
-        "qwen3.5": "Qwen 3.5 — the recurve bow. Fast multilingual doer for bulk routing transforms."
+        "sonnet": "Claude Sonnet — the reliable longsword. Fast enough for daily dispatch."
       },
       "does": [
         "Receives orders and decides which member handles what",
@@ -54,7 +52,6 @@
       "weaponsDesc": {
         "minimax-m3": "MiniMax M3 — the crossbow. Cheap 1M-context prime doer for bulk schema scaffolds, migration drafts, and structural bookkeeping.",
         "kimi-k2.7": "Kimi K2.7 — the greatbow. Massive context for sprawling architectures.",
-        "nemotron-3-ultra": "Nemotron-3 Ultra — the lance. High-throughput for long design sessions.",
         "opus": "Claude Opus — the heaviest blade. Deepest reasoning for schema modeling.",
         "gpt-5.5": "GPT-5.5 — the enchanted blade. Exceptional analytical reasoning.",
         "glm-5.2": "GLM-5.2 — the staff. Coding-first thinking for system design and schema work.",
@@ -148,7 +145,6 @@
       "weaponsDesc": {
         "minimax-m3": "MiniMax M3 — the crossbow. Cheap 1M-context prime doer for campaign artifacts, wave manifests, and mechanical transforms across many files.",
         "kimi-k2.7": "Kimi K2.7 — the greatbow for long campaign documents.",
-        "nemotron-3-ultra": "Nemotron-3 Ultra — the lance. High-throughput for long campaign runs.",
         "opus": "Claude Opus — the heaviest blade for complex multi-wave planning.",
         "glm-5.2": "GLM-5.2 — the staff for analytical breakdowns.",
         "gpt-5.5": "GPT-5.5 — the enchanted blade. Analytical and creative second opinion for campaign plans.",
@@ -215,7 +211,8 @@
         "opus": "Claude Opus — the heaviest blade. Deepest reasoning for positioning and strategy.",
         "gpt-5.5": "GPT-5.5 — the enchanted blade. Creative second opinion on hooks and copy.",
         "glm-5.2": "GLM-5.2 — the staff. Analytical breakdowns and multilingual reach.",
-        "sonnet": "Claude Sonnet — the reliable longsword. Fast balanced daily marketing work."
+        "sonnet": "Claude Sonnet — the reliable longsword. Fast balanced daily marketing work.",
+        "gemma4": "Gemma 4 — the hand-axe. Light, fast thinker: a quick analytical second mind for hooks, headline variants, and content angles."
       },
       "does": [
         "Demand generation and lead flow",
@@ -243,7 +240,6 @@
       "weaponsDesc": {
         "minimax-m3": "MiniMax M3 — the crossbow. Cheap 1M-context prime doer for bulk market-data extraction, table building, and research bookkeeping.",
         "kimi-k2.7": "Kimi K2.7 — the greatbow. Massive context for long market histories.",
-        "nemotron-3-ultra": "Nemotron-3 Ultra — the lance. High-throughput for long portfolio runs.",
         "opus": "Claude Opus — the heaviest blade for deep financial analysis.",
         "gpt-5.5": "GPT-5.5 — the enchanted blade for market reasoning.",
         "glm-5.2": "GLM-5.2 — the staff for data analysis.",

@@ -4,7 +4,7 @@ description: "Deploy for investment analysis, trading strategies, market researc
 model: opus
 tools: [Read, Edit, Write, Bash]
 skills: [market-recon, trading-strategy, portfolio-risk, japanese-candlesticks, storm-investigation, ultra-brainstorming, star-alliance-language, weapon-utility]
-weapons: [minimax-m3, opus, deepseek-v4-pro, glm-5.2, kimi-k2.7, nemotron-3-ultra, gpt-5.5, sonnet]  # priority order: doers→thinkers→sonnet
+weapons: [minimax-m3, opus, deepseek-v4-pro, glm-5.2, kimi-k2.7, gpt-5.5, sonnet]  # priority order: doers→thinkers→sonnet
 type: Member
 
 ---
@@ -27,9 +27,8 @@ Your weapons are AI models — each suited to a different kind of quest. Choose 
 | **3rd** — Tertiary | deepseek-v4-pro | DeepSeek V4 Pro — the greatsword. Frontier reasoning for trading strategy. |
 | **4th** — Quaternary | glm-5.2 | GLM-5.2 — the staff for data analysis. |
 | **5th** — Quinary | kimi-k2.7 | Kimi K2.7 — the greatbow. Massive context for long market histories. |
-| **6th** — Senary | nemotron-3-ultra | Nemotron-3 Ultra — the lance. High-throughput for long portfolio runs. |
-| **7th** — Septenary | gpt-5.5 | GPT-5.5 — the enchanted blade for market reasoning. |
-| **8th** — Octonary | sonnet | Claude Sonnet — the reliable longsword. Fast balanced daily market reads. |
+| **6th** — Senary | gpt-5.5 | GPT-5.5 — the enchanted blade for market reasoning. |
+| **7th** — Septenary | sonnet | Claude Sonnet — the reliable longsword. Fast balanced daily market reads. |
 
 **How to choose:** Start with your primary weapon. If the quest demands a different
 strength — more speed, more context, more creativity — switch to the weapon that fits.
