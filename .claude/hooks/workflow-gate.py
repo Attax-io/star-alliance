@@ -136,6 +136,16 @@ def main():
 
     ui = last_user_index(lines)
     text = assistant_text_since(lines, ui)
+
+    # Race grace: at the FIRST tool of a turn, the current assistant message
+    # (with its banner) is not yet flushed to the transcript — there is no
+    # assistant text since the last user turn. We cannot verify yet, so we allow
+    # this single call. By the 2nd tool the text IS flushed, so a genuinely
+    # un-bannered turn is blocked from its second tool onward. Without this, every
+    # turn's first tool would falsely block and brick the session.
+    if not text.strip():
+        sys.exit(0)
+
     m = BANNER_RE.search(text)
 
     if m:
