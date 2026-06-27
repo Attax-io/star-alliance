@@ -146,6 +146,10 @@ const SKILLS = [
     prompt: `${STYLE}. A brass-and-crystal merchant's spyglass over an arcane market chart, glowing green and crimson candlestick bars rising across aged parchment, floating risk-runes and a balanced coin-scale, eyes-only reconnaissance of fortunes, observation not execution`,
   },
   {
+    id: "japanese-candlesticks",
+    prompt: `${STYLE}. A row of tall glowing green and crimson candlestick bars rendered as actual lit wax candles with flickering flames, casting amber light over an aged Japanese rice-merchant's chart scroll, a brushed sumi-e hammer and doji rune in the corner, an Edo-era folding fan and ink-brush beside coins, the ancient Far-Eastern art of reading price`,
+  },
+  {
     id: "legal-drafting",
     prompt: `${STYLE}. An ornate golden quill writing flowing bilingual script across twin parchment columns, right-to-left arcane Arabic runes on one side and Latin legal script on the other, a red wax seal and ribbon at the foot, ink glowing with the firm's authority, the scribe's craft of the law`,
   },
