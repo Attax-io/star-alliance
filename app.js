@@ -1314,6 +1314,12 @@ function mdToHtml(src) {
 
 // Lazy-fetch a skill's SKILL.md into the panel widget (called on first expand).
 async function loadSkillMd(id, host) {
+  // Prefer the baked sidecar (loaded via <script>, works under file:// too).
+  if (typeof SKILL_MD !== "undefined" && SKILL_MD && typeof SKILL_MD[id] === "string") {
+    host.innerHTML = mdToHtml(SKILL_MD[id]);
+    return;
+  }
+  // Fallback: live fetch (needs http — file:// blocks reads of local files).
   host.innerHTML = `<div class="md-loading">Reading SKILL.md…</div>`;
   try {
     const res = await fetch(`star-alliance-skills/${encodeURIComponent(id)}/SKILL.md`, { cache: "no-store" });
