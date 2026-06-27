@@ -14,6 +14,7 @@ Checks (each maps to a source-of-truth invariant or a logged decision):
   R  refs          workflow actors ∈ members∪{you}; gates valid; member skills exist
   S  source==gen   member .md frontmatter weapons order == generated guild-data
   W  weaponsDesc   members-meta weaponsDesc set == member weapons set
+  SD skill-drills  every member-carried skill has a `## Skill Drills` table row
   N  counts        guild-data meta.counts == real lengths
 """
 import json, re, sys, pathlib
@@ -215,6 +216,22 @@ def main():
         for mid, m in members.items():
             if "weapon-utility" not in m.get("skills", []):
                 fails.append(f"U  {mid}: missing foundational skill 'weapon-utility' (every member must carry it)")
+
+    # SD — Skill Drills coverage: every skill a member carries must be DRILLED in that
+    # member's `## Skill Drills` table — i.e. appear as a table ROW (matched by the
+    # `| <skill> |` cell). The frontmatter `skills:` list declares what the member wields;
+    # the drills table declares WHEN/when-NOT to wield each. A carried-but-undrilled skill
+    # is a coverage hole the member would have no firing doctrine for → HARD FAIL.
+    for md in sorted((ROOT / "star-alliance-members").glob("the-*.md")):
+        text = md.read_text()
+        skills = frontmatter_list(text, "skills")
+        if skills is None:
+            continue  # no skills frontmatter → nothing to drill
+        body = text.split("---", 2)[2] if text.count("---") >= 2 else text
+        for sk in skills:
+            if re.search(r'\|\s*`?' + re.escape(sk) + r'`?\s*\|', body) is None:
+                fails.append(f"SD {md.stem}: skill '{sk}' is carried but has no Skill Drills "
+                             f"table row (add a `| {sk} | ... |` drill)")
 
     # T — every type build.py explicitly classifies must be loggable via log_event.py
     def _set(text, name):
