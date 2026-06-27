@@ -23,6 +23,10 @@ const STYLE = "fantasy RPG skill icon, Fallen Sword MMORPG style, dark parchment
 
 const WORKFLOWS = [
   {
+    id: "app-packaging",
+    prompt: `${STYLE}. A master artificer's workbench on dark parchment: a finished glowing AMBER application-crystal being sealed inside an ornate runed reliquary-crate, a smaller sidecar casket latched alongside it, an enchanted anvil and gilded toolchain laid out, a wax guild-seal stamping the lid, the craft of scaffolding and packing a built app into one distributable shell`,
+  },
+  {
     id: "standard-mission",
     prompt: `${STYLE}. A grand celestial war-map carved on dark parchment, a glowing CYAN mission route winding through a constellation of stars, the guild banner planted at the center, runic waypoint markers at each stage, a coordinated multi-wave campaign mapped across the heavens`,
   },

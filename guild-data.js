@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 57,
       "patch": 70
     },
-    "generated": "2026-06-27T20:56:44Z",
+    "generated": "2026-06-27T20:58:10Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -7817,7 +7817,7 @@ const GUILD = {
         "bundle as an app",
         "make it an app"
       ],
-      "artPng": false
+      "artPng": true
     }
   ],
   "hooks": [
