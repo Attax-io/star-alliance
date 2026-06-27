@@ -2313,8 +2313,61 @@
       ]
     },
     {
+      "id": "harness-calibration",
       "name": "Harness Calibration",
-      "description": "Fix, tune, and verify the harness itself \u2014 hooks, scripts, measurement, and efficiency. Run when instrumentation is broken, efficiency_report.py reports wrong data, a hook needs patching, skills need upgrading after an audit, or LITE/FULL tier policy must be recalibrated.",
+      "icon": "\u2699\ufe0f",
+      "accent": "amber",
+      "category": "Guild Self",
+      "class": "mutating",
+      "tagline": "Fix, tune, and verify the harness itself.",
+      "when": "Instrumentation broken, efficiency_report.py blind, hooks misfiring, skills need upgrade after audit, or LITE/FULL tier policy needs recalibration.",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Trigger calibration",
+          "act": "You name the broken instrumentation, misfiring hook, bad efficiency report, or skill gap that triggered this run.",
+          "produces": "calibration trigger"
+        },
+        {
+          "kind": "gate",
+          "gate": "approval",
+          "label": "Restate brief (harness work, not feature work) and halt for explicit go."
+        },
+        {
+          "kind": "member",
+          "actor": "the-strategist",
+          "title": "Audit harness",
+          "act": "Trace every hook, script, and measurement point. Find gaps where harness fails to capture, route, or report correctly. Produce concrete patch list.",
+          "produces": "calibration findings"
+        },
+        {
+          "kind": "member",
+          "actor": "the-developer",
+          "title": "Patch hooks and scripts",
+          "act": "Apply patch list: fix broken hooks, correct script logic, repair measurement code, adjust LITE/FULL gating. Scoped to harness layer only. Verify data flows after patching.",
+          "produces": "patched harness"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Upgrade affected skills",
+          "act": "Update skills surfaced by audit: remove stale content, add instructions for newly instrumented capabilities, bump version tags.",
+          "produces": "upgraded skills"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Conformity close",
+          "act": "Re-run conformity_check.py. Verify no orphan hooks or dead scripts. Confirm all actors in new/changed workflows exist in guild-data.json.",
+          "produces": "conformance sign-off"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports patch list applied, skills upgraded, conformity green \u2014 and flags any remaining gaps for a follow-up Harness Calibration."
+        }
+      ],
       "trigger_phrases": [
         "harness calibration",
         "instrumentation broken",
@@ -2325,57 +2378,6 @@
         "hooks not firing",
         "recalibrate harness",
         "harness audit"
-      ],
-      "steps": [
-        {
-          "step": 1,
-          "kind": "gate",
-          "actor": "you",
-          "action": "Approval gate",
-          "detail": "Restate brief (harness work, not feature work) and halt for explicit go."
-        },
-        {
-          "step": 2,
-          "kind": "member",
-          "actor": "the-strategist",
-          "action": "Audit harness",
-          "detail": "Trace every hook, script, and measurement point. Find gaps where harness fails to capture, route, or report correctly."
-        },
-        {
-          "step": 3,
-          "kind": "member",
-          "actor": "the-strategist",
-          "action": "Produce calibration findings",
-          "detail": "Write findings: stale hooks, misreporting scripts, missing measurements, miscalibrated tier policy. Hand off concrete patch list to the-developer."
-        },
-        {
-          "step": 4,
-          "kind": "member",
-          "actor": "the-developer",
-          "action": "Patch hooks and scripts",
-          "detail": "Apply patch list: fix broken hooks, correct script logic, repair measurement code, adjust LITE/FULL gating. Scoped to harness layer only."
-        },
-        {
-          "step": 5,
-          "kind": "tool",
-          "actor": "the-developer",
-          "action": "Verify data flows",
-          "detail": "Run efficiency_report.py. Confirm reports match reality, hooks fire on right events, tier policy routes correctly."
-        },
-        {
-          "step": 6,
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "action": "Upgrade affected skills",
-          "detail": "Update skills surfaced by audit: remove stale content, add instructions for newly instrumented capabilities, bump version tags."
-        },
-        {
-          "step": 7,
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "action": "Conformity close",
-          "detail": "Re-run conformity check. Verify no orphan hooks or dead scripts. Sign off on calibration."
-        }
       ]
     }
   ]

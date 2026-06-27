@@ -12,7 +12,7 @@ description: >-
   every 'lesson' already shipped. Output is propose-only (apply-gate OFF). The on-demand companion to
   skillsmith's daily routine; uses storm-investigation to synthesize.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 type: Skill
 
 ---
@@ -96,7 +96,37 @@ Own skill. Bump `metadata.version` on any change (PATCH wording/refs · MINOR ne
 pipeline contract change). Regenerate `VERSIONS.md` with
 `python3 skillsmith/scripts/skill_registry.py write` after a bump.
 
+## Incremental mining — last-mine-ts delta (1.1.0)
+
+Full pipeline reruns over all historical sessions are slow and redundant after the first pass. Stamp a watermark so every subsequent run only processes new sessions.
+
+**After each successful mine run, write the watermark:**
+
+```sh
+python3 -c "
+import time, json, pathlib
+wm = pathlib.Path('data/last-mine-ts.json')
+wm.write_text(json.dumps({'ts': time.time(), 'iso': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())}))
+print('watermark written')
+"
+```
+
+**At the start of the next run, filter sessions newer than the watermark:**
+
+```sh
+python3 -c "
+import json, pathlib, time
+wm_path = pathlib.Path('data/last-mine-ts.json')
+since = json.loads(wm_path.read_text())['ts'] if wm_path.exists() else 0
+print(f'mining sessions newer than {since} ({time.strftime(\"%Y-%m-%d\", time.gmtime(since))})')
+"
+# pass `since` as a filter to session_map.py
+```
+
+This turns a growing O(n-sessions) rescan into an O(new-sessions) pass. For repos with >20 sessions, the difference is minutes → seconds. The full rescan remains available for a first-run or when a prior mine was incomplete.
+
 ## Changelog
+- **1.1.0** — New §Incremental mining: documents the `data/last-mine-ts.json` watermark pattern, add watermark-write command after a successful run, and filter command at run start. Prevents full-history rescan on every invocation. New section → MINOR.
 - **1.0.0** — Initial release. Six-phase pipeline (locate → map → signal-extract → doer-summarize →
   STORM synthesize → verify → propose-only register). `session_map.py` (store join) + `mine_sessions.py`
   (signal-window extractor). Crystallized from the repeated by-hand session-mining retrospectives.

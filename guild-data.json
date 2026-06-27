@@ -7,7 +7,7 @@
       "minor": 55,
       "patch": 62
     },
-    "generated": "2026-06-27T14:44:47Z",
+    "generated": "2026-06-27T15:07:48Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "gpt-5.5": "deactivated",
@@ -22,7 +22,7 @@
       "members": 9,
       "skills": 52,
       "domains": 3,
-      "workflows": 29,
+      "workflows": 30,
       "hooks": 7,
       "log": 141
     }
@@ -2859,7 +2859,7 @@
     {
       "id": "guild-conformity",
       "name": "guild-conformity",
-      "version": "1.2.0",
+      "version": "1.3.0",
       "icon": "🔎",
       "art": "",
       "artPng": true,
@@ -2878,6 +2878,7 @@
         "Gotchas",
         "Edit-time fast-path — conformitycheck.py --member <name>",
         "Versioning",
+        "Member-table consistency check (1.3.0)",
         "Changelog"
       ],
       "triggers": "'confirm guild conformance', 'run the conformity check', 'reconcile the guild data', 'conformity sweep', 'is everything consistent'",
@@ -2886,8 +2887,8 @@
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 96,
-        "words": 1614
+        "lines": 114,
+        "words": 1803
       },
       "global": true,
       "members": [
@@ -2934,7 +2935,7 @@
     {
       "id": "harness-efficiency",
       "name": "harness-efficiency",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "icon": "📊",
       "art": "",
       "artPng": true,
@@ -2953,6 +2954,7 @@
         "When the data is thin",
         "Where it sits",
         "Versioning",
+        "New metrics (1.1.0)",
         "Changelog"
       ],
       "triggers": "'efficiency report', 'harness efficiency', 'how much are we saving', 'is the gate working', 'tier split', 'check the offload', 'net tokens saved', 'tune the stakes list', or before/after a routing-gate hook change",
@@ -2961,10 +2963,10 @@
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 97,
-        "words": 800
+        "lines": 119,
+        "words": 1062
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-strategist"
       ]
@@ -3807,7 +3809,7 @@
     {
       "id": "session-mining",
       "name": "session-mining",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "icon": "⛏️",
       "art": "",
       "artPng": true,
@@ -3823,6 +3825,7 @@
         "The pipeline (run in order)",
         "Doctrine baked in (from the runs that forged this)",
         "Versioning",
+        "Incremental mining — last-mine-ts delta (1.1.0)",
         "Changelog"
       ],
       "triggers": "'review the last N sessions', 'mine my sessions', 'what did we learn from these sessions', 'what should we upgrade/merge/create from past work', 'audit the sessions for lessons', 'note down skills we can extract', or any retrospective over prior runs. Locates all three session stores, signal-extracts with offset/limit discipline (no blind read), doer-summarizes via MiniMax, STORM-synthesizes, then VERIFIES against the repo to kill every lesson already shipped. Propose-only.",
@@ -3834,8 +3837,8 @@
         "session_map.py"
       ],
       "stats": {
-        "lines": 85,
-        "words": 780
+        "lines": 115,
+        "words": 959
       },
       "global": true,
       "members": [
@@ -4292,7 +4295,7 @@
     {
       "id": "weapon-utility",
       "name": "weapon-utility",
-      "version": "1.5.0",
+      "version": "1.6.0",
       "icon": "🗡️",
       "art": "",
       "artPng": true,
@@ -4313,6 +4316,7 @@
         "Availability — when a weapon counts as drawable",
         "Where it sits",
         "Versioning",
+        "Cost-per-tier baseline (1.6.0)",
         "Changelog"
       ],
       "triggers": "automatic — every member consults it before drawing a weapon. 'which weapon', 'which model should X use', 'pick the weapon', 'thinker or doer', 'draw a weapon', 'run the weapon loop', 'how does the member choose its model'. The atomic layer beneath members-formation (which member) and ultra-brainstorming (fuse across models).",
@@ -4321,8 +4325,8 @@
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 184,
-        "words": 2208
+        "lines": 203,
+        "words": 2463
       },
       "global": true,
       "members": [
@@ -4340,7 +4344,7 @@
     {
       "id": "workflow-forge",
       "name": "workflow-forge",
-      "version": "1.2.0",
+      "version": "1.3.0",
       "icon": "🗺️",
       "art": "",
       "artPng": true,
@@ -4357,6 +4361,7 @@
         "Sharpening the craft",
         "Gotchas",
         "Versioning",
+        "Cast validation after forge (1.3.0)",
         "Changelog"
       ],
       "triggers": "'save this as a workflow', 'add this to the star map', 'register a workflow', 'crystallize this formation'",
@@ -4365,8 +4370,8 @@
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 77,
-        "words": 1487
+        "lines": 101,
+        "words": 1701
       },
       "global": true,
       "members": [
@@ -6849,6 +6854,75 @@
         "explain"
       ],
       "artPng": true
+    },
+    {
+      "id": "harness-calibration",
+      "name": "Harness Calibration",
+      "icon": "⚙️",
+      "accent": "amber",
+      "category": "Guild Self",
+      "class": "mutating",
+      "tagline": "Fix, tune, and verify the harness itself.",
+      "when": "Instrumentation broken, efficiency_report.py blind, hooks misfiring, skills need upgrade after audit, or LITE/FULL tier policy needs recalibration.",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Trigger calibration",
+          "act": "You name the broken instrumentation, misfiring hook, bad efficiency report, or skill gap that triggered this run.",
+          "produces": "calibration trigger"
+        },
+        {
+          "kind": "gate",
+          "gate": "approval",
+          "label": "Restate brief (harness work, not feature work) and halt for explicit go."
+        },
+        {
+          "kind": "member",
+          "actor": "the-strategist",
+          "title": "Audit harness",
+          "act": "Trace every hook, script, and measurement point. Find gaps where harness fails to capture, route, or report correctly. Produce concrete patch list.",
+          "produces": "calibration findings"
+        },
+        {
+          "kind": "member",
+          "actor": "the-developer",
+          "title": "Patch hooks and scripts",
+          "act": "Apply patch list: fix broken hooks, correct script logic, repair measurement code, adjust LITE/FULL gating. Scoped to harness layer only. Verify data flows after patching.",
+          "produces": "patched harness"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Upgrade affected skills",
+          "act": "Update skills surfaced by audit: remove stale content, add instructions for newly instrumented capabilities, bump version tags.",
+          "produces": "upgraded skills"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Conformity close",
+          "act": "Re-run conformity_check.py. Verify no orphan hooks or dead scripts. Confirm all actors in new/changed workflows exist in guild-data.json.",
+          "produces": "conformance sign-off"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports patch list applied, skills upgraded, conformity green — and flags any remaining gaps for a follow-up Harness Calibration."
+        }
+      ],
+      "trigger_phrases": [
+        "harness calibration",
+        "instrumentation broken",
+        "efficiency report wrong",
+        "hook needs patching",
+        "skill upgrades after audit",
+        "calibrate tier policy",
+        "hooks not firing",
+        "recalibrate harness",
+        "harness audit"
+      ],
+      "artPng": false
     }
   ],
   "hooks": [
