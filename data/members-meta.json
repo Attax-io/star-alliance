@@ -108,7 +108,7 @@
         "minimax-speech": "MiniMax Speech — the herald's voice. Generates spoken audio and voiceover.",
         "minimax-music": "MiniMax Music — the bard's lute. Generates music and sound to score the experience.",
         "minimax-m3": "MiniMax M3 — the crossbow. Precise structural doer for code-shaped design work.",
-        "opus": "Claude Opus — the master's eye. The prime thinker: plans the design, makes the taste calls, and critiques the doers' renders before they ship.",
+        "opus": "Claude Opus — the master's eye. The escalation thinker, drawn for the hardest design calls: plans the design, makes the taste calls, and critiques the doers' renders before they ship.",
         "sonnet": "Claude Sonnet — the reliable longsword. The dual at the tail: stands in for any role, and the Claude-capable fallback when a doer needs a tool only Claude models can run."
       },
       "does": [

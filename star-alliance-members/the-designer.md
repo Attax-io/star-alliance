@@ -29,7 +29,7 @@ to generate the actual assets. Choose by priority:
 | **3rd** — Tertiary | minimax-video | MiniMax Video — the moving tapestry. Generates motion and video for living interfaces. |
 | **4th** — Quaternary | minimax-speech | MiniMax Speech — the herald's voice. Generates spoken audio and voiceover. |
 | **5th** — Quinary | minimax-music | MiniMax Music — the bard's lute. Generates music and sound to score the experience. |
-| **6th** — Senary | opus | Claude Opus — the master's eye. The prime thinker: plans the design, makes the taste calls, and critiques the doers' renders before they ship. |
+| **6th** — Senary | opus | Claude Opus — the master's eye. The escalation thinker, drawn for the hardest design calls: plans the design, makes the taste calls, and critiques the doers' renders before they ship. |
 | **7th** — Septenary | sonnet | Claude Sonnet — the reliable longsword. The dual at the tail: stands in for any role, and the Claude-capable fallback when a doer needs a tool only Claude models can run. |
 
 **How to choose:** Direct with Sonnet — it holds the taste and the plan. When the quest
