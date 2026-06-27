@@ -46,7 +46,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`full-output-enforcement`](star-alliance-skills/full-output-enforcement/SKILL.md) | 1.0.0 | own | 25 / 203 | 382 / 46 | ✓ lean | Overrides default LLM truncation behavior |
 | [`graphify`](star-alliance-skills/graphify/SKILL.md) | 1.0.0 | own | 35 / 225 | 5904 / 1025 | ○ large | any input (code, docs, papers, images, videos) to knowledge graph |
 | [`growth-marketing`](star-alliance-skills/growth-marketing/SKILL.md) | 1.0.0 | own | 108 / 829 | 2490 / 97 | ✓ lean | The Herald's marketing craft — turn a business's invisibility into a repeatable demand eng… |
-| [`guild-conformity`](star-alliance-skills/guild-conformity/SKILL.md) | 1.4.0 | own | 131 / 916 | 2133 / 138 | ✓ lean | The Quartermaster's craft for proving the whole guild repo agrees with itself and with eve… |
+| [`guild-conformity`](star-alliance-skills/guild-conformity/SKILL.md) | 1.4.1 | own | 131 / 916 | 2167 / 139 | ✓ lean | The Quartermaster's craft for proving the whole guild repo agrees with itself and with eve… |
 | [`guild-log`](star-alliance-skills/guild-log/SKILL.md) | 1.2.1 | own | 118 / 801 | 2454 / 231 | ✓ lean | Enforce logging of non-git-visible changes to the Star Alliance guild log |
 | [`harness-efficiency`](star-alliance-skills/harness-efficiency/SKILL.md) | 1.1.0 | own | 150 / 1010 | 1062 / 120 | ✓ lean | The Strategist's craft for proving the Star Alliance harness actually saves tokens and tim… |
 | [`high-alert`](star-alliance-skills/high-alert/SKILL.md) | 1.0.0 | own | 88 / 577 | 292 / 29 | ✓ lean | The guild's session-event klaxon |
@@ -59,7 +59,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`legal-drafting`](star-alliance-skills/legal-drafting/SKILL.md) | 1.0.0 | own | 122 / 935 | 1156 / 54 | ✓ lean | The Translator's craft for drafting client correspondence and bilingual (Arabic/French/Eng… |
 | [`legal-rule-modeling`](star-alliance-skills/legal-rule-modeling/SKILL.md) | 1.0.0 | own | 133 / 931 | 1447 / 64 | ✓ lean | The Architect's craft for modelling a governing law into the exact calculation rules and i… |
 | [`market-recon`](star-alliance-skills/market-recon/SKILL.md) | 1.0.0 | own | 127 / 914 | 1115 / 55 | ✓ lean | The Merchant's craft for read-only market, investment, and risk analysis that ships a writ… |
-| [`members-formation`](star-alliance-skills/members-formation/SKILL.md) | 1.1.0 | own | 141 / 883 | 1775 / 178 | ✓ lean | The Butler's routing method — match an incoming request to the right star-map workflow in … |
+| [`members-formation`](star-alliance-skills/members-formation/SKILL.md) | 1.1.1 | own | 141 / 883 | 1805 / 179 | ✓ lean | The Butler's routing method — match an incoming request to the right star-map workflow in … |
 | [`obsidian-markdown`](star-alliance-skills/obsidian-markdown/SKILL.md) | 1.0.0 | own | 36 / 262 | 610 / 163 | ✓ lean | Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, a… |
 | [`okf`](star-alliance-skills/okf/SKILL.md) | 1.2.0 | own | 76 / 512 | 1204 / 142 | ✓ lean | Keep the whole Star Alliance repo tidy and conformant to the Open Knowledge Format (OKF v0… |
 | [`performance`](star-alliance-skills/performance/SKILL.md) | 1.0.3 | vendored | 32 / 219 | 1418 / 371 | ✓ lean | Optimize web performance for faster loading and better user experience |
@@ -71,7 +71,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`scheduled-watch`](star-alliance-skills/scheduled-watch/SKILL.md) | 1.0.0 | own | 134 / 909 | 1030 / 48 | ✓ lean | The Strategist's craft for defining an unattended task that runs on a cron cadence and res… |
 | [`schema-evolution`](star-alliance-skills/schema-evolution/SKILL.md) | 1.1.0 | own | 152 / 1013 | 1750 / 139 | ✓ lean | The Architect's craft for evolving a structured data model without breaking what already r… |
 | [`session-mining`](star-alliance-skills/session-mining/SKILL.md) | 1.1.0 | own | 134 / 934 | 959 / 116 | ✓ lean | Mine your own Claude session history for lessons, then turn them into ranked, verified upg… |
-| [`skillsmith`](star-alliance-skills/skillsmith/SKILL.md) | 1.5.0 | own | 132 / 987 | 5203 / 164 | ○ large | Manage, sync, upgrade, create, and auto-evolve Star Alliance skills across the star-allian… |
+| [`skillsmith`](star-alliance-skills/skillsmith/SKILL.md) | 1.5.1 | own | 132 / 987 | 5254 / 165 | ○ large | Manage, sync, upgrade, create, and auto-evolve Star Alliance skills across the star-allian… |
 | [`star-alliance-language`](star-alliance-skills/star-alliance-language/SKILL.md) | 1.2.0 | own | 84 / 522 | 912 / 111 | ✓ lean | The guild's shared reading protocol for OKF-tidied repos — how every member quickly, cheap… |
 | [`storm-investigation`](star-alliance-skills/storm-investigation/SKILL.md) | 1.0.0 | own | 113 / 866 | 919 / 94 | ✓ lean | Multi-perspective deep-research method (Stanford STORM, NAACL 2024) for any topic — run fi… |
 | [`strategies-review`](star-alliance-skills/strategies-review/SKILL.md) | 1.0.0 | own | 12 / 72 | 297 / 44 | ✓ lean | Review pending strategies and move them to executed then check the docs. |

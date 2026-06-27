@@ -35,7 +35,7 @@
     "the-architect": {
       "name": "The Architect",
       "role": "Systems Design · Database Architecture",
-      "level": "Advanced",
+      "level": "Master",
       "color": "#3b7dd8",
       "summary": "Designs systems and database architecture. Thinks in data flow, domain boundaries, and structural integrity.",
       "deploy": "System design, domain modeling, database architecture, structural refactoring",
@@ -63,7 +63,7 @@
     "the-developer": {
       "name": "The Developer",
       "role": "Writing Code · Fixing Bugs · Implementation",
-      "level": "Advanced",
+      "level": "Elite",
       "color": "#3da155",
       "summary": "Writes code, fixes bugs, implements features. Takes specs and turns them into working code. Tests before saying it's done.",
       "deploy": "Writing code, applying changes, fixing bugs, implementing features",
@@ -223,7 +223,7 @@
     "the-merchant": {
       "name": "The Merchant",
       "role": "Investment · Trading · Market Research",
-      "level": "Advanced",
+      "level": "Elite",
       "color": "#3da155",
       "summary": "Investment and trading specialist. Analyzes markets, builds trading strategies, assesses risk, and manages portfolios with rigor.",
       "deploy": "Investment analysis, trading strategies, market research, portfolio management",

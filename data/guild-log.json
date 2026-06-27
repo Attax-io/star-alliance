@@ -2,6 +2,45 @@
   "version": 1,
   "entries": [
     {
+      "id": 90,
+      "date": "2026-06-27",
+      "type": "member-upgrade",
+      "title": "Promote The Merchant: Advanced → Elite",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Advanced → Elite (craft-depth tier). Prerequisite checklist for Elite verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-merchant"
+      ],
+      "from": "Advanced",
+      "to": "Elite"
+    },
+    {
+      "id": 89,
+      "date": "2026-06-27",
+      "type": "member-upgrade",
+      "title": "Promote The Developer: Advanced → Elite",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Advanced → Elite (craft-depth tier). Prerequisite checklist for Elite verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-developer"
+      ],
+      "from": "Advanced",
+      "to": "Elite"
+    },
+    {
+      "id": 88,
+      "date": "2026-06-27",
+      "type": "member-upgrade",
+      "title": "Promote The Architect: Advanced → Master",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Advanced → Master (craft-depth tier). Prerequisite checklist for Master verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-architect"
+      ],
+      "from": "Advanced",
+      "to": "Master"
+    },
+    {
       "id": 87,
       "date": "2026-06-27",
       "type": "decision",

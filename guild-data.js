@@ -3,13 +3,13 @@
 const GUILD = {
   "meta": {
     "name": "Star Alliance",
-    "version": "6.55.62",
+    "version": "6.55.65",
     "versionTiers": {
       "major": 6,
       "minor": 55,
-      "patch": 62
+      "patch": 65
     },
-    "generated": "2026-06-27T17:58:19Z",
+    "generated": "2026-06-27T18:01:26Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -34,7 +34,7 @@ const GUILD = {
       "domains": 3,
       "workflows": 29,
       "hooks": 7,
-      "log": 142
+      "log": 145
     }
   },
   "members": [
@@ -265,7 +265,7 @@ const GUILD = {
       "name": "The Architect",
       "role": "Systems Design · Database Architecture",
       "model": "sonnet",
-      "conferred": "Advanced",
+      "conferred": "Master",
       "color": "#3b7dd8",
       "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-arch\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#102030\"/><stop offset=\"1\" stop-color=\"#0a1520\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-arch)\"/><path d=\"M48 16 L32 24 L32 42 L48 50 L64 42 L64 24 Z\" fill=\"none\" stroke=\"#5e9ef5\" stroke-width=\"2.5\" stroke-linejoin=\"round\"/><path d=\"M32 24 L48 32 L64 24 M48 32 L48 50\" stroke=\"#5e9ef5\" stroke-width=\"2\" opacity=\".6\"/><path d=\"M18 54 L78 54 L78 72 L18 72 Z\" fill=\"none\" stroke=\"#5e9ef5\" stroke-width=\"2\" opacity=\".5\"/><circle cx=\"48\" cy=\"42\" r=\"3.5\" fill=\"#5e9ef5\" opacity=\".7\"/></svg>",
       "summary": "Designs systems and database architecture. Thinks in data flow, domain boundaries, and structural integrity.",
@@ -330,7 +330,7 @@ const GUILD = {
         "qualified": true,
         "nextTier": null,
         "rampEarned": "purple",
-        "rampConferred": "teal",
+        "rampConferred": "purple",
         "ad": 24,
         "signals": {
           "ad": 24,
@@ -462,7 +462,7 @@ const GUILD = {
           ]
         },
         "progress": [],
-        "dueForPromotion": true,
+        "dueForPromotion": false,
         "overConferred": false
       }
     },
@@ -471,7 +471,7 @@ const GUILD = {
       "name": "The Developer",
       "role": "Writing Code · Fixing Bugs · Implementation",
       "model": "sonnet",
-      "conferred": "Advanced",
+      "conferred": "Elite",
       "color": "#3da155",
       "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-dev\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#102820\"/><stop offset=\"1\" stop-color=\"#0a1815\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-dev)\"/><path d=\"M30 36 L22 44 L30 52 M66 36 L74 44 L66 52\" stroke=\"#4ec985\" stroke-width=\"3\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M42 30 L38 58 M54 30 L50 58\" stroke=\"#4ec985\" stroke-width=\"2.5\" fill=\"none\" stroke-linecap=\"round\" opacity=\".7\"/></svg>",
       "summary": "Writes code, fixes bugs, implements features. Takes specs and turns them into working code. Tests before saying it's done.",
@@ -547,7 +547,7 @@ const GUILD = {
         "qualified": true,
         "nextTier": "Master",
         "rampEarned": "amber",
-        "rampConferred": "teal",
+        "rampConferred": "amber",
         "ad": 23,
         "signals": {
           "ad": 23,
@@ -706,7 +706,7 @@ const GUILD = {
             "ok": true
           }
         ],
-        "dueForPromotion": true,
+        "dueForPromotion": false,
         "overConferred": false
       }
     },
@@ -1626,7 +1626,7 @@ const GUILD = {
       "name": "The Merchant",
       "role": "Investment · Trading · Market Research",
       "model": "opus",
-      "conferred": "Advanced",
+      "conferred": "Elite",
       "color": "#3da155",
       "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-merc\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#102820\"/><stop offset=\"1\" stop-color=\"#0a1812\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-merc)\"/><path d=\"M48 18 L48 62\" stroke=\"#4ec9a0\" stroke-width=\"3\"/><circle cx=\"48\" cy=\"18\" r=\"4\" fill=\"#4ec9a0\"/><path d=\"M24 42 L72 42\" stroke=\"#4ec9a0\" stroke-width=\"2\" opacity=\".3\"/><path d=\"M24 42 L24 50 L34 50 L34 42 M62 42 L62 54 L72 54 L72 42\" fill=\"none\" stroke=\"#4ec9a0\" stroke-width=\"2\"/><path d=\"M48 42 L48 36 L42 36 L42 42 M48 42 L48 48 L54 48 L54 42\" fill=\"none\" stroke=\"#4ec9a0\" stroke-width=\"2\" opacity=\".5\"/><rect x=\"28\" y=\"60\" width=\"6\" height=\"8\" rx=\"1\" fill=\"#4ec9a0\" opacity=\".3\"/><rect x=\"38\" y=\"60\" width=\"6\" height=\"12\" rx=\"1\" fill=\"#4ec9a0\" opacity=\".4\"/><rect x=\"48\" y=\"60\" width=\"6\" height=\"6\" rx=\"1\" fill=\"#4ec9a0\" opacity=\".25\"/><rect x=\"58\" y=\"60\" width=\"6\" height=\"14\" rx=\"1\" fill=\"#4ec9a0\" opacity=\".35\"/></svg>",
       "summary": "Investment and trading specialist. Analyzes markets, builds trading strategies, assesses risk, and manages portfolios with rigor.",
@@ -1691,7 +1691,7 @@ const GUILD = {
         "qualified": true,
         "nextTier": "Master",
         "rampEarned": "amber",
-        "rampConferred": "teal",
+        "rampConferred": "amber",
         "ad": 20,
         "signals": {
           "ad": 20,
@@ -1850,7 +1850,7 @@ const GUILD = {
             "ok": true
           }
         ],
-        "dueForPromotion": true,
+        "dueForPromotion": false,
         "overConferred": false
       }
     },
@@ -3452,7 +3452,7 @@ const GUILD = {
     {
       "id": "members-formation",
       "name": "members-formation",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "icon": "🧭",
       "art": "",
       "artPng": true,
@@ -3481,8 +3481,8 @@ const GUILD = {
       ],
       "scripts": [],
       "stats": {
-        "lines": 177,
-        "words": 1775
+        "lines": 178,
+        "words": 1805
       },
       "global": true,
       "members": [
@@ -3915,7 +3915,7 @@ const GUILD = {
     {
       "id": "skillsmith",
       "name": "skillsmith",
-      "version": "1.5.0",
+      "version": "1.5.1",
       "icon": "🛠️",
       "art": "",
       "artPng": true,
@@ -3959,8 +3959,8 @@ const GUILD = {
         "skill_sync.py"
       ],
       "stats": {
-        "lines": 163,
-        "words": 5203
+        "lines": 164,
+        "words": 5254
       },
       "global": true,
       "members": [
@@ -7007,6 +7007,45 @@ const GUILD = {
   "log": {
     "entries": [
       {
+        "id": 90,
+        "date": "2026-06-27",
+        "type": "member-upgrade",
+        "title": "Promote The Merchant: Advanced → Elite",
+        "who": "The Quartermaster",
+        "detail": "Conferred member level Advanced → Elite (craft-depth tier). Prerequisite checklist for Elite verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+        "ref": [
+          "the-merchant"
+        ],
+        "from": "Advanced",
+        "to": "Elite"
+      },
+      {
+        "id": 89,
+        "date": "2026-06-27",
+        "type": "member-upgrade",
+        "title": "Promote The Developer: Advanced → Elite",
+        "who": "The Quartermaster",
+        "detail": "Conferred member level Advanced → Elite (craft-depth tier). Prerequisite checklist for Elite verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+        "ref": [
+          "the-developer"
+        ],
+        "from": "Advanced",
+        "to": "Elite"
+      },
+      {
+        "id": 88,
+        "date": "2026-06-27",
+        "type": "member-upgrade",
+        "title": "Promote The Architect: Advanced → Master",
+        "who": "The Quartermaster",
+        "detail": "Conferred member level Advanced → Master (craft-depth tier). Prerequisite checklist for Master verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+        "ref": [
+          "the-architect"
+        ],
+        "from": "Advanced",
+        "to": "Master"
+      },
+      {
         "id": 87,
         "date": "2026-06-27",
         "type": "decision",
@@ -8759,7 +8798,7 @@ const GUILD = {
         "id": "g-325a46a5-add-skill-conquering-campaign"
       }
     ],
-    "count": 142
+    "count": 145
   },
   "models": {
     "opus": {
