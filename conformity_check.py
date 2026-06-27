@@ -19,7 +19,9 @@ Checks (each maps to a source-of-truth invariant or a logged decision):
 """
 import json, re, sys, pathlib
 
-ROOT = pathlib.Path(__file__).parent
+ROOT = next((p for p in pathlib.Path(__file__).resolve().parents
+             if (p / "VERSIONS.md").exists() and (p / ".git").exists()),
+            pathlib.Path(__file__).resolve().parent)
 
 # role per model id, mirrored from MODELS in app.js. sonnet is "both" but forced last.
 ROLE = {
