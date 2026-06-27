@@ -135,11 +135,15 @@ def run_build() -> int:
 def main() -> int:
     ap = argparse.ArgumentParser(description="Forge — wire a weapon/skill/workflow into its registry")
     ap.add_argument("--kind", required=True, choices=("weapon", "skill", "workflow"))
-    ap.add_argument("--spec", required=True, help="Path to the spec JSON")
+    # --in is the workflow-runner's file-rail alias for --spec
+    # (resolve_io_args supplies --in from the step's first `inputs` entry).
+    ap.add_argument("--spec", "--in", dest="spec", required=True, help="Path to the spec JSON")
     ap.add_argument("--propagate", choices=("loadouts",), default=None,
                     help="Propagate a skill/weapon into member loadouts")
     ap.add_argument("--dry-run", action="store_true",
                     help="Print planned mutations; write nothing and skip the rebuild")
+    # Tolerate the runner's --out rail (this step writes its own registry target).
+    ap.add_argument("--out", dest="_out", default=None, help=argparse.SUPPRESS)
     args = ap.parse_args()
 
     spec_path = Path(args.spec)
