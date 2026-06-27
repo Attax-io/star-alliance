@@ -124,10 +124,14 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="Release Train — bump version + changelog stub")
     ap.add_argument("--step", required=True, choices=("patch", "minor", "major"),
                     help="Which part of the version to bump")
-    ap.add_argument("--changelog", required=True,
+    # --out is the workflow-runner's file-rail alias for --changelog
+    # (resolve_io_args supplies --out from the step's `produces`).
+    ap.add_argument("--changelog", "--out", dest="changelog", required=True,
                     help="Path to write the changelog stub")
     ap.add_argument("--stamp-docs", action="store_true",
                     help="Rewrite version: stamps across docs (OFF by default; mutating)")
+    # Tolerate the runner's --in rail (this step takes no input file).
+    ap.add_argument("--in", dest="_in", default=None, help=argparse.SUPPRESS)
     args = ap.parse_args()
 
     try:
