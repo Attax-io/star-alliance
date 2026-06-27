@@ -66,6 +66,7 @@
         "portability-audit",
         "project-start",
         "algorithmic-trading-chan",
+        "probability-statistics",
         "guild-sync",
         "volume-price-analysis",
         "python-master"
@@ -81,7 +82,7 @@
         "the-merchant",
         "the-quartermaster"
       ],
-      "notes": "The home domain. All 9 guild members + 60 skills live here. Every other domain borrows from this skill pool."
+      "notes": "The home domain. All 9 guild members + 61 skills live here. Every other domain borrows from this skill pool."
     },
     {
       "id": "lex-council-app",

@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 55,
       "patch": 66
     },
-    "generated": "2026-06-27T19:50:40Z",
+    "generated": "2026-06-27T19:52:39Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -1646,9 +1646,9 @@ const GUILD = {
         "nextTier": "Master",
         "rampEarned": "amber",
         "rampConferred": "amber",
-        "ad": 27,
+        "ad": 29,
         "signals": {
-          "ad": 27,
+          "ad": 29,
           "nSkills": 10,
           "nUnique": 7,
           "nMaster": 1,
@@ -1679,7 +1679,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 27,
+              "have": 29,
               "need": 8
             },
             {
@@ -1703,7 +1703,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 27,
+              "have": 29,
               "need": 12
             },
             {
@@ -1727,7 +1727,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 27,
+              "have": 29,
               "need": 18
             },
             {
@@ -1751,7 +1751,7 @@ const GUILD = {
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 27,
+              "have": 29,
               "need": 24
             },
             {
@@ -1780,7 +1780,7 @@ const GUILD = {
           {
             "label": "Arsenal Depth",
             "ok": true,
-            "have": 27,
+            "have": 29,
             "need": 24
           },
           {
@@ -3741,15 +3741,15 @@ const GUILD = {
       "id": "probability-statistics",
       "name": "probability-statistics",
       "version": "1.0.0",
-      "icon": "📦",
+      "icon": "🎲",
       "art": "",
-      "artPng": false,
-      "blurb": "The Merchant's read-only craft for probability and statistics, distilled from Evans & Rose…",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "",
+      "artPng": true,
+      "blurb": "Read-only probability & statistics — distributions, inference, testing, Bayes",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-chart-histogram",
       "src": "own",
-      "desc": "The Merchant's read-only craft for probability and statistics, distilled from Evans & Rosenthal, Miller & Freund, and Fernandez-Granda. Reason rigorously about uncertainty: probability models, axioms, counting, conditional probability and Bayes; random variables and the distribution zoo (binomial, Poisson, normal, exponential, gamma, beta, t/chi-square/F); expectation, variance, covariance, MGFs; joint/multivariate distributions and independence; limit theorems (LLN, CLT) and sampling distributions; descriptive statistics; estimation (MLE, confidence intervals, bootstrap); hypothesis testing (p-values, power, Neyman-Pearson, chi-square); Bayesian inference (priors, posteriors, conjugacy, MCMC); regression and ANOVA; and stochastic processes (random walks, Markov chains). Analysis and teaching only; never trades or moves money. Use for: 'what distribution fits this', 'explain the central limit theorem', 'compute this probability', 'is this statistically significant', 'set up a hypothesis test', 'derive the MLE', 'Bayesian vs frequentist', 'teach me probability'. Differentiate from market-recon, trading-strategy, portfolio-risk, and algorithmic-trading-chan. Never executes a trade or transfer.",
+      "desc": "The Merchant's read-only craft for probability and statistics, distilled from Evans & Rosenthal, Miller & Freund, and Fernandez-Granda. Reason rigorously about uncertainty: probability models and Bayes; random variables and the distribution zoo; expectation/variance/covariance/MGFs; joint distributions and independence; limit theorems (LLN, CLT) and sampling; descriptive statistics; estimation (MLE, confidence intervals, bootstrap); hypothesis testing (p-values, power, chi-square); Bayesian inference (priors, posteriors, MCMC); regression and ANOVA; stochastic processes (random walks, Markov chains). Analysis and teaching only; never trades or moves money. Use for: 'what distribution fits this', 'explain the central limit theorem', 'compute this probability', 'is this statistically significant', 'set up a hypothesis test', 'derive the MLE', 'Bayesian vs frequentist', 'teach me probability'. Differentiate from market-recon, trading-strategy, portfolio-risk, and algorithmic-trading-chan.",
       "intro": "The mathematics of uncertainty, set down by three complementary hands: the rigorous measure-theoretic frame (Evans & Rosenthal), the applied engineering toolkit (Miller & Freund), and the data-science lens (Fernandez-Granda). This craft reasons about randomness from first principles — it builds a pr",
       "sections": [
         "What it is / is not",
@@ -3760,10 +3760,24 @@ const GUILD = {
         "Versioning",
         "Changelog"
       ],
-      "triggers": "",
+      "triggers": "'what distribution fits this', 'explain the central limit theorem', 'compute this probability', 'is this statistically significant', 'set up a hypothesis test', 'derive the MLE', 'Bayesian vs frequentist', 'teach me probability'",
       "modes": "",
       "disabled": false,
-      "refs": [],
+      "refs": [
+        "00-foundations.md",
+        "01-random-variables.md",
+        "02-distributions.md",
+        "03-expectation-moments.md",
+        "04-joint-multivariate.md",
+        "05-limit-theorems.md",
+        "06-descriptive-stats.md",
+        "07-estimation.md",
+        "08-hypothesis-testing.md",
+        "09-bayesian.md",
+        "10-regression-anova.md",
+        "11-stochastic-processes.md",
+        "12-glossary.md"
+      ],
       "scripts": [],
       "stats": {
         "lines": 64,
@@ -4738,6 +4752,7 @@ const GUILD = {
         "portability-audit",
         "project-start",
         "algorithmic-trading-chan",
+        "probability-statistics",
         "guild-sync",
         "volume-price-analysis",
         "python-master"
@@ -4753,7 +4768,7 @@ const GUILD = {
         "the-merchant",
         "the-quartermaster"
       ],
-      "notes": "The home domain. All 9 guild members + 60 skills live here. Every other domain borrows from this skill pool."
+      "notes": "The home domain. All 9 guild members + 61 skills live here. Every other domain borrows from this skill pool."
     },
     {
       "id": "lex-council-app",

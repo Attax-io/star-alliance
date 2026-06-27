@@ -335,6 +335,14 @@
   "triggers": "'schedule this', 'run this daily', 'set up a cron task', 'make this a routine', 'standing watch'",
   "modes": ""
  },
+ "probability-statistics": {
+  "icon": "🎲",
+  "blurb": "Read-only probability & statistics — distributions, inference, testing, Bayes",
+  "level": "Advanced",
+  "tabler": "ti-chart-histogram",
+  "triggers": "'what distribution fits this', 'explain the central limit theorem', 'compute this probability', 'is this statistically significant', 'set up a hypothesis test', 'derive the MLE', 'Bayesian vs frequentist', 'teach me probability'",
+  "modes": ""
+ },
  "spec-driven-development": {
   "icon": "📜",
   "blurb": "Build from an executable spec — spec→plan→tasks→implement, each phase gated",

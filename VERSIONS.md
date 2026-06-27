@@ -55,7 +55,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`image-to-code`](star-alliance-skills/image-to-code/SKILL.md) | 1.0.0 | own | 80 / 555 | 5735 / 1225 | ○ large | Elite website image-to-code skill for Codex |
 | [`imagegen-frontend`](star-alliance-skills/imagegen-frontend/SKILL.md) | 1.0.0 | own | 139 / 985 | 819 / 77 | ✓ lean | The Designer's image-generation engine — generate premium design imagery with image-01, on… |
 | [`impeccable`](star-alliance-skills/impeccable/SKILL.md) | 3.0.7 | external | 118 / 895 | 1793 / 173 | ✓ lean | Use when the user wants to design, redesign, shape, critique, audit, polish, clarify, dist… |
-| [`invariant-inference`](star-alliance-skills/invariant-inference/SKILL.md) | 1.0.0 | own | 151 / 1026 | 672 / 51 | ✗ desc>1024 | The Architect's craft for data-driven invariant and rule synthesis, distilled from LoopInv… |
+| [`invariant-inference`](star-alliance-skills/invariant-inference/SKILL.md) | 1.0.0 | own | 150 / 1022 | 672 / 51 | ✓ lean | The Architect's craft for data-driven invariant and rule synthesis, distilled from LoopInv… |
 | [`japanese-candlesticks`](star-alliance-skills/japanese-candlesticks/SKILL.md) | 1.0.0 | own | 128 / 1012 | 965 / 60 | ✓ lean | The Merchant's read-only craft for reading Japanese candlestick charts, distilled from Ste… |
 | [`law-harvest`](star-alliance-skills/law-harvest/SKILL.md) | 1.0.0 | own | 149 / 979 | 1152 / 63 | ✓ lean | The shared Architect + Translator craft for ingesting real law PDFs into a clean, verified… |
 | [`legal-drafting`](star-alliance-skills/legal-drafting/SKILL.md) | 1.0.0 | own | 122 / 935 | 1156 / 54 | ✓ lean | The Translator's craft for drafting client correspondence and bilingual (Arabic/French/Eng… |
@@ -68,7 +68,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`performance`](star-alliance-skills/performance/SKILL.md) | 1.0.3 | vendored | 32 / 219 | 1418 / 371 | ✓ lean | Optimize web performance for faster loading and better user experience |
 | [`portability-audit`](star-alliance-skills/portability-audit/SKILL.md) | 1.0.0 | own | 75 / 481 | 578 / 104 | ✓ lean | Audit how portable a Claude Code project is — maps every layer (skills, members, hooks, en… |
 | [`portfolio-risk`](star-alliance-skills/portfolio-risk/SKILL.md) | 0.1.0 | own | 129 / 1005 | 834 / 55 | ✓ lean | The Merchant's craft for read-only, book-level portfolio construction and risk measurement… |
-| [`probability-statistics`](star-alliance-skills/probability-statistics/SKILL.md) | 1.0.0 | own | 171 / 1453 | 1139 / 65 | ✗ desc>1024 | The Merchant's read-only craft for probability and statistics, distilled from Evans & Rose… |
+| [`probability-statistics`](star-alliance-skills/probability-statistics/SKILL.md) | 1.0.0 | own | 117 / 1000 | 1139 / 65 | ✓ lean | The Merchant's read-only craft for probability and statistics, distilled from Evans & Rose… |
 | [`project-start`](star-alliance-skills/project-start/SKILL.md) | 1.0.0 | own | 55 / 375 | 262 / 56 | ✓ lean | Start-of-session health check for projects that have Star Alliance members deployed |
 | [`python-master`](star-alliance-skills/python-master/SKILL.md) | 1.0.0 | own | 134 / 1020 | 431 / 47 | ✓ lean | The Developer's craft for building production-grade Python libraries and web apps end to e… |
 | [`relationship-intel`](star-alliance-skills/relationship-intel/SKILL.md) | 1.0.0 | own | 136 / 961 | 1072 / 55 | ✓ lean | The Herald's craft for turning email traffic into living relationship intelligence so the … |
@@ -91,4 +91,4 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`weapon-utility`](star-alliance-skills/weapon-utility/SKILL.md) | 2.1.0 | own | 166 / 1009 | 3516 / 256 | ✓ lean | Every member's rule for which weapon (model) to draw and how thinker and doer weapons work… |
 | [`workflow-forge`](star-alliance-skills/workflow-forge/SKILL.md) | 1.3.0 | own | 153 / 997 | 1701 / 102 | ✓ lean | The Strategist's craft for distilling a finished run into a reusable star-map workflow in … |
 
-_61 skills — 54 lean · 4 large (installable, over the 500-line ideal) · 1 near the word ceiling · 2 hard violations._
+_61 skills — 56 lean · 4 large (installable, over the 500-line ideal) · 1 near the word ceiling · 0 hard violations._

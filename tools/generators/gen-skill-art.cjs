@@ -22,6 +22,10 @@ const STYLE = "fantasy RPG skill icon, Fallen Sword MMORPG style, dark parchment
 
 const SKILLS = [
   {
+    id: "probability-statistics",
+    prompt: `${STYLE}. A merchant-sage's table of chance on dark parchment: a pair of glowing golden dice mid-roll, a luminous bell-curve (normal distribution) arcing in gold light above a row of histogram bars, a brass scale weighing a frequentist coin against a Bayesian prior-scroll, scattered data-points resolving into a fitted trend-line, arcane probability glyphs (Σ, integral signs, a P-value seal) orbiting the scene — the read-only craft of reasoning rigorously about uncertainty, never a trade in sight`,
+  },
+  {
     id: "invariant-inference",
     prompt: `${STYLE}. A master diviner's rule-forging ritual on dark parchment: two sorted heaps of glowing gemstones — emerald-green "good" examples on the left, ember-red "bad" examples on the right — and a single luminous golden boundary-line being conjured between them that perfectly separates the two, an oracle's all-seeing eye floating above casting a probing beam that finds one stray counterexample (a red gem on the wrong side) which a feedback-arc loops back to redraw the line tighter, arcane logic-glyphs and a brass set-square framing the law being learned — the craft of inferring the rule that must always hold`,
   },
