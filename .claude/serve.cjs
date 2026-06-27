@@ -146,7 +146,7 @@ function mergeUsage(claude) {
 // Per-model usage weights — DERIVED from the canonical registry
 // (star-alliance-arsenal/models.json). Literal fallback only if it can't be read.
 function loadModelWeights() {
-  const fallback = { 'minimax-m3': 1.0, 'glm-5.2': 0.7, 'kimi-k2.7': 0.5, 'deepseek-v4-pro': 0.5, 'nemotron-3-ultra': 0.4, 'qwen3.5': 0.4, 'gemma4': 0.3, 'gpt-5.5': 0.2 };
+  const fallback = { 'minimax-m3': 1.0, 'glm-5.2': 0.7, 'kimi-k2.7': 0.5, 'deepseek-v4-pro': 0.5, 'nemotron-3-ultra': 0.4, 'qwen3.5': 0.4, 'gemma4': 0.3 };
   try {
     const reg = JSON.parse(fs.readFileSync(path.join(ROOT, 'star-alliance-arsenal', 'models.json'), 'utf8'));
     const w = {};
@@ -412,7 +412,7 @@ const MODELS_JSON = path.join(ROOT, 'star-alliance-arsenal/models.json');
 const WORKFLOWS_JSON = path.join(ROOT, 'workflows.json');
 const LOG_EVENT_PY = path.join(ROOT, 'tools/log_event.py');
 const ID_RE = /^[a-z0-9-]+$/;          // skills, domains, workflows
-const MODEL_ID_RE = /^[A-Za-z0-9._-]+$/;  // model ids carry dots (gpt-5.5)
+const MODEL_ID_RE = /^[A-Za-z0-9._-]+$/;  // model ids carry dots (glm-5.2)
 
 // Read JSON, .bak the raw text, hand the parsed doc to mutate(doc) → doc|Error,
 // write it back pretty-printed. Synchronous: these files are all small. Preserves

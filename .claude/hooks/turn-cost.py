@@ -130,8 +130,14 @@ def main():
         try:
             start_ts = float(start_file.read_text().strip())
             wall_ms = int((time.time() - start_ts) * 1000)
-            start_file.unlink()
         except Exception:
+            pass
+        # Consume the sentinel WHENEVER it exists — decoupled from the parse above,
+        # so a corrupt/empty stamp can't leave it behind and let blocking re-prompt
+        # Stops append duplicate records (the dedup depends on this deletion).
+        try:
+            start_file.unlink()
+        except OSError:
             pass
 
     rec = {

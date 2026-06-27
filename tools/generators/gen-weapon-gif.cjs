@@ -19,7 +19,6 @@ const WEAPONS = [
   { id: "opus",             color: "#e8c93a", aura: "golden solar divine light pulsing, gold energy waves rippling outward" },
   { id: "sonnet",           color: "#3df0ff", aura: "cyan electric lightning arcs crackling, ice-blue energy pulses along the blade" },
   { id: "haiku",            color: "#4ec985", aura: "neon green spirit fireflies swirling, emerald energy shimmering" },
-  { id: "gpt-5.5",          color: "#9d7bff", aura: "deep violet arcane orb swirling with cosmic nebula, purple energy tendrils drifting" },
   { id: "minimax-m3",       color: "#4ec9a0", aura: "teal circuit energy sparking, mechanical crossbow limbs vibrating with teal pulses" },
   { id: "glm-5.2",          color: "#d4a05a", aura: "amber-gold fire and embers drifting upward, warm orange bow glow pulsing" },
   { id: "kimi-k2.7",        color: "#ff6b8a", aura: "hot magenta plasma erupting from the hammerhead, pink energy shockwaves radiating" },

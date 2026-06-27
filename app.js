@@ -56,7 +56,7 @@ const ROLE_META = {
   both:    { label: "Both",    icon: "role-art/both.png",    color: "#3df0ff", rule: "Can think and execute. Assign explicitly — don't use as a catch-all." },
 };
 // The armory display order for the Arsenal page.
-const ARSENAL = ["opus", "sonnet", "haiku", "gpt-5.5", "minimax-m3", "image-01", "minimax-video", "minimax-speech", "minimax-music", "glm-5.2", "kimi-k2.7", "deepseek-v4-pro", "nemotron-3-ultra", "qwen3.5", "gemma4"];
+const ARSENAL = ["opus", "sonnet", "haiku", "minimax-m3", "image-01", "minimax-video", "minimax-speech", "minimax-music", "glm-5.2", "kimi-k2.7", "deepseek-v4-pro", "nemotron-3-ultra", "qwen3.5", "gemma4"];
 // model id -> the ollama `:cloud` tag, DERIVED from the registry's cloud_tag so it
 // can never drift from summon.py (the routing source of truth). Non-cloud models omitted.
 const CLOUD_TAG = Object.fromEntries(
@@ -673,7 +673,7 @@ function renderWorkflowPage(id) {
     </div>`;
 }
 
-const TIER_RANK = { "opus": 0, "gpt-5.5": 1, "sonnet": 2, "glm-5.2": 3, "kimi-k2.7": 3, "minimax-m3": 3, "deepseek-v4-pro": 3, "nemotron-3-ultra": 3, "qwen3.5": 3, "gemma4": 4, "haiku": 4, "image-01": 5, "minimax-video": 5, "minimax-speech": 5, "minimax-music": 5 };
+const TIER_RANK = { "opus": 0, "sonnet": 2, "glm-5.2": 3, "kimi-k2.7": 3, "minimax-m3": 3, "deepseek-v4-pro": 3, "nemotron-3-ultra": 3, "qwen3.5": 3, "gemma4": 4, "haiku": 4, "image-01": 5, "minimax-video": 5, "minimax-speech": 5, "minimax-music": 5 };
 
 function buildConstellation(wf) {
   const members = GUILD.members;

@@ -27,10 +27,6 @@ const WEAPONS = [
     prompt: "VIBRANT GLOWING fantasy weapon art. A slender stiletto blade, impossibly thin and needle-sharp, BLAZING NEON GREEN, vivid emerald energy crackling along the edge like static electricity, ornate finger-ring guard, INTENSE saturated green radiance on black, pure black background, ultra sharp ultra detailed",
   },
   {
-    id: "gpt-5.5",
-    prompt: "VIBRANT GLOWING fantasy weapon art. A wizard staff topped with a MASSIVE pulsing violet crystal orb, DEEP SATURATED PURPLE with cosmic nebula swirling inside, bright arcane glyphs orbiting it, INTENSE purple-magenta radiance exploding outward, pure black background, ultra sharp ultra detailed",
-  },
-  {
     id: "minimax-m3",
     prompt: "VIBRANT GLOWING fantasy weapon art. A heavy siege crossbow, wide powerful limbs made of dark metal and bone, a glowing TEAL-GREEN bolt loaded on the track, intricate circuit rune engravings across the stock, mechanical cocking mechanism visible, VIVID neon teal string and bolt tip radiating energy, INTENSE saturated teal glow, pure black background, ultra sharp ultra detailed",
   },

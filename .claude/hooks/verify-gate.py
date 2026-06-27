@@ -72,12 +72,16 @@ def main():
     # re-prompted the model every turn (the "triple response" loop). When the
     # baseline is absent (rare), fall back to the verify-pass comparison below.
     bfile = os.path.join(state, "verify-baseline")
+    if not os.path.exists(bfile):
+        # No turn-start baseline (the snapshot subprocess failed). We cannot tell
+        # what changed THIS turn, so fail OPEN rather than risk re-prompting every
+        # turn on a pre-existing dirty tree — consistent with every other hook here.
+        sys.exit(0)
     baseline = ""
-    if os.path.exists(bfile):
-        try:
-            baseline = open(bfile).read().strip()
-        except OSError:
-            baseline = ""
+    try:
+        baseline = open(bfile).read().strip()
+    except OSError:
+        baseline = ""
     if baseline and cur == baseline:
         sys.exit(0)
 
