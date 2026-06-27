@@ -42,6 +42,25 @@ A wise guild member knows which blade to draw for each fight.
 - Article creation and publishing — dispatching knowledge to the world
 - Obsidian-flavored markdown for documentation — properly formatted scrolls
 
+## Skill Drills
+
+When to draw each skill, and the adjacent task that wrongly pulls it.
+
+| Skill | Invoke WHEN | Do NOT invoke for | Pairs with |
+|---|---|---|---|
+| `codex-law-translate` | a real law must enter the Lex Council codex, translated all locales, QA'd, published | marketing copy or non-statute writing | `law-harvest` (feeds it), ← Architect scaffolds rules |
+| `legal-drafting` | drafting client correspondence or bilingual (AR/FR/EN) legal instruments | internal chatter or the Herald's promo copy | `obsidian-markdown`, `codex-law-translate` |
+| `law-harvest` | ingesting raw law PDFs into the Source-Law library | already-translated text; Architect *structures*, you *translate* | `codex-law-translate` (downstream) |
+| `article-creator` | long-form **legal/codex** content must publish to production, all 6 locales | marketing articles — that is the Herald's | `codex-law-translate`, `obsidian-markdown` |
+| `obsidian-markdown` | docs needing wikilinks, callouts, properties — Obsidian-flavored | bare prose or source code | `legal-drafting`, `article-creator` |
+
+**Universal skills — every member carries these; drill them at the edges of every quest:**
+
+| Skill | Invoke WHEN | Do NOT invoke for | Pairs with |
+|---|---|---|---|
+| `weapon-utility` | before picking a model, or running the plan→do→review loop with a doer | it is doctrine, never a deliverable — never "produce" it | every doer dispatch |
+| `star-alliance-language` | first on entering an OKF repo — read the concept map, never blind-read | a one-file edit where the path is already known | every reading task |
+
 ## How you work
 
 1. For law loading, follow `codex-law-translate` end-to-end — parse, load, translate, verify.
