@@ -1,9 +1,11 @@
 """commission_art.py — Art Forge: commission an image asset from a brief.
 
-Tries an image-gen weapon (MiniMax image-01 via star-alliance-arsenal/summon.py).
-As of writing, image-01 is declared in models-usage.json but is NOT routable by
-summon.py (only minimax-m3, the Ollama cloud tags, and Claude-native are wired).
-So this degrades gracefully: if no image backend is reachable, it writes an
+Drives the REAL image weapon: star-alliance-arsenal/imagegen.py (MiniMax image-01,
+direct API, 1024x1024 JPEG-as-png — the same forge that makes every skill/member/
+workflow tile). image-01 is NOT routable by summon.py (only text weapons are wired
+there), so this calls imagegen.py directly instead.
+
+Degrades gracefully: if imagegen.py or its API key is missing, it writes an
 art_log.md describing the brief + the exact prompt it WOULD send, and exits 0 with
 a clear "no image backend wired" notice. It never fakes an image.
 
@@ -13,38 +15,20 @@ CLI:
 from __future__ import annotations
 
 import argparse
+import os
 import subprocess
 import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-SUMMON = REPO_ROOT / "star-alliance-arsenal" / "summon.py"
+IMAGEGEN = REPO_ROOT / "star-alliance-arsenal" / "imagegen.py"
+KEY_PATH = Path(os.path.expanduser("~/.config/minimax/m3.key"))
 IMAGE_WEAPON = "image-01"
 
 
-def _summon_known_ids() -> set[str]:
-    """Ask summon.py for its routable catalogue (parsed from its error output)."""
-    if not SUMMON.exists():
-        return set()
-    try:
-        # An unknown id makes summon print "Known: a, b, c" and exit non-zero.
-        proc = subprocess.run(
-            ["python3", str(SUMMON), "__probe_unknown__", "x"],
-            capture_output=True, text=True, timeout=30,
-        )
-    except Exception:
-        return set()
-    text = (proc.stderr or "") + (proc.stdout or "")
-    marker = "Known:"
-    if marker in text:
-        tail = text.split(marker, 1)[1]
-        return {t.strip() for t in tail.replace("\n", " ").split(",") if t.strip()}
-    return set()
-
-
 def image_backend_reachable() -> bool:
-    """True only if summon.py can actually route the image weapon."""
-    return IMAGE_WEAPON in _summon_known_ids()
+    """True only if the real imagegen.py forge AND its API key are present."""
+    return IMAGEGEN.exists() and KEY_PATH.exists()
 
 
 def build_prompt(brief_text: str) -> str:
