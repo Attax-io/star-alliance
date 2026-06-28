@@ -21,6 +21,18 @@
 import sys, os, json, re
 
 
+def _sense(signal, **kw):
+    """Fail-soft capability-signal emit into the evolution ledger; never breaks the
+    banner path (high-alert announces, it does not block — and neither does this)."""
+    try:
+        proj = os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
+        sys.path.insert(0, os.path.join(proj, "evolution"))
+        import signals  # noqa: E402
+        signals.emit(signal, **kw)
+    except Exception:
+        pass
+
+
 def guild_member_ids():
     """Member ids from guild-data.json (source of truth). Empty set on any error."""
     try:
@@ -40,6 +52,8 @@ def check(data):
     if tool == "Skill":
         name = ti.get("skill") or ti.get("name") or "?"
         banner = f"⚡ Member Skill Activated: {name}!"
+        _sense("skill-fire", surface="skills", detail=f"skill fired: {name}",
+               meta={"skill": name})
     elif tool == "Workflow":
         name = ti.get("name")
         if not name:
@@ -51,6 +65,8 @@ def check(data):
         sub = ti.get("subagent_type") or ti.get("subagentType") or ""
         if sub in guild_member_ids():
             banner = f"⚔ Member reports for duty: {sub}!"
+            _sense("member-dispatch", detail=f"member dispatched: {sub}",
+                   meta={"member": sub})
 
     return {"exit": 0, "systemMessage": banner} if banner else {"exit": 0}
 

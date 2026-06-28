@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 58,
       "patch": 76
     },
-    "generated": "2026-06-28T07:37:22Z",
+    "generated": "2026-06-28T07:43:06Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -3049,7 +3049,7 @@ const GUILD = {
         "lines": 100,
         "words": 798
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-developer"
       ]
@@ -4655,7 +4655,7 @@ const GUILD = {
         "lines": 94,
         "words": 711
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-designer"
       ]

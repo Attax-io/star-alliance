@@ -1245,3 +1245,31 @@ a.tag.off { text-decoration: none; }
   .starmap-side .flow-gallery { flex-direction: row; flex-wrap: wrap; max-height: none; }
   .starmap-side .flow-tile { flex: 1 1 140px; }
 }
+
+/* ── Evolution Engine panel ─────────────────────────────────────────────────
+   The self-improvement console: fitness, capability signals, schedule control,
+   recurring routines. Colours are tokens only (no hardcoded hex) per doctrine. */
+.ev-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 14px 0; }
+.ev-stat { padding: 14px 16px; border-radius: 12px; }
+.ev-statval { font-size: 1.6rem; font-weight: 700; color: var(--starlight); line-height: 1.1; }
+.ev-statlbl { font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--hint); margin-top: 4px; }
+.ev-statsub { font-size: .78rem; color: var(--muted); margin-top: 6px; }
+.ev-section { margin: 22px 0; }
+.ev-section h2 { font-size: .82rem; text-transform: uppercase; letter-spacing: .1em; color: var(--accent); margin: 0 0 10px; }
+.ev-verdict { padding: 10px 14px; border-radius: 10px; border: 1px solid var(--accent-border); color: var(--starlight); font-size: .9rem; }
+.ev-ctrl { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 14px 16px; border-radius: 12px; }
+.ev-cad { padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line-2); background: var(--panel-2); color: var(--muted); cursor: pointer; font-size: .82rem; }
+.ev-cad.on { background: var(--accent); color: var(--ink); border-color: var(--accent); font-weight: 600; }
+.ev-run { padding: 7px 16px; border-radius: 8px; border: 1px solid var(--accent-border); background: var(--accent); color: var(--ink); cursor: pointer; font-weight: 600; font-size: .84rem; }
+.ev-run[disabled] { opacity: .5; cursor: default; }
+.ev-toggle { padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line-2); background: var(--panel-2); color: var(--muted); cursor: pointer; font-size: .82rem; }
+.ev-toggle.on { color: var(--starlight); border-color: var(--accent-border); }
+.ev-sep { flex: 1 1 auto; }
+.ev-note { font-size: .8rem; color: var(--hint); }
+.ev-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.ev-row { display: flex; align-items: baseline; gap: 10px; padding: 10px 14px; border-radius: 10px; background: var(--panel); border: 1px solid var(--line); }
+.ev-row .ev-id { font-weight: 600; color: var(--starlight); }
+.ev-row .ev-id.ev-self { color: var(--accent); }
+.ev-row .ev-desc { color: var(--muted); font-size: .84rem; }
+.ev-pill { font-size: .7rem; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line-2); color: var(--hint); white-space: nowrap; }
+.ev-empty { color: var(--hint); font-size: .85rem; padding: 8px 0; }

@@ -94,6 +94,121 @@ async function refreshArsenalData() {
   }
 }
 
+/* ── Evolution Engine (live) ────────────────────────────────────────────────
+   Mirrors the Arsenal live-fetch: the page renders from evolutionLive, filled
+   from /api/evolution. Degrades to an offline notice over file:// (no server). */
+let evolutionLive = null, evolutionApplied = false, evolutionFetching = false;
+
+async function refreshEvolutionData() {
+  if (evolutionFetching) return;
+  evolutionFetching = true;
+  try {
+    const r = await fetch("/api/evolution", { cache: "no-store" });
+    if (!r.ok) throw new Error("bad status " + r.status);
+    evolutionLive = await r.json();
+  } catch (_) {
+    evolutionLive = evolutionLive || { offline: true };
+  } finally {
+    evolutionFetching = false;
+    evolutionApplied = true;
+    if ((location.hash.split("?")[0] || "").includes("evolution")) refreshView();
+  }
+}
+
+async function postEvolution(suffix, body) {
+  try {
+    const r = await fetch("/api/evolution/" + suffix, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body || {}),
+    });
+    return await r.json();
+  } catch (e) { return { ok: false, error: String(e) }; }
+}
+
+function renderEvolution() {
+  const d = evolutionLive;
+  const head = viewHead("Self-improvement", "Evolution Engine",
+    "The guild's self-improving loop — sense, diagnose, verify, remember.");
+  if (!d) return head + `<p class="ev-empty" style="padding:1rem">Fetching live engine state…</p>`;
+  if (d.offline) return head + `<div class="glass" style="padding:1rem 1.2rem">Live engine state needs the dashboard server. Start it with <code>node .claude/serve.cjs</code> and reload.</div>`;
+  if (d.error) return head + `<div class="glass" style="padding:1rem 1.2rem">Engine status error: ${esc(d.error)}</div>`;
+
+  const s = d.score || {}, c = d.capability || {}, sc = d.schedule || {};
+  const cadences = d.cadences || ["off", "hourly", "daily", "weekly"];
+  const ct = s.cost_trend || {};
+  const costStr = (ct.delta_pct == null) ? (ct.note || "—") : `${ct.delta_pct}%`;
+  const stat = (val, lbl, sub) => `<div class="ev-stat glass"><div class="ev-statval">${esc(String(val))}</div><div class="ev-statlbl">${esc(lbl)}</div>${sub ? `<div class="ev-statsub">${esc(sub)}</div>` : ""}</div>`;
+  const cadBtns = cadences.map((cd) => `<button class="ev-cad${sc.cadence === cd ? " on" : ""}" data-cadence="${esc(cd)}" type="button">${esc(cd)}</button>`).join("");
+  const enabled = sc.enabled !== false;
+  const routines = (d.routines || []).map((r) => `<li class="ev-row"><span class="ev-id${r.is_evolution ? " ev-self" : ""}">${esc(r.id)}</span><span class="ev-desc">${esc(r.description || "")}</span>${r.cron ? `<span class="ev-pill">${esc(r.cron)}</span>` : ""}</li>`).join("");
+  const refl = (d.recent_reflections || []).slice().reverse().map((e) => `<li class="ev-row"><span class="ev-pill">${esc((e.ts || "").replace("T", " ").replace("Z", ""))}</span><span class="ev-desc">${esc(e.detail || "")}</span></li>`).join("");
+  const unknownWf = Object.keys(c.workflow_unknown || {}).length;
+  const cofire = Object.keys(c.skill_cofire || {}).length;
+
+  return head + `
+    <div class="ev-grid">
+      ${stat(s.regression_escapes ?? "—", "Regression escapes", "junk that reached the repo")}
+      ${stat(s.verdicts ?? "—", "Verdicts", `block rate ${s.block_rate ?? "—"}`)}
+      ${stat(s.concern_density ?? "—", "Concern density", "per change")}
+      ${stat(costStr, "Cost trend", "recent vs prior out-tok")}
+    </div>
+    <div class="ev-verdict">${esc(s.verdict || "no verdict yet")}</div>
+
+    <div class="ev-section">
+      <h2>Schedule &amp; control</h2>
+      <div class="ev-ctrl glass">
+        <span class="ev-note">Cadence</span>
+        ${cadBtns}
+        <button class="ev-toggle${enabled ? " on" : ""}" id="ev-enable" type="button">${enabled ? "Enabled" : "Disabled"}</button>
+        <span class="ev-sep"></span>
+        <span class="ev-note">${d.disarmed ? "⚠ DISARMED (kill switch on)" : `next: ${esc((d.due && d.due.reason) || "")}`}</span>
+        <button class="ev-run" id="ev-run" type="button">Run now</button>
+      </div>
+      <p class="ev-note" style="margin-top:8px">Run now performs a <strong>propose-only (shadow)</strong> reflection — it surfaces proposals but applies nothing. Tier-B changes always need your go.</p>
+      <p class="ev-note" id="ev-runout" style="margin-top:4px"></p>
+    </div>
+
+    <div class="ev-section">
+      <h2>Capability signals</h2>
+      <div class="ev-grid">
+        ${stat(c.total_skill_fires ?? 0, "Skill fires", `${Object.keys(c.skill_fires || {}).length} distinct`)}
+        ${stat(c.doer_summons ?? 0, "Doer summons", "bulk offloaded")}
+        ${stat(unknownWf, "Unregistered workflows", "new-workflow candidates")}
+        ${stat(cofire, "Skill co-fires", "merge candidates")}
+      </div>
+    </div>
+
+    <div class="ev-section">
+      <h2>Recurring routines (${(d.routines || []).length})</h2>
+      <ul class="ev-list">${routines || `<li class="ev-empty">No scheduled routines found.</li>`}</ul>
+    </div>
+
+    <div class="ev-section">
+      <h2>Recent reflections</h2>
+      <ul class="ev-list">${refl || `<li class="ev-empty">No reflections recorded yet — the reflector runs on its cadence (or hit Run now).</li>`}</ul>
+    </div>`;
+}
+
+function wireEvolutionControls() {
+  const setOut = (msg) => { const o = byId("ev-runout"); if (o) o.textContent = msg || ""; };
+  document.querySelectorAll(".ev-cad").forEach((b) => b.addEventListener("click", async () => {
+    const r = await postEvolution("schedule", { cadence: b.dataset.cadence });
+    if (r && r.ok) { evolutionApplied = false; refreshEvolutionData(); } else setOut("Failed: " + ((r && r.error) || "?"));
+  }));
+  const en = byId("ev-enable");
+  if (en) en.addEventListener("click", async () => {
+    const r = await postEvolution("schedule", { enabled: !en.classList.contains("on") });
+    if (r && r.ok) { evolutionApplied = false; refreshEvolutionData(); } else setOut("Failed: " + ((r && r.error) || "?"));
+  });
+  const run = byId("ev-run");
+  if (run) run.addEventListener("click", async () => {
+    run.disabled = true; setOut("Running reflector…");
+    const r = await postEvolution("run", {});
+    setOut((r && r.output ? r.output.trim().split("\n").slice(-2).join("  ") : "") || (r && r.error) || "done");
+    run.disabled = false; evolutionApplied = false; refreshEvolutionData();
+  });
+}
+
 /* ── 3. Data indices (built once) ─────────────────────────────────────────── */
 const byMember = new Map(GUILD.members.map((m) => [m.id, m]));
 const bySkill  = new Map(GUILD.skills.map((s) => [s.id, s]));
@@ -419,6 +534,7 @@ const ROUTES = {
   skills:  { list: renderSkills,       detail: renderSkillPanel,    navKey: "skills" },
   domains: { list: renderDomains,      detail: renderSectorDetail,  navKey: "domains" },
   log:     { list: renderLog,          navKey: "log" },
+  evolution: { list: renderEvolution,  navKey: "evolution" },
 };
 
 function onRoute() {
@@ -1628,6 +1744,8 @@ function afterRender(key, segments) {
   if (key === "log" && !segments[1]) filterLog();
   if (key === "arsenal" && !arsenalApplied) refreshArsenalData();
   if (key === "arsenal") initWeaponAuras();
+  if (key === "evolution" && !evolutionApplied) refreshEvolutionData();
+  if (key === "evolution") wireEvolutionControls();
   if (key === "map") initPowerCore();
 }
 

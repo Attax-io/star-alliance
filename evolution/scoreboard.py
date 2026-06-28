@@ -26,6 +26,7 @@ import json
 import os
 import re
 import sys
+from collections import Counter
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
@@ -81,6 +82,86 @@ def _learning_key(text: str) -> str:
     repeats. Conservative on purpose: a sorted token SET, not a loose substring."""
     toks = sorted({t for t in re.findall(r"[a-z0-9]+", text.lower()) if len(t) > 2})
     return " ".join(toks)
+
+
+# Minimum skill-fire telemetry before "never fired" is trusted as "dead" rather
+# than "no data yet" — guards the engine from flagging the whole roster at launch.
+DEAD_SKILL_MIN_FIRES = 50
+
+
+def _roster() -> tuple[set, set]:
+    """(known_skill_ids, known_workflow_names) from guild-data.json — the same source
+    of truth the dashboard is built from. Empty sets on any error → capability()
+    degrades to ledger-only signals (no never-fired detection)."""
+    skills: set = set()
+    wfs: set = set()
+    try:
+        g = json.load(open(os.path.join(REPO, "guild-data.json"), encoding="utf-8"))
+        for s in g.get("skills", []):
+            sid = (s.get("id") or s.get("name")) if isinstance(s, dict) else s
+            if sid:
+                skills.add(sid)
+        for w in g.get("workflows", []):
+            nm = w.get("name") if isinstance(w, dict) else w
+            if nm:
+                wfs.add(nm)
+    except Exception:
+        pass
+    return skills, wfs
+
+
+def capability(since: str | None = None) -> dict:
+    """The CAPABILITY half of the scoreboard — reads the Wave-1 SENSE signals
+    (skill-fire / doer-summon / workflow-fire / workflow-unknown) back into the
+    numbers engine.diagnose() turns into skill/workflow/coaching proposals.
+
+    Counts, never-fired sets (roster minus fired), and skill CO-FIRE (skills sharing
+    a turn id — that's why signals stamp meta.turn). 'never fired' is only meaningful
+    once enough fires exist; the trust gate lives in the engine, not here."""
+    events = ledger.read(since=since)
+    sigs = [e for e in events
+            if e.get("kind") == "metric" and (e.get("meta") or {}).get("signal")]
+
+    def of(sig):
+        return [e for e in sigs if e["meta"]["signal"] == sig]
+
+    skill_fires = Counter(e["meta"].get("skill") for e in of("skill-fire")
+                          if e["meta"].get("skill"))
+    wf_runs = Counter(e["meta"].get("workflow") for e in of("workflow-fire")
+                      if e["meta"].get("workflow"))
+    wf_unknown = Counter(e["meta"].get("workflow") for e in of("workflow-unknown")
+                         if e["meta"].get("workflow"))
+    n_summon = len(of("doer-summon"))
+
+    # co-fire: skills that share a turn id, counted as sorted pairs.
+    by_turn: dict = {}
+    for e in of("skill-fire"):
+        key = e["meta"].get("turn") or e.get("ts")
+        sk = e["meta"].get("skill")
+        if sk:
+            by_turn.setdefault(key, set()).add(sk)
+    cofire: Counter = Counter()
+    for sset in by_turn.values():
+        sl = sorted(sset)
+        for i in range(len(sl)):
+            for j in range(i + 1, len(sl)):
+                cofire[(sl[i], sl[j])] += 1
+
+    known_skills, known_wfs = _roster()
+    never_skills = sorted(known_skills - set(skill_fires)) if known_skills else []
+    never_wfs = sorted(known_wfs - set(wf_runs)) if known_wfs else []
+
+    return {
+        "skill_fires": dict(skill_fires.most_common()),
+        "total_skill_fires": sum(skill_fires.values()),
+        "skills_never_fired": never_skills,
+        "skill_cofire": {f"{a} + {b}": n for (a, b), n in cofire.most_common() if n > 1},
+        "workflow_runs": dict(wf_runs.most_common()),
+        "workflows_never_run": never_wfs,
+        "workflow_unknown": dict(wf_unknown.most_common()),
+        "doer_summons": n_summon,
+        "dead_skill_trusted": sum(skill_fires.values()) >= DEAD_SKILL_MIN_FIRES,
+    }
 
 
 def score(since: str | None = None) -> dict:
@@ -168,6 +249,25 @@ def _cli():
         print(f"  cost trend        : recent {ct['recent_mean_out']} vs prior "
               f"{ct['prior_mean_out']} out-tok ({ct['delta_pct']}%)")
     print(f"  → {s['verdict']}")
+
+    c = capability(since=a.since)
+    print("\n── Capability ──")
+    print(f"  skill fires       : {c['total_skill_fires']} total, "
+          f"{len(c['skill_fires'])} distinct skills")
+    print(f"  workflow runs     : {sum(c['workflow_runs'].values())} total, "
+          f"{len(c['workflow_runs'])} distinct workflows")
+    print(f"  doer summons      : {c['doer_summons']}")
+    if c["workflow_unknown"]:
+        print(f"  unregistered wf   : {c['workflow_unknown']}  (new-workflow candidates)")
+    if c["skill_cofire"]:
+        top = list(c["skill_cofire"].items())[:3]
+        print(f"  top co-fires      : {top}")
+    if c["dead_skill_trusted"]:
+        print(f"  never-fired skills: {len(c['skills_never_fired'])} "
+              f"(trusted — ≥{DEAD_SKILL_MIN_FIRES} fires observed)")
+    else:
+        print(f"  never-fired skills: held back — only {c['total_skill_fires']}/"
+              f"{DEAD_SKILL_MIN_FIRES} fires observed (too little data to call dead)")
 
 
 if __name__ == "__main__":

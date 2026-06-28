@@ -519,6 +519,24 @@ function deleteWorkflow(id, cb) {
   }, cb);
 }
 
+// ── Evolution Engine control (Wave 5). The schedule lives in a repo file so the
+//    dashboard edits it without touching the cron — reflect.py self-gates on it.
+const EVOLUTION_DIR = path.join(ROOT, 'evolution');
+const SCHEDULE_JSON = path.join(EVOLUTION_DIR, 'schedule.json');
+const CADENCES = new Set(['off', 'hourly', 'daily', 'weekly']);
+
+function setEvolutionSchedule(fields, cb) {
+  fields = fields || {};
+  editJsonFile(SCHEDULE_JSON, (doc) => {
+    if (typeof fields.cadence === 'string') {
+      if (!CADENCES.has(fields.cadence)) return new Error('bad cadence');
+      doc.cadence = fields.cadence;
+    }
+    if (typeof fields.enabled === 'boolean') doc.enabled = fields.enabled;
+    return doc;
+  }, cb);
+}
+
 // guild log — append-only, via the canonical tools/log_event.py (auto-stamps
 // date/id, never overwrites). Provenance stays intact; no direct JSON write.
 const LOG_TYPES = new Set(['skill-upgrade','skill-create','skill-remove','member-upgrade',
@@ -624,6 +642,33 @@ http.createServer((req, res) => {
       try { lastBuild = fs.statSync(path.join(ROOT, 'guild-data.js')).mtime.toISOString(); } catch (_) {}
       res.writeHead(err ? 500 : 200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
       res.end(JSON.stringify({ ok: !err, error: err ? String(err.message || err) : undefined, lastBuild }));
+    });
+    return;
+  }
+
+  // ── Evolution Engine: live status (read), schedule control (write), run-now.
+  if (req.method === 'GET' && req.url === '/api/evolution') {
+    execFile('python3', [path.join(EVOLUTION_DIR, 'status.py')], { cwd: ROOT, timeout: 15000 }, (err, stdout) => {
+      res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', 'Cache-Control': 'no-store' });
+      res.end(err ? JSON.stringify({ error: String(err.message || err) }) : (stdout || '{}'));
+    });
+    return;
+  }
+  if (req.method === 'POST' && req.url === '/api/evolution/schedule') {
+    let raw = ''; req.on('data', (c) => { raw += c; if (raw.length > 1e5) req.destroy(); });
+    req.on('end', () => {
+      let body; try { body = JSON.parse(raw); } catch (e) { res.writeHead(400, {'Content-Type':'application/json'}); return res.end('{"ok":false,"error":"bad json"}'); }
+      setEvolutionSchedule(body, (err) => {
+        res.writeHead(err ? 400 : 200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+        res.end(JSON.stringify({ ok: !err, error: err ? String(err.message || err) : undefined }));
+      });
+    });
+    return;
+  }
+  if (req.method === 'POST' && req.url === '/api/evolution/run') {
+    execFile('python3', [path.join(EVOLUTION_DIR, 'reflect.py'), '--now'], { cwd: ROOT, timeout: 120000 }, (err, stdout, stderr) => {
+      res.writeHead(err ? 500 : 200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' });
+      res.end(JSON.stringify({ ok: !err, output: (stdout || '') + (stderr || ''), error: err ? String(err.message || err) : undefined }));
     });
     return;
   }

@@ -90,6 +90,50 @@ def diagnose(since: str | None = None) -> list[dict]:
             "action": "inspect recent turns for un-offloaded bulk work; reinforce doer-first routing",
         })
 
+    # ── CAPABILITY signals (Wave 2): skills / workflows / doer discipline ────────
+    # Sourced from the SENSE telemetry the hooks now ledger. These route to the
+    # EXISTING producers (skillsmith, Workflow Forge) rather than reinventing them.
+    cap = scoreboard.capability(since=since)
+
+    # 5. Recurring workflow MISS — an unregistered workflow declared repeatedly is a
+    #    real gap: a craft the guild keeps reaching for with no lane. Forge it.
+    for name, n in cap["workflow_unknown"].items():
+        if n >= 2:
+            proposals.append({
+                "surface": "workflows", "tier": "B",
+                "detail": f"workflow '{name}' declared {n}× but is NOT registered — a recurring gap",
+                "action": f"run Workflow Forge to create '{name}' (or map it to an existing workflow)",
+            })
+
+    # 6. Skill CO-FIRE — two skills almost always drawn together → merge candidate.
+    for pair, n in cap["skill_cofire"].items():
+        if n >= 5:
+            proposals.append({
+                "surface": "skills", "tier": "A",
+                "detail": f"skills '{pair}' co-fired {n}× — evaluate merging into one",
+                "action": f"run skillsmith to assess merging {pair} (critic-gated)",
+            })
+
+    # 7. DEAD skills — carried but never drawn across a TRUSTED window → merge/retire.
+    #    Held back until enough fires exist so launch-time silence isn't read as death.
+    if cap["dead_skill_trusted"] and cap["skills_never_fired"]:
+        sample = ", ".join(cap["skills_never_fired"][:8])
+        proposals.append({
+            "surface": "skills", "tier": "A",
+            "detail": f"{len(cap['skills_never_fired'])} skill(s) never fired in "
+                      f"{cap['total_skill_fires']} uses (e.g. {sample}) — review for merge/retire",
+            "action": "run skillsmith to assess merge/retire of unused skills (critic-gated)",
+        })
+
+    # 8. DOER discipline — real changes but zero doer offload → members may be doing
+    #    bulk inline. A coaching signal (doctrine/member-files), not an auto-fix.
+    if s["changes"] >= 5 and cap["doer_summons"] == 0:
+        proposals.append({
+            "surface": "doctrine", "tier": "B",
+            "detail": f"{s['changes']} changes but 0 doer summons — bulk work may be done inline",
+            "action": "reinforce doer-first routing (weapon-utility); coach members to offload bulk",
+        })
+
     if not proposals:
         proposals.append({
             "surface": "", "tier": "", "detail": "no actionable signal this cycle", "action": ""})

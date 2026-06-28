@@ -1,0 +1,13 @@
+{
+  "cadence": "daily",
+  "enabled": true,
+  "last_run": "2026-06-28T07:19:37Z",
+  "last_proposals": 1,
+  "_cadences": [
+    "off",
+    "hourly",
+    "daily",
+    "weekly"
+  ],
+  "_doc": "Single source of truth for the Evolution reflector's schedule. Edited from the dashboard (Evolution panel) or by hand. The cron fires reflect.py hourly; reflect.py self-gates on this file, so changing cadence here needs NO cron edit. cadence=off disables; 'Run now' bypasses cadence via --now."
+}

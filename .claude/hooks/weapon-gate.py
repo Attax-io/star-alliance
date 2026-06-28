@@ -38,6 +38,16 @@ def project_dir():
     return os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
 
 
+def _sense(signal, **kw):
+    """Fail-soft capability-signal emit; never breaks the gate (logging, not control)."""
+    try:
+        sys.path.insert(0, os.path.join(project_dir(), "evolution"))
+        import signals  # noqa: E402
+        signals.emit(signal, **kw)
+    except Exception:
+        pass
+
+
 def _first_reminder_this_turn():
     """True only on the FIRST valid summon of a turn. turn-start.py clears the
     sentinel on every new UserPromptSubmit, so the ~130-token weapon-doctrine
@@ -139,6 +149,11 @@ def check(data):
                 f"Draw a real weapon (one of: {', '.join(sorted(valid))}). "
                 "A member can only wield weapons in its loadout — see weapon-utility.\n"
             )}
+
+    # Capability telemetry: a valid doer draw — recorded per-occurrence (each offload
+    # is a distinct datapoint for the engine's doer-discipline signal), fail-soft.
+    _sense("doer-summon", surface="arsenal",
+           detail=f"doer summoned: {', '.join(models)}", meta={"models": models})
 
     # Valid summon → non-blocking doctrine reminder (+ doer size-threshold),
     # emitted ONCE per turn (not on every draw).

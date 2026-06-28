@@ -1,6 +1,5 @@
 
-BUILD WARNINGS (9):
-  ⚠ skill 'safe-agentic-orchestration' has no skills-meta.json entry — using defaults
+BUILD WARNINGS (8):
   ⚠ domain 'lex-council-app' references member 'backend-auditor' not in the guild (external)
   ⚠ domain 'lex-council-app' references member 'cold-doc-rotator' not in the guild (external)
   ⚠ domain 'lex-council-app' references member 'frontend-auditor' not in the guild (external)
@@ -9,4 +8,4 @@ BUILD WARNINGS (9):
   ⚠ domain 'lex-council-app' references member 'pattern-detector' not in the guild (external)
   ⚠ domain 'lex-council-business' references member 'bd-research-agent' not in the guild (external)
   ⚠ domain 'lex-council-business' references member 'intake-agent' not in the guild (external)
-Wrote guild-data.js (538,413 bytes) + guild-data.json + skill-md.js (765,621 bytes, 70 skills) + workflow-md.js (70,369 bytes, 33 workflows)
+Wrote guild-data.js (566,403 bytes) + guild-data.json + skill-md.js (831,174 bytes, 80 skills) + workflow-md.js (70,369 bytes, 33 workflows)

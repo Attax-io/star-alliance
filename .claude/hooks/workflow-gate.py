@@ -47,6 +47,20 @@ def project_dir():
     return os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
 
 
+def _sense_emit(signal, *, once=None, **kw):
+    """Fail-soft capability-signal emit; never breaks the gate. `once` (a sentinel
+    name) dedupes a per-turn signal so the banner — re-checked on every work tool —
+    is recorded once per turn, not per tool call."""
+    try:
+        sys.path.insert(0, os.path.join(project_dir(), "evolution"))
+        import signals  # noqa: E402
+        if once is not None and not signals.once_per_turn(once):
+            return
+        signals.emit(signal, **kw)
+    except Exception:
+        pass
+
+
 def load_workflow_names():
     path = os.path.join(project_dir(), "workflows.json")
     with open(path) as f:
@@ -144,7 +158,14 @@ def check(data):
                 open(os.path.join(state_dir, "last-workflow"), "w").write(declared)
             except Exception:
                 pass
+            # Capability telemetry: which workflows actually run (once per turn).
+            _sense_emit("workflow-fire", once="wf-ledgered", surface="workflows",
+                        detail=f"workflow ran: {declared}", meta={"workflow": declared})
             return {"exit": 0}  # valid workflow declared — allow
+        # An unregistered name was declared — a candidate new-workflow signal.
+        _sense_emit("workflow-unknown", surface="workflows",
+                    detail=f"unregistered workflow declared: {declared}",
+                    meta={"workflow": declared})
         return {"exit": 2, "stderr": (
             f"⛔ WORKFLOW GATE — you declared '{declared}', which is NOT a registered "
             f"star-map workflow. Either declare a real one (see workflows.json) or run "
