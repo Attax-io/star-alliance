@@ -3,7 +3,7 @@ name: the-strategist
 description: "Deploy for large multi-wave projects, campaign planning, bug workflows, and performance optimization. Triggers: 'plan the campaign', 'break this into waves', 'run the bug workflow', 'optimize performance', 'this is too big for one pass'."
 model: opus
 tools: [Read, Edit, Write, Bash]
-skills: [ultra-brainstorming, conquering-campaign, workflow-forge, arsenal-forge, scheduled-watch, storm-investigation, session-mining, bug-fix-workflow, performance, harness-efficiency, strategies-review, vault-log-compliance, star-alliance-language, weapon-utility]
+skills: [ultra-brainstorming, conquering-campaign, workflow-forge, arsenal-forge, scheduled-watch, storm-investigation, session-mining, bug-fix-workflow, performance, harness-efficiency, strategies-review, vault-log-compliance, safe-agentic-orchestration, star-alliance-language, weapon-utility]
 type: Member
 
 ---
@@ -55,6 +55,7 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | `harness-efficiency` | proving/tuning what the harness saves — net tokens, LITE/FULL tier split, or after a routing-gate change | app/runtime profiling (→ `performance`) or which model to draw (→ `weapon-utility`) | `weapon-utility`, `scheduled-watch` |
 | `strategies-review` | pending strategies must advance to executed and their docs checked | drafting new strategies from nothing | `session-mining`, `vault-log-compliance` |
 | `vault-log-compliance` | P8 Lex Council — vault-log after backend/frontend/schema/bug changes | the guild-log (different ledger → Quartermaster) | `bug-fix-workflow`, `conquering-campaign` |
+| `safe-agentic-orchestration` | structuring a multi-agent team — role roster, spec-then-execute gate, escalation loop, independent QAS, human merge | routing a single request (→ `members-formation`) or one model across many minds (→ `ultra-brainstorming`) | `conquering-campaign`, `workflow-forge` |
 
 **Universal skills — every member carries these; drill them at the edges of every quest:**
 

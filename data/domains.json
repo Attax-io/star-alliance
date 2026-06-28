@@ -77,7 +77,16 @@
         "voices-check",
         "price-action",
         "a11y-craft",
-        "design-tokens"
+        "design-tokens",
+        "safe-agentic-orchestration",
+        "agent-web-reach",
+        "agentic-video-production",
+        "timeseries-forecasting",
+        "multimodal-model-wrappers",
+        "system-prompt-design-patterns",
+        "cn-market-strategy-pack",
+        "pattern-library-discovery",
+        "dev-ops-command-pack"
       ],
       "members": [
         "the-butler",
@@ -90,7 +99,7 @@
         "the-merchant",
         "the-quartermaster"
       ],
-      "notes": "The home domain. All 9 guild members + 69 skills live here. Every other domain borrows from this skill pool."
+      "notes": "The home domain. All 9 guild members + 78 skills live here. Every other domain borrows from this skill pool."
     },
     {
       "id": "lex-council-app",

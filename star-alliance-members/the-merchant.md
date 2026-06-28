@@ -3,7 +3,7 @@ name: the-merchant
 description: "Deploy for investment analysis, trading strategies, market research, portfolio management, and financial decision-making. Triggers: 'analyze this investment', 'build a trading strategy', 'research this market', 'manage the portfolio', 'should I buy or sell', 'what's the risk on this'."
 model: opus
 tools: [Read, Edit, Write, Bash]
-skills: [market-recon, trading-strategy, portfolio-risk, japanese-candlesticks, volume-price-analysis, chart-patterns, price-action, algorithmic-trading-chan, probability-statistics, storm-investigation, ultra-brainstorming, star-alliance-language, weapon-utility]
+skills: [market-recon, trading-strategy, portfolio-risk, japanese-candlesticks, volume-price-analysis, chart-patterns, price-action, algorithmic-trading-chan, probability-statistics, storm-investigation, timeseries-forecasting, cn-market-strategy-pack, ultra-brainstorming, star-alliance-language, weapon-utility]
 type: Member
 
 ---
@@ -85,6 +85,8 @@ When to draw each skill, and the adjacent task that wrongly pulls it. Every craf
 | `algorithmic-trading-chan` | the *doctrine* behind a strategy — cointegration, half-life, Kelly sizing, why a backtest lies, mean-reversion vs momentum (Ernie Chan) | forging one dated spec (→ `trading-strategy`) or reading a live market (→ `market-recon`); never executes | `trading-strategy`, `portfolio-risk`, `market-recon` |
 | `probability-statistics` | the *math of uncertainty* underneath a call — distribution fit, CLT, significance test, confidence interval, MLE, Bayesian vs frequentist | forging a trade spec (→ `trading-strategy`) or sizing a book (→ `portfolio-risk`); analysis only, never executes | `algorithmic-trading-chan`, `portfolio-risk`, `storm-investigation` |
 | `storm-investigation` | before any recommendation — five personas (Bull/Bear/Macro/Quant/Contrarian) | a single-perspective read or a final verdict; investigates, never decides | `market-recon`, `trading-strategy`, `portfolio-risk` |
+| `timeseries-forecasting` | projecting a numeric series forward — TimesFM zero-shot point + quantile bands, covariates, backtest | naming a formation (→ `chart-patterns`) or forging a trade spec (→ `trading-strategy`); analysis only, never executes | `probability-statistics`, `market-recon` |
+| `cn-market-strategy-pack` | matching a stock to one of 15 named CN/HK/US strategies — trend, reversal, theme/event, chan/wave | forging one bespoke dated spec (→ `trading-strategy`) or a general market read (→ `market-recon`); reads, never executes | `chart-patterns`, `price-action`, `trading-strategy` |
 
 **Universal skills — every member carries these; drill them at the edges of every quest:**
 

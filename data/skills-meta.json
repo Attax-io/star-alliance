@@ -550,5 +550,77 @@
     "tabler": "ti-map-2",
     "triggers": "'save this as a workflow', 'add this to the star map', 'register a workflow', 'crystallize this formation'",
     "modes": ""
+  },
+  "safe-agentic-orchestration": {
+    "icon": "🎻",
+    "blurb": "Orchestrate a multi-agent AI team — role roster, spec-then-execute gate, escalation loop, independent QAS, human merge",
+    "level": "Advanced",
+    "tabler": "ti-sitemap",
+    "triggers": "'orchestrate this team', 'coordinate these agents', 'design the agent roles', 'who should own this work', 'enforce a quality gate'",
+    "modes": "role architecture; coordination patterns; spec→execute→release gating"
+  },
+  "agent-web-reach": {
+    "icon": "🌐",
+    "blurb": "Give an agent reliable web reach — YouTube/Bilibili transcripts, Twitter/Reddit/LinkedIn scraping, RSS, Exa search, cookies",
+    "level": "Advanced",
+    "tabler": "ti-world-search",
+    "triggers": "'get this youtube transcript', 'scrape this reddit thread', 'pull this tweet', 'read this blocked page', 'subscribe to this RSS'",
+    "modes": "channels; auth & cookies; search & RSS; transcription; health probing"
+  },
+  "agentic-video-production": {
+    "icon": "🎬",
+    "blurb": "Produce finished video agentically from a brief — research→script→assets→edit→compose, native b-roll corpus, gated stages",
+    "level": "Advanced",
+    "tabler": "ti-movie",
+    "triggers": "'make a video about X', 'produce this video', 'turn this script into a video', 'build a b-roll corpus'",
+    "modes": "pipeline & stage-gates; corpus & footage; providers; prompt patterns"
+  },
+  "timeseries-forecasting": {
+    "icon": "📈",
+    "blurb": "Forecast a numeric series with Google TimesFM — zero-shot point + quantile intervals, covariates, rolling backtests",
+    "level": "Advanced",
+    "tabler": "ti-chart-dots",
+    "triggers": "'forecast this series', 'predict the next N periods', 'project this metric forward', 'forecast demand'",
+    "modes": "foundation vs classical; API & usage; evaluation & pitfalls; quant application"
+  },
+  "multimodal-model-wrappers": {
+    "icon": "🧬",
+    "blurb": "Build a unified multi-provider model abstraction — one call surface over LLM/VLM/TTS/TTV/image-gen/embeddings",
+    "level": "Advanced",
+    "tabler": "ti-stack-2",
+    "triggers": "'wrap this model provider', 'unify these model APIs', 'add a provider to the abstraction', 'build a multimodal model layer'",
+    "modes": "base contracts; adding a provider; modality normalization"
+  },
+  "system-prompt-design-patterns": {
+    "icon": "📜",
+    "blurb": "Design & harden production system prompts — identity, capabilities, tool-use, refusal, persona, anti-jailbreak (8 vendors)",
+    "level": "Advanced",
+    "tabler": "ti-prompt",
+    "triggers": "'design a system prompt', 'review this system prompt', 'harden this agent prompt', 'how do production prompts handle X'",
+    "modes": "structural patterns; tool-use & refusal; persona & anti-jailbreak; cross-vendor comparison"
+  },
+  "cn-market-strategy-pack": {
+    "icon": "🐉",
+    "blurb": "Read-only pack of 15 CN/HK/US market strategies — trend, reversal, theme/event, chan & wave; thesis/entry/exit/regime",
+    "level": "Advanced",
+    "tabler": "ti-trending-up",
+    "triggers": "'which strategy fits this stock', 'screen with chan theory', 'is this a dragon-head setup', 'apply a CN-market strategy'",
+    "modes": "trend & momentum; reversal & volume; theme & event; chan & wave theory"
+  },
+  "pattern-library-discovery": {
+    "icon": "🗂️",
+    "blurb": "Build & query a reusable code-pattern library — capture proven patterns, reuse-before-reinvent across 7 categories",
+    "level": "Advanced",
+    "tabler": "ti-folder-search",
+    "triggers": "'find a pattern for X', 'is there a reusable pattern', 'capture this as a pattern', 'search the pattern library', 'reuse before reinvent'",
+    "modes": "capturing patterns; category taxonomy; search & retrieval"
+  },
+  "dev-ops-command-pack": {
+    "icon": "🛠️",
+    "blurb": "Disciplined dev-ops lifecycle as one gated loop — start-work→pre-pr→deploy→health→rollback→retro, dev/remote symmetry",
+    "level": "Advanced",
+    "tabler": "ti-rocket",
+    "triggers": "'start work on this', 'pre-pr check', 'deploy this', 'roll back the deploy', 'run a retro', 'health check the service'",
+    "modes": "lifecycle loop; deploy & rollback; health & observability"
   }
 }

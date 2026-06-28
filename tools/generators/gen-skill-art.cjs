@@ -285,6 +285,42 @@ const SKILLS = [
     id: "project-start",
     prompt: `${STYLE}. A guild sentinel standing at the gate of a new fortress at dawn, lantern raised to check a glowing checklist etched into the stonework — three runes lighting up green as the check passes: a shield rune for the root path, a sword-rack rune for skill versions, a banner rune for member presence — a sunrise breaking over the parapets behind, the craft of a fast dawn-check before the day's work begins, no text, no watermarks`,
   },
+  {
+    id: "safe-agentic-orchestration",
+    prompt: `${STYLE}. A Fallen-Sword emblem on dark aged leather: a golden conductor's baton crossed over a layered org-chart of glowing sword-nodes, each rank tethered by gold command-lines into one disciplined formation, a spec-scroll gate and a sealed QAS checkmark guarding the flow into a final human-merge rune — the craft of marshalling many agents into one verifiable team, no text, no watermarks`,
+  },
+  {
+    id: "agent-web-reach",
+    prompt: `${STYLE}. A Fallen-Sword emblem on dark aged leather: a golden globe pierced by a sword whose blade unspools into a dozen reaching tendrils — each tipped with a tiny platform sigil (play-button, bird, alien, feed-waves) drawing glowing content back through a brass cookie-key past a shattered 403 wall — the craft of giving an agent reach across the whole web, no text, no watermarks`,
+  },
+  {
+    id: "agentic-video-production",
+    prompt: `${STYLE}. A Fallen-Sword emblem on dark aged leather: a golden film clapperboard whose strip becomes a flowing timeline of glowing keyframes — research scroll, script page, asset shards, edit blade, and a final rendered frame — gated by small brass checkpoints between each stage, reels of retrieved b-roll stacked beside it — the craft of producing finished video agentically from a plain brief, no text, no watermarks`,
+  },
+  {
+    id: "timeseries-forecasting",
+    prompt: `${STYLE}. A Fallen-Sword emblem on dark aged leather: a glowing golden time-series line marching across parchment then extending into the future as a forecast, flanked by a softly-shaded quantile prediction-band fanning outward, a brass sundial-compass marking the context window and the horizon, faint covariate threads feeding in from the side — the read-only craft of projecting one series forward with calibrated uncertainty, no text, no watermarks`,
+  },
+  {
+    id: "multimodal-model-wrappers",
+    prompt: `${STYLE}. A Fallen-Sword emblem on dark aged leather: a single golden sword-hilt socket into which many different model-blades (text, eye, sound-wave, film-frame, vector-lattice) all plug through one shared collar, normalized into one luminous output stream — the craft of one stable call-surface over many providers and modalities, no text, no watermarks`,
+  },
+  {
+    id: "system-prompt-design-patterns",
+    prompt: `${STYLE}. A Fallen-Sword emblem on dark aged leather: a master's prompt-scroll unfurled, its sections carved as glowing golden bands — identity crest, capability ledger, tool-use rune, a refusal shield-wall, a persona mask — a sword laid across it warding off a tangle of red jailbreak-serpents at the margin — the meta-craft of designing a strong system prompt, no text, no watermarks`,
+  },
+  {
+    id: "cn-market-strategy-pack",
+    prompt: `${STYLE}. A Fallen-Sword emblem on dark aged leather: a golden Eastern dragon coiling around a candlestick chart, its body tracing a trend then a reversal, four strategy-seals (trend, reversal, theme, chan-wave) glowing at the corners, a brass abacus and a fanned deck of strategy-scrolls below — the Merchant's read-only pack of fifteen market strategies, never a trade in sight, no text, no watermarks`,
+  },
+  {
+    id: "pattern-library-discovery",
+    prompt: `${STYLE}. A Fallen-Sword emblem on dark aged leather: a golden card-catalog cabinet of glowing pattern-tablets sorted into seven labelled drawers (api, ci, config, database, security, testing, ui), a sword-shaped index-key drawing one proven tablet out into the light while a faint ghost of reinvention dissolves — the craft of capturing and reusing battle-tested patterns, no text, no watermarks`,
+  },
+  {
+    id: "dev-ops-command-pack",
+    prompt: `${STYLE}. A Fallen-Sword emblem on dark aged leather: a golden circular lifecycle-gear of stations — start, pre-PR shield, deploy rocket, health pulse, rollback hook, retro lens — a sword as the gate-lever that can halt the ring at any checkpoint, twin dev/remote rails mirrored beneath — the craft of a disciplined, reversible dev-ops loop, no text, no watermarks`,
+  },
 ];
 
 function postJSON(url, headers, body) {

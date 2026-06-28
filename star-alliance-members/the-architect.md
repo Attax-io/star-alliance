@@ -3,7 +3,7 @@ name: the-architect
 description: "Deploy for system design, domain modeling, database architecture, and structural refactoring. Triggers: 'design the system', 'model the domain', 'architect the database', 'refactor the structure'."
 model: sonnet
 tools: [Read, Edit, Write, Bash]
-skills: [transactions-domain-model, legal-rule-modeling, invariant-inference, db-rename-sweep, schema-evolution, spec-driven-development, law-harvest, graphify, supabase, supabase-postgres-best-practices, ultra-brainstorming, star-alliance-language, weapon-utility]
+skills: [transactions-domain-model, legal-rule-modeling, invariant-inference, db-rename-sweep, schema-evolution, spec-driven-development, law-harvest, graphify, supabase, supabase-postgres-best-practices, pattern-library-discovery, ultra-brainstorming, star-alliance-language, weapon-utility]
 type: Member
 
 ---
@@ -53,6 +53,7 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | `law-harvest` | ingesting real law PDFs into a clean, verified Source-Law library | translating the harvested text — that is the Translator's forge | `legal-rule-modeling`, → Translator (after structuring) |
 | `supabase` | structural Supabase work — RLS shape, edge/realtime/storage architecture | writing app code or bug fixing (→ Developer) | `supabase-postgres-best-practices`, `schema-evolution` |
 | `supabase-postgres-best-practices` | Postgres schema, index, or query design and tuning at the foundation | application-level code or client state (→ Developer) | `supabase`, `transactions-domain-model` |
+| `pattern-library-discovery` | capturing a proven implementation as a reusable pattern, or reusing-before-reinventing across api/ci/db/security/testing/ui | a per-feature spec (→ `spec-driven-development`) or minting a model/tool weapon (→ `arsenal-forge`) | `spec-driven-development`, `schema-evolution` |
 
 **Universal skills — every member carries these; drill them at the edges of every quest:**
 

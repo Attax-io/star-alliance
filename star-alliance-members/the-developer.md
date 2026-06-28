@@ -3,7 +3,7 @@ name: the-developer
 description: "Deploy for writing code, applying changes, fixing bugs, implementing features, and hands-on development work — including dev servers, tooling, and knowledge graphs. Triggers: 'write the code', 'implement this', 'fix this bug', 'apply the changes', 'build this feature', 'refactor this code', 'open dev server', 'generate a knowledge graph'."
 model: sonnet
 tools: [Read, Edit, Write, Bash]
-skills: [bug-fix-workflow, db-rename-sweep, dev-server, graphify, claude-code-hooks, supabase, supabase-postgres-best-practices, full-output-enforcement, obsidian-markdown, performance, python-master, motion-design, ultra-brainstorming, star-alliance-language, weapon-utility]
+skills: [bug-fix-workflow, db-rename-sweep, dev-server, graphify, claude-code-hooks, supabase, supabase-postgres-best-practices, full-output-enforcement, obsidian-markdown, performance, python-master, motion-design, agent-web-reach, multimodal-model-wrappers, system-prompt-design-patterns, dev-ops-command-pack, ultra-brainstorming, star-alliance-language, weapon-utility]
 type: Member
 
 ---
@@ -58,6 +58,10 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | `obsidian-markdown` | dev docs in Obsidian md — wikilinks, callouts, properties | long-form strategy docs (→ Strategist) or graph ingestion (→ `graphify`) | `graphify` |
 | `python-master` | building a Python library or service — setup, packaging, typing, tests, docs, API/CLI, profiling, security audit, release, or full review | JS/TS or non-Python work, or web-app UI (→ Designer) | `performance`, `supabase`, `full-output-enforcement` |
 | `motion-design` | implementing the motion the Designer specced — Create mode: build the transition/micro-interaction in React/Framer/CSS with the right easing, duration token, and `prefers-reduced-motion` | DECIDING whether a surface should move or its overall style (→ Designer / `design-taste`) | `dev-server`, `performance` |
+| `agent-web-reach` | an agent must reach blocked web content — youtube/bilibili transcripts, twitter/reddit/linkedin scrape, RSS, Exa search | financial-data synthesis (→ Merchant `market-recon`) or people research (→ Herald `relationship-intel`) | `graphify`, `python-master` |
+| `multimodal-model-wrappers` | building a unified call-surface over many model providers/modalities (LLM/VLM/TTS/image-gen) | wiring a runner into the arsenal (→ `arsenal-forge`) or exposing MCP tools (→ `mcp-builder`) | `python-master`, `weapon-utility` |
+| `system-prompt-design-patterns` | designing, reviewing, or hardening a system/agent prompt against injection | routing work across members (→ `members-formation`) or a product spec (→ Architect `spec-driven-development`) | `claude-code-hooks`, `full-output-enforcement` |
+| `dev-ops-command-pack` | running the disciplined ops loop — start-work, pre-pr, deploy, health, rollback, retro | a single version cut (→ Strategist `release-train`) or just starting the app (→ `dev-server`) | `dev-server`, `performance` |
 
 **Universal skills — every member carries these; drill them at the edges of every quest:**
 

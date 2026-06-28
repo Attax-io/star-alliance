@@ -2,6 +2,19 @@
   "version": 1,
   "entries": [
     {
+      "id": 100,
+      "date": "2026-06-28",
+      "type": "member-upgrade",
+      "title": "Promote The Herald: Advanced → Elite",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Advanced → Elite (craft-depth tier). Prerequisite checklist for Elite verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-herald"
+      ],
+      "from": "Advanced",
+      "to": "Elite"
+    },
+    {
       "id": 99,
       "date": "2026-06-28",
       "type": "dashboard",
