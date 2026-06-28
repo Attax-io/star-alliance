@@ -193,15 +193,17 @@ def main():
             )
             sys.exit(0)
         sys.stderr.write(
-            "WORKFLOW NOT DECLARED (turn-end) — every turn runs inside a workflow. As your "
-            "FIRST line, open the deployment brief naming a workflow from workflows.json:\n"
+            "WORKFLOW NOT DECLARED (turn-end) — the answer you already gave is complete and "
+            "final; it logs the turn's substance. All that is missing is the workflow banner. "
+            "Add ONE short follow-up message containing nothing but the banner block below — "
+            "no prose, and do NOT reproduce or summarize the answer above (that is what made "
+            "the reply appear twice):\n"
             "    ▸ Workflow — <Name>\n"
-            "(use 'Conversation' for a plain greeting/ack/meta-question, 'Inquiry / Recon' for "
-            "a read-only question). If none fits, run Workflow Forge. In this SAME reply also "
-            "list at least one deployed agent of that workflow's cast:\n"
             "    Deploying <N> agents:\n"
             "      • The <Member> — <planning model> (planning) · <execution model> (execution)\n"
-            "Both lines are checked together — include both or you'll be re-prompted.\n"
+            "Pick the workflow from workflows.json — 'Conversation' for a greeting/ack/meta-"
+            "question, 'Inquiry / Recon' for a read-only question; if none fits, run Workflow "
+            "Forge.\n"
         )
         sys.exit(2)
 
@@ -229,13 +231,15 @@ def main():
 
     roster_str = ", ".join(roster)
     sys.stderr.write(
-        f"NO AGENT LISTED (turn-end) — workflow '{declared}' was declared but no agent of its "
-        f"cast was listed as deployed this turn. List each agent as it takes the field:\n"
+        f"NO AGENT LISTED (turn-end) — the answer you already gave is complete and final. "
+        f"Workflow '{declared}' was declared but no agent of its cast was listed. Add ONE short "
+        f"follow-up message containing nothing but the banner block below — no prose, and do NOT "
+        f"reproduce or summarize the answer above:\n"
+        f"    ▸ Workflow — {declared}\n"
+        f"    Deploying <N> agents:\n"
         f"      • The <Member> — <planning model> (planning) · <execution model> (execution)\n"
-        f"This workflow's cast (steps[].actor): {roster_str} — list each as it acts (including "
-        f"the closing the-quartermaster). Keep the '▸ Workflow — {declared}' line in this SAME "
-        f"reply alongside the agent list — both are checked together; include both or you'll be "
-        f"re-prompted for whichever you drop.\n"
+        f"This workflow's cast (steps[].actor): {roster_str} — list at least one (including the "
+        f"closing the-quartermaster as it acts).\n"
     )
     sys.exit(2)
 
