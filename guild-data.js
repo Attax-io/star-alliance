@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 58,
       "patch": 78
     },
-    "generated": "2026-06-28T09:04:57Z",
+    "generated": "2026-06-28T09:13:49Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -4650,6 +4650,7 @@ const GUILD = {
         "The gates — guild standard, baked into every workflow",
         "Crystallizing a fallback formation into a star-map workflow",
         "How the Butler runs it — the full loop",
+        "Reading a step's execution tags (exec · parallel)",
         "Failure-mode routing — route the stuck, not just the start",
         "Versioning",
         "Changelog"
@@ -4663,8 +4664,8 @@ const GUILD = {
       ],
       "scripts": [],
       "stats": {
-        "lines": 188,
-        "words": 1939
+        "lines": 204,
+        "words": 2099
       },
       "global": true,
       "members": [
@@ -6611,7 +6612,8 @@ const GUILD = {
           "actor": "you",
           "title": "Place the Order",
           "act": "You describe the mission in plain language so the guild knows what to build.",
-          "produces": "raw request"
+          "produces": "raw request",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -6628,7 +6630,8 @@ const GUILD = {
           ],
           "doers": [
             "minimax-m3"
-          ]
+          ],
+          "exec": "inline"
         },
         {
           "kind": "gate",
@@ -6649,7 +6652,9 @@ const GUILD = {
             "cleared brief"
           ],
           "thinker": "opus",
-          "ultra": true
+          "ultra": true,
+          "exec": "spawn",
+          "parallel": true
         },
         {
           "kind": "member",
@@ -6659,14 +6664,16 @@ const GUILD = {
           "produces": "routed assignments",
           "doers": [
             "minimax-m3"
-          ]
+          ],
+          "exec": "inline"
         },
         {
           "kind": "member",
           "actor": "the-designer",
           "title": "Design the Interface",
           "act": "The Designer shapes the visual design and UI for any user-facing part of the mission, so the build has a clear visual target to hit. The guild's only designer — no one else touches the look.",
-          "produces": "design spec"
+          "produces": "design spec",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -6686,7 +6693,9 @@ const GUILD = {
               "count": 3
             },
             "haiku"
-          ]
+          ],
+          "exec": "spawn",
+          "parallel": true
         },
         {
           "kind": "member",
@@ -6696,7 +6705,8 @@ const GUILD = {
           "produces": "verified build",
           "doers": [
             "minimax-m3"
-          ]
+          ],
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -6704,7 +6714,8 @@ const GUILD = {
           "title": "Confirm Guild Conformance",
           "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
           "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
+          "produces": "conformance sign-off",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -6737,7 +6748,8 @@ const GUILD = {
           "actor": "you",
           "title": "Report the Bug",
           "act": "You flag a small, well-understood bug or change for the guild to fix.",
-          "produces": "small request"
+          "produces": "small request",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -6751,7 +6763,8 @@ const GUILD = {
           },
           "inputs": [
             "small request"
-          ]
+          ],
+          "exec": "inline"
         },
         {
           "kind": "gate",
@@ -6763,14 +6776,16 @@ const GUILD = {
           "actor": "the-developer",
           "title": "Make the Fix",
           "act": "The Developer applies the smallest correct change and tests it locally before handing it off.",
-          "produces": "applied fix"
+          "produces": "applied fix",
+          "exec": "spawn"
         },
         {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Verify the Fix",
           "act": "The Quartermaster double-checks the change and confirms nothing else broke in the process.",
-          "produces": "verified fix"
+          "produces": "verified fix",
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -6778,7 +6793,8 @@ const GUILD = {
           "title": "Confirm Guild Conformance",
           "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
           "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
+          "produces": "conformance sign-off",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -6811,7 +6827,8 @@ const GUILD = {
           "actor": "you",
           "title": "Request the Sprint",
           "act": "You describe the UI or UX problem you want the guild to design around.",
-          "produces": "design request"
+          "produces": "design request",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -6825,7 +6842,8 @@ const GUILD = {
           },
           "inputs": [
             "design request"
-          ]
+          ],
+          "exec": "inline"
         },
         {
           "kind": "gate",
@@ -6844,28 +6862,32 @@ const GUILD = {
           },
           "inputs": [
             "design brief"
-          ]
+          ],
+          "exec": "spawn"
         },
         {
           "kind": "member",
           "actor": "the-designer",
           "title": "Design the Visuals",
           "act": "The Designer produces the UI/UX mockups, components, and brand treatments for the sprint.",
-          "produces": "design assets"
+          "produces": "design assets",
+          "exec": "spawn"
         },
         {
           "kind": "member",
           "actor": "the-developer",
           "title": "Build the Design",
           "act": "The Developer implements the design faithfully in code, respecting the visual spec.",
-          "produces": "implemented UI"
+          "produces": "implemented UI",
+          "exec": "spawn"
         },
         {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Clean Up and Verify",
           "act": "The Quartermaster polishes the build and verifies the design holds up in real interactions.",
-          "produces": "polished UI"
+          "produces": "polished UI",
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -6873,7 +6895,8 @@ const GUILD = {
           "title": "Confirm Guild Conformance",
           "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
           "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
+          "produces": "conformance sign-off",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -6906,7 +6929,8 @@ const GUILD = {
           "actor": "you",
           "title": "Request the Build",
           "act": "You describe the system, schema, or architectural change you need the guild to make.",
-          "produces": "architecture request"
+          "produces": "architecture request",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -6920,7 +6944,8 @@ const GUILD = {
           },
           "inputs": [
             "architecture request"
-          ]
+          ],
+          "exec": "inline"
         },
         {
           "kind": "gate",
@@ -6939,14 +6964,16 @@ const GUILD = {
           },
           "inputs": [
             "architecture brief"
-          ]
+          ],
+          "exec": "spawn"
         },
         {
           "kind": "member",
           "actor": "the-architect",
           "title": "Architect the System",
           "act": "The Architect drafts the system architecture and database schema to satisfy the scope.",
-          "produces": "system blueprint"
+          "produces": "system blueprint",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -6958,14 +6985,16 @@ const GUILD = {
           "actor": "the-developer",
           "title": "Build Migrations and Code",
           "act": "The Developer writes the schema migrations and implements the system against the certified design.",
-          "produces": "implemented system"
+          "produces": "implemented system",
+          "exec": "spawn"
         },
         {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Clean Up and Verify",
           "act": "The Quartermaster runs final checks and confirms the architecture works as intended in production-like conditions.",
-          "produces": "verified system"
+          "produces": "verified system",
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -6973,7 +7002,8 @@ const GUILD = {
           "title": "Confirm Guild Conformance",
           "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
           "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
+          "produces": "conformance sign-off",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -7006,7 +7036,8 @@ const GUILD = {
           "actor": "you",
           "title": "Submit the Law",
           "act": "You point the guild at the real-world law or regulation you need codified.",
-          "produces": "law reference"
+          "produces": "law reference",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -7020,7 +7051,8 @@ const GUILD = {
           },
           "inputs": [
             "law reference"
-          ]
+          ],
+          "exec": "inline"
         },
         {
           "kind": "gate",
@@ -7032,14 +7064,16 @@ const GUILD = {
           "actor": "the-translator",
           "title": "Load and Translate",
           "act": "The Translator ingests the real law and translates it faithfully across each required locale.",
-          "produces": "translated codex"
+          "produces": "translated codex",
+          "exec": "spawn"
         },
         {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Run Publish Check",
           "act": "The Quartermaster runs the pre-publish check on the codex and signs off on its readiness.",
-          "produces": "ready codex"
+          "produces": "ready codex",
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -7047,7 +7081,8 @@ const GUILD = {
           "title": "Confirm Guild Conformance",
           "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
           "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
+          "produces": "conformance sign-off",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -7080,7 +7115,8 @@ const GUILD = {
           "actor": "you",
           "title": "Ask the Question",
           "act": "You pose a research or investment question you want the guild to analyze.",
-          "produces": "research question"
+          "produces": "research question",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -7094,7 +7130,8 @@ const GUILD = {
           },
           "inputs": [
             "research question"
-          ]
+          ],
+          "exec": "inline"
         },
         {
           "kind": "gate",
@@ -7106,7 +7143,8 @@ const GUILD = {
           "actor": "the-merchant",
           "title": "Analyze Market and Risk",
           "act": "The Merchant investigates the market, prices, and risk in a read-only analysis pass and writes a report.",
-          "produces": "market report"
+          "produces": "market report",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -7139,7 +7177,8 @@ const GUILD = {
           "actor": "you",
           "title": "Request Skill Maintenance",
           "act": "You ask the guild to sync, upgrade, or create skills for the team.",
-          "produces": "maintenance request"
+          "produces": "maintenance request",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -7153,14 +7192,16 @@ const GUILD = {
           },
           "inputs": [
             "maintenance request"
-          ]
+          ],
+          "exec": "inline"
         },
         {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Sync and Upgrade Skills",
           "act": "The Quartermaster syncs, upgrades, or authors the logic and content of the skills that were requested.",
-          "produces": "updated skills"
+          "produces": "updated skills",
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -7174,14 +7215,16 @@ const GUILD = {
           },
           "inputs": [
             "updated skills"
-          ]
+          ],
+          "exec": "spawn"
         },
         {
           "kind": "member",
           "actor": "the-developer",
           "title": "Provide Tooling Support",
           "act": "The Developer provides any tooling, dev-environment, or knowledge-graph support the skill changes require.",
-          "produces": "ready tooling"
+          "produces": "ready tooling",
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -7189,7 +7232,8 @@ const GUILD = {
           "title": "Confirm Guild Conformance",
           "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
           "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
+          "produces": "conformance sign-off",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -7226,7 +7270,8 @@ const GUILD = {
           "actor": "you",
           "title": "Call the Log Sweep",
           "act": "You ask the guild to loop the recent sessions (today and yesterday) and check the guild log for any change that never got recorded.",
-          "produces": "sweep request"
+          "produces": "sweep request",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -7240,7 +7285,8 @@ const GUILD = {
           },
           "inputs": [
             "sweep request"
-          ]
+          ],
+          "exec": "inline"
         },
         {
           "kind": "gate",
@@ -7256,7 +7302,8 @@ const GUILD = {
           "script": "guild/session_scout.py",
           "args": {
             "window": "today,yesterday"
-          }
+          },
+          "exec": "inline"
         },
         {
           "kind": "gate",
@@ -7271,7 +7318,8 @@ const GUILD = {
           "produces": "synced guild log",
           "doers": [
             "minimax-m3"
-          ]
+          ],
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -7279,7 +7327,8 @@ const GUILD = {
           "title": "Confirm Guild Conformance",
           "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
           "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
+          "produces": "conformance sign-off",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -7312,7 +7361,8 @@ const GUILD = {
           "actor": "you",
           "title": "Call the Compliance Audit",
           "act": "You ask the guild to run the full compliance pass — OKF tidy and/or guild conformity — or name a specific mode (okf | conformity | both, default both).",
-          "produces": "audit request"
+          "produces": "audit request",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -7326,7 +7376,8 @@ const GUILD = {
           },
           "inputs": [
             "audit request"
-          ]
+          ],
+          "exec": "inline"
         },
         {
           "kind": "gate",
@@ -7338,7 +7389,8 @@ const GUILD = {
           "actor": "the-quartermaster",
           "title": "OKF Audit (skip if mode=conformity)",
           "act": "Runs  to report every governed .md lacking YAML frontmatter or a  field, and surveys non-markdown files for orphans and misplacement.",
-          "produces": "OKF non-conformance report"
+          "produces": "OKF non-conformance report",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -7350,14 +7402,16 @@ const GUILD = {
           "actor": "the-quartermaster",
           "title": "OKF Migrate & Sweep (skip if mode=conformity)",
           "act": "Runs , enriches concepts with title/description/tags and cross-links (handing bulk drafting to a doer weapon), places non-md files by concept-path, prunes confirmed dead files, then runs build.py. Re-runs until it passes clean. Confirms okf-gate hook is registered in .claude/settings.json.",
-          "produces": "OKF-conformant repo"
+          "produces": "OKF-conformant repo",
+          "exec": "spawn"
         },
         {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Conformity Audit (skip if mode=okf)",
           "act": "Drawing MiniMax M3, runs conformity_check.py — reading every source (members, skills, arsenal, workflows, docs, guild log) plus generated guild data, cross-checking every reference and testing each against logged decisions — to assemble a contradiction map.",
-          "produces": "contradiction map"
+          "produces": "contradiction map",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -7369,7 +7423,8 @@ const GUILD = {
           "actor": "the-quartermaster",
           "title": "Reconcile & Rebuild (skip if mode=okf)",
           "act": "Fixes each real contradiction at its source of truth, runs build.py so the generated guild data matches the sources again, re-runs conformity_check.py until it passes clean.",
-          "produces": "conformed repo"
+          "produces": "conformed repo",
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -7377,7 +7432,8 @@ const GUILD = {
           "title": "Confirm Guild Conformance",
           "act": "Runs  — wraps conformity_check.py, writes a signoff markdown. Runs guild-log to record the pass.",
           "produces": "conformance signoff",
-          "script": "guild/conformance.py"
+          "script": "guild/conformance.py",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -7418,7 +7474,8 @@ const GUILD = {
           "actor": "you",
           "title": "Report or Pull the Bug",
           "act": "You file a bug, or ask the guild to pull the open rows from the bug_reports table.",
-          "produces": "bug request"
+          "produces": "bug request",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -7432,7 +7489,8 @@ const GUILD = {
           },
           "inputs": [
             "bug request"
-          ]
+          ],
+          "exec": "inline"
         },
         {
           "kind": "gate",
@@ -7444,14 +7502,16 @@ const GUILD = {
           "actor": "the-strategist",
           "title": "Triage & Reproduce",
           "act": "The Strategist pulls the row, reads primary_instructions, and reproduces the report to find the true root cause — not just the symptom.",
-          "produces": "triaged root cause"
+          "produces": "triaged root cause",
+          "exec": "spawn"
         },
         {
           "kind": "member",
           "actor": "the-developer",
           "title": "Fix at the Root",
           "act": "The Developer applies the smallest correct fix following project conventions, and self-tests it locally.",
-          "produces": "applied fix"
+          "produces": "applied fix",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -7463,7 +7523,8 @@ const GUILD = {
           "actor": "the-developer",
           "title": "Close & File Spawn",
           "act": "The Developer flips the bug_reports row to Fixed and files any new bugs surfaced during the hunt back into the table.",
-          "produces": "closed bug + new tickets"
+          "produces": "closed bug + new tickets",
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -7471,7 +7532,8 @@ const GUILD = {
           "title": "Confirm Guild Conformance",
           "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
           "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
+          "produces": "conformance sign-off",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -7504,7 +7566,8 @@ const GUILD = {
           "actor": "you",
           "title": "Call the Sweep",
           "act": "You ask the guild to audit the app's security surface for leaks and over-broad access.",
-          "produces": "security request"
+          "produces": "security request",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -7518,7 +7581,8 @@ const GUILD = {
           },
           "inputs": [
             "security request"
-          ]
+          ],
+          "exec": "inline"
         },
         {
           "kind": "gate",
@@ -7537,14 +7601,17 @@ const GUILD = {
           },
           "inputs": [
             "security brief"
-          ]
+          ],
+          "exec": "spawn"
         },
         {
           "kind": "member",
           "actor": "the-architect",
           "title": "Hunt the Holes",
           "act": "The Architect audits the security surface, pulls Supabase advisors, and maps every leak, missing policy, and over-broad grant.",
-          "produces": "vulnerability map"
+          "produces": "vulnerability map",
+          "exec": "spawn",
+          "parallel": true
         },
         {
           "kind": "gate",
@@ -7556,7 +7623,8 @@ const GUILD = {
           "actor": "the-developer",
           "title": "Seal the Breaches",
           "act": "The Developer applies the approved RLS/policy/grant fixes and re-proves each gate holds.",
-          "produces": "hardened surface"
+          "produces": "hardened surface",
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -7564,7 +7632,8 @@ const GUILD = {
           "title": "Confirm Guild Conformance",
           "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
           "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
+          "produces": "conformance sign-off",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -7597,7 +7666,8 @@ const GUILD = {
           "actor": "you",
           "title": "Call the Rotation",
           "act": "You ask the guild to run a hygiene pass — or the post-campaign cleanup for a just-shipped build.",
-          "produces": "cleanup request"
+          "produces": "cleanup request",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -7611,7 +7681,8 @@ const GUILD = {
           },
           "inputs": [
             "cleanup request"
-          ]
+          ],
+          "exec": "inline"
         },
         {
           "kind": "gate",
@@ -7627,7 +7698,8 @@ const GUILD = {
           "script": "guild/hygiene_run.py",
           "args": {
             "dry-run": true
-          }
+          },
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -7635,7 +7707,8 @@ const GUILD = {
           "title": "Confirm Guild Conformance",
           "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
           "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
+          "produces": "conformance sign-off",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -7668,7 +7741,8 @@ const GUILD = {
           "actor": "you",
           "title": "Call the Sync",
           "act": "You ask the guild whether the device still matches the repo — or to reconcile what has drifted.",
-          "produces": "sync request"
+          "produces": "sync request",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -7682,7 +7756,8 @@ const GUILD = {
           },
           "inputs": [
             "sync request"
-          ]
+          ],
+          "exec": "inline"
         },
         {
           "kind": "gate",
@@ -7701,7 +7776,8 @@ const GUILD = {
           },
           "inputs": [
             "sync brief"
-          ]
+          ],
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -7709,7 +7785,8 @@ const GUILD = {
           "title": "Confirm Guild Conformance",
           "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
           "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
+          "produces": "conformance sign-off",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -7742,7 +7819,8 @@ const GUILD = {
           "actor": "you",
           "title": "Call the Release",
           "act": "You ask the guild to clean up, merge everything outstanding, bump the version, and push.",
-          "produces": "release request"
+          "produces": "release request",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -7756,7 +7834,8 @@ const GUILD = {
           },
           "inputs": [
             "release request"
-          ]
+          ],
+          "exec": "inline"
         },
         {
           "kind": "gate",
@@ -7768,7 +7847,8 @@ const GUILD = {
           "actor": "the-quartermaster",
           "title": "Gather the Branches",
           "act": "The Quartermaster merges every outstanding branch and PR into main, resolving conflicts.",
-          "produces": "unified main"
+          "produces": "unified main",
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -7779,7 +7859,8 @@ const GUILD = {
           "script": "guild/version_bump.py",
           "args": {
             "step": "patch"
-          }
+          },
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -7791,7 +7872,8 @@ const GUILD = {
           "actor": "the-quartermaster",
           "title": "Push the Release",
           "act": "The Quartermaster commits and pushes the release to the remote.",
-          "produces": "pushed release"
+          "produces": "pushed release",
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -7799,7 +7881,8 @@ const GUILD = {
           "title": "Confirm Guild Conformance",
           "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
           "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
+          "produces": "conformance sign-off",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -7832,7 +7915,8 @@ const GUILD = {
           "actor": "you",
           "title": "Request the Tool",
           "act": "You describe the legal calculator or tool you want to offer on the public panel.",
-          "produces": "tool request"
+          "produces": "tool request",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -7846,7 +7930,8 @@ const GUILD = {
           },
           "inputs": [
             "tool request"
-          ]
+          ],
+          "exec": "inline"
         },
         {
           "kind": "gate",
@@ -7858,21 +7943,24 @@ const GUILD = {
           "actor": "the-architect",
           "title": "Model the Law",
           "act": "The Architect studies the governing law and models the calculation rules and inputs the tool must honour.",
-          "produces": "rule model"
+          "produces": "rule model",
+          "exec": "spawn"
         },
         {
           "kind": "member",
           "actor": "the-designer",
           "title": "Design the Tool",
           "act": "The Designer shapes the calculator's UI with an inviting, trustworthy layout.",
-          "produces": "tool design"
+          "produces": "tool design",
+          "exec": "spawn"
         },
         {
           "kind": "member",
           "actor": "the-developer",
           "title": "Build the Calculator",
           "act": "The Developer implements the tool, wires the rules, and adds the team-review disclaimer.",
-          "produces": "working tool"
+          "produces": "working tool",
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -7880,7 +7968,8 @@ const GUILD = {
           "title": "Confirm Guild Conformance",
           "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
           "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
+          "produces": "conformance sign-off",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -7913,7 +8002,8 @@ const GUILD = {
           "actor": "you",
           "title": "Submit the Matter",
           "act": "You describe the correspondence or legal instrument you need drafted.",
-          "produces": "drafting request"
+          "produces": "drafting request",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -7927,7 +8017,8 @@ const GUILD = {
           },
           "inputs": [
             "drafting request"
-          ]
+          ],
+          "exec": "inline"
         },
         {
           "kind": "gate",
@@ -7939,7 +8030,8 @@ const GUILD = {
           "actor": "the-translator",
           "title": "Draft the Document",
           "act": "The Translator drafts the correspondence or legal instrument — bilingual where needed — in the firm's register.",
-          "produces": "draft document"
+          "produces": "draft document",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -7951,7 +8043,8 @@ const GUILD = {
           "actor": "the-translator",
           "title": "Finalize & Format",
           "act": "The Translator finalizes the document and formats it client-facing, with the bilingual layout in place.",
-          "produces": "final document"
+          "produces": "final document",
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -7959,7 +8052,8 @@ const GUILD = {
           "title": "Confirm Guild Conformance",
           "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
           "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
+          "produces": "conformance sign-off",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -7992,7 +8086,8 @@ const GUILD = {
           "actor": "you",
           "title": "Call the Triage",
           "act": "You ask the guild to go through your email, calendar, and WhatsApp and surface what needs you.",
-          "produces": "triage request"
+          "produces": "triage request",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -8006,7 +8101,8 @@ const GUILD = {
           },
           "inputs": [
             "triage request"
-          ]
+          ],
+          "exec": "inline"
         },
         {
           "kind": "gate",
@@ -8018,14 +8114,16 @@ const GUILD = {
           "actor": "the-butler",
           "title": "Sweep the Inboxes",
           "act": "The Butler sweeps email, calendar, and WhatsApp, surfacing what needs a response, a task, or a calendar entry.",
-          "produces": "triage list"
+          "produces": "triage list",
+          "exec": "inline"
         },
         {
           "kind": "member",
           "actor": "the-butler",
           "title": "Sort to Tasks & Calendar",
           "act": "The Butler turns each item into a task or calendar event with a deadline, and drafts replies where useful.",
-          "produces": "tasks + events + drafts"
+          "produces": "tasks + events + drafts",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -8033,7 +8131,8 @@ const GUILD = {
           "title": "Confirm Guild Conformance",
           "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
           "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
+          "produces": "conformance sign-off",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -8066,7 +8165,8 @@ const GUILD = {
           "actor": "you",
           "title": "Define the Routine",
           "act": "You describe the recurring job you want to run on a schedule, unattended.",
-          "produces": "routine request"
+          "produces": "routine request",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -8080,7 +8180,8 @@ const GUILD = {
           },
           "inputs": [
             "routine request"
-          ]
+          ],
+          "exec": "inline"
         },
         {
           "kind": "gate",
@@ -8099,14 +8200,16 @@ const GUILD = {
           },
           "inputs": [
             "routine brief"
-          ]
+          ],
+          "exec": "spawn"
         },
         {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Stand the Watch",
           "act": "On each tick the routine runs unattended via its assigned weapons, does the work, and ends with a plain-English summary.",
-          "produces": "routine run"
+          "produces": "routine run",
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -8114,7 +8217,8 @@ const GUILD = {
           "title": "Confirm Guild Conformance",
           "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
           "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
+          "produces": "conformance sign-off",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -8147,7 +8251,8 @@ const GUILD = {
           "actor": "you",
           "title": "Call the Recon",
           "act": "You ask the guild to audit the public panel and brand as a marketing firm would.",
-          "produces": "marketing request"
+          "produces": "marketing request",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -8161,7 +8266,8 @@ const GUILD = {
           },
           "inputs": [
             "marketing request"
-          ]
+          ],
+          "exec": "inline"
         },
         {
           "kind": "gate",
@@ -8173,21 +8279,24 @@ const GUILD = {
           "actor": "the-herald",
           "title": "Frame the Lens",
           "act": "The Herald frames the audit from a marketing-firm perspective — SEO, search-catchability, messaging truth, reach, and the conversion path.",
-          "produces": "audit lens"
+          "produces": "audit lens",
+          "exec": "spawn"
         },
         {
           "kind": "member",
           "actor": "the-herald",
           "title": "Audit Reach & Message",
           "act": "The Herald audits the public site's reach, messaging, and conversion, flagging anything off-brand, untrue, or that weakens demand.",
-          "produces": "marketing findings"
+          "produces": "marketing findings",
+          "exec": "spawn"
         },
         {
           "kind": "member",
           "actor": "the-designer",
           "title": "Polish the Public Panel",
           "act": "The Designer reviews the public site's visual polish and on-brand look — footer, hero, team, pricing — and fixes what's off.",
-          "produces": "visual findings"
+          "produces": "visual findings",
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -8195,7 +8304,8 @@ const GUILD = {
           "title": "Confirm Guild Conformance",
           "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
           "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
+          "produces": "conformance sign-off",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -8228,7 +8338,8 @@ const GUILD = {
           "actor": "you",
           "title": "Request the Art",
           "act": "You describe the art you need — what it's for, the subject, and any constraints.",
-          "produces": "art request"
+          "produces": "art request",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -8242,7 +8353,8 @@ const GUILD = {
           },
           "inputs": [
             "art request"
-          ]
+          ],
+          "exec": "inline"
         },
         {
           "kind": "gate",
@@ -8254,7 +8366,8 @@ const GUILD = {
           "actor": "the-designer",
           "title": "Draft the Brief",
           "act": "The Designer sets the art brief — subject, size, theme, palette, and what to avoid — in the Fallen Sword style.",
-          "produces": "art brief"
+          "produces": "art brief",
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -8268,7 +8381,8 @@ const GUILD = {
           },
           "inputs": [
             "art brief"
-          ]
+          ],
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -8276,7 +8390,8 @@ const GUILD = {
           "title": "Wire the Art",
           "act": "The Developer drops the finals into the right path and rebuilds the dashboard so the art renders.",
           "produces": "wired art",
-          "script": "build.py"
+          "script": "build.py",
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -8284,7 +8399,8 @@ const GUILD = {
           "title": "Confirm Guild Conformance",
           "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
           "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
+          "produces": "conformance sign-off",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -8317,7 +8433,8 @@ const GUILD = {
           "actor": "you",
           "title": "Recruit the Weapon",
           "act": "You name the model to add or change, and how it should look or behave.",
-          "produces": "weapon request"
+          "produces": "weapon request",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -8331,7 +8448,8 @@ const GUILD = {
           },
           "inputs": [
             "weapon request"
-          ]
+          ],
+          "exec": "inline"
         },
         {
           "kind": "gate",
@@ -8343,7 +8461,8 @@ const GUILD = {
           "actor": "the-strategist",
           "title": "Name the Weapon",
           "act": "The Strategist sets the weapon's identity — model, element, colour, visual metaphor — and its role: thinker, doer, or both.",
-          "produces": "weapon identity"
+          "produces": "weapon identity",
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -8357,7 +8476,8 @@ const GUILD = {
           },
           "inputs": [
             "weapon identity"
-          ]
+          ],
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -8371,7 +8491,8 @@ const GUILD = {
           },
           "inputs": [
             "weapon identity"
-          ]
+          ],
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -8379,7 +8500,8 @@ const GUILD = {
           "title": "Confirm Guild Conformance",
           "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
           "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
+          "produces": "conformance sign-off",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -8412,7 +8534,8 @@ const GUILD = {
           "actor": "you",
           "title": "Pose the Question",
           "act": "You pose the question to audit — the repo, the roster, a decision, or a body of work.",
-          "produces": "audit question"
+          "produces": "audit question",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -8426,7 +8549,8 @@ const GUILD = {
           },
           "inputs": [
             "audit question"
-          ]
+          ],
+          "exec": "inline"
         },
         {
           "kind": "gate",
@@ -8445,14 +8569,17 @@ const GUILD = {
           },
           "inputs": [
             "audit brief"
-          ]
+          ],
+          "exec": "spawn",
+          "parallel": true
         },
         {
           "kind": "member",
           "actor": "the-strategist",
           "title": "Converge & Grade",
           "act": "The Strategist fires the panel, converges the takes, resolves contradictions, grades the result, and writes the ranked MD audit.",
-          "produces": "graded audit"
+          "produces": "graded audit",
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -8460,7 +8587,8 @@ const GUILD = {
           "title": "Confirm Guild Conformance",
           "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
           "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
+          "produces": "conformance sign-off",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -8502,7 +8630,8 @@ const GUILD = {
           "actor": "you",
           "title": "Flag the Pattern",
           "act": "You (or the Butler) flag that the just-finished run is worth saving as a star-map workflow.",
-          "produces": "capture request"
+          "produces": "capture request",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -8516,7 +8645,8 @@ const GUILD = {
           },
           "inputs": [
             "capture request"
-          ]
+          ],
+          "exec": "inline"
         },
         {
           "kind": "gate",
@@ -8528,7 +8658,8 @@ const GUILD = {
           "actor": "the-strategist",
           "title": "Draft the Workflow",
           "act": "The Strategist distils the run into a reusable workflow — name, trigger, members, weapons, and steps.",
-          "produces": "workflow draft"
+          "produces": "workflow draft",
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -8542,7 +8673,8 @@ const GUILD = {
           },
           "inputs": [
             "workflow draft"
-          ]
+          ],
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -8556,7 +8688,8 @@ const GUILD = {
           },
           "inputs": [
             "workflow draft"
-          ]
+          ],
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -8564,7 +8697,8 @@ const GUILD = {
           "title": "Confirm Guild Conformance",
           "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
           "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
+          "produces": "conformance sign-off",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -8603,7 +8737,8 @@ const GUILD = {
           "actor": "you",
           "title": "Call the Sweep",
           "act": "You ask the guild to sweep your email and update the relationship intelligence.",
-          "produces": "intel request"
+          "produces": "intel request",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -8617,7 +8752,8 @@ const GUILD = {
           },
           "inputs": [
             "intel request"
-          ]
+          ],
+          "exec": "inline"
         },
         {
           "kind": "gate",
@@ -8629,21 +8765,26 @@ const GUILD = {
           "actor": "the-herald",
           "title": "Harvest the Threads",
           "act": "The Herald sweeps Gmail (received and sent) for the window, returning a structured digest per contact — threads, response latency, tone, and commercial signals — saved as a dated harvest digest.",
-          "produces": "relationship digest"
+          "produces": "relationship digest",
+          "exec": "spawn",
+          "parallel": true
         },
         {
           "kind": "member",
           "actor": "the-herald",
           "title": "Profile the Contacts",
           "act": "The Herald enriches each contact profile — character, how to deal with them from the firm's angle, and mistakes to avoid — without overwriting their live items.",
-          "produces": "contact profiles"
+          "produces": "contact profiles",
+          "exec": "spawn",
+          "parallel": true
         },
         {
           "kind": "member",
           "actor": "the-strategist",
           "title": "Flag Risk & Opportunity",
           "act": "The Strategist logs the mistakes to avoid, updates the recommended-tasks list, and flags at-risk relationships and opportunities to protect the firm's commercial interest.",
-          "produces": "risk/opportunity flags"
+          "produces": "risk/opportunity flags",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -8676,7 +8817,8 @@ const GUILD = {
           "actor": "you",
           "title": "Drop the Laws",
           "act": "You add law PDFs to the Stock Laws folder, or ask the guild to process what's queued.",
-          "produces": "law PDFs"
+          "produces": "law PDFs",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -8690,7 +8832,8 @@ const GUILD = {
           },
           "inputs": [
             "law PDFs"
-          ]
+          ],
+          "exec": "inline"
         },
         {
           "kind": "gate",
@@ -8702,14 +8845,17 @@ const GUILD = {
           "actor": "the-architect",
           "title": "Scan & Queue the Stock",
           "act": "The Architect scans the Stock Laws folder, identifies and renames each misnamed law PDF, resolves conflicts, and queues an extraction task.",
-          "produces": "queued laws"
+          "produces": "queued laws",
+          "exec": "spawn",
+          "parallel": true
         },
         {
           "kind": "member",
           "actor": "the-translator",
           "title": "Extract Verbatim",
           "act": "The Translator extracts the queued law verbatim — Arabic canonical, page-ranges intact — into Source Laws.",
-          "produces": "extracted law"
+          "produces": "extracted law",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -8721,7 +8867,8 @@ const GUILD = {
           "actor": "the-translator",
           "title": "Index the Harvest",
           "act": "The Translator updates the Source Laws index and writes the dated harvest digest.",
-          "produces": "indexed harvest"
+          "produces": "indexed harvest",
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -8729,7 +8876,8 @@ const GUILD = {
           "title": "Confirm Guild Conformance",
           "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
           "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
+          "produces": "conformance sign-off",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -8762,7 +8910,8 @@ const GUILD = {
           "actor": "you",
           "title": "Pose the Question",
           "act": "You ask a question that needs an answer from the live web, with 'search the web' in it.",
-          "produces": "web question"
+          "produces": "web question",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -8776,7 +8925,8 @@ const GUILD = {
           },
           "inputs": [
             "web question"
-          ]
+          ],
+          "exec": "inline"
         },
         {
           "kind": "gate",
@@ -8788,7 +8938,8 @@ const GUILD = {
           "actor": "the-strategist",
           "title": "Scry & Verify the Web",
           "act": "The Strategist, driving the thinker weapon (web tools stay with the thinker — doers cannot run them), fans out web searches, fetches the strongest sources, adversarially cross-checks the claims, and synthesizes a cited answer.",
-          "produces": "cited answer"
+          "produces": "cited answer",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -8821,7 +8972,8 @@ const GUILD = {
           "actor": "you",
           "title": "Pose the Question",
           "act": "You ask a read-only question about the code, the repo, or the guild.",
-          "produces": "inquiry"
+          "produces": "inquiry",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -8831,7 +8983,8 @@ const GUILD = {
           "produces": "cited answer",
           "inputs": [
             "inquiry"
-          ]
+          ],
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -8871,7 +9024,8 @@ const GUILD = {
           "actor": "you",
           "title": "Pose the Session Task",
           "act": "You ask for work to run in a fresh, isolated local session — an investigation or a scoped job.",
-          "produces": "session task"
+          "produces": "session task",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -8881,21 +9035,24 @@ const GUILD = {
           "produces": "session findings",
           "inputs": [
             "session task"
-          ]
+          ],
+          "exec": "spawn"
         },
         {
           "kind": "member",
           "actor": "the-developer",
           "title": "Review & Synthesize",
           "act": "The routed member verifies the subagent's findings against source — nothing trusted unverified — and synthesizes the answer.",
-          "produces": "verified result"
+          "produces": "verified result",
+          "exec": "spawn"
         },
         {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Confirm Conformance",
           "act": "Runs guild/conformance.py if anything was mutated; for a read-only scout, confirms the session touched nothing and closes clean.",
-          "produces": "conformance sign-off"
+          "produces": "conformance sign-off",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -8932,7 +9089,8 @@ const GUILD = {
           "actor": "you",
           "title": "Say the Word",
           "act": "You greet, acknowledge, or ask a meta-question that fits no specialist lane.",
-          "produces": "utterance"
+          "produces": "utterance",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -8942,7 +9100,8 @@ const GUILD = {
           "produces": "reply",
           "inputs": [
             "utterance"
-          ]
+          ],
+          "exec": "inline"
         },
         {
           "kind": "gate",
@@ -8981,7 +9140,8 @@ const GUILD = {
           "actor": "you",
           "title": "Trigger calibration",
           "act": "You name the broken instrumentation, misfiring hook, bad efficiency report, or skill gap that triggered this run.",
-          "produces": "calibration trigger"
+          "produces": "calibration trigger",
+          "exec": "inline"
         },
         {
           "kind": "gate",
@@ -8993,28 +9153,32 @@ const GUILD = {
           "actor": "the-strategist",
           "title": "Audit harness",
           "act": "Trace every hook, script, and measurement point. Find gaps where harness fails to capture, route, or report correctly. Produce concrete patch list.",
-          "produces": "calibration findings"
+          "produces": "calibration findings",
+          "exec": "spawn"
         },
         {
           "kind": "member",
           "actor": "the-developer",
           "title": "Patch hooks and scripts",
           "act": "Apply patch list: fix broken hooks, correct script logic, repair measurement code, adjust LITE/FULL gating. Scoped to harness layer only. Verify data flows after patching.",
-          "produces": "patched harness"
+          "produces": "patched harness",
+          "exec": "spawn"
         },
         {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Upgrade affected skills",
           "act": "Update skills surfaced by audit: remove stale content, add instructions for newly instrumented capabilities, bump version tags.",
-          "produces": "upgraded skills"
+          "produces": "upgraded skills",
+          "exec": "spawn"
         },
         {
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Conformity close",
           "act": "Re-run conformity_check.py. Verify no orphan hooks or dead scripts. Confirm all actors in new/changed workflows exist in guild-data.json.",
-          "produces": "conformance sign-off"
+          "produces": "conformance sign-off",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -9050,7 +9214,8 @@ const GUILD = {
           "actor": "you",
           "title": "Finish the Work",
           "act": "A non-trivial task has just completed (code, doctrine, workflow, or a run with retries/corrections).",
-          "produces": "completed run"
+          "produces": "completed run",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -9060,7 +9225,8 @@ const GUILD = {
           "produces": "reflection record",
           "inputs": [
             "completed run"
-          ]
+          ],
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -9070,7 +9236,8 @@ const GUILD = {
           "produces": "applied or filed upgrade",
           "inputs": [
             "reflection record"
-          ]
+          ],
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -9104,7 +9271,8 @@ const GUILD = {
           "actor": "you",
           "title": "Call the Audit",
           "act": "You (or a scheduled routine) trigger the cadence self-audit.",
-          "produces": "audit request"
+          "produces": "audit request",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -9114,7 +9282,8 @@ const GUILD = {
           "produces": "behavior snapshot",
           "inputs": [
             "audit request"
-          ]
+          ],
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -9124,7 +9293,9 @@ const GUILD = {
           "produces": "audit findings + proposed diffs",
           "inputs": [
             "behavior snapshot"
-          ]
+          ],
+          "exec": "spawn",
+          "parallel": true
         },
         {
           "kind": "member",
@@ -9134,7 +9305,8 @@ const GUILD = {
           "produces": "applied upgrades + audit report",
           "inputs": [
             "audit findings + proposed diffs"
-          ]
+          ],
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -9142,7 +9314,8 @@ const GUILD = {
           "title": "Confirm Guild Conformance",
           "act": "Runs guild/conformance.py — wraps conformity_check.py, writes a signoff markdown.",
           "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
+          "produces": "conformance sign-off",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -9177,14 +9350,16 @@ const GUILD = {
           "actor": "you",
           "title": "Request the Package",
           "act": "You name the surface to package and the target shell (e.g. Tauri desktop app with a server sidecar).",
-          "produces": "packaging request"
+          "produces": "packaging request",
+          "exec": "inline"
         },
         {
           "kind": "member",
           "actor": "the-butler",
           "title": "Clarify the Ask",
           "act": "The Butler restates the package target, sidecar model, and what gets touched as a one-line brief.",
-          "produces": "packaging brief"
+          "produces": "packaging brief",
+          "exec": "inline"
         },
         {
           "kind": "gate",
@@ -9196,28 +9371,32 @@ const GUILD = {
           "actor": "the-developer",
           "title": "Provision the Toolchain",
           "act": "Verify and install the build prerequisites (Node, Rust/cargo, Tauri CLI, platform SDK). Records what was installed.",
-          "produces": "ready toolchain"
+          "produces": "ready toolchain",
+          "exec": "spawn"
         },
         {
           "kind": "member",
           "actor": "the-developer",
           "title": "Scaffold the Shell",
           "act": "Create the app shell (src-tauri/ config, window, icon) pointing at the existing surface — no change to the surface's own code.",
-          "produces": "app shell"
+          "produces": "app shell",
+          "exec": "spawn"
         },
         {
           "kind": "member",
           "actor": "the-developer",
           "title": "Wire the Sidecar",
           "act": "Bundle the server (serve.cjs + a Node runtime) as a sidecar the app spawns on launch and stops on quit, so the app is self-contained.",
-          "produces": "wired sidecar"
+          "produces": "wired sidecar",
+          "exec": "spawn"
         },
         {
           "kind": "member",
           "actor": "the-developer",
           "title": "Build and Smoke-Test",
           "act": "Produce the app bundle, launch it, and confirm the surface loads and edits write through the sidecar.",
-          "produces": "installable app"
+          "produces": "installable app",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -9229,7 +9408,8 @@ const GUILD = {
           "actor": "the-quartermaster",
           "title": "Confirm Guild Conformance",
           "act": "Run the conformity sweep, log the packaging, and confirm the repo still agrees with itself.",
-          "produces": "verified package"
+          "produces": "verified package",
+          "exec": "spawn"
         },
         {
           "kind": "gate",
@@ -9263,7 +9443,8 @@ const GUILD = {
           "actor": "you",
           "title": "Name the Role",
           "act": "You name the role the guild lacks and the work it would own.",
-          "produces": "member request"
+          "produces": "member request",
+          "exec": "inline"
         },
         {
           "kind": "member",
@@ -9277,7 +9458,8 @@ const GUILD = {
           "inputs": [
             "member request"
           ],
-          "produces": "member brief"
+          "produces": "member brief",
+          "exec": "inline"
         },
         {
           "kind": "gate",
@@ -9292,7 +9474,8 @@ const GUILD = {
           "inputs": [
             "member brief"
           ],
-          "produces": "member design"
+          "produces": "member design",
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -9306,7 +9489,8 @@ const GUILD = {
           "inputs": [
             "member design"
           ],
-          "produces": "member art"
+          "produces": "member art",
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -9316,7 +9500,8 @@ const GUILD = {
           "inputs": [
             "member design"
           ],
-          "produces": "scaffolded member"
+          "produces": "scaffolded member",
+          "exec": "spawn"
         },
         {
           "kind": "member",
@@ -9324,7 +9509,8 @@ const GUILD = {
           "title": "Confirm Guild Conformance",
           "act": "Runs guild/conformance.py — wraps conformity_check.py and writes a signoff markdown; recruitment fails the gate if the member lacks 3 skills or a weapon.",
           "script": "guild/conformance.py",
-          "produces": "conformance sign-off"
+          "produces": "conformance sign-off",
+          "exec": "spawn"
         },
         {
           "kind": "gate",

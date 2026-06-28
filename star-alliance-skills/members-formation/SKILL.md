@@ -164,6 +164,22 @@ A one-off fallback is **not** crystallized — the Butler says so in his report 
 A compact worked example (request → no fit → formation → crystallized workflow) is in
 [`references/crystallize-to-workflow.md`](references/crystallize-to-workflow.md).
 
+## Reading a step's execution tags (`exec` · `parallel`)
+
+Each workflow step now carries how it should run — honor it:
+
+- **`exec: "spawn"`** — dispatch this step to a **real helper** (Agent tool, `subagent_type`
+  = the step's `actor`), with the step's intent as the brief. This is every specialist step.
+- **`exec: "inline"`** — the Butler does this himself in the main thread (his own framing,
+  the approval gate, the closing report). He never spawns himself.
+- **`parallel: true`** — this step fans out to **several helpers at once**. Spawn them in a
+  single message (multiple Agent calls) so they run concurrently, then collect every
+  result. This is the swarm win — independent work running side-by-side, not in series.
+
+Steps **without** these tags keep the default: specialist → spawn, Butler/you → inline,
+and run in listed order. The build→verify→confirm chain is sequential by design — never
+parallelize a verify or a conformance step ahead of the work it checks.
+
 ## Failure-mode routing — route the stuck, not just the start
 
 The Butler routes the START of work by workflow. He also routes FAILURES: when a member or
