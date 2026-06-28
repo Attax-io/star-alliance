@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 58,
       "patch": 78
     },
-    "generated": "2026-06-28T12:27:55Z",
+    "generated": "2026-06-28T12:45:40Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -3311,7 +3311,7 @@ const GUILD = {
     {
       "id": "conquering-campaign",
       "name": "conquering-campaign",
-      "version": "3.8.4",
+      "version": "3.9.0",
       "icon": "🚀",
       "art": "",
       "artPng": true,
@@ -3320,7 +3320,7 @@ const GUILD = {
       "ramp": "purple",
       "tabler": "ti-flag",
       "src": "own",
-      "desc": "Multi-wave campaign skill for work too big for one pass. Three modes — AUDIT (reconcile docs with code/DB), BUILD (multi-phase features/refactors/migrations touching 3+ surfaces), EXTENSION (extends a recent predecessor, reusing its prescan). Gate G0 runs FIRST: work that doesn't clear the bar (3+ INDEPENDENT logical changes — one vertical slice = ONE — OR genuinely multi-phase, OR an app-wide doc↔code/DB audit) is declined and routed to a lighter pass, no campaign folder created. Triggers ONLY above that bar: 'audit my app', 'build this feature', 'ship this refactor', 'phase this migration', 'proceed in application', 'extend [campaign] to X', 'roll out [pattern] to [surface]', 'apply [v1.X] to [Z]'. Planning asks every question upfront then executes autonomously (a 15+-site rename, namespace move, or public-component rename earns a single approval gate). Enforces always-on pre-flight gates, conformity, consolidation, and self-verification (tsc+lint+preview). Full detail in references/.",
+      "desc": "Multi-wave campaign skill for work too big for one pass. Three modes — AUDIT (reconcile docs with code/DB), BUILD (multi-phase features/refactors/migrations touching 3+ surfaces), EXTENSION (extends a recent predecessor, reusing its prescan). Gate G0 runs FIRST: work that doesn't clear the bar (3+ INDEPENDENT logical changes — one vertical slice = ONE — OR genuinely multi-phase, OR an app-wide doc-code/DB audit) is declined and routed to a lighter pass, no folder created. Triggers ONLY above that bar: 'audit my app', 'build this feature', 'ship this refactor', 'phase this migration', 'proceed in application', 'extend [campaign] to X', 'roll out [pattern] to [surface]'. Planning asks every question upfront then executes autonomously. At the BUILD wave, parallel disjoint writes deploy as a worthiness-gated SWARM via decompose-and-swarm (workers run as the member brain; conformity closes ONCE). Enforces always-on pre-flight gates, conformity, consolidation, self-verification. Full detail in references/.",
       "intro": "Plan thoroughly. Then conquer without stopping.",
       "sections": [
         "Core philosophy",
@@ -3341,8 +3341,7 @@ const GUILD = {
         "Trigger-phrase precedence (the single resolution table — earlier wins; default LATER if unclear)",
         "Model assignment",
         "Conformity & consolidation (the always-on disciplines — full extraction procedure in references/fe-i18n-playbook.md)",
-        "Deploy & sync (#84)",
-        "Skill self-health (run at every reflection pass — #84)",
+        "Deploy & sync · skill self-health (#84)",
         "Common failure modes (#1–#107)",
         "Output conventions",
         "Reference files",
@@ -3366,8 +3365,8 @@ const GUILD = {
       ],
       "scripts": [],
       "stats": {
-        "lines": 387,
-        "words": 8138
+        "lines": 388,
+        "words": 7346
       },
       "global": false,
       "members": [

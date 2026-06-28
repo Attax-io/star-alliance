@@ -47,7 +47,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`codebase-memory-mcp`](star-alliance-skills/codebase-memory-mcp/SKILL.md) | 1.2.0 | own | 139 / 1014 | 1337 / 167 | ✓ lean | Use this MCP code-intelligence engine to answer structural questions about a real reposito… |
 | [`codex-law-translate`](star-alliance-skills/codex-law-translate/SKILL.md) | 1.1.0 | own | 134 / 908 | 2112 / 228 | ✓ lean | End-to-end pipeline for loading a real-world law into the Lex Council legal codex, transla… |
 | [`comms-triage`](star-alliance-skills/comms-triage/SKILL.md) | 1.0.0 | own | 151 / 945 | 1052 / 60 | ✓ lean | The Butler's one hands-on craft beside routing — sweep email, calendar, and WhatsApp into … |
-| [`conquering-campaign`](star-alliance-skills/conquering-campaign/SKILL.md) | 3.8.4 | own | 140 / 1001 | 10516 / 477 | ⚠ body>10k | Multi-wave campaign skill for work too big for one pass |
+| [`conquering-campaign`](star-alliance-skills/conquering-campaign/SKILL.md) | 3.9.0 | own | 143 / 1015 | 7346 / 389 | ○ large | Multi-wave campaign skill for work too big for one pass |
 | [`contract-review`](star-alliance-skills/contract-review/SKILL.md) | 1.0.0 | own | 128 / 896 | 1103 / 113 | ✓ lean | The Translator's inbound-review craft: read a contract or NDA the other side drafted, find… |
 | [`dashboard-parity`](star-alliance-skills/dashboard-parity/SKILL.md) | 1.1.0 | own | 159 / 1008 | 1521 / 76 | ✓ lean | The Quartermaster's craft for proving a change actually reaches the rendered dashboard at … |
 | [`data-analysis-viz`](star-alliance-skills/data-analysis-viz/SKILL.md) | 1.0.0 | own | 132 / 886 | 1264 / 39 | ✓ lean | The Merchant's craft for turning a raw dataset — a CSV, a query result, a table — into an … |
@@ -125,4 +125,4 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`workflow-forge`](star-alliance-skills/workflow-forge/SKILL.md) | 1.4.0 | own | 153 / 997 | 2235 / 175 | ✓ lean | The Strategist's craft for distilling a finished run into a reusable star-map workflow in … |
 | [`workflow-runner`](star-alliance-skills/workflow-runner/SKILL.md) | 1.0.0 | own | 123 / 875 | 1100 / 90 | ✓ lean | The Quartermaster's craft for operating the guild's own machinery — RUN a star-map workflo… |
 
-_95 skills — 90 lean · 4 large (installable, over the 500-line ideal) · 1 near the word ceiling · 0 hard violations._
+_95 skills — 90 lean · 5 large (installable, over the 500-line ideal) · 0 near the word ceiling · 0 hard violations._
