@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 58,
       "patch": 78
     },
-    "generated": "2026-06-28T17:24:38Z",
+    "generated": "2026-06-28T17:37:29Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -2280,7 +2280,7 @@ const GUILD = {
         "lines": 55,
         "words": 519
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-designer"
       ]
@@ -2321,7 +2321,7 @@ const GUILD = {
         "lines": 135,
         "words": 1138
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-developer",
         "the-herald",
@@ -2363,7 +2363,7 @@ const GUILD = {
         "lines": 111,
         "words": 942
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-herald"
       ]
@@ -2407,7 +2407,7 @@ const GUILD = {
         "lines": 52,
         "words": 1016
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-merchant"
       ]
@@ -2445,7 +2445,7 @@ const GUILD = {
         "lines": 100,
         "words": 1159
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-architect"
       ]
@@ -2558,7 +2558,7 @@ const GUILD = {
         "lines": 205,
         "words": 1868
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-developer"
       ]
@@ -2650,7 +2650,7 @@ const GUILD = {
         "lines": 65,
         "words": 1106
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-merchant"
       ]
@@ -2693,7 +2693,7 @@ const GUILD = {
         "lines": 133,
         "words": 1920
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-developer"
       ]
@@ -2806,7 +2806,7 @@ const GUILD = {
         "lines": 122,
         "words": 1094
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-merchant"
       ]
@@ -2846,7 +2846,7 @@ const GUILD = {
         "lines": 133,
         "words": 1178
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-developer"
       ]
@@ -2887,7 +2887,7 @@ const GUILD = {
         "lines": 166,
         "words": 1337
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-developer"
       ]
@@ -3046,7 +3046,7 @@ const GUILD = {
         "lines": 388,
         "words": 7346
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-strategist"
       ]
@@ -3084,7 +3084,7 @@ const GUILD = {
         "lines": 112,
         "words": 1103
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-translator"
       ]
@@ -3159,7 +3159,7 @@ const GUILD = {
         "lines": 38,
         "words": 1264
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-merchant"
       ]
@@ -3362,7 +3362,7 @@ const GUILD = {
         "lines": 57,
         "words": 532
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-designer"
       ]
@@ -3406,7 +3406,7 @@ const GUILD = {
         "lines": 106,
         "words": 1274
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-designer"
       ]
@@ -3444,7 +3444,7 @@ const GUILD = {
         "lines": 89,
         "words": 816
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-developer"
       ]
@@ -3523,7 +3523,7 @@ const GUILD = {
         "lines": 65,
         "words": 1412
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-merchant"
       ]
@@ -3562,7 +3562,7 @@ const GUILD = {
         "lines": 151,
         "words": 1584
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-developer"
       ]
@@ -3799,7 +3799,7 @@ const GUILD = {
         "lines": 133,
         "words": 1295
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-quartermaster"
       ]
@@ -3834,7 +3834,7 @@ const GUILD = {
         "lines": 82,
         "words": 742
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-quartermaster"
       ]
@@ -3877,7 +3877,7 @@ const GUILD = {
         "lines": 160,
         "words": 1505
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-strategist"
       ]
@@ -3912,7 +3912,7 @@ const GUILD = {
         "lines": 41,
         "words": 498
       },
-      "global": true,
+      "global": false,
       "members": []
     },
     {
@@ -4020,7 +4020,7 @@ const GUILD = {
         "lines": 76,
         "words": 819
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-designer",
         "the-herald"
@@ -4087,7 +4087,7 @@ const GUILD = {
         "lines": 172,
         "words": 1793
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-designer"
       ]
@@ -4126,7 +4126,7 @@ const GUILD = {
         "lines": 50,
         "words": 672
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-architect",
         "the-translator"
@@ -4176,7 +4176,7 @@ const GUILD = {
         "lines": 59,
         "words": 965
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-merchant"
       ]
@@ -4257,7 +4257,7 @@ const GUILD = {
         "lines": 104,
         "words": 898
       },
-      "global": true,
+      "global": false,
       "members": []
     },
     {
@@ -4363,7 +4363,7 @@ const GUILD = {
         "lines": 51,
         "words": 444
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-quartermaster"
       ]
@@ -4478,7 +4478,7 @@ const GUILD = {
         "lines": 51,
         "words": 408
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-quartermaster"
       ]
@@ -4532,7 +4532,7 @@ const GUILD = {
         "lines": 179,
         "words": 1307
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-designer",
         "the-developer"
@@ -4574,7 +4574,7 @@ const GUILD = {
         "lines": 153,
         "words": 1470
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-developer"
       ]
@@ -4614,7 +4614,7 @@ const GUILD = {
         "lines": 55,
         "words": 1150
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-herald"
       ]
@@ -4654,7 +4654,7 @@ const GUILD = {
         "lines": 164,
         "words": 1416
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-developer"
       ]
@@ -4744,7 +4744,7 @@ const GUILD = {
         "lines": 141,
         "words": 1204
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-quartermaster"
       ]
@@ -4782,7 +4782,7 @@ const GUILD = {
         "lines": 110,
         "words": 944
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-architect"
       ]
@@ -4820,7 +4820,7 @@ const GUILD = {
         "lines": 94,
         "words": 711
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-designer"
       ]
@@ -4897,7 +4897,7 @@ const GUILD = {
         "lines": 103,
         "words": 578
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-quartermaster"
       ]
@@ -4934,7 +4934,7 @@ const GUILD = {
         "lines": 54,
         "words": 834
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-merchant"
       ]
@@ -4982,7 +4982,7 @@ const GUILD = {
         "lines": 62,
         "words": 1084
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-merchant"
       ]
@@ -5036,7 +5036,7 @@ const GUILD = {
         "lines": 68,
         "words": 1318
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-merchant"
       ]
@@ -5070,7 +5070,7 @@ const GUILD = {
         "lines": 55,
         "words": 262
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-quartermaster"
       ]
@@ -5123,7 +5123,7 @@ const GUILD = {
         "lines": 46,
         "words": 431
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-developer"
       ]
@@ -5236,7 +5236,7 @@ const GUILD = {
         "lines": 57,
         "words": 1202
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-strategist"
       ]
@@ -5313,7 +5313,7 @@ const GUILD = {
         "lines": 172,
         "words": 2264
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-architect"
       ]
@@ -5353,7 +5353,7 @@ const GUILD = {
         "lines": 168,
         "words": 1439
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-quartermaster",
         "the-strategist"
@@ -5455,7 +5455,7 @@ const GUILD = {
         "lines": 157,
         "words": 1396
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-architect"
       ]
@@ -5494,7 +5494,7 @@ const GUILD = {
         "lines": 110,
         "words": 912
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-architect",
         "the-designer",
@@ -5736,7 +5736,7 @@ const GUILD = {
         "lines": 159,
         "words": 1313
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-developer"
       ]
@@ -5780,7 +5780,7 @@ const GUILD = {
         "lines": 181,
         "words": 1579
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-merchant"
       ]
@@ -5820,7 +5820,7 @@ const GUILD = {
         "lines": 63,
         "words": 1120
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-merchant"
       ]
@@ -5943,7 +5943,7 @@ const GUILD = {
         "lines": 127,
         "words": 1223
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-designer"
       ]
@@ -5981,7 +5981,7 @@ const GUILD = {
         "lines": 86,
         "words": 915
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-designer"
       ]
@@ -6051,7 +6051,7 @@ const GUILD = {
         "lines": 49,
         "words": 392
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-quartermaster"
       ]
@@ -6096,7 +6096,7 @@ const GUILD = {
         "lines": 54,
         "words": 1067
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-merchant"
       ]
@@ -6223,7 +6223,7 @@ const GUILD = {
         "lines": 89,
         "words": 1100
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-quartermaster"
       ]
@@ -8915,7 +8915,7 @@ const GUILD = {
         },
         {
           "name": "executor-enforce.py",
-          "plain": "Holds the executor seat to MiniMax M3 across FOUR layers: (1) SPAWN — Task/Agent/Bash summon must resolve to model=minimax-m3, not haiku/glm/sonnet-as-doer; brain-tier Claude spawns pass. (2) BUTLER LOCK — on the MAIN session (CLAUDE_CODE_CHILD_SESSION unset), Edit/Write/MultiEdit/NotebookEdit are blocked entirely (subagents are exempt because they ARE the executor), Bash write commands (sed -i, cat >, rm, cp, mv, tee, touch, dd, echo >) are blocked, and MCP write-verb tools (create_/update_/delete_/insert_/drop_/truncate_/set_/put_/patch_/write_) are blocked. Read-only tools (Read/Glob/Grep/WebFetch/WebSearch/LS/TodoWrite) and MCP read-verb tools (get_/list_/fetch_/read_/find_/search_/query_/describe_/show_/view_/lookup_/select_) still pass through. The Butler can think, plan, and review — but it cannot mutate. (3) OVERRIDE CONTRACT — the bare SA_ALLOW_EXECUTOR token no longer grants bypass; the override MUST be paired with a real reason (≥15 chars) in the form `SA_ALLOW_EXECUTOR: <reason>`. The reason is logged to evolution/ledger.jsonl AND surfaced to the user as a systemMessage at the next UserPromptSubmit (no silent bypasses). (4) SCOREBOARD — evolution/scoreboard.py now shows an 'Executor Discipline' section: override count, override reasons, direct-write blocks, doer summons with minimax-m3 vs sonnet share, and a verdict (ALIGNED / MIXED / STRAYING). Kill switch: touch evolution/DISARMED or .claude/state/executor-enforce-disarmed. The /doer slash command (.claude/commands/doer.md) gives the agent a one-token path to the executor seat so the correct behavior is also the easy behavior."
+          "plain": "STRICT MODE — holds the executor seat to MiniMax M3 with NO agent-controlled bypass. The hook fires on FOUR axes: (1) SPAWN — Task/Agent/Bash summon must resolve to model=minimax-m3; brain-tier Claude spawns (sonnet/opus) pass. (2) BUTLER LOCK — on the MAIN session (CLAUDE_CODE_CHILD_SESSION unset), Edit/Write/MultiEdit/NotebookEdit are blocked entirely (subagents are exempt because they ARE the executor), Bash write commands (sed -i, cat >, rm, cp, mv, tee, touch, dd, echo >) are blocked, and MCP write-verb tools (create_/update_/delete_/insert_/drop_/truncate_/set_/put_/patch_/write_) are blocked. Read-only tools (Read/Glob/Grep/WebFetch/WebSearch/LS/TodoWrite) and MCP read-verb tools (get_/list_/fetch_/read_/find_/search_/query_/describe_/show_/view_/lookup_/select_) still pass through. (3) SCOREBOARD — evolution/scoreboard.py shows an 'Executor Discipline' section with override count, direct-write blocks, doer summons with minimax-m3 vs sonnet share, and a verdict (ALIGNED / MIXED / STRAYING). (4) NO OVERRIDE PATH — there is no SA_ALLOW_EXECUTOR token, no env var, no string the agent can put in its own message that grants bypass. The ONLY way to disable the hook is the kill switch: `touch evolution/DISARMED` (engine-wide) or `touch .claude/state/executor-enforce-disarmed` (this hook only). Re-enable with `rm <that-file>`. The /doer slash command (.claude/commands/doer.md) gives the agent a one-token path to the executor seat so the correct behavior is also the easy behavior."
         },
         {
           "name": "high-alert.py",

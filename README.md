@@ -14,7 +14,6 @@ with specific kinds of work. Members share common skills and carry unique ones.
 star-alliance/
 ├── star-alliance-members/  ← guild roster (agent definitions)
 │   ├── the-architect.md
-│   ├── the-butler.md
 │   ├── the-designer.md
 │   ├── the-developer.md
 │   ├── the-herald.md
@@ -22,7 +21,7 @@ star-alliance/
 │   ├── the-quartermaster.md
 │   ├── the-strategist.md
 │   └── the-translator.md
-├── star-alliance-skills/  ← shared skill pool (95 skills, each a directory with SKILL.md)
+├── star-alliance-skills/  ← shared skill pool (94 skills, each a directory with SKILL.md)
 │   ├── algorithmic-trading-chan/
 │   ├── article-creator/
 │   ├── bug-fix-workflow/
@@ -202,4 +201,4 @@ The authoritative gate is **`skill-creator`'s `quick_validate.py` green** on eve
 ## Registry
 
 See [`VERSIONS.md`](VERSIONS.md) for the full skill → version table with word counts and Cowork
-status (95 skills).
+status (94 skills).

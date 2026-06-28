@@ -38,7 +38,6 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`article-creator`](star-alliance-skills/article-creator/SKILL.md) | 1.0.1 | own | 138 / 923 | 839 / 111 | ✓ lean | End-to-end procedure for creating a public Insights article and pushing it to the Lex Coun… |
 | [`automated-testing`](star-alliance-skills/automated-testing/SKILL.md) | 1.1.0 | own | 119 / 810 | 1868 / 206 | ✓ lean | Author automated tests for a modern web app — the JS/TS plus application layer, grounded i… |
 | [`bug-fix-workflow`](star-alliance-skills/bug-fix-workflow/SKILL.md) | 1.2.0 | own | 151 / 934 | 2388 / 255 | ✓ lean | The Lex Council end-to-end bug workflow — pull reports from the bug_reports table, triage … |
-| [`butler-onboarding`](star-alliance-skills/butler-onboarding/SKILL.md) | 1.0.0 | own | 144 / 892 | 975 / 99 | ✓ lean | Turns a vague or first-contact request into a short discovery, an honest presentation of w… |
 | [`chart-patterns`](star-alliance-skills/chart-patterns/SKILL.md) | 1.0.0 | own | 130 / 1012 | 1106 / 66 | ✓ lean | The Merchant's read-only craft for identifying and interpreting chart patterns, distilled … |
 | [`claude-code-hooks`](star-alliance-skills/claude-code-hooks/SKILL.md) | 1.1.0 | own | 146 / 962 | 1920 / 134 | ✓ lean | The Developer's craft for authoring Claude Code hooks — the shell scripts the harness fire… |
 | [`cleanup`](star-alliance-skills/cleanup/SKILL.md) | 1.20.0 | own | 135 / 991 | 5594 / 330 | ○ large | Multi-mode hygiene skill for Lex Council |
@@ -125,4 +124,4 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`workflow-forge`](star-alliance-skills/workflow-forge/SKILL.md) | 1.4.0 | own | 153 / 997 | 2235 / 175 | ✓ lean | The Strategist's craft for distilling a finished run into a reusable star-map workflow in … |
 | [`workflow-runner`](star-alliance-skills/workflow-runner/SKILL.md) | 1.0.0 | own | 123 / 875 | 1100 / 90 | ✓ lean | The Quartermaster's craft for operating the guild's own machinery — RUN a star-map workflo… |
 
-_95 skills — 90 lean · 5 large (installable, over the 500-line ideal) · 0 near the word ceiling · 0 hard violations._
+_94 skills — 89 lean · 5 large (installable, over the 500-line ideal) · 0 near the word ceiling · 0 hard violations._
