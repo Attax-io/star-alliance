@@ -9,6 +9,29 @@ Semver: **MAJOR** = paradigm shift / artifact-layout change · **MINOR** = new s
 
 ---
 
+### v3.9.0 — 2026-06-28 — Swarm-era campaign engine + under-ceiling restructure (MINOR)
+
+Two goals in one release.
+
+**Goal 1 — Trim under the Cowork installer ceiling.** SKILL.md was 10,666 words (over the ~10k installer limit → flagged ⚠ body>10k). Relocated detailed prose into the EXISTING references (no new files), leaving pointers in the body:
+- §Common failure modes — the full #1–#107 lookup table + the §Anti-pattern quick-lookup → **references/failure-modes.md** (already carried the prose); body now a 3-line pointer.
+- §Step 3 W3 execution-loop detail (the Pre-W3 checklist + the 7 numbered steps + mid-execution scope-discovery) → **references/wave-playbook.md** (§W3 execution loop full detail); body keeps the recipe skeleton + a pointer.
+- The full swarm procedure (worthiness gate, MOVES 0.5→4 invocation, per-slice critic, CONFORMITY-CLOSE-ONCE) → **references/wave-playbook.md** (§The W3 swarm); body keeps the one-paragraph rule.
+- §Version history → pointer (this file). §Environment hazards stays a 2-line pointer to references/env-hazards.md.
+Body kept: core philosophy, the seven pre-flight gates, standing principles, the two modes, the Step 0–6 skeleton, the autonomous decision ladder, model assignment, conformity/consolidation, and pointers. Result: under 7,500 words.
+
+**Goal 2 — Proper swarm-era campaign engine** (was a thin cross-ref). The BUILD wave's sanctioned parallel-write primitive is now a **swarm via [[decompose-and-swarm]]**, the DEFAULT path for parallel writes (not a context-exhaustion exception):
+- **One pattern, not two** — the existing "fan-out sweep" IS the shared-tree swarm; named the equivalence. The swarm is its formally-named, schema-governed, per-slice-critic'd version.
+- **Wave-level WORTHINESS gate** — reuse [[decompose-and-swarm]] MOVE 0: swarm only if slices are big (≳1.5k tok) + disjoint + loosely-coupled + cheaper-net; else run serial. Amp trip condition + over-decomposition warning.
+- **CONFORMITY-CLOSE-ONCE** — the orchestrator (campaign driver) runs conformity/verify/integration EXACTLY ONCE after all swarm workers finish; workers never run it (intermediate parallel states fail spuriously). The serialised single integration is the gate that lets parallel writers stay ungated.
+- **Model rule** — swarm workers run as the member BRAIN (Sonnet, tool-capable), NEVER a doer-tier model; MiniMax is the doer INSIDE each worker. Reconciled with the W0-Ollama / sonnet-mechanical / opus-security wave model-assignment.
+- **Per-slice critic** — `verdict.run_cold(slice_diff)` per worker before integration keeps the critic invariant intact when the aggregate diff exceeds the 60KB auto-critic threshold.
+- Cross-links added: [[decompose-and-swarm]] · [[core-swarm]] · [[weapon-utility]]. NEVER swarm DB/red writes or W4 synthesis.
+
+(Staged Swarm Methodology Wave 2 — `docs/SWARM-METHODOLOGY-PLAN.md` "conquering-campaign — UPGRADE".)
+
+---
+
 ### v3.8.3 — 2026-06-21 — G2 stale-MCP-handle / reconnect clause (PATCH)
 
 G2 ("Verify project_id") previously only named the `-32600`/permission signature → wrong project_id. It had no guidance for the *other* Supabase-MCP failure mode: a network/`ERR_FAILED`/`fetch failed` on even a parameterless call (`list_projects`), or the MCP tools simply missing at session start. That signature is a **stale / unattached handle on reconnect**, not a project_id problem — the fix is to re-attach the server (`/mcp` reconnect) and retry once, NOT to blame `project_id` or declare the MCP down. Added that branch to the G2 bullet, cross-linked `[[discovery_supabase-mcp-may-need-reconnect]]`. Verified gap before the edit: 0 hits for reconnect/`ERR_FAILED`/re-attach across SKILL.md + references. Standing routine proposal **P-B** (raised Run 23, 2026-06-21); applied this run after diff proved repo == Lex device canonical byte-for-byte (no monolith-over-stub fork hazard → the sanctioned lean-edition PATCH is safe in-scope). Device-copy sync to the Lex Council project-local copy remains an attended remainder (out of routine scope). Conf 8/10.

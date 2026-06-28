@@ -659,3 +659,68 @@ N+1. **Open questions**
 | **W4 — you** | main agent | synthesis / risk sweep — never delegated | conversation turn |
 
 Effort is set via prompt language (the Agent tool has no effort param): **deep** — "Reason step by step. Think through every implication and edge case. Flag uncertainty rather than guessing." **standard** — no special phrase. **fast** — "Mechanical task. List/count/map only. Don't reason beyond what you observe." opus+deep for security/RLS/synthesis/money; sonnet+fast for mechanical scanning; never deep on a mechanical task; avoid haiku when W0 ran.
+
+**Swarm-worker model rule (the BUILD wave's parallel-write tier — see §W3 execution loop below + SKILL.md §Model assignment).** A swarm worker that EDITS FILES runs as the member **BRAIN** — a tool-capable Claude model (Sonnet, per each member's `model:` field) — NEVER a doer-tier model (MiniMax/Ollama can't hold Edit/Write/Bash). MiniMax is the worker's *internal* bulk doer (the Doer seat works INSIDE each instance), not the worker itself. The saving is **N Sonnet workers under one Opus orchestrator** (cheaper than Opus editing every slice serially), not a doer downgrade. Per-instance: planning = member brain (Sonnet/Opus per `model:`); execution-inside-instance = Doer seat (minimax-m3); coordinator + integration + per-slice/aggregate review = the Opus orchestrator + Critic (glm-5.2). This reconciles with the table above: the same opus/sonnet tiering applies — opus orchestrates + reviews red/security slices, sonnet workers run the disjoint mechanical/standard slices, Ollama prescans at W0. See [[decompose-and-swarm]] · [[weapon-utility]] · [[core-swarm]].
+
+---
+
+## W3 execution loop (BUILD) — full per-phase detail
+
+SKILL.md §Step 3 carries the recipe skeleton (the 7 numbered steps + the Pre-W3 checklist headers). This is the full procedure.
+
+**Pre-W3 checklist (tick before the first Write; mark N/A explicitly if it doesn't apply):**
+```
+□ G1 reference render-structure filled + leaf file named (UI phases)
+□ G1 N=3 alarm cleared — sibling-clone grep + base-primitive identified (UI)
+□ N=3+ union-prop audit — consumer grep per value of any ≥3-value union prop (consolidation)
+□ reference file re-Read THIS turn
+□ G2 project_id verified (any MCP)
+□ G3 schema claim verified via information_schema/pg_policies/pg_views (DB)  → references/db-playbook.md
+□ G6 DB-object conformity — naming + security boilerplate + RLS bundle (W6) + view-registry (W3) + callRpc (C4) + soft-delete (C31), any DB object create/alter  → references/db-playbook.md → G6
+□ themable-token semantic audit done (theme/dark-mode/contrast)  → references/fe-i18n-playbook.md
+□ forced_gate read; if pending/true → AskUserQuestion fired
+□ phase risk tag checked vs cadence
+```
+
+1. **Cadence check** — gate if the risk tag requires it; else proceed.
+2. **Execute writes.** DB phases follow **PDAAV** (probe→draft→approve→apply→verify) — full procedure incl. post-migration ground-truth SELECT (#33), 2a-RLS effective-access check (#47), and phase-atomicity for multi-layer changes in references/db-playbook.md. Rename+shrink uses **RIBS** / **PDAAV-RIBS** (references). **When the phase is a parallel WRITE across disjoint slices → run it as a SWARM (below), not a serial loop.**
+3. **Stale-override sweep** (mandatory when this phase changed a shared primitive's visual default): grep every consumer override, reclassify still-correct / stale-against-old-default (fix NOW) / newly-redundant (remove); grep stale header comments (#23). **Single-instance fix → sibling-scan** the same directory (#77).
+4. **Self-verification loop** (SKILL.md §Self-verification).
+5. **Update campaign tracking** (`phases_completed`, `current_phase`, `phases_remaining`, `pN_result:`).
+6. **Append "what actually ran"** to the phase file (deviations, autonomous decisions, every fixed override with file:line + before/after).
+7. **Continue.** Don't stop between green phases; don't ask "shall I proceed?" — the plan was approved.
+
+**Mid-execution scope discovery:** ≤5 files/≤20 keys/same surface → proceed silently (log it); 6–50 / 21–200 → proceed + append a phase + log prominently (hybrid: one-line note, user can interrupt); >50 / >200 / any new surface → gate regardless of cadence. **Never silently truncate requested scope under context pressure** — checkpoint with what shipped + what remains + resume instructions + `scope_truncated:` (#74). Emit a heartbeat on any op >~2 min (#75).
+
+---
+
+## The W3 swarm — the sanctioned parallel-write primitive (full procedure)
+
+SKILL.md §Step 3 + §Subagent dispatch carry the one-paragraph rule + the worthiness summary. This is the full method; the canonical craft is **[[decompose-and-swarm]]** (read it before swarming) — what follows is how a campaign WAVE invokes it.
+
+**One pattern, not two.** The campaign's older "fan-out sweep" (one `general-purpose` subagent per disjoint sibling file) IS the shared-tree swarm — the swarm is the formally-named, schema-governed, worthiness-gated, per-slice-critic'd version of the SAME move. There is now ONE parallel-write primitive (the swarm); "fan-out sweep" is its informal historical name and the `≥5-mechanical-sibling-refactor` is its most common shape.
+
+**The swarm is the DEFAULT path for a parallel write wave** — not a context-exhaustion exception. When a BUILD phase writes across slices and the worthiness gate clears, deploy a swarm; "build-W3 writes by the main agent" remains true for SERIAL/coupled phases and for the orchestrator's own integration step.
+
+**Wave-level WORTHINESS gate (reuse [[decompose-and-swarm]] MOVE 0 — swarm ONLY if all four hold, else run the wave serially on the main thread):**
+1. **Big enough** — each slice ≳1.5k output tokens. A phase you can state as "edit these 3 lines in file X" is NOT a swarm.
+2. **Splittable** — at least `min_instances` (default 2) clean, nameable slices.
+3. **Loosely coupled** — no slice needs another slice's *in-progress* state (coupled phases are sequenced, never swarmed).
+4. **Cheaper net** — N Sonnet workers + orchestration overhead beats Opus editing every slice serially.
+
+The Amp trip condition: "Can you name the exact files/symbols to change?" → YES = do it inline, no swarm. Over-decomposition is the #1 way swarms destroy value.
+
+**NEVER swarm:** a wave with DB/red writes (PDAAV stays serial on the main thread), W4 synthesis, or any phase where slices share a file. The disjoint-partition invariant is non-negotiable — overlap → re-partition or escalate that pair to `isolation:worktree` (deferred, Wave-4 worktrees).
+
+**The wave's swarm steps (delegated to [[decompose-and-swarm]] — MOVES 0.5→4):**
+- **Scout + cut disjoint slices** (MOVE 0.5/1): scout the surface (codebase-memory when indexed; else manual directory analysis + explicit coupling note), partition by file/module/subtask, build each instance's file-set, **assert pairwise-empty intersection**. Mandatory order inside a swarm: Setup → Foundational (the synchronisation barrier, runs+completes BEFORE fan-out) → parallel per-story slices → Polish.
+- **Contracts-first seams** (MOVE 2): write the interfaces/types/names every worker must agree on BEFORE any worker launches; the seam goes in every brief.
+- **3-tier brief per worker** (MOVE 3): routing label · core brief <2k tokens (files owned + "touch nothing else" + the seam contract + the acceptance test + `model: sonnet` as a first-class field + "do NOT commit/cross-edit/spawn") · file excerpts only if needed.
+- **Fan out in ONE message** (MOVE 4): true parallelism, ≤MAX_SWARM (5) workers; workers can't spawn workers.
+- **Per-slice critic BEFORE integration** (MOVE 4): as each worker returns, the orchestrator runs `evolution/verdict.run_cold(worker_slice_diff)` on that worker's SMALL diff and records the verdict in the ledger — a BLOCK stops integration of that slice (re-dispatch or fix inline). This keeps the critic invariant intact: a swarm's AGGREGATE diff routinely exceeds the auto-critic's 60KB threshold, so without per-slice review the Stop gate falls to a manual bypass and "nothing enters without a critic verdict" becomes theater.
+
+**CONFORMITY-CLOSE-ONCE (the swarm-close invariant).** The campaign DRIVER (orchestrator / main thread) runs conformity + verify + integration EXACTLY ONCE, AFTER all swarm workers finish. **Workers NEVER run conformity/verify themselves** — an intermediate parallel state is an incomplete tree and would fail spuriously. The orchestrator assembles all blessed slices, reconciles the seams against the contract, runs the structural-grep matrix (target shape present on every file, legacy absent — tsc/lint prove it compiles, the grep proves it converted), deep-reviews the 1–2 riskiest (money/state-machine) line-by-line, lets the armed Stop verify-gate Critic (glm-5.2) review the aggregate diff (backed by the per-slice ledger trail), then commits once (one commit per slice in the merge sequence so `git revert` = surgical rollback). This is why parallel writers are ungated — the serialised, single integration is the gate.
+
+**Failure handling:** one worker fails → re-dispatch just that slice (fault-isolated); seam mismatch → fix inline or re-dispatch the two affected slices with a corrected contract; a slice failing ≥2× → orchestrator does it inline or invokes the Confusion Protocol.
+
+See [[decompose-and-swarm]] (the five MOVES in full) · [[core-swarm]] (the guild's swarm memory core) · [[weapon-utility]] (worker = Brain, Doer-inside, Critic-review seat doctrine).

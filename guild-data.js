@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 58,
       "patch": 78
     },
-    "generated": "2026-06-28T11:41:55Z",
+    "generated": "2026-06-28T12:24:42Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -3343,7 +3343,7 @@ const GUILD = {
         "Conformity & consolidation (the always-on disciplines — full extraction procedure in references/fe-i18n-playbook.md)",
         "Deploy & sync (#84)",
         "Skill self-health (run at every reflection pass — #84)",
-        "Common failure modes",
+        "Common failure modes (#1–#107)",
         "Output conventions",
         "Reference files",
         "Version history"
@@ -3366,8 +3366,8 @@ const GUILD = {
       ],
       "scripts": [],
       "stats": {
-        "lines": 476,
-        "words": 10516
+        "lines": 387,
+        "words": 8600
       },
       "global": false,
       "members": [
