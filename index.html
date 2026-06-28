@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Star Alliance — Mission Console</title>
-  <meta name="description" content="Star Alliance — the guild of AI agents. A cosmic command console for members, skills, sectors, and the guild log.">
+  <title>Star Alliance — Control Panel</title>
+  <meta name="description" content="The Star Alliance control panel — agents, models, skills, projects, and workflows in one place.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="app.css">
   <!-- Critical boot styles: paint the deep-space background before app.css loads, so there is never a white flash. -->
@@ -21,20 +21,21 @@
   <a class="skip-link" href="#app">Skip to content</a>
 
   <header id="topbar" class="glass">
-    <a class="brand" href="#/map" aria-label="Star Alliance home">
+    <a class="brand" href="#/home" aria-label="Star Alliance home">
       <span class="brand-mark" aria-hidden="true">✦</span>
       <span class="brand-text">Star <em>Alliance</em></span>
       <span class="brand-ver" id="brand-ver" title="Project version — derived from the guild log"></span>
     </a>
 
     <nav id="nav" aria-label="Primary">
-      <a href="#/map" data-nav="map">Star Map</a>
-      <a href="#/members" data-nav="members">Members</a>
-      <a href="#/arsenal" data-nav="arsenal">Arsenal</a>
+      <a href="#/home" data-nav="home">Home</a>
+      <a href="#/agents" data-nav="members">Agents</a>
+      <a href="#/models" data-nav="arsenal">Models</a>
       <a href="#/skills" data-nav="skills">Skills</a>
-      <a href="#/domains" data-nav="domains">Sectors</a>
-      <a href="#/log" data-nav="log">Guild Log</a>
-      <a href="#/evolution" data-nav="evolution">Evolution</a>
+      <a href="#/projects" data-nav="domains">Projects</a>
+      <a href="#/map" data-nav="map">Workflows</a>
+      <a href="#/activity" data-nav="log">Activity</a>
+      <a href="#/evolution" data-nav="evolution">Automation</a>
     </nav>
 
     <div class="topbar-actions">
@@ -62,7 +63,7 @@
   <div id="palette" class="palette" role="dialog" aria-modal="true" aria-label="Command palette" hidden></div>
 
   <noscript>
-    <p style="padding:2rem;text-align:center">This mission console requires JavaScript to plot the constellation.</p>
+    <p style="padding:2rem;text-align:center">Star Alliance requires JavaScript.</p>
   </noscript>
 
   <!-- Load order is load-bearing: data global first, then the app. -->

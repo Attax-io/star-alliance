@@ -10,11 +10,11 @@ const app = document.getElementById("app");
 function bootFailed() {
   app.innerHTML = `<div class="state state-error" role="alert">
     <div class="glyph">📡</div>
-    <h2>Uplink lost</h2>
-    <p>The guild data failed to load. <code>guild-data.js</code> must sit beside
+    <h2>Load failed</h2>
+    <p>Control panel data failed to load. <code>guild-data.js</code> must sit beside
        <code>index.html</code> and define <code>const GUILD</code>. Re-run
        <code>python3 build.py</code>, then reload.</p>
-    <button class="btn" onclick="location.reload()">Retry uplink</button>
+    <button class="btn" onclick="location.reload()">Retry</button>
   </div>`;
 }
 if (typeof GUILD === "undefined" || !GUILD || !Array.isArray(GUILD.members)) {
@@ -51,8 +51,8 @@ const MODELS = Object.fromEntries(
 const modelMeta = (m) => MODELS[m] || { label: m || "—", color: "#8a93ad" };
 const modelGlyph = (m) => (modelMeta(m).label).replace(/[^A-Za-z0-9]/g, "").slice(0, 2).toUpperCase();
 const ROLE_META = {
-  thinker: { label: "Thinker", icon: "role-art/thinker.png", color: "#9d7bff", rule: "Only reasons, plans, analyzes, and orchestrates. Never executes bulk work or fires sub-tasks directly." },
-  doer:    { label: "Doer",    icon: "role-art/doer.png",    color: "#ffb04e", rule: "Only executes, produces, writes, and transforms. Never orchestrates other agents or makes high-level decisions." },
+  thinker: { label: "Planner", icon: "role-art/thinker.png", color: "#9d7bff", rule: "Only reasons, plans, analyzes, and orchestrates. Never executes bulk work or fires sub-tasks directly." },
+  doer:    { label: "Worker",  icon: "role-art/doer.png",    color: "#ffb04e", rule: "Only executes, produces, writes, and transforms. Never orchestrates other agents or makes high-level decisions." },
   both:    { label: "Both",    icon: "role-art/both.png",    color: "#3df0ff", rule: "Can think and execute. Assign explicitly — don't use as a catch-all." },
 };
 // The armory display order for the Arsenal page.
@@ -127,8 +127,8 @@ async function postEvolution(suffix, body) {
 
 function renderEvolution() {
   const d = evolutionLive;
-  const head = viewHead("Self-improvement", "Evolution Engine",
-    "The guild's self-improving loop — sense, diagnose, verify, remember.");
+  const head = viewHead("Automation", "Automation",
+    "The self-improving loop — sense, diagnose, verify, remember.");
   if (!d) return head + `<p class="ev-empty" style="padding:1rem">Fetching live engine state…</p>`;
   if (d.offline) return head + `<div class="glass" style="padding:1rem 1.2rem">Live engine state needs the dashboard server. Start it with <code>node .claude/serve.cjs</code> and reload.</div>`;
   if (d.error) return head + `<div class="glass" style="padding:1rem 1.2rem">Engine status error: ${esc(d.error)}</div>`;
@@ -367,8 +367,8 @@ async function createEntity(kind) {
   else alert("Create failed \u2014 it may exist, or the dev server is off.");
 }
 async function deleteEntity(kind, id, backHash) {
-  const label = { skill: "skill", domain: "sector", workflow: "workflow", model: "weapon" }[kind] || kind;
-  if (!confirm("Delete " + label + " \u201c" + id + "\u201d? Source files are backed up (.bak) and the guild rebuilds.")) return;
+  const label = { skill: "skill", domain: "project", workflow: "workflow", model: "model" }[kind] || kind;
+  if (!confirm("Delete " + label + " \u201c" + id + "\u201d? Source files are backed up (.bak) and the system rebuilds.")) return;
   const payload = kind === "skill"    ? { kind: "skill-delete", skill: id }
                 : kind === "domain"   ? { kind: "domain-delete", id }
                 : kind === "workflow" ? { kind: "workflow-delete", id }
@@ -384,7 +384,7 @@ async function appendLogUI() {
   if (!TYPES.includes(type) && !confirm("\u201c" + type + "\u201d is non-standard \u2014 file anyway?")) return;
   const title = (prompt("Title:") || "").trim(); if (!title) return;
   const detail = (prompt("Detail (optional):", "") || "").trim();
-  if (await postSave({ kind: "log-append", entry: { type, title, detail, who: "Guild Master" } })) location.reload();
+  if (await postSave({ kind: "log-append", entry: { type, title, detail, who: "You" } })) location.reload();
   else alert("Log append failed \u2014 is the dev server running?");
 }
 
@@ -516,9 +516,136 @@ const searchIndex = [
   ...GUILD.members.map((m) => ({ kind: "member", id: m.id, label: m.name, sub: m.role, icon: "◆", hash: `#/members/${m.id}`, hay: `${m.name} ${m.role} ${m.summary}`.toLowerCase() })),
   ...GUILD.skills.map((s) => ({ kind: "skill", id: s.id, label: s.name, sub: s.blurb, icon: s.icon, hash: `#/skills/${s.id}`, hay: `${s.id} ${s.name} ${s.blurb} ${s.level}`.toLowerCase() })),
   ...GUILD.domains.map((d) => ({ kind: "sector", id: d.id, label: d.name, sub: d.tagline, icon: d.icon, hash: `#/domains/${d.id}`, hay: `${d.name} ${d.tagline}`.toLowerCase() })),
+  ...Object.entries(GUILD.models).map(([id, m]) => ({ kind: "model", id, label: m.label || id, sub: m.desc || m.summary || "", icon: "⚙", hash: `#/arsenal/${id}`, hay: `${id} ${m.label || ""} ${m.desc || m.summary || ""} ${m.tier || ""}`.toLowerCase() })),
+  ...GUILD.workflows.map((w) => ({ kind: "workflow", id: w.id, label: w.name, sub: w.tagline || "", icon: w.icon || "⚔", hash: `#/workflows/${w.id}`, hay: `${w.id} ${w.name} ${w.tagline || ""} ${w.category || ""}`.toLowerCase() })),
 ];
 
 /* ── 4. Hash router ───────────────────────────────────────────────────────── */
+function renderHome() {
+  const nMembers   = GUILD.members.length;
+  const nModels    = Object.keys(GUILD.models || {}).length;
+  const nSkills    = GUILD.skills.length;
+  const nDomains   = GUILD.domains.length;
+  const nWorkflows = (GUILD.workflows || []).length;
+
+  // Recent activity — last 5 log entries, newest-first
+  const recent = logEntries.slice().reverse().slice(0, 5);
+  const recentRows = recent.length
+    ? recent.map((e) => `
+      <div class="home-activity-row">
+        <span class="home-act-chip">${esc(e.type)}</span>
+        <span class="home-act-title">${esc(e.title)}</span>
+        <span class="home-act-date">${esc((e.date || "").slice(0, 10))}</span>
+      </div>`).join("")
+    : `<div class="home-activity-empty">No activity recorded yet.</div>`;
+
+  // Jump grid — 6 cards
+  const firstMember   = GUILD.members[0];
+  const firstSkill    = GUILD.skills[0];
+  const firstDomain   = GUILD.domains[0];
+  const firstWorkflow = (GUILD.workflows || [])[0];
+  const firstModel    = Object.keys(GUILD.models || {})[0];
+
+  const jumpCard = (href, name, count, thumbHtml) => `
+    <a class="home-jump-card" href="${href}">
+      <div class="home-jump-thumb">${thumbHtml}</div>
+      <div class="home-jump-name">${esc(name)}</div>
+      <div class="home-jump-count">${esc(String(count))}</div>
+    </a>`;
+
+  const memberThumb = firstMember
+    ? `<img src="member-art/${esc(firstMember.id)}.png" alt="${esc(firstMember.name)}" loading="lazy">`
+    : `<span class="home-jump-thumb-emoji">◆</span>`;
+  const modelThumb = firstModel && GUILD.models[firstModel]
+    ? `<img src="weapon-art/${esc(firstModel)}.png" alt="${esc(GUILD.models[firstModel].label || firstModel)}" loading="lazy">`
+    : `<span class="home-jump-thumb-emoji">⚙</span>`;
+  const skillThumb = firstSkill
+    ? (firstSkill.artPng
+        ? `<img src="skill-art/${esc(firstSkill.id)}.png" alt="${esc(firstSkill.name)}" loading="lazy">`
+        : `<span class="home-jump-thumb-emoji">${esc(firstSkill.icon || "📦")}</span>`)
+    : `<span class="home-jump-thumb-emoji">📦</span>`;
+  const domainThumb = firstDomain
+    ? `<span class="home-jump-thumb-emoji">${esc(firstDomain.icon || "⬡")}</span>`
+    : `<span class="home-jump-thumb-emoji">⬡</span>`;
+  const workflowThumb = firstWorkflow
+    ? (firstWorkflow.artPng
+        ? `<img src="workflow-art/${esc(firstWorkflow.id)}.png" alt="${esc(firstWorkflow.name)}" loading="lazy">`
+        : `<span class="home-jump-thumb-emoji">${esc(firstWorkflow.icon || "⚔")}</span>`)
+    : `<span class="home-jump-thumb-emoji">⚔</span>`;
+  const autoThumb = `<span class="home-jump-thumb-emoji">♻</span>`;
+
+  return `${viewHead("Control Panel", "Home", "Search, navigate, and act — everything from one place.")}
+    <div class="home-root">
+      <div class="home-cmd">
+        <div class="home-cmd-label">Command</div>
+        <div class="home-cmd-wrap">
+          <span class="home-cmd-icon" aria-hidden="true">⌕</span>
+          <input id="home-search" class="home-cmd-input" type="text"
+            placeholder="Search agents, models, skills, projects, workflows…"
+            aria-label="Search agents, models, skills, projects, and workflows" autocomplete="off">
+        </div>
+        <div class="home-cmd-hint">Press <kbd>⌘K</kbd> or start typing to search. <kbd>↵</kbd> opens the first result.</div>
+        <div class="home-actions">
+          <button class="home-action primary" id="home-new-agent"   type="button"><span class="home-action-icon">◆</span> New Agent</button>
+          <button class="home-action"         id="home-new-skill"   type="button"><span class="home-action-icon">📦</span> New Skill</button>
+          <button class="home-action"         id="home-new-project" type="button"><span class="home-action-icon">⬡</span> New Project</button>
+          <button class="home-action"         id="home-new-workflow" type="button"><span class="home-action-icon">⚔</span> New Workflow</button>
+          <button class="home-action"         id="home-log-activity" type="button"><span class="home-action-icon">📋</span> Log Activity</button>
+          <button class="home-action"         id="home-rebuild"     type="button"><span class="home-action-icon">↻</span> Rebuild</button>
+        </div>
+      </div>
+
+      <div class="home-stats">
+        <div class="home-stats-status" id="home-status-strip"></div>
+        <div class="home-stat-divider" aria-hidden="true"></div>
+        <a class="home-stat" href="#/agents">
+          <span class="home-stat-n">${nMembers}</span>
+          <span class="home-stat-label">Agents</span>
+        </a>
+        <a class="home-stat" href="#/models">
+          <span class="home-stat-n">${nModels}</span>
+          <span class="home-stat-label">Models</span>
+        </a>
+        <a class="home-stat" href="#/skills">
+          <span class="home-stat-n">${nSkills}</span>
+          <span class="home-stat-label">Skills</span>
+        </a>
+        <a class="home-stat" href="#/projects">
+          <span class="home-stat-n">${nDomains}</span>
+          <span class="home-stat-label">Projects</span>
+        </a>
+        <a class="home-stat" href="#/map">
+          <span class="home-stat-n">${nWorkflows}</span>
+          <span class="home-stat-label">Workflows</span>
+        </a>
+      </div>
+
+      <div class="home-lower">
+        <div class="home-recent">
+          <div class="home-section-head">
+            <span class="home-section-label">Recent Activity</span>
+            <a class="home-section-link" href="#/activity">View all →</a>
+          </div>
+          <div class="home-activity-list">${recentRows}</div>
+        </div>
+
+        <div class="home-jump">
+          <div class="home-section-head">
+            <span class="home-section-label">Jump To</span>
+          </div>
+          <div class="home-jump-grid">
+            ${jumpCard("#/agents",    "Agents",      pluralize(nMembers, "agent"),     memberThumb)}
+            ${jumpCard("#/models",    "Models",      pluralize(nModels, "model"),      modelThumb)}
+            ${jumpCard("#/skills",    "Skills",      pluralize(nSkills, "skill"),      skillThumb)}
+            ${jumpCard("#/projects",  "Projects",    pluralize(nDomains, "project"),   domainThumb)}
+            ${jumpCard("#/map",       "Workflows",   pluralize(nWorkflows, "workflow"), workflowThumb)}
+            ${jumpCard("#/evolution", "Automation",  "Self-improving loop",            autoThumb)}
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
 function parseHash() {
   const raw = location.hash.replace(/^#\/?/, "");
   const [pathPart, queryPart = ""] = raw.split("?");
@@ -527,6 +654,7 @@ function parseHash() {
 }
 
 const ROUTES = {
+  home:    { list: renderHome,          navKey: "home" },
   map:     { list: renderStarMap,      navKey: "map" },
   workflows: { list: renderStarMap,    detail: renderWorkflowPage,  navKey: "map" },
   members: { list: renderMembers,      detail: renderMemberDossier, navKey: "members" },
@@ -535,13 +663,18 @@ const ROUTES = {
   domains: { list: renderDomains,      detail: renderSectorDetail,  navKey: "domains" },
   log:     { list: renderLog,          navKey: "log" },
   evolution: { list: renderEvolution,  navKey: "evolution" },
+  // Plain-name aliases — point at the same render functions as the canonical routes.
+  agents:   { list: renderMembers,     detail: renderMemberDossier, navKey: "members" },
+  models:   { list: renderArsenal,     detail: renderWeaponDetail,  navKey: "arsenal" },
+  projects: { list: renderDomains,     detail: renderSectorDetail,  navKey: "domains" },
+  activity: { list: renderLog,         navKey: "log" },
 };
 
 function onRoute() {
   assignOpenFor = null; assignQuery = "";  // close any assign panel when navigating
   arsenalApplied = false;                  // a real navigation re-arms the Arsenal live-fetch
   const { segments, query } = parseHash();
-  const key = segments[0] || "map";
+  const key = segments[0] || "home";
   const route = ROUTES[key];
   if (!route) { mount(renderNotFound(), null); return; }  // null → no nav link highlighted on a 404
 
@@ -567,7 +700,7 @@ function mount(html, navKey) {
 function refreshView() {
   const y = window.scrollY;
   const { segments, query } = parseHash();
-  const route = ROUTES[segments[0] || "map"];
+  const route = ROUTES[segments[0] || "home"];
   if (!route) return;
   app.innerHTML = (segments[1] && route.detail) ? route.detail(segments[1], query) : route.list(query);
   setActiveNav(route.navKey);
@@ -688,7 +821,7 @@ function memberCard(m) {
     <div class="mc-skills">${shown}${extra}</div>
     <div class="mc-foot">
       <span>${pluralize(active, "skill")}${blocked ? ` <span class="blk-note">· ${blocked} blocked</span>` : ""}</span>
-      <span class="sep"></span><span>${pluralize(effectiveWeapons(m).length, "weapon")}</span>
+      <span class="sep"></span><span>${pluralize(effectiveWeapons(m).length, "model")}</span>
       <span class="mc-foot-spacer"></span>${memberLevelBadge(m)}
     </div>
   </div>`;
@@ -703,8 +836,8 @@ function renderStarMap(query) {
   const unknown = reqId && !GUILD.workflows.some(w => w.id === reqId);
   if (unknown) console.warn(`[map] unknown workflow id "${reqId}" — falling back to default`);
   const accent = ACCENT[wf.accent] || "var(--cyan)";
-  return `${viewHead("Operations", "Star Map",
-      `Members plotted by model tier — the power core traces the active workflow. Pick a workflow on the right to trace it; hover a star to read ${esc(wf.name)}'s role.`)}
+  return `${viewHead("Workflows", "Workflow Map",
+      `Agents plotted by model tier. Pick a workflow to trace it; hover a node to inspect its role.`)}
     <div class="starmap-layout">
       <div class="starmap-wrap glass" style="--accent:${accent}">
         ${buildConstellation(wf)}
@@ -753,7 +886,7 @@ function flowChips(activeId) {
 // double-clicking a tile on the Star Map.
 function renderWorkflowPage(id) {
   const w = GUILD.workflows.find((x) => x.id === id);
-  if (!w) return renderNotFound(`No workflow “${esc(id)}” in the star map.`);
+  if (!w) return renderNotFound(`No workflow “${esc(id)}” found.`);
   const accent = ACCENT[w.accent] || "var(--cyan)";
   const md = (typeof WORKFLOW_MD !== "undefined" && WORKFLOW_MD && WORKFLOW_MD[id]) || "";
   const pic = w.artPng
@@ -761,7 +894,7 @@ function renderWorkflowPage(id) {
     : `<span class="wp-art-emoji" aria-hidden="true">${esc(w.icon || "⚔")}</span>`;
   const stepCount = (w.steps || []).filter((s) => s.kind === "member").length;
   const gateCount = (w.steps || []).filter((s) => s.kind === "gate").length;
-  return `${crumb("#/map", "Star Map")}
+  return `${crumb("#/map", "Workflows")}
     <div class="skill-panel" style="--accent:${accent}">
       <div class="sp-hero glass">
         <div class="sp-icon${w.artPng ? " art" : ""}">${pic}</div>
@@ -776,7 +909,7 @@ function renderWorkflowPage(id) {
              data-edit="workflow" data-ent="${esc(w.id)}" data-field="tagline" data-last="${esc(w.tagline || "")}">${esc(w.tagline || "")}</p>
         </div>
         <div class="sp-actions">
-          <a class="ref-pill" href="#/map?flow=${esc(w.id)}" style="--mc:${accent}" title="Trace this workflow on the Star Map">✦ View on map</a>
+          <a class="ref-pill" href="#/map?flow=${esc(w.id)}" style="--mc:${accent}" title="Trace this workflow on the Workflow Map">✦ View on map</a>
           <button class="cp-del" data-del="workflow" data-ent="${esc(w.id)}" data-back="#/map" type="button">Delete</button>
         </div>
       </div>
@@ -893,9 +1026,9 @@ function buildConstellation(wf) {
   // sends out expanding RIPPLE rings (radar-ping), distinct from every member node.
   const ripples = [0, 1, 2].map(i =>
     `<circle class="you-ripple" r="15" style="animation-delay:${(i * 1.2).toFixed(1)}s"/>`).join("");
-  const youCore = `<g class="you-core" transform="translate(${cx},${cy})" tabindex="0" role="img" aria-label="You · Guild Master" data-name="You · Guild Master" data-tip="The Guild Master and prompter. Every mission begins with your order — the Butler turns it into a clear brief for your approval — and ends when the guild reports the finished work back to you."><circle class="halo" r="32"/>${ripples}<circle class="you-sun" r="16"/><circle class="you-coreglow" r="14"/><circle class="core" r="8"/><text class="you-glyph" text-anchor="middle" dominant-baseline="central">✦</text><title>You — where every mission begins and ends</title></g>`;
+  const youCore = `<g class="you-core" transform="translate(${cx},${cy})" tabindex="0" role="img" aria-label="You · Owner" data-name="You · Owner" data-tip="The owner and prompter. Every mission begins with your order — the Butler turns it into a clear brief for your approval — and ends when the agents report the finished work back to you."><circle class="halo" r="32"/>${ripples}<circle class="you-sun" r="16"/><circle class="you-coreglow" r="14"/><circle class="core" r="8"/><text class="you-glyph" text-anchor="middle" dominant-baseline="central">✦</text><title>You — where every mission begins and ends</title></g>`;
 
-  return `<svg class="starmap" viewBox="0 0 800 800" data-core-dur="${dur}" role="group" aria-label="${esc(wf.name)} workflow over the guild constellation">
+  return `<svg class="starmap" viewBox="0 0 800 800" data-core-dur="${dur}" role="group" aria-label="${esc(wf.name)} workflow map">
     <g class="orbits" aria-hidden="true">${orbits}</g>
     <g class="links" aria-hidden="true">${links}</g>
     <path id="flow-path" class="flow-path" d="${pathD}" fill="none"/>
@@ -950,15 +1083,15 @@ function renderHookRing(cx, cy) {
 
 // Members -------------------------------------------------------------------
 function renderMembers() {
-  return `${viewHead("Roster", "Guild Members",
-      `${GUILD.members.length} specialists, each carrying a curated skill set.`)}
-    <div class="arsenal-toolbar"><button class="reset-btn" id="member-new" type="button">\uff0b Recruit a member</button></div>
+  return `${viewHead("Roster", "Agents",
+      `${GUILD.members.length} agents in the system.`)}
+    <div class="arsenal-toolbar"><button class="reset-btn" id="member-new" type="button">\uff0b Recruit an agent</button></div>
     <div class="grid roster-grid">${GUILD.members.map(memberCard).join("")}</div>`;
 }
 
 function renderMemberDossier(id) {
   const m = byMember.get(id);
-  if (!m) return renderNotFound(`No member “${esc(id)}” in the roster.`);
+  if (!m) return renderNotFound(`No agent “${esc(id)}” found.`);
   const assigned = assignedSkills(m);
   const active = effectiveSkills(m);
   const blocked = assigned.length - active.length;
@@ -1016,7 +1149,7 @@ function renderMemberDossier(id) {
         title="${blk ? "Blocked — click to allow" : "Click to block for this agent"}">${siArt}</button>
       <a class="sn" href="#/skills/${esc(sid)}">${esc(s ? s.name : sid)}</a>
       ${isAdded ? `<span class="tag added">added</span>` : ""}
-      ${off ? `<a class="tag off" href="#/skills/${esc(sid)}" title="Deactivated guild-wide">deactivated</a>`
+      ${off ? `<a class="tag off" href="#/skills/${esc(sid)}" title="Deactivated system-wide">deactivated</a>`
             : (blk ? `<span class="tag blocked">blocked</span>`
                    : (isShared(sid) ? `<span class="tag shared">shared</span>` : ""))}
       <button class="unassign-btn" type="button" data-member="${esc(m.id)}" data-skill="${esc(sid)}"
@@ -1062,7 +1195,7 @@ function renderMemberDossier(id) {
         : `<p class="empty">This agent already carries every skill in the pool.</p>`}
     </div>` : ""}`;
 
-  return `${crumb("#/members", "All members")}
+  return `${crumb("#/agents", "All agents")}
     <div class="dossier" style="--mc:${esc(m.color)}">
       <div class="dossier-hero glass">
         <div class="dh-portrait-wrap">
@@ -1089,10 +1222,10 @@ function renderMemberDossier(id) {
       <div class="panel-grid">
         <div class="section glass" style="grid-column:1/-1">
           <div class="section-title sk-head">
-            <span>Arsenal · ${pluralize(eff.length, "weapon")}</span>
-            <a class="reset-btn" href="#/arsenal">Manage in Arsenal →</a>
+            <span>Models · ${pluralize(eff.length, "model")}</span>
+            <a class="reset-btn" href="#/models">Manage in Models →</a>
           </div>
-          <p class="skill-hint">The <strong>universal arsenal</strong>, projected for this member as four seats — <strong>Brain</strong> (its <code>model:</code>) · <strong>Doer</strong> · <strong>Critic</strong> · <strong>Bench</strong>. Defined once in <code>models.json → seats</code>; not per-member editable.</p>
+          <p class="skill-hint">The <strong>universal model set</strong>, projected for this agent as four seats — <strong>Brain</strong> (its <code>model:</code>) · <strong>Doer</strong> · <strong>Critic</strong> · <strong>Bench</strong>. Defined once in <code>models.json → seats</code>; not per-agent editable.</p>
           <div class="arsenal-grid">${weapons}</div>
         </div>
       </div>
@@ -1110,9 +1243,9 @@ function renderMemberDossier(id) {
         <div class="section glass" style="--mc:${esc(g.color || "#888")}">
           <div class="section-title sk-head">
             <span>${esc(g.icon || "⬡")} ${esc(g.name)} · ${g.ids.length}</span>
-            <a class="reset-btn" href="#/domains/${esc(g.id)}">View sector →</a>
+            <a class="reset-btn" href="#/projects/${esc(g.id)}">View project →</a>
           </div>
-          <p class="skill-hint">Sector-specific skills deployed to <strong>${esc(g.name)}</strong>.</p>
+          <p class="skill-hint">Project skills deployed to <strong>${esc(g.name)}</strong>.</p>
           <div class="skill-lines">${g.ids.map(skillLine).join("")}</div>
         </div>`).join("")}
         <div class="section glass">
@@ -1178,19 +1311,19 @@ function renderStarmapWorkflow(m) {
     return `
       <div class="section glass starmap-wf" style="grid-column:1/-1">
         <div class="section-title">Starmap Workflow</div>
-        <div class="skill-hint">${esc(m.name)} is not yet part of any charted workflow.</div>
+        <div class="skill-hint">${esc(m.name)} is not part of any workflow yet.</div>
       </div>`;
   }
 
   let html = `
     <div class="section glass starmap-wf" style="grid-column:1/-1">
       <div class="section-title">Starmap Workflow</div>
-      <div class="skill-hint">How ${esc(m.name)} is summoned across the guild's ${flows.length} ${flows.length === 1 ? "workflow" : "workflows"}.</div>`;
+      <div class="skill-hint">How ${esc(m.name)} appears across ${flows.length} ${flows.length === 1 ? "workflow" : "workflows"}.</div>`;
 
   if (m.triggers) {
     html += `
       <div class="swf-prompts">
-        <div class="k">Prompts that summon ${esc(m.name)}</div>
+        <div class="k">Prompts that invoke ${esc(m.name)}</div>
         <div class="v">${esc(m.triggers)}</div>
       </div>`;
   }
@@ -1316,20 +1449,20 @@ function renderArsenal() {
     </div>`;
   }
 
-  return `${viewHead("Armory", "Arsenal",
-      "Every model in the guild's armory — with its <strong>summon recipe</strong>. Claude = native master brain; MiniMax = <strong>direct</strong> cloud sub (not Ollama); the bench = Ollama Cloud. On the dev server each card shows whether its cloud model is actually pulled. Tap an agent under a model to grant/revoke.")}
+  return `${viewHead("Models", "Model Library",
+      "Every AI model in the system — planners, workers, and specialists.")}
     ${ledgerBanner}
     <div class="arsenal-toolbar">
       ${liveTag}
-      ${anyOv ? `<span class="tag green">Custom loadouts active</span><button class="reset-btn" id="reset-weapons">Reset all assignments</button>` : ""}
-      <button class="cp-new" data-new="model" type="button">+ New weapon</button>
+      ${anyOv ? `<span class="tag green">Custom assignments active</span><button class="reset-btn" id="reset-weapons">Reset all assignments</button>` : ""}
+      <button class="cp-new" data-new="model" type="button">+ New model</button>
     </div>
     <div class="model-grid">${cards}</div>`;
 }
 
 function renderWeaponDetail(id) {
   const mm = modelMeta(id);
-  if (!mm || !mm.label) return renderNotFound(`No weapon "${esc(id)}" in the armory.`);
+  if (!mm || !mm.label) return renderNotFound(`No model "${esc(id)}" found.`);
   const off = isWeaponDisabled(id);
   const role = mm.role ? ROLE_META[mm.role] : null;
   const wielders = GUILD.members.filter((m) => wields(m, id));
@@ -1357,9 +1490,9 @@ function renderWeaponDetail(id) {
   </div>` : "";
   const wielderPills = wielders.map((m) => `<a class="ref-pill" href="#/members/${esc(m.id)}" style="--mc:${esc(m.color || "#888")}">
     <span class="avatar" style="width:26px;height:26px;border-radius:7px">${m.avatar || ""}</span>${esc(m.name)}</a>`).join("") ||
-    `<span class="empty">No agents wield this weapon yet.</span>`;
+    `<span class="empty">No agents use this model yet.</span>`;
 
-  return `${crumb("#/arsenal", "Arsenal")}
+  return `${crumb("#/models", "Models")}
     <div class="weapon-panel">
       <div class="wp-hero glass${off ? " deactivated" : ""}" style="--wc:${esc(mm.color)}">
         <div class="weapon-art-wrap wp-art" data-weapon-color="${esc(mm.color)}" data-weapon-off="${off}">
@@ -1384,16 +1517,16 @@ function renderWeaponDetail(id) {
         </div>
         <div class="sp-actions" style="align-self:flex-start">
           <button class="weapon-power-btn${off ? " off" : ""}" type="button" data-weapon="${esc(id)}"
-            title="${off ? "Reactivate weapon" : "Deactivate weapon"}" style="position:relative">⏻</button>
-          <button class="cp-del" data-del="model" data-ent="${esc(id)}" data-back="#/arsenal" type="button">Delete</button>
+            title="${off ? "Reactivate model" : "Deactivate model"}" style="position:relative">⏻</button>
+          <button class="cp-del" data-del="model" data-ent="${esc(id)}" data-back="#/models" type="button">Delete</button>
         </div>
       </div>
-      ${off ? `<div class="off-banner glass">⏻ Deactivated guild-wide — no agent can wield this weapon. Reactivate to restore.</div>` : ""}
+      ${off ? `<div class="off-banner glass">⏻ Deactivated — no agent can use this model. Reactivate to restore.</div>` : ""}
       ${usageHtml}
       ${mm.ollama_desc && mm.ollama_desc !== mm.desc ? `<div class="section glass"><div class="section-title">Extended description</div><p class="model-desc" style="color:var(--fg)">${esc(mm.ollama_desc)}</p></div>` : ""}
-      ${mm.call ? `<div class="section glass"><div class="section-title">⚔ How to summon</div><pre class="mc-recipe" style="margin:0">${esc(mm.call)}</pre></div>` : ""}
+      ${mm.call ? `<div class="section glass"><div class="section-title">⚔ How to call</div><pre class="mc-recipe" style="margin:0">${esc(mm.call)}</pre></div>` : ""}
       <div class="section glass">
-        <div class="section-title">Agents wielding · ${wieldCount}/${GUILD.members.length}</div>
+        <div class="section-title">Agents using · ${wieldCount}/${GUILD.members.length}</div>
         <div class="ref-grid" style="margin-bottom:12px">${wielderPills}</div>
         <div class="wield-row">${chips}</div>
       </div>
@@ -1415,7 +1548,7 @@ function renderSkills(query) {
 
   const cards = GUILD.skills.map(skillCard).join("");
 
-  return `${viewHead("Inventory", "Skill Pool", `${GUILD.skills.length} skills shared across the guild.`)}
+  return `${viewHead("Skills", "Skill Library", `${GUILD.skills.length} skills across all agents and projects.`)}
     <div class="cp-toolbar"><button class="cp-new" data-new="skill" type="button">+ New skill</button></div>
     <div class="filter-bar glass">
       <label class="search-field"><span class="si" aria-hidden="true">⌕</span>
@@ -1551,14 +1684,14 @@ async function loadSkillMd(id, host) {
 
 function renderSkillPanel(id) {
   const s = bySkill.get(id);
-  if (!s) return renderNotFound(`No skill “${esc(id)}” in the skill pool.`);
+  if (!s) return renderNotFound(`No skill “${esc(id)}” found.`);
   const off = isDisabled(s.id);
   const carrierIds = liveCarriers(s.id);
   const carriers = carrierIds.map((mid) => {
     const m = byMember.get(mid);
     return `<a class="ref-pill" href="#/members/${esc(mid)}" style="--mc:${esc(m?.color || "#888")}">
       <span class="avatar" style="width:26px;height:26px;border-radius:7px">${m?.avatar || ""}</span>${esc(m ? m.name : mid)}</a>`;
-  }).join("") || `<span class="empty">${off ? "Deactivated guild-wide — no agent can use it." : (s.members.length ? "No guild member carries this skill (all blocked)." : "No guild member carries this skill yet.")}</span>`;
+  }).join("") || `<span class="empty">${off ? "Deactivated system-wide — no agent can use it." : (s.members.length ? "No agent carries this skill (all blocked)." : "No agent carries this skill yet.")}</span>`;
 
   const sections = s.sections.length
     ? `<div class="section glass"><div class="section-title">Inside the skill · ${s.sections.length} sections</div>
@@ -1589,7 +1722,7 @@ function renderSkillPanel(id) {
             <span class="tag ${rampClass(s)}">${esc(s.level)}</span>
             <span class="tag src-${esc(s.src)}">${esc(s.src)}</span>
             <span class="tag ${s.global ? "scope-global" : "scope-sector"}" title="${esc(skillScopeTip(s))}">${s.global ? "🌐 Global" : "⬡ Sector-specific"}</span>
-            ${off ? `<span class="tag off">deactivated guild-wide</span>` : ""}
+            ${off ? `<span class="tag off">deactivated</span>` : ""}
           </div>
           <p class="sp-blurb">${esc(s.desc || s.blurb)}</p>
           <p class="sp-blurb editable" contenteditable="true" spellcheck="false"
@@ -1598,13 +1731,13 @@ function renderSkillPanel(id) {
         </div>
         <div class="sp-actions">
           <button class="deactivate-toggle${off ? " on" : ""}" id="deactivate-toggle" type="button" data-skill="${esc(s.id)}"
-            aria-pressed="${off}" title="${off ? "Reactivate this skill for the whole guild" : "Deactivate this skill for every agent"}">
+            aria-pressed="${off}" title="${off ? "Reactivate this skill for every agent" : "Deactivate this skill for every agent"}">
             ⏻ ${off ? "Reactivate skill" : "Deactivate skill"}
           </button>
           <button class="cp-del" data-del="skill" data-ent="${esc(s.id)}" data-back="#/skills" type="button">Delete skill</button>
         </div>
       </div>
-      ${off ? `<div class="off-banner glass">⏻ Deactivated guild-wide — every agent's copy is inert, it counts as 0 carriers everywhere, and it's dropped from the Star Map. Reactivate to restore.</div>` : ""}
+      ${off ? `<div class="off-banner glass">⏻ Deactivated — every agent's copy is inert, counts as 0 carriers, and is excluded from the Workflow Map. Reactivate to restore.</div>` : ""}
       <div class="telemetry glass">
         <div class="stat"><b class="count">${carrierIds.length}</b><span>Carriers</span></div>
         <div class="stat"><b class="count">${s.stats.lines}</b><span>Lines</span></div>
@@ -1632,8 +1765,8 @@ function renderSkillPanel(id) {
 
 // Domains / Sectors ---------------------------------------------------------
 function renderDomains() {
-  return `${viewHead("Sectors", "Project Domains", `${GUILD.domains.length} domains drawing from the shared skill pool.`)}
-    <div class="cp-toolbar"><button class="cp-new" data-new="domain" type="button">+ New sector</button></div>
+  return `${viewHead("Projects", "Projects", `${GUILD.domains.length} active areas of work and the skills deployed to each.`)}
+    <div class="cp-toolbar"><button class="cp-new" data-new="domain" type="button">+ New project</button></div>
     <div class="grid sector-grid">${GUILD.domains.map(sectorCard).join("")}</div>`;
 }
 
@@ -1651,21 +1784,21 @@ function sectorCard(d) {
 
 function renderSectorDetail(id) {
   const d = byDomain.get(id);
-  if (!d) return renderNotFound(`No sector “${esc(id)}”.`);
+  if (!d) return renderNotFound(`No project “${esc(id)}” found.`);
 
   const skills = d.skills.map((sid) => {
     const s = bySkill.get(sid);
-    if (!s) return `<span class="ref-pill ext" title="not installed in the guild pool"><span class="ri">⚠</span>${esc(sid)}</span>`;
+    if (!s) return `<span class="ref-pill ext" title="not in the skill pool"><span class="ri">⚠</span>${esc(sid)}</span>`;
     return `<a class="ref-pill" href="#/skills/${esc(sid)}"><span class="ri">${esc(s.icon)}</span>${esc(s.name)}</a>`;
   }).join("");
 
   const members = d.members.map((mid) => {
     const m = byMember.get(mid);
-    if (!m) return `<span class="ref-pill ext" title="external agent, not a guild member"><span class="ri">◇</span>${esc(mid)} <span class="tag">external</span></span>`;
+    if (!m) return `<span class="ref-pill ext" title="external agent, not in the roster"><span class="ri">◇</span>${esc(mid)} <span class="tag">external</span></span>`;
     return `<a class="ref-pill" href="#/members/${esc(mid)}" style="--mc:${esc(m.color)}"><span class="avatar" style="width:24px;height:24px;border-radius:6px">${m.avatar || ""}</span>${esc(m.name)}</a>`;
   }).join("");
 
-  return `${crumb("#/domains", "All sectors")}
+  return `${crumb("#/projects", "All projects")}
     <div class="dossier" style="--mc:${esc(d.color)}">
       <div class="dossier-hero glass">
         <div class="sector-icon" style="font-size:40px;width:76px;height:76px">${esc(d.icon)}</div>
@@ -1684,7 +1817,7 @@ function renderSectorDetail(id) {
         <button class="cp-del" data-del="domain" data-ent="${esc(d.id)}" data-back="#/domains" type="button">Delete</button>
       </div>
       <div class="section glass"><div class="section-title">Linked skills · ${d.skills.length}</div><div class="ref-grid">${skills}</div></div>
-      <div class="section glass"><div class="section-title">Members in sector · ${d.members.length}</div><div class="ref-grid">${members}</div></div>
+      <div class="section glass"><div class="section-title">Agents in project · ${d.members.length}</div><div class="ref-grid">${members}</div></div>
     </div>`;
 }
 
@@ -1696,7 +1829,7 @@ function renderLog(query) {
     types.map((t) => `<button data-logtype="${esc(t)}" aria-pressed="${t === active}">${esc(t)}</button>`).join("");
   const entries = logEntries.map(logEntry).join("");
 
-  return `${viewHead("Activity", "Guild Log", `${logEntries.length} recorded changes to the guild.`)}
+  return `${viewHead("Activity", "Activity Log", `${logEntries.length} recorded changes.`)}
     <div class="cp-toolbar"><button class="cp-new" id="log-new" type="button">+ Append log entry</button></div>
     <div class="filter-bar glass">
       <div class="seg" id="f-logtype" role="group" aria-label="Filter by type">${seg}</div>
@@ -1732,9 +1865,9 @@ function logEntry(e) {
 // Not found -----------------------------------------------------------------
 function renderNotFound(msg) {
   return `<div class="state" role="alert">
-    <div class="glyph">🛰️</div><h1 data-focus>Sector uncharted</h1>
-    <p>${msg ? esc(msg) : "That route doesn’t map to anything in the guild."}</p>
-    <a class="btn" href="#/map">Return to Star Map</a>
+    <div class="glyph">🛰️</div><h1 data-focus>Page not found</h1>
+    <p>${msg ? esc(msg) : "That route doesn’t exist."}</p>
+    <a class="btn" href="#/map">Go to Workflows</a>
   </div>`;
 }
 
@@ -1747,6 +1880,47 @@ function afterRender(key, segments) {
   if (key === "evolution" && !evolutionApplied) refreshEvolutionData();
   if (key === "evolution") wireEvolutionControls();
   if (key === "map") initPowerCore();
+  if (key === "home") wireHomeControls();
+}
+
+function wireHomeControls() {
+  // Command bar — focus opens the palette so the user can type to search
+  const searchEl = byId("home-search");
+  if (searchEl) {
+    searchEl.addEventListener("focus", () => {
+      openPalette();
+      // Pre-fill what the user typed before focus transferred to the palette
+      const input = byId("pal-input");
+      if (input && searchEl.value) { input.value = searchEl.value; paletteQuery(searchEl.value); }
+    });
+    searchEl.addEventListener("input", () => {
+      if (!palette.hidden) return;          // palette already open
+      openPalette();
+      const input = byId("pal-input");
+      if (input) { input.value = searchEl.value; paletteQuery(searchEl.value); }
+    });
+    searchEl.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") { e.preventDefault(); openPalette(); }
+    });
+  }
+
+  // Quick-action buttons
+  const qa = (id, fn) => { const el = byId(id); if (el) el.addEventListener("click", fn); };
+  qa("home-new-agent",    () => createMemberUI());
+  qa("home-new-skill",    () => createEntity("skill"));
+  qa("home-new-project",  () => createEntity("domain"));
+  qa("home-new-workflow", () => createEntity("workflow"));
+  qa("home-log-activity", () => appendLogUI());
+  qa("home-rebuild",      () => rebuildNow());
+
+  // Status strip — clone the topbar cp-status pill into the home strip
+  const strip = byId("home-status-strip");
+  const pill  = byId("cp-status");
+  if (strip && pill) {
+    const clone = pill.cloneNode(true);
+    clone.id = "home-cp-status-clone";   // avoid duplicate id
+    strip.appendChild(clone);
+  }
 }
 
 function initWeaponAuras() {
@@ -1986,7 +2160,7 @@ function openPalette() {
   palette.hidden = false;
   palette.innerHTML = `<div class="palette-box">
     <div class="palette-input"><span aria-hidden="true">⌕</span>
-      <input id="pal-input" type="text" placeholder="Jump to a member, skill, or sector…" aria-label="Search" autocomplete="off"></div>
+      <input id="pal-input" type="text" placeholder="Search agents, models, skills, projects, workflows…" aria-label="Search" autocomplete="off"></div>
     <div class="palette-results" id="pal-results" role="listbox"></div>
     <div class="palette-hint"><span><kbd>↑</kbd><kbd>↓</kbd> navigate</span><span><kbd>↵</kbd> open</span><span><kbd>esc</kbd> close</span></div>
   </div>`;
@@ -2007,7 +2181,7 @@ function paletteQuery(q) {
 }
 function renderPaletteResults() {
   const box = byId("pal-results"); if (!box) return;
-  if (!paletteResults.length) { box.innerHTML = `<div class="palette-empty">No matches in the guild.</div>`; return; }
+  if (!paletteResults.length) { box.innerHTML = `<div class="palette-empty">No matches.</div>`; return; }
   box.innerHTML = paletteResults.map((r, i) => `<div class="palette-result" role="option"
       aria-selected="${i === paletteSel}" data-hash="${esc(r.hash)}">
       <span class="pr-icon">${esc(r.icon)}</span>
@@ -2230,7 +2404,7 @@ function setFooter() {
   const brandVer = byId("brand-ver");
   if (brandVer) brandVer.textContent = `v${ver}`;
   byId("footer-meta").innerHTML =
-    `${esc(GUILD.meta.name)} · ${c.members} members · ${c.skills} skills · ${c.domains} sectors · ` +
+    `${esc(GUILD.meta.name)} · ${c.members} agents · ${c.skills} skills · ${c.domains} projects · ` +
     `release v${esc(ver)} · schema v${GUILD.meta.schemaVersion} · generated ${esc(GUILD.meta.generated)}` +
     (oc ? ` · <button id="reset-overrides" class="footer-btn">${oc} unsaved edit${oc > 1 ? "s" : ""} · reset all</button>` : "");
 }
@@ -2240,7 +2414,7 @@ byId("footer").addEventListener("click", (e) => {
 });
 
 window.addEventListener("hashchange", onRoute);
-if (!location.hash) location.replace("#/map");
+if (!location.hash) location.replace("#/home");
 onRoute();
 setFooter();
 

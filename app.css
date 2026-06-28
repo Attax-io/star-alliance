@@ -1272,4 +1272,421 @@ a.tag.off { text-decoration: none; }
 .ev-row .ev-id.ev-self { color: var(--accent); }
 .ev-row .ev-desc { color: var(--muted); font-size: .84rem; }
 .ev-pill { font-size: .7rem; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line-2); color: var(--hint); white-space: nowrap; }
+
+/* ============================================================================
+   HOME — Command centre landing surface
+   Single-column, max-width matches #app. All colour references use existing
+   tokens only — no hardcoded hex. Classes are prefixed .home-* to avoid leaking.
+   ========================================================================== */
+
+/* ── Home wrapper ──────────────────────────────────────────────────────────── */
+.home-root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s7);
+  padding-bottom: var(--s8);
+}
+
+/* ── 1. Command bar (hero search) ─────────────────────────────────────────── */
+.home-cmd {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+  padding: var(--s6) var(--s6) var(--s5);
+  border-radius: var(--r4);
+  background: var(--panel);
+  border: 1px solid var(--line-2);
+  box-shadow: var(--shadow-panel), var(--inner-hi);
+}
+
+.home-cmd-label {
+  font-family: var(--mono);
+  font-size: var(--t-xs);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--hint);
+}
+
+.home-cmd-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.home-cmd-icon {
+  position: absolute;
+  left: var(--s4);
+  pointer-events: none;
+  color: var(--hint);
+  font-size: var(--t-lg);
+  line-height: 1;
+  z-index: 1;
+}
+
+.home-cmd-input {
+  width: 100%;
+  padding: var(--s4) var(--s4) var(--s4) calc(var(--s4) + var(--s5) + var(--s2));
+  font-family: var(--font);
+  font-size: var(--t-lg);
+  line-height: 1.4;
+  color: var(--starlight);
+  background: var(--panel-2);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r3);
+  outline: none;
+  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  min-height: 54px;
+}
+
+.home-cmd-input::placeholder { color: var(--faint); }
+
+.home-cmd-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-border), var(--shadow-sm);
+}
+
+.home-cmd-hint {
+  font-size: var(--t-sm);
+  color: var(--faint);
+}
+
+/* ── 2. Quick actions ──────────────────────────────────────────────────────── */
+.home-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  align-items: center;
+}
+
+.home-action {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s2);
+  padding: 9px var(--s4);
+  font-size: var(--t-sm);
+  font-weight: 500;
+  border-radius: var(--r2);
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease),
+              color var(--dur) var(--ease), transform var(--dur) var(--ease);
+  white-space: nowrap;
+  min-height: 36px;
+  cursor: pointer;
+  /* default: ghost */
+  background: var(--panel);
+  border: 1px solid var(--line-2);
+  color: var(--muted);
+}
+
+.home-action:hover {
+  color: var(--starlight);
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line-2));
+  background: color-mix(in srgb, var(--accent) 6%, var(--panel));
+  transform: translateY(-1px);
+}
+
+.home-action:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.home-action.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.home-action.primary:hover {
+  background: var(--accent-dim);
+  border-color: var(--accent-dim);
+  color: var(--ink);
+}
+
+.home-action-icon {
+  font-size: var(--t-md);
+  line-height: 1;
+  flex: none;
+}
+
+/* ── 3. Status + counts strip ──────────────────────────────────────────────── */
+.home-stats {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s3);
+}
+
+.home-stats-status {
+  /* hosts the existing #cp-status pill rendered by paintStatus() */
+  display: flex;
+  align-items: center;
+  flex: none;
+}
+
+.home-stat-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--line-2);
+  flex: none;
+}
+
+.home-stat {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--s1);
+  padding: 5px 12px;
+  border-radius: var(--r2);
+  border: 1px solid var(--line-2);
+  background: var(--panel);
+  text-decoration: none;
+  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease),
+              color var(--dur) var(--ease);
+  font-size: var(--t-sm);
+  color: var(--muted);
+  white-space: nowrap;
+  min-height: 32px;
+}
+
+.home-stat:hover {
+  color: var(--starlight);
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--line-2));
+  background: color-mix(in srgb, var(--accent) 5%, var(--panel));
+}
+
+.home-stat:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.home-stat-n {
+  font-size: var(--t-md);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--starlight);
+  line-height: 1;
+}
+
+.home-stat-label {
+  font-size: var(--t-xs);
+  letter-spacing: .02em;
+  color: inherit;
+}
+
+/* ── 4. Two-column lower area ──────────────────────────────────────────────── */
+.home-lower {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s5);
+  align-items: start;
+}
+
+/* ── 4a. Recent Activity ───────────────────────────────────────────────────── */
+.home-recent {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: var(--s5);
+  background: var(--panel);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r3);
+  box-shadow: var(--shadow-sm);
+}
+
+.home-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--s4);
+}
+
+.home-section-label {
+  font-family: var(--mono);
+  font-size: var(--t-xs);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--hint);
+}
+
+.home-section-link {
+  font-size: var(--t-xs);
+  color: var(--accent);
+  text-decoration: none;
+  letter-spacing: .01em;
+  transition: color var(--dur) var(--ease);
+}
+
+.home-section-link:hover { color: var(--starlight); }
+
+.home-section-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--r1);
+}
+
+.home-activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.home-activity-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s3);
+  padding: var(--s3) 0;
+  border-top: 1px solid var(--line);
+}
+
+.home-activity-row:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+.home-act-chip {
+  flex: none;
+  font-family: var(--mono);
+  font-size: var(--t-xs);
+  letter-spacing: .04em;
+  padding: 2px 7px;
+  border-radius: var(--pill);
+  border: 1px solid var(--line-2);
+  background: var(--panel-2);
+  color: var(--hint);
+  white-space: nowrap;
+}
+
+.home-act-title {
+  flex: 1 1 0;
+  font-size: var(--t-sm);
+  color: var(--muted);
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.home-act-date {
+  flex: none;
+  font-family: var(--mono);
+  font-size: var(--t-xs);
+  color: var(--faint);
+  white-space: nowrap;
+}
+
+.home-activity-empty {
+  font-size: var(--t-sm);
+  color: var(--faint);
+  padding: var(--s3) 0;
+}
+
+/* ── 4b. Jump-to grid ──────────────────────────────────────────────────────── */
+.home-jump {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: var(--s5);
+  background: var(--panel);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r3);
+  box-shadow: var(--shadow-sm);
+}
+
+.home-jump-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s3);
+}
+
+.home-jump-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--s2);
+  padding: var(--s4);
+  border-radius: var(--r2);
+  background: var(--panel-2);
+  border: 1px solid var(--line-2);
+  text-decoration: none;
+  color: var(--muted);
+  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease),
+              color var(--dur) var(--ease), transform var(--dur) var(--ease);
+  min-height: 90px;
+}
+
+.home-jump-card:hover {
+  color: var(--starlight);
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--line-2));
+  background: color-mix(in srgb, var(--accent) 5%, var(--panel-2));
+  transform: translateY(-2px);
+}
+
+.home-jump-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.home-jump-thumb {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r1);
+  object-fit: cover;
+  overflow: hidden;
+  flex: none;
+  background: var(--panel-3);
+  border: 1px solid var(--line-2);
+  display: grid;
+  place-items: center;
+}
+
+.home-jump-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: inherit;
+}
+
+.home-jump-thumb-emoji {
+  font-size: var(--t-lg);
+  line-height: 1;
+}
+
+.home-jump-name {
+  font-size: var(--t-sm);
+  font-weight: 600;
+  color: var(--starlight);
+  line-height: 1.2;
+}
+
+.home-jump-count {
+  font-size: var(--t-xs);
+  font-variant-numeric: tabular-nums;
+  color: var(--faint);
+  margin-top: auto;
+}
+
+/* ── Responsive ────────────────────────────────────────────────────────────── */
+@media (max-width: 780px) {
+  .home-lower {
+    grid-template-columns: 1fr;
+  }
+  .home-jump-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .home-cmd {
+    padding: var(--s5) var(--s4) var(--s4);
+  }
+}
+
+@media (max-width: 480px) {
+  .home-jump-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .home-cmd-input {
+    font-size: var(--t-base);
+  }
+  .home-stats {
+    gap: var(--s2);
+  }
+}
 .ev-empty { color: var(--hint); font-size: .85rem; padding: 8px 0; }
