@@ -2,8 +2,15 @@
 name: frontend-react-engineering
 description: "Production React / Next.js engineering craft for the-developer: component architecture, hooks discipline, server vs client components (App Router / RSC), state placement (local/URL/server/global), data fetching plus caching, Suspense streaming, forms and Server Actions, performance (re-render control, memoization that earns it, code-splitting, list virtualization), TypeScript prop contracts, and accessibility-aware components. Triggers: 'build this React component', 'fix this re-render', 'server or client component', 'wire this Next.js page', 'where should this state live', 'this page is slow'. Differs from image-to-code (screenshot to markup, one-shot), motion-design (the animation only), and design skills like design-tokens/design-unity (visual decisions, not engineering). Owns hardening the Designer to production-React handoff."
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 type: Skill
+changelog:
+  - version: 1.1.0
+    date: 2026-06-28
+    note: "Added analytics & instrumentation surface (references/analytics-instrumentation.md + Principle 8): provider-neutral product-event taxonomy (snake_case, category-prefixed), capture-at-the-leaf, SPA $pageview tracking, and feature-flag-gated components. PostHog as the concrete example."
+  - version: 1.0.0
+    date: 2026-06-28
+    note: "Initial release: production React/Next.js engineering craft (architecture, hooks, RSC boundary, data/caching, state placement, performance, TypeScript contracts, accessibility)."
 ---
 
 # Frontend React Engineering
@@ -22,6 +29,7 @@ This skill owns the seam from a finished design to shipped, typed, accessible, f
 - Performance: re-render control, memoization that earns its keep, code-splitting, list virtualization.
 - TypeScript hygiene: prop contracts, discriminated unions for variant components, no `any` at a boundary.
 - Accessibility-aware components: semantics, focus, and keyboard wired in at build time, not bolted on.
+- Analytics & instrumentation: a stable product-event taxonomy, capture at the interactive leaf, SPA pageview tracking, and feature-flag-gated branches — wired in as the component ships, not later.
 
 ## What it is NOT
 
@@ -133,8 +141,24 @@ See `references/server-vs-client-and-data.md`.
 
 Use the semantic element (`button`, `a`, `nav`, `label`) before reaching for a `div` plus ARIA; ARIA patches missing semantics, it doesn't replace them. Wire focus management, keyboard handlers, and labels as you build the component, because retrofitting them after means re-deriving the interaction model. And render the design's **tokens** — never a hardcoded hex or magic px when a token exists. The component is correct only when it is typed, fast, keyboard-operable, and visually faithful to the design source.
 
+### 8. Instrument as you ship; a feature with no events is half-blind.
+
+Shipping a production frontend includes making it *measurable*. The same client leaf that owns a click owns its analytics call: fire the event in the handler, never in an effect and never bubbled up a prop chain. Names are a contract — snake_case, category-prefixed, past-tense (`payment_checkout_started`, `cta_clicked`) — kept finite by pushing variation into properties, not new names. In a single-page app you emit `$pageview` yourself on every route change (the one honest analytics use of an effect), and you gate dark or experimental branches behind a feature flag that defaults to the safe path while it resolves. This is provider-neutral; the example uses PostHog but the discipline holds for any analytics layer.
+
+```tsx
+"use client";
+import { usePostHog } from "posthog-js/react";
+export function CtaButton({ page }: { page: string }) {
+  const posthog = usePostHog();                          // optional-chain → missing provider is a no-op
+  return <Button onClick={() => posthog?.capture("cta_clicked", { page })}>Get Started</Button>;
+}
+```
+
+See `references/analytics-instrumentation.md`.
+
 ## References
 
 - `references/component-architecture.md` — composition, state placement, hooks discipline, prop-contract typing.
 - `references/server-vs-client-and-data.md` — RSC boundary, data fetching/caching, Suspense streaming, Server Actions, forms.
 - `references/react-performance.md` — re-render control, memoization that earns its keep, code-splitting, lists.
+- `references/analytics-instrumentation.md` — product-event taxonomy, capture-at-the-leaf, SPA pageview tracking, feature-flag-gated components.

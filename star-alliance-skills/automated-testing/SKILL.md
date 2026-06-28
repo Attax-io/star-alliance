@@ -1,7 +1,7 @@
 ---
 name: automated-testing
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 type: Skill
 description: "Author automated tests for a modern web app — the JS/TS plus application layer, grounded in Next.js/TypeScript plus Supabase. Covers the four layers (unit with Vitest/Jest, component with Testing Library, integration against a real or seeded DB, and E2E with Playwright), the test pyramid and coverage strategy, what is worth testing and what is not, deterministic flake-free design, fixtures/mocks/factories, testing async and RLS-guarded data, and CI wiring. Use on 'write tests for this', 'add test coverage', 'set up Playwright', 'why is this test flaky', 'mock Supabase', 'test this server action', 'how do I test RLS'. Differs from bug-fix-workflow (fixes one known reported bug), performance (profiling/optimizing speed), and python-master (Python-library pytest only — this is the JS/TS and app layer)."
 ---
@@ -167,6 +167,27 @@ when they are fast enough to run constantly.
 - Fail the build on test failure *and* on a coverage **regression** in critical paths — not on
   an arbitrary global floor.
 
+### 8. Hand off verifiable evidence, and gate the push on it
+
+A green run on your own machine is a claim, not proof. Non-trivial test work is not done when
+it passes locally — it is done when the run leaves a **structured evidence block** on the PR or
+tracker that a reviewer can trust without re-running anything, produced by the same command
+that gates the push.
+
+- After the suite runs, emit an evidence block (Markdown) into the PR/ticket: **Test Suite**,
+  the **Files Changed** it speaks for, the **total / passed / failed / skipped** tally, a
+  **coverage** block when collected, the **exact commands run**, and the trimmed **output**.
+- The numbers are **generated, never hand-typed** — paste the real runner and coverage output;
+  invented numbers launder a guess as a fact. **Failed must be 0** to hand off, and each skip
+  needs a reason or a ticket.
+- Treat the pre-push `ci:validate`-style command (typecheck + lint + unit + format) as **the
+  gate**: it must pass before pushing, it is identical locally and in CI, and its run is what
+  produces the evidence — the gate and the receipt are two faces of one verification.
+
+```bash
+pnpm ci:validate   # one command, same locally and in CI — its green run is the evidence
+```
+
 ## References
 
 - `references/test-pyramid-and-strategy.md` — choosing the layer, what to test vs skip, the
@@ -175,3 +196,16 @@ when they are fast enough to run constantly.
   ordering, shared state, network; factories, fixtures, and where to mock.
 - `references/e2e-playwright.md` — Playwright craft: auto-waiting locators, auth setup/storage
   state, test isolation against a seeded DB, network mocking, sharding, CI wiring.
+- `references/evidence-packaging-and-handoff.md` — turning a green run into a deliverable: the
+  structured pass/coverage evidence block for the PR/tracker, field discipline (zero failures,
+  reasoned skips, reported-not-chased coverage), and the pre-push `ci:validate` gate that
+  produces it.
+
+## Changelog
+
+- **1.1.0** — Added the evidence-packaging-and-handoff reference and Principle 8: after a suite
+  runs, emit a structured pass/coverage evidence block (Test Suite, total/passed/failed/skipped,
+  coverage, commands-run, output) for the PR/tracker, and treat the pre-push `ci:validate`-style
+  command as the gate that produces it.
+- **1.0.0** — Initial: four-layer authoring, the pyramid, contract-not-implementation,
+  determinism, factories/mocks, RLS and async boundaries, coverage strategy, CI wiring.

@@ -1,8 +1,8 @@
 ---
 name: obsidian-markdown
-description: Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, and other Obsidian-specific syntax. Use when working with .md files in Obsidian, or when the user mentions wikilinks, callouts, frontmatter, tags, embeds, or Obsidian notes.
+description: Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, and other Obsidian-specific syntax. Includes an Architecture Decision Record (ADR) template in Obsidian flavor with frontmatter status and wikilinked related decisions. Use when working with .md files in Obsidian, when writing an ADR or architecture decision record, or when the user mentions wikilinks, callouts, frontmatter, tags, embeds, or Obsidian notes.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 type: Skill
 
 ---
@@ -160,6 +160,62 @@ To link Mermaid nodes to Obsidian notes, add `class NodeName internal-link;`.
 
     Reviewed in [[Meeting Notes 2024-01-10#Decisions]].
 
+## Templates: Architecture Decision Records (ADRs)
+
+An Architecture Decision Record captures one significant decision so the *why*
+survives the people who made it. In an Obsidian vault each ADR is a single note,
+using frontmatter properties for the status and wikilinks for Related Decisions
+so the graph wires the decisions together and backlinks need no manual index.
+
+The structure is Status, Context, Decision, Consequences (positive / negative /
+neutral), Implementation Notes, and Related Decisions:
+
+    ---
+    title: ADR-XXX Short Decision Title
+    date: 2026-06-28
+    status: proposed          # proposed | accepted | deprecated | superseded
+    tags:
+      - adr
+      - adr/<domain>
+    aliases:
+      - ADR-XXX
+    ---
+
+    # ADR-XXX: Short Decision Title
+
+    > [!info] Status
+    > **proposed**
+
+    ## Context
+    What forces motivate this decision?
+
+    ## Decision
+    What we will do, in one active sentence, then expanded.
+
+    ## Consequences
+    ### Positive
+    - Benefit
+    ### Negative
+    - Tradeoff we accept
+    ### Neutral
+    - A fact that follows
+
+    ## Implementation Notes
+    How to carry it out; link supporting notes with [[wikilinks]].
+
+    ## Related Decisions
+    - [[ADR-YYY Related Decision]] -- how it relates
+
+**Convention:** store ADRs in an `ADRs/` folder, one note per decision, named
+`ADR-XXX Short Decision Title.md` with a zero-padded sequential number that is
+never reused. Put the bare `ADR-XXX` in `aliases` so `[[ADR-014]]` shorthand
+resolves. When an ADR is superseded, set `status: superseded`, link the
+replacement in the Status callout (`superseded by [[ADR-YYY Title]]`), and add a
+backlink under the new ADR's Related Decisions.
+
+See [adr-template.md](skills/obsidian-markdown/references/adr-template.md) for the
+full template, status-value table, naming convention, and a worked example.
+
 ## References
 
 - [Obsidian Flavored Markdown](https://help.obsidian.md/obsidian-flavored-markdown)
@@ -167,3 +223,12 @@ To link Mermaid nodes to Obsidian notes, add `class NodeName internal-link;`.
 - [Embed files](https://help.obsidian.md/embeds)
 - [Callouts](https://help.obsidian.md/callouts)
 - [Properties](https://help.obsidian.md/properties)
+
+## Changelog
+
+- **1.1.0** — Added an Architecture Decision Record (ADR) template in Obsidian
+  flavor (frontmatter `status`, wikilinked Related Decisions) plus output-location
+  and naming convention. New reference: `references/adr-template.md`. Adapted from
+  the Safe Agentic Workflow `confluence-docs` ADR template.
+- **1.0.0** — Initial Obsidian Flavored Markdown skill (wikilinks, embeds,
+  callouts, properties, tags, comments, math, Mermaid, footnotes).

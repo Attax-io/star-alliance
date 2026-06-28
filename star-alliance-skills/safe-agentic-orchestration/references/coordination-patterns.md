@@ -88,4 +88,4 @@ Gates can be mechanically enforced, not just trusted:
 - **TaskCompleted hook** — validates output meets acceptance criteria before a task may be marked done; exit code 2 prevents completion and feeds back.
 - **TeammateIdle hook** — validates assigned work is actually complete before an agent goes idle; exit code 2 keeps it working.
 
-These are the team-level analogue of a Stop/verify gate: the structure enforces "done means done," so a gate cannot be skipped by an over-eager agent.
+These are the team-level analogue of a Stop/verify gate: the structure enforces "done means done," so a gate cannot be skipped by an over-eager agent. For the full enforcement mechanism — the exit-code-2 block contract, the `.claude/settings.json` wiring, what each check must actually verify, and how it maps onto the verify-gate — see `references/hook-enforcement.md`.

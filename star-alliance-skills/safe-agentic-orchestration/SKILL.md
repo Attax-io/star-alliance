@@ -1,9 +1,9 @@
 ---
 name: safe-agentic-orchestration
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 type: Skill
-description: "Orchestrate a coordinated multi-agent AI team using the SAFe-agentic doctrine distilled from a production harness: a fixed role roster with hard boundaries, a spec-then-execute pre-implementation gate, an iterate-until-blocked-then-escalate agent loop, evidence-based delivery with an independent QAS verification gate, and a layered handoff-and-gate pipeline ending in human merge. Use it whenever you must split a large deliverable across specialists and want the work to stay verifiable and traceable. Triggers: 'orchestrate this team', 'coordinate these agents', 'design the agent roles', 'who should own this work', 'set up the delivery pipeline', 'enforce a quality gate', 'spawn an agent team'. Unlike ultra-brainstorming (one mind across many models) or members-formation (Butler routing one request), this teaches durable team structure, role separation, and spec-execute-release gating."
+description: "Orchestrate a coordinated multi-agent AI team using the SAFe-agentic doctrine distilled from a production harness: a fixed role roster with hard boundaries, a spec-then-execute pre-implementation gate, an iterate-until-blocked-then-escalate agent loop, evidence-based delivery with an independent QAS verification gate, a layered handoff-and-gate pipeline ending in human merge, and machine-enforced quality-gate hooks (TeammateIdle / TaskCompleted, exit code 2 blocks idle-or-done until criteria pass). Use it whenever you must split a large deliverable across specialists and want the work to stay verifiable and traceable. Triggers: 'orchestrate this team', 'coordinate these agents', 'design the agent roles', 'who should own this work', 'set up the delivery pipeline', 'enforce a quality gate', 'spawn an agent team'. Unlike ultra-brainstorming (one mind across many models) or members-formation (Butler routing one request), this teaches durable team structure, role separation, and spec-execute-release gating."
 ---
 
 # Safe Agentic Orchestration
@@ -47,8 +47,17 @@ The pipeline is a chain of gates, each with an owner and an explicit exit state:
 ### 7. Right-size the team and bound the blast radius
 More agents is not more throughput past a point — coordination overhead dominates, and Agent-Teams cost can run ~7x a single session. Match team size to scope (single story → 2-3 agents, feature → 3-5, epic → 5-8), give each agent disjoint files to avoid write conflicts, broadcast only for stop-the-line events, and prefer subagents when you just need a focused worker that reports back. See `references/coordination-patterns.md`.
 
+### 8. Enforce the load-bearing gates with hooks — a gate you only trust is a gate that gets skipped
+Doctrine says an agent *should* not skip the QAS gate or declare done what isn't; a **hook** makes it *cannot*. Wire the team-lifecycle hooks so the line mechanically stops at the gate: a **TaskCompleted** hook (exit code 2 BLOCKS a task being marked done until acceptance criteria verify and evidence is attached) and a **TeammateIdle** hook (exit code 2 BLOCKS an agent going idle with assigned work unfinished or unverified). exit 2 + a precise stderr message turns the block into a corrective instruction. This is the team-level mirror of the Star Alliance verify-gate — the single-session critic-on-the-diff extended to a coordinated team; the human merge gate still sits above it. See `references/hook-enforcement.md`.
+
 ## Reference index
 
 - `references/role-architecture.md` — the 11-role roster, each role's mandate and boundary, the orchestrator-vs-manager-vs-doer split, and which roles are collapsible vs independence gates.
 - `references/gating-and-release.md` — the spec → plan → execute → verify → release pipeline: the pre-implementation gate, the spec contract (acceptance criteria + pattern refs + validation command), the QAS independence gate, exit states, and HITL merge.
 - `references/coordination-patterns.md` — the agent loop, evidence-based delivery, structured escalation, team-vs-subagent-vs-background choice, team sizing, communication discipline, and quality-gate hooks.
+- `references/hook-enforcement.md` — the machine-enforced gate mechanism: the TeammateIdle / TaskCompleted hooks (exit code 2 to BLOCK idle/completion until acceptance criteria are met), the exit-code contract, `.claude/settings.json` wiring, what each check must actually verify, and the mapping back onto the doctrine gates and the verify-gate.
+
+## Changelog
+
+- **1.1.0** — Added the hook-as-enforcement mechanism: new `references/hook-enforcement.md` (TeammateIdle / TaskCompleted quality-gate hooks, exit-code-2 block contract, settings.json wiring, check anatomy, verify-gate mapping) + Core principle 8. Turns the gate doctrine into machine-enforced invariants mirroring the guild verify-gate.
+- **1.0.0** — Initial release: SAFe-agentic orchestration doctrine (role architecture, gating-and-release, coordination patterns) distilled from a production harness.

@@ -1,7 +1,7 @@
 ---
 name: observability-incident-response
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 type: Skill
 description: "Keep a live service observable and respond when it breaks. Covers the three signals (structured logs, RED/USE metrics, distributed traces), alerting thresholds tied to SLOs and error budgets, and the incident lifecycle: detect, triage, mitigate, resolve, then a blameless post-mortem with a runbook. Grounded in the guild stack (Next.js on Cloudflare/OpenNext Workers, Supabase/Postgres). Triggers: 'the app is down', 'triage this outage', 'set up alerting', 'write a runbook', 'post-mortem this incident', 'add logging', 'add metrics', 'what's our SLO', 'are we paging on the right thing'. Differs from dev-ops-command-pack (the deploy/rollback/release loop), performance (profiling and optimization of healthy code), and bug-fix-workflow (a single tracked bug in the table) — this is run-time visibility and the live-failure response that surrounds them."
 ---
@@ -144,8 +144,27 @@ faster) and a **blameless post-mortem** (so the system, not a person, changes).
   alerting, and the symptom-vs-cause paging rule with worked thresholds.
 - `references/incident-lifecycle.md` — the detect→resolve loop, incident roles and
   severity, and the live-event mitigation playbook for the guild stack.
-- `references/runbooks-and-postmortem.md` — runbook anatomy and a template, plus
-  the blameless post-mortem structure and action-item discipline.
+- `references/runbooks-and-postmortem.md` — runbook anatomy with two fill-in
+  templates (a minimal incident-response one and a full operational one — Overview,
+  Prerequisites, per-step Procedure, Verification, Rollback, Troubleshooting,
+  Contacts, Revision History), plus the blameless post-mortem structure, a
+  post-mortem fill-in skeleton, a knowledge-transfer (KT) skeleton, and action-item
+  discipline.
 
 Plugin knowledge worth pulling alongside this skill: `operations:runbook` (runbook
 authoring) and `engineering:incident-response` (incident process patterns).
+
+## Changelog
+
+- **1.1.0** — Added concrete fill-in templates to `runbooks-and-postmortem.md`: a
+  full operational runbook template (Overview · Prerequisites · per-step Procedure
+  with expected-output and on-error · Verification · Rollback · Troubleshooting
+  symptom/cause/solution · Contacts · Revision History) alongside the existing
+  minimal incident template, plus a post-mortem fill-in skeleton and a
+  knowledge-transfer (KT) skeleton. The skill prescribed writing runbooks and
+  post-mortems but shipped no concrete shape to fill in; this closes that gap.
+  Distilled from the safe-agentic-workflow `confluence-docs` documentation templates.
+- **1.0.0** — Initial release. Observability and incident-response craft for the
+  guild stack (Next.js on Cloudflare/OpenNext Workers, Supabase/Postgres): the
+  three signals, SLO/error-budget alerting, the detect→post-mortem lifecycle, and
+  runbook/blameless-retro memory discipline, across four reference files.

@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 58,
       "patch": 78
     },
-    "generated": "2026-06-28T11:14:51Z",
+    "generated": "2026-06-28T11:18:32Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -2805,7 +2805,7 @@ const GUILD = {
     {
       "id": "automated-testing",
       "name": "automated-testing",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "icon": "🧪",
       "art": "",
       "artPng": true,
@@ -2820,20 +2820,22 @@ const GUILD = {
         "What it is",
         "What it is not",
         "Principles",
-        "References"
+        "References",
+        "Changelog"
       ],
       "triggers": "'write tests for this', 'add test coverage', 'set up Playwright', 'why is this test flaky', 'test this server action'",
       "modes": "test pyramid & strategy; deterministic tests; E2E Playwright",
       "disabled": false,
       "refs": [
         "e2e-playwright.md",
+        "evidence-packaging-and-handoff.md",
         "test-pyramid-and-strategy.md",
         "writing-deterministic-tests.md"
       ],
       "scripts": [],
       "stats": {
-        "lines": 171,
-        "words": 1555
+        "lines": 205,
+        "words": 1868
       },
       "global": true,
       "members": [
@@ -3811,7 +3813,7 @@ const GUILD = {
     {
       "id": "frontend-react-engineering",
       "name": "frontend-react-engineering",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "icon": "⚛️",
       "art": "",
       "artPng": true,
@@ -3832,14 +3834,15 @@ const GUILD = {
       "modes": "component architecture; server vs client & data; React performance",
       "disabled": false,
       "refs": [
+        "analytics-instrumentation.md",
         "component-architecture.md",
         "react-performance.md",
         "server-vs-client-and-data.md"
       ],
       "scripts": [],
       "stats": {
-        "lines": 134,
-        "words": 1375
+        "lines": 151,
+        "words": 1584
       },
       "global": true,
       "members": [
@@ -4044,7 +4047,7 @@ const GUILD = {
     {
       "id": "guild-reflection",
       "name": "guild-reflection",
-      "version": "1.0.1",
+      "version": "1.1.0",
       "icon": "🔁",
       "art": "",
       "artPng": true,
@@ -4059,6 +4062,7 @@ const GUILD = {
         "The five voices that say the same thing",
         "Mode 1 · CYCLE — run after any non-trivial task",
         "Mode 2 · AUDIT — run on a cadence (weekly / every N sessions)",
+        "Mode 2 · AUDIT — four self-learning audits (run with the sweep)",
         "The journal (persistence is the point)",
         "Anti-patterns (do not)",
         "Changelog"
@@ -4067,13 +4071,14 @@ const GUILD = {
       "modes": "CYCLE | AUDIT",
       "disabled": false,
       "refs": [
+        "audit-doctrines.md",
         "recipe.md",
         "self-interrogation.md"
       ],
       "scripts": [],
       "stats": {
-        "lines": 100,
-        "words": 867
+        "lines": 133,
+        "words": 1295
       },
       "global": true,
       "members": [
@@ -4856,7 +4861,7 @@ const GUILD = {
     {
       "id": "observability-incident-response",
       "name": "observability-incident-response",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "icon": "🚨",
       "art": "",
       "artPng": true,
@@ -4871,7 +4876,8 @@ const GUILD = {
         "What it is",
         "What it is not",
         "Generative principles",
-        "References"
+        "References",
+        "Changelog"
       ],
       "triggers": "'the app is down', 'triage this outage', 'set up alerting', 'write a runbook', 'post-mortem this incident'",
       "modes": "observability signals; SLOs & alerting; incident lifecycle; runbooks & post-mortem",
@@ -4884,8 +4890,8 @@ const GUILD = {
       ],
       "scripts": [],
       "stats": {
-        "lines": 145,
-        "words": 1273
+        "lines": 164,
+        "words": 1416
       },
       "global": true,
       "members": [
@@ -4895,7 +4901,7 @@ const GUILD = {
     {
       "id": "obsidian-markdown",
       "name": "obsidian-markdown",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "icon": "📝",
       "art": "",
       "artPng": true,
@@ -4904,7 +4910,7 @@ const GUILD = {
       "ramp": "gray",
       "tabler": "ti-markdown",
       "src": "own",
-      "desc": "Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, and other Obsidian-specific syntax. Use when working with .md files in Obsidian, or when the user mentions wikilinks, callouts, frontmatter, tags, embeds, or Obsidian notes.",
+      "desc": "Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, and other Obsidian-specific syntax. Includes an Architecture Decision Record (ADR) template in Obsidian flavor with frontmatter status and wikilinked related decisions. Use when working with .md files in Obsidian, when writing an ADR or architecture decision record, or when the user mentions wikilinks, callouts, frontmatter, tags, embeds, or Obsidian notes.",
       "intro": "Create and edit valid Obsidian Flavored Markdown. Obsidian extends CommonMark and GFM with wikilinks, embeds, callouts, properties, comments, and other syntax. This skill covers only Obsidian-specific extensions -- standard Markdown (headings, bold, italic, lists, quotes, code blocks, tables) is ass",
       "sections": [
         "Workflow: Creating an Obsidian Note",
@@ -4919,7 +4925,9 @@ const GUILD = {
         "Diagrams (Mermaid)",
         "Footnotes",
         "Complete Example",
-        "References"
+        "Templates: Architecture Decision Records (ADRs)",
+        "References",
+        "Changelog"
       ],
       "triggers": "",
       "modes": "",
@@ -4927,12 +4935,13 @@ const GUILD = {
       "refs": [
         "CALLOUTS.md",
         "EMBEDS.md",
-        "PROPERTIES.md"
+        "PROPERTIES.md",
+        "adr-template.md"
       ],
       "scripts": [],
       "stats": {
-        "lines": 162,
-        "words": 610
+        "lines": 227,
+        "words": 915
       },
       "global": true,
       "members": [
@@ -5435,7 +5444,7 @@ const GUILD = {
     {
       "id": "safe-agentic-orchestration",
       "name": "safe-agentic-orchestration",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "icon": "🎻",
       "art": "",
       "artPng": true,
@@ -5444,12 +5453,13 @@ const GUILD = {
       "ramp": "teal",
       "tabler": "ti-sitemap",
       "src": "own",
-      "desc": "Orchestrate a coordinated multi-agent AI team using the SAFe-agentic doctrine distilled from a production harness: a fixed role roster with hard boundaries, a spec-then-execute pre-implementation gate, an iterate-until-blocked-then-escalate agent loop, evidence-based delivery with an independent QAS verification gate, and a layered handoff-and-gate pipeline ending in human merge. Use it whenever you must split a large deliverable across specialists and want the work to stay verifiable and traceable. Triggers: 'orchestrate this team', 'coordinate these agents', 'design the agent roles', 'who should own this work', 'set up the delivery pipeline', 'enforce a quality gate', 'spawn an agent team'. Unlike ultra-brainstorming (one mind across many models) or members-formation (Butler routing one request), this teaches durable team structure, role separation, and spec-execute-release gating.",
+      "desc": "Orchestrate a coordinated multi-agent AI team using the SAFe-agentic doctrine distilled from a production harness: a fixed role roster with hard boundaries, a spec-then-execute pre-implementation gate, an iterate-until-blocked-then-escalate agent loop, evidence-based delivery with an independent QAS verification gate, a layered handoff-and-gate pipeline ending in human merge, and machine-enforced quality-gate hooks (TeammateIdle / TaskCompleted, exit code 2 blocks idle-or-done until criteria pass). Use it whenever you must split a large deliverable across specialists and want the work to stay verifiable and traceable. Triggers: 'orchestrate this team', 'coordinate these agents', 'design the agent roles', 'who should own this work', 'set up the delivery pipeline', 'enforce a quality gate', 'spawn an agent team'. Unlike ultra-brainstorming (one mind across many models) or members-formation (Butler routing one request), this teaches durable team structure, role separation, and spec-execute-release gating.",
       "intro": "Coordinating several AI agents on one deliverable is not \"spawn more workers.\" It is a question of structure: who is allowed to do what, in what order, and with what proof. This skill distills the generative doctrine of a production-tested SAFe-style harness (11 roles, layered gates, evidence-based ",
       "sections": [
         "What it is / is not",
         "Core principles",
-        "Reference index"
+        "Reference index",
+        "Changelog"
       ],
       "triggers": "'orchestrate this team', 'coordinate these agents', 'design the agent roles', 'who should own this work', 'enforce a quality gate'",
       "modes": "role architecture; coordination patterns; spec→execute→release gating",
@@ -5457,12 +5467,13 @@ const GUILD = {
       "refs": [
         "coordination-patterns.md",
         "gating-and-release.md",
+        "hook-enforcement.md",
         "role-architecture.md"
       ],
       "scripts": [],
       "stats": {
-        "lines": 48,
-        "words": 966
+        "lines": 57,
+        "words": 1202
       },
       "global": true,
       "members": [
@@ -5781,7 +5792,7 @@ const GUILD = {
     {
       "id": "strategies-review",
       "name": "strategies-review",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "icon": "📋",
       "art": "",
       "artPng": true,
@@ -5790,7 +5801,7 @@ const GUILD = {
       "ramp": "gray",
       "tabler": "ti-checklist",
       "src": "own",
-      "desc": "Review pending strategies and move them to executed then check the docs.",
+      "desc": "Review and housekeep strategies. Walks the static strategy docs (pending / auto_strategizing / plans) against the resolutions log to classify each as executed, stale, or genuinely pending, then audits two LIVE review surfaces — the alert-rule roster (price_cross and volume_spike trigger plus cooldown semantics) and the DecisionSignal status queue (active to expired / invalidated / closed). The skill audits and reports only; it never creates rules, fires triggers, mutates signal status, or executes trades.",
       "intro": "",
       "sections": [
         "Step 1 — Load the resolutions log first",
@@ -5798,16 +5809,20 @@ const GUILD = {
         "Step 3 — Classify and report",
         "Step 4 — Verify documentation",
         "Step 5 — Flag inconsistencies",
-        "Output format"
+        "Step 6 — Audit the live review surfaces",
+        "Output format",
+        "Changelog"
       ],
       "triggers": "",
       "modes": "",
       "disabled": false,
-      "refs": [],
+      "refs": [
+        "live-review-surfaces.md"
+      ],
       "scripts": [],
       "stats": {
-        "lines": 43,
-        "words": 297
+        "lines": 75,
+        "words": 631
       },
       "global": true,
       "members": [
