@@ -235,6 +235,21 @@ def main():
         elif skill_ver and ver_rows[s] != skill_ver:
             fails.append(f"VER {s}: VERSIONS.md says {ver_rows[s]} but SKILL.md is {skill_ver}")
 
+    # === AG — .claude/agents/*.md are GENERATED from star-alliance-members (the SSOT).
+    # Never hand-edit an agent file. install_agents.py --check is the authority; any drift
+    # is a hard contradiction so a stale agent (what the model actually runs as) is caught.
+    import subprocess as _sp
+    try:
+        _r = _sp.run(["python3", str(ROOT / "guild/install_agents.py"), "--check"],
+                     capture_output=True, text=True, timeout=30)
+        for _ln in _r.stdout.splitlines():
+            _m = re.match(r"\s*DRIFT\s+(\S+)", _ln)
+            if _m:
+                fails.append(f"AG agent '{_m.group(1)}' drifted from star-alliance-members "
+                             f"(SSOT) — run: python3 guild/install_agents.py")
+    except Exception:
+        pass
+
     # G — gen-workflow-art.cjs has a prompt entry for every workflow (art can be forged)
     gen = (ROOT / "tools/generators/gen-workflow-art.cjs")
     if gen.exists():

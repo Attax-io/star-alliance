@@ -28,6 +28,37 @@ correct. On every message to the Guild Master:
 This binds even when a turn is technical: the *work* may be technical, the *explanation*
 to the Guild Master never is.
 
+## Single source of truth (never hand-edit a generated file)
+
+Every fact lives in exactly ONE place; everything else is **generated** from it. Editing a
+generated file is a deviation that the next build silently overwrites — never do it.
+
+**Sources of truth (edit these):**
+- Members → `star-alliance-members/*.md`
+- Skills → `star-alliance-skills/<id>/SKILL.md` (version lives in its frontmatter)
+- Models → `star-alliance-arsenal/models.json` (the `seats` block + per-model facts)
+- Workflows → `workflows.json`
+- Domains → `data/domains.json`
+
+**Generated (DO NOT hand-edit — regenerate instead):**
+- `.claude/agents/*.md` ← from `star-alliance-members/` via `guild/install_agents.py`
+- `guild-data.js` · `guild-data.json` · `skill-md.js` · `workflow-md.js` ← `build.py`
+- `VERSIONS.md` ← each `SKILL.md` frontmatter (via the skill registry)
+- `star-alliance-arsenal/models/*.md` ← `models.json`
+
+**Enforced by `tools/conformity_check.py`** (run it before trusting the repo): `AG`
+agents==members · `VER` versions==frontmatter · `P` guild-data parity · `RG`
+routing-gate roster==guild-data · `FB` fallback dicts==models.json. A green run means no
+drift. If you must change a member/agent, edit the member file then run
+`guild/install_agents.py` — never touch `.claude/agents/` by hand.
+
+**Helper-safety fact (verified 2026-06-28):** this project's hooks/gates run on the MAIN
+session only — they do NOT fire inside a spawned helper (a subagent runs hook-free:
+`CLAUDE_CODE_CHILD_SESSION=1`, no `CLAUDE_PROJECT_DIR`). So a deployed helper edits files
+freely; no spawn-boundary mechanism is needed. Don't debug "why didn't the gate fire"
+inside a helper — by design it doesn't. The main thread's end-of-turn verify covers the
+aggregate diff.
+
 ## Two layers: Claude thinker plans & reviews · MiniMax doer executes bulk
 
 There is **no single "default model"** — there are two roles, and "MiniMax first"
