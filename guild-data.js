@@ -3,13 +3,13 @@
 const GUILD = {
   "meta": {
     "name": "Star Alliance",
-    "version": "6.57.75",
+    "version": "6.58.75",
     "versionTiers": {
       "major": 6,
-      "minor": 57,
+      "minor": 58,
       "patch": 75
     },
-    "generated": "2026-06-27T23:56:10Z",
+    "generated": "2026-06-28T06:44:48Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -33,7 +33,7 @@ const GUILD = {
       "domains": 3,
       "workflows": 33,
       "hooks": 7,
-      "log": 158
+      "log": 159
     }
   },
   "members": [
@@ -8347,6 +8347,18 @@ const GUILD = {
   "log": {
     "entries": [
       {
+        "id": 99,
+        "date": "2026-06-28",
+        "type": "dashboard",
+        "title": "Refined Console — dashboard redesign: ink surfaces, gold accent, Star Map split",
+        "who": "Atta",
+        "detail": "Ground-up visual remake of the control panel (approved direction: keep guild gold/stone heritage, refined). app.css: rewrote :root token values (calm ink surfaces, hairline borders, gold as the single signature accent, slate-blue info; killed neon cyan/violet glow + glass blur) and appended a Refined Console override block retuning every view. app.js: renderStarMap restructured into a split layout (constellation left + scrollable workflow sidebar right). index.html: removed the animated starfield/nebula DOM for a flat ink backdrop. All 6 views verified live at 1440px, zero console errors, palette + inline-edit + flow-trace intact. Cold critic (glm-5.2) reviewed the diff; 2 real findings fixed (--ink layering restored below --panel, --accent-border defined).",
+        "ref": [
+          "the-designer",
+          "the-developer"
+        ]
+      },
+      {
         "id": 98,
         "date": "2026-06-28",
         "type": "chore",
@@ -10247,7 +10259,7 @@ const GUILD = {
         "id": "g-650b7781-add-skill-impeccable"
       }
     ],
-    "count": 158
+    "count": 159
   },
   "models": {
     "opus": {

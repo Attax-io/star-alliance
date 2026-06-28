@@ -2,6 +2,18 @@
   "version": 1,
   "entries": [
     {
+      "id": 99,
+      "date": "2026-06-28",
+      "type": "dashboard",
+      "title": "Refined Console — dashboard redesign: ink surfaces, gold accent, Star Map split",
+      "who": "Atta",
+      "detail": "Ground-up visual remake of the control panel (approved direction: keep guild gold/stone heritage, refined). app.css: rewrote :root token values (calm ink surfaces, hairline borders, gold as the single signature accent, slate-blue info; killed neon cyan/violet glow + glass blur) and appended a Refined Console override block retuning every view. app.js: renderStarMap restructured into a split layout (constellation left + scrollable workflow sidebar right). index.html: removed the animated starfield/nebula DOM for a flat ink backdrop. All 6 views verified live at 1440px, zero console errors, palette + inline-edit + flow-trace intact. Cold critic (glm-5.2) reviewed the diff; 2 real findings fixed (--ink layering restored below --panel, --accent-border defined).",
+      "ref": [
+        "the-designer",
+        "the-developer"
+      ]
+    },
+    {
       "id": 98,
       "date": "2026-06-28",
       "type": "chore",
