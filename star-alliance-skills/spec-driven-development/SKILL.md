@@ -1,6 +1,6 @@
 ---
 name: spec-driven-development
-description: "The Architect's discipline for building from an executable specification instead of vibe-coding — the spec→plan→tasks→implement→converge pipeline distilled from GitHub Spec Kit. Write WHAT/WHY first (a testable spec, no tech stack), gate it against a checklist (unit tests for the requirements writing, not the code), derive a HOW plan checked against the constitution (CLAUDE.md), slice into independently-testable user-story tasks (P1=MVP), analyze the artifacts for coverage/drift, implement story-by-story on checkpoints, then converge the built code back against spec/plan/tasks and append any remaining work. Every phase is a gate: unresolved clarifications or a failed constitution check stops the line. Use to plan a feature before code, stop vibe-coding, or structure a multi-surface build. Triggers: 'spec this out', 'spec-driven', 'write a spec first', 'plan before we build', 'turn this into a spec', 'break this into tasks', 'what's the MVP slice', 'converge the code', 'reconcile what we built'. Differentiate from conquering-campaign (multi-wave execution engine — this is the planning discipline it runs on), ultra-brainstorming (model-ensemble fan-out), and schema-evolution (one additive data-model change)."
+description: "The Architect's discipline for building from an executable specification instead of vibe-coding — the spec→plan→tasks→implement→converge pipeline from GitHub Spec Kit. Write WHAT/WHY first (a testable spec, no tech stack), gate it with a checklist (unit tests for the requirements writing, not the code), derive a HOW plan checked against the constitution (CLAUDE.md), slice into independently-testable user-story tasks (P1=MVP), analyze for coverage/drift, implement on checkpoints, then converge the built code back against the artifacts and append remaining work. Every phase is a gate; unresolved clarifications or a failed constitution check stop the line. Use to plan a feature before code or structure a multi-surface build. Triggers: 'spec this out', 'spec-driven', 'write a spec first', 'plan before we build', 'converge the code'. Differentiate from conquering-campaign (the execution engine this runs on), ultra-brainstorming (model-ensemble fan-out), and schema-evolution (one additive data-model change)."
 metadata:
   version: 1.1.0
 type: Skill
@@ -132,7 +132,7 @@ Write the left column. The right column belongs in the plan, not the spec.
 
 ## What it is / is not
 
-- It IS: the planning-and-slicing discipline — spec → plan → tasks → implement, each gated.
+- It IS: the planning-and-slicing discipline — spec → plan → tasks → implement → converge, each gated.
 - It is NOT: `conquering-campaign` — that is the multi-wave *execution* engine. This is the
   planning method a campaign can run on; pair them (spec/plan/tasks → campaign waves).
 - It is NOT: `ultra-brainstorming` — that fans one decision across thinker models. This is a
@@ -148,6 +148,13 @@ Write the left column. The right column belongs in the plan, not the spec.
 `ultra-brainstorming` (contested design inside /plan) · `conquering-campaign` (execution engine
 for the resulting tasks) · `schema-evolution` (when the plan adds a data-model field) ·
 `graphify` (visualize the plan's structure) · `weapon-utility` (doer dispatch for drafting).
+
+## Changelog
+
+| Version | Change |
+|---|---|
+| 1.1.0 | Added the `/converge` post-implement reconciliation stage (`references/converge-stage.md`); upgraded the Analyze gate to emit a concrete artifact — severity-tagged findings table + requirement→task coverage table + metrics block (`references/analyze-report.md`); reframed checklists as "unit tests for English" (validate the requirements writing, not the implementation; ban Verify/Test/Confirm items; `[Gap]`/`[Ambiguity]`/`[Conflict]` markers, CHK### ids, ≥80% traceability — `references/checklist-unit-tests-for-english.md`). Distilled from Spec Kit `converge.md`/`analyze.md`/`checklist.md`. |
+| 1.0.0 | Initial skill — spec→plan→tasks→implement pipeline distilled from GitHub Spec Kit. |
 
 ---
 

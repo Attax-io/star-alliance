@@ -7,7 +7,7 @@
       "minor": 58,
       "patch": 78
     },
-    "generated": "2026-06-28T11:06:30Z",
+    "generated": "2026-06-28T11:08:45Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -5208,7 +5208,7 @@
     {
       "id": "probability-statistics",
       "name": "probability-statistics",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "icon": "🎲",
       "art": "",
       "artPng": true,
@@ -5246,12 +5246,13 @@
         "11-stochastic-processes.md",
         "12-glossary.md",
         "13-nonparametric.md",
-        "14-quality-control.md"
+        "14-quality-control.md",
+        "15-reliability.md"
       ],
       "scripts": [],
       "stats": {
-        "lines": 64,
-        "words": 1139
+        "lines": 68,
+        "words": 1318
       },
       "global": true,
       "members": [
@@ -5642,7 +5643,7 @@
       "ramp": "teal",
       "tabler": "ti-list-check",
       "src": "own",
-      "desc": "The Architect's discipline for building from an executable specification instead of vibe-coding — the spec→plan→tasks→implement→converge pipeline distilled from GitHub Spec Kit. Write WHAT/WHY first (a testable spec, no tech stack), gate it against a checklist (unit tests for the requirements writing, not the code), derive a HOW plan checked against the constitution (CLAUDE.md), slice into independently-testable user-story tasks (P1=MVP), analyze the artifacts for coverage/drift, implement story-by-story on checkpoints, then converge the built code back against spec/plan/tasks and append any remaining work. Every phase is a gate: unresolved clarifications or a failed constitution check stops the line. Use to plan a feature before code, stop vibe-coding, or structure a multi-surface build. Triggers: 'spec this out', 'spec-driven', 'write a spec first', 'plan before we build', 'turn this into a spec', 'break this into tasks', 'what's the MVP slice', 'converge the code', 'reconcile what we built'. Differentiate from conquering-campaign (multi-wave execution engine — this is the planning discipline it runs on), ultra-brainstorming (model-ensemble fan-out), and schema-evolution (one additive data-model change).",
+      "desc": "The Architect's discipline for building from an executable specification instead of vibe-coding — the spec→plan→tasks→implement→converge pipeline from GitHub Spec Kit. Write WHAT/WHY first (a testable spec, no tech stack), gate it with a checklist (unit tests for the requirements writing, not the code), derive a HOW plan checked against the constitution (CLAUDE.md), slice into independently-testable user-story tasks (P1=MVP), analyze for coverage/drift, implement on checkpoints, then converge the built code back against the artifacts and append remaining work. Every phase is a gate; unresolved clarifications or a failed constitution check stop the line. Use to plan a feature before code or structure a multi-surface build. Triggers: 'spec this out', 'spec-driven', 'write a spec first', 'plan before we build', 'converge the code'. Differentiate from conquering-campaign (the execution engine this runs on), ultra-brainstorming (model-ensemble fan-out), and schema-evolution (one additive data-model change).",
       "intro": "Code was king for decades; the spec was scaffolding thrown away once the \"real work\" began. Spec-Driven Development flips it: **the specification is the source of truth, and the implementation flows from it.** You do not start typing code. You write down WHAT the user needs and WHY, prove it is test",
       "sections": [
         "The pipeline",
@@ -5650,7 +5651,8 @@
         "Success criteria: measurable + technology-agnostic",
         "How you work (guild form)",
         "What it is / is not",
-        "Pairs with"
+        "Pairs with",
+        "Changelog"
       ],
       "triggers": "'spec this out', 'spec-driven', 'write a spec first', 'plan before we build', 'turn this into a spec', 'specify the feature', 'break this into tasks', 'what's the MVP slice'",
       "modes": "specify; clarify; plan; tasks; analyze; implement",
@@ -5667,8 +5669,8 @@
       ],
       "scripts": [],
       "stats": {
-        "lines": 150,
-        "words": 1310
+        "lines": 157,
+        "words": 1396
       },
       "global": true,
       "members": [
@@ -7620,7 +7622,7 @@
           "kind": "member",
           "actor": "the-architect",
           "title": "Hunt the Holes",
-          "act": "The Architect audits the security surface, pulls Supabase advisors, and maps every leak, missing policy, and over-broad grant.",
+          "act": "The Architect audits the security surface across the OWASP Top-10 lens: pulls Supabase advisors and maps every leak, missing RLS policy, and over-broad grant (A01); scans for hardcoded secrets/credentials (A02), injection and unvalidated input (A03), and outdated/vulnerable dependencies via npm audit (A06).",
           "produces": "vulnerability map",
           "exec": "spawn",
           "parallel": true

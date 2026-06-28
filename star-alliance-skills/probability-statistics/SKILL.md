@@ -2,7 +2,7 @@
 name: probability-statistics
 description: "The Merchant's read-only craft for probability and statistics, distilled from Evans & Rosenthal, Miller & Freund, and Fernandez-Granda. Reason rigorously about uncertainty: probability models and Bayes; random variables and the distribution zoo; expectation/variance/covariance/MGFs; joint distributions and independence; limit theorems (LLN, CLT) and sampling; descriptive statistics; estimation (MLE, confidence intervals, bootstrap); hypothesis testing (p-values, power, chi-square); Bayesian inference (priors, posteriors, MCMC); regression and ANOVA; stochastic processes (random walks, Markov chains). Analysis and teaching only; never trades or moves money. Use for: 'what distribution fits this', 'explain the central limit theorem', 'compute this probability', 'is this statistically significant', 'set up a hypothesis test', 'derive the MLE', 'Bayesian vs frequentist', 'teach me probability'. Differentiate from market-recon, trading-strategy, portfolio-risk, and algorithmic-trading-chan."
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 type: Skill
 
 ---
@@ -52,6 +52,9 @@ Load the file that matches the question — each is exhaustive on its family.
 - `references/09-bayesian.md` — Bayesian inference: prior, likelihood, posterior; conjugate priors; credible intervals; Bayes estimators and decision theory; choosing priors (empirical, hierarchical, noninformative); posterior sampling via Gibbs/MCMC.
 - `references/10-regression-anova.md` — least squares; simple and multiple linear regression; inference on the coefficients; correlation; model adequacy/diagnostics; analysis of variance (one-way, randomized blocks, two-way) and factorial experiments.
 - `references/11-stochastic-processes.md` — stochastic processes: the simple random walk and gambler's ruin; the Poisson process; Markov chains, stationary distributions and the limit theorem; Markov-chain Monte Carlo (Metropolis–Hastings, Gibbs).
+- `references/13-nonparametric.md` — distribution-free tests (Miller & Freund ch. 14): the sign test, Wilcoxon/Mann–Whitney U rank-sum test, Kruskal–Wallis H, Spearman's rank correlation, the runs test for randomness, and Kolmogorov–Smirnov / Anderson–Darling goodness-of-fit — plus when to use nonparametric vs parametric.
+- `references/14-quality-control.md` — statistical process control (Miller & Freund ch. 15): Shewhart $\bar X$ and $R$ charts, $p$ and $c$ attribute charts, three-sigma limits, the CUSUM chart, process-capability indices $C_p/C_{pk}$, control limits vs specification limits, and tolerance limits.
+- `references/15-reliability.md` — reliability & life testing (Miller & Freund ch. 16): the reliability and hazard (failure-rate) functions, the bathtub curve, series/parallel system reliability, the exponential and Weibull life models, MTBF, censored life testing with chi-square confidence intervals, and the Weibull plot.
 - `references/12-glossary.md` — a glossary of every key term plus a one-page distribution cheat-sheet and a "which method for which question" index.
 
 ## Sharpening the craft
@@ -68,4 +71,5 @@ The apprentice memorises formulas; the journeyman builds the model and states th
 Own skill. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new reference or section · MAJOR: method-contract change). Regenerate `VERSIONS.md` with `python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.
 
 ## Changelog
+- **1.1.0** — Added the three applied-engineering reference files distilled from Miller & Freund chapters 14–16 (grounded in the source PDF): `13-nonparametric.md` (sign, Wilcoxon/Mann–Whitney U, Kruskal–Wallis, Spearman, runs, KS/AD), `14-quality-control.md` (Shewhart $\bar X$/$R$/$p$/$c$ charts, CUSUM, $C_p$/$C_{pk}$, tolerance limits), and `15-reliability.md` (hazard function, series/parallel systems, exponential & Weibull life models, MTBF, censored life testing). Reference index updated; no method-contract change.
 - **1.0.0** — Initial release. The Merchant's read-only probability & statistics craft, distilled from Evans & Rosenthal, Miller & Freund, and Fernandez-Granda into thirteen exhaustive reference files spanning probability foundations through stochastic processes.
