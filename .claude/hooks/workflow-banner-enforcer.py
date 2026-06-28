@@ -132,11 +132,14 @@ def assistant_blocks_since(lines, start):
 # ── Model-line invariant ──────────────────────────────────────────────────────
 # Standing order from the Guild Master: every deployment-brief agent line reads
 #       • The <Member> — <planning> (planning) · minimax-m3 (execution) · glm-5.2 (critic)
-# Planning is the live thinker (varies); EXECUTION is pinned to the doer (minimax-m3)
-# and the CRITIC (glm-5.2) must be shown for every agent. We enforce the two fixed
-# slots, not planning. Placeholder template tokens ("<execution model>") are ignored.
+# Standing order (2026-06-28): all THREE slots are now pinned. PLANNING/thinker is
+# `sonnet` (every guild member's model: is sonnet), EXECUTION is the doer (minimax-m3),
+# and the CRITIC is glm-5.2 — shown for every agent. Placeholder template tokens
+# ("<planning model>") are ignored. Planning match is tolerant: any token containing
+# "sonnet" (e.g. `claude-sonnet-4-6`) passes; anything else hard-blocks.
 REQUIRED_EXEC = "minimax-m3"
 REQUIRED_CRIT = "glm-5.2"
+REQUIRED_PLAN = "sonnet"
 PLAN_RE = re.compile(r"`?([A-Za-z0-9.\-]+)`?\s*\(planning\)")
 EXEC_RE = re.compile(r"`?([A-Za-z0-9.\-]+)`?\s*\(execution\)")
 CRIT_RE = re.compile(r"`?([A-Za-z0-9.\-]+)`?\s*\(critic\)")
@@ -163,6 +166,12 @@ def check_model_line(text):
     execs = _model_toks(EXEC_RE, scope)
     crit = _model_toks(CRIT_RE, scope)
     problems = []
+    # PLANNING/thinker pinned to sonnet (tolerant: any token containing "sonnet").
+    if not plan:
+        problems.append(f"the planning slot `{REQUIRED_PLAN}` is missing")
+    bad_plan = sorted({t for t in plan if REQUIRED_PLAN not in t.lower()})
+    if bad_plan:
+        problems.append(f"planning/thinker must be `{REQUIRED_PLAN}`, not {', '.join(bad_plan)}")
     if not execs:
         problems.append("the execution slot is missing")
     bad_exec = sorted({t for t in execs if t != REQUIRED_EXEC})
@@ -177,7 +186,7 @@ def check_model_line(text):
         return None
     return (
         "MODEL LINE INVALID (turn-end) — every agent in the deployment brief must read:\n"
-        "      • The <Member> — <planning model> (planning) · minimax-m3 (execution) · glm-5.2 (critic)\n"
+        "      • The <Member> — sonnet (planning) · minimax-m3 (execution) · glm-5.2 (critic)\n"
         f"Fix: {'; '.join(problems)}. Re-emit ONLY the corrected banner block — no prose.\n"
     )
 
