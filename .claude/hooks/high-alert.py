@@ -2,10 +2,10 @@
 # ─────────────────────────────────────────────────────────────────────────────
 # Star Alliance — HIGH-ALERT  (PreToolUse, harness-injected)
 #
-# Fires the session klaxon the instant an observable essential event happens:
-#   • a Skill tool is invoked    →  ⚡ Member Skill Activated: <name>!
-#   • a Workflow tool is invoked →  🗺 Starmap Workflow Started: <name>!
-#   • an Agent/Task tool dispatches a GUILD MEMBER → ⚔ Member reports for duty: <member>!
+# Announces — cleanly, professionally — the instant an observable event happens:
+#   • a Skill tool is invoked    →  ▸ Skill — <name>
+#   • a Workflow tool is invoked →  ▸ Workflow — <name>
+#   • an Agent/Task tool dispatches a GUILD MEMBER → ▸ Agent deployed — The <Member> (<model>)
 #
 # The ⚔ banner only auto-fires when a REAL sub-agent is spawned whose type is a
 # known guild member (the-developer, the-quartermaster, …). In the single-context
@@ -51,7 +51,7 @@ def check(data):
 
     if tool == "Skill":
         name = ti.get("skill") or ti.get("name") or "?"
-        banner = f"⚡ Member Skill Activated: {name}!"
+        banner = f"▸ Skill — {name}"
         _sense("skill-fire", surface="skills", detail=f"skill fired: {name}",
                meta={"skill": name})
     elif tool == "Workflow":
@@ -60,11 +60,13 @@ def check(data):
             script = ti.get("script") or ""
             m = re.search(r"name:\s*['\"]([^'\"]+)['\"]", script)
             name = m.group(1) if m else "inline workflow"
-        banner = f"\U0001f5fa Starmap Workflow Started: {name}!"
+        banner = f"▸ Workflow — {name}"
     elif tool in ("Agent", "Task"):
         sub = ti.get("subagent_type") or ti.get("subagentType") or ""
         if sub in guild_member_ids():
-            banner = f"⚔ Member reports for duty: {sub}!"
+            friendly = "The " + sub.replace("the-", "").replace("-", " ").title()
+            model = ti.get("model")
+            banner = f"▸ Agent deployed — {friendly}" + (f" ({model})" if model else "")
             _sense("member-dispatch", detail=f"member dispatched: {sub}",
                    meta={"member": sub})
 

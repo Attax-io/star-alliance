@@ -28,8 +28,21 @@
 import sys, os, json, re
 
 CAP = 3  # max consecutive banner-less assistant turns before we relent (anti-brick)
-BANNER_RE = re.compile(r"Starmap Workflow Started:\s*(.+?)\s*!")
-MEMBER_RE = re.compile(r"Member reports for duty:\s*([^!]+?)(?:\s+using\b|!)", re.I)
+# Two accepted forms — the NEW clean professional brief and the LEGACY klaxon.
+# Recognizing both is strictly more permissive, so the switch can never brick a turn.
+#   NEW:    ▸ Workflow — Architecture Build
+#           Deploying 2 agents:
+#             • The Developer — Sonnet (planning) · MiniMax M3 (execution)
+#   LEGACY: 🗺 Starmap Workflow Started: Architecture Build!
+#           ⚔ Member reports for duty: the-developer using sonnet and minimax-m3!
+BANNER_RES = [
+    re.compile(r"Starmap Workflow Started:\s*(.+?)\s*!"),            # legacy
+    re.compile(r"▸\s*Workflow\s*[—–\-]\s*([^\n·|]+)"),               # new
+]
+MEMBER_RES = [
+    re.compile(r"Member reports for duty:\s*([^!]+?)(?:\s+using\b|!)", re.I),   # legacy
+    re.compile(r"(?m)^[\s>]*[•\-\*]\s*\*{0,2}(The\s+[A-Za-z]+|the-[a-z]+)\b"),  # new bullet
+]
 
 
 def project_dir():
@@ -163,10 +176,13 @@ def main():
 
     # 1) A valid workflow must be declared this turn.
     declared = None
-    for m in BANNER_RE.finditer(text):
-        nm = m.group(1).strip().lower()
-        if nm in rosters:
-            declared = nm
+    for rx in BANNER_RES:
+        for m in rx.finditer(text):
+            nm = m.group(1).strip().lower()
+            if nm in rosters:
+                declared = nm
+                break
+        if declared:
             break
 
     if declared is None:
@@ -177,16 +193,15 @@ def main():
             )
             sys.exit(0)
         sys.stderr.write(
-            "⛔ WORKFLOW GATE (turn-end) — this turn ended without declaring a star-map "
-            "workflow. EVERY turn must run inside one. Emit, as your FIRST line, "
-            "🗺 Starmap Workflow Started: <name>! naming a workflow from workflows.json "
-            "(use 'Conversation' for a plain greeting/ack/meta-question, 'Inquiry / Recon' "
-            "for a read-only question about the code or guild), then give your answer. "
-            "If none fits, run Workflow Forge to create one. "
-            "IMPORTANT — BOTH gates are checked in the same pass: in this SAME reply you "
-            "must ALSO emit a ⚔ Member reports for duty: <member> using <thinker> and "
-            "<doer>! banner for a member of that workflow's cast. Emit both banners at "
-            "once or you will be re-prompted again for the one you drop.\n"
+            "WORKFLOW NOT DECLARED (turn-end) — every turn runs inside a workflow. As your "
+            "FIRST line, open the deployment brief naming a workflow from workflows.json:\n"
+            "    ▸ Workflow — <Name>\n"
+            "(use 'Conversation' for a plain greeting/ack/meta-question, 'Inquiry / Recon' for "
+            "a read-only question). If none fits, run Workflow Forge. In this SAME reply also "
+            "list at least one deployed agent of that workflow's cast:\n"
+            "    Deploying <N> agents:\n"
+            "      • The <Member> — <planning model> (planning) · <execution model> (execution)\n"
+            "Both lines are checked together — include both or you'll be re-prompted.\n"
         )
         sys.exit(2)
 
@@ -203,7 +218,7 @@ def main():
     if not roster:
         sys.exit(0)
     roster_cores = {_core(r) for r in roster}
-    announced = {_core(m.group(1)) for m in MEMBER_RE.finditer(text)}
+    announced = {_core(m.group(1)) for rx in MEMBER_RES for m in rx.finditer(text)}
     if announced & roster_cores or relent:
         if relent and not (announced & roster_cores):
             sys.stderr.write(
@@ -214,14 +229,13 @@ def main():
 
     roster_str = ", ".join(roster)
     sys.stderr.write(
-        f"⚔ MEMBER GATE (turn-end) — workflow '{declared}' was declared but NO member of "
-        f"its cast reported for duty this turn. Emit the klaxon "
-        f"⚔ Member reports for duty: <member> using <thinker> and <doer>! the instant a "
-        f"member takes the field. This workflow's cast (steps[].actor): {roster_str} — each "
-        f"fires ⚔ as it acts (one per member, including the closing the-quartermaster), "
-        f"NOT one per workflow. Keep the 🗺 Starmap Workflow Started: {declared}! banner in "
-        f"this SAME reply alongside the ⚔ — both gates are checked together; emit both at "
-        f"once or you'll be re-prompted for whichever you drop.\n"
+        f"NO AGENT LISTED (turn-end) — workflow '{declared}' was declared but no agent of its "
+        f"cast was listed as deployed this turn. List each agent as it takes the field:\n"
+        f"      • The <Member> — <planning model> (planning) · <execution model> (execution)\n"
+        f"This workflow's cast (steps[].actor): {roster_str} — list each as it acts (including "
+        f"the closing the-quartermaster). Keep the '▸ Workflow — {declared}' line in this SAME "
+        f"reply alongside the agent list — both are checked together; include both or you'll be "
+        f"re-prompted for whichever you drop.\n"
     )
     sys.exit(2)
 

@@ -40,7 +40,20 @@ import sys, os, json, re
 EXEMPT = {"Workflow", "Skill", "AskUserQuestion", "ExitPlanMode",
           "Read", "Bash", "Grep", "Glob", "LS", "NotebookRead", "WebFetch", "WebSearch"}
 
-BANNER_RE = re.compile(r"Starmap Workflow Started:\s*(.+?)\s*!")
+# Accept the NEW clean brief ("▸ Workflow — <Name>") and the LEGACY klaxon
+# ("🗺 Starmap Workflow Started: <Name>!"). Recognizing both can never brick a turn.
+BANNER_RES = [
+    re.compile(r"Starmap Workflow Started:\s*(.+?)\s*!"),     # legacy
+    re.compile(r"▸\s*Workflow\s*[—–\-]\s*([^\n·|]+)"),        # new clean brief
+]
+
+
+def find_banner(text):
+    for rx in BANNER_RES:
+        m = rx.search(text)
+        if m:
+            return m.group(1).strip()
+    return None
 
 
 def project_dir():
@@ -148,9 +161,8 @@ def check(data):
     if not text.strip():
         return {"exit": 0}
 
-    m = BANNER_RE.search(text)
-    if m:
-        declared = m.group(1).strip()
+    declared = find_banner(text)
+    if declared:
         if declared.lower() in names:
             try:
                 state_dir = os.path.join(project_dir(), ".claude", "state")
@@ -167,10 +179,9 @@ def check(data):
                     detail=f"unregistered workflow declared: {declared}",
                     meta={"workflow": declared})
         return {"exit": 2, "stderr": (
-            f"⛔ WORKFLOW GATE — you declared '{declared}', which is NOT a registered "
-            f"star-map workflow. Either declare a real one (see workflows.json) or run "
-            f"Workflow Forge to create '{declared}' first: emit "
-            f"🗺 Starmap Workflow Started: Workflow Forge! and forge it, then re-declare.\n"
+            f"⛔ WORKFLOW GATE — you named '{declared}', which is NOT a registered workflow. "
+            f"Declare a real one (see workflows.json) with '▸ Workflow — <Name>', or forge "
+            f"'{declared}' first: open '▸ Workflow — Workflow Forge', create it, then re-declare.\n"
         )}
 
     cands = candidate_workflows(last_user_text(lines, ui), triggers)
@@ -180,10 +191,10 @@ def check(data):
         else " No existing workflow obviously fits — run Workflow Forge to create one before proceeding."
     )
     return {"exit": 2, "stderr": (
-        "⛔ WORKFLOW GATE (HARD RULE) — no star-map workflow declared this turn. "
-        "Every working turn must run inside a workflow. Emit, as your first line, "
-        "🗺 Starmap Workflow Started: <name>! naming a workflow from workflows.json, "
-        "or forge a new one via Workflow Forge if none fits." + hint + "\n"
+        "⛔ WORKFLOW GATE (HARD RULE) — no workflow declared this turn. Every working turn "
+        "runs inside a workflow. Emit, as your first line, '▸ Workflow — <Name>' naming a "
+        "workflow from workflows.json, or forge a new one via Workflow Forge if none fits."
+        + hint + "\n"
     )}
 
 

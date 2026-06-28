@@ -79,10 +79,11 @@ cat <<'EOF'
 This looks like a quick, easily-reversible change. Proportional path:
   • ROUTE to ONE specialist (code→the-developer · db→the-architect · UI→the-designer
     · skills/log→the-quartermaster · law→the-translator). The Butler only routes.
-  • If it IS a quick, low-stakes fix → declare, as your FIRST line,
-    🗺 Starmap Workflow Started: Quick Fix!  then emit the member's
-    ⚔ Member reports for duty: <member> using <thinker> and <doer>!  and proceed —
-    no approval halt needed for a trivially-reversible edit.
+  • If it IS a quick, low-stakes fix → open, as your FIRST line, the brief:
+    ▸ Workflow — Quick Fix
+    Deploying 1 agent:
+      • The <Member> — <planning model> (planning) · <execution model> (execution)
+    then proceed — no approval halt needed for a trivially-reversible edit.
   • Hand any doer-grade bulk/transform work to a cheap doer
     (python3 star-alliance-arsenal/summon.py minimax-m3 "<prompt>").
   • ESCALATE TO FULL + HALT the instant the task actually touches anything
@@ -128,10 +129,10 @@ STEP 2 · FOLLOW THE WORKFLOW (workflows.json) — MANDATORY, not optional:
     to create the workflow (Workflow Forge) BEFORE doing the work. Never proceed
     past a missing workflow on your own.
   ▶ HARD RULE (mechanically enforced by the workflow-gate PreToolUse hook): every
-    working turn MUST run inside a declared workflow. Emit, as your FIRST line,
-    🗺 Starmap Workflow Started: <name>! naming a real workflows.json entry — or
-    forge one via Workflow Forge if none fits — BEFORE any tool fires. No banner =
-    every tool call is blocked. The banner is not decoration; it is the gate key.
+    working turn MUST run inside a declared workflow. Open, as your FIRST line,
+    ▸ Workflow — <name>  naming a real workflows.json entry — or forge one via
+    Workflow Forge if none fits — BEFORE any tool fires. No workflow line =
+    every tool call is blocked. It is the gate key.
 
 STEP 3 · THAT MEMBER DRAWS HIS WEAPONS (weapon-utility):
   Hand doer-grade work — bulk edits, extraction, generation, mechanical transforms, large reads/summaries —
@@ -144,19 +145,22 @@ Acting as the Butler to do a specialist's job, OR a member doing doer-grade work
 EXCEPTION — and must be justified out loud. Tool-access orchestration (git, file writes, MCP) stays with the
 working member's thinker; doers cannot run it.
 
-HIGH-ALERT · SESSION KLAXON (always on, every session) — emit the matching banner the
-INSTANT each event happens, as the first line for that event, exact emoji + punctuation:
-  • EACH member the declared workflow names → ⚔ Member reports for duty: <member name> using <thinker weapon(s)> and <doer weapon>!
-    The cast is the workflow's own steps[].actor list (skip `you` and the gates). Fire ⚔ the
-    instant THAT member takes the field — the lead specialist when work begins, AND the closing
-    the-quartermaster at the conformance step, AND any other actor the workflow lists. One ⚔ per
-    member as it acts — NOT one ⚔ per workflow. A multi-member workflow emits multiple ⚔ banners.
-    (The turn-end banner-enforcer hook derives this same roster from the declared workflow and
-    blocks if the lead member never reported.)
-  • STEP 2, a workflows.json procedure begins →  🗺 Starmap Workflow Started: <workflow name>!
-  • Any Skill tool fires →  ⚡ Member Skill Activated: <skill name>!  (this one is auto-fired by the
-    high-alert PreToolUse hook — let it land, do not also repeat it).
-One banner per event (per member, per skill, per workflow). No stacking, no echo on trivial/internal steps.
+DEPLOYMENT BRIEF (always on, every working turn) — open with a short, professional brief
+the Guild Master can read at a glance. Clean and plain — no insider jargon. Format:
+  ▸ Workflow — <workflow name>
+  Deploying <N> agents:
+    • The <Member> — <planning model> (planning) · <execution model> (execution)
+    • The <Member> — <planning model> (planning) · <execution model> (execution)
+RULES:
+  • The "▸ Workflow — <name>" line is mandatory and is the gate key (no workflow line →
+    tools blocked). Name a real workflows.json entry.
+  • List one bullet per agent the workflow deploys, with that agent's models. Keep the
+    "<N>" count accurate. The cast is the workflow's steps[].actor list (skip `you`/gates).
+  • List each agent as it takes the field — the lead specialist when work begins, and the
+    closing the-quartermaster at the conformance step. (The turn-end enforcer needs at least
+    one of the workflow's agents listed, or it re-prompts.)
+  • When a Skill tool fires it auto-announces "▸ Skill — <name>" — let it land, don't repeat.
+Keep it tight: the brief is a few lines, never a wall of text.
 EOF
 fi
 
@@ -190,7 +194,7 @@ if is_plugin or is_local:
     print(
         f"\n⚡ SLASH-SKILL DETECTED ({name}) — the high-alert hook cannot see "
         f"/slash skills. Emit, as your FIRST output line, exactly:\n"
-        f"⚡ Member Skill Activated: {name}!"
+        f"▸ Skill — {name}"
     )
 PY
 exit 0

@@ -1,35 +1,41 @@
 ---
 name: high-alert
-description: "The guild's session-event klaxon. The Butler and every member emit a one-line BANNER the instant an essential session event happens, so the Guild Master never misses it. Three banners: Starmap Workflow Started (a workflows.json procedure begins), Member Skill Activated (any Skill tool fires — hook-enforced via high-alert.py), and Member reports for duty (a member is formed at routing STEP 1, naming its thinker + doer weapons). Always on, every session, no toggle. Triggers automatically — no invocation needed; this skill documents the standing alert contract and its hook."
+description: "The guild's deployment brief. The Butler opens every working turn with a short, professional, plain-English brief so the Guild Master always knows what is running: the workflow, which agents are deployed, how many, and each agent's models. Three announcements: ▸ Workflow — <name> (a workflows.json procedure begins), ▸ Skill — <name> (any Skill tool fires — hook-enforced via high-alert.py), and ▸ Agent deployed — The <Member> (<model>) (a member is dispatched). Always on, every session, no toggle. Triggers automatically — this skill documents the standing announcement contract and its hook."
 metadata:
-  version: 1.0.0
+  version: 2.0.0
 type: Skill
 
 ---
-# High-Alert — the guild's session klaxon
+# High-Alert — the guild's deployment brief
 
-You are the high-alert skill. You exist so the Guild Master never misses an essential session event. The Butler (and any member) emits the matching banner the instant the event happens. Banner goes out first, prose after.
+You exist so the Guild Master always knows what is running — in clean, professional, plain language. The Butler opens every working turn with a short deployment brief, then proceeds. Brief first, prose after. No insider jargon, no game-y wording, no clutter.
 
-## The three banners
+## The deployment brief (open every working turn)
 
-1. `🗺 Starmap Workflow Started: <workflow name>!`
-2. `⚡ Member Skill Activated: <skill name>!`
-3. `⚔ Member reports for duty: <member name> using <thinker weapon(s)> and <doer weapon>!`
+```
+▸ Workflow — <workflow name>
+Deploying <N> agents:
+  • The <Member> — <planning model> (planning) · <execution model> (execution)
+  • The <Member> — <planning model> (planning) · <execution model> (execution)
+```
 
-Keep the emoji exact. Keep the punctuation exact. One line each.
+- The **`▸ Workflow — <name>`** line is mandatory — it names a real `workflows.json` entry and is the gate key (no workflow line → tools are blocked).
+- List **one bullet per agent** the workflow deploys, each with its planning and execution models. Keep the **`<N>` count** accurate.
+- Single-agent turn → "Deploying 1 agent:" with one bullet. Keep it tight — a few lines, never a wall of text.
 
-## When each fires
+## The two auto-announcements
 
-**Workflow start** — emit the moment a Starmap workflow from `workflows.json` is kicked off (Skill Forge, Bug Cycle, Design Sprint, etc.). Banner names the workflow. Emitted behaviorally by the working member.
+- **`▸ Skill — <name>`** — fires the moment any Skill tool is invoked. **Hook-enforced** by `.claude/hooks/high-alert.py` (PreToolUse), so it cannot be forgotten. The hook surfaces it; do not repeat it.
+- **`▸ Agent deployed — The <Member> (<model>)`** — fires when a real agent is dispatched via the Agent/Task tool whose type is a guild member. Also from `high-alert.py`.
 
-**Skill activation** — fires the moment any Skill tool is invoked. **Hook-enforced** by a `PreToolUse` hook (`.claude/hooks/high-alert.py`) wired in `.claude/settings.json`, so it cannot be forgotten. The hook surfaces the banner as a system note; you do not also repeat it. If the hook is ever disabled, fall back to emitting it behaviorally.
+## When agents are listed
 
-**Member reports for duty** — emit at routing STEP 1, when a member is formed. Name the member, its thinker weapon(s), and its doer weapon exactly as routed. Emitted behaviorally by the Butler.
+List each agent in the brief as it takes the field — the lead specialist when work begins, and the closing the-quartermaster at the conformance step. The turn-end enforcer (`workflow-banner-enforcer.py`) needs the workflow line plus at least one of that workflow's agents listed, or it re-prompts.
 
 ## Rules
 
-- Banner is the **first line** emitted for its event. No preamble, no greeting, no other prose above it.
-- All three alerts fire **every session, always on**. No toggle, no opt-out.
-- **One banner per event.** No stacking, no duplicates, no echo on trivial or internal steps.
-- Skill-activation is hook-enforced; workflow-start and member-on-duty are emitted **behaviorally** by the working member at the moment of the event.
-- Keep the format literal: emoji + label + content + `!`. Do not paraphrase.
+- The brief is the **first thing** in the turn. No preamble above it.
+- **Always on, every working turn.** No toggle.
+- **Professional and plain.** No jargon, no emoji clutter, no "reports for duty / weapons / klaxon" wording.
+- Keep it short. The brief informs at a glance; it is not a transcript.
+- Both legacy and new forms are still accepted by the gates during transition, but always write the new clean brief.
