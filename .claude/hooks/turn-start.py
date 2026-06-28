@@ -19,7 +19,8 @@
 import sys, os, time, pathlib, subprocess
 
 # per-turn sentinels other hooks set and we reset each new turn
-RESET_SENTINELS = ("weapon-reminded", "wf-ledgered", "pe-nudged")
+RESET_SENTINELS = ("weapon-reminded", "wf-ledgered", "pe-nudged",
+                   "delegation-block", "delegation-ledgered", "thinker-attested")
 
 
 def main():

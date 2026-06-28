@@ -57,6 +57,16 @@ if [ "$disarmed" != "1" ]; then
   esac
 fi
 
+# 0b. Honor the executor (delegation) gate. Like verify-gate, delegation-gate.py is
+#     a SIBLING Stop hook whose exit 2 does NOT abort this hook — so it drops a
+#     sentinel on BLOCK that we mirror here to skip the commit. It clears the
+#     sentinel on pass / SA_SOLO override, so its presence means "blocked this turn."
+if [ ! -f "$repo/evolution/DISARMED" ] && [ ! -f "$state/delegation-gate-disarmed" ] \
+   && [ "${SA_SOLO:-}" != "1" ] && [ -f "$state/delegation-block" ]; then
+  echo "[turn-finalize] delegation-gate blocked this turn (doer-grade bulk, no doer call) — commit skipped" >&2
+  exit 0
+fi
+
 # 1. Single rebuild if any build-source changed this turn (flag set by build-mark.py).
 #    Build output is kept in a state log (not /dev/null) so a regression is
 #    diagnosable from the next session — an independent-review finding.

@@ -12,7 +12,9 @@
 # An event is one JSON object per line:
 #   {ts, kind, author, surface, diff_hash, verdict, severity, tier, detail, meta}
 #
-#   kind      change | verdict | learning | metric | proposal | revert | block
+#   kind      change | verdict | learning | metric | proposal | revert | block |
+#             thinker (which model thought / member-model conformity) |
+#             delegation (executor gate: doer-grade bulk actually offloaded?)
 #   author    who acted — a model id (opus/sonnet/glm-5.2) or a routine name
 #   surface   what was touched — skills | memory | docs | hooks | doctrine |
 #             gates | arsenal | workflows | product  (tier A = first three)
@@ -39,7 +41,8 @@ from datetime import datetime, timezone
 HERE = os.path.dirname(os.path.abspath(__file__))
 LEDGER = os.path.join(HERE, "ledger.jsonl")
 
-KINDS = {"change", "verdict", "learning", "metric", "proposal", "revert", "block"}
+KINDS = {"change", "verdict", "learning", "metric", "proposal", "revert", "block",
+         "thinker", "delegation"}
 TIER_A_SURFACES = {"skills", "memory", "docs"}          # reversible → auto-appliable
 TIER_B_SURFACES = {"hooks", "doctrine", "gates", "arsenal", "workflows"}  # human-gated
 
