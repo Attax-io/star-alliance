@@ -2,8 +2,8 @@
 name: multimodal-model-wrappers
 type: Skill
 metadata:
-  version: 1.0.0
-description: "Craft for building a unified, multi-provider model abstraction — one stable call surface (run / __call__) over many LLM, vision-language (VLM), TTS, text-to-video, image-gen, and embedding providers. Use when you need to wrap a new model provider behind a shared interface, unify several model APIs (OpenAI, Anthropic, Together, Ollama, HuggingFace) under one class hierarchy, add a provider to an existing abstraction, normalize inputs and outputs across modalities, or design retry, batch, and async behavior in the base class. Differs from arsenal-forge (that wires a runner into the Star Alliance arsenal/registry, not designing the provider abstraction itself) and from mcp-builder (that exposes tools over the MCP protocol, not a Python model class hierarchy). Distilled from the swarm-models repo."
+  version: 1.1.0
+description: "Craft for building a unified, multi-provider model abstraction — one stable call surface (run / __call__) over many LLM, vision-language (VLM), TTS, text-to-video, image-gen, and embedding providers. Use when you need to wrap a new model provider behind a shared interface, unify several model APIs (OpenAI, Anthropic, Together, Ollama, HuggingFace) under one class hierarchy, add a provider to an existing abstraction, normalize inputs and outputs across modalities, add streaming, structured/JSON, token-counting or cost-tracking returns, or design typed-params, retry, batch, and async behavior in the base class. Differs from arsenal-forge (that wires a runner into the Star Alliance arsenal/registry, not designing the provider abstraction itself) and from mcp-builder (that exposes tools over the MCP protocol, not a Python model class hierarchy). Distilled from the swarm-models repo."
 ---
 
 # Multimodal Model Wrappers
@@ -103,6 +103,31 @@ expose an escape hatch (`*args, **kwargs` passthrough to the native client, or d
 to the underlying SDK object) for the 20% that needs the raw provider.** When a modality can't
 honor the shared contract without lying, give it its own base rather than forcing it.
 
+### 8. The escape hatches are first-class verbs, not bolt-ons to `run`.
+The three things callers most need beyond a finished string each get their *own* typed
+contract, never a flag smeared onto `run`. **Streaming** is `arun_streaming(task) ->
+AsyncIterator[str]` (yield each delta, don't log-and-drop it); **structured output** is a
+dedicated caller returning a validated object (`response_format=BaseModel` →
+`model_validate_json`, never `eval`); **token/cost** is a composed meter (`count_tokens`)
+used for pre-flight budgeting and per-call cost. Each lives off `run` precisely because its
+*return type* differs from a string — the same logic that gives embeddings their own base.
+The base skill named streaming and tool-calls only as things a lossy wrapper drops; that is
+right for the plain `run` path and wrong as a blanket rule. Provide the escape hatch as a
+clean second verb and the 80% path stays string-simple while the 20% stays honest.
+
+### 9. Generation knobs live in a validated params object; retries are decorated and re-raise.
+Two concrete corrections to the source's weak spots. **Params:** replace the kitchen-sink
+constructor (~25 half-ignored kwargs, with a real `frequency_penalty` overwrite bug) with one
+validated `SamplingParams`-style value object the caller builds once and hands in — it
+range-checks itself at construction, keeps mode-dependent fields coherent (beam vs. sampling),
+and gives advanced outputs like `logprobs` a typed home. **Retries:** prefer the `dalle3`
+shape — `@backoff.on_exception(expo, max_time=…)` plus a cache short-circuit plus log-loudly-
+then-**re-raise** — over a hand-rolled count loop that returns `None` (or `"Error running
+model."`) on exhaustion. Hold every provider, including the structured and streaming verbs, to
+that one error contract. **Batch:** ship both a serial `run_batched` (device-bound, order-
+sensitive) and a bounded-concurrent `run_concurrent_batched` (I/O-bound remote calls), each
+returning its results, and let the caller choose by workload.
+
 ## References
 
 - `references/base-contracts.md` — the per-modality base classes, their abstract verbs,
@@ -112,3 +137,23 @@ honor the shared contract without lying, give it its own base rather than forcin
   contract; worked examples (LLM, TTS, image-gen, local VLM).
 - `references/modality-normalization.md` — input/output normalization patterns per modality,
   the typed `MultimodalData` envelope, and the escape-hatch rule for provider-specific power.
+- `references/streaming-structured-and-tokens.md` — the three escape-hatch contracts: an
+  async streaming return (`arun_streaming -> AsyncIterator[str]`), a typed-JSON return
+  (`response_format=BaseModel` + backoff, no `eval`), and a `count_tokens` cost meter for
+  pre-flight budgeting and per-call cost.
+- `references/params-retry-and-batching.md` — the positive reference impls for the source's
+  three weak spots: a validated `SamplingParams` object (with `logprobs`) replacing the fat
+  constructor, the `dalle3` `@backoff` + re-raise retry, and the `run_concurrent_batched` vs
+  `run_batched` workload contrast.
+
+## Changelog
+
+- **1.1.0** — Added the escape-hatch positive patterns the skill previously omitted or named
+  only as anti-patterns: streaming (`arun_streaming -> AsyncIterator[str]`), structured/JSON
+  output (`response_format=BaseModel`), token counting / cost tracking (`count_tokens`), the
+  typed `SamplingParams` object (with `logprobs`) vs. the fat constructor, the `dalle3`
+  decorated-retry + re-raise reference, and the `run_concurrent_batched` vs `run_batched` TTV
+  batching contrast. New principles 8–9; two new references
+  (`streaming-structured-and-tokens.md`, `params-retry-and-batching.md`).
+- **1.0.0** — Initial skill distilled from the `swarm-models` repo: per-modality base
+  contracts, the add-a-provider checklist, and modality normalization.

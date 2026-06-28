@@ -2,7 +2,7 @@
 name: agentic-video-production
 description: "Produce finished video agentically from a plain-language brief: the agent runs research, proposal, script, scene-plan, assets, edit, compose, with gates between stages (approval, pre-compose validation, slideshow-risk scoring, mandatory post-render self-review, budget caps). Builds a REAL native-video corpus from free stock and open archives (Pexels, Archive.org, NASA, Wikimedia) by CLIP retrieval, not just animated stills; scored provider selection; present-both Remotion/HyperFrames/FFmpeg runtime choice; can start from a reference video. Triggers: 'make a video about X', 'produce this video', 'turn this script into a video', 'build a b-roll corpus', 'documentary montage', 'make me something like this'. Differs from imagegen-frontend (one still image), motion-design (UI micro-interactions), image-to-code (screenshot to markup): this orchestrates an end-to-end video production line."
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 type: Skill
 ---
 
@@ -90,3 +90,28 @@ code provides only tools and persistence.
   FFmpeg, templated vs atelier, style playbooks and platform profiles.
 - `references/prompt-patterns.md` — the five routing signals in a brief, pipeline triggers by
   brief shape, onboarding a vague brief, the proposal gate, the specificity lever.
+- `references/post-production-tools.md` — the finishing-tool catalog: end-tag closing-card
+  rendering contract (overlay vs concat, ProRes 4444 alpha), auto_reframe, color_grade,
+  green_screen keying, remotion_caption_burn (word-level WhisperX captions), silence_cutter,
+  and the video_analysis_brief reference-grounding artifact.
+
+## Changelog
+
+- **1.1.0** — Grounded the governance and tool surface against the OpenMontage source
+  (`pipeline_defs/`, `schemas/`, `lib/`, `tools/video/`, `.agents/skills/`). Made the
+  **slideshow-risk score** concrete (the 6 scored dimensions + verdict thresholds from
+  `lib/slideshow_risk.py`) and the **delivery-promise gate** concrete (motion-ratio rule, the
+  slide-grammar-vs-real-motion cut classification from `lib/delivery_promise.py`, wired in
+  `video_compose.py`'s pre-compose gate). Added the **CLIP corpus build→retrieve workflow**
+  with the real tool names (`corpus_builder` / `clip_search` / `direct_clip_search`, standard
+  vs fast path) and the **character-animation pipeline contract** (`character_design` →
+  `rig_plan` stages before `scene_plan`, with their schemas). Added **Seedance 2.0** as the
+  premium video default (unified video+audio, multi-shot, lip-sync) with its gateway map. New
+  `references/post-production-tools.md` covers the **end-tag closing-card** rendering contract
+  plus auto_reframe, color_grade, green_screen, remotion_caption_burn, silence_cutter, and
+  video_analysis_brief. References touched: pipeline-and-stage-gates, corpus-and-footage,
+  providers-and-runtimes.
+- **1.0.0** — Initial release. Orchestration doctrine for end-to-end agentic video production
+  distilled from OpenMontage: staged production line with canonical artifacts and governance
+  gates, real-footage corpus over animated stills, reference-video entry, scored provider
+  selection, and present-both Remotion/HyperFrames runtime choice.

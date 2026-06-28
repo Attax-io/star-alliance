@@ -1,7 +1,7 @@
 ---
 name: agent-web-reach
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 type: Skill
 description: "Give an agent reliable internet reach — pull content from platforms that normally block agents. Channels: YouTube + Bilibili (subtitles/transcripts), Twitter/X, Reddit, LinkedIn, Xiaohongshu, Xueqiu, V2EX, RSS, GitHub, generic web, Exa semantic search, podcast (Whisper) transcription, plus browser cookie extraction. Trigger on 'get this youtube transcript', 'summarize this video', 'scrape this reddit thread', 'pull this tweet', 'search twitter without the API', 'read this blocked page', 'this page returns 403/login wall', 'subscribe to this RSS', 'what does this xiaohongshu note say', 'read this bilibili video'. This is the access layer: how to REACH and clean content. Use market-recon for financial-data synthesis and relationship-intel for people/account research — they consume reach, they are not it."
 ---
@@ -118,4 +118,24 @@ is currently serving each channel. Always run it first when reach misbehaves.
 - `references/search-rss-and-transcripts.md` — Exa vs in-platform search, RSS,
   YouTube/Bilibili subtitles, podcast Whisper transcription.
 - `references/health-probing.md` — missing/broken/timeout/ok classification, the
-  stale-venv trap, multi-backend resolution, the doctor report.
+  stale-venv trap, the two-loop multi-backend resolution (ok-beats-warn, carry the
+  reinstall hint), git-pinning a PyPI-lagging tool (rdt-cli), env-var-first config,
+  the doctor report.
+- `references/edge-cleaning.md` — concrete struct-stripping: whitelist a nested
+  note/feed blob to load-bearing fields (Xiaohongshu) and strip HTML-in-JSON
+  (Xueqiu) at the reach boundary before the model sees it.
+
+## Changelog
+
+- **1.1.0** — Grounded five abstract techniques with concrete source detail from
+  Agent-Reach: session-bootstrap / anti-DDoS token (homepage visit for Xueqiu's
+  `acw_tc`), cookie-extraction library order (rookiepy ▸ browser_cookie3 + why),
+  localhost proxy-bypass for MCP checks (`ProxyHandler({})`), and env-var-first
+  config — added to `auth-and-cookies.md` and `health-probing.md`; the two-loop
+  multi-backend resolution code example and the git-pinned rdt-cli prescription in
+  `health-probing.md`; new `references/edge-cleaning.md` with the Xiaohongshu
+  struct-whitelist and Xueqiu HTML-in-JSON stripping examples.
+- **1.0.0** — Initial release. The agent's internet-reach access layer distilled
+  from Agent-Reach (Panniantong/agent-reach): per-platform access-class map, ordered
+  backends with real health-probing, cookie/auth handling, search-surface routing,
+  and edge-cleaning, across four reference files.

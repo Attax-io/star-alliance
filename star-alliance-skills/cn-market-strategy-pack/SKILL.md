@@ -2,7 +2,7 @@
 name: cn-market-strategy-pack
 description: "The Merchant's read-only pack of 15 named CN/HK/US/JP/KR-market stock strategies distilled from a daily A-share analysis system; analysis and education only, never trades or moves money. Four families — trend/momentum (bull trend, golden cross, volume breakout, shrink pullback, dragon-head), reversal/range/sentiment (bottom volume, box oscillation, one-yang-three-yin, emotion cycle), theme/event/fundamental (hot theme, event-driven, expectation repricing, growth quality), and structural frameworks (chan, wave) — each with thesis, selection, entry, exit, and the regime it fits, plus a decision-signal layer. Use for 'which strategy fits this stock', 'screen with chan theory', 'is this a dragon-head setup', 'apply a CN-market strategy'. Differs from trading-strategy (one bespoke spec), strategies-review (housekeeping), market-recon (general read), chart-patterns (Bulkowski). Never trades."
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 type: Skill
 ---
 
@@ -112,3 +112,17 @@ Read the family file that matches the strategy or regime in question:
   growth_quality. Catalyst-, narrative-, and fundamentals-driven reads.
 - **`references/chan-and-wave-theory.md`** — chan_theory, wave_theory. Nested-level and
   wave-count structural frameworks; level-graded buy/sell points.
+- **`references/scoring-and-router.md`** — the exact numeric layer: every strategy's
+  `sentiment_score` adjustments verbatim from the source YAMLs, the seven core trading
+  rules table, and the router/priority/regime metadata (default_router, default_priority,
+  market_regimes, core_rules) that decides which strategy fires when. Read this when you
+  need the precise score deltas or to reason about strategy selection/priority.
+
+## Changelog
+
+- **1.1.0** — Added `references/scoring-and-router.md`: per-strategy exact
+  `sentiment_score` adjustments, the seven core trading rules table, and
+  router/priority/regime metadata for all 15 strategies, reproduced verbatim from the
+  source system's strategy YAMLs (still analysis/education only — no trades).
+- **1.0.0** — Initial pack: 15 strategies across four family reference files with
+  thesis / selection / entry / exit / regime, plus the decision-signal layer.

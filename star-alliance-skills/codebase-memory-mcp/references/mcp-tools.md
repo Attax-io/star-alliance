@@ -28,7 +28,8 @@ with 14 tools.
 |------|--------------|------------------------|
 | `get_graph_schema` | Node/edge counts, relationship patterns, property defs per label. **Run this first** on an unfamiliar graph. | "what's actually in this graph / what can I query?" — orient before writing Cypher. |
 | `get_architecture` | One-call overview: languages, packages, entry points, routes, hotspots, boundaries, layers, clusters, ADRs. | "map this repo's architecture", "give me the lay of the land", "what are the entry points / hotspots?" |
-| `search_graph` | Structured search by label, name pattern (regex), file pattern, min/max degree; paginated. Also the BM25 / semantic search surface. | "where is X defined?", "find all `.*Handler.*` functions", "list the classes in this file". **Use this to discover exact qualified names before `trace_path` / `get_code_snippet`.** |
+| `search_graph` | Structured search by label, name pattern (regex), file pattern, min/max degree; paginated. Also the BM25 full-text surface (FTS5, camelCase/snake_case-aware tokenizer). | "where is X defined?", "find all `.*Handler.*` functions", "list the classes in this file". **Use this to discover exact qualified names before `trace_path` / `get_code_snippet`.** |
+| `semantic_query` | **Vector search across the whole graph** by meaning, powered by bundled `nomic-embed-code` embeddings (768d int8, compiled into the binary — no API key, no Ollama, no Docker). 11-signal combined scoring. | "find the code that does X" when you know *behavior* but not the name — "where do we rate-limit requests?", "the retry/backoff logic", "anything that parses JWTs". The semantic counterpart to `search_graph`'s exact/regex matching. |
 | `trace_path` | BFS call-chain traversal, inbound / outbound / both, depth 1–5 (alias `trace_call_path`). | "what calls Y?" (inbound), "what does Y call?" (outbound), "trace this call chain", "show the path from A to B". |
 | `detect_changes` | Map a git diff to affected symbols + blast radius, with risk classification. | "impact of changing Z", "what does my uncommitted diff touch?", "what's the blast radius of this PR?", "what should I re-test?" |
 | `query_graph` | Execute a read-only openCypher subset (`MATCH … RETURN …`). | Anything the structured tools don't express directly — dead-code (`WHERE NOT EXISTS { (f)<-[:CALLS]-() }`), custom multi-hop traversals, aggregates. See query-recipes.md. |
@@ -49,23 +50,54 @@ with 14 tools.
 - "what HTTP route handles this call / cross-service link?" → `query_graph` over `HTTP_CALLS` / `Route` (validate with `ingest_traces`)
 - "show me the source of X" → `get_code_snippet` (qualified name)
 - "what's in this graph?" → `get_graph_schema`
+- "find the code that does X (by behavior, not name)" → `semantic_query`
+- "find near-duplicate / cloned functions" → `query_graph` over `SIMILAR_TO` (or `semantic_query` for vocabulary-mismatch clones)
+- "what Docker/K8s resource configures this?" → `query_graph` over `Resource` / `Module` nodes
+- "what gRPC/GraphQL/tRPC service / pub-sub channel links these?" → `query_graph` over `HTTP_CALLS` / `EMITS` / `LISTENS_ON`
+- "validate these cross-service edges against real traffic" → `ingest_traces`
 - "record / recall an architecture decision" → `manage_adr`
 
-## Note on semantic search
+## The three search modes (pick by what you know)
 
-The search layer also offers **semantic / vector search** (bundled `nomic-embed-code`
-embeddings, 11-signal scoring) and **BM25 full-text** with a camelCase/snake_case-aware
-tokenizer. These are reached through the search surface (`search_graph` / `search_code`)
-— useful when you know *what a thing does* but not its exact name. No API key, no Ollama,
-no Docker; embeddings are compiled into the binary.
+The search layer has three distinct modes — choose by how you can describe the target:
+
+- **`search_graph` — structural / exact.** Regex name patterns, label + file + degree
+  filters. Use when you know the name (or a fragment of it). BM25 full-text backs it
+  (SQLite FTS5, `cbm_camel_split` tokenizer — camelCase / snake_case aware).
+- **`semantic_query` — vector / by-meaning.** Use when you know *what the code does*
+  but not what it's called. Bundled `nomic-embed-code` embeddings (768d int8, compiled
+  into the binary — no API key, no Ollama, no Docker). It returns a **scoring
+  breakdown** so you can see *why* a hit ranked: **11 signals** —
+  TF-IDF, RRI, API/Type/Decorator signatures, AST profiles, data flow, Halstead-lite,
+  MinHash, module proximity, and graph diffusion. Read the breakdown before trusting a
+  borderline hit; a result carried only by module proximity is weaker than one with API
+  + AST + data-flow agreement.
+- **`search_code` — graph-augmented grep.** Literal text search confined to indexed
+  files. Use for a string/literal you expect verbatim.
+
+Rule of thumb: known name → `search_graph`; known behavior → `semantic_query`; known
+literal → `search_code`.
 
 ## Graph data model (for `query_graph`)
 
 - **Node labels**: `Project`, `Package`, `Folder`, `File`, `Module`, `Class`,
   `Function`, `Method`, `Interface`, `Enum`, `Type`, `Route`, `Resource`.
+  - `Resource` and `Module` double as **infrastructure-as-code** nodes — `Resource`
+    for Kubernetes kinds (and Dockerfile-derived resources), `Module` for Kustomize
+    overlays — with `IMPORTS` edges from an overlay to the resources it references.
 - **Edge types**: `CONTAINS_PACKAGE`, `CONTAINS_FOLDER`, `CONTAINS_FILE`, `DEFINES`,
   `DEFINES_METHOD`, `IMPORTS`, `CALLS`, `HTTP_CALLS`, `ASYNC_CALLS`, `IMPLEMENTS`,
   `HANDLES`, `USAGE`, `CONFIGURES`, `WRITES`, `MEMBER_OF`, `TESTS`, `USES_TYPE`,
   `FILE_CHANGES_WITH`.
+- **Cross-service & channel edges**: `HTTP_CALLS` and `ASYNC_CALLS` link call sites to
+  `Route` nodes (REST, plus gRPC / GraphQL / tRPC route extraction); `EMITS` /
+  `LISTENS_ON` model pub-sub channels (Socket.IO, EventEmitter, generic pub-sub —
+  ~8 languages, with constant resolution).
+- **Similarity / semantic edges**: `SIMILAR_TO` (MinHash + LSH near-clone detection,
+  Jaccard-scored) for structural near-duplicates; `SEMANTICALLY_RELATED`
+  (vocabulary-mismatch, same-language, score ≥ 0.80) for meaning-level kinship.
+- **Cross-repo edges**: `CROSS_*` edges link nodes across repos indexed under the same
+  shared store — the basis for multi-repo (`project`-scoped) questions and the
+  multi-galaxy UI. See query-recipes.md for cross-repo patterns.
 </content>
 </invoke>

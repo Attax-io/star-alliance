@@ -65,9 +65,11 @@ Add to `~/.claude/.mcp.json` (global) or project `.mcp.json`:
 
 Restart, then verify with `/mcp` → `codebase-memory-mcp` with **14 tools**.
 
-## Graph visualization UI
+## Graph visualization UI (3D, localhost:9749)
 
-If you installed the `ui` variant:
+The UI is a **separate binary variant** — install with `--ui` (one-line: `… | bash
+-s -- --ui`; manual: download the `codebase-memory-mcp-ui-<os>-<arch>` archive). Then
+launch it:
 
 ```bash
 codebase-memory-mcp --ui=true --port=9749
@@ -75,7 +77,16 @@ codebase-memory-mcp --ui=true --port=9749
 
 Open `http://localhost:9749`. The UI runs as a background thread alongside the MCP
 server — a 3D interactive knowledge-graph explorer, available whenever the agent is
-connected. Multi-galaxy layout for cross-repo views.
+connected. A **multi-galaxy layout** renders each indexed repo as its own galaxy and
+draws the `CROSS_*` edges between them, so cross-repo architecture is visible at a
+glance.
+
+**When to use it:** the agent answers structural questions far more cheaply via the
+MCP tools — reach for the UI for *human* exploration, not agent queries: eyeballing
+overall shape, spotting clusters/hotspots `get_architecture` summarizes, presenting a
+cross-repo map to a teammate, or sanity-checking that an index looks complete. It is
+not required for any tool to work; skip the `--ui` variant entirely if you only drive
+the engine through the agent.
 
 ## Operating it
 
@@ -105,13 +116,42 @@ connected. Multi-galaxy layout for cross-repo views.
   `CBM_DUMP_VERIFY_MIN_RATIO` (indexing returns `status:"degraded"` if persisted
   nodes fall below this fraction of committed nodes).
 
+## What gets indexed beyond code (infrastructure-as-code)
+
+The pipeline indexes **infrastructure-as-code** alongside source: **Dockerfiles,
+Kubernetes manifests, and Kustomize overlays** become first-class graph nodes —
+`Resource` nodes for K8s kinds (and Dockerfile-derived resources), `Module` nodes for
+Kustomize overlays, with `IMPORTS` edges from an overlay to the resources it
+references. No extra config; it happens on a normal `index_repository`. Query it like
+any other part of the graph (see the infra-query recipes in query-recipes.md) — e.g.
+"which overlay deploys this resource?" without grepping YAML.
+
+## Cross-repo intelligence (shared store + multi-galaxy)
+
+Index multiple repos under the **same store** (the default `~/.cache/codebase-memory-mcp/`,
+or a shared `CBM_CACHE_DIR`) and the engine links them with `CROSS_*` edges, exposing a
+cross-repo architecture view (services, routes, dependencies across the fleet).
+
+- **Scope queries** to one repo with `project="name"` (`list_projects` lists them); this
+  is also the fix when results from the wrong repo leak in.
+- **Visualize** the fleet with the multi-galaxy 3D UI (above).
+- **Share the index** via the team artifact below — the recommended way to bootstrap a
+  teammate or a second machine into the same graph without a full reindex.
+
 ## Team-shared graph artifact
 
-Commit `.codebase-memory/graph.db.zst` (a zstd-compressed graph snapshot, 8–13:1)
-next to the source and teammates skip the reindex: on first run the artifact is
-imported, then incremental indexing fills their local diff. A `merge=ours`
-`.gitattributes` line is auto-created so the binary artifact never conflicts.
-Optional — gitignore `.codebase-memory/` if you prefer everyone reindex from scratch.
+Commit `.codebase-memory/graph.db.zst` (a zstd-compressed graph snapshot, 8–13:1) next
+to the source and teammates skip the reindex. Two export tiers: **Best** (`zstd -9` +
+index strip + `VACUUM INTO`) on an explicit `index_repository`, **Fast** (`zstd -3`)
+written by the watcher for low-latency incremental updates.
+
+**Bootstrap path:** when no local DB exists but the artifact is present,
+`index_repository` **imports the artifact first**, then runs incremental indexing to
+fill only the local diff — avoiding the full reindex cost on a fresh clone or machine.
+A `merge=ours` `.gitattributes` line is auto-created on first export so the binary
+artifact never produces merge conflicts. Optional — gitignore `.codebase-memory/` if you
+prefer everyone reindex from scratch. (Similar in spirit to graphify's `graphify-out/`,
+but a single integrity-checked compressed file.)
 
 ## Troubleshooting (high-signal)
 

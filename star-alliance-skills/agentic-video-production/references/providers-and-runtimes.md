@@ -61,6 +61,27 @@ prompting guide before writing a prompt.
 User preference, when explicitly given and available, wins over the score — surface the
 vendor directly, don't hide provider choice.
 
+### Seedance 2.0 is the premium video default
+
+When a paid gateway is configured, **ByteDance Seedance 2.0** is the preferred premium video
+model for cinematic / trailer / teaser / motion-led work. It is a unified multimodal model:
+**single-pass native synced audio** (speech + SFX + ambience generated jointly, not
+post-synced), **multi-shot inside one generation**, director-level camera control, **lip-sync
+from quoted dialogue** (`Character says: "…"`), reference conditioning (up to 9 images + 3
+video + 3 audio clips), and stable character identity across shots (4–15 s shots).
+
+Route to it by **capability, not gateway**: pass `preferred_provider="seedance"` to
+`video_selector` (or let the scorer pick it) — the scoring engine deduplicates on
+`provider="seedance"` so whichever configured gateway wins automatically. Gateways wrapped:
+`seedance_video` (fal.ai, primary; `FAL_KEY`), `seedance_replicate` (Replicate;
+`REPLICATE_API_TOKEN`), `runway_video model=seedance_2.0` (Runway, Enterprise/non-US),
+`higgsfield_video model=seedance_2.0` (Higgsfield, default model there). BytePlus / Freepik /
+HeyGen-Video-Agent are roadmap. The `fast` variant trades camera/motion fidelity for cost —
+don't send slow-mo, multi-shot, or dolly-heavy prompts to `fast` on the first try. Switch away
+only for a stated reason: strict budget (→ `fast` or local LTX), a user-preferred provider
+(Veo/Sora/Kling), or a style that fits another model better. As with any generation tool, read
+its Layer-3 `agent_skills` (`seedance-2-0`, `ai-video-gen`) before writing the prompt.
+
 ## The three-layer knowledge architecture
 
 Read in this order; do not write prompts from memory:

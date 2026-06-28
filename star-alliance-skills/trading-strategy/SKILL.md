@@ -2,7 +2,7 @@
 name: trading-strategy
 description: "The Merchant's craft for read-only trading-strategy design that ships a written, dated strategy spec and never places a trade or writes broker code. Take a market view (often from market-recon) and forge it into an executable-on-paper plan: scope the instrument, horizon, and regime; define a falsifiable edge with mechanical entry, exit, stop, time-stop, and invalidation rules; size the position by risk-per-trade and stop distance; frame a backtest with costs, in/out-of-sample split, and metrics (hit rate, payoff, expectancy, drawdown); then hand off a graded spec with a clear invalidation trigger. Four modes: trend-following, mean-reversion, event/catalyst-driven, systematic rules-based screen. Differentiate from market-recon (the read), portfolio-risk (the book), and storm-investigation (general research). Triggers: 'build a trading strategy', 'design an entry/exit plan', 'backtest this idea', 'how should I size this trade', 'turn this view into a strategy'. Never executes a trade or transfer."
 metadata:
-  version: 0.1.0
+  version: 0.2.0
 type: Skill
 
 ---
@@ -23,7 +23,15 @@ A craft of rules over hunches. A market view is a rumor until it is hammered int
 2. Define the edge and the rules. State the signal or thesis in one sentence. Then make every rule mechanical and falsifiable: precise entry trigger, target exit, stop-loss, time-stop, and an explicit invalidation condition ("if X happens, this strategy is dead"). Vague rules breed quiet drift; mechanical rules survive the heat of the day.
 3. Size the position. Convert risk-per-trade (a suggested percentage of notional book) and stop distance into position size. State max concurrent risk, a correlation cap against other open strategies, and how the size scales or shrinks in drawdown. For tail-risk or shock-prone regimes, defer to storm-investigation's framing before sizing in. Suggest, never mandate — sizing here is a draft for the requesting member and the portfolio-risk skill to ratify.
 4. Frame the backtest. Pick a sample window that includes a regime resembling today, split in-sample and out-of-sample, and account for costs, slippage, and borrow where relevant. Track hit rate, payoff ratio, expectancy, max drawdown, and a Sharpe-ish ratio. Flag the usual traps: overfitting, curve-fitting, survivorship bias, look-ahead.
-5. Write and hand off the dated strategy spec. Compile thesis, the rules table, sizing draft, backtest result and its caveats, a clear "what would invalidate this strategy" line, and a confidence grade of Low, Med, or High. Date and version the spec. Hand it to the requesting member. Never act on it.
+5. Write and hand off the dated strategy spec. Compile thesis, the rules table, sizing draft, backtest result and its caveats, a clear "what would invalidate this strategy" line, and a confidence grade of Low, Med, or High. Date and version the spec. Emit at least one DecisionSignal per the fixed output contract in `references/decision-signal-schema.md` so the spec is queryable and gradable. Hand it to the requesting member. Never act on it.
+
+## DecisionSignal output contract and outcome grading
+
+A strategy spec is prose; its DecisionSignal is the machine-checkable contract beneath it. See `references/decision-signal-schema.md` for the full schema and grading rules.
+
+- **Output contract.** Every spec emits at least one DecisionSignal with a fixed shape: `action` enum, `horizon` enum, `entry`/`stop`/`target`, `invalidation`, `watch_conditions`, `confidence`, and `evidence` (plus optional lifecycle fields). Enum wire values are fixed; human labels are presentation only. The signal records the advice — it never places an order.
+- **Post-hoc outcome grading.** The `decision_signal_outcomes` loop scores each emitted signal against the forward bars implied by its horizon (`hit`/`miss`/`flat`, MFE/MAE, realized R), keyed idempotently by `(signal_id, horizon, engine_version)`. Only daily-verifiable directional horizons (`1d/3d/5d/10d`) are gradable; everything else returns `eval_status=unable` with a reason rather than a fabricated score. This closes the backtest→live-grading loop, so the next spec's confidence grade is earned rather than asserted.
+- Both stay strictly offline. The skill produces a paper-executable spec and grades it after the fact; it never executes a trade.
 
 ## Modes
 
@@ -58,4 +66,5 @@ Own skill. Bump metadata.version on any change (PATCH: wording/refs · MINOR: ne
 
 ## Changelog
 
+- **0.2.0** — Added the DecisionSignal output contract (`action`/`horizon`/`entry`/`stop`/`target`/`invalidation`/`watch_conditions`/`confidence`/`evidence`) and the `decision_signal_outcomes` post-hoc grading loop, both in new `references/decision-signal-schema.md` (distilled and translated to English from the DSA P7 decision-signals spec). Closes the backtest→live-grading loop; stays read-only/paper-executable.
 - **0.1.0** — Initial release. A read-only strategy-design craft that turns a market view into a dated, falsifiable, backtest-framed spec without ever touching a broker.

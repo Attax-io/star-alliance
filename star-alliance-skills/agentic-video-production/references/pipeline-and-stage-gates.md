@@ -69,13 +69,30 @@ gates are not bureaucracy — each one blocks a specific, expensive failure mode
 1. **Approval gate (creative stages).** `idea`/`script`/`scene_plan` default to human
    approval; technical stages (`assets`/`edit`/`compose`) auto-proceed. Never begin asset
    generation before the user approves the production plan and cost.
-2. **Pre-compose validation gate.** Blocks the render if the *delivery promise* is violated
-   (a "motion-led" brief that resolved to 80% still images), if the **slideshow risk score**
-   is critical, or if the chosen renderer family is missing. Catches broken plans *before*
-   wasting GPU time and money.
-3. **Slideshow risk scoring.** A 6-dimension check (repetition, decorative visuals, weak
-   motion, shot intent, typography overreliance, unsupported cinematic claims) that prevents
-   "animated PowerPoint."
+2. **Pre-compose validation gate** (`video_compose.py` `_precompose_check`). Runs at the seam
+   between `edit` and `compose` and **blocks the render** on critical violations: a
+   *delivery-promise* violation (a motion-led brief that resolved to mostly stills), a
+   *slideshow risk* verdict of `fail`, or a missing renderer family (the last only WARNs).
+   Catches broken plans *before* wasting GPU time and money. Run it on the resolved cuts +
+   `scene_plan` before any compose call.
+3. **Slideshow risk scoring** (`lib/slideshow_risk.py`, `score_slideshow_risk`). Scores the
+   `scene_plan` (and optionally `edit_decisions` + `renderer_family` + `render_runtime`) across
+   **6 dimensions, each 0–5, lower is better** — averaged into a verdict:
+
+   | Dimension | Fires when | What it catches |
+   |-----------|------------|-----------------|
+   | `repetition` | one scene `type` >70%, <60% unique descriptions, or one `shot_size` >60% | same layout/grammar recurring |
+   | `decorative_visuals` | scenes with no `information_role` / `narrative_role` / `shot_intent` | scenes that decorate instead of communicate |
+   | `weak_motion` | moving shots that lack a `shot_intent` | motion with no narrative purpose |
+   | `weak_shot_intent` | low share of scenes carrying `shot_intent` | framing/reveal with no stated reason |
+   | `typography_overreliance` | high share of `text_card`/`stat_card`/`kpi_grid` scenes | "animated PowerPoint" |
+   | `unsupported_cinematic_claims` | renderer family says *cinematic* but scenes lack `hero_moment`, camera movement, or `lighting_key` | a cinematic label with no cinematic structure |
+
+   **Verdict thresholds (on the average):** `< 2.0` strong · `< 3.0` acceptable · `< 4.0` revise
+   · `≥ 4.0` **fail — must not proceed to compose.** Score at `scene_plan` (to revise early)
+   and again at `edit` (the gate). Feeding the scenes the role/intent fields the scorer reads
+   (`information_role`, `narrative_role`, `shot_intent`, `shot_language.{shot_size,
+   camera_movement, lighting_key}`, `hero_moment`) is what lets the plan pass honestly.
 4. **Post-render self-review (mandatory).** After every render: ffprobe validation, frame
    extraction at 4 positions (black frames / broken overlays), audio level analysis (silence,
    clipping), delivery-promise verification, subtitle presence. **If review fails, the video
@@ -83,6 +100,47 @@ gates are not bureaucracy — each one blocks a specific, expensive failure mode
 5. **Source media inspection.** When the user supplies footage, probe every file (resolution,
    codec, audio channels, duration) and derive planning implications before any creative
    decision. Never hallucinate content from a filename.
+
+### The delivery-promise gate, concretely (`lib/delivery_promise.py`)
+
+The delivery promise is **classified at proposal and locked**, then enforced at the pre-compose
+gate. It is the named defense against the single most damaging failure mode: silently
+downgrading a motion-led brief into stills. Each `PromiseType` carries rules — the load-bearing
+ones being `still_fallback_allowed`, `requires_video_generation`, and a **`min_motion_ratio`**:
+
+| Promise type | still fallback | min motion ratio |
+|--------------|:--:|:--:|
+| `motion_led` | no | 0.70 |
+| `avatar_presenter` | no | 0.30 |
+| `source_led` | yes | 0.30 |
+| `hybrid` | yes | 0.20 |
+| `data_explainer` / `teacher_explainer` / `screen_demo` / `localization` | yes | 0.00 |
+
+The promise's `validate_cuts(cuts)` classifies every cut into three buckets — and the crucial
+rule is that **animated slides are not motion**: only `video` / `animation` / `avatar` cuts
+count as *real motion*; `text_card`, `stat_card`, `chart`/`bar_chart`/`line_chart`/`pie_chart`,
+`kpi_grid`, `comparison`, `progress`, `callout` are *slide-grammar* (they have transitions but
+are not footage); everything else is a *still*. If the motion ratio falls below the promise's
+floor, the cut set is invalid and the pre-compose gate **blocks**. Persist the promise at
+`edit_decisions.metadata.delivery_promise` (or top-level on the proposal packet) so the gate
+can read it; absence only WARNs. Post-render, `video_compose` re-verifies and records
+`delivery_promise_honored` + `motion_ratio_actual` in the render report — a locked motion-led
+promise must never be quietly satisfied by slides.
+
+### Character-animation inserts two contract stages before `scene_plan`
+
+The `character-animation` pipeline is the canonical example of the spine flexing: between
+`script` and `scene_plan` it inserts **`character_design` then `rig_plan`**, each a
+schema-validated artifact that the later stages consume:
+
+| Stage | Artifact (`schemas/artifacts/…`) | Locks |
+|-------|----------------------------------|-------|
+| `character_design` | `character_design.schema.json` | per-character `id`, `role`, `body_type`, `style`, `required_emotions`, `required_actions` (+ optional `required_views`, `props`, `constraints`) and a shared `style` block (palette, line, texture) |
+| `rig_plan` | `rig_plan.schema.json` | per-character `rig_type` (`svg_rig`/`canvas_procedural`/`lottie`/`hybrid`), `parts` (id/kind/layer/parent), `joints` (pivot/rotation/scale), `layers`, `required_poses`, `risks` |
+
+`scene_plan`, `assets`, `edit`, and `compose` all list `character_design` + `rig_plan` in their
+`required_artifacts_in` — design must precede rig, and rig must precede any scene work. Never
+plan character scenes before both contracts are checkpointed.
 
 ## Self-review, checkpoints, and resumption
 

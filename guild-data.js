@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 58,
       "patch": 78
     },
-    "generated": "2026-06-28T11:10:33Z",
+    "generated": "2026-06-28T11:14:51Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -2567,7 +2567,7 @@ const GUILD = {
     {
       "id": "agent-web-reach",
       "name": "agent-web-reach",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "icon": "🌐",
       "art": "",
       "artPng": true,
@@ -2582,7 +2582,8 @@ const GUILD = {
         "What this is",
         "What this is not",
         "Principles",
-        "References"
+        "References",
+        "Changelog"
       ],
       "triggers": "'get this youtube transcript', 'scrape this reddit thread', 'pull this tweet', 'read this blocked page', 'subscribe to this RSS'",
       "modes": "channels; auth & cookies; search & RSS; transcription; health probing",
@@ -2590,13 +2591,14 @@ const GUILD = {
       "refs": [
         "auth-and-cookies.md",
         "channels.md",
+        "edge-cleaning.md",
         "health-probing.md",
         "search-rss-and-transcripts.md"
       ],
       "scripts": [],
       "stats": {
-        "lines": 115,
-        "words": 994
+        "lines": 135,
+        "words": 1138
       },
       "global": true,
       "members": [
@@ -2608,7 +2610,7 @@ const GUILD = {
     {
       "id": "agentic-video-production",
       "name": "agentic-video-production",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "icon": "🎬",
       "art": "",
       "artPng": true,
@@ -2622,7 +2624,8 @@ const GUILD = {
       "sections": [
         "What it is / is not",
         "Generative principles",
-        "References"
+        "References",
+        "Changelog"
       ],
       "triggers": "'make a video about X', 'produce this video', 'turn this script into a video', 'build a b-roll corpus'",
       "modes": "pipeline & stage-gates; corpus & footage; providers; prompt patterns",
@@ -2630,13 +2633,14 @@ const GUILD = {
       "refs": [
         "corpus-and-footage.md",
         "pipeline-and-stage-gates.md",
+        "post-production-tools.md",
         "prompt-patterns.md",
         "providers-and-runtimes.md"
       ],
       "scripts": [],
       "stats": {
-        "lines": 86,
-        "words": 750
+        "lines": 111,
+        "words": 942
       },
       "global": true,
       "members": [
@@ -3084,7 +3088,7 @@ const GUILD = {
     {
       "id": "cn-market-strategy-pack",
       "name": "cn-market-strategy-pack",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "icon": "🐉",
       "art": "",
       "artPng": true,
@@ -3100,7 +3104,8 @@ const GUILD = {
         "What it is NOT",
         "Generative principles",
         "The screening + decision-signal layer (high level)",
-        "References"
+        "References",
+        "Changelog"
       ],
       "triggers": "'which strategy fits this stock', 'screen with chan theory', 'is this a dragon-head setup', 'apply a CN-market strategy'",
       "modes": "trend & momentum; reversal & volume; theme & event; chan & wave theory",
@@ -3108,13 +3113,14 @@ const GUILD = {
       "refs": [
         "chan-and-wave-theory.md",
         "reversal-and-volume.md",
+        "scoring-and-router.md",
         "theme-and-event.md",
         "trend-and-momentum.md"
       ],
       "scripts": [],
       "stats": {
-        "lines": 108,
-        "words": 979
+        "lines": 122,
+        "words": 1094
       },
       "global": true,
       "members": [
@@ -3164,7 +3170,7 @@ const GUILD = {
     {
       "id": "codebase-memory-mcp",
       "name": "codebase-memory-mcp",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "icon": "🕸️",
       "art": "",
       "artPng": true,
@@ -3173,14 +3179,15 @@ const GUILD = {
       "ramp": "teal",
       "tabler": "ti-binary-tree",
       "src": "own",
-      "desc": "Use this MCP code-intelligence engine to answer structural questions about a real repository: 'index this codebase', 'where is X defined', 'what calls Y', 'trace this call chain', 'impact of changing Z', 'find dead code', 'map this repo's architecture', or cross-service HTTP linking and Cypher queries over a knowledge graph of functions, classes, call chains, and routes. It is a fast external MCP server (single static binary, 158 languages via tree-sitter plus Hybrid LSP type resolution, 14 tools, ~120x fewer tokens than file-by-file grep) that indexes a repo into a persistent graph the agent queries. Reach for it before fanning out greps/reads on any where/what-calls/impact/architecture question. Differs from graphify, the guild's own graph-building craft over arbitrary inputs (code, docs, papers, media); codebase-memory-mcp is purpose-built code intelligence over one indexed repo.",
+      "desc": "Use this MCP code-intelligence engine to answer structural questions about a real repository: 'index this codebase', 'where is X defined', 'what calls Y', 'trace this call chain', 'impact of changing Z', 'find dead code', 'find near-duplicate code', 'map this repo's architecture', semantic by-behavior search, infrastructure-as-code (Docker/K8s/Kustomize) queries, cross-service gRPC/GraphQL/tRPC and pub-sub linking, cross-repo questions, and Cypher over a knowledge graph of functions, classes, routes, and resources. A fast external MCP server (single static binary, 158 languages via tree-sitter plus Hybrid LSP, 14 tools, semantic_query vector search, optional 3D graph UI at localhost:9749, ~120x fewer tokens than grep) that indexes a repo into a persistent graph the agent queries. Reach for it before fanning out greps/reads on any structural question. Differs from graphify, the guild's graph-building craft over arbitrary inputs; codebase-memory-mcp is code intelligence over one or many indexed repos.",
       "intro": "A fast, external MCP code-intelligence engine. It full-indexes a repository into a persistent knowledge graph — functions, classes, call chains, HTTP routes, cross-service links — and exposes 14 MCP tools that answer structural questions in under a millisecond and at a fraction of the token cost of ",
       "sections": [
         "What it is",
         "What it is not",
         "Principles",
         "When to reach for this skill",
-        "References"
+        "References",
+        "Changelog"
       ],
       "triggers": "'index this codebase', 'where is X defined', 'what calls Y', 'trace this call chain', 'impact of changing Z', 'find dead code', 'map this repo's architecture'",
       "modes": "indexing; structural search & trace; impact & architecture; Cypher queries; dead-code",
@@ -3192,8 +3199,8 @@ const GUILD = {
       ],
       "scripts": [],
       "stats": {
-        "lines": 100,
-        "words": 798
+        "lines": 124,
+        "words": 1009
       },
       "global": true,
       "members": [
@@ -4768,7 +4775,7 @@ const GUILD = {
     {
       "id": "multimodal-model-wrappers",
       "name": "multimodal-model-wrappers",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "icon": "🧬",
       "art": "",
       "artPng": true,
@@ -4777,13 +4784,14 @@ const GUILD = {
       "ramp": "teal",
       "tabler": "ti-stack-2",
       "src": "own",
-      "desc": "Craft for building a unified, multi-provider model abstraction — one stable call surface (run / __call__) over many LLM, vision-language (VLM), TTS, text-to-video, image-gen, and embedding providers. Use when you need to wrap a new model provider behind a shared interface, unify several model APIs (OpenAI, Anthropic, Together, Ollama, HuggingFace) under one class hierarchy, add a provider to an existing abstraction, normalize inputs and outputs across modalities, or design retry, batch, and async behavior in the base class. Differs from arsenal-forge (that wires a runner into the Star Alliance arsenal/registry, not designing the provider abstraction itself) and from mcp-builder (that exposes tools over the MCP protocol, not a Python model class hierarchy). Distilled from the swarm-models repo.",
+      "desc": "Craft for building a unified, multi-provider model abstraction — one stable call surface (run / __call__) over many LLM, vision-language (VLM), TTS, text-to-video, image-gen, and embedding providers. Use when you need to wrap a new model provider behind a shared interface, unify several model APIs (OpenAI, Anthropic, Together, Ollama, HuggingFace) under one class hierarchy, add a provider to an existing abstraction, normalize inputs and outputs across modalities, add streaming, structured/JSON, token-counting or cost-tracking returns, or design typed-params, retry, batch, and async behavior in the base class. Differs from arsenal-forge (that wires a runner into the Star Alliance arsenal/registry, not designing the provider abstraction itself) and from mcp-builder (that exposes tools over the MCP protocol, not a Python model class hierarchy). Distilled from the swarm-models repo.",
       "intro": "The craft of putting one stable call surface over many model providers and modalities. A caller writes model.run(task) or model(task) and does not care whether the model is OpenAI chat, an Anthropic call routed through aisuite, a local HuggingFace VLM, a DALL·E-3 image generator, an OpenAI TTS endpo",
       "sections": [
         "What it is",
         "What it is not",
         "Principles",
-        "References"
+        "References",
+        "Changelog"
       ],
       "triggers": "'wrap this model provider', 'unify these model APIs', 'add a provider to the abstraction', 'build a multimodal model layer'",
       "modes": "base contracts; adding a provider; modality normalization",
@@ -4791,12 +4799,14 @@ const GUILD = {
       "refs": [
         "adding-a-provider.md",
         "base-contracts.md",
-        "modality-normalization.md"
+        "modality-normalization.md",
+        "params-retry-and-batching.md",
+        "streaming-structured-and-tokens.md"
       ],
       "scripts": [],
       "stats": {
-        "lines": 108,
-        "words": 1031
+        "lines": 153,
+        "words": 1470
       },
       "global": true,
       "members": [
@@ -5919,7 +5929,7 @@ const GUILD = {
     {
       "id": "system-prompt-design-patterns",
       "name": "system-prompt-design-patterns",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "icon": "📜",
       "art": "",
       "artPng": true,
@@ -5928,13 +5938,14 @@ const GUILD = {
       "ramp": "teal",
       "tabler": "ti-prompt",
       "src": "own",
-      "desc": "Distills the recurring design patterns of effective production system prompts (Anthropic, OpenAI, Cursor, Perplexity, Notion, Mistral, xAI) into reusable craft: identity framing, capability/limitation declarations, tool-use instruction shape, refusal and safety scaffolding, formatting/output discipline, persona, context-injection contracts, and anti-jailbreak/injection defense. Use it to design a system prompt, review or critique a system prompt, harden an agent prompt against injection or extraction, or answer how production prompts handle X (search, refusal, formatting, persona, tools). Differs from spec-driven-development (which authors product/feature specs and acceptance criteria, not LLM persona/safety prompts) and from members-formation (which routes work across guild members, not crafts a single model's instructions).",
+      "desc": "Distills the recurring design patterns of effective production system prompts (Anthropic, OpenAI, Google, xAI, Meta, Mistral, Cursor, Perplexity, Notion, Qwen) into reusable craft: identity framing, capability/limitation declarations, tool-use shape, refusal/safety scaffolding, formatting discipline, persona, context/memory priority, follow-up discipline, multi-agent framing, values-as-axioms, widget and voice output, memory-tool schemas, intent disambiguation, design-to-domain framing, context-injection contracts, and anti-jailbreak/injection defense. Use it to design, review, or harden a system or agent prompt, or to answer how production prompts handle X (search, refusal, formatting, persona, tools, memory, multi-agent). Differs from spec-driven-development (product/feature specs, not LLM persona/safety prompts) and members-formation (routes work across guild members, not crafts one model's instructions).",
       "intro": "The meta-craft of writing a strong production system prompt — distilled from leaked, shipped prompts behind Claude, ChatGPT/Codex, Cursor, Perplexity, Notion, Le Chat, and Grok. Not theory: every principle is evidenced by what a billion-user product actually wrote.",
       "sections": [
         "What it is / is not",
         "Generative principles",
         "References",
-        "Quick start"
+        "Quick start",
+        "Changelog"
       ],
       "triggers": "'design a system prompt', 'review this system prompt', 'harden this agent prompt', 'how do production prompts handle X'",
       "modes": "structural patterns; tool-use & refusal; persona & anti-jailbreak; cross-vendor comparison",
@@ -5943,12 +5954,13 @@ const GUILD = {
         "cross-vendor-comparison.md",
         "persona-and-antijailbreak.md",
         "structural-patterns.md",
-        "tool-use-and-refusal.md"
+        "tool-use-and-refusal.md",
+        "vendor-pattern-extensions.md"
       ],
       "scripts": [],
       "stats": {
-        "lines": 123,
-        "words": 966
+        "lines": 159,
+        "words": 1313
       },
       "global": true,
       "members": [
@@ -5958,7 +5970,7 @@ const GUILD = {
     {
       "id": "timeseries-forecasting",
       "name": "timeseries-forecasting",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "icon": "📈",
       "art": "",
       "artPng": true,
@@ -5967,7 +5979,7 @@ const GUILD = {
       "ramp": "teal",
       "tabler": "ti-chart-dots",
       "src": "own",
-      "desc": "Project a numeric time series forward with Google's TimesFM zero-shot foundation model, returning a point forecast plus calibrated quantile prediction intervals — no per-series training. Triggers on 'forecast this series', 'predict the next N periods', 'time-series forecast', 'project this metric forward', 'forecast demand/volume/price'. Adds uncertainty bands, quantile-based anomaly flags, batch-forecasting many series, and covariate (XReg) forecasting with known-future drivers. Covers when a foundation model beats classical ARIMA/Prophet, context/horizon framing, and rolling backtest evaluation. Differs from market-recon (gathers market context), trading-strategy (entry/exit rules), portfolio-risk (exposure/VaR), and probability-statistics (general inference toolkit) — this projects one series forward.",
+      "desc": "Project a numeric time series forward with Google's TimesFM zero-shot foundation model, returning a point forecast plus calibrated quantile prediction intervals — no per-series training. Triggers on 'forecast this series', 'predict the next N periods', 'time-series forecast', 'project this metric forward', 'forecast demand/volume/price'. Adds uncertainty bands, quantile-based anomaly flags, batch-forecasting many series, and covariate (XReg) forecasting with known-future drivers (dynamic numerical/categorical plus static numerical/categorical, two xreg residual modes, tuning knobs). Covers when a foundation model beats classical ARIMA/Prophet, context/horizon framing, rolling backtest evaluation, the Flax/JAX backend for faster TPU/GPU inference, and LoRA/PEFT fine-tuning when zero-shot underfits. Differs from market-recon (gathers market context), trading-strategy (entry/exit rules), portfolio-risk (exposure/VaR), and probability-statistics (general inference toolkit) — this projects one series forward.",
       "intro": "Forecasting a series forward is a craft of framing, not a button. The model returns numbers no matter what you feed it — the skill is choosing context, horizon, covariates, and uncertainty handling so those numbers mean something, and knowing when a foundation model beats a fitted classical one.",
       "sections": [
         "What it is / is not",
@@ -5975,21 +5987,24 @@ const GUILD = {
         "Generative principles",
         "Quick shape (orientation, not a tutorial)",
         "References",
-        "How this differs from neighbouring skills"
+        "How this differs from neighbouring skills",
+        "Changelog"
       ],
       "triggers": "'forecast this series', 'predict the next N periods', 'project this metric forward', 'forecast demand'",
       "modes": "foundation vs classical; API & usage; evaluation & pitfalls; quant application",
       "disabled": false,
       "refs": [
         "api-and-usage.md",
+        "backends-and-finetuning.md",
+        "covariates-xreg.md",
         "evaluation-and-pitfalls.md",
         "foundation-vs-classical.md",
         "quant-application.md"
       ],
       "scripts": [],
       "stats": {
-        "lines": 144,
-        "words": 1164
+        "lines": 181,
+        "words": 1579
       },
       "global": true,
       "members": [
@@ -5999,7 +6014,7 @@ const GUILD = {
     {
       "id": "trading-strategy",
       "name": "trading-strategy",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "icon": "🎯",
       "art": "",
       "artPng": true,
@@ -6013,6 +6028,7 @@ const GUILD = {
       "sections": [
         "What it is / is not",
         "The craft",
+        "DecisionSignal output contract and outcome grading",
         "Modes",
         "Sharpening the craft",
         "Gotchas",
@@ -6022,11 +6038,13 @@ const GUILD = {
       "triggers": "'build a trading strategy', 'design an entry/exit plan', 'backtest this idea', 'how should I size this trade', 'turn this view into a strategy'",
       "modes": "trend-following; mean-reversion; event/catalyst-driven; systematic rules-based screen",
       "disabled": false,
-      "refs": [],
+      "refs": [
+        "decision-signal-schema.md"
+      ],
       "scripts": [],
       "stats": {
-        "lines": 54,
-        "words": 901
+        "lines": 63,
+        "words": 1120
       },
       "global": true,
       "members": [

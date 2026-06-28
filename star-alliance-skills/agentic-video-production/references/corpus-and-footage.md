@@ -48,6 +48,28 @@ Trigger words that route here: *documentary montage*, *tone poem*, *stock-footag
 *archival collage*, *b-roll corpus*, plus an explicit "real footage only." Tone poems and
 mood pieces (no narration, music yes) are the sweet spot.
 
+### The build→retrieve workflow, with the real tool names
+
+The `documentary-montage` pipeline's `assets` stage has two paths; pick by whether you need
+semantic ranking over a large pool or just fast acquisition of known clips:
+
+- **Standard path (semantic) — `corpus_builder` → `clip_search`.** `corpus_builder` is the one
+  place adapters + embedding + the `Corpus` meet: it fans out across the stock sources,
+  downloads candidates, thumbnails them, embeds with CLIP, and indexes. `clip_search` then
+  loads that corpus and exposes retrieval (`rank_for_slot` embeds a slot's text description and
+  ranks the corpus by meaning, plus diversify/dedupe). Use when the brief needs the best clip
+  per beat from a broad pool. The asset-director's quality bar: **corpus size ≥ 8× slot count,
+  per-pick scores ≥ 0.22, diversify ran clean, every pick has provenance** (provider,
+  original_url, license) and a `rejected_picks` log. Emits `metadata.corpus_stats`.
+- **Fast path — `direct_clip_search`.** Same `StockSource` adapter protocol (Pexels,
+  Archive.org, NASA, Wikimedia, Unsplash, …) but **skips CLIP embedding** — it downloads
+  matching clips directly when you already know what you want. Use for quick fills or when the
+  corpus overhead isn't worth it. Inspect thumbnails, note cross-act reuse, fill gaps. Emits
+  `metadata.search_stats`.
+
+Both paths must satisfy the same contract downstream: exactly one picked clip per scene slot,
+no `clip_id` reused across two slots.
+
 ## Starting from a reference video
 
 Starting from a video the user already loves is often faster than starting from a blank

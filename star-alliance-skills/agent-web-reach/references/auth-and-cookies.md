@@ -40,6 +40,84 @@ via `rookiepy` (Rust, more stable) with a `browser_cookie3` fallback:
 session token is present (e.g. Xueqiu's `xq_a_token`); failures are swallowed so an
 agent without a local browser keeps working on the public path.
 
+### Cookie-extraction library order — rookiepy preferred, browser_cookie3 fallback
+
+The extractor (`cookie_extract.py: extract_all`) imports **rookiepy first, then
+`browser_cookie3`**, and the order is deliberate. `rookiepy` is Rust-backed and far
+more stable against the moving target of browser cookie encryption (Chrome's
+v10/v11 app-bound `Cipher` changes break the pure-Python `browser_cookie3`
+repeatedly). The fallback is auto: a bare `import rookiepy` failure drops to
+`import browser_cookie3`, and only if *both* are missing does it raise — with a
+prescription that recommends `pip install rookiepy` first. The two libraries return
+different shapes (rookiepy → `list[dict]` with `name`/`value`/`domain` keys;
+browser_cookie3 → a cookiejar of objects), so the extractor normalizes rookiepy's
+dicts into `.name`/`.value`/`.domain` objects before the shared per-platform
+matching loop runs. Don't hardcode one library; keep the import-order fallback so a
+single broken install doesn't kill extraction.
+
+Per-platform, the extractor only **saves a cookie set when its session token is
+present**: Xueqiu is written to config only if the header string contains
+`xq_a_token` (anonymous cookies are useless and would falsely report "configured"),
+Bilibili requires `SESSDATA`, Twitter requires both `auth_token` and `ct0`. A
+platform whose token is missing returns a *fixable* message ("login to x.com in
+chrome first"), never a silent success.
+
+### Session-bootstrap / anti-DDoS token (Xueqiu pattern)
+
+Some platforms front their **public** API with an anti-DDoS layer (e.g. Akamai/
+Alibaba `acw_tc`) that 4xx-rejects a cold request carrying no session cookie — even
+on endpoints that need no login. The fix is a **homepage-visit bootstrap**: before
+the first public-API call, GET the site homepage through a cookie-jar-backed opener
+so the response's `Set-Cookie` plants the anti-DDoS token, then make the real API
+call on the same opener.
+
+Xueqiu (`channels/xueqiu.py: _ensure_cookies`) does exactly this as the **last** of
+three cookie sources, in priority order:
+
+1. Saved cookie string in `~/.agent-reach/config.yaml` (`xueqiu_cookie`).
+2. Live browser cookies via rookiepy/browser_cookie3 (only if `xq_a_token` present).
+3. **Homepage-visit fallback** — `GET https://xueqiu.com` on the shared
+   `HTTPCookieProcessor` opener to pick up the `acw_tc` anti-DDoS cookie.
+
+```python
+# build ONE opener with a cookie jar; reuse it for bootstrap AND the API call
+_cookie_jar = http.cookiejar.CookieJar()
+_opener = urllib.request.build_opener(
+    urllib.request.HTTPCookieProcessor(_cookie_jar))
+
+def _ensure_cookies():
+    if _load_cookies_from_config():   return   # logged-in path
+    if _load_cookies_from_browser():  return   # logged-in path
+    # public path: visit homepage so acw_tc anti-DDoS cookie lands in the jar
+    req = urllib.request.Request("https://xueqiu.com", headers={"User-Agent": _UA})
+    _opener.open(req, timeout=10)              # discard body — we only want the cookie
+```
+
+Key points: the bootstrap only yields the anti-DDoS token, **not** auth — it
+unlocks public quote/search/hot endpoints but not login-walled data; and it must
+share the *same* opener/jar as the subsequent calls, or the freshly-set cookie is
+lost. Run it once and memoize (`_cookies_initialized`).
+
+### Localhost proxy-bypass for MCP service checks
+
+When probing a **local** MCP backend (e.g. xiaohongshu-mcp on
+`http://localhost:18060/mcp`), build the request opener with an **empty
+`ProxyHandler`** so the check is never routed through `HTTP_PROXY`/`HTTPS_PROXY`. An
+agent on a blocked network legitimately sets a residential proxy for Reddit/Twitter
+(below) — but localhost must bypass it, or the health check dies on a proxy that
+can't reach `127.0.0.1`. Any HTTP answer (even a 405 to a GET) counts as "service
+alive":
+
+```python
+opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))  # bypass proxy
+try:
+    opener.open(urllib.request.Request(_MCP_ENDPOINT, method="GET"), timeout=3)
+    return True
+except urllib.error.HTTPError:
+    return True   # 405/404 — the service answered, it's up
+except Exception:
+    return False
+
 ## OpenCLI — cookies you never touch
 
 OpenCLI drives the user's *real* Chrome through a bridge extension + local daemon,

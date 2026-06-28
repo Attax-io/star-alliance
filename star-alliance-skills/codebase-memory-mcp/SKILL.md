@@ -1,8 +1,8 @@
 ---
 name: codebase-memory-mcp
-description: "Use this MCP code-intelligence engine to answer structural questions about a real repository: 'index this codebase', 'where is X defined', 'what calls Y', 'trace this call chain', 'impact of changing Z', 'find dead code', 'map this repo's architecture', or cross-service HTTP linking and Cypher queries over a knowledge graph of functions, classes, call chains, and routes. It is a fast external MCP server (single static binary, 158 languages via tree-sitter plus Hybrid LSP type resolution, 14 tools, ~120x fewer tokens than file-by-file grep) that indexes a repo into a persistent graph the agent queries. Reach for it before fanning out greps/reads on any where/what-calls/impact/architecture question. Differs from graphify, the guild's own graph-building craft over arbitrary inputs (code, docs, papers, media); codebase-memory-mcp is purpose-built code intelligence over one indexed repo."
+description: "Use this MCP code-intelligence engine to answer structural questions about a real repository: 'index this codebase', 'where is X defined', 'what calls Y', 'trace this call chain', 'impact of changing Z', 'find dead code', 'find near-duplicate code', 'map this repo's architecture', semantic by-behavior search, infrastructure-as-code (Docker/K8s/Kustomize) queries, cross-service gRPC/GraphQL/tRPC and pub-sub linking, cross-repo questions, and Cypher over a knowledge graph of functions, classes, routes, and resources. A fast external MCP server (single static binary, 158 languages via tree-sitter plus Hybrid LSP, 14 tools, semantic_query vector search, optional 3D graph UI at localhost:9749, ~120x fewer tokens than grep) that indexes a repo into a persistent graph the agent queries. Reach for it before fanning out greps/reads on any structural question. Differs from graphify, the guild's graph-building craft over arbitrary inputs; codebase-memory-mcp is code intelligence over one or many indexed repos."
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 type: Skill
 ---
 
@@ -66,13 +66,18 @@ re-implementation.
 
 4. **One tool per question class.** Match the question to the right tool rather than
    forcing everything through Cypher:
-   - "where is X defined" → `search_graph` (→ `get_code_snippet` for the body)
+   - "where is X defined" (known name) → `search_graph` (→ `get_code_snippet` for the body)
+   - "find the code that does X" (known behavior, not name) → `semantic_query` (vector
+     search; read its **11-signal scoring breakdown** before trusting a borderline hit)
    - "what calls Y / what does Y call / trace the chain" → `trace_path`
    - "impact of changing Z / blast radius of my diff" → `detect_changes`
    - "map the architecture" → `get_architecture`; "what's queryable" → `get_graph_schema`
-   - "find dead code / custom multi-hop" → `query_graph` (Cypher subset)
-   - "cross-service / HTTP route linking" → `query_graph` over `HTTP_CALLS`/`Route`,
-     validated by `ingest_traces`
+   - "find dead code / near-duplicates / custom multi-hop" → `query_graph` (Cypher subset;
+     `SIMILAR_TO` for MinHash/LSH near-clones)
+   - "Docker/K8s/Kustomize infra" → `query_graph` over `Resource` / `Module` nodes
+   - "cross-service (REST/gRPC/GraphQL/tRPC) or pub-sub link" → `query_graph` over
+     `HTTP_CALLS`/`Route`/`EMITS`/`LISTENS_ON`, validated by `ingest_traces` (runtime traces)
+   - "cross-repo question" → `list_projects` + `project="name"` scoping + `CROSS_*` edges
    - "record/recall an architecture decision" → `manage_adr`
 
    Full mapping in `references/mcp-tools.md`.
@@ -90,17 +95,36 @@ re-implementation.
 ## When to reach for this skill
 
 Trigger phrases: "index this codebase/project", "where is X defined", "what calls Y",
-"trace this call chain", "impact of changing Z", "find dead code", "map this repo's
-architecture", "what HTTP route handles this", "set up codebase-memory-mcp". Any
-structural code-intelligence question over a real repository you can index.
+"trace this call chain", "impact of changing Z", "find dead code", "find near-duplicate
+code", "map this repo's architecture", "find the code that does X" (semantic), "what
+HTTP/gRPC/GraphQL route handles this", "which K8s/Docker resource configures this",
+"cross-repo / which service calls which", "set up codebase-memory-mcp", "open the graph
+UI". Any structural code-intelligence question over one or more real repositories you
+can index.
 
 ## References
 
 - `references/mcp-tools.md` — the 14 tools, each mapped to the question it answers,
-  the question→tool cheat sheet, semantic-search note, and the graph data model.
-- `references/install-and-setup.md` — install (one-line / 11-agent auto-config / UI),
-  operating it (auto-index, watcher, CLI), persistence, ignores, team-shared artifact,
-  troubleshooting.
-- `references/query-recipes.md` — recipes from real questions to tool calls, Cypher
-  examples (dead code, co-change, cross-service), and the token-economy rationale.
+  the question→tool cheat sheet, the **three search modes** (`search_graph` exact /
+  `semantic_query` by-behavior with 11-signal scoring / `search_code` literal), and the
+  graph data model incl. IaC `Resource`/`Module` nodes, `SIMILAR_TO`/`SEMANTICALLY_RELATED`,
+  pub-sub `EMITS`/`LISTENS_ON`, and cross-repo `CROSS_*` edges.
+- `references/install-and-setup.md` — install (one-line / 11-agent auto-config / `--ui`),
+  operating it (auto-index, watcher, CLI), persistence, ignores, IaC indexing, cross-repo
+  shared store + multi-galaxy UI, team-shared artifact bootstrap, troubleshooting.
+- `references/query-recipes.md` — recipes from real questions to tool calls: semantic
+  by-behavior search, near-duplicate detection, infra-as-code queries, cross-service /
+  pub-sub linking, `ingest_traces` validation, cross-repo patterns, Cypher examples, and
+  the token-economy rationale.
+
+## Changelog
+
+- **1.1.0** — Added the capabilities the skill omitted (grounded in the source README):
+  `semantic_query` vector search as a distinct mode with the 11-signal scoring breakdown;
+  `SIMILAR_TO` (MinHash/LSH) near-duplicate detection recipe; infrastructure-as-code
+  (`Resource`/`Module`) indexing + infra-query section; cross-repo `CROSS_*` edges,
+  `project` scoping, multi-galaxy UI, and the `graph.db.zst` bootstrap; gRPC/GraphQL/tRPC
+  route detection and `EMITS`/`LISTENS_ON` pub-sub recipes; `ingest_traces` workflow; and
+  a "when to use" note for the 3D UI at localhost:9749.
+- **1.0.0** — Initial usage skill: 14 MCP tools, principles, install/setup, query recipes.
 </content>

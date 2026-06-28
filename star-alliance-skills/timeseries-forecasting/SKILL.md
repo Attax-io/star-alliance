@@ -1,9 +1,9 @@
 ---
 name: timeseries-forecasting
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 type: Skill
-description: "Project a numeric time series forward with Google's TimesFM zero-shot foundation model, returning a point forecast plus calibrated quantile prediction intervals — no per-series training. Triggers on 'forecast this series', 'predict the next N periods', 'time-series forecast', 'project this metric forward', 'forecast demand/volume/price'. Adds uncertainty bands, quantile-based anomaly flags, batch-forecasting many series, and covariate (XReg) forecasting with known-future drivers. Covers when a foundation model beats classical ARIMA/Prophet, context/horizon framing, and rolling backtest evaluation. Differs from market-recon (gathers market context), trading-strategy (entry/exit rules), portfolio-risk (exposure/VaR), and probability-statistics (general inference toolkit) — this projects one series forward."
+description: "Project a numeric time series forward with Google's TimesFM zero-shot foundation model, returning a point forecast plus calibrated quantile prediction intervals — no per-series training. Triggers on 'forecast this series', 'predict the next N periods', 'time-series forecast', 'project this metric forward', 'forecast demand/volume/price'. Adds uncertainty bands, quantile-based anomaly flags, batch-forecasting many series, and covariate (XReg) forecasting with known-future drivers (dynamic numerical/categorical plus static numerical/categorical, two xreg residual modes, tuning knobs). Covers when a foundation model beats classical ARIMA/Prophet, context/horizon framing, rolling backtest evaluation, the Flax/JAX backend for faster TPU/GPU inference, and LoRA/PEFT fine-tuning when zero-shot underfits. Differs from market-recon (gathers market context), trading-strategy (entry/exit rules), portfolio-risk (exposure/VaR), and probability-statistics (general inference toolkit) — this projects one series forward."
 ---
 
 # Time-Series Forecasting (TimesFM foundation model)
@@ -74,14 +74,23 @@ volume, counts, price *levels*) so the floor stays at 0 — but set it **False**
 for anything that can go negative: temperature, *returns*, PnL, spreads. Getting
 this wrong silently clips half your distribution.
 
-**4. Covariates earn their place only when their future is known.** A dynamic
+**4. Covariates earn their place only when their future is known.** A *dynamic*
 covariate must be supplied over the **full `context + horizon`** window — so it
 only helps if you *know* its future values (a published holiday calendar, a
 scheduled promotion, a planned price). An unknown-future driver (next month's
 weather you don't have) cannot be a covariate without first forecasting it.
-Three kinds: dynamic-numerical (price, temp), dynamic-categorical (day-of-week,
-holiday flag), static-categorical (region, store id). Requires TimesFM 2.5 +
-`timesfm[xreg]`. Detail: `references/api-and-usage.md`.
+Four kinds: dynamic-numerical (price, temp), dynamic-categorical (day-of-week,
+holiday flag), **static-numerical** (per-series invariant numbers — store
+square-footage, latitude, a base price tier), and static-categorical (region,
+store id). Static covariates are one value per series, supplied for context
+only (no horizon span). `xreg_mode` picks the residual ordering ("xreg+timesfm"
+fits the linear model first then TimesFM forecasts its residual; "timesfm+xreg"
+forecasts first then regresses the residual) — pick by whether the covariate
+relationship or the temporal pattern dominates. `forecast_with_covariates`
+requires `return_backcast=True` and returns a **dual output (point, quantile)**
+tuple already combining the TimesFM and XReg parts. Requires TimesFM 2.5 +
+`timesfm[xreg]`. Full XReg surface, modes, tuning knobs, and the unpacking
+example: `references/covariates-xreg.md`.
 
 **5. Evaluate with a rolling backtest, score the interval too.** Hold out the
 last H points, forecast from the truncated history, compare to actuals — then
@@ -103,6 +112,19 @@ needs ~1.5 GB RAM on CPU / ~1 GB VRAM and downloads ~800 MB of weights on first
 use. The archived 500M v2.0 needs ≥ 16 GB RAM — prefer 2.5. Estimate batch RAM
 as `0.8 + 0.5 + 0.0002 × num_series × context_length` GB and chunk large
 batches rather than OOM mid-run. Sizing tiers: `references/api-and-usage.md`.
+
+**8. Reach for a different backend or fine-tuning only after zero-shot is
+exhausted.** TimesFM 2.5 ships three backends behind the same `forecast()` API:
+`_torch` (default), `_flax` (JAX/`nnx` — faster on TPU and GPU, checkpoint
+`google/timesfm-2.5-200m-flax`, `pip install timesfm[flax]`), and
+`_transformers` (the HuggingFace path used by fine-tuning). Swap to Flax for a
+speed win on accelerators; the framing knobs above are unchanged. Reach for
+**LoRA/PEFT fine-tuning** (parameter-efficient, a few-MB adapter on the frozen
+base) only when a rolling backtest shows zero-shot genuinely underfits *your*
+domain — train on pre-sampled random full-length windows (never zero-padded,
+which corrupts TimesFM's internal RevIN normalisation), validate on each
+series' last window, keep the adapter that wins on held-out MAE. Backend
+install/usage and the LoRA reference: `references/backends-and-finetuning.md`.
 
 ## Quick shape (orientation, not a tutorial)
 
@@ -129,7 +151,15 @@ require `freq=[0]` for monthly data. Always prefer 2.5.
 - `references/foundation-vs-classical.md` — the decision: foundation model vs
   ARIMA/ETS/Prophet; what zero-shot buys and costs; how to settle it empirically.
 - `references/api-and-usage.md` — model classes, `ForecastConfig` every flag,
-  output shapes, covariates (XReg), data prep / NaN handling, hardware sizing.
+  output shapes, covariates (XReg) overview, data prep / NaN handling, sizing.
+- `references/covariates-xreg.md` — the full XReg surface: all four covariate
+  kinds (incl. static-numerical), the two `xreg_mode` residual orderings + when
+  to use each, the tuning knobs (`normalize_xreg_target_per_input`, `ridge`,
+  `max_rows_per_col`, `force_on_cpu`), `return_backcast` requirement, the
+  continuous-quantile head, and the dual-output unpacking example.
+- `references/backends-and-finetuning.md` — the Torch / Flax (JAX) /
+  Transformers backends with install + load paths, the `torch_compile=False`
+  flag, and LoRA/PEFT fine-tuning (random-window dataset, training loop, eval).
 - `references/evaluation-and-pitfalls.md` — rolling backtest, coverage scoring,
   anomaly detection, and the recurring mistakes (quantile off-by-one, trailing
   NaNs, covariate horizon span, sign clamp).
@@ -148,3 +178,10 @@ require `freq=[0]` for monthly data. Always prefer 2.5.
   can *feed* it a forward distribution but does not aggregate portfolio risk.
 - **probability-statistics** is the general inference/distribution toolkit; this
   skill is one applied instrument — a pretrained sequence model — within it.
+
+## Changelog
+
+| Version | Date | Summary |
+|---|---|---|
+| **1.1.0** | 2026-06-28 | Closed the gaps confirmed-absent against the TimesFM 2.5 source. Added `references/covariates-xreg.md` (full XReg surface: static-numerical covariates, both `xreg_mode` residual orderings + selection guidance, the `normalize_xreg_target_per_input`/`ridge`/`max_rows_per_col`/`force_on_cpu` tuning knobs, the `return_backcast=True` requirement, the continuous-quantile head vs discrete buckets, and the dual-output `(point, quantile)` unpacking) and `references/backends-and-finetuning.md` (Torch/Flax/Transformers backends with install + load paths, `torch_compile=False`, and a LoRA/PEFT fine-tuning reference with the random-window dataset + training/eval loop). Expanded principle 4 (four covariate kinds + modes) and added principle 8 (backends + fine-tuning). New surfaces, no breaking change → MINOR. |
+| **1.0.0** | 2026-06-28 | Initial skill — zero-shot TimesFM 2.5 forecasting craft: framing (context/horizon), distributional forecasts + quantile bands, sign domain, dynamic + static-categorical covariates, rolling-backtest evaluation, quantile anomaly detection, hardware sizing, and quant-application guidance. |

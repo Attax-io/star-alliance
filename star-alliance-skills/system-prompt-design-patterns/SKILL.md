@@ -1,8 +1,8 @@
 ---
 name: system-prompt-design-patterns
-description: "Distills the recurring design patterns of effective production system prompts (Anthropic, OpenAI, Cursor, Perplexity, Notion, Mistral, xAI) into reusable craft: identity framing, capability/limitation declarations, tool-use instruction shape, refusal and safety scaffolding, formatting/output discipline, persona, context-injection contracts, and anti-jailbreak/injection defense. Use it to design a system prompt, review or critique a system prompt, harden an agent prompt against injection or extraction, or answer how production prompts handle X (search, refusal, formatting, persona, tools). Differs from spec-driven-development (which authors product/feature specs and acceptance criteria, not LLM persona/safety prompts) and from members-formation (which routes work across guild members, not crafts a single model's instructions)."
+description: "Distills the recurring design patterns of effective production system prompts (Anthropic, OpenAI, Google, xAI, Meta, Mistral, Cursor, Perplexity, Notion, Qwen) into reusable craft: identity framing, capability/limitation declarations, tool-use shape, refusal/safety scaffolding, formatting discipline, persona, context/memory priority, follow-up discipline, multi-agent framing, values-as-axioms, widget and voice output, memory-tool schemas, intent disambiguation, design-to-domain framing, context-injection contracts, and anti-jailbreak/injection defense. Use it to design, review, or harden a system or agent prompt, or to answer how production prompts handle X (search, refusal, formatting, persona, tools, memory, multi-agent). Differs from spec-driven-development (product/feature specs, not LLM persona/safety prompts) and members-formation (routes work across guild members, not crafts one model's instructions)."
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 type: Skill
 ---
 
@@ -104,6 +104,31 @@ and lower tiers can never escalate to issue instructions.
   implying an image is present doesn't mean one is — check"). Restate the safety
   floor inside every persona overlay. (`persona-and-antijailbreak.md` §B–D.)
 
+### 8. Newer cross-vendor moves: memory, latency, follow-ups, swarms, surfaces
+Beyond the seven spine principles, the corpus has matured a set of more specific,
+high-leverage moves a modern prompt should consider — each grounded in a shipped
+prompt (see `vendor-pattern-extensions.md`):
+- **Context/memory priority** (OpenAI gpt-5.5-instant): known context outranks
+  re-asking; *silently* check for a missed item before answering; a visible profile
+  is a hint to fetch more, not proof of sufficiency.
+- **Latency-aware emission** (Perplexity): when a tool call is inevitable, emit it
+  *first* — no thinking tokens before the call.
+- **Follow-up discipline** (Google gemini): a 3-mode terminal rule — strict
+  completion (no follow-up), single clarifier (open asks only), never a generic one.
+- **Multi-agent framing** (xAI grok): named peers, one designated leader who
+  collects and writes the final answer, with a defined message-arrival contract.
+- **Values as axioms** (Meta): truth/beauty/respect as operative conflict-resolvers,
+  not adjectives.
+- **Custom-UI / widget routing** (Mistral) and **voice-layer markup** (elevenlabs):
+  per-surface output contracts — a metadata-keyed emit/suppress gate for widgets; an
+  expressivity+speaker markup vocabulary (no bullets/bold) for voice.
+- **Memory-tool schema** (Qwen): an indexed add/update/delete store, addressed by
+  index — revise and prune, don't only append.
+- **Intent disambiguation** (warp): classify question-vs-task before acting; explain
+  "how" questions without running, execute commands, scale clarification to complexity.
+- **Design-to-domain framing** (OpenAI Codex): bind aesthetic to domain (SaaS-quiet
+  vs editorial), demand stable dimensions, ban named layout smells (no cards-in-cards).
+
 ## References
 
 - `references/structural-patterns.md` — the spine (identity → env → behavior →
@@ -116,6 +141,10 @@ and lower tiers can never escalate to issue instructions.
   trust hierarchy, verify-the-envelope reflex.
 - `references/cross-vendor-comparison.md` — axis-by-axis vendor table, what's
   universal vs a choice, the build/review checklist, and named anti-patterns.
+- `references/vendor-pattern-extensions.md` — ten newer cross-vendor patterns
+  (context/memory priority, latency-aware emission, follow-up discipline, multi-agent
+  framing, values-as-axioms, custom-UI/widget routing, voice-layer markup, memory-tool
+  schema, intent disambiguation, design-to-domain framing), each with vendor evidence.
 
 ## Quick start
 
@@ -127,3 +156,10 @@ and lower tiers can never escalate to issue instructions.
 - **Hardening against injection** → apply principle 7 + `persona-and-antijailbreak.md`
   §C–D: trust hierarchy, inert retrieved content, tainted-provenance escalation,
   non-disclosure, verify-the-envelope.
+
+## Changelog
+
+| Version | Change |
+|---|---|
+| 1.1.0 | Added `references/vendor-pattern-extensions.md` and principle 8 covering ten newer cross-vendor patterns mined from later leaks: context/memory priority (OpenAI gpt-5.5-instant), latency-aware emission (Perplexity), 3-mode follow-up discipline (Google gemini), multi-agent leader/peer framing (xAI grok), values-as-axioms (Meta), custom-UI/widget routing (Mistral), voice-layer markup (elevenlabs), indexed memory-tool schema (Qwen), question-vs-task intent disambiguation (warp), design-to-domain framing (OpenAI Codex). Broadened the description's vendor list. |
+| 1.0.0 | Initial release: 7 generative principles + 4 references (structural, tool-use/refusal, persona/anti-jailbreak, cross-vendor comparison). |
