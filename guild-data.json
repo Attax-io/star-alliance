@@ -7,7 +7,7 @@
       "minor": 58,
       "patch": 78
     },
-    "generated": "2026-06-28T14:18:08Z",
+    "generated": "2026-06-28T14:22:06Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -31,7 +31,7 @@
       "domains": 3,
       "workflows": 34,
       "hooks": 7,
-      "log": 162
+      "log": 164
     }
   },
   "members": [
@@ -9740,6 +9740,29 @@
   "log": {
     "entries": [
       {
+        "id": 104,
+        "date": "2026-06-28",
+        "type": "decision",
+        "title": "Butler is now a Persona (the voice), not a spawnable agent; the Strategist owns routing",
+        "who": "Atta",
+        "detail": "the-butler reclassified type Member->Persona: runs as the active session model, gets NO .claude/agents file (install_agents.py skips personas and removes the stale file). It stays a valid workflow actor and the report-gate owner (D23 bookend intact). Routing — forming the right member and sequencing work — moved from the Butler to the Strategist, along with the members-formation, decompose-and-swarm, and safe-agentic-orchestration skills. Updated: guild-routing-gate.sh (Butler=voice, Strategist routes), swarm coordinator butler-brain->strategist-brain. Nothing spawns the Butler as a subagent, so removing its agent file breaks nothing.",
+        "ref": [
+          "the-butler",
+          "the-strategist"
+        ]
+      },
+      {
+        "id": 103,
+        "date": "2026-06-28",
+        "type": "decision",
+        "title": "Uniform arsenal seats: Sonnet thinks · MiniMax does · GLM reviews · Opus benched off-seat",
+        "who": "Atta",
+        "detail": "Every member's brain = sonnet (a tool-capable Claude model — GLM cannot hold Edit/Write/Bash without a gateway, so the thinker stays Claude); doer = minimax-m3; critic = glm-5.2 (a different model family for diverse review). Opus removed from ALL seat defaults/fallbacks and reserved off-seat for a separate plan. When a seat's model is dry it walks its fallback to the strongest available bench model. Rationale: resilience — when Opus runs dry, no member breaks. Source: star-alliance-arsenal/models.json seats. Conformity green.",
+        "ref": [
+          "the-arsenal"
+        ]
+      },
+      {
         "id": 102,
         "date": "2026-06-28",
         "type": "member-upgrade",
@@ -11691,7 +11714,7 @@
         "id": "g-650b7781-add-skill-impeccable"
       }
     ],
-    "count": 162
+    "count": 164
   },
   "models": {
     "opus": {
