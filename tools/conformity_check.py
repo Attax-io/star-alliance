@@ -250,6 +250,17 @@ def main():
     except Exception:
         pass
 
+    # === LITE — workflows-lite.json is GENERATED from workflows.json (SSOT); never
+    # hand-edit. gen_workflows_lite.py --check is the authority.
+    try:
+        _rl = _sp.run(["python3", str(ROOT / "guild/gen_workflows_lite.py"), "--check"],
+                      capture_output=True, text=True, timeout=30)
+        if _rl.returncode != 0:
+            fails.append("LITE workflows-lite.json drifted from workflows.json (SSOT) — "
+                         "run: python3 guild/gen_workflows_lite.py")
+    except Exception:
+        pass
+
     # G — gen-workflow-art.cjs has a prompt entry for every workflow (art can be forged)
     gen = (ROOT / "tools/generators/gen-workflow-art.cjs")
     if gen.exists():

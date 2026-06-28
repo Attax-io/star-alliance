@@ -989,6 +989,13 @@ def write_outputs(repo: Path, guild: dict, check: bool) -> bool:
     print(f"Wrote guild-data.js ({len(js):,} bytes) + guild-data.json "
           f"+ skill-md.js ({len(md_js):,} bytes, {len(md_map)} skills) "
           f"+ workflow-md.js ({len(wf_js):,} bytes, {len(wf_map)} workflows)")
+    # Keep the portable subset (workflows-lite.json) derived from workflows.json (SSOT).
+    try:
+        import subprocess
+        subprocess.run(["python3", str(repo / "guild" / "gen_workflows_lite.py")],
+                       check=False, capture_output=True, timeout=30)
+    except Exception:
+        pass
     return changed
 
 

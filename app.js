@@ -55,8 +55,10 @@ const ROLE_META = {
   doer:    { label: "Worker",  icon: "role-art/doer.png",    color: "#ffb04e", rule: "Only executes, produces, writes, and transforms. Never orchestrates other agents or makes high-level decisions." },
   both:    { label: "Both",    icon: "role-art/both.png",    color: "#3df0ff", rule: "Can think and execute. Assign explicitly — don't use as a catch-all." },
 };
-// The armory display order for the Arsenal page.
-const ARSENAL = ["opus", "sonnet", "haiku", "minimax-m3", "image-01", "minimax-video", "minimax-speech", "minimax-music", "glm-5.2", "kimi-k2.7", "deepseek-v4-pro", "nemotron-3-ultra", "qwen3.5", "gemma4"];
+// The armory display order for the Arsenal page — DERIVED from the registry
+// (models.json key order, via GUILD.models). Single source of truth: no hand-listed
+// model ids here, so a new weapon in models.json appears automatically and in order.
+const ARSENAL = Object.keys(MODELS);
 // model id -> the ollama `:cloud` tag, DERIVED from the registry's cloud_tag so it
 // can never drift from summon.py (the routing source of truth). Non-cloud models omitted.
 const CLOUD_TAG = Object.fromEntries(
