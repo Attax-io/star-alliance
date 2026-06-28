@@ -135,6 +135,86 @@ v1 = Waves 0,1,2,3,5. Wave 4 is a later, separate, human-gated campaign.
 - **Coupled work mis-swarmed** → loose-coupling test; coupled slices are sequenced, not
   swarmed.
 
+## Decomposition Methodology — grounded by the Learning Pool deep-dive (2026-06-28)
+
+A 4-agent read-only swarm mined `swarm-models`, `safe-agentic-workflow`, `spec-kit`,
+`system_prompts_leaks`, `agent-skills`, and `codebase-memory-mcp`. This section is the
+evidence-backed answer to "HOW does the Butler split the work" + the prime goal (cheaper via
+rough-work-to-cheap-models). It supersedes §3 MOVE 1's hand-wave.
+
+### The economic engine: capable bookends, cheap middle
+(from safe-agentic-workflow `README.md:770` stop-the-line + `:565` non-collapsible QA gate)
+Cheap delegation is net-cheap ONLY when bracketed by two capable, small gates:
+- **FRONT (capable, small):** the thinker SCOUTS + DECOMPOSES + writes the seams. Decomposition
+  is a thinker job — never a cheap-model job.
+- **MIDDLE (cheap, parallel, bulk):** N workers fill disjoint slices. **Two levels of cheap:**
+  (1) workers run as the member BRAIN (Sonnet, tool-capable) instead of the Opus coordinator;
+  (2) each worker offloads its OWN rough text to the Doer seat (minimax-m3) internally. The
+  saving is "N Sonnet + MiniMax-inside vs one Opus doing all of it serially."
+- **BACK (capable, small):** independent Critic (glm-5.2, different family) on the AGGREGATE
+  diff + a serialized, revertible merge (one commit per slice → `git revert` = rollback;
+  safe-agentic `MERGE-QUEUE-POLICY.md`). A cheap worker never grades or commits its own slice.
+
+### The decomposition procedure (the Butler's actual steps)
+Assembled from spec-kit's task algorithm + codebase-memory's scout + Amp's policies.
+
+**MOVE 0 — Worthiness gate (concrete trip condition, from Amp `amp-code.md:454`).**
+"Can you name the exact files/symbols to change?" → if YES, do it inline, NO swarm. Swarm only
+if each slice needs ≳1.5k output tokens AND can't be stated as "edit these 3 lines in file X."
+
+**MOVE 0.5 — SCOUT the surface (NEW — fills the "boundaries before starting" gap).**
+Run codebase-memory (CLI ok, ~3.4k tokens vs ~412k for grep):
+- `get_architecture` → clusters = de-facto modules (often cut across folders) = candidate slices.
+- `trace_path(boundary, both)` → cross-slice CALLS edges = coupling to declare as a seam.
+- `query_graph "MATCH (a:File)-[:FILE_CHANGES_WITH]->(b:File)…"` → latent co-change coupling
+  invisible to import graphs.
+- `detect_changes(symbols)` → per-slice blast radius (CRITICAL/HIGH/…) sizes the seam.
+Fallback if not indexed: manual directory analysis + explicit coupling note in each brief.
+
+**MOVE 1 — Cut `[P]`-safe slices (spec-kit's exact rule, `tasks-template.md:18`).**
+A slice is parallel-safe **iff (a) it touches DIFFERENT files than every concurrent slice AND
+(b) it depends on no incomplete slice.** Order is mandatory: **Setup → Foundational (BLOCKS all)
+→ per-story slices (parallel) → Polish.** Foundational is the synchronization barrier BEFORE
+fan-out. Every slice carries explicit file paths; build the file-sets and assert pairwise-empty
+intersection (mechanical, now backed by the scout, not a guess).
+
+**MOVE 2 — Contracts-first seams (spec-kit `plan.md:141`).**
+Before any worker launches, the thinker writes the seams the workers must agree on (interfaces,
+types, names — spec-kit's `data-model.md` + `contracts/`). This is what stops two isolated
+workers inventing two names for one boundary.
+
+**MOVE 3 — Self-contained 3-tier brief per worker (Amp `amp-code.md:312` + agent-skills
+progressive disclosure `AGENTS.md:163`).** Each worker loses all context — pack the brief:
+(1) one-line routing label, (2) core brief <2k tokens (its file slice, the shared contract, the
+acceptance test, do-NOT-touch files, the model to use — model is a first-class brief field, per
+the Claude Code Agent schema), (3) file excerpts attached ONLY if the slice needs them.
+
+**MOVE 4 — Fan out in one message; integrate + verify inline; serialized revertible merge.**
+Failure isolation per slice (swarm-models `together_llm.py:96`): one worker fails → re-dispatch
+just that slice; bounded batch = the Ollama concurrency tier.
+
+### Skill actions this adds (fold into the wave plan)
+- **codebase-memory-mcp skill — UPGRADE:** add a "Swarm Decomposition Scout" section (the 4
+  scout calls + the FILE_CHANGES_WITH Cypher recipe + CLI usage) so `decompose-and-swarm`
+  cites it by wikilink. (Wave 0/2.)
+- **decompose-and-swarm skill — author with the above** MOVES (0, 0.5, 1–4), the quoted `[P]`
+  rule, and the 3-tier brief template. (Wave 0.)
+- **spec-driven-development skill — light UPGRADE:** add the formal `[P]` rule + the mandatory
+  phase structure (Setup→Foundational→stories→Polish) + "every task carries a file path."
+- **multimodal-model-wrappers** is the worker-runner foundation (uniform `run`, threadpool,
+  batch, retry) — reuse, don't reinvent; do NOT import swarm-models' name-only `ModelRouter`
+  (it has a silent-fallthrough bug, `model_router.py:229`).
+- **harness-efficiency (Wave 5):** read `Archive/Skills Pool/headroom-main` first — a cost/budget
+  gating tool that maps to the worthiness "cheaper-net" check.
+
+### Cited sources
+swarm-models `base_llm.py:108`, `together_llm.py:71/96/99`, `base_multimodal_model.py:148`,
+`model_router.py:229` · safe-agentic-workflow `README.md:565/770/899`, `spec_template.md:40`,
+`DARK-FACTORY-GUIDE.md:290`, `MERGE-QUEUE-POLICY.md` · spec-kit `tasks-template.md:18/163`,
+`tasks.md:64/182`, `plan.md:141` · system-prompts `amp-code.md:312/454/466/493`,
+`claude-cowork-dispatch.md:14`, `claude-code-2.1.172-opus-4.8.md:62` · agent-skills
+`AGENTS.md:163` · codebase-memory `mcp.c:355/389/4191`, `README.md:17`.
+
 ## Verification per wave
 Each wave ends with: `conformity_check.py` exit 0, a real dry-run of the new behavior, and
 an independent review of the diff. The 8 existing fan-out steps must keep working at every

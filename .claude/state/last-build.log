@@ -8,4 +8,4 @@ BUILD WARNINGS (8):
   ⚠ domain 'lex-council-app' references member 'pattern-detector' not in the guild (external)
   ⚠ domain 'lex-council-business' references member 'bd-research-agent' not in the guild (external)
   ⚠ domain 'lex-council-business' references member 'intake-agent' not in the guild (external)
-Wrote guild-data.js (614,717 bytes) + guild-data.json + skill-md.js (948,269 bytes, 93 skills) + workflow-md.js (73,078 bytes, 34 workflows)
+Wrote guild-data.js (617,011 bytes) + guild-data.json + skill-md.js (980,335 bytes, 93 skills) + workflow-md.js (73,078 bytes, 34 workflows)
