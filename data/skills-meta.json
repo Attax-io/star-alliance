@@ -734,5 +734,13 @@
     "tabler": "ti-businessplan",
     "triggers": "'prep this negotiation', 'structure this deal', \"what's my BATNA\", 'pricing strategy for X', 'handle this objection', 'write a deal memo'",
     "modes": "preparation (BATNA/ZOPA); structuring & concessions; deal memo"
+  },
+  "workflow-runner": {
+    "icon": "🎛️",
+    "blurb": "Operate the guild's own machinery — RUN a workflows.json workflow via guild/run.py; invoke the frame/plan/efficiency/leveling primitives",
+    "level": "Advanced",
+    "tabler": "ti-player-play",
+    "triggers": "'run the X workflow', 'execute this workflow', 'dry-run the workflow', 'frame this brief', 'show the efficiency report', 'show the promotion queue'",
+    "modes": "running a workflow; the script primitives; run outputs & gates"
   }
 }

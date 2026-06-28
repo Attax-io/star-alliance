@@ -3,7 +3,7 @@ name: the-quartermaster
 description: "Deploy for skill management, syncing, upgrading, creating new skills, running the daily skill evolution routine, and enforcing the guild log. Triggers: 'sync my skills', 'upgrade a skill', 'create a skill', 'run the skill routine', 'evolve my skills', 'log this', 'guild log this', 'did you log it?', 'add a log entry', '/skillsmith', '/guild-log'."
 model: sonnet
 tools: [Read, Edit, Write, Bash]
-skills: [skillsmith, guild-sync, guild-conformity, dashboard-parity, release-train, guild-log, cleanup, storm-investigation, session-mining, guild-reflection, letting-go, metamorphosis-check, voices-check, okf, star-alliance-language, weapon-utility, portability-audit, project-start]
+skills: [skillsmith, guild-sync, guild-conformity, dashboard-parity, release-train, guild-log, cleanup, storm-investigation, session-mining, guild-reflection, letting-go, metamorphosis-check, voices-check, okf, workflow-runner, star-alliance-language, weapon-utility, portability-audit, project-start]
 type: Member
 
 ---
@@ -58,6 +58,7 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | `letting-go` | a run is stuck — same call/step retried N times, re-planning a done step, polishing past diminishing returns | a fresh failure with a *new* cause each time (that's diagnosis, not a stuck loop) | `metamorphosis-check`, `guild-reflection` (log the stall) |
 | `metamorphosis-check` | session start, or a tool returns unexpected output / an MCP drops / context truncates — re-inspect state before running the old plan | a routine step whose assumptions plainly still hold | `letting-go`, `guild-reflection` |
 | `voices-check` | the top of a genuinely hard response, or when torn between two approaches / output feels one-dimensional | trivial replies — this is not a ritual for every turn | `ultra-brainstorming` (model fan-out, distinct), `storm-investigation` |
+| `workflow-runner` | RUN a declared workflow end-to-end via `guild/run.py`, or invoke the frame/plan/efficiency/leveling primitives | SELECTING which workflow (→ `members-formation`) or AUTHORING one (→ `workflow-forge`) | `skillsmith`, `guild-conformity` |
 
 **Universal skills — every member carries these; drill them at the edges of every quest:**
 

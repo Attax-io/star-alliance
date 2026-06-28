@@ -121,5 +121,6 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`volume-price-analysis`](star-alliance-skills/volume-price-analysis/SKILL.md) | 1.0.0 | own | 137 / 1020 | 1067 / 55 | ✓ lean | The Merchant's read-only craft for Volume Price Analysis, distilled from Anna Coulling's A… |
 | [`weapon-utility`](star-alliance-skills/weapon-utility/SKILL.md) | 3.0.0 | own | 166 / 1009 | 4123 / 302 | ✓ lean | Every member's rule for which weapon (model) to draw and how thinker and doer weapons work… |
 | [`workflow-forge`](star-alliance-skills/workflow-forge/SKILL.md) | 1.3.0 | own | 153 / 997 | 1701 / 102 | ✓ lean | The Strategist's craft for distilling a finished run into a reusable star-map workflow in … |
+| [`workflow-runner`](star-alliance-skills/workflow-runner/SKILL.md) | 1.0.0 | own | 123 / 875 | 1100 / 90 | ✓ lean | The Quartermaster's craft for operating the guild's own machinery — RUN a star-map workflo… |
 
-_92 skills — 87 lean · 4 large (installable, over the 500-line ideal) · 1 near the word ceiling · 0 hard violations._
+_93 skills — 88 lean · 4 large (installable, over the 500-line ideal) · 1 near the word ceiling · 0 hard violations._

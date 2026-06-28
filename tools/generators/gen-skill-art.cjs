@@ -377,6 +377,10 @@ const SKILLS = [
     id: "negotiation-deal-strategy",
     prompt: `${STYLE}. A Fallen-Sword emblem on dark aged leather: two golden hands clasping over a deal-table, a sword laid flat as the agreed line, a BATNA-anchor and a ZOPA-band glowing beneath, a concession-ladder and a sealed deal-memo to the side — the Herald's advisory craft of the negotiated deal, never a signature given, no text, no watermarks`,
   },
+  {
+    id: "workflow-runner",
+    prompt: `${STYLE}. A Fallen-Sword emblem on dark aged leather: a golden control-console with a glowing play-lever, a star-map workflow-scroll feeding through it step by step — script-cogs, prose-quills, and a halting approval-gate rune — a run-summary scroll spooling out the bottom, a sword as the master lever — the Quartermaster craft of running the guild own machinery, no text, no watermarks`,
+  },
 ];
 
 function postJSON(url, headers, body) {
