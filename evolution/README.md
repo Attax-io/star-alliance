@@ -72,6 +72,23 @@ python3 evolution/scoreboard.py        # read the fitness scoreboard
 python3 evolution/ledger.py tail -n 20 # inspect the event stream
 ```
 
+## Evaluated, not changed — small-diff auto-critic skip (2026-06-28)
+
+The gate runs a synchronous ~150s cold critic in the Stop hook on every
+source-touching turn. A proposed optimization was to skip the auto-critic for
+small interactive diffs (< N changed lines) and defer them to routine-time
+grounded review, to keep interactive UX snappy.
+
+**Decision: not adopted.** A line-count threshold is a poor proxy for risk — the
+regression that motivated this whole engine was a *small* diff that shipped
+unreviewed through Strategic Audit. Auto-skipping small diffs would re-open exactly
+that hole, and "defer to routine-time review" reintroduces the un-closed-loop the
+audit found (review that is owed but never happens). The latency is already opt-out:
+`SA_AUTO_CRITIC=0` falls back to manual review for fast interactive work, and
+`SA_SKIP_VERIFY=1` bypasses one turn. Coverage stays diff-size-agnostic up to the
+60KB cold-critique cap (above which it escalates to grounded review, never skips).
+Revisit only if a cheaper/faster local critic makes per-turn latency a non-issue.
+
 ## Migration — the strangler (do NOT big-bang)
 
 Ripping out the old gate before the new loop works would remove the only thing

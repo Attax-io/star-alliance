@@ -588,17 +588,24 @@ function renderStarMap(query) {
   if (unknown) console.warn(`[map] unknown workflow id "${reqId}" — falling back to default`);
   const accent = ACCENT[wf.accent] || "var(--cyan)";
   return `${viewHead("Operations", "Star Map",
-      `A workflow is just a set of repeated steps the Star Alliance follow to get a job done. Hover a star to read ${esc(wf.name)}'s role — the power core traces the active workflow.`)}
-    <div class="starmap-wrap glass" style="--accent:${accent}">
-      ${buildConstellation(wf)}
-      <a class="starmap-readmore" href="#/workflows/${esc(wf.id)}" aria-label="Open the full ${esc(wf.name)} workflow page">
-        <span class="srm-icon" aria-hidden="true">📖</span> Read more
-      </a>
-    </div>
-    <p class="flow-hint">Hover a star for its role · pick a workflow below to trace it on the map · <strong>Read more</strong> opens the active workflow's full page.</p>
-    ${unknown ? `<div class="flow-note">Unknown flow — showing the default.</div>` : ""}
-    <div class="cp-toolbar"><button class="cp-new" data-new="workflow" type="button">+ New workflow</button></div>
-    ${flowChips(wf.id)}`;
+      `Members plotted by model tier — the power core traces the active workflow. Pick a workflow on the right to trace it; hover a star to read ${esc(wf.name)}'s role.`)}
+    <div class="starmap-layout">
+      <div class="starmap-wrap glass" style="--accent:${accent}">
+        ${buildConstellation(wf)}
+        <a class="starmap-readmore" href="#/workflows/${esc(wf.id)}" aria-label="Open the full ${esc(wf.name)} workflow page">
+          <span class="srm-icon" aria-hidden="true">📖</span> Read more
+        </a>
+      </div>
+      <aside class="starmap-side" aria-label="Workflows">
+        <div class="starmap-side-head">
+          <span class="ss-title">Workflows</span>
+          <button class="cp-new" data-new="workflow" type="button">+ New</button>
+        </div>
+        ${unknown ? `<div class="flow-note">Unknown flow — showing the default.</div>` : ""}
+        ${flowChips(wf.id)}
+        <p class="flow-hint">Pick a workflow to trace it on the map · <strong>Read more</strong> opens its full page.</p>
+      </aside>
+    </div>`;
 }
 
 // Accent name → CSS color. There is no --blue token, so map it to a literal.

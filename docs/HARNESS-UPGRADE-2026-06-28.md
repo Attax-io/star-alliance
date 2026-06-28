@@ -45,11 +45,19 @@ the independent reviewer) sat idle. These changes close that gap.
 
 ### Wave C — independent verification armed by default
 - The `verify-gate` (HARNESS-BOOKS 9.9 — "never grade your own work") was opt-in via
-  a touch-file and shipped **off**. It is now **armed by default**
-  (`.claude/state/verify-gate-armed`). A turn that changed source code cannot close
-  until a different member/model has reviewed the working-tree diff and recorded the
-  pass: `python3 .claude/hooks/verify_hash.py > .claude/state/verify-pass`.
-- **Controls:** one-turn bypass `SA_SKIP_VERIFY=1`; disarm `rm .claude/state/verify-gate-armed`.
+  a touch-file and shipped **off**. It is now **armed by default** — no enable file.
+  A turn that changed source code cannot close until an independent critic (the
+  Evolution Engine's VERIFY organ) reviews the working-tree diff; on pass/concerns
+  the gate auto-records the pass, on block it stops the commit.
+- **Controls:** one-turn bypass `SA_SKIP_VERIFY=1`; manual-only `SA_AUTO_CRITIC=0`;
+  disarm `touch evolution/DISARMED` (or `.claude/state/verify-gate-disarmed`).
+- **Migration (2026-06-28 hardening):** the old enable file
+  `.claude/state/verify-gate-armed` is **retired** — it no longer arms anything and
+  was removed from the repo. `turn-finalize.sh` previously gated its "skip commit
+  while blocked" logic on that file's presence; with the gate armed-by-default it now
+  mirrors verify-gate.py's own disarm conditions (`evolution/DISARMED`,
+  `verify-gate-disarmed`, `SA_SKIP_VERIFY=1`) instead, so a blocked turn still commits
+  nothing. See the Evolution Engine (`evolution/README.md`).
 
 ### Wave D — real member sub-agents (costume → crew, core increment)
 - **`guild/install_agents.py`** (new) generates one real Claude Code agent file per

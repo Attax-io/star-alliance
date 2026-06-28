@@ -24,8 +24,8 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import sys
-from collections import Counter
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
@@ -51,15 +51,36 @@ def _turncost_trend(recent_n: int = 10) -> dict:
         except Exception:
             pass
     outs = [r.get("out", 0) for r in rows if isinstance(r.get("out", 0), (int, float))]
-    if len(outs) < 2:
-        return {"recent_mean_out": None, "prior_mean_out": None, "delta_pct": None}
+    # Need a FULL prior window AND a full recent window before a trend is meaningful.
+    # With fewer than 2*recent_n rows the old code let prior fall through to the same
+    # rows as recent (pm==rm → delta 0.0%), so the >40% cost-trend proposal could
+    # never fire in early usage. Report "insufficient data" explicitly instead.
+    if len(outs) < 2 * recent_n:
+        return {"recent_mean_out": None, "prior_mean_out": None,
+                "delta_pct": None, "note": f"insufficient data (<{2 * recent_n} turns)"}
     recent = outs[-recent_n:]
-    prior = outs[-2 * recent_n:-recent_n] or outs[:-recent_n] or recent
+    prior = outs[-2 * recent_n:-recent_n]
     rm = sum(recent) / len(recent)
-    pm = sum(prior) / len(prior) if prior else rm
-    delta = ((rm - pm) / pm * 100.0) if pm else 0.0
+    pm = sum(prior) / len(prior)
+    # pm==0 would force delta to 0.0 and mask a real zero→nonzero jump (the same
+    # "trend silently never fires" failure this guard exists to prevent), so report
+    # it as undefined rather than a misleading 0%.
+    if not pm:
+        return {"recent_mean_out": round(rm), "prior_mean_out": round(pm),
+                "delta_pct": None, "note": "prior window all-zero — trend undefined"}
+    delta = (rm - pm) / pm * 100.0
     return {"recent_mean_out": round(rm), "prior_mean_out": round(pm),
             "delta_pct": round(delta, 1)}
+
+
+def _learning_key(text: str) -> str:
+    """Fuzzy clustering key for a learning detail. Lowercase, keep alphanumeric
+    tokens >2 chars, dedupe + sort — so near-duplicate frictions ('grep misses
+    utf8 files' vs 'UTF-8 files: grep silently misses') collapse to ONE recurring
+    signal instead of exact-string-only matching, which never clusters reworded
+    repeats. Conservative on purpose: a sorted token SET, not a loose substring."""
+    toks = sorted({t for t in re.findall(r"[a-z0-9]+", text.lower()) if len(t) > 2})
+    return " ".join(toks)
 
 
 def score(since: str | None = None) -> dict:
@@ -80,10 +101,20 @@ def score(since: str | None = None) -> dict:
     escapes = [b for b in blocks
                if b.get("diff_hash") in committed and b["ts"] > committed[b["diff_hash"]]]
 
-    # repeated learnings: identical detail text seen more than once.
-    ltexts = Counter((e.get("detail") or "").strip().lower()
-                     for e in learnings if (e.get("detail") or "").strip())
-    repeated = {k: n for k, n in ltexts.items() if n > 1}
+    # repeated learnings: cluster by a normalized token key so reworded/reordered
+    # near-duplicates of the same friction count together, not only exact repeats.
+    # Keyed by the fuzzy key; displayed by the first real wording seen in that group.
+    groups: dict[str, dict] = {}
+    for e in learnings:
+        detail = (e.get("detail") or "").strip()
+        if not detail:
+            continue
+        key = _learning_key(detail)
+        if not key:
+            continue
+        g = groups.setdefault(key, {"count": 0, "sample": detail})
+        g["count"] += 1
+    repeated = {g["sample"]: g["count"] for g in groups.values() if g["count"] > 1}
 
     n_changes = len(changes) or 1
     concerns = [v for v in verdicts if v.get("verdict") == "concerns"]
@@ -131,8 +162,11 @@ def _cli():
     print(f"  repeated learnings: {len(s['repeated_learnings'])}")
     print(f"  tier-B pending    : {s['tierB_pending']} (awaiting human go)")
     ct = s["cost_trend"]
-    print(f"  cost trend        : recent {ct['recent_mean_out']} vs prior "
-          f"{ct['prior_mean_out']} out-tok ({ct['delta_pct']}%)")
+    if ct.get("delta_pct") is None:
+        print(f"  cost trend        : {ct.get('note', 'insufficient data')}")
+    else:
+        print(f"  cost trend        : recent {ct['recent_mean_out']} vs prior "
+              f"{ct['prior_mean_out']} out-tok ({ct['delta_pct']}%)")
     print(f"  → {s['verdict']}")
 
 

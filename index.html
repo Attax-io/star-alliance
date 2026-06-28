@@ -9,19 +9,14 @@
   <link rel="stylesheet" href="app.css">
   <!-- Critical boot styles: paint the deep-space background before app.css loads, so there is never a white flash. -->
   <style>
-    html { background: #07090f; }
+    html { background: #06080f; }
     body { margin: 0; color: #e8ecf5; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif; }
     #app:empty::after { content: "Booting console…"; display: block; padding: 18vh 0; text-align: center; color: #5a6480; letter-spacing: .12em; }
   </style>
 </head>
 <body>
-  <!-- Deep-space background: starfield layers live entirely in CSS. -->
-  <div id="starfield" aria-hidden="true">
-    <span class="star-layer l1"></span>
-    <span class="star-layer l2"></span>
-    <span class="star-layer l3"></span>
-    <span class="nebula"></span>
-  </div>
+  <!-- Flat ink backdrop — a single calm gradient lives in CSS (#starfield), no animated starfield. -->
+  <div id="starfield" aria-hidden="true"></div>
 
   <a class="skip-link" href="#app">Skip to content</a>
 

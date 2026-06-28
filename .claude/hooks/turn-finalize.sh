@@ -11,12 +11,15 @@
 #      git log reads as a ledger of WHAT each turn did, not "auto: session turn".
 #      Commit only; never push (push still needs an explicit ask).
 #
-# It ALSO honors the independent-verification gate: when that gate is ARMED, this
-# hook is a SIBLING Stop command and used to commit even while verify-gate blocked
-# (exit 2 stops the Stop event but does NOT abort sibling hooks — git log proved
-# it committed mid-block). So before committing we re-run the SAME source-changed
-# check; if armed + source changed this turn + unverified, we skip the commit,
-# making the gate's "nothing is committed while blocked" guarantee actually true.
+# It ALSO honors the independent-verification gate, which is now ARMED BY DEFAULT
+# (the old opt-in .claude/state/verify-gate-armed touch-file is retired). This hook
+# is a SIBLING Stop command and would commit even while verify-gate blocked (exit 2
+# stops the Stop event but does NOT abort sibling hooks — git log proved it committed
+# mid-block). So unless the gate is disarmed (mirror verify-gate.py's own conditions:
+# evolution/DISARMED, .claude/state/verify-gate-disarmed, or SA_SKIP_VERIFY=1) we
+# re-run the SAME source-changed check; if source changed this turn + unverified, we
+# skip the commit, making the gate's "nothing is committed while blocked" guarantee
+# actually true.
 #
 # Fails OPEN (exit 0) on everything — a broken finalize must never block Stop.
 # ─────────────────────────────────────────────────────────────────────────────
@@ -25,17 +28,29 @@ repo=$(git rev-parse --show-toplevel 2>/dev/null) || exit 0
 state="$repo/.claude/state"
 pending="$state/build-pending"
 
-# 0. Honor the verify-gate (opt-in). Mirror verify-gate.py's allow condition so a
-#    blocked turn commits NOTHING: stand down only when source changed this turn
-#    (cur != baseline) AND it was not independently verified (cur != verify-pass).
-if [ -f "$state/verify-gate-armed" ] && [ "${SA_SKIP_VERIFY:-}" != "1" ]; then
+# 0. Honor the verify-gate (armed by default). Mirror verify-gate.py's allow
+#    condition so a blocked turn commits NOTHING. The gate auto-records a pass
+#    (writes verify-pass) on pass/concerns; on BLOCK it writes no pass, so a turn
+#    whose fingerprint matches a real baseline but neither that baseline nor the
+#    recorded pass is a blocked turn — stand down. This re-implements verify-gate.py's
+#    disarm conditions + baseline-absent fail-open in sh; the two are maintained in
+#    lock-step (keep this block in sync when the gate's disarm set changes).
+#    NOTE: SA_AUTO_CRITIC=0 is deliberately NOT a disarm — in that mode the gate takes
+#    the manual path and BLOCKS until a human records verify-pass, so skipping the
+#    commit here is correct (work stays in the tree, nothing is lost).
+disarmed=0
+[ -f "$repo/evolution/DISARMED" ] && disarmed=1
+[ -f "$state/verify-gate-disarmed" ] && disarmed=1
+[ "${SA_SKIP_VERIFY:-}" = "1" ] && disarmed=1
+if [ "$disarmed" != "1" ]; then
   cur=$(python3 "$repo/.claude/hooks/verify_hash.py" 2>/dev/null)
   case "$cur" in
     CLEAN|NOREPO|"") : ;;                       # no source change → safe to commit
     *)
       base=$(cat "$state/verify-baseline" 2>/dev/null)
       pass=$(cat "$state/verify-pass" 2>/dev/null)
-      if [ "$cur" != "$base" ] && [ "$cur" != "$pass" ]; then
+      # base empty → gate fails open (no turn-start baseline); don't skip the commit.
+      if [ -n "$base" ] && [ "$cur" != "$base" ] && [ "$cur" != "$pass" ]; then
         echo "[turn-finalize] verify-gate armed + source changed this turn and unverified — commit skipped" >&2
         exit 0
       fi ;;
