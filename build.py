@@ -399,6 +399,10 @@ def build_member(agent: dict, meta: dict, errors: list[str], seats: dict, models
     mid = agent["id"]
     brain = agent.get("model")
     seats_obj, weapons = derive_member_arsenal(brain, seats, models, errors)
+    # Check if Hermes profile exists for this member (migration: dashboard)
+    hermes_home = os.environ.get("HERMES_HOME", str(Path.home() / ".hermes"))
+    profile_name = "star-alliance-butler" if mid == "the-butler" else f"star-alliance-{mid.replace('the-', '')}"
+    hermes_profile = (Path(hermes_home) / "profiles" / profile_name / "AGENTS.md").exists()
     return {
         "id": mid,
         "name": meta.get("name", mid),
@@ -417,6 +421,7 @@ def build_member(agent: dict, meta: dict, errors: list[str], seats: dict, models
         "does": meta.get("does", []),
         "doesnt": meta.get("doesnt", []),
         "skills": agent["skills"],
+        "hermes_profile": profile_name if hermes_profile else None,
     }
 
 

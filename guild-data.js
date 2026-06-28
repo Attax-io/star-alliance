@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 58,
       "patch": 78
     },
-    "generated": "2026-06-28T17:37:29Z",
+    "generated": "2026-06-28T20:20:14Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -159,6 +159,7 @@ const GUILD = {
         "star-alliance-language",
         "weapon-utility"
       ],
+      "hermes_profile": "star-alliance-architect",
       "levelInfo": {
         "earned": "Master",
         "qualified": true,
@@ -436,6 +437,7 @@ const GUILD = {
         "star-alliance-language",
         "weapon-utility"
       ],
+      "hermes_profile": "star-alliance-developer",
       "levelInfo": {
         "earned": "Master",
         "qualified": true,
@@ -701,6 +703,7 @@ const GUILD = {
         "star-alliance-language",
         "weapon-utility"
       ],
+      "hermes_profile": "star-alliance-designer",
       "levelInfo": {
         "earned": "Master",
         "qualified": true,
@@ -970,6 +973,7 @@ const GUILD = {
         "star-alliance-language",
         "weapon-utility"
       ],
+      "hermes_profile": "star-alliance-strategist",
       "levelInfo": {
         "earned": "Master",
         "qualified": true,
@@ -1228,6 +1232,7 @@ const GUILD = {
         "star-alliance-language",
         "weapon-utility"
       ],
+      "hermes_profile": "star-alliance-translator",
       "levelInfo": {
         "earned": "Advanced",
         "qualified": true,
@@ -1514,6 +1519,7 @@ const GUILD = {
         "star-alliance-language",
         "weapon-utility"
       ],
+      "hermes_profile": "star-alliance-herald",
       "levelInfo": {
         "earned": "Master",
         "qualified": true,
@@ -1783,6 +1789,7 @@ const GUILD = {
         "star-alliance-language",
         "weapon-utility"
       ],
+      "hermes_profile": "star-alliance-merchant",
       "levelInfo": {
         "earned": "Elite",
         "qualified": true,
@@ -2081,6 +2088,7 @@ const GUILD = {
         "portability-audit",
         "project-start"
       ],
+      "hermes_profile": "star-alliance-quartermaster",
       "levelInfo": {
         "earned": "Advanced",
         "qualified": true,
@@ -2280,7 +2288,7 @@ const GUILD = {
         "lines": 55,
         "words": 519
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-designer"
       ]
@@ -2321,7 +2329,7 @@ const GUILD = {
         "lines": 135,
         "words": 1138
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-developer",
         "the-herald",
@@ -2363,7 +2371,7 @@ const GUILD = {
         "lines": 111,
         "words": 942
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-herald"
       ]
@@ -2407,7 +2415,7 @@ const GUILD = {
         "lines": 52,
         "words": 1016
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-merchant"
       ]
@@ -2445,7 +2453,7 @@ const GUILD = {
         "lines": 100,
         "words": 1159
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-architect"
       ]
@@ -2558,7 +2566,7 @@ const GUILD = {
         "lines": 205,
         "words": 1868
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-developer"
       ]
@@ -2650,7 +2658,7 @@ const GUILD = {
         "lines": 65,
         "words": 1106
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-merchant"
       ]
@@ -2693,7 +2701,7 @@ const GUILD = {
         "lines": 133,
         "words": 1920
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-developer"
       ]
@@ -2806,7 +2814,7 @@ const GUILD = {
         "lines": 122,
         "words": 1094
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-merchant"
       ]
@@ -2846,7 +2854,7 @@ const GUILD = {
         "lines": 133,
         "words": 1178
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-developer"
       ]
@@ -2887,7 +2895,7 @@ const GUILD = {
         "lines": 166,
         "words": 1337
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-developer"
       ]
@@ -3046,7 +3054,7 @@ const GUILD = {
         "lines": 388,
         "words": 7346
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-strategist"
       ]
@@ -3084,7 +3092,7 @@ const GUILD = {
         "lines": 112,
         "words": 1103
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-translator"
       ]
@@ -3159,7 +3167,7 @@ const GUILD = {
         "lines": 38,
         "words": 1264
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-merchant"
       ]
@@ -3362,7 +3370,7 @@ const GUILD = {
         "lines": 57,
         "words": 532
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-designer"
       ]
@@ -3406,7 +3414,7 @@ const GUILD = {
         "lines": 106,
         "words": 1274
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-designer"
       ]
@@ -3444,7 +3452,7 @@ const GUILD = {
         "lines": 89,
         "words": 816
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-developer"
       ]
@@ -3523,7 +3531,7 @@ const GUILD = {
         "lines": 65,
         "words": 1412
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-merchant"
       ]
@@ -3562,7 +3570,7 @@ const GUILD = {
         "lines": 151,
         "words": 1584
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-developer"
       ]
@@ -3799,7 +3807,7 @@ const GUILD = {
         "lines": 133,
         "words": 1295
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-quartermaster"
       ]
@@ -3834,7 +3842,7 @@ const GUILD = {
         "lines": 82,
         "words": 742
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-quartermaster"
       ]
@@ -3877,7 +3885,7 @@ const GUILD = {
         "lines": 160,
         "words": 1505
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-strategist"
       ]
@@ -3912,7 +3920,7 @@ const GUILD = {
         "lines": 41,
         "words": 498
       },
-      "global": false,
+      "global": true,
       "members": []
     },
     {
@@ -4020,7 +4028,7 @@ const GUILD = {
         "lines": 76,
         "words": 819
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-designer",
         "the-herald"
@@ -4087,7 +4095,7 @@ const GUILD = {
         "lines": 172,
         "words": 1793
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-designer"
       ]
@@ -4126,7 +4134,7 @@ const GUILD = {
         "lines": 50,
         "words": 672
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-architect",
         "the-translator"
@@ -4176,7 +4184,7 @@ const GUILD = {
         "lines": 59,
         "words": 965
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-merchant"
       ]
@@ -4257,7 +4265,7 @@ const GUILD = {
         "lines": 104,
         "words": 898
       },
-      "global": false,
+      "global": true,
       "members": []
     },
     {
@@ -4363,7 +4371,7 @@ const GUILD = {
         "lines": 51,
         "words": 444
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-quartermaster"
       ]
@@ -4478,7 +4486,7 @@ const GUILD = {
         "lines": 51,
         "words": 408
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-quartermaster"
       ]
@@ -4532,7 +4540,7 @@ const GUILD = {
         "lines": 179,
         "words": 1307
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-designer",
         "the-developer"
@@ -4574,7 +4582,7 @@ const GUILD = {
         "lines": 153,
         "words": 1470
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-developer"
       ]
@@ -4614,7 +4622,7 @@ const GUILD = {
         "lines": 55,
         "words": 1150
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-herald"
       ]
@@ -4654,7 +4662,7 @@ const GUILD = {
         "lines": 164,
         "words": 1416
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-developer"
       ]
@@ -4744,7 +4752,7 @@ const GUILD = {
         "lines": 141,
         "words": 1204
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-quartermaster"
       ]
@@ -4782,7 +4790,7 @@ const GUILD = {
         "lines": 110,
         "words": 944
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-architect"
       ]
@@ -4820,7 +4828,7 @@ const GUILD = {
         "lines": 94,
         "words": 711
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-designer"
       ]
@@ -4897,7 +4905,7 @@ const GUILD = {
         "lines": 103,
         "words": 578
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-quartermaster"
       ]
@@ -4934,7 +4942,7 @@ const GUILD = {
         "lines": 54,
         "words": 834
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-merchant"
       ]
@@ -4982,7 +4990,7 @@ const GUILD = {
         "lines": 62,
         "words": 1084
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-merchant"
       ]
@@ -5036,7 +5044,7 @@ const GUILD = {
         "lines": 68,
         "words": 1318
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-merchant"
       ]
@@ -5070,7 +5078,7 @@ const GUILD = {
         "lines": 55,
         "words": 262
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-quartermaster"
       ]
@@ -5123,7 +5131,7 @@ const GUILD = {
         "lines": 46,
         "words": 431
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-developer"
       ]
@@ -5236,7 +5244,7 @@ const GUILD = {
         "lines": 57,
         "words": 1202
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-strategist"
       ]
@@ -5313,7 +5321,7 @@ const GUILD = {
         "lines": 172,
         "words": 2264
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-architect"
       ]
@@ -5353,7 +5361,7 @@ const GUILD = {
         "lines": 168,
         "words": 1439
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-quartermaster",
         "the-strategist"
@@ -5455,7 +5463,7 @@ const GUILD = {
         "lines": 157,
         "words": 1396
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-architect"
       ]
@@ -5494,7 +5502,7 @@ const GUILD = {
         "lines": 110,
         "words": 912
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-architect",
         "the-designer",
@@ -5736,7 +5744,7 @@ const GUILD = {
         "lines": 159,
         "words": 1313
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-developer"
       ]
@@ -5780,7 +5788,7 @@ const GUILD = {
         "lines": 181,
         "words": 1579
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-merchant"
       ]
@@ -5820,7 +5828,7 @@ const GUILD = {
         "lines": 63,
         "words": 1120
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-merchant"
       ]
@@ -5943,7 +5951,7 @@ const GUILD = {
         "lines": 127,
         "words": 1223
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-designer"
       ]
@@ -5981,7 +5989,7 @@ const GUILD = {
         "lines": 86,
         "words": 915
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-designer"
       ]
@@ -6051,7 +6059,7 @@ const GUILD = {
         "lines": 49,
         "words": 392
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-quartermaster"
       ]
@@ -6096,7 +6104,7 @@ const GUILD = {
         "lines": 54,
         "words": 1067
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-merchant"
       ]
@@ -6223,7 +6231,7 @@ const GUILD = {
         "lines": 89,
         "words": 1100
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-quartermaster"
       ]

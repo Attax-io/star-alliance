@@ -312,6 +312,23 @@ def main():
     except Exception:
         pass
 
+    # === HP — ~/.hermes/profiles/star-alliance-*/AGENTS.md are GENERATED from
+    # star-alliance-members (the SSOT). Same drift rule as AG but for Hermes
+    # profiles. install_agents.py --check reports drift for both destinations.
+    # We only add a distinct failure if the drift is in the hermes path (the .claude
+    # check above already covers .claude paths).
+    try:
+        _r = _sp.run(["python3", str(ROOT / "guild/install_agents.py"), "--check"],
+                     capture_output=True, text=True, timeout=30)
+        for _ln in _r.stdout.splitlines():
+            if "(hermes" in _ln and "DRIFT" in _ln:
+                _m = re.search(r"DRIFT\s+(\S+)\s+\(hermes", _ln)
+                if _m:
+                    fails.append(f"HP hermes profile '{_m.group(1)}' AGENTS.md drifted from "
+                                 f"star-alliance-members (SSOT) — run: python3 guild/install_agents.py")
+    except Exception:
+        pass
+
     # === LITE — workflows-lite.json is GENERATED from workflows.json (SSOT); never
     # hand-edit. gen_workflows_lite.py --check is the authority.
     try:
