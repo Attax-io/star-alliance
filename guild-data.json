@@ -7,7 +7,7 @@
       "minor": 58,
       "patch": 78
     },
-    "generated": "2026-06-28T12:24:42Z",
+    "generated": "2026-06-28T12:27:55Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -3365,7 +3365,7 @@
       "scripts": [],
       "stats": {
         "lines": 387,
-        "words": 8600
+        "words": 8138
       },
       "global": false,
       "members": [

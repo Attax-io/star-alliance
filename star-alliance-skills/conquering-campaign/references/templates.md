@@ -11,6 +11,33 @@ Templates are grouped by mode. The campaign-plan template has audit and build va
 
 ---
 
+## Frontmatter (master field reference)
+
+SKILL.md §Step 2 carries the always-required fields; this is the full field catalog. Plans inventing undocumented fields = noise.
+
+**Always:** `mode`, `scope`, `status` (`planning→in-progress→completed|superseded`), `approval_cadence`, `current_phase`, `phases_completed`, `phases_remaining`.
+
+**As applicable:**
+- `standing_instructions` (verbatim, when ≥2 campaigns/session — #31)
+- `predecessor`
+- `campaign_folder_root` + `vault_log_root` + `claude_md_path` + `wikilink_convention` (monorepo — §0.0.5)
+- `w0_enabled` + `w0_useful` + `w0_note`
+- `preview_verification` (`yes|user-owned|blocked-by-auth|partial|n/a`) + reason
+- `verification_recipe`
+- `verification_class` (`render|interactive|contrast-measured|content-only|static|code-only`)
+- `generation_strategy` (`deferred-parallel-subagents|inline` when a phase emits >5KB)
+- `forced_gate` (per-phase state machine: `pending|true|satisfied — Q "<header>" → "<answer>"|false`)
+- `pN_result:` (one-line per closed phase — the only programmatic record when per-phase files are trimmed)
+- `pivot_class`
+- `g0_override` (reason — present only when the user insisted on a campaign for sub-bar work, §Pre-flight G0)
+- `branch_data_status` (`populated|empty|unknown` — #79)
+- `scope_truncated` (what+where, if context forced a partial — #74)
+- `goal_line` (the `/goal` condition emitted at plan approval, for `--resume` re-paste — §Step 2)
+- `workflow_available` (`yes|no|unknown` — §0.7 Workflow-tool probe) + `workflow_emitted` (the emitted-script run-handle/path, or a §0.7 skip reason — the two EMIT artifacts sit beside `goal_line`)
+- Swarm phases: the `swarm` object rides in the workflow step, not the plan frontmatter; record the per-phase swarm outcome in `pN_result:` (n_workers, partition, re-dispatches). See [[decompose-and-swarm]].
+
+---
+
 ## W0 output file — both modes
 
 Path: `docs/<mode>-campaigns/<YYYY-MM-DD>_<topic>/00-w0-offline-prescan.md`
