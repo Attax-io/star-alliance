@@ -6,11 +6,17 @@ there. This is the single command that makes that easy. It wraps the proven
 installer and the dashboard server; nothing here re-implements them.
 
 Usage:
+  star-alliance deploy   --to /path/to/project [--all] [--domain ID]
+        FULL gated guild into another project: members + skills + arsenal PLUS the
+        harness brain (routing/spawn/safety gates + workflows + plain-English nudge +
+        activity log + settings wiring). The Butler routes and spawns gated helpers
+        there, speaking plain English. Same as: install --with-harness.
+        (Settings are auto-wired only if the target has no hooks yet; otherwise the
+        exact snippet is printed for you to paste — never clobbered.)
+
   star-alliance install  --to /path/to/project [--all] [--domain ID] [--dev]
-        Install members + skills + arsenal into another project (the proven path).
-        The Butler and helpers work there as agents; the cheap-engine offload works.
-        NOTE: this does NOT yet carry the full gate machinery (hooks/workflows/
-        evolution) — that "full gated guild" deploy is the remaining roadmap piece.
+        Thin install — members + skills + arsenal only, no gates. Use --with-harness
+        to add the gated brain (that's what `deploy` does).
 
   star-alliance status   --to /path/to/project
   star-alliance uninstall --to /path/to/project [--dry-run]
@@ -43,6 +49,8 @@ def main(argv: list[str]) -> int:
     cmd, rest = argv[0], argv[1:]
     install_py = str(REPO / "tools" / "install.py")
 
+    if cmd == "deploy":
+        return run([sys.executable, install_py, "install", "--with-harness", *rest])
     if cmd in ("install", "status", "uninstall"):
         return run([sys.executable, install_py, cmd, *rest])
     if cmd == "serve":
@@ -64,7 +72,7 @@ def main(argv: list[str]) -> int:
         rc2 = run([sys.executable, str(sync), "--check"]) if sync.exists() else 0
         return rc1 or rc2
 
-    print(f"star-alliance: unknown command '{cmd}'. Try: install status uninstall serve doctor")
+    print(f"star-alliance: unknown command '{cmd}'. Try: deploy install status uninstall serve doctor")
     return 2
 
 

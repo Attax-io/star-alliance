@@ -68,6 +68,103 @@ except Exception:  # keep install.py usable even if skillsmith moves
         return None
 
 ARSENAL_FILES = ["summon.py", "minimax.py", "ollama_cloud.py", "models-usage.json"]
+
+# --- the portable GATED HARNESS (--with-harness) -------------------------------
+# The curated set that makes the Butler really route + spawn gated helpers in a
+# TARGET project, speaking plain English. Deliberately EXCLUDES this repo's self
+# machinery (build.py, the self-critic verify-gate, auto-commit turn-finalize,
+# cost telemetry) — a target project owns its own build/commit/review flow.
+HARNESS_HOOKS = [
+    "sa-pretool.py", "workflow-gate.py", "high-alert.py", "okf-gate.py",
+    "stop-line-gate.py", "weapon-gate.py", "destructive-gate.py", "turn-start.py",
+    "plain-english-nudge.py", "workflow-banner-enforcer.py", "verify_hash.py",
+    "guild-routing-gate.sh",
+]
+HARNESS_EVOLUTION = ["signals.py", "ledger.py"]   # high-alert/gates emit signals here
+# data the gates read at runtime, copied to the target ROOT (paths the hooks expect)
+HARNESS_ROOT_FILES = ["workflows.json", "guild-data.json"]
+
+
+def harness_hooks_block() -> dict:
+    """The curated settings.json hooks wiring for a target project. References
+    $CLAUDE_PROJECT_DIR so it resolves against the TARGET, not this repo."""
+    def cmd(rel):
+        ext = "sh" if rel.endswith(".sh") else "py"
+        runner = "sh" if ext == "sh" else "python3"
+        return {"type": "command",
+                "command": f'{runner} "$CLAUDE_PROJECT_DIR/.claude/hooks/{rel}"'}
+    return {
+        "UserPromptSubmit": [{"hooks": [cmd("guild-routing-gate.sh"), cmd("turn-start.py")]}],
+        "PreToolUse": [{"matcher": "*", "hooks": [cmd("sa-pretool.py")]}],
+        "Stop": [{"hooks": [cmd("plain-english-nudge.py"), cmd("workflow-banner-enforcer.py")]}],
+    }
+
+
+def install_harness(repo: Path, to: Path, dry: bool) -> dict:
+    """Copy the gated-harness files into the target and wire (or print) settings.
+    Returns a manifest dict for the stamp. Additive + idempotent."""
+    claude = to / ".claude"
+    landed = {"hooks": [], "evolution": [], "root_files": [], "arsenal": [],
+              "settings_hooks": "skipped", "state_dir": False}
+    if dry:
+        print(f"   + harness hooks → {claude/'hooks'}  ({len(HARNESS_HOOKS)} files)")
+        print(f"   + workflows.json + guild-data.json → {to}")
+        print(f"   + star-alliance-arsenal/models.json → {to/'star-alliance-arsenal'}")
+        print(f"   + evolution/ (signals.py, ledger.py, ledger.jsonl) → {to/'evolution'}")
+        print(f"   + settings.json hooks wiring (UserPromptSubmit/PreToolUse/Stop) "
+              f"+ STAR_ALLIANCE_ROOT, IF target has no hooks (else printed)")
+        return landed
+
+    # 1. hooks
+    (claude / "hooks").mkdir(parents=True, exist_ok=True)
+    for h in HARNESS_HOOKS:
+        src = repo / ".claude" / "hooks" / h
+        if src.exists():
+            shutil.copy2(src, claude / "hooks" / h)
+            landed["hooks"].append(h)
+    # 2. evolution signal writer + a writable ledger
+    (to / "evolution").mkdir(parents=True, exist_ok=True)
+    for e in HARNESS_EVOLUTION:
+        src = repo / "evolution" / e
+        if src.exists():
+            shutil.copy2(src, to / "evolution" / e)
+            landed["evolution"].append(e)
+    led = to / "evolution" / "ledger.jsonl"
+    if not led.exists():
+        led.write_text("")
+    # 3. root data files the gates read
+    for f in HARNESS_ROOT_FILES:
+        src = repo / f
+        if src.exists():
+            shutil.copy2(src, to / f)
+            landed["root_files"].append(f)
+    # 4. models.json where weapon-gate looks: <root>/star-alliance-arsenal/models.json
+    (to / "star-alliance-arsenal").mkdir(parents=True, exist_ok=True)
+    msrc = repo / "star-alliance-arsenal" / "models.json"
+    if msrc.exists():
+        shutil.copy2(msrc, to / "star-alliance-arsenal" / "models.json")
+        landed["arsenal"].append("models.json")
+    # 5. state dir for per-turn sentinels
+    (claude / "state").mkdir(parents=True, exist_ok=True)
+    landed["state_dir"] = True
+    # 6. settings.json hooks wiring — safe: only auto-wire if target has NO hooks
+    sp = claude / "settings.json"
+    cur = json.loads(sp.read_text()) if sp.exists() else {}
+    block = harness_hooks_block()
+    if not cur.get("hooks"):
+        if sp.exists():
+            shutil.copy2(sp, claude / "settings.json.bak")
+        cur["hooks"] = block
+        cur.setdefault("env", {})["STAR_ALLIANCE_ROOT"] = str(to)
+        sp.write_text(json.dumps(cur, indent=2, ensure_ascii=False) + "\n")
+        landed["settings_hooks"] = "wired"
+    else:
+        print("   ! target settings.json already has a 'hooks' block — NOT merged "
+              "(would risk double-firing). Add these manually:")
+        print(json.dumps({"hooks": block,
+                          "env": {"STAR_ALLIANCE_ROOT": str(to)}}, indent=2))
+        landed["settings_hooks"] = "manual"
+    return landed
 ARSENAL_PERMS = [
     "Bash(python3 .claude/arsenal/summon.py:*)",
     "Bash(python3 .claude/arsenal/minimax.py:*)",
@@ -196,7 +293,8 @@ def harness_version(repo: Path) -> str:
 
 
 # --- commands -------------------------------------------------------------------
-def do_install(repo: Path, to: Path, domain, want_all, dev, do_global, dry, no_settings):
+def do_install(repo: Path, to: Path, domain, want_all, dev, do_global, dry, no_settings,
+               with_harness=False):
     members, skills, miss_m, miss_s = resolve_set(repo, domain, want_all)
     skills_src = repo / "star-alliance-skills"
     members_src = repo / "star-alliance-members"
@@ -219,6 +317,8 @@ def do_install(repo: Path, to: Path, domain, want_all, dev, do_global, dry, no_s
         print(f"   arsenal → {claude/'arsenal'}")
         if not no_settings:
             print(f"   settings.json += {len(ARSENAL_PERMS)} arsenal perms (union, backed up)")
+        if with_harness:
+            install_harness(repo, to, dry=True)
         return 0
 
     # members → agents/
@@ -247,6 +347,8 @@ def do_install(repo: Path, to: Path, domain, want_all, dev, do_global, dry, no_s
 
     added = [] if no_settings else merge_settings(claude, dry=False)
 
+    harness = install_harness(repo, to, dry=False) if with_harness else None
+
     if do_global:
         gskills = Path.home() / ".claude" / "skills"
         for s in skills:
@@ -268,11 +370,15 @@ def do_install(repo: Path, to: Path, domain, want_all, dev, do_global, dry, no_s
             "arsenal": arsenal_installed,
         },
         "settings_added": added,
+        "harness": harness,
     }
     (claude / ".harness-version.json").write_text(json.dumps(stamp, indent=2, ensure_ascii=False) + "\n")
 
     print(f"   ✓ agents: {len(members)}   skills: {len(skills)} ({'symlinked' if dev and did_symlink else 'copied'})"
           f"   arsenal: {len(arsenal_installed)} item(s)")
+    if harness:
+        print(f"   ✓ harness: {len(harness['hooks'])} hooks, evolution+ledger, "
+              f"workflows.json+guild-data.json+models.json, settings={harness['settings_hooks']}")
     if dev and did_copy and did_symlink:
         print("   ! some items fell back to copy (symlink not permitted on this target)")
     if added:
@@ -324,6 +430,34 @@ def do_uninstall(to: Path, dry: bool):
     print("   - arsenal/")
     if not dry:
         rm_path(claude / "arsenal")
+    # harness files (only what we recorded installing)
+    harness = st.get("harness")
+    if harness:
+        print("   - harness (hooks/evolution/root data files)")
+        if not dry:
+            for h in harness.get("hooks", []):
+                rm_path(claude / "hooks" / h)
+            for e in harness.get("evolution", []):
+                rm_path(to / "evolution" / e)
+            for f in harness.get("root_files", []):
+                rm_path(to / f)
+            for a in harness.get("arsenal", []):
+                rm_path(to / "star-alliance-arsenal" / a)
+            # tidy now-empty dirs we may have created
+            for d in (claude / "hooks", to / "evolution", to / "star-alliance-arsenal"):
+                if d.is_dir() and not any(d.iterdir()):
+                    d.rmdir()
+            # if WE wired the settings hooks block, remove it (we wrote it, we own it)
+            if harness.get("settings_hooks") == "wired" and (claude / "settings.json").exists():
+                s = json.loads((claude / "settings.json").read_text())
+                s.pop("hooks", None)
+                env = s.get("env", {})
+                if env.get("STAR_ALLIANCE_ROOT") == str(to):
+                    env.pop("STAR_ALLIANCE_ROOT", None)
+                    if not env:
+                        s.pop("env", None)
+                (claude / "settings.json").write_text(json.dumps(s, indent=2, ensure_ascii=False) + "\n")
+                print("   - settings.json: removed wired hooks block + STAR_ALLIANCE_ROOT")
     # un-merge only the perms we added
     added = st.get("settings_added", [])
     if added and (claude / "settings.json").exists():
@@ -355,6 +489,9 @@ def main():
     ap.add_argument("--global", dest="do_global", action="store_true",
                     help="also mirror installed skills into ~/.claude/skills")
     ap.add_argument("--no-settings", action="store_true", help="don't touch settings.json")
+    ap.add_argument("--with-harness", action="store_true",
+                    help="also install the gated harness (hooks + workflows + signals + "
+                         "settings wiring) so the Butler routes/spawns gated helpers there")
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args()
 
@@ -375,7 +512,8 @@ def main():
     if domain is None and not a.all and not a.domain:
         print("install: no domain matched --to path; installing EVERYTHING. "
               "Use --domain <id> to scope, or --all to silence this.")
-    return do_install(repo, to, domain, a.all, a.dev, a.do_global, a.dry_run, a.no_settings)
+    return do_install(repo, to, domain, a.all, a.dev, a.do_global, a.dry_run, a.no_settings,
+                      with_harness=a.with_harness)
 
 
 if __name__ == "__main__":
