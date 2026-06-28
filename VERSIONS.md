@@ -68,7 +68,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`guild-reflection`](star-alliance-skills/guild-reflection/SKILL.md) | 1.1.0 | own | 148 / 1020 | 1295 / 134 | ✓ lean | The Quartermaster's self-improvement engine — turn finished work into durable guild upgrad… |
 | [`guild-sync`](star-alliance-skills/guild-sync/SKILL.md) | 1.0.1 | own | 139 / 1014 | 742 / 83 | ✓ lean | The Quartermaster's device-parity craft — one sweep that proves every surface where the on… |
 | [`harness-efficiency`](star-alliance-skills/harness-efficiency/SKILL.md) | 1.2.0 | own | 150 / 1010 | 1303 / 143 | ✓ lean | The Strategist's craft for proving the Star Alliance harness actually saves tokens and tim… |
-| [`high-alert`](star-alliance-skills/high-alert/SKILL.md) | 2.0.0 | own | 90 / 596 | 353 / 35 | ✗ desc<> | The guild's deployment brief |
+| [`high-alert`](star-alliance-skills/high-alert/SKILL.md) | 2.0.1 | own | 90 / 611 | 389 / 40 | ✓ lean | The guild's deployment brief |
 | [`image-to-code`](star-alliance-skills/image-to-code/SKILL.md) | 1.0.0 | own | 80 / 555 | 5735 / 1225 | ○ large | Elite website image-to-code skill for Codex |
 | [`imagegen-frontend`](star-alliance-skills/imagegen-frontend/SKILL.md) | 1.0.0 | own | 139 / 985 | 819 / 77 | ✓ lean | The Designer's image-generation engine — generate premium design imagery with image-01, on… |
 | [`impeccable`](star-alliance-skills/impeccable/SKILL.md) | 3.0.7 | external | 118 / 895 | 1793 / 173 | ✓ lean | Use when the user wants to design, redesign, shape, critique, audit, polish, clarify, dist… |
@@ -123,4 +123,4 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`workflow-forge`](star-alliance-skills/workflow-forge/SKILL.md) | 1.3.0 | own | 153 / 997 | 1701 / 102 | ✓ lean | The Strategist's craft for distilling a finished run into a reusable star-map workflow in … |
 | [`workflow-runner`](star-alliance-skills/workflow-runner/SKILL.md) | 1.0.0 | own | 123 / 875 | 1100 / 90 | ✓ lean | The Quartermaster's craft for operating the guild's own machinery — RUN a star-map workflo… |
 
-_93 skills — 87 lean · 4 large (installable, over the 500-line ideal) · 1 near the word ceiling · 1 hard violations._
+_93 skills — 88 lean · 4 large (installable, over the 500-line ideal) · 1 near the word ceiling · 0 hard violations._

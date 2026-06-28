@@ -7,7 +7,7 @@
       "minor": 58,
       "patch": 78
     },
-    "generated": "2026-06-28T11:20:52Z",
+    "generated": "2026-06-28T11:23:44Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -4163,7 +4163,7 @@
     {
       "id": "high-alert",
       "name": "high-alert",
-      "version": "2.0.0",
+      "version": "2.0.1",
       "icon": "🚨",
       "art": "",
       "artPng": true,
@@ -4172,13 +4172,14 @@
       "ramp": "gray",
       "tabler": "ti-alert-triangle",
       "src": "own",
-      "desc": "The guild's deployment brief. The Butler opens every working turn with a short, professional, plain-English brief so the Guild Master always knows what is running: the workflow, which agents are deployed, how many, and each agent's models. Three announcements: ▸ Workflow — <name> (a workflows.json procedure begins), ▸ Skill — <name> (any Skill tool fires — hook-enforced via high-alert.py), and ▸ Agent deployed — The <Member> (<model>) (a member is dispatched). Always on, every session, no toggle. Triggers automatically — this skill documents the standing announcement contract and its hook.",
+      "desc": "The guild's deployment brief. The Butler opens every working turn with a short, professional, plain-English brief so the Guild Master always knows what is running: the workflow, which agents are deployed, how many, and each agent's models. Three announcements: the Workflow line names the workflows.json procedure that begins, the Skill line names any Skill tool that fires (hook-enforced via high-alert.py), and the Agent-deployed line names the member dispatched and its model. Always on, every session, no toggle. Triggers automatically — this skill documents the standing announcement contract and its hook.",
       "intro": "You exist so the Guild Master always knows what is running — in clean, professional, plain language. The Butler opens every working turn with a short deployment brief, then proceeds. Brief first, prose after. No insider jargon, no game-y wording, no clutter.",
       "sections": [
         "The deployment brief (open every working turn)",
         "The two auto-announcements",
         "When agents are listed",
-        "Rules"
+        "Rules",
+        "Changelog"
       ],
       "triggers": "always on, no invocation — fires automatically on workflow start, Skill tool use (hook-enforced), and member formation at routing STEP 1",
       "modes": "",
@@ -4186,8 +4187,8 @@
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 34,
-        "words": 353
+        "lines": 39,
+        "words": 389
       },
       "global": true,
       "members": [

@@ -1,8 +1,8 @@
 ---
 name: high-alert
-description: "The guild's deployment brief. The Butler opens every working turn with a short, professional, plain-English brief so the Guild Master always knows what is running: the workflow, which agents are deployed, how many, and each agent's models. Three announcements: ▸ Workflow — <name> (a workflows.json procedure begins), ▸ Skill — <name> (any Skill tool fires — hook-enforced via high-alert.py), and ▸ Agent deployed — The <Member> (<model>) (a member is dispatched). Always on, every session, no toggle. Triggers automatically — this skill documents the standing announcement contract and its hook."
+description: "The guild's deployment brief. The Butler opens every working turn with a short, professional, plain-English brief so the Guild Master always knows what is running: the workflow, which agents are deployed, how many, and each agent's models. Three announcements: the Workflow line names the workflows.json procedure that begins, the Skill line names any Skill tool that fires (hook-enforced via high-alert.py), and the Agent-deployed line names the member dispatched and its model. Always on, every session, no toggle. Triggers automatically — this skill documents the standing announcement contract and its hook."
 metadata:
-  version: 2.0.0
+  version: 2.0.1
 type: Skill
 
 ---
@@ -39,3 +39,8 @@ List each agent in the brief as it takes the field — the lead specialist when 
 - **Professional and plain.** No jargon, no emoji clutter, no "reports for duty / weapons / klaxon" wording.
 - Keep it short. The brief informs at a glance; it is not a transcript.
 - Both legacy and new forms are still accepted by the gates during transition, but always write the new clean brief.
+
+## Changelog
+
+- **2.0.1** — Rephrased the `description:` frontmatter to remove angle-bracket placeholders (Agent Skills validator rejects `<`/`>`); restored Cowork-installability. No behavior change.
+- **2.0.0** — Deployment-brief format: workflow line, agent list with models, two auto-announcements.
