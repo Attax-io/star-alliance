@@ -570,7 +570,7 @@
           "kind": "member",
           "actor": "the-architect",
           "title": "Hunt the Holes",
-          "act": "The Architect audits the security surface, pulls Supabase advisors, and maps every leak, missing policy, and over-broad grant.",
+          "act": "The Architect audits the security surface across the OWASP Top-10 lens: pulls Supabase advisors and maps every leak, missing RLS policy, and over-broad grant (A01); scans for hardcoded secrets/credentials (A02), injection and unvalidated input (A03), and outdated/vulnerable dependencies via npm audit (A06).",
           "produces": "vulnerability map",
           "exec": "spawn",
           "parallel": true
