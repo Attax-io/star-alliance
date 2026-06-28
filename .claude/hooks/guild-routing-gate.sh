@@ -85,6 +85,9 @@ This looks like a quick, easily-reversible change. Proportional path:
     Deploying 1 agent:
       • The <Member> — <planning model> (planning) · minimax-m3 (execution) · glm-5.2 (critic)
     then proceed — no approval halt needed for a trivially-reversible edit.
+    (Voice-only turn the Butler answers directly? He is NOT an agent — drop the
+    "Deploying agents" block and write: "Handled directly by the Butler — <model>.
+    No agents deployed.")
   • Hand any doer-grade bulk/transform work to a cheap doer
     (python3 star-alliance-arsenal/summon.py minimax-m3 "<prompt>").
   • ESCALATE TO FULL + HALT the instant the task actually touches anything
@@ -157,6 +160,17 @@ the Guild Master can read at a glance. Clean and plain — no insider jargon. Fo
   Deploying <N> agents:
     • The <Member> — <planning model> (planning) · <execution model> (execution) · <critic model> (critic)
     • The <Member> — <planning model> (planning) · <execution model> (execution) · <critic model> (critic)
+
+  THE BUTLER IS THE VOICE, NOT AN AGENT — never list him as a bullet under "Deploying
+  agents." He is the session persona who relays every turn; the "Deploying N agents"
+  block counts ONLY the specialists actually put on the field. For a CONVERSATION /
+  voice-only turn (a greeting, ack, or meta-question the Butler answers directly with no
+  specialist), there are zero deployed agents — so DROP the "Deploying agents" block
+  entirely and write just the two lines:
+    ▸ Workflow — Conversation
+    Handled directly by the Butler (the guild's voice) — <model>. No agents deployed.
+  Keep the honest model attribution (the model that actually answered); only the "agent"
+  label is wrong for the Butler.
 RULES:
   • The "▸ Workflow — <name>" line is mandatory and is the gate key (no workflow line →
     tools blocked). Name a real workflows.json entry.

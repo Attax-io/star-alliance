@@ -24,6 +24,10 @@
           "plain": "Blocks every tool until the turn has declared a star-map workflow banner. No banner, no action — this is the gate you keep seeing."
         },
         {
+          "name": "executor-enforce.py",
+          "plain": "Holds the executor seat to MiniMax M3 across TWO layers: (1) SPAWN — Task/Agent/Bash summon must resolve to model=minimax-m3, not haiku/glm/sonnet-as-doer; brain-tier Claude spawns pass. (2) BUTLER LOCK — on the MAIN session (CLAUDE_CODE_CHILD_SESSION unset), Edit/Write/MultiEdit/NotebookEdit are blocked entirely (subagents are exempt because they ARE the executor), Bash write commands (sed -i, cat >, rm, cp, mv, tee, touch, dd, echo >) are blocked, and MCP write-verb tools (create_/update_/delete_/insert_/drop_/truncate_/set_/put_/patch_/write_) are blocked. Read-only tools (Read/Glob/Grep/WebFetch/WebSearch/LS/TodoWrite) and MCP read-verb tools (get_/list_/fetch_/read_/find_/search_/query_/describe_/show_/view_/lookup_/select_) still pass through. The Butler can think, plan, and review — but it cannot mutate. One-call bypass: append SA_ALLOW_EXECUTOR to the prompt/command (logged as a solo-override). Kill switch: touch evolution/DISARMED or .claude/state/executor-enforce-disarmed."
+        },
+        {
           "name": "high-alert.py",
           "plain": "When a skill, workflow, or agent is invoked, fires the alert banners that announce it (the ⚡ and 🗺 klaxons)."
         },

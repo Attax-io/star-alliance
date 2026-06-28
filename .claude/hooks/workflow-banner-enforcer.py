@@ -72,7 +72,15 @@ def load_workflows():
         for s in it.get("steps", []) or []:
             if s.get("kind") == "member":
                 actor = s.get("actor")
-                if actor and actor != "you" and actor not in roster:
+                # The Butler is the guild's VOICE — the active session persona, present
+                # on every turn (he appears as the intake/report bookend in ~every
+                # workflow's cast). Like `you`, he is not a deployable agent and must
+                # NOT be the thing that satisfies "a specialist took the field." Excluding
+                # him (a) lets the voice-only Conversation lane pass on the workflow line
+                # alone — its roster becomes empty — and (b) strengthens the member check
+                # on real work turns by forcing a genuine specialist bullet. See the
+                # "Deploying agents" voice carve-out in guild-routing-gate.sh.
+                if actor and actor not in ("you", "the-butler") and actor not in roster:
                     roster.append(actor)
         out[nm.lower()] = roster
     return out
@@ -214,6 +222,10 @@ def main():
             "Pick the workflow from workflows.json — 'Conversation' for a greeting/ack/meta-"
             "question, 'Inquiry / Recon' for a read-only question; if none fits, run Workflow "
             "Forge.\n"
+            "VOICE-ONLY TURN: for 'Conversation' the Butler answers directly and is NOT an "
+            "agent — drop the 'Deploying agents' block and write just two lines:\n"
+            "    ▸ Workflow — Conversation\n"
+            "    Handled directly by the Butler (the guild's voice) — <model>. No agents deployed.\n"
         )
         sys.exit(2)
 
