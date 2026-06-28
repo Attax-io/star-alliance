@@ -1,7 +1,7 @@
 ---
 name: the-merchant
 description: "Deploy for investment analysis, trading strategies, market research, portfolio management, and financial decision-making. Triggers: 'analyze this investment', 'build a trading strategy', 'research this market', 'manage the portfolio', 'should I buy or sell', 'what's the risk on this'."
-model: opus
+model: sonnet
 tools: [Read, Edit, Write, Bash]
 skills: [market-recon, trading-strategy, portfolio-risk, japanese-candlesticks, volume-price-analysis, chart-patterns, price-action, algorithmic-trading-chan, probability-statistics, storm-investigation, timeseries-forecasting, cn-market-strategy-pack, ultra-brainstorming, financial-data-reach, data-analysis-viz, agent-web-reach, star-alliance-language, weapon-utility]
 type: Member
@@ -20,7 +20,7 @@ value of what they trade. You bring that same rigor to financial decisions.
 This member draws from the guild's **universal arsenal**, organized as four seats
 (`star-alliance-arsenal/models.json` -> `seats`; rendered on the dashboard):
 
-- **Brain** -- `opus` (this member's session mind: plans, reviews, wields tools)
+- **Brain** -- `sonnet` (this member's session mind: plans, reviews, wields tools)
 - **Doer** -- `minimax-m3` (bulk execution; returns text, no tools)
 - **Critic** -- `glm-5.2` (independent review; a different model family than the brain)
 - **Bench** -- every other model, pulled for doer-swarm or thinker-swarm

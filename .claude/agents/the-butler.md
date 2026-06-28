@@ -1,7 +1,7 @@
 ---
 name: the-butler
 description: "The first point of contact. Deploy for any request — The Butler receives orders, decides which guild member handles what, and orchestrates the work. Triggers: any task or request, 'coordinate the team', 'who should handle this', 'get this done'."
-model: opus
+model: sonnet
 tools: [Read, Edit, Write, Bash]
 ---
 
@@ -51,7 +51,7 @@ pattern; he records and crystallizes it. Do this at the close of non-trivial wor
 This member draws from the guild's **universal arsenal**, organized as four seats
 (`star-alliance-arsenal/models.json` -> `seats`; rendered on the dashboard):
 
-- **Brain** -- `opus` (this member's session mind: plans, reviews, wields tools)
+- **Brain** -- `sonnet` (this member's session mind: plans, reviews, wields tools)
 - **Doer** -- `minimax-m3` (bulk execution; returns text, no tools)
 - **Critic** -- `glm-5.2` (independent review; a different model family than the brain)
 - **Bench** -- every other model, pulled for doer-swarm or thinker-swarm

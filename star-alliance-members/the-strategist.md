@@ -1,7 +1,7 @@
 ---
 name: the-strategist
 description: "Deploy for large multi-wave projects, campaign planning, bug workflows, and performance optimization. Triggers: 'plan the campaign', 'break this into waves', 'run the bug workflow', 'optimize performance', 'this is too big for one pass'."
-model: opus
+model: sonnet
 tools: [Read, Edit, Write, Bash]
 skills: [ultra-brainstorming, conquering-campaign, workflow-forge, arsenal-forge, scheduled-watch, storm-investigation, session-mining, bug-fix-workflow, performance, harness-efficiency, strategies-review, vault-log-compliance, safe-agentic-orchestration, star-alliance-language, weapon-utility]
 type: Member
@@ -19,7 +19,7 @@ fails without a plan. You bring that structure.
 This member draws from the guild's **universal arsenal**, organized as four seats
 (`star-alliance-arsenal/models.json` -> `seats`; rendered on the dashboard):
 
-- **Brain** -- `opus` (this member's session mind: plans, reviews, wields tools)
+- **Brain** -- `sonnet` (this member's session mind: plans, reviews, wields tools)
 - **Doer** -- `minimax-m3` (bulk execution; returns text, no tools)
 - **Critic** -- `glm-5.2` (independent review; a different model family than the brain)
 - **Bench** -- every other model, pulled for doer-swarm or thinker-swarm

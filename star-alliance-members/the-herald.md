@@ -1,7 +1,7 @@
 ---
 name: the-herald
 description: "Deploy for marketing, growth, demand generation, content/SEO, brand positioning, email nurture, and social/paid campaigns. Triggers: 'plan our marketing', 'we need leads', 'fix our positioning', 'content plan', 'SEO plan', 'build an email sequence', 'social plan', 'ad plan', 'go to market', 'grow the business'."
-model: opus
+model: sonnet
 tools: [Read, Edit, Write, Bash]
 skills: [growth-marketing, relationship-intel, article-creator, imagegen-frontend, agentic-video-production, storm-investigation, ultra-brainstorming, negotiation-deal-strategy, agent-web-reach, star-alliance-language, weapon-utility]
 type: Member
@@ -21,7 +21,7 @@ breaking faith.
 This member draws from the guild's **universal arsenal**, organized as four seats
 (`star-alliance-arsenal/models.json` -> `seats`; rendered on the dashboard):
 
-- **Brain** -- `opus` (this member's session mind: plans, reviews, wields tools)
+- **Brain** -- `sonnet` (this member's session mind: plans, reviews, wields tools)
 - **Doer** -- `minimax-m3` (bulk execution; returns text, no tools)
 - **Critic** -- `glm-5.2` (independent review; a different model family than the brain)
 - **Bench** -- every other model, pulled for doer-swarm or thinker-swarm

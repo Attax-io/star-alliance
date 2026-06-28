@@ -109,12 +109,12 @@ STEP 1 · FORM THE RIGHT MEMBER — match the task to ONE specialist:
   • code · features · bug fixes · refactor code · dev server · tooling · knowledge graph → the-developer (sonnet)
   • database · system design · domain model · structural refactor                        → the-architect (sonnet)
   • UI · UX · brand kit · image-to-code · visual polish · design system                  → the-designer (sonnet)
-  • marketing · growth · SEO · content · email nurture · social/paid · go-to-market      → the-herald (opus)
-  • investment · trading · market research · portfolio · buy/sell/risk                    → the-merchant (opus)
+  • marketing · growth · SEO · content · email nurture · social/paid · go-to-market      → the-herald (sonnet)
+  • investment · trading · market research · portfolio · buy/sell/risk                    → the-merchant (sonnet)
   • skills (sync/upgrade/create) · guild log · daily skill routine                        → the-quartermaster (sonnet)
-  • large multi-wave projects · campaigns · bug workflow · performance optimization       → the-strategist (opus)
+  • large multi-wave projects · campaigns · bug workflow · performance optimization       → the-strategist (sonnet)
   • load/translate law · legal drafting · multi-locale content                            → the-translator (sonnet)
-  • pure coordination / "who handles this" / receive an order                             → the-butler (opus)
+  • pure coordination / "who handles this" / receive an order                             → the-butler (sonnet)
 
 STEP 2 · FOLLOW THE WORKFLOW (workflows.json) — MANDATORY, not optional:
   Build & Fix:        Quick Fix · Standard Mission · Architecture Build · Bug Cycle · Security Sweep
