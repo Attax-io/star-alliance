@@ -126,27 +126,39 @@ _Mined from full session history — 46 sessions hit this; it was the single mos
 
 ## Star Alliance MCP Server (guild gates as tools)
 
-The `star-alliance` MCP server (`server/star_alliance_mcp.py`) exposes 19 tools that replace the Claude Code hook system. The Butler calls them at the appropriate points:
+The `star-alliance` MCP server (`server/star_alliance_mcp.py`) exposes 19 tools that replace the Claude Code hook system. The Butler and Strategist call them at the appropriate points.
 
-| Tool | When | Replaces |
-|------|------|----------|
-| `sa_route_request(prompt)` | Start of each turn | guild-routing-gate.sh |
-| `sa_turn_start(profile, workflow?)` | Start of each turn | turn-start.py |
-| `sa_turn_cost(profile, model, tokens_in, tokens_out)` | End of each turn | turn-cost.py |
-| `sa_verify(diff?)` | Before finishing a turn that changed files | verify-gate.py |
-| `sa_delegation_check(bulk_bytes, doer_calls)` | End of each turn | delegation-gate.py |
-| `sa_thinker_check(profile, actual_model)` | Before Task/Agent dispatch | thinker-gate.py |
-| `sa_thinker_attest(profile, model, turn_id)` | End of each turn | thinker-attest.py |
-| `sa_destructive_check(command, confirm?)` | Before any bash write op | destructive-gate.py |
-| `sa_executor_check(profile, tools_used)` | End of each turn (Butler only) | executor-enforce.py |
-| `sa_turn_finalize(gates_passed)` | End of each turn (commit gate) | turn-finalize.sh |
+### The two-layer routing doctrine
+
+```
+Guild Master  ←→  Butler (voice/intake/approval/report)
+                    ↓
+                Strategist (the ROUTER — decides who handles what)
+                    ↓
+                [Architect | Developer | Designer | Translator | Herald | Merchant | Quartermaster]
+```
+
+**The Butler does NOT pick specialists.** He always dispatches to the Strategist. The Strategist decides which specialist(s) handle the work and sequences multi-wave campaigns.
+
+| Tool | Called by | When | Replaces |
+|------|-----------|------|----------|
+| `sa_route_request(prompt)` | Butler | Hand brief to Strategist (always routes to star-alliance-strategist) | guild-routing-gate.sh |
+| `sa_turn_start(profile, workflow?)` | All profiles | Start of each turn | turn-start.py |
+| `sa_turn_cost(profile, model, tokens_in, tokens_out)` | All profiles | End of each turn | turn-cost.py |
+| `sa_verify(diff?)` | All profiles | Before finishing a turn that changed files | verify-gate.py |
+| `sa_delegation_check(bulk_bytes, doer_calls)` | Strategist, Developer, Designer | End of each turn | delegation-gate.py |
+| `sa_thinker_check(profile, actual_model)` | Butler, Strategist | Before Task/Agent dispatch | thinker-gate.py |
+| `sa_thinker_attest(profile, model, turn_id)` | All profiles | End of each turn | thinker-attest.py |
+| `sa_destructive_check(command, confirm?)` | All profiles | Before any bash write op | destructive-gate.py |
+| `sa_executor_check(profile, tools_used)` | Butler | End of each turn (blocks Butler file-writes) | executor-enforce.py |
+| `sa_turn_finalize(gates_passed)` | All profiles | End of each turn (commit gate) | turn-finalize.sh |
 | `sa_build_mark()` | After any source edit | build-mark.py |
-| `sa_checkpoint_save(summary, decisions, remaining)` | On context save | context_save.py |
-| `sa_checkpoint_restore(stamp)` | On cold resume | context_restore.py |
-| `sa_snapshot(summary)` | Before context compression | precompact-snapshot.py |
-| `sa_plain_english_check(response)` | End of each turn | plain-english-nudge.py |
-| `sa_evolution_status()` / `_ledger` / `_scoreboard` | Any time | evolution/status.py + ledger.py + scoreboard.py |
-| `sa_skill_fingerprints_check()` | Weekly (cron) | skill_fingerprint.py --check |
+| `sa_checkpoint_save(summary, decisions, remaining)` | All profiles | On context save | context_save.py |
+| `sa_checkpoint_restore(stamp)` | All profiles | On cold resume | context_restore.py |
+| `sa_snapshot(summary)` | All profiles | Before context compression | precompact-snapshot.py |
+| `sa_plain_english_check(response)` | Butler | End of each turn | plain-english-nudge.py |
+| `sa_evolution_status()` / `_ledger` / `_scoreboard` | Quartermaster | Any time | evolution/status.py + ledger.py + scoreboard.py |
+| `sa_skill_fingerprints_check()` | Quartermaster | Weekly (cron) | skill_fingerprint.py --check |
 
 The MCP server fails OPEN on infra errors (mirrors verify-gate risk posture).
 - **Confusion Protocol** — for high-stakes ambiguity (architecture · data model · destructive scope · missing context), STOP. Name the confusion in one sentence, present 2–3 options with trade-offs, and ask. The Butler does this at STEP 0: if it can't produce a clean one-line restatement, it emits the options instead of rubber-stamping a misread task. Not for routine/obvious changes.

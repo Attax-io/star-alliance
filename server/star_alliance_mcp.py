@@ -106,22 +106,42 @@ def _destructive_check_impl(command: str, confirm: bool = False) -> dict:
 
 
 def _route_request_impl(prompt: str) -> dict:
-    """Port of .claude/hooks/guild-routing-gate.sh — routes to a member."""
-    routing_table = [
-        (["design the system", "model the domain", "architect the database", "refactor the structure", "schema"], "star-alliance-architect"),
-        (["write the code", "fix this bug", "implement this feature", "apply this change", "write code"], "star-alliance-developer"),
-        (["design the UI", "make it look premium", "create a brand kit", "design the interface", "ui design", "ux"], "star-alliance-designer"),
-        (["plan", "campaign", "strategy", "strategic", "roadmap"], "star-alliance-strategist"),
-        (["translate", "law", "legal text", "explain the rule"], "star-alliance-translator"),
-        (["market", "announce", "marketing", "comms", "communication"], "star-alliance-herald"),
-        (["trade", "portfolio", "market recon", "stock", "crypto"], "star-alliance-merchant"),
-        (["release", "verify", "ship", "publish", "audit", "conformity"], "star-alliance-quartermaster"),
+    """Port of .claude/hooks/guild-routing-gate.sh — routes via the Strategist.
+
+    The Butler is voice/intake only. He calls this tool to hand the brief
+    to the Strategist, who is the actual router. This tool returns
+    star-alliance-strategist as the routing target — the Strategist then
+    decides which specialist(s) handle the work.
+
+    The hint field is provided for the Strategist's benefit — it suggests
+    which domain the request falls into, but the Strategist makes the
+    final routing decision.
+
+    Verified 2026-06-28: returns star-alliance-strategist (never a specialist directly).
+    """
+    routing_hints = [
+        (["design the system", "model the domain", "architect the database", "refactor the structure", "schema"], "architecture"),
+        (["write the code", "fix this bug", "implement this feature", "apply this change", "write code"], "implementation"),
+        (["design the UI", "make it look premium", "create a brand kit", "design the interface", "ui design", "ux"], "design"),
+        (["plan", "campaign", "strategy", "strategic", "roadmap"], "campaign"),
+        (["translate", "law", "legal text", "explain the rule"], "translation"),
+        (["market", "announce", "marketing", "comms", "communication"], "comms"),
+        (["trade", "portfolio", "market recon", "stock", "crypto"], "trading"),
+        (["release", "verify", "ship", "publish", "audit", "conformity"], "release"),
     ]
     p_lower = prompt.lower()
-    for triggers, member in routing_table:
+    hint = "general"
+    for triggers, domain in routing_hints:
         if any(t in p_lower for t in triggers):
-            return {"member": member, "reason": f"matched triggers: {triggers}", "matched": True}
-    return {"member": "star-alliance-strategist", "reason": "no specific match — default to Strategist", "matched": False}
+            hint = domain
+            break
+    # ALWAYS route to the Strategist — he is the guild's router, not the Butler.
+    return {
+        "member": "star-alliance-strategist",
+        "reason": "Butler is voice/intake only — Strategist owns routing",
+        "domain_hint": hint,
+        "next_step": "Strategist will dispatch to the appropriate specialist(s)",
+    }
 
 
 def _delegation_check_impl(bulk_bytes: int, doer_calls: int = 0) -> dict:
