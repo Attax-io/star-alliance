@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 58,
       "patch": 76
     },
-    "generated": "2026-06-28T07:57:05Z",
+    "generated": "2026-06-28T07:59:18Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -29,7 +29,7 @@ const GUILD = {
     },
     "counts": {
       "members": 9,
-      "skills": 80,
+      "skills": 89,
       "domains": 3,
       "workflows": 33,
       "hooks": 7,
@@ -2697,6 +2697,40 @@ const GUILD = {
       ]
     },
     {
+      "id": "api-integration-design",
+      "name": "api-integration-design",
+      "version": "1.0.0",
+      "icon": "📦",
+      "art": "",
+      "artPng": false,
+      "blurb": "The Architect's craft for the API and integration boundary — designing the service contrac…",
+      "level": "Foundational",
+      "ramp": "gray",
+      "tabler": "",
+      "src": "own",
+      "desc": "The Architect's craft for the API and integration boundary — designing the service contract you expose (REST or GraphQL resource modeling, versioning, pagination, idempotency, error and status conventions, webhooks, auth) and integrating the third-party APIs you consume (rate-limit handling, backoff, timeouts, circuit-breaking, replay, contract testing). The seam between two systems is where most production failures live; this craft makes that seam explicit, versioned, idempotent, and resilient. Use when designing the API for a feature, integrating a third-party API, designing webhook delivery and verification, versioning an endpoint, or hardening a flaky integration. Triggers: 'design the API for X', 'integrate this third-party API', 'design these webhooks', 'version this endpoint', 'handle rate limits', 'add idempotency', 'make this integration resilient'. Differentiate from schema-evolution (the DB schema and its consumers, not the network contract), supabase (Supabase platform features, not API contract design), and transactions-domain-model (one fixed Lex domain, not the integration boundary).",
+      "intro": "You design the seam between systems. The Architect already models the database and the domain; this craft governs the boundary that crosses the network — both the contract you publish for others to call, and the third-party APIs you consume. A schema lives inside one process and one team; an API con",
+      "sections": [
+        "What it is / is not",
+        "Principles",
+        "References"
+      ],
+      "triggers": "",
+      "modes": "",
+      "disabled": false,
+      "refs": [
+        "contract-design.md",
+        "webhooks-and-events.md"
+      ],
+      "scripts": [],
+      "stats": {
+        "lines": 100,
+        "words": 1159
+      },
+      "global": false,
+      "members": []
+    },
+    {
       "id": "arsenal-forge",
       "name": "arsenal-forge",
       "version": "1.0.0",
@@ -2768,6 +2802,40 @@ const GUILD = {
         "the-herald",
         "the-translator"
       ]
+    },
+    {
+      "id": "automated-testing",
+      "name": "automated-testing",
+      "version": "1.0.0",
+      "icon": "📦",
+      "art": "",
+      "artPng": false,
+      "blurb": "Author automated tests for a modern web app — the JS/TS plus application layer, grounded i…",
+      "level": "Foundational",
+      "ramp": "gray",
+      "tabler": "",
+      "src": "own",
+      "desc": "Author automated tests for a modern web app — the JS/TS plus application layer, grounded in Next.js/TypeScript plus Supabase. Covers the four layers (unit with Vitest/Jest, component with Testing Library, integration against a real or seeded DB, and E2E with Playwright), the test pyramid and coverage strategy, what is worth testing and what is not, deterministic flake-free design, fixtures/mocks/factories, testing async and RLS-guarded data, and CI wiring. Use on 'write tests for this', 'add test coverage', 'set up Playwright', 'why is this test flaky', 'mock Supabase', 'test this server action', 'how do I test RLS'. Differs from bug-fix-workflow (fixes one known reported bug), performance (profiling/optimizing speed), and python-master (Python-library pytest only — this is the JS/TS and app layer).",
+      "intro": "The craft of building a test suite a team trusts — one that fails only when the product is broken, and whose green is worth believing. Grounded in the guild stack: Next.js + TypeScript + Supabase (Postgres + RLS), with Vitest/Jest for unit, Testing Library for components, real-DB integration tests, ",
+      "sections": [
+        "What it is",
+        "What it is not",
+        "Principles",
+        "References"
+      ],
+      "triggers": "",
+      "modes": "",
+      "disabled": false,
+      "refs": [
+        "test-pyramid-and-strategy.md"
+      ],
+      "scripts": [],
+      "stats": {
+        "lines": 171,
+        "words": 1555
+      },
+      "global": false,
+      "members": []
     },
     {
       "id": "bug-fix-workflow",
@@ -3016,6 +3084,40 @@ const GUILD = {
       ]
     },
     {
+      "id": "code-review-craft",
+      "name": "code-review-craft",
+      "version": "1.0.0",
+      "icon": "📦",
+      "art": "",
+      "artPng": false,
+      "blurb": "A deliberate, member-invoked code review of a diff, PR, or file…",
+      "level": "Foundational",
+      "ramp": "gray",
+      "tabler": "",
+      "src": "own",
+      "desc": "A deliberate, member-invoked code review of a diff, PR, or file. Reviews four dimensions — correctness bugs, security, simplification and reuse, and efficiency — tags each finding by severity, holds one finding per line, and grounds every finding in evidence: the cited line and the concrete failure case. Refuses scope creep and nitpick noise. Use on \"review this diff\", \"review my PR\", \"audit this file\", \"is this change safe\", \"look over my changes\". Differs from the automatic verify-gate hook, which runs unbidden on Stop as a critic — this is the human-asked craft. Differs from bug-fix-workflow, which fixes a known reported bug, and from security-audit, which sweeps one risk dimension; this opens the lens across all four and ends in a review-then-verify loop.",
+      "intro": "The craft of looking hard at code someone is about to ship — a diff, a PR, a single file — and returning a small set of findings that are **true, located, and worth acting on**. The reviewer is a second pair of eyes, not a linter and not a rubber stamp. The goal is to catch the bug that would have s",
+      "sections": [
+        "What it is",
+        "What it is not",
+        "Principles",
+        "References"
+      ],
+      "triggers": "",
+      "modes": "",
+      "disabled": false,
+      "refs": [
+        "review-dimensions.md"
+      ],
+      "scripts": [],
+      "stats": {
+        "lines": 118,
+        "words": 1068
+      },
+      "global": false,
+      "members": []
+    },
+    {
       "id": "codebase-memory-mcp",
       "name": "codebase-memory-mcp",
       "version": "1.0.0",
@@ -3217,6 +3319,40 @@ const GUILD = {
       ]
     },
     {
+      "id": "contract-review",
+      "name": "contract-review",
+      "version": "1.0.0",
+      "icon": "📦",
+      "art": "",
+      "artPng": false,
+      "blurb": "The Translator's inbound-review craft: read a contract or NDA the other side drafted, find…",
+      "level": "Foundational",
+      "ramp": "gray",
+      "tabler": "",
+      "src": "own",
+      "desc": "The Translator's inbound-review craft: read a contract or NDA the other side drafted, find where it is one-sided, unusual, or silent, and hand back a redline plus a risk-scored reviewer's report. Walk it clause by clause — indemnity, liability caps, IP assignment, termination, auto-renewal, governing law, confidentiality scope, non-compete — flag each as accept / negotiate / reject, score the deal's overall risk, and recommend concrete edits. This is advisory analysis, NOT binding legal advice and NOT a signature: it surfaces risk and proposes language for a qualified human to decide and sign. Triggers: 'review this contract', 'triage this NDA', 'redline this agreement', 'what's the risk in this clause', 'is this term standard', 'check this MSA'. Differs from legal-drafting (authoring our own outbound documents), codex-law-translate (translating enacted statutes into the codex), and legal-rule-modeling (formalizing a known statute into rules). May draw on legal:review-contract, legal:triage-nda, legal:legal-risk-assessment plugin knowledge.",
+      "intro": "You are the Translator reading a document someone else wrote and trying to get the better of us. The drafting party chooses every default in their own favour; the reviewer's whole job is to find where that has happened, name it plainly, and hand back language that pulls the deal back to fair. A sign",
+      "sections": [
+        "What it is / is not",
+        "Principles",
+        "How a review runs",
+        "References index"
+      ],
+      "triggers": "",
+      "modes": "",
+      "disabled": false,
+      "refs": [
+        "clause-checklist.md"
+      ],
+      "scripts": [],
+      "stats": {
+        "lines": 112,
+        "words": 1103
+      },
+      "global": false,
+      "members": []
+    },
+    {
       "id": "dashboard-parity",
       "name": "dashboard-parity",
       "version": "1.1.0",
@@ -3252,6 +3388,40 @@ const GUILD = {
       "members": [
         "the-quartermaster"
       ]
+    },
+    {
+      "id": "data-analysis-viz",
+      "name": "data-analysis-viz",
+      "version": "1.0.0",
+      "icon": "📦",
+      "art": "",
+      "artPng": false,
+      "blurb": "The Merchant's craft for turning a raw dataset — a CSV, a query result, a table — into an …",
+      "level": "Foundational",
+      "ramp": "gray",
+      "tabler": "",
+      "src": "own",
+      "desc": "The Merchant's craft for turning a raw dataset — a CSV, a query result, a table — into an analyzed, honestly visualized report. Runs exploratory data analysis: profile the columns, validate and clean, find the shape of the data, segment it, and pick the right chart for the question (distribution, comparison, trend, relationship, composition), then write a plain narrative of what was found and how confident to be. Visualizations obey axis integrity and reject chart-junk. Use for: 'analyze this data', 'explore this CSV', 'what does this dataset show', 'chart this', 'build a dashboard from this', 'summarize this table', 'find the trend / outliers / segments here'. May reference the data:* plugin knowledge. Differentiate from probability-statistics (inference theory — the math beneath this), graphify (knowledge graphs from arbitrary inputs), and market-recon (market narrative, not dataset EDA).",
+      "intro": "Take a dataset as it arrives — a CSV, a query return, a pasted table — and turn it into something a decision can rest on: a profiled, cleaned, understood set of columns; the right few charts for the questions being asked; summary numbers that hold up; and a short, honest narrative of what the data s",
+      "sections": [
+        "What it is / is not",
+        "Core principles (read these first)",
+        "How you work",
+        "Reference library"
+      ],
+      "triggers": "",
+      "modes": "",
+      "disabled": false,
+      "refs": [
+        "eda-workflow.md"
+      ],
+      "scripts": [],
+      "stats": {
+        "lines": 38,
+        "words": 1264
+      },
+      "global": false,
+      "members": []
     },
     {
       "id": "db-rename-sweep",
@@ -3536,6 +3706,76 @@ const GUILD = {
       "members": [
         "the-developer"
       ]
+    },
+    {
+      "id": "financial-data-reach",
+      "name": "financial-data-reach",
+      "version": "1.0.0",
+      "icon": "📦",
+      "art": "",
+      "artPng": false,
+      "blurb": "The Merchant's data-layer craft: acquire and clean the financial data his read-only analys…",
+      "level": "Foundational",
+      "ramp": "gray",
+      "tabler": "",
+      "src": "own",
+      "desc": "The Merchant's data-layer craft: acquire and clean the financial data his read-only analysis runs on — quotes and OHLCV, fundamentals, filings (10-K, 10-Q, 8-K), earnings and estimates, macro series, and news or sentiment. Choose a source per question, normalize and reconcile it, and keep it point-in-time correct (no look-ahead, no survivorship bias) while respecting rate limits and caching. It gathers and cleans data only — it never trades, transfers, or places an order. Triggers: 'pull the fundamentals for X', 'get the price history', 'fetch the latest filing', 'find macro data on Y', 'where do I get earnings estimates'. Differs from market-recon (synthesizes a written read; this feeds it), agent-web-reach (social and transcript scraping, not financial feeds), and probability-statistics (the math run on the data once it is clean).",
+      "intro": "You are the Merchant's supply line. Every read-only analysis he ships — a recon, a portfolio review, a backtest — stands on data someone had to acquire, clean, and date correctly. That someone is this craft. The Merchant's other skills read; this one fetches and reconciles the raw material they read",
+      "sections": [
+        "What it is / is not",
+        "The craft",
+        "Source classes at a glance",
+        "Sharpening the craft",
+        "Gotchas",
+        "References",
+        "Versioning",
+        "Changelog"
+      ],
+      "triggers": "",
+      "modes": "",
+      "disabled": false,
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 65,
+        "words": 1412
+      },
+      "global": false,
+      "members": []
+    },
+    {
+      "id": "frontend-react-engineering",
+      "name": "frontend-react-engineering",
+      "version": "1.0.0",
+      "icon": "📦",
+      "art": "",
+      "artPng": false,
+      "blurb": "DESCRIPTION_PLACEHOLDER",
+      "level": "Foundational",
+      "ramp": "gray",
+      "tabler": "",
+      "src": "own",
+      "desc": "DESCRIPTION_PLACEHOLDER",
+      "intro": "The craft of building React / Next.js (App Router, RSC) that survives production: code a real reviewer would merge, not a demo that renders once and rots. You are a senior product engineer who reasons about the render tree, the network waterfall, and the type contract before touching JSX — and who k",
+      "sections": [
+        "What it is",
+        "What it is NOT",
+        "Principles",
+        "References"
+      ],
+      "triggers": "",
+      "modes": "",
+      "disabled": false,
+      "refs": [
+        "component-architecture.md"
+      ],
+      "scripts": [],
+      "stats": {
+        "lines": 134,
+        "words": 1375
+      },
+      "global": false,
+      "members": []
     },
     {
       "id": "full-output-enforcement",
@@ -4496,6 +4736,41 @@ const GUILD = {
       "members": [
         "the-developer"
       ]
+    },
+    {
+      "id": "observability-incident-response",
+      "name": "observability-incident-response",
+      "version": "1.0.0",
+      "icon": "📦",
+      "art": "",
+      "artPng": false,
+      "blurb": "Keep a live service observable and respond when it breaks…",
+      "level": "Foundational",
+      "ramp": "gray",
+      "tabler": "",
+      "src": "own",
+      "desc": "Keep a live service observable and respond when it breaks. Covers the three signals (structured logs, RED/USE metrics, distributed traces), alerting thresholds tied to SLOs and error budgets, and the incident lifecycle: detect, triage, mitigate, resolve, then a blameless post-mortem with a runbook. Grounded in the guild stack (Next.js on Cloudflare/OpenNext Workers, Supabase/Postgres). Triggers: 'the app is down', 'triage this outage', 'set up alerting', 'write a runbook', 'post-mortem this incident', 'add logging', 'add metrics', 'what's our SLO', 'are we paging on the right thing'. Differs from dev-ops-command-pack (the deploy/rollback/release loop), performance (profiling and optimization of healthy code), and bug-fix-workflow (a single tracked bug in the table) — this is run-time visibility and the live-failure response that surrounds them.",
+      "intro": "The craft of running a service you can see into, and responding with calm discipline when it breaks. Observability is the standing investment — the instrumentation that lets you ask new questions of a live system without shipping new code. Incident response is the acute skill — the ordered loop that",
+      "sections": [
+        "What it is",
+        "What it is not",
+        "Generative principles",
+        "References"
+      ],
+      "triggers": "",
+      "modes": "",
+      "disabled": false,
+      "refs": [
+        "observability-signals.md",
+        "slos-and-alerting.md"
+      ],
+      "scripts": [],
+      "stats": {
+        "lines": 145,
+        "words": 1273
+      },
+      "global": false,
+      "members": []
     },
     {
       "id": "obsidian-markdown",
@@ -5719,6 +5994,37 @@ const GUILD = {
         "the-merchant",
         "the-strategist"
       ]
+    },
+    {
+      "id": "ux-copywriting",
+      "name": "ux-copywriting",
+      "version": "1.0.0",
+      "icon": "📦",
+      "art": "",
+      "artPng": false,
+      "blurb": "Write functional in-product copy — the words a user reads while operating an interface…",
+      "level": "Foundational",
+      "ramp": "gray",
+      "tabler": "",
+      "src": "own",
+      "desc": "Write functional in-product copy — the words a user reads while operating an interface. Covers microcopy (buttons, labels, tooltips, placeholders), state copy (error, empty, loading, success), onboarding and permission prompts, form help text, and confirmation or destructive-action wording, all held to one voice and tone and to plain-language accessibility. Use when the task is to write or fix the literal text inside a UI. Triggers: 'write the error message', 'microcopy for this button', 'empty-state copy', 'onboarding copy', 'reword this confirmation', 'what should this tooltip say', 'name this label'. NOT design-language (that is brand voice and world or lore narrative — how a product sounds, not what its controls say). NOT article-creator (long-form marketing or editorial content). NOT growth-marketing (campaigns, ads, lifecycle email). This is the smallest unit of product writing: the sentence on the button.",
+      "intro": "This is the craft of functional in-product copy: the text a person reads while using a product, not the text that sells it. A label, an error, an empty state, a confirm dialog — each is a tiny piece of interface that happens to be made of words. Write it so the user always knows what just happened, ",
+      "sections": [
+        "What it is / is not",
+        "Principles",
+        "References"
+      ],
+      "triggers": "",
+      "modes": "",
+      "disabled": false,
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 127,
+        "words": 1223
+      },
+      "global": false,
+      "members": []
     },
     {
       "id": "vault-log-compliance",

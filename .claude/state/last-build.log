@@ -1,5 +1,14 @@
 
-BUILD WARNINGS (8):
+BUILD WARNINGS (17):
+  ⚠ skill 'api-integration-design' has no skills-meta.json entry — using defaults
+  ⚠ skill 'automated-testing' has no skills-meta.json entry — using defaults
+  ⚠ skill 'code-review-craft' has no skills-meta.json entry — using defaults
+  ⚠ skill 'contract-review' has no skills-meta.json entry — using defaults
+  ⚠ skill 'data-analysis-viz' has no skills-meta.json entry — using defaults
+  ⚠ skill 'financial-data-reach' has no skills-meta.json entry — using defaults
+  ⚠ skill 'frontend-react-engineering' has no skills-meta.json entry — using defaults
+  ⚠ skill 'observability-incident-response' has no skills-meta.json entry — using defaults
+  ⚠ skill 'ux-copywriting' has no skills-meta.json entry — using defaults
   ⚠ domain 'lex-council-app' references member 'backend-auditor' not in the guild (external)
   ⚠ domain 'lex-council-app' references member 'cold-doc-rotator' not in the guild (external)
   ⚠ domain 'lex-council-app' references member 'frontend-auditor' not in the guild (external)
@@ -8,4 +17,4 @@ BUILD WARNINGS (8):
   ⚠ domain 'lex-council-app' references member 'pattern-detector' not in the guild (external)
   ⚠ domain 'lex-council-business' references member 'bd-research-agent' not in the guild (external)
   ⚠ domain 'lex-council-business' references member 'intake-agent' not in the guild (external)
-Wrote guild-data.js (566,403 bytes) + guild-data.json + skill-md.js (832,930 bytes, 80 skills) + workflow-md.js (70,369 bytes, 33 workflows)
+Wrote guild-data.js (583,516 bytes) + guild-data.json + skill-md.js (907,510 bytes, 89 skills) + workflow-md.js (70,369 bytes, 33 workflows)
