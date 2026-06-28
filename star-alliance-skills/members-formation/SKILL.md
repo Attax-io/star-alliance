@@ -2,7 +2,7 @@
 name: members-formation
 description: "The Butler's routing method — match an incoming request to the right star-map workflow in `workflows.json` and follow it. The Butler does not assemble a fresh team per mission; each workflow already names its members and their arrangement, so routing is a *selection* problem: read the request, scan the workflows' triggers, pick the one that fits, follow its steps. Use when the Butler receives an order and must decide which workflow to run. Triggers: 'route this', 'which workflow', 'who should handle this', 'how do we run this', 'pick the workflow', 'what's the play', or any incoming order that must be matched to a procedure. Only when NO existing workflow fits does the Butler fall back to forming a fresh formation (members + arrangement + gates) and hand it to the Quartermaster's Workflow Forge to crystallize. Workflow-selection first; formation-building is the fallback."
 metadata:
-  version: 1.2.0
+  version: 1.3.0
 type: Skill
 
 ---
@@ -111,9 +111,28 @@ wrong sequential call only costs a little time.
 | **Parallel** | A ∥ B (simultaneous) | slices are independent and disjoint |
 | **Fan-out / Fan-in** | split → A ∥ B ∥ C → merge | one input splits into independent slices, then recombines |
 | **Gated relay** | A → ⟨gate⟩ → B | a relay where a checkpoint must pass before the next member starts |
+| **Swarm** | A×N → A (inline) | N instances of ONE member, disjoint slices, followed by inline integration |
 
 Most real missions are a **gated relay with a parallel middle** (plan → design ∥ architect → build
 → verify).
+
+### Swarm — recognize and route; do NOT decompose here
+
+The **swarm** arrangement is recognized at routing time but **never decomposed here.** When a step
+in a matched workflow carries a `swarm` object, or when a fallback formation calls for N parallel
+instances of one member working on disjoint slices, the Butler **delegates entirely** to
+`[[decompose-and-swarm]]` — that skill owns every decomposition detail (worthiness gate, scout,
+slice-cutting, per-instance brief, fan-out, per-slice critic, integration).
+
+**members-formation's role with swarm:**
+- Read a `swarm` step in `workflows.json` → recognize it as a swarm stage → hand control to
+  `decompose-and-swarm`.
+- For a fallback formation, if the request is big enough and the slices are disjoint → mark the
+  step as a swarm candidate → hand the decomposition to `decompose-and-swarm`.
+- Never write the briefs, cut the slices, or run the fan-out yourself.
+
+Keep the decomposition logic OUT of members-formation. Routing chooses swarm as a pattern;
+`decompose-and-swarm` executes it.
 
 ## The gates — guild standard, baked into every workflow
 
@@ -196,6 +215,10 @@ MAJOR: method contract change). Regenerate `VERSIONS.md` with
 `python3 skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.
 
 ## Changelog
+- **1.3.0** — New **swarm arrangement** row in the formation patterns table + "Swarm — recognize
+  and route" section: members-formation recognizes `swarm` as a pattern and delegates all
+  decomposition to `[[decompose-and-swarm]]`; no decomposition logic lives here. New pattern row
+  + new section → MINOR.
 - **1.2.0** — New **failure-mode routing** section + `references/failure-mode-routing.md`: a table mapping every mid-work stuck (bug, missing spec, scope overflow, vague intent, high-stakes ambiguity, doer miss, no-workflow, missing-role) to a deterministic owner, so a blocked agent declares the failure mode instead of silently retrying. New section → MINOR.
 - **1.1.1** — Workflow-catalog fix: the Hygiene & Release row now lists **Compliance Audit** (the merged Conformity Sweep + OKF Tidy) instead of the old "Conformity Sweep". Wording/refs → PATCH.
 - **1.1.0** — Reframed around the Butler's true job: **workflow selection, not member assembly**.

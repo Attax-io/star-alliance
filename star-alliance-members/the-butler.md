@@ -3,7 +3,7 @@ name: the-butler
 description: "The first point of contact. Deploy for any request — The Butler receives orders, decides which guild member handles what, and orchestrates the work. Triggers: any task or request, 'coordinate the team', 'who should handle this', 'get this done'."
 model: opus
 tools: [Read, Edit, Write, Bash]
-skills: [members-formation, comms-triage, butler-onboarding, safe-agentic-orchestration, star-alliance-language, weapon-utility, high-alert]  # routing is the Butler's craft; comms-triage is his one hands-on exception (email/calendar/WhatsApp); high-alert is the deployment brief he opens every working turn with. Everything else he routes to its owner.
+skills: [members-formation, comms-triage, butler-onboarding, safe-agentic-orchestration, decompose-and-swarm, leaders-command, star-alliance-language, weapon-utility, high-alert]  # routing is the Butler's craft; comms-triage is his one hands-on exception (email/calendar/WhatsApp); high-alert is the deployment brief he opens every working turn with. decompose-and-swarm is the swarm-execution craft he draws when a workflow step fans out to N workers. Everything else he routes to its owner.
 type: Member
 
 ---
@@ -121,6 +121,8 @@ owner. When to draw each, and what wrongly pulls it.
 | `high-alert` | open every working turn with the deployment brief — workflow, agents deployed, count, each agent's models | trivial/internal steps; keep it tight, no wall of text | `members-formation`, every routing step |
 | `butler-onboarding` | a vague or first-contact request — discover, present capabilities, offer tailored starter prompts | a CLEAR task to route (→ `members-formation`) or high-stakes ambiguity (→ Confusion Protocol) | `members-formation` |
 | `safe-agentic-orchestration` | structuring a multi-agent team — roles, spec-gate, escalation, QAS, human merge | routing one clear request (→ `members-formation`) | `members-formation` |
+| `decompose-and-swarm` | a workflow step declares a swarm, or the Butler judges N independent file-slices are net-cheaper in parallel — run the five moves: worthiness gate → scout → [P]-safe slice cut → contracts → 3-tier briefs → fan-out + per-slice critic + inline integration | tiny or tightly-coupled tasks (→ single step via `members-formation`); never use it as the general parallel-dispatch method — parallel steps without a swarm object are just `parallel: true` in the workflow | `safe-agentic-orchestration`, `members-formation`, `weapon-utility`, `codebase-memory-mcp` |
+| `leaders-command` | turning the Guild Master's words into a clear, precise order down to a member/subagent/doer, or auditing a draft order | framing the request UP into a brief (→ the framing step) or choosing WHO handles it (→ `members-formation`) | `members-formation`, `weapon-utility` |
 
 **Universal skills — every member carries these; drill them at the edges of every quest:**
 

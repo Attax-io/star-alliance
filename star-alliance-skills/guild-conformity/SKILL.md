@@ -2,7 +2,7 @@
 name: guild-conformity
 description: "The Quartermaster's craft for proving the whole guild repo agrees with itself and with every logged decision, then reconciling any contradiction at its source. Wraps the read-only conformity_check.py (which emits a contradiction map across members, members-meta, skills, skills-meta, domains, workflows, the guild log, and the generated guild-data) plus fixing each real contradiction at its source of truth and rebuilding with build.py until the check passes clean. It is the closing step of every guild workflow and the spine of the Compliance Audit. Use when a workflow is closing, after any structural change, or when you need proof nothing contradicts. Triggers: 'run the conformity check', 'confirm guild conformance', 'does the repo agree with itself', 'conformity sweep', 'reconcile the guild data', 'is everything consistent'. Differentiate from cleanup (app/i18n hygiene) and skillsmith (skill versioning)."
 metadata:
-  version: 1.4.2
+  version: 1.5.0
 type: Skill
 
 ---
@@ -116,8 +116,16 @@ the [[skillsmith]] Invariant #9 coupling; the full conformity-close remains the 
 the harness-efficiency session, where a skill landed in two loadouts with no drill row and only the
 sweep-time SD flag caught it.)
 
+## Swarm-close
+
+When a workflow ran a `swarm` step (N worker instances on disjoint slices), the **ORCHESTRATOR**
+(the Butler) runs the conformity check ONCE after ALL workers finish — workers never run conformity
+themselves. Intermediate parallel states would fail (each worker sees only its slice, not the
+assembled repo). The Butler collects every slice, integrates, then calls this craft as the closing
+seal, exactly as in any other workflow. Nothing else changes.
+
 ## Versioning
-Own skill. Current: **1.4.2**. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new mode/section · MAJOR: method contract change). Regenerate `VERSIONS.md` with `python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.
+Own skill. Current: **1.5.0**. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new mode/section · MAJOR: method contract change). Regenerate `VERSIONS.md` with `python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.
 
 ## Member-table consistency check (1.3.0)
 
@@ -139,6 +147,7 @@ python3 conformity_check.py
 **Invariant to watch:** after any member `.md` edit, confirm `build.py` ran this turn (check `.claude/state/last-build.log`, or that `build-mark.py` (PostToolUse) + `turn-finalize.sh` (Stop) are wired in `settings.json`). If they are missing, flag it as a harness gap before closing.
 
 ## Changelog
+- **1.5.0** — Added §Swarm-close: the orchestrator (Butler) runs the conformity check ONCE after ALL swarm workers finish; workers never run it themselves (intermediate parallel states would fail). New section → MINOR.
 - **1.4.2** — Updated §Member-table consistency check to the current build chain (`build-mark.py` PostToolUse → `turn-finalize.sh` Stop); the old `member-table-sync.py` + `autocommit.sh` invariant was stale (those hooks are archived under `.claude/hooks/.deprecated/`). Refs → PATCH.
 - **1.4.1** — Reconciled the workflow rename: live references to the old "Conformity Sweep" workflow now read **Compliance Audit** (the merged Conformity Sweep + OKF Tidy workflow); historical/changelog mentions left intact. Wording/refs → PATCH.
 - **1.4.0** — New §The anti-drift family under "Adding a new invariant": names the reusable invariant *class* that locks a source-of-truth consolidation — `fallback == source` (FB), `sidecar ⊆ source` (MU), `asset-per-id` (WART), `prose == data` lint (RG). Each ties a copy you couldn't delete back to the SoT so it can't silently re-diverge; each still earns its negative test. Mined from the model-armory consolidation onto `star-alliance-arsenal/models.json` (the FB check is the guard that would have caught the original `app.js sonnet=doer` bug). Pairs with `schema-evolution` 1.1.0 §Consolidation. New section → MINOR.

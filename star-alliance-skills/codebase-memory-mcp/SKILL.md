@@ -2,7 +2,7 @@
 name: codebase-memory-mcp
 description: "Use this MCP code-intelligence engine to answer structural questions about a real repository: 'index this codebase', 'where is X defined', 'what calls Y', 'trace this call chain', 'impact of changing Z', 'find dead code', 'find near-duplicate code', 'map this repo's architecture', semantic by-behavior search, infrastructure-as-code (Docker/K8s/Kustomize) queries, cross-service gRPC/GraphQL/tRPC and pub-sub linking, cross-repo questions, and Cypher over a knowledge graph of functions, classes, routes, and resources. A fast external MCP server (single static binary, 158 languages via tree-sitter plus Hybrid LSP, 14 tools, semantic_query vector search, optional 3D graph UI at localhost:9749, ~120x fewer tokens than grep) that indexes a repo into a persistent graph the agent queries. Reach for it before fanning out greps/reads on any structural question. Differs from graphify, the guild's graph-building craft over arbitrary inputs; codebase-memory-mcp is code intelligence over one or many indexed repos."
 metadata:
-  version: 1.1.0
+  version: 1.2.0
 type: Skill
 ---
 
@@ -102,6 +102,42 @@ HTTP/gRPC/GraphQL route handles this", "which K8s/Docker resource configures thi
 UI". Any structural code-intelligence question over one or more real repositories you
 can index.
 
+## Swarm Decomposition Scout
+
+Before the Butler fans out a [[decompose-and-swarm]], it runs a **MOVE 0.5 scout pass**
+against the indexed repo to ground the partition in real structure rather than guesses.
+Four calls, ~3,400 tokens total (vs ~412,000 for file-by-file exploration):
+
+1. `get_architecture` — clusters = de-facto modules (often cross folder boundaries) = the
+   candidate slice set. Read cluster membership before drawing any boundary.
+2. `trace_path(boundary_symbol, "both")` — edges crossing the candidate boundary =
+   explicit coupling to declare as a seam in every worker brief. A dense crossing edge
+   count signals two clusters that must be sequenced, not swarmed.
+3. `query_graph "MATCH (a:File)-[:FILE_CHANGES_WITH]->(b:File) RETURN a.path, b.path"` —
+   latent co-change coupling invisible to import graphs (files that historically change
+   together even without a static call edge). If a and b land in different slices, the
+   partition is unsafe; re-draw or sequence those slices.
+4. `detect_changes(symbols)` — per-slice blast radius (CRITICAL/HIGH/MEDIUM/LOW) sizes
+   the seam and flags which boundary symbols must appear in the shared contract.
+
+**CLI usage (for scripted or Bash-driven scout passes):**
+
+```sh
+codebase-memory-mcp cli get_architecture '{"repo_path": "/abs/path/to/repo"}'
+codebase-memory-mcp cli trace_path '{"source": "BoundarySymbol", "direction": "both"}'
+codebase-memory-mcp cli query_graph '{"query": "MATCH (a:File)-[:FILE_CHANGES_WITH]->(b:File) RETURN a.path, b.path"}'
+codebase-memory-mcp cli detect_changes '{"symbols": ["Symbol1", "Symbol2"]}'
+```
+
+CLI mode (`codebase-memory-mcp cli tool_name json_args`) runs without the MCP session
+overhead and is the right choice when the Butler orchestrates the scout inside a Bash call.
+
+**Fallback.** If the repo is not yet indexed, run `index_repository` first. If the server
+is unavailable, the Butler falls back to manual directory analysis and must add an explicit
+coupling note to every worker brief.
+
+Cross-ref: [[decompose-and-swarm]] (the Butler's decomposition skill that calls this scout).
+
 ## References
 
 - `references/mcp-tools.md` — the 14 tools, each mapped to the question it answers,
@@ -119,6 +155,12 @@ can index.
 
 ## Changelog
 
+- **1.2.0** — **Swarm Decomposition Scout section.** Documents the Butler's MOVE 0.5
+  pre-partition scout: four calls (get_architecture, trace_path at the boundary,
+  FILE_CHANGES_WITH co-change Cypher, detect_changes blast radius) that ground slice
+  boundaries in real graph structure before fan-out. Adds CLI usage
+  (`codebase-memory-mcp cli tool json`) for Bash-driven scout passes. Cross-links
+  [[decompose-and-swarm]]. New usage section → MINOR.
 - **1.1.0** — Added the capabilities the skill omitted (grounded in the source README):
   `semantic_query` vector search as a distinct mode with the 11-signal scoring breakdown;
   `SIMILAR_TO` (MinHash/LSH) near-duplicate detection recipe; infrastructure-as-code

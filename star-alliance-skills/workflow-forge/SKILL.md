@@ -2,7 +2,7 @@
 name: workflow-forge
 description: "The Strategist's craft for distilling a finished run into a reusable star-map workflow in workflows.json. Recognise when a run is worth saving (a repeatable sequence not already on the map), draft the workflow object — id, name, icon, accent, category, tagline, a 'when' description, and steps[] (each step kind member or gate with actor, title, act, produces) — honouring the two hard guild standards (every workflow ends with the Butler 'report' gate; the last member step before it is the-quartermaster's conformance close), name the members and the weapon per step, then hand to the Quartermaster to register it and rebuild. Use when a run should become a repeatable workflow. Triggers: 'save this as a workflow', 'turn this run into a workflow', 'add this to the star map', 'crystallize this formation', 'register a workflow', 'workflow forge'. Differentiate from members-formation (the Butler's live routing — produces formations, not saved workflows) and skillsmith (skills, not workflows)."
 metadata:
-  version: 1.3.0
+  version: 1.4.0
 type: Skill
 
 ---
@@ -78,6 +78,75 @@ Keep a private ledger: workflow id, date forged, first re-use date, count of re-
 ## Versioning
 Own skill. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new mode/section · MAJOR: method contract change). Regenerate `VERSIONS.md` with `python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.
 
+## Authoring a swarm stage (1.4.0)
+
+A **swarm stage** is a group of steps that share the same `"stage": "<name>"` tag. The stage tag is
+optional and additive — any workflow without it behaves exactly as today.
+
+### When to tag steps with `stage`
+
+Tag a group of steps with `stage` when:
+- Two or more consecutive steps form a logical wave (e.g. `"build"`, `"review"`, `"release"`).
+- At least one step in the group declares a `swarm` object (the stage tag is required in that case
+  so SW4 can locate the integration step within the same stage).
+
+A workflow that has no swarm work does not need stage tags — they are purely additive sugar.
+
+### When to emit a `swarm` object
+
+Add a `swarm` object to a `kind:"member"` step when **all** of the following hold:
+- The work is big enough (~1.5k+ output tokens per instance).
+- The work is splittable into at least `min_instances` clean, **disjoint** slices (no shared files).
+- Slices do not need each other's in-progress state (loosely coupled).
+- N parallel Sonnet workers is cheaper than one Opus coordinator doing it serially.
+
+If any condition fails, omit `swarm` and run the step as a single spawn.
+
+The `swarm` object fields:
+```jsonc
+"swarm": {
+  "member": "the-developer",   // MUST equal the step's actor (SW1)
+  "max_instances": 4,          // 1 < n <= 5 (SW2)
+  "min_instances": 2,          // >= 2, <= max_instances (SW2)
+  "partition": "by-module",    // by-file | by-module | by-subtask (SW3)
+  "isolation": "shared-tree",  // shared-tree | worktree (SW3; worktree = deferred Wave 4)
+  "integration_step": true     // requires a following inline same-actor integration step (SW4)
+}
+```
+
+A step with `swarm` also carries `"exec": "spawn"` and `"parallel": true`.
+
+### Hard rule — SW4: swarm MUST be followed in-stage by an inline integration step
+
+When `integration_step: true`, the very next same-actor step in the **same `stage`** must be:
+```jsonc
+{
+  "kind": "member",
+  "actor": "<same actor>",
+  "exec": "inline",
+  "stage": "<same stage>",
+  "title": "Integrate the Modules"  // or equivalent
+}
+```
+
+This integration step is inline precisely so the Stop-hook Critic (glm-5.2) reviews the **aggregate
+diff** — not individual slices — before the commit. Never make it a spawn; a spawned integration step
+bypasses the inline verify-gate.
+
+### Conformity rules the forged workflow must pass (SW1–SW5)
+
+`conformity_check.py` enforces these automatically. When you author a swarm stage, verify each:
+
+| Rule | What it checks |
+|---|---|
+| **SW1** | `swarm.member` == the step's `actor` |
+| **SW2** | `1 < max_instances <= 5` and `2 <= min_instances <= max_instances` |
+| **SW3** | `partition` ∈ `{by-file, by-module, by-subtask}`; `isolation` ∈ `{shared-tree, worktree}` |
+| **SW4** | A swarm step with `integration_step:true` is followed **in the same `stage`** by an `exec:"inline"` step with the same `actor` |
+| **SW5** | `swarm.member` is a real guild member id (present in `guild-data.json`) |
+
+The SW guardrails are fail-soft: a crash in the swarm check never blocks the overall sweep.
+
 ## Cast validation after forge (1.3.0)
 
 After writing a new workflow to `workflows.json`, the `workflow-banner-enforcer.py` Stop hook reads the cast from `steps[].actor` and enforces that at least one member reports for duty each turn. A workflow with an actor name that does not match a `guild-data.json` member ID will silently never satisfy the enforcer — the turn will loop forever with the member gate firing.
@@ -102,6 +171,10 @@ print('cast check done')
 Gotcha: `the-butler`, `the-developer`, etc. — the `the-` prefix is the canonical member ID. Do not drop it or abbreviate it in the `actor` field. The enforcer normalizes via `_core()` (strips `the-`, lowercases), but `guild-data.json` lookup is exact-match.
 
 ## Changelog
+- **1.4.0** — New §Authoring a swarm stage: documents the `stage` tag, `swarm` object fields,
+  the SW4 hard rule (inline integration step must follow in-stage), and the SW1–SW5 conformity rules
+  every forged swarm workflow must pass. Pairs with `decompose-and-swarm` (the Butler's live
+  execution skill) and `guild/STEP-SCHEMA.md` (the canonical field reference).
 - **1.3.0** — New §Cast validation after forge: documents the cast-actor lookup gap (unknown actor → enforcer loops forever), adds a one-shot validation command to run after every `workflows.json` write, and calls out the `the-` prefix invariant. Prevents harness lock-up from a typo in `actor`.
 - **1.2.0** — Introduced the workflow **`class`** (`mutating` | `read-only`). The Quartermaster conformance-close is now required **only** for mutating workflows; read-only/advisory workflows end at the Butler report with the worker as the last step, and a ceremonial Quartermaster no-op close is now **rejected**. Stops force-fitting a conformance sweep onto conversation/research runs that change nothing.
 - **1.1.0** — Documented the **structured weapon fields** on member steps (`thinker`, `doers` with parallel `count`, `ultra`), now enforced by `build.py` + `conformity_check.py` and rendered on the dashboard. Step authoring names weapons as fields, not only prose.

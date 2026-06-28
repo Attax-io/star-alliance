@@ -2,7 +2,7 @@
 name: weapon-utility
 description: "Every member's rule for which weapon (model) to draw and how thinker and doer weapons work together. Thinker weapons read, plan, and prompt the doers; doer weapons do the job and return it; the thinker then reviews the result against the plan and re-prompts the doer until it conforms. A member draws the highest-priority AVAILABLE weapon of the kind the job needs — scanning its arsenal left to right. One thinker plans and reviews and may dispatch several doers in parallel (many of one model or a mix); only ultra-brainstorming runs several thinkers at once. Use whenever a member must pick a model, decide thinker-vs-doer, or run the plan → do → review loop. Triggers: 'which weapon', 'which model should X use', 'pick the weapon', 'thinker or doer', 'draw a weapon', 'run the weapon loop', 'how does the member choose its model'. Every member consults this before acting — it is the atomic layer beneath members-formation (which member works) and ultra-brainstorming (fuse several members across models)."
 metadata:
-  version: 3.0.0
+  version: 3.1.0
 type: Skill
 
 ---
@@ -193,6 +193,21 @@ plan** (ultra-brainstorming's converge → synthesize step). That consolidated p
 by one *or several* doers exactly as above. So ultra-brainstorming layers **thinker fan-out** on top
 of the **doer fan-out** that is always available.
 
+**Second exception — Member-instance swarm (the Butler's [[decompose-and-swarm]] path).** The
+Butler deploys N instances of ONE member on disjoint file slices, fanned out in a single message.
+Each instance runs as the **member's Brain** — a tool-capable Claude model (e.g. Sonnet per that
+member's `model:`) — **never a doer-tier model**. This is a hard rule: only Claude models hold
+Edit / Write / Bash / MCP tools; a non-Claude weapon (minimax-m3, glm-5.2, any Ollama bench
+weapon) physically cannot be an autonomous file-editing instance. The saving is N Sonnet workers
+under one Opus Butler, not a doer-tier downgrade. Inside each instance the Doer seat
+(minimax-m3) still does bulk text generation as normal. Roles on the main thread: the Butler
+(Opus) decomposes, coordinates, and integrates inline; the Critic seat (glm-5.2) reviews the
+aggregate diff before the single commit. Instances are strictly contained: they never spawn
+sub-instances, never commit independently, and never cross-edit another instance's files.
+This exception adds a **second axis of parallelism** (many member instances) on top of the first
+(many doers inside one instance); the two axes compose — each Sonnet instance can still fan its
+own doers internally.
+
 **Batching the doer fan-out — one process, one connection.** When the fan-out is many *independent*
 prompts to the **same** prime doer (`minimax-m3`), do not spawn N subprocesses — **batch** them.
 `minimax.py --batch <file.jsonl>` runs all N over ONE keep-alive HTTPS connection (one process spawn,
@@ -276,6 +291,13 @@ python3 tools/efficiency_report.py   # shows median in/out tokens split by lite 
 **The safety check always wins:** before adjusting any `size_small_signals`, verify zero high-stakes turns in the LITE column (a migration, git push, deploy in a LITE-tagged turn is the hard failure). Stakes keyword list in `data/harness.json` is immutable until safety is confirmed.
 
 ## Changelog
+- **3.1.0** — **Member-instance swarm clause (second exception).** Adds the Butler's
+  [[decompose-and-swarm]] path as a second exception to the one-thinker-per-member rule. Each
+  instance runs as the member's Brain (tool-capable Claude model, e.g. Sonnet) — NEVER a
+  doer-tier model (minimax-m3 / Ollama weapons cannot hold Edit/Write/Bash tools). Doer seat
+  still works inside each instance; Butler (Opus) coordinates + integrates; Critic (glm-5.2)
+  reviews the aggregate diff. Instances never commit independently, cross-edit, or spawn
+  sub-instances. New selection rule (second thinker exception) → MINOR.
 - **3.0.0** — **Universal arsenal (4 seats).** The arsenal is no longer nine hand-kept per-member loadouts — it is ONE universal set of seats (Brain/Doer/Critic/Bench) defined in `models.json` → `seats`. New §The arsenal is universal. Only the **Brain** is per-member (the `model:` it runs as); Doer/Critic are universal seat defaults; **Bench** is the swarm pool, pulled via new `star-alliance-arsenal/bench_pull.py`. build.py now DERIVES each member's arsenal from the seats; per-member `weapons:`/`weaponsDesc` deleted (drift class killed); conformity retired A/PD/W/S/WT, added ST. Selection-contract change (source of the arsenal) → MAJOR. Phase 2–4 of the 4-seat Architecture Build.
 - **2.2.0** — **Critic seat (third seat).** New §The Critic seat: Brain plans · Doer executes · **Critic refutes** before ship. Default `glm-5.2` (a DIFFERENT family than the opus Brain — diverse blind spots, enforced by `conformity_check` ST). Two modes: COLD (`critique.py`, GLM text-only, no tools) vs GROUNDED (a Claude review agent that runs grep/build — the only way to catch *absence* bugs). Seats now live in `models.json` → `seats` (Brain/Doer/Critic/Bench), emitted to guild-data. Phase 1 of the 4-seat Architecture Build (additive; the full per-member→universal arsenal rewrite is Phase 2). New seat doctrine → MINOR.
 - **2.1.1** — Removed the dead `gpt-5.5` reference from the escalation-thinker list and the availability example (model retired from the arsenal — Strategic Audit 2026-06-28). Refs → PATCH.

@@ -2,7 +2,7 @@
 name: conquering-campaign
 description: "Multi-wave campaign skill for work too big for one pass. Three modes — AUDIT (reconcile docs with code/DB), BUILD (multi-phase features/refactors/migrations touching 3+ surfaces), EXTENSION (extends a recent predecessor, reusing its prescan). Gate G0 runs FIRST: work that doesn't clear the bar (3+ INDEPENDENT logical changes — one vertical slice = ONE — OR genuinely multi-phase, OR an app-wide doc↔code/DB audit) is declined and routed to a lighter pass, no campaign folder created. Triggers ONLY above that bar: 'audit my app', 'build this feature', 'ship this refactor', 'phase this migration', 'proceed in application', 'extend [campaign] to X', 'roll out [pattern] to [surface]', 'apply [v1.X] to [Z]'. Planning asks every question upfront then executes autonomously (a 15+-site rename, namespace move, or public-component rename earns a single approval gate). Enforces always-on pre-flight gates, conformity, consolidation, and self-verification (tsc+lint+preview). Full detail in references/."
 metadata:
-  version: 3.8.3
+  version: 3.8.4
 type: Skill
 
 ---
@@ -312,6 +312,16 @@ Irreversible+high-risk = drop a column/table, delete data (not code — code is 
 - **Source-walk template** (>20 files inspected → JSON-on-disk, never inline): brief specifies inputs, per-item steps, exact JSON output path `<campaign>/NN-<topic>.json`, "cover every item once, dedupe by <key>, cap at <N>"; reply with counts + anomalies only. The main thread parses one file + builds SQL/UI from the typed shape (#42).
 - **Long batches** (N>20 items) write progress to a sidecar via `fs.appendFileSync('progress.log', …)`, not `console.log` (stdout is buffered to non-TTY) — tailable + survives a kill (#39). Checkpoint incrementally every K (5 for ≤100, 20 for >100); confirm strategy via one `AskUserQuestion` before any >5min batch (#40).
 
+- **Swarming a wave** — when a wave has ≥ `min_instances` DISJOINT write-slices (each clearly bigger than
+  ~1.5k output tokens, loosely coupled), the parallel step becomes a `swarm` step delegated to
+  [[decompose-and-swarm]], followed by an inline integration step on the main thread. The existing
+  "fan-out sweep" pattern (one subagent per disjoint file) IS the shared-tree swarm — `swarm` is the
+  formally-named, schema-governed version of the same move. After all workers finish, the Butler
+  (orchestrator) runs the conformity check and integration ONCE; workers never run conformity themselves
+  (intermediate parallel states would fail). Use swarm only when the worthiness gate clears
+  (worthiness, disjoint-partition invariant, and inline integration are the Butler's job —
+  see [[decompose-and-swarm]]). Never swarm waves that include DB/red writes or W4 synthesis.
+
 - **Fan-out sweep** (named) — when ≥5 sibling files need the SAME mechanical, behavior-preserving refactor (apply one converted reference to N adapters), "build-W3 writes by main agent" yields to #74 (context exhaustion across N dense files): dispatch one `general-purpose` subagent per **disjoint** file, each briefed with (a) the canonical already-converted reference file, (b) a behavior-preserving mandate (every handler / guard / conditional identical — only restructure), (c) "touch ONLY your file; do NOT write shared docs (#91)". Then the MAIN agent runs the verification gate: full `tsc` + scoped `lint` + a **structural-grep matrix** asserting the target shape on every file (new API present, legacy absent) — tsc/lint prove it compiles, the grep proves it actually converted — and deep-reviews the 1–2 riskiest (money / state-machine) line-by-line; the rest ride the grep + the user's visual pass. Never fan-out writes to a shared file (#91).
 
 - **Workflow-orchestration** (named) — on Claude Code CLI, when the user opted into orchestration AND a wave is a genuine scripted batch (the `>20-file source-walk`, #42) or an approved ≥5-file NON-DB fan-out sweep, the EMITTED Workflow script (§Step 2) replaces the hand-rolled `fs.appendFileSync` batch loop / prose barrier with `pipeline()` (no inter-stage barrier; harness checkpoint + `resume` retires #39/#40), `schema`-checked agent returns (the #42 JSON-on-disk cure, now auto-retried — carry completeness predicates so shallow truncation can't pass), `isolation:'worktree'` for parallel write sweeps, and `log()`/`phase()` heartbeat (#75). The script writes NO shared artefact — the MAIN agent consolidates the vault-log / risk-sweep after the barrier (#91). NOT for the everyday parallel `Agent`-call wave (already barriered in-message) and NEVER for DB/red writes, gates, or W4 synthesis. Absent the tool, the prose dispatch runs unchanged. Detail: references/wave-playbook.md → Deterministic orchestration. (#93, #94)
@@ -469,4 +479,5 @@ The full smell → cure index (#14–#107) lives in **references/failure-modes.m
 - references/skill-maintenance.md — deploy/sync procedure + self-health checks (#84) + the G0 sprawl metric
 
 ## Version history
-Full release history (newest first) lives in **references/version-history.md**. Current: **v3.8.3 — 2026-06-21** (PATCH) — G2 gains a stale-MCP-handle clause: a network/`ERR_FAILED` on a parameterless call (or MCP tools absent at start) = unattached handle on reconnect → re-attach (`/mcp`), don't blame project_id. On each meaningful upgrade, bump `version:` (SemVer) and prepend the entry to references/version-history.md.
+Full release history (newest first) lives in **references/version-history.md**. Current: **v3.8.4 — 2026-06-28** (PATCH) — Added "Swarming a wave" cross-ref in §Subagent dispatch: names the equivalence between the existing fan-out sweep and the formal `swarm` step; delegates decomposition to [[decompose-and-swarm]]; notes that the orchestrator runs conformity check once after all workers finish.
+- **v3.8.3 — 2026-06-21** (PATCH) — G2 gains a stale-MCP-handle clause: a network/`ERR_FAILED` on a parameterless call (or MCP tools absent at start) = unattached handle on reconnect → re-attach (`/mcp`), don't blame project_id. On each meaningful upgrade, bump `version:` (SemVer) and prepend the entry to references/version-history.md.

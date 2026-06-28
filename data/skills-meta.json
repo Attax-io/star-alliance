@@ -7,6 +7,22 @@
     "triggers": "'is this accessible', 'a11y audit', 'check contrast', 'WCAG', 'fix focus states', 'keyboard navigation', 'make it accessible'",
     "modes": ""
   },
+  "agent-web-reach": {
+    "icon": "🌐",
+    "blurb": "Give an agent reliable web reach — YouTube/Bilibili transcripts, Twitter/Reddit/LinkedIn scraping, RSS, Exa search, cookies",
+    "level": "Advanced",
+    "tabler": "ti-world-search",
+    "triggers": "'get this youtube transcript', 'scrape this reddit thread', 'pull this tweet', 'read this blocked page', 'subscribe to this RSS'",
+    "modes": "channels; auth & cookies; search & RSS; transcription; health probing"
+  },
+  "agentic-video-production": {
+    "icon": "🎬",
+    "blurb": "Produce finished video agentically from a brief — research→script→assets→edit→compose, native b-roll corpus, gated stages",
+    "level": "Advanced",
+    "tabler": "ti-movie",
+    "triggers": "'make a video about X', 'produce this video', 'turn this script into a video', 'build a b-roll corpus'",
+    "modes": "pipeline & stage-gates; corpus & footage; providers; prompt patterns"
+  },
   "algorithmic-trading-chan": {
     "icon": "📈",
     "blurb": "Ernie Chan's quant doctrine: mean reversion, momentum, backtesting pitfalls, Kelly risk",
@@ -14,6 +30,14 @@
     "tabler": "ti-chart-candle",
     "triggers": "'explain cointegration', 'how do I size with Kelly', 'why did this backtest lie', 'mean reversion vs momentum', 'teach me Chan's strategies'",
     "modes": "backtesting integrity; mean reversion; momentum; risk management"
+  },
+  "api-integration-design": {
+    "icon": "🔌",
+    "blurb": "Design service/API contracts + integrate third-party APIs — REST/GraphQL, versioning, idempotency, webhooks, resilience, contract testing",
+    "level": "Advanced",
+    "tabler": "ti-plug-connected",
+    "triggers": "'design the API for X', 'integrate this third-party API', 'design these webhooks', 'version this endpoint', 'handle rate limits'",
+    "modes": "contract design; webhooks & events; integration resilience; contract testing"
   },
   "arsenal-forge": {
     "icon": "⚔️",
@@ -31,6 +55,14 @@
     "triggers": "on \"new insights post\", \"add it to /insights\", \"make this an article\", \"push to the articles table\", or any request that implies writing rows into articles/articletranslations. This skill exists because the insert has six landmines discovered in production: th",
     "modes": ""
   },
+  "automated-testing": {
+    "icon": "🧪",
+    "blurb": "Author automated tests for a web app — unit/component/integration/E2E (Vitest, Testing Library, Playwright); pyramid, coverage, flake-free",
+    "level": "Advanced",
+    "tabler": "ti-test-pipe",
+    "triggers": "'write tests for this', 'add test coverage', 'set up Playwright', 'why is this test flaky', 'test this server action'",
+    "modes": "test pyramid & strategy; deterministic tests; E2E Playwright"
+  },
   "bug-fix-workflow": {
     "icon": "🐛",
     "blurb": "End-to-end bug triage, reproduction, and root-cause fixing",
@@ -38,6 +70,14 @@
     "tabler": "ti-bug",
     "triggers": "gotcha, the INSERT/push pattern (identity PK, trigger-filled names, reporter-uuid lookup, status=1, no notification fires), the \"doesn't work\" reproduction technique, and the rule for WHEN a bug may be marked Fixed (DB fixes now, frontend fixes only after depl",
     "modes": ""
+  },
+  "butler-onboarding": {
+    "icon": "🚪",
+    "blurb": "Turn a vague/first-contact request into discovery + honest capability presentation + 2-3 tailored starter prompts, instead of guessing",
+    "level": "Intermediate",
+    "tabler": "ti-door-enter",
+    "triggers": "'what can you do', 'help me with my business', 'help me get started', \"I'm not sure what I need\", 'where do I begin'",
+    "modes": "discovery questions; capability map; starter prompts"
   },
   "chart-patterns": {
     "icon": "📐",
@@ -63,6 +103,30 @@
     "triggers": "\\\"run cleanup\\\", \\\"/cleanup\\\", \\\"i18n cleanup\\\", \\\"translate untranslated\\\", \\\"find hardcoded text\\\", \\\"find leaking keys\\\", \\\"raw key paths\\\", \\\"fix dev errors\\\", \\\"check postgres\\\", \\\"run lint\\\", \\\"consolidate code\\\", \\\"check the bundle size\\\", \\\"doc cleanup",
     "modes": "language (i18n translations); consolidate (i18n key dedup); hardcoded (extract raw UI text to next-intl keys); leaks (i18n keys used in code but missing from JSON); errors (dev log sweep); postgres (Supabase advisors + pg health); lint (ESLint --fix + tsc); consolidate-code (duplicate code detection"
   },
+  "cn-market-strategy-pack": {
+    "icon": "🐉",
+    "blurb": "Read-only pack of 15 CN/HK/US market strategies — trend, reversal, theme/event, chan & wave; thesis/entry/exit/regime",
+    "level": "Advanced",
+    "tabler": "ti-trending-up",
+    "triggers": "'which strategy fits this stock', 'screen with chan theory', 'is this a dragon-head setup', 'apply a CN-market strategy'",
+    "modes": "trend & momentum; reversal & volume; theme & event; chan & wave theory"
+  },
+  "code-review-craft": {
+    "icon": "🔍",
+    "blurb": "Deliberate member-invoked review of a diff/PR/file — correctness, security, simplification, efficiency; severity-tagged, evidence-grounded",
+    "level": "Advanced",
+    "tabler": "ti-eye-check",
+    "triggers": "'review this diff', 'review my PR', 'audit this file', 'is this change safe', 'look over my changes'",
+    "modes": "review dimensions; grounding findings; severity & scope"
+  },
+  "codebase-memory-mcp": {
+    "icon": "🕸️",
+    "blurb": "MCP code-intelligence engine — tree-sitter knowledge graph over a repo (158 langs, 14 tools); where/what-calls/impact/dead-code",
+    "level": "Advanced",
+    "tabler": "ti-binary-tree",
+    "triggers": "'index this codebase', 'where is X defined', 'what calls Y', 'trace this call chain', 'impact of changing Z', 'find dead code', 'map this repo's architecture'",
+    "modes": "indexing; structural search & trace; impact & architecture; Cypher queries; dead-code"
+  },
   "codex-law-translate": {
     "icon": "⚖️",
     "blurb": "Legal codex pipeline: load law, translate to five locales",
@@ -87,6 +151,14 @@
     "triggers": "ONLY above that bar: 'audit my app', 'build this feature', 'ship this refactor', 'phase this migration', 'proceed in application', 'extend [campaign] to X', 'roll out [pattern] to [surface]', 'apply [v1.X] to [Z]'. Planning asks every question upfront then exe",
     "modes": "AUDIT (reconcile docs with code/DB), BUILD (multi-phase features/refactors/migrations touching 3+ surfaces), EXTENSION (extends a recent predecessor, reusing its prescan). Gate G0 runs FIRST: work that doesn't clear the bar (3+ INDEPENDENT logical changes — one vertical slice = ONE — OR genuinely mu"
   },
+  "contract-review": {
+    "icon": "📋",
+    "blurb": "Review an inbound contract/NDA for risk — clause-by-clause redline, one-sided/missing-term flags, risk score, reviewer's report. Advisory, never signs",
+    "level": "Advanced",
+    "tabler": "ti-file-search",
+    "triggers": "'review this contract', 'triage this NDA', 'redline this agreement', \"what's the risk in this clause\", 'is this term standard'",
+    "modes": "clause checklist; redline & risk scoring; reviewer report"
+  },
   "dashboard-parity": {
     "icon": "🪞",
     "blurb": "Prove every change actually renders on the dashboard",
@@ -95,12 +167,28 @@
     "triggers": "'is it on the dashboard', 'did it reflect on index.html', 'verify the dashboard', 'dashboard parity', 'did the build land', 'did my change show up'",
     "modes": ""
   },
+  "data-analysis-viz": {
+    "icon": "📊",
+    "blurb": "Turn a dataset (CSV/query/table) into an analyzed, honestly-visualized report — EDA, cleaning, the right chart, axis integrity, a clear narrative",
+    "level": "Advanced",
+    "tabler": "ti-chart-histogram",
+    "triggers": "'analyze this data', 'explore this CSV', 'what does this dataset show', 'chart this', 'build a dashboard from this'",
+    "modes": "EDA workflow; choosing the chart; honest visualization"
+  },
   "db-rename-sweep": {
     "icon": "🏷️",
     "blurb": "Scans database schema for safe table and column renames",
     "level": "Foundational",
     "tabler": "ti-database",
     "triggers": "on \"rename\", \"rename sweep\", \"rename checklist\", \"naming cleanup\", \"change table name\", \"rename this view\", \"prefix the tables\", \"sweep the old name\", \"unify the naming\", or any request that implies a SQL ALTER TABLE ... RENAME / RENAME COLUMN. The skill exist",
+    "modes": ""
+  },
+  "decompose-and-swarm": {
+    "icon": "🧩",
+    "blurb": "The Butler's swarm craft — judge whether a task is worth parallelising, scout the codebase surf",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "'swarm this', 'parallelise the work', 'run N agents', 'fan out', 'split the slices'",
     "modes": ""
   },
   "design-language": {
@@ -135,6 +223,14 @@
     "triggers": "'make the UI consistent', 'one source of truth for the UI', 'enforce the design system', 'kill the design drift', 'unify the look', 'audit UI conformity', 'design tokens'",
     "modes": "establish; audit; reconcile"
   },
+  "dev-ops-command-pack": {
+    "icon": "🛠️",
+    "blurb": "Disciplined dev-ops lifecycle as one gated loop — start-work→pre-pr→deploy→health→rollback→retro, dev/remote symmetry",
+    "level": "Advanced",
+    "tabler": "ti-rocket",
+    "triggers": "'start work on this', 'pre-pr check', 'deploy this', 'roll back the deploy', 'run a retro', 'health check the service'",
+    "modes": "lifecycle loop; deploy & rollback; health & observability"
+  },
   "dev-server": {
     "icon": "🚀",
     "blurb": "Launches, restarts, and manages your local development server",
@@ -142,6 +238,22 @@
     "tabler": "ti-server",
     "triggers": "",
     "modes": ""
+  },
+  "financial-data-reach": {
+    "icon": "💹",
+    "blurb": "Acquire + clean financial data — quotes/OHLCV, fundamentals, filings, earnings, macro, sentiment; source choice, point-in-time correctness. Never trades",
+    "level": "Advanced",
+    "tabler": "ti-database-dollar",
+    "triggers": "'pull the fundamentals for X', 'get the price history', 'fetch the latest filing', 'find macro data on Y', 'get earnings estimates'",
+    "modes": "source landscape; point-in-time correctness; normalization & caching"
+  },
+  "frontend-react-engineering": {
+    "icon": "⚛️",
+    "blurb": "Production React / Next.js engineering — RSC, hooks, state placement, data fetching, Suspense, perf, TS contracts",
+    "level": "Advanced",
+    "tabler": "ti-brand-react",
+    "triggers": "'build this React component', 'fix this re-render', 'server or client component', 'wire this Next.js page', 'where should this state live'",
+    "modes": "component architecture; server vs client & data; React performance"
   },
   "full-output-enforcement": {
     "icon": "🛡️",
@@ -319,6 +431,30 @@
     "triggers": "'animate this', 'add a transition', 'motion for X', 'clean up this animation', 'this feels too fast/slow', 'make it feel more alive', easing, timing, spring vs bezier, bounce",
     "modes": "evaluate; recommend"
   },
+  "multimodal-model-wrappers": {
+    "icon": "🧬",
+    "blurb": "Build a unified multi-provider model abstraction — one call surface over LLM/VLM/TTS/TTV/image-gen/embeddings",
+    "level": "Advanced",
+    "tabler": "ti-stack-2",
+    "triggers": "'wrap this model provider', 'unify these model APIs', 'add a provider to the abstraction', 'build a multimodal model layer'",
+    "modes": "base contracts; adding a provider; modality normalization"
+  },
+  "negotiation-deal-strategy": {
+    "icon": "🤝",
+    "blurb": "Business negotiation + deal strategy — BATNA/ZOPA prep, structuring, pricing & concession ladder, objection handling, deal memo. Advisory, never signs",
+    "level": "Advanced",
+    "tabler": "ti-businessplan",
+    "triggers": "'prep this negotiation', 'structure this deal', \"what's my BATNA\", 'pricing strategy for X', 'handle this objection', 'write a deal memo'",
+    "modes": "preparation (BATNA/ZOPA); structuring & concessions; deal memo"
+  },
+  "observability-incident-response": {
+    "icon": "🚨",
+    "blurb": "Keep a live service observable and respond when it breaks — logs/metrics/traces, SLO alerting, detect→mitigate→post-mortem, runbooks",
+    "level": "Advanced",
+    "tabler": "ti-activity-heartbeat",
+    "triggers": "'the app is down', 'triage this outage', 'set up alerting', 'write a runbook', 'post-mortem this incident'",
+    "modes": "observability signals; SLOs & alerting; incident lifecycle; runbooks & post-mortem"
+  },
   "obsidian-markdown": {
     "icon": "📝",
     "blurb": "Edit Obsidian-flavored markdown with wikilinks and callouts",
@@ -334,6 +470,22 @@
     "tabler": "ti-file-stack",
     "triggers": "'tidy the repo', 'OKF', 'make it OKF-conformant', 'run the OKF audit', 'fix frontmatter', 'keep it clean', after any campaign that left files behind. The producer half of the guild's knowledge standard; pairs with star-alliance-language (reader). Enforced mechanically by the okf-gate PreToolUse hook.",
     "modes": "audit (default) — report non-conformant governed .md; --fix — migrate-first baseline (inject type: + timestamp:, idempotent); enrich — add title/description/tags/cross-links; sweep — place non-md by concept-path & prune orphans"
+  },
+  "pattern-library-discovery": {
+    "icon": "🗂️",
+    "blurb": "Build & query a reusable code-pattern library — capture proven patterns, reuse-before-reinvent across 7 categories",
+    "level": "Advanced",
+    "tabler": "ti-folder-search",
+    "triggers": "'find a pattern for X', 'is there a reusable pattern', 'capture this as a pattern', 'search the pattern library', 'reuse before reinvent'",
+    "modes": "capturing patterns; category taxonomy; search & retrieval"
+  },
+  "penpot-design-platform": {
+    "icon": "🎨",
+    "blurb": "Drive Penpot — open-source design platform + its MCP & plugin API; boards/components/tokens, inspect-mode SVG/CSS, agent-driven design",
+    "level": "Advanced",
+    "tabler": "ti-vector-bezier",
+    "triggers": "'open this in penpot', 'pull the components from penpot', 'use the penpot MCP', 'design this in penpot', 'export penpot tokens', 'write a penpot plugin'",
+    "modes": "platform model; MCP surface; plugin API"
   },
   "performance": {
     "icon": "⚡",
@@ -406,6 +558,14 @@
     "tabler": "ti-git-merge",
     "triggers": "'cut a release', 'merge all branches', 'release X.Y.Z', 'ship it', 'bump the version and push'",
     "modes": "Lex Council app release; guild self-release"
+  },
+  "safe-agentic-orchestration": {
+    "icon": "🎻",
+    "blurb": "Orchestrate a multi-agent AI team — role roster, spec-then-execute gate, escalation loop, independent QAS, human merge",
+    "level": "Advanced",
+    "tabler": "ti-sitemap",
+    "triggers": "'orchestrate this team', 'coordinate these agents', 'design the agent roles', 'who should own this work', 'enforce a quality gate'",
+    "modes": "role architecture; coordination patterns; spec→execute→release gating"
   },
   "scheduled-watch": {
     "icon": "⏱️",
@@ -487,6 +647,22 @@
     "triggers": "",
     "modes": ""
   },
+  "system-prompt-design-patterns": {
+    "icon": "📜",
+    "blurb": "Design & harden production system prompts — identity, capabilities, tool-use, refusal, persona, anti-jailbreak (8 vendors)",
+    "level": "Advanced",
+    "tabler": "ti-prompt",
+    "triggers": "'design a system prompt', 'review this system prompt', 'harden this agent prompt', 'how do production prompts handle X'",
+    "modes": "structural patterns; tool-use & refusal; persona & anti-jailbreak; cross-vendor comparison"
+  },
+  "timeseries-forecasting": {
+    "icon": "📈",
+    "blurb": "Forecast a numeric series with Google TimesFM — zero-shot point + quantile intervals, covariates, rolling backtests",
+    "level": "Advanced",
+    "tabler": "ti-chart-dots",
+    "triggers": "'forecast this series', 'predict the next N periods', 'project this metric forward', 'forecast demand'",
+    "modes": "foundation vs classical; API & usage; evaluation & pitfalls; quant application"
+  },
   "trading-strategy": {
     "icon": "🎯",
     "blurb": "Read-only trading-strategy design: entry/exit rules, sizing, backtest framing",
@@ -510,6 +686,22 @@
     "tabler": "ti-brain",
     "triggers": "'ultra-brainstorm this', 'super-plan this', 'synthesize the members' work', 'brainstorm this across models', 'merge these proposals into one plan', 'plan this deeply before we build', or any fan-in where several specialists feed one build. A MODEL ensemble (several thinking models), distinct from storm-investigation's persona ensemble.",
     "modes": ""
+  },
+  "ux-copywriting": {
+    "icon": "✍️",
+    "blurb": "Functional in-product copy — microcopy, error/empty/loading/success states, onboarding, confirmations; one voice, plain-language, accessible",
+    "level": "Advanced",
+    "tabler": "ti-text-caption",
+    "triggers": "'write the error message', 'microcopy for this button', 'empty-state copy', 'onboarding copy', 'reword this confirmation'",
+    "modes": "state-copy patterns; voice & concision; accessible copy"
+  },
+  "ux-research": {
+    "icon": "🔬",
+    "blurb": "UX research — pick a method (interviews/usability/surveys/card sort), write unbiased scripts, run studies, synthesize into personas/journeys/findings",
+    "level": "Advanced",
+    "tabler": "ti-users-group",
+    "triggers": "'run user research', 'plan a usability test', 'write interview questions', 'map the user journey', 'synthesize this research', 'build a persona'",
+    "modes": "choosing a method; running studies; synthesis & artifacts"
   },
   "vault-log-compliance": {
     "icon": "🛡️",
@@ -551,190 +743,6 @@
     "triggers": "'save this as a workflow', 'add this to the star map', 'register a workflow', 'crystallize this formation'",
     "modes": ""
   },
-  "safe-agentic-orchestration": {
-    "icon": "🎻",
-    "blurb": "Orchestrate a multi-agent AI team — role roster, spec-then-execute gate, escalation loop, independent QAS, human merge",
-    "level": "Advanced",
-    "tabler": "ti-sitemap",
-    "triggers": "'orchestrate this team', 'coordinate these agents', 'design the agent roles', 'who should own this work', 'enforce a quality gate'",
-    "modes": "role architecture; coordination patterns; spec→execute→release gating"
-  },
-  "agent-web-reach": {
-    "icon": "🌐",
-    "blurb": "Give an agent reliable web reach — YouTube/Bilibili transcripts, Twitter/Reddit/LinkedIn scraping, RSS, Exa search, cookies",
-    "level": "Advanced",
-    "tabler": "ti-world-search",
-    "triggers": "'get this youtube transcript', 'scrape this reddit thread', 'pull this tweet', 'read this blocked page', 'subscribe to this RSS'",
-    "modes": "channels; auth & cookies; search & RSS; transcription; health probing"
-  },
-  "agentic-video-production": {
-    "icon": "🎬",
-    "blurb": "Produce finished video agentically from a brief — research→script→assets→edit→compose, native b-roll corpus, gated stages",
-    "level": "Advanced",
-    "tabler": "ti-movie",
-    "triggers": "'make a video about X', 'produce this video', 'turn this script into a video', 'build a b-roll corpus'",
-    "modes": "pipeline & stage-gates; corpus & footage; providers; prompt patterns"
-  },
-  "timeseries-forecasting": {
-    "icon": "📈",
-    "blurb": "Forecast a numeric series with Google TimesFM — zero-shot point + quantile intervals, covariates, rolling backtests",
-    "level": "Advanced",
-    "tabler": "ti-chart-dots",
-    "triggers": "'forecast this series', 'predict the next N periods', 'project this metric forward', 'forecast demand'",
-    "modes": "foundation vs classical; API & usage; evaluation & pitfalls; quant application"
-  },
-  "multimodal-model-wrappers": {
-    "icon": "🧬",
-    "blurb": "Build a unified multi-provider model abstraction — one call surface over LLM/VLM/TTS/TTV/image-gen/embeddings",
-    "level": "Advanced",
-    "tabler": "ti-stack-2",
-    "triggers": "'wrap this model provider', 'unify these model APIs', 'add a provider to the abstraction', 'build a multimodal model layer'",
-    "modes": "base contracts; adding a provider; modality normalization"
-  },
-  "system-prompt-design-patterns": {
-    "icon": "📜",
-    "blurb": "Design & harden production system prompts — identity, capabilities, tool-use, refusal, persona, anti-jailbreak (8 vendors)",
-    "level": "Advanced",
-    "tabler": "ti-prompt",
-    "triggers": "'design a system prompt', 'review this system prompt', 'harden this agent prompt', 'how do production prompts handle X'",
-    "modes": "structural patterns; tool-use & refusal; persona & anti-jailbreak; cross-vendor comparison"
-  },
-  "cn-market-strategy-pack": {
-    "icon": "🐉",
-    "blurb": "Read-only pack of 15 CN/HK/US market strategies — trend, reversal, theme/event, chan & wave; thesis/entry/exit/regime",
-    "level": "Advanced",
-    "tabler": "ti-trending-up",
-    "triggers": "'which strategy fits this stock', 'screen with chan theory', 'is this a dragon-head setup', 'apply a CN-market strategy'",
-    "modes": "trend & momentum; reversal & volume; theme & event; chan & wave theory"
-  },
-  "pattern-library-discovery": {
-    "icon": "🗂️",
-    "blurb": "Build & query a reusable code-pattern library — capture proven patterns, reuse-before-reinvent across 7 categories",
-    "level": "Advanced",
-    "tabler": "ti-folder-search",
-    "triggers": "'find a pattern for X', 'is there a reusable pattern', 'capture this as a pattern', 'search the pattern library', 'reuse before reinvent'",
-    "modes": "capturing patterns; category taxonomy; search & retrieval"
-  },
-  "dev-ops-command-pack": {
-    "icon": "🛠️",
-    "blurb": "Disciplined dev-ops lifecycle as one gated loop — start-work→pre-pr→deploy→health→rollback→retro, dev/remote symmetry",
-    "level": "Advanced",
-    "tabler": "ti-rocket",
-    "triggers": "'start work on this', 'pre-pr check', 'deploy this', 'roll back the deploy', 'run a retro', 'health check the service'",
-    "modes": "lifecycle loop; deploy & rollback; health & observability"
-  },
-  "codebase-memory-mcp": {
-    "icon": "🕸️",
-    "blurb": "MCP code-intelligence engine — tree-sitter knowledge graph over a repo (158 langs, 14 tools); where/what-calls/impact/dead-code",
-    "level": "Advanced",
-    "tabler": "ti-binary-tree",
-    "triggers": "'index this codebase', 'where is X defined', 'what calls Y', 'trace this call chain', 'impact of changing Z', 'find dead code', 'map this repo's architecture'",
-    "modes": "indexing; structural search & trace; impact & architecture; Cypher queries; dead-code"
-  },
-  "penpot-design-platform": {
-    "icon": "🎨",
-    "blurb": "Drive Penpot — open-source design platform + its MCP & plugin API; boards/components/tokens, inspect-mode SVG/CSS, agent-driven design",
-    "level": "Advanced",
-    "tabler": "ti-vector-bezier",
-    "triggers": "'open this in penpot', 'pull the components from penpot', 'use the penpot MCP', 'design this in penpot', 'export penpot tokens', 'write a penpot plugin'",
-    "modes": "platform model; MCP surface; plugin API"
-  },
-  "automated-testing": {
-    "icon": "🧪",
-    "blurb": "Author automated tests for a web app — unit/component/integration/E2E (Vitest, Testing Library, Playwright); pyramid, coverage, flake-free",
-    "level": "Advanced",
-    "tabler": "ti-test-pipe",
-    "triggers": "'write tests for this', 'add test coverage', 'set up Playwright', 'why is this test flaky', 'test this server action'",
-    "modes": "test pyramid & strategy; deterministic tests; E2E Playwright"
-  },
-  "frontend-react-engineering": {
-    "icon": "⚛️",
-    "blurb": "Production React / Next.js engineering — RSC, hooks, state placement, data fetching, Suspense, perf, TS contracts",
-    "level": "Advanced",
-    "tabler": "ti-brand-react",
-    "triggers": "'build this React component', 'fix this re-render', 'server or client component', 'wire this Next.js page', 'where should this state live'",
-    "modes": "component architecture; server vs client & data; React performance"
-  },
-  "code-review-craft": {
-    "icon": "🔍",
-    "blurb": "Deliberate member-invoked review of a diff/PR/file — correctness, security, simplification, efficiency; severity-tagged, evidence-grounded",
-    "level": "Advanced",
-    "tabler": "ti-eye-check",
-    "triggers": "'review this diff', 'review my PR', 'audit this file', 'is this change safe', 'look over my changes'",
-    "modes": "review dimensions; grounding findings; severity & scope"
-  },
-  "observability-incident-response": {
-    "icon": "🚨",
-    "blurb": "Keep a live service observable and respond when it breaks — logs/metrics/traces, SLO alerting, detect→mitigate→post-mortem, runbooks",
-    "level": "Advanced",
-    "tabler": "ti-activity-heartbeat",
-    "triggers": "'the app is down', 'triage this outage', 'set up alerting', 'write a runbook', 'post-mortem this incident'",
-    "modes": "observability signals; SLOs & alerting; incident lifecycle; runbooks & post-mortem"
-  },
-  "api-integration-design": {
-    "icon": "🔌",
-    "blurb": "Design service/API contracts + integrate third-party APIs — REST/GraphQL, versioning, idempotency, webhooks, resilience, contract testing",
-    "level": "Advanced",
-    "tabler": "ti-plug-connected",
-    "triggers": "'design the API for X', 'integrate this third-party API', 'design these webhooks', 'version this endpoint', 'handle rate limits'",
-    "modes": "contract design; webhooks & events; integration resilience; contract testing"
-  },
-  "contract-review": {
-    "icon": "📋",
-    "blurb": "Review an inbound contract/NDA for risk — clause-by-clause redline, one-sided/missing-term flags, risk score, reviewer's report. Advisory, never signs",
-    "level": "Advanced",
-    "tabler": "ti-file-search",
-    "triggers": "'review this contract', 'triage this NDA', 'redline this agreement', \"what's the risk in this clause\", 'is this term standard'",
-    "modes": "clause checklist; redline & risk scoring; reviewer report"
-  },
-  "financial-data-reach": {
-    "icon": "💹",
-    "blurb": "Acquire + clean financial data — quotes/OHLCV, fundamentals, filings, earnings, macro, sentiment; source choice, point-in-time correctness. Never trades",
-    "level": "Advanced",
-    "tabler": "ti-database-dollar",
-    "triggers": "'pull the fundamentals for X', 'get the price history', 'fetch the latest filing', 'find macro data on Y', 'get earnings estimates'",
-    "modes": "source landscape; point-in-time correctness; normalization & caching"
-  },
-  "data-analysis-viz": {
-    "icon": "📊",
-    "blurb": "Turn a dataset (CSV/query/table) into an analyzed, honestly-visualized report — EDA, cleaning, the right chart, axis integrity, a clear narrative",
-    "level": "Advanced",
-    "tabler": "ti-chart-histogram",
-    "triggers": "'analyze this data', 'explore this CSV', 'what does this dataset show', 'chart this', 'build a dashboard from this'",
-    "modes": "EDA workflow; choosing the chart; honest visualization"
-  },
-  "ux-research": {
-    "icon": "🔬",
-    "blurb": "UX research — pick a method (interviews/usability/surveys/card sort), write unbiased scripts, run studies, synthesize into personas/journeys/findings",
-    "level": "Advanced",
-    "tabler": "ti-users-group",
-    "triggers": "'run user research', 'plan a usability test', 'write interview questions', 'map the user journey', 'synthesize this research', 'build a persona'",
-    "modes": "choosing a method; running studies; synthesis & artifacts"
-  },
-  "ux-copywriting": {
-    "icon": "✍️",
-    "blurb": "Functional in-product copy — microcopy, error/empty/loading/success states, onboarding, confirmations; one voice, plain-language, accessible",
-    "level": "Advanced",
-    "tabler": "ti-text-caption",
-    "triggers": "'write the error message', 'microcopy for this button', 'empty-state copy', 'onboarding copy', 'reword this confirmation'",
-    "modes": "state-copy patterns; voice & concision; accessible copy"
-  },
-  "butler-onboarding": {
-    "icon": "🚪",
-    "blurb": "Turn a vague/first-contact request into discovery + honest capability presentation + 2-3 tailored starter prompts, instead of guessing",
-    "level": "Intermediate",
-    "tabler": "ti-door-enter",
-    "triggers": "'what can you do', 'help me with my business', 'help me get started', \"I'm not sure what I need\", 'where do I begin'",
-    "modes": "discovery questions; capability map; starter prompts"
-  },
-  "negotiation-deal-strategy": {
-    "icon": "🤝",
-    "blurb": "Business negotiation + deal strategy — BATNA/ZOPA prep, structuring, pricing & concession ladder, objection handling, deal memo. Advisory, never signs",
-    "level": "Advanced",
-    "tabler": "ti-businessplan",
-    "triggers": "'prep this negotiation', 'structure this deal', \"what's my BATNA\", 'pricing strategy for X', 'handle this objection', 'write a deal memo'",
-    "modes": "preparation (BATNA/ZOPA); structuring & concessions; deal memo"
-  },
   "workflow-runner": {
     "icon": "🎛️",
     "blurb": "Operate the guild's own machinery — RUN a workflows.json workflow via guild/run.py; invoke the frame/plan/efficiency/leveling primitives",
@@ -742,5 +750,13 @@
     "tabler": "ti-player-play",
     "triggers": "'run the X workflow', 'execute this workflow', 'dry-run the workflow', 'frame this brief', 'show the efficiency report', 'show the promotion queue'",
     "modes": "running a workflow; the script primitives; run outputs & gates"
+  },
+  "leaders-command": {
+    "icon": "📯",
+    "blurb": "The Butler's down-command craft — turn the Guild Master's words into one concise, precise, complete order to a member/subagent/doer; COMPOSE + AUDIT + a runnable composer",
+    "level": "Advanced",
+    "tabler": "ti-speakerphone",
+    "triggers": "'command the team', 'turn this into a clear order', 'write the prompt for the doer', 'brief the agent', 'make this instruction precise', 'audit this order'",
+    "modes": "COMPOSE (write an order, right-sized to subordinate); AUDIT (critique + rewrite)"
   }
 }

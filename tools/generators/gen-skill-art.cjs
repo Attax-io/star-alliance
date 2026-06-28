@@ -22,6 +22,10 @@ const STYLE = "fantasy RPG skill icon, Fallen Sword MMORPG style, dark parchment
 
 const SKILLS = [
   {
+    id: "decompose-and-swarm",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "The Butler's swarm craft — judge whether a task is worth parallelising, scout the codebase surf", no text, no watermarks`,
+  },
+  {
     id: "design-tokens",
     prompt: `${STYLE}. A master architect's emblem on dark aged leather: a three-tiered ziggurat of glowing enchanted gemstones — a broad base row of raw uncut crystals (the primitive palette), a middle row of cut and named gems linked by fine gold filigree threads (the semantic layer), and a small crowning row set into tiny carved component-sockets — one vertical seam splits the whole structure into a sunlit light-theme half and a moonlit dark-theme half, the same gem positions glowing in mirrored tones, a faint OKLCH color-wheel halo behind it and gold rune-brackets framing the tiers, the craft of one ordered source of color powering every surface, no text, no watermarks`,
   },
@@ -380,6 +384,10 @@ const SKILLS = [
   {
     id: "workflow-runner",
     prompt: `${STYLE}. A Fallen-Sword emblem on dark aged leather: a golden control-console with a glowing play-lever, a star-map workflow-scroll feeding through it step by step — script-cogs, prose-quills, and a halting approval-gate rune — a run-summary scroll spooling out the bottom, a sword as the master lever — the Quartermaster craft of running the guild own machinery, no text, no watermarks`,
+  },
+  {
+    id: "leaders-command",
+    prompt: `${STYLE}. A Fallen-Sword emblem on dark aged leather: a golden commander baton crossed over a crisp single-line order-scroll sealed with a wax sigil, the Guild Master spoken words above resolving into one sharp arrow of intent passed down to a waiting blade, terse runes marking order-intent-context-constraints-contract, every excess word burned away — the Butler craft of the clear precise command, no text, no watermarks`,
   },
 ];
 

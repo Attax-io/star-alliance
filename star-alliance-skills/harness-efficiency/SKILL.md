@@ -2,7 +2,7 @@
 name: harness-efficiency
 description: "The Strategist's craft for proving the Star Alliance harness actually saves tokens and time, then tuning the levers that do it. Joins the two Phase-0 measurement streams via tools/efficiency_report.py — usage-log.jsonl (every offloaded model call, with phase + wall_ms) and data/turn-cost.jsonl (per-turn Opus tokens + which routing tier fired) — into a net-saved figure and a LITE-vs-FULL per-turn breakdown, watches for the one safety regression that matters (a high-stakes turn that took the cheap LITE gate path), and recommends edits to the stakes/size policy in data/harness.json. Use to answer how much the harness is saving, whether the proportional routing gate works, or before and after a hook change to the gate. Triggers: 'efficiency report', 'harness efficiency', 'how much are we saving', 'is the gate working', 'tier split', 'check the offload', 'net tokens saved', 'tune the stakes list'. Differentiate from performance (app hot-path profiling) and weapon-utility (which model a member draws)."
 metadata:
-  version: 1.2.0
+  version: 1.3.0
 type: Skill
 
 ---
@@ -110,6 +110,23 @@ guild-framed and efficiency-read:
 Read it when tuning the policy, reviewing a hook change, or arguing *why* a turn should have been LITE.
 It is the conceptual backbone; the levers above are how this skill measures the result.
 
+## Swarm economics
+
+The worthiness gate's "cheaper-net" check (N Sonnet workers vs one Opus serial run) requires real
+per-worker cost data. That data arrives when engine Phase 2 routes per-turn cost into `ledger.jsonl`
+as a `metric` event and captures `n_workers` (gap #2 in the swarm-audit, Wave 5). Until then, use the
+**~1.5k output-tokens/instance heuristic** (from `decompose-and-swarm` MOVE 0): if each slice produces
+≥1.5k tokens of output, a Sonnet worker is likely cheaper than the same work done inline by the Opus
+coordinator.
+
+Watch **over-decomposition** as a regression: a swarm that produces less output per worker than the
+coordination overhead costs MORE than serial. The `efficiency_report.py` net-saved figure will expose
+this once Phase 2 lands. Until then, note any swarm where re-dispatch rate > 0 or slice size is below
+~1k tokens — those are early signs of a bad partition.
+
+Before building or extending the worthiness gate, read `Archive/Skills Pool/headroom-main` — it is a
+cost/budget gating tool that maps directly to the "cheaper-net" check.
+
 ## Versioning
 Own skill. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new check or lever ·
 MAJOR: a change to what counts as a regression). Regenerate `VERSIONS.md` via
@@ -137,6 +154,7 @@ python3 tools/efficiency_report.py --cache        # cache hit-rate (cache_read /
 6. **Cache hit-rate.** `cache_read / (cache_read + cache_create)` below 0.6 means the cache is thrashing — prompts are changing too much between turns or the 5-min TTL is expiring. Investigate turn cadence.
 
 ## Changelog
+- **1.3.0** — Added §Swarm economics: the ~1.5k-tokens/instance worthiness heuristic (to use until engine Phase 2 routes per-turn cost into the ledger); over-decomposition regression watch; pointer to `Archive/Skills Pool/headroom-main` before building the cheaper-net check. New section → MINOR.
 - **1.2.0** — Added `references/harness-doctrine.md` (distilled from *Harness Engineering: A Design
   Guide to Claude Code*) + a "doctrine behind the levers" section: context-as-budget, error-path-as-
   main-path, independent verification, multi-agent partitioning — each with its token/time read. Gives

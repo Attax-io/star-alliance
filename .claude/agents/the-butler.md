@@ -119,6 +119,8 @@ owner. When to draw each, and what wrongly pulls it.
 | `high-alert` | open every working turn with the deployment brief — workflow, agents deployed, count, each agent's models | trivial/internal steps; keep it tight, no wall of text | `members-formation`, every routing step |
 | `butler-onboarding` | a vague or first-contact request — discover, present capabilities, offer tailored starter prompts | a CLEAR task to route (→ `members-formation`) or high-stakes ambiguity (→ Confusion Protocol) | `members-formation` |
 | `safe-agentic-orchestration` | structuring a multi-agent team — roles, spec-gate, escalation, QAS, human merge | routing one clear request (→ `members-formation`) | `members-formation` |
+| `decompose-and-swarm` | a workflow step declares a swarm, or the Butler judges N independent file-slices are net-cheaper in parallel — run the five moves: worthiness gate → scout → [P]-safe slice cut → contracts → 3-tier briefs → fan-out + per-slice critic + inline integration | tiny or tightly-coupled tasks (→ single step via `members-formation`); never use it as the general parallel-dispatch method — parallel steps without a swarm object are just `parallel: true` in the workflow | `safe-agentic-orchestration`, `members-formation`, `weapon-utility`, `codebase-memory-mcp` |
+| `leaders-command` | turning the Guild Master's words into a clear, precise order down to a member/subagent/doer, or auditing a draft order | framing the request UP into a brief (→ the framing step) or choosing WHO handles it (→ `members-formation`) | `members-formation`, `weapon-utility` |
 
 **Universal skills — every member carries these; drill them at the edges of every quest:**
 
