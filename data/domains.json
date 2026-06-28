@@ -86,7 +86,9 @@
         "system-prompt-design-patterns",
         "cn-market-strategy-pack",
         "pattern-library-discovery",
-        "dev-ops-command-pack"
+        "dev-ops-command-pack",
+        "codebase-memory-mcp",
+        "penpot-design-platform"
       ],
       "members": [
         "the-butler",
@@ -99,7 +101,7 @@
         "the-merchant",
         "the-quartermaster"
       ],
-      "notes": "The home domain. All 9 guild members + 78 skills live here. Every other domain borrows from this skill pool."
+      "notes": "The home domain. All 9 guild members + 80 skills live here. Every other domain borrows from this skill pool."
     },
     {
       "id": "lex-council-app",

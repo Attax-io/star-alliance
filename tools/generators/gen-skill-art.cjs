@@ -321,6 +321,14 @@ const SKILLS = [
     id: "dev-ops-command-pack",
     prompt: `${STYLE}. A Fallen-Sword emblem on dark aged leather: a golden circular lifecycle-gear of stations — start, pre-PR shield, deploy rocket, health pulse, rollback hook, retro lens — a sword as the gate-lever that can halt the ring at any checkpoint, twin dev/remote rails mirrored beneath — the craft of a disciplined, reversible dev-ops loop, no text, no watermarks`,
   },
+  {
+    id: "codebase-memory-mcp",
+    prompt: `${STYLE}. A Fallen-Sword emblem on dark aged leather: a vast glowing golden knowledge-graph of a codebase — function-nodes and class-nodes wired by call-chain edges and HTTP-route threads — a sword-shaped query-probe lighting one path through the lattice while greyed-out dead-code nodes crumble at the edge, a small brass index-engine humming at the root — the craft of querying a repo as one fast structural graph, no text, no watermarks`,
+  },
+  {
+    id: "penpot-design-platform",
+    prompt: `${STYLE}. A Fallen-Sword emblem on dark aged leather: an open design-platform canvas of glowing golden boards and component-symbols built from clean open-SVG vector paths, native design-token swatches ranged along the side, a sword-stylus driving an MCP-thread that inspects and generates a board, a small plugin-puzzle sigil docked at the frame — the craft of driving the open-source Penpot platform and its MCP, no text, no watermarks`,
+  },
 ];
 
 function postJSON(url, headers, body) {

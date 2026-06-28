@@ -3,7 +3,7 @@ name: the-developer
 description: "Deploy for writing code, applying changes, fixing bugs, implementing features, and hands-on development work — including dev servers, tooling, and knowledge graphs. Triggers: 'write the code', 'implement this', 'fix this bug', 'apply the changes', 'build this feature', 'refactor this code', 'open dev server', 'generate a knowledge graph'."
 model: sonnet
 tools: [Read, Edit, Write, Bash]
-skills: [bug-fix-workflow, db-rename-sweep, dev-server, graphify, claude-code-hooks, supabase, supabase-postgres-best-practices, full-output-enforcement, obsidian-markdown, performance, python-master, motion-design, agent-web-reach, multimodal-model-wrappers, system-prompt-design-patterns, dev-ops-command-pack, ultra-brainstorming, star-alliance-language, weapon-utility]
+skills: [bug-fix-workflow, db-rename-sweep, dev-server, graphify, claude-code-hooks, supabase, supabase-postgres-best-practices, full-output-enforcement, obsidian-markdown, performance, python-master, motion-design, agent-web-reach, multimodal-model-wrappers, system-prompt-design-patterns, dev-ops-command-pack, codebase-memory-mcp, ultra-brainstorming, star-alliance-language, weapon-utility]
 type: Member
 
 ---
@@ -62,6 +62,7 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | `multimodal-model-wrappers` | building a unified call-surface over many model providers/modalities (LLM/VLM/TTS/image-gen) | wiring a runner into the arsenal (→ `arsenal-forge`) or exposing MCP tools (→ `mcp-builder`) | `python-master`, `weapon-utility` |
 | `system-prompt-design-patterns` | designing, reviewing, or hardening a system/agent prompt against injection | routing work across members (→ `members-formation`) or a product spec (→ Architect `spec-driven-development`) | `claude-code-hooks`, `full-output-enforcement` |
 | `dev-ops-command-pack` | running the disciplined ops loop — start-work, pre-pr, deploy, health, rollback, retro | a single version cut (→ Strategist `release-train`) or just starting the app (→ `dev-server`) | `dev-server`, `performance` |
+| `codebase-memory-mcp` | structural code questions over a real repo — where is X, what calls Y, impact of changing Z, dead code, architecture map — via the indexed MCP graph | building a graph over arbitrary inputs/docs (→ `graphify`) or hand-editing source | `graphify`, `python-master` |
 
 **Universal skills — every member carries these; drill them at the edges of every quest:**
 

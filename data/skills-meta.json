@@ -622,5 +622,21 @@
     "tabler": "ti-rocket",
     "triggers": "'start work on this', 'pre-pr check', 'deploy this', 'roll back the deploy', 'run a retro', 'health check the service'",
     "modes": "lifecycle loop; deploy & rollback; health & observability"
+  },
+  "codebase-memory-mcp": {
+    "icon": "🕸️",
+    "blurb": "MCP code-intelligence engine — tree-sitter knowledge graph over a repo (158 langs, 14 tools); where/what-calls/impact/dead-code",
+    "level": "Advanced",
+    "tabler": "ti-binary-tree",
+    "triggers": "'index this codebase', 'where is X defined', 'what calls Y', 'trace this call chain', 'impact of changing Z', 'find dead code', 'map this repo's architecture'",
+    "modes": "indexing; structural search & trace; impact & architecture; Cypher queries; dead-code"
+  },
+  "penpot-design-platform": {
+    "icon": "🎨",
+    "blurb": "Drive Penpot — open-source design platform + its MCP & plugin API; boards/components/tokens, inspect-mode SVG/CSS, agent-driven design",
+    "level": "Advanced",
+    "tabler": "ti-vector-bezier",
+    "triggers": "'open this in penpot', 'pull the components from penpot', 'use the penpot MCP', 'design this in penpot', 'export penpot tokens', 'write a penpot plugin'",
+    "modes": "platform model; MCP surface; plugin API"
   }
 }
