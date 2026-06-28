@@ -75,6 +75,21 @@ def main():
         if not fields or "name" not in fields:
             print(f"  skip (no name): {os.path.basename(path)}", file=sys.stderr)
             continue
+        # Personas (e.g. the Butler — the voice you talk to) run as the active session
+        # model, NOT as a spawnable subagent. They are valid workflow actors and report
+        # owners, but they get NO .claude/agents/ file. Remove any stale one.
+        if str(fields.get("type", "")).strip().lower() == "persona":
+            stale = os.path.join(DST, fields["name"] + ".md")
+            if os.path.exists(stale):
+                if check:
+                    print(f"  DRIFT {fields['name']} (persona — stale agent file present)")
+                    drift += 1
+                else:
+                    os.remove(stale)
+                    print(f"  removed {fields['name']} (persona — no agent file)")
+            else:
+                print(f"  persona {fields['name']} (no agent file — correct)")
+            continue
         text = agent_text(fields, body)
         dst = os.path.join(DST, fields["name"] + ".md")
         cur = open(dst, encoding="utf-8").read() if os.path.exists(dst) else None

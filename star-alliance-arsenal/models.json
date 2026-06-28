@@ -11,7 +11,7 @@
   "swarm": {
     "max_instances": 5,
     "worker_model": "brain",
-    "coordinator": "butler-brain",
+    "coordinator": "strategist-brain",
     "comment": "Member-instance swarm: each instance runs as the member's brain seat (tool-capable Claude model — Sonnet). Worker is NEVER a doer-tier model (minimax-m3/Ollama cannot hold Edit/Write/Bash tools). Bench feeds MODEL-swarms (one member fires N bench models, as in ultra-brainstorming), not member-instance swarms. The session persona (Sonnet) decomposes, coordinates, and integrates inline; Critic (glm-5.2) reviews the aggregate diff."
   },
   "models": {
