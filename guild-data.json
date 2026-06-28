@@ -7,7 +7,7 @@
       "minor": 58,
       "patch": 75
     },
-    "generated": "2026-06-28T06:44:48Z",
+    "generated": "2026-06-28T07:08:09Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -27,7 +27,7 @@
     },
     "counts": {
       "members": 9,
-      "skills": 69,
+      "skills": 70,
       "domains": 3,
       "workflows": 33,
       "hooks": 7,
@@ -4708,6 +4708,37 @@
       "members": [
         "the-quartermaster"
       ]
+    },
+    {
+      "id": "safe-agentic-orchestration",
+      "name": "safe-agentic-orchestration",
+      "version": "1.0.0",
+      "icon": "📦",
+      "art": "",
+      "artPng": false,
+      "blurb": "Orchestrate a coordinated multi-agent AI team using the SAFe-agentic doctrine distilled fr…",
+      "level": "Foundational",
+      "ramp": "gray",
+      "tabler": "",
+      "src": "own",
+      "desc": "Orchestrate a coordinated multi-agent AI team using the SAFe-agentic doctrine distilled from a production harness: a fixed role roster with hard boundaries, a spec-then-execute pre-implementation gate, an iterate-until-blocked-then-escalate agent loop, evidence-based delivery with an independent QAS verification gate, and a layered handoff-and-gate pipeline ending in human merge. Use it whenever you must split a large deliverable across specialists and want the work to stay verifiable and traceable. Triggers: 'orchestrate this team', 'coordinate these agents', 'design the agent roles', 'who should own this work', 'set up the delivery pipeline', 'enforce a quality gate', 'spawn an agent team'. Unlike ultra-brainstorming (one mind across many models) or members-formation (Butler routing one request), this teaches durable team structure, role separation, and spec-plan-execute-release gating.",
+      "intro": "Coordinating several AI agents on one deliverable is not \"spawn more workers.\" It is a question of structure: who is allowed to do what, in what order, and with what proof. This skill distills the generative doctrine of a production-tested SAFe-style harness (11 roles, layered gates, evidence-based ",
+      "sections": [
+        "What it is / is not",
+        "Core principles",
+        "Reference index"
+      ],
+      "triggers": "",
+      "modes": "",
+      "disabled": false,
+      "refs": [],
+      "scripts": [],
+      "stats": {
+        "lines": 48,
+        "words": 966
+      },
+      "global": false,
+      "members": []
     },
     {
       "id": "scheduled-watch",
