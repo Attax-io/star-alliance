@@ -1690,3 +1690,14 @@ a.tag.off { text-decoration: none; }
   }
 }
 .ev-empty { color: var(--hint); font-size: .85rem; padding: 8px 0; }
+
+/* Live activity feed — "Who's working" (#/activity) */
+.act-feed { display: flex; flex-direction: column; gap: 2px; }
+.act-row {
+  display: grid; grid-template-columns: 1.6rem 1fr auto; align-items: center;
+  gap: 10px; padding: 9px 6px; border-bottom: 1px solid var(--line, rgba(255,255,255,.06));
+}
+.act-row:last-child { border-bottom: 0; }
+.act-icon { font-size: 1rem; text-align: center; }
+.act-text { color: var(--text, #e8e8ea); font-size: .9rem; }
+.act-time { color: var(--hint, #8a8a93); font-size: .78rem; white-space: nowrap; }

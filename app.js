@@ -125,6 +125,69 @@ async function postEvolution(suffix, body) {
   } catch (e) { return { ok: false, error: String(e) }; }
 }
 
+/* ── Live guild activity — who the Butler has put to work, from /api/activity.
+   Degrades to an offline notice over file:// (no server). */
+let activityLive = null, activityApplied = false, activityFetching = false;
+
+async function refreshActivityData() {
+  if (activityFetching) return;
+  activityFetching = true;
+  try {
+    const r = await fetch("/api/activity", { cache: "no-store" });
+    if (!r.ok) throw new Error("bad status " + r.status);
+    activityLive = await r.json();
+  } catch (_) {
+    activityLive = activityLive || { offline: true };
+  } finally {
+    activityFetching = false;
+    activityApplied = true;
+    if ((location.hash.split("?")[0] || "").includes("activity")) refreshView();
+  }
+}
+
+function relTime(iso) {
+  if (!iso) return "";
+  const t = Date.parse(iso);
+  if (isNaN(t)) return iso;
+  const s = Math.max(0, Math.round((Date.now() - t) / 1000));
+  if (s < 60) return s + "s ago";
+  const m = Math.round(s / 60); if (m < 60) return m + "m ago";
+  const h = Math.round(m / 60); if (h < 24) return h + "h ago";
+  return Math.round(h / 24) + "d ago";
+}
+
+function memberName(id) {
+  const m = (GUILD.members || []).find((x) => x.id === id);
+  return m ? m.name : (id || "");
+}
+
+function renderActivity() {
+  const live = activityLive;
+  let body;
+  if (!live) {
+    body = `<div class="section glass"><p class="view-sub">Loading…</p></div>`;
+  } else if (live.offline) {
+    body = `<div class="section glass"><p>Live activity needs the dashboard server running.
+      Start it with <code>star-alliance serve</code> and open over http:// (not a file).</p></div>`;
+  } else if (!live.activity || !live.activity.length) {
+    body = `<div class="section glass"><p>No helpers put to work yet. The moment the Butler
+      dispatches one, it appears here — newest first.</p></div>`;
+  } else {
+    const rows = live.activity.map((a) => {
+      let icon = "•", text = esc(a.detail || a.signal || "");
+      if (a.signal === "member-dispatch") { icon = "🤝"; text = `<strong>${esc(memberName(a.member))}</strong> put to work`; }
+      else if (a.signal === "workflow-fire") { icon = "🗺"; text = `Workflow ran: <strong>${esc(a.workflow || "")}</strong>`; }
+      else if (a.signal === "skill-fire") { icon = "⚡"; text = `Skill used: <strong>${esc(a.skill || a.detail || "")}</strong>`; }
+      else if (a.signal === "doer-summon") { icon = "⚙"; text = `Bulk engine drawn: <strong>${esc(a.doer || "")}</strong>`; }
+      return `<div class="act-row"><span class="act-icon">${icon}</span>
+        <span class="act-text">${text}</span>
+        <span class="act-time">${esc(relTime(a.ts))}</span></div>`;
+    }).join("");
+    body = `<div class="section glass act-feed">${rows}</div>`;
+  }
+  return viewHead("Live", "Who's working", "The helpers the Butler has put to work — newest first.") + body;
+}
+
 function renderEvolution() {
   const d = evolutionLive;
   const head = viewHead("Automation", "Automation",
@@ -667,12 +730,13 @@ const ROUTES = {
   agents:   { list: renderMembers,     detail: renderMemberDossier, navKey: "members" },
   models:   { list: renderArsenal,     detail: renderWeaponDetail,  navKey: "arsenal" },
   projects: { list: renderDomains,     detail: renderSectorDetail,  navKey: "domains" },
-  activity: { list: renderLog,         navKey: "log" },
+  activity: { list: renderActivity,    navKey: "log" },
 };
 
 function onRoute() {
   assignOpenFor = null; assignQuery = "";  // close any assign panel when navigating
   arsenalApplied = false;                  // a real navigation re-arms the Arsenal live-fetch
+  activityApplied = false;                 // re-arm the Activity live-fetch on navigation
   const { segments, query } = parseHash();
   const key = segments[0] || "home";
   const route = ROUTES[key];
@@ -1879,6 +1943,7 @@ function afterRender(key, segments) {
   if (key === "arsenal") initWeaponAuras();
   if (key === "evolution" && !evolutionApplied) refreshEvolutionData();
   if (key === "evolution") wireEvolutionControls();
+  if (key === "activity" && !activityApplied) refreshActivityData();
   if (key === "map") initPowerCore();
   if (key === "home") wireHomeControls();
 }

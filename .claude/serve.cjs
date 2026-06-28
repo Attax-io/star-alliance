@@ -673,6 +673,36 @@ http.createServer((req, res) => {
     return;
   }
 
+  // ── Guild activity: who the Butler put to work (real member dispatches),
+  // which skills fired, which workflows ran — read live from the evolution ledger.
+  // Feeds the dashboard "Who's working" panel. Read-only, fail-soft (empty on error).
+  if (req.method === 'GET' && req.url.startsWith('/api/activity')) {
+    const out = [];
+    try {
+      const raw = fs.readFileSync(path.join(EVOLUTION_DIR, 'ledger.jsonl'), 'utf8');
+      for (const line of raw.split('\n')) {
+        if (!line.trim()) continue;
+        let o; try { o = JSON.parse(line); } catch (_) { continue; }
+        const m = o.meta || {};
+        const sig = m.signal || '';
+        if (!['member-dispatch', 'skill-fire', 'workflow-fire', 'doer-summon'].includes(sig)) continue;
+        out.push({
+          ts: o.ts || '',
+          turn: m.turn || '',
+          signal: sig,
+          member: m.member || null,
+          workflow: m.workflow || null,
+          skill: m.skill || null,
+          doer: m.doer || m.model || null,
+          detail: o.detail || '',
+        });
+      }
+    } catch (_) { /* no ledger yet → empty feed */ }
+    out.reverse(); // newest first
+    res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*', 'Cache-Control': 'no-store' });
+    return res.end(JSON.stringify({ activity: out.slice(0, 60), ts: Date.now() }));
+  }
+
   let urlPath = decodeURIComponent((req.url || '/').split('?')[0]);
   if (urlPath === '/' || urlPath === '') urlPath = '/index.html';
   const filePath = path.join(ROOT, urlPath);
