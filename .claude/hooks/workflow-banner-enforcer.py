@@ -129,66 +129,14 @@ def assistant_blocks_since(lines, start):
     return "\n".join(texts), count
 
 
-# ── Model-line invariant ──────────────────────────────────────────────────────
-# Standing order from the Guild Master: every deployment-brief agent line reads
-#       • The <Member> — <planning> (planning) · minimax-m3 (execution) · glm-5.2 (critic)
-# Standing order (2026-06-28): all THREE slots are now pinned. PLANNING/thinker is
-# `sonnet` (every guild member's model: is sonnet), EXECUTION is the doer (minimax-m3),
-# and the CRITIC is glm-5.2 — shown for every agent. Placeholder template tokens
-# ("<planning model>") are ignored. Planning match is tolerant: any token containing
-# "sonnet" (e.g. `claude-sonnet-4-6`) passes; anything else hard-blocks.
-REQUIRED_EXEC = "minimax-m3"
-REQUIRED_CRIT = "glm-5.2"
-REQUIRED_PLAN = "sonnet"
-PLAN_RE = re.compile(r"`?([A-Za-z0-9.\-]+)`?\s*\(planning\)")
-EXEC_RE = re.compile(r"`?([A-Za-z0-9.\-]+)`?\s*\(execution\)")
-CRIT_RE = re.compile(r"`?([A-Za-z0-9.\-]+)`?\s*\(critic\)")
-
-
-def _model_toks(rx, text):
-    # Drop placeholder tokens like the "model" in "<execution model>".
-    return [t for t in rx.findall(text) if "model" not in t.lower() and "<" not in t]
-
-
-BRIEF_BULLET = re.compile(r"^[\s>]*[•\-\*]\s+(?:\*\*|`)?The\s+[A-Za-z].*\(planning\)", re.I)
-
-
-def check_model_line(text):
-    """Return an error string if the brief's per-agent model slots are wrong, else None.
-    ONLY inspects actual deployment-brief bullet lines (a bullet naming "The <Member>"
-    that carries a "(planning)" slot). Prose that merely mentions "sonnet (execution)"
-    while discussing the format is NOT a brief line and must never trip the gate."""
-    lines = [ln for ln in text.splitlines() if BRIEF_BULLET.match(ln)]
-    if not lines:
-        return None  # no real brief bullet this turn — nothing to enforce
-    scope = "\n".join(lines)
-    plan = _model_toks(PLAN_RE, scope)
-    execs = _model_toks(EXEC_RE, scope)
-    crit = _model_toks(CRIT_RE, scope)
-    problems = []
-    # PLANNING/thinker pinned to sonnet (tolerant: any token containing "sonnet").
-    if not plan:
-        problems.append(f"the planning slot `{REQUIRED_PLAN}` is missing")
-    bad_plan = sorted({t for t in plan if REQUIRED_PLAN not in t.lower()})
-    if bad_plan:
-        problems.append(f"planning/thinker must be `{REQUIRED_PLAN}`, not {', '.join(bad_plan)}")
-    if not execs:
-        problems.append("the execution slot is missing")
-    bad_exec = sorted({t for t in execs if t != REQUIRED_EXEC})
-    if bad_exec:
-        problems.append(f"execution must be `{REQUIRED_EXEC}`, not {', '.join(bad_exec)}")
-    if not crit:
-        problems.append(f"the critic slot `{REQUIRED_CRIT}` is missing (now mandatory in every brief)")
-    bad_crit = sorted({t for t in crit if t != REQUIRED_CRIT})
-    if bad_crit:
-        problems.append(f"critic must be `{REQUIRED_CRIT}`, not {', '.join(bad_crit)}")
-    if not problems:
-        return None
-    return (
-        "MODEL LINE INVALID (turn-end) — every agent in the deployment brief must read:\n"
-        "      • The <Member> — sonnet (planning) · minimax-m3 (execution) · glm-5.2 (critic)\n"
-        f"Fix: {'; '.join(problems)}. Re-emit ONLY the corrected banner block — no prose.\n"
-    )
+# ── Model-line invariant: REMOVED 2026-06-28 (transparency over enforced uniformity) ──
+# This enforcer used to BLOCK any turn whose brief didn't literally read
+# "minimax-m3 (execution) · glm-5.2 (critic)" (and, briefly, "sonnet (planning)").
+# The Guild Master removed it: forcing the text to claim fixed model names guaranteed
+# the brief said those models whether or not they were actually called — which masks a
+# hallucinated/mismatched model claim instead of revealing it. The deployment brief must
+# now be a TRUE reflection of the models actually used, so nothing here rewrites or
+# bounces it. The workflow-declaration and member-reporting checks below remain.
 
 
 def main():
@@ -279,12 +227,9 @@ def main():
     #    the-quartermaster — announces as it acts. (Persona switches inside one context
     #    have no tool footprint, so per-turn we can only require ≥1, not the whole cast.)
     def _enforce_models_then_allow():
-        # 3) MODEL-LINE INVARIANT — execution pinned to minimax-m3, critic glm-5.2 shown.
-        if not relent:
-            err = check_model_line(text)
-            if err:
-                sys.stderr.write(err)
-                sys.exit(2)
+        # MODEL-LINE INVARIANT REMOVED 2026-06-28 — the brief now reflects the models
+        # actually used; nothing rewrites or bounces it. (Name kept for the call sites
+        # below; it is now a plain allow.)
         sys.exit(0)
 
     roster = rosters.get(declared, [])

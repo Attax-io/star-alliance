@@ -155,16 +155,19 @@ DEPLOYMENT BRIEF (always on, every working turn) — open with a short, professi
 the Guild Master can read at a glance. Clean and plain — no insider jargon. Format:
   ▸ Workflow — <workflow name>
   Deploying <N> agents:
-    • The <Member> — <planning model> (planning) · minimax-m3 (execution) · glm-5.2 (critic)
-    • The <Member> — <planning model> (planning) · minimax-m3 (execution) · glm-5.2 (critic)
+    • The <Member> — <planning model> (planning) · <execution model> (execution) · <critic model> (critic)
+    • The <Member> — <planning model> (planning) · <execution model> (execution) · <critic model> (critic)
 RULES:
   • The "▸ Workflow — <name>" line is mandatory and is the gate key (no workflow line →
     tools blocked). Name a real workflows.json entry.
   • List one bullet per agent the workflow deploys, with all three model slots. Keep the
     "<N>" count accurate. The cast is the workflow's steps[].actor list (skip `you`/gates).
-  • MODEL SLOTS (enforced at turn-end): planning = the live thinker (usually sonnet);
-    execution is ALWAYS `minimax-m3` (the doer); critic is ALWAYS `glm-5.2`. The execution
-    and critic slots are fixed — a brief with any other value is bounced back.
+  • MODEL SLOTS — TRANSPARENCY RULE (2026-06-28): report the models you ACTUALLY used,
+    never a template. Planning = the live thinker (usually sonnet). The default doer is
+    minimax-m3 and the default critic is glm-5.2 — but if you did NOT actually call them,
+    write what you DID call (e.g. an Ollama bench model, or "none" if no doer/critic ran).
+    A brief that claims a model you never invoked is a hallucination, not a formality.
+    Nothing bounces the brief for "wrong" names anymore; honesty is the whole point.
   • List each agent as it takes the field — the lead specialist when work begins, and the
     closing the-quartermaster at the conformance step. (The turn-end enforcer needs at least
     one of the workflow's agents listed, or it re-prompts.)
