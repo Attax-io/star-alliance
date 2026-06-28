@@ -33,18 +33,24 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`agent-web-reach`](star-alliance-skills/agent-web-reach/SKILL.md) | 1.0.0 | own | 113 / 813 | 994 / 116 | ✓ lean | Give an agent reliable internet reach — pull content from platforms that normally block ag… |
 | [`agentic-video-production`](star-alliance-skills/agentic-video-production/SKILL.md) | 1.0.0 | own | 113 / 895 | 750 / 87 | ✓ lean | Produce finished video agentically from a plain-language brief: the agent runs research, p… |
 | [`algorithmic-trading-chan`](star-alliance-skills/algorithmic-trading-chan/SKILL.md) | 1.0.0 | own | 116 / 960 | 1016 / 53 | ✓ lean | The Merchant's quant doctrine, distilled from Ernest Chan's Algorithmic Trading: Winning S… |
+| [`api-integration-design`](star-alliance-skills/api-integration-design/SKILL.md) | 1.0.0 | own | 114 / 895 | 1159 / 101 | ✓ lean | The Architect's craft for the API and integration boundary — designing the service contrac… |
 | [`arsenal-forge`](star-alliance-skills/arsenal-forge/SKILL.md) | 1.0.0 | own | 147 / 949 | 1106 / 58 | ✓ lean | The Strategist's craft for recruiting a new weapon (AI model) into the guild arsenal, or r… |
 | [`article-creator`](star-alliance-skills/article-creator/SKILL.md) | 1.0.1 | own | 138 / 923 | 839 / 111 | ✓ lean | End-to-end procedure for creating a public Insights article and pushing it to the Lex Coun… |
+| [`automated-testing`](star-alliance-skills/automated-testing/SKILL.md) | 1.0.0 | own | 119 / 810 | 1555 / 172 | ✓ lean | Author automated tests for a modern web app — the JS/TS plus application layer, grounded i… |
 | [`bug-fix-workflow`](star-alliance-skills/bug-fix-workflow/SKILL.md) | 1.2.0 | own | 151 / 934 | 2388 / 255 | ✓ lean | The Lex Council end-to-end bug workflow — pull reports from the bug_reports table, triage … |
+| [`butler-onboarding`](star-alliance-skills/butler-onboarding/SKILL.md) | 1.0.0 | own | 144 / 892 | 975 / 99 | ✓ lean | Turns a vague or first-contact request into a short discovery, an honest presentation of w… |
 | [`chart-patterns`](star-alliance-skills/chart-patterns/SKILL.md) | 1.0.0 | own | 130 / 1012 | 1106 / 66 | ✓ lean | The Merchant's read-only craft for identifying and interpreting chart patterns, distilled … |
 | [`claude-code-hooks`](star-alliance-skills/claude-code-hooks/SKILL.md) | 1.1.0 | own | 146 / 962 | 1920 / 134 | ✓ lean | The Developer's craft for authoring Claude Code hooks — the shell scripts the harness fire… |
 | [`cleanup`](star-alliance-skills/cleanup/SKILL.md) | 1.20.0 | own | 135 / 991 | 5594 / 330 | ○ large | Multi-mode hygiene skill for Lex Council |
 | [`cn-market-strategy-pack`](star-alliance-skills/cn-market-strategy-pack/SKILL.md) | 1.0.0 | own | 111 / 898 | 979 / 109 | ✓ lean | The Merchant's read-only pack of 15 named CN/HK/US/JP/KR-market stock strategies distilled… |
+| [`code-review-craft`](star-alliance-skills/code-review-craft/SKILL.md) | 1.0.0 | own | 123 / 769 | 1068 / 119 | ✓ lean | A deliberate, member-invoked code review of a diff, PR, or file |
 | [`codebase-memory-mcp`](star-alliance-skills/codebase-memory-mcp/SKILL.md) | 1.0.0 | own | 129 / 895 | 798 / 101 | ✓ lean | Use this MCP code-intelligence engine to answer structural questions about a real reposito… |
 | [`codex-law-translate`](star-alliance-skills/codex-law-translate/SKILL.md) | 1.1.0 | own | 134 / 908 | 2112 / 228 | ✓ lean | End-to-end pipeline for loading a real-world law into the Lex Council legal codex, transla… |
 | [`comms-triage`](star-alliance-skills/comms-triage/SKILL.md) | 1.0.0 | own | 151 / 945 | 1052 / 60 | ✓ lean | The Butler's one hands-on craft beside routing — sweep email, calendar, and WhatsApp into … |
 | [`conquering-campaign`](star-alliance-skills/conquering-campaign/SKILL.md) | 3.8.3 | own | 140 / 1001 | 10351 / 466 | ⚠ body>10k | Multi-wave campaign skill for work too big for one pass |
+| [`contract-review`](star-alliance-skills/contract-review/SKILL.md) | 1.0.0 | own | 128 / 896 | 1103 / 113 | ✓ lean | The Translator's inbound-review craft: read a contract or NDA the other side drafted, find… |
 | [`dashboard-parity`](star-alliance-skills/dashboard-parity/SKILL.md) | 1.1.0 | own | 159 / 1008 | 1521 / 76 | ✓ lean | The Quartermaster's craft for proving a change actually reaches the rendered dashboard at … |
+| [`data-analysis-viz`](star-alliance-skills/data-analysis-viz/SKILL.md) | 1.0.0 | own | 132 / 886 | 1264 / 39 | ✓ lean | The Merchant's craft for turning a raw dataset — a CSV, a query result, a table — into an … |
 | [`db-rename-sweep`](star-alliance-skills/db-rename-sweep/SKILL.md) | 1.1.0 | own | 146 / 910 | 542 / 48 | ✓ lean | Loads the full surface inventory for any Lex Council table or column rename before the fir… |
 | [`design-language`](star-alliance-skills/design-language/SKILL.md) | 1.0.0 | own | 152 / 1011 | 921 / 93 | ✓ lean | Pick and enforce a project's NARRATIVE VOICE — its vocabulary, lore, naming conventions, a… |
 | [`design-taste`](star-alliance-skills/design-taste/SKILL.md) | 1.0.0 | own | 132 / 1012 | 1077 / 100 | ✓ lean | The Designer's core taste engine — one multi-mode skill replacing the guild's scattered st… |
@@ -52,6 +58,8 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`design-unity`](star-alliance-skills/design-unity/SKILL.md) | 1.1.0 | own | 159 / 1016 | 1274 / 107 | ✓ lean | The Designer's UI-unity guardian — make ONE design language the single source of truth and… |
 | [`dev-ops-command-pack`](star-alliance-skills/dev-ops-command-pack/SKILL.md) | 1.0.0 | own | 107 / 768 | 816 / 90 | ✓ lean | Run a disciplined dev-ops command lifecycle as one gated loop: start work, validate before… |
 | [`dev-server`](star-alliance-skills/dev-server/SKILL.md) | 1.1.0 | own | 46 / 303 | 645 / 73 | ✓ lean | Use this skill whenever the user says 'open dev server', 'run dev server', 'restart dev se… |
+| [`financial-data-reach`](star-alliance-skills/financial-data-reach/SKILL.md) | 1.0.0 | own | 128 / 844 | 1412 / 66 | ✓ lean | The Merchant's data-layer craft: acquire and clean the financial data his read-only analys… |
+| [`frontend-react-engineering`](star-alliance-skills/frontend-react-engineering/SKILL.md) | 1.0.0 | own | 101 / 842 | 1375 / 135 | ✓ lean | Production React / Next.js engineering craft for the-developer: component architecture, ho… |
 | [`full-output-enforcement`](star-alliance-skills/full-output-enforcement/SKILL.md) | 1.0.0 | own | 25 / 203 | 382 / 46 | ✓ lean | Overrides default LLM truncation behavior |
 | [`graphify`](star-alliance-skills/graphify/SKILL.md) | 1.0.0 | own | 35 / 225 | 5904 / 1025 | ○ large | any input (code, docs, papers, images, videos) to knowledge graph |
 | [`growth-marketing`](star-alliance-skills/growth-marketing/SKILL.md) | 1.0.0 | own | 110 / 851 | 2506 / 97 | ✓ lean | The Herald's marketing craft — turn a business's invisibility into a repeatable demand eng… |
@@ -75,6 +83,8 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`metamorphosis-check`](star-alliance-skills/metamorphosis-check/SKILL.md) | 1.0.1 | own | 163 / 1007 | 408 / 52 | ✓ lean | A guardrail that catches the most dangerous agent failure: confidently running the OLD pla… |
 | [`motion-design`](star-alliance-skills/motion-design/SKILL.md) | 2.0.0 | own | 135 / 1018 | 1307 / 180 | ✓ lean | Two-mode motion & interaction design specialist for product UI |
 | [`multimodal-model-wrappers`](star-alliance-skills/multimodal-model-wrappers/SKILL.md) | 1.0.0 | own | 117 / 804 | 1031 / 109 | ✓ lean | Craft for building a unified, multi-provider model abstraction — one stable call surface (… |
+| [`negotiation-deal-strategy`](star-alliance-skills/negotiation-deal-strategy/SKILL.md) | 1.0.0 | own | 116 / 861 | 1150 / 56 | ✓ lean | The Herald's deal craft — strategize and draft a business negotiation from prep to close, … |
+| [`observability-incident-response`](star-alliance-skills/observability-incident-response/SKILL.md) | 1.0.0 | own | 118 / 856 | 1273 / 146 | ✓ lean | Keep a live service observable and respond when it breaks |
 | [`obsidian-markdown`](star-alliance-skills/obsidian-markdown/SKILL.md) | 1.0.0 | own | 36 / 262 | 610 / 163 | ✓ lean | Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, a… |
 | [`okf`](star-alliance-skills/okf/SKILL.md) | 1.2.0 | own | 76 / 512 | 1204 / 142 | ✓ lean | Keep the whole Star Alliance repo tidy and conformant to the Open Knowledge Format (OKF v0… |
 | [`pattern-library-discovery`](star-alliance-skills/pattern-library-discovery/SKILL.md) | 1.0.0 | own | 114 / 896 | 944 / 111 | ✓ lean | Build and query a reusable code-pattern library so agents reuse a proven, security-validat… |
@@ -104,10 +114,12 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`trading-strategy`](star-alliance-skills/trading-strategy/SKILL.md) | 0.1.0 | own | 139 / 1009 | 901 / 55 | ✓ lean | The Merchant's craft for read-only trading-strategy design that ships a written, dated str… |
 | [`transactions-domain-model`](star-alliance-skills/transactions-domain-model/SKILL.md) | 1.3.1 | own | 108 / 951 | 3263 / 399 | ✓ lean | Loads the complete Lex Council transactions domain model before any transaction-related wo… |
 | [`ultra-brainstorming`](star-alliance-skills/ultra-brainstorming/SKILL.md) | 1.3.1 | own | 129 / 873 | 2029 / 191 | ✓ lean | An ASSIGNABLE multi-thinker method — any member who carries it fires ALL his available thi… |
+| [`ux-copywriting`](star-alliance-skills/ux-copywriting/SKILL.md) | 1.0.0 | own | 121 / 852 | 1223 / 128 | ✓ lean | Write functional in-product copy — the words a user reads while operating an interface |
+| [`ux-research`](star-alliance-skills/ux-research/SKILL.md) | 1.0.0 | own | 119 / 857 | 915 / 87 | ✓ lean | The Designer's UX research craft — learn from real users instead of guessing |
 | [`vault-log-compliance`](star-alliance-skills/vault-log-compliance/SKILL.md) | 1.1.0 | own | 128 / 807 | 1445 / 119 | ✓ lean | Enforces P8 vault-logging compliance for Lex Council |
 | [`voices-check`](star-alliance-skills/voices-check/SKILL.md) | 1.0.1 | own | 145 / 1013 | 392 / 50 | ✓ lean | Integrate an agent's competing internal sub-voices into one coherent response instead of l… |
 | [`volume-price-analysis`](star-alliance-skills/volume-price-analysis/SKILL.md) | 1.0.0 | own | 137 / 1020 | 1067 / 55 | ✓ lean | The Merchant's read-only craft for Volume Price Analysis, distilled from Anna Coulling's A… |
 | [`weapon-utility`](star-alliance-skills/weapon-utility/SKILL.md) | 3.0.0 | own | 166 / 1009 | 4123 / 302 | ✓ lean | Every member's rule for which weapon (model) to draw and how thinker and doer weapons work… |
 | [`workflow-forge`](star-alliance-skills/workflow-forge/SKILL.md) | 1.3.0 | own | 153 / 997 | 1701 / 102 | ✓ lean | The Strategist's craft for distilling a finished run into a reusable star-map workflow in … |
 
-_80 skills — 75 lean · 4 large (installable, over the 500-line ideal) · 1 near the word ceiling · 0 hard violations._
+_92 skills — 87 lean · 4 large (installable, over the 500-line ideal) · 1 near the word ceiling · 0 hard violations._

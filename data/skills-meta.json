@@ -638,5 +638,101 @@
     "tabler": "ti-vector-bezier",
     "triggers": "'open this in penpot', 'pull the components from penpot', 'use the penpot MCP', 'design this in penpot', 'export penpot tokens', 'write a penpot plugin'",
     "modes": "platform model; MCP surface; plugin API"
+  },
+  "automated-testing": {
+    "icon": "🧪",
+    "blurb": "Author automated tests for a web app — unit/component/integration/E2E (Vitest, Testing Library, Playwright); pyramid, coverage, flake-free",
+    "level": "Advanced",
+    "tabler": "ti-test-pipe",
+    "triggers": "'write tests for this', 'add test coverage', 'set up Playwright', 'why is this test flaky', 'test this server action'",
+    "modes": "test pyramid & strategy; deterministic tests; E2E Playwright"
+  },
+  "frontend-react-engineering": {
+    "icon": "⚛️",
+    "blurb": "Production React / Next.js engineering — RSC, hooks, state placement, data fetching, Suspense, perf, TS contracts",
+    "level": "Advanced",
+    "tabler": "ti-brand-react",
+    "triggers": "'build this React component', 'fix this re-render', 'server or client component', 'wire this Next.js page', 'where should this state live'",
+    "modes": "component architecture; server vs client & data; React performance"
+  },
+  "code-review-craft": {
+    "icon": "🔍",
+    "blurb": "Deliberate member-invoked review of a diff/PR/file — correctness, security, simplification, efficiency; severity-tagged, evidence-grounded",
+    "level": "Advanced",
+    "tabler": "ti-eye-check",
+    "triggers": "'review this diff', 'review my PR', 'audit this file', 'is this change safe', 'look over my changes'",
+    "modes": "review dimensions; grounding findings; severity & scope"
+  },
+  "observability-incident-response": {
+    "icon": "🚨",
+    "blurb": "Keep a live service observable and respond when it breaks — logs/metrics/traces, SLO alerting, detect→mitigate→post-mortem, runbooks",
+    "level": "Advanced",
+    "tabler": "ti-activity-heartbeat",
+    "triggers": "'the app is down', 'triage this outage', 'set up alerting', 'write a runbook', 'post-mortem this incident'",
+    "modes": "observability signals; SLOs & alerting; incident lifecycle; runbooks & post-mortem"
+  },
+  "api-integration-design": {
+    "icon": "🔌",
+    "blurb": "Design service/API contracts + integrate third-party APIs — REST/GraphQL, versioning, idempotency, webhooks, resilience, contract testing",
+    "level": "Advanced",
+    "tabler": "ti-plug-connected",
+    "triggers": "'design the API for X', 'integrate this third-party API', 'design these webhooks', 'version this endpoint', 'handle rate limits'",
+    "modes": "contract design; webhooks & events; integration resilience; contract testing"
+  },
+  "contract-review": {
+    "icon": "📋",
+    "blurb": "Review an inbound contract/NDA for risk — clause-by-clause redline, one-sided/missing-term flags, risk score, reviewer's report. Advisory, never signs",
+    "level": "Advanced",
+    "tabler": "ti-file-search",
+    "triggers": "'review this contract', 'triage this NDA', 'redline this agreement', \"what's the risk in this clause\", 'is this term standard'",
+    "modes": "clause checklist; redline & risk scoring; reviewer report"
+  },
+  "financial-data-reach": {
+    "icon": "💹",
+    "blurb": "Acquire + clean financial data — quotes/OHLCV, fundamentals, filings, earnings, macro, sentiment; source choice, point-in-time correctness. Never trades",
+    "level": "Advanced",
+    "tabler": "ti-database-dollar",
+    "triggers": "'pull the fundamentals for X', 'get the price history', 'fetch the latest filing', 'find macro data on Y', 'get earnings estimates'",
+    "modes": "source landscape; point-in-time correctness; normalization & caching"
+  },
+  "data-analysis-viz": {
+    "icon": "📊",
+    "blurb": "Turn a dataset (CSV/query/table) into an analyzed, honestly-visualized report — EDA, cleaning, the right chart, axis integrity, a clear narrative",
+    "level": "Advanced",
+    "tabler": "ti-chart-histogram",
+    "triggers": "'analyze this data', 'explore this CSV', 'what does this dataset show', 'chart this', 'build a dashboard from this'",
+    "modes": "EDA workflow; choosing the chart; honest visualization"
+  },
+  "ux-research": {
+    "icon": "🔬",
+    "blurb": "UX research — pick a method (interviews/usability/surveys/card sort), write unbiased scripts, run studies, synthesize into personas/journeys/findings",
+    "level": "Advanced",
+    "tabler": "ti-users-group",
+    "triggers": "'run user research', 'plan a usability test', 'write interview questions', 'map the user journey', 'synthesize this research', 'build a persona'",
+    "modes": "choosing a method; running studies; synthesis & artifacts"
+  },
+  "ux-copywriting": {
+    "icon": "✍️",
+    "blurb": "Functional in-product copy — microcopy, error/empty/loading/success states, onboarding, confirmations; one voice, plain-language, accessible",
+    "level": "Advanced",
+    "tabler": "ti-text-caption",
+    "triggers": "'write the error message', 'microcopy for this button', 'empty-state copy', 'onboarding copy', 'reword this confirmation'",
+    "modes": "state-copy patterns; voice & concision; accessible copy"
+  },
+  "butler-onboarding": {
+    "icon": "🚪",
+    "blurb": "Turn a vague/first-contact request into discovery + honest capability presentation + 2-3 tailored starter prompts, instead of guessing",
+    "level": "Intermediate",
+    "tabler": "ti-door-enter",
+    "triggers": "'what can you do', 'help me with my business', 'help me get started', \"I'm not sure what I need\", 'where do I begin'",
+    "modes": "discovery questions; capability map; starter prompts"
+  },
+  "negotiation-deal-strategy": {
+    "icon": "🤝",
+    "blurb": "Business negotiation + deal strategy — BATNA/ZOPA prep, structuring, pricing & concession ladder, objection handling, deal memo. Advisory, never signs",
+    "level": "Advanced",
+    "tabler": "ti-businessplan",
+    "triggers": "'prep this negotiation', 'structure this deal', \"what's my BATNA\", 'pricing strategy for X', 'handle this objection', 'write a deal memo'",
+    "modes": "preparation (BATNA/ZOPA); structuring & concessions; deal memo"
   }
 }

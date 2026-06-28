@@ -5,7 +5,7 @@
   "the-butler": {
    "name": "The Butler",
    "role": "Orchestrator · First Point of Contact",
-   "level": "Foundational",
+   "level": "Advanced",
    "color": "#b89530",
    "summary": "Takes your orders and routes them to the right member. Knows the full roster, who's good at what, and how to sequence their work.",
    "deploy": "Any request — The Butler decides who handles what",
@@ -147,7 +147,7 @@
   "the-herald": {
    "name": "The Herald",
    "role": "Marketing · Growth · Demand Generation",
-   "level": "Elite",
+   "level": "Master",
    "color": "#e0883c",
    "summary": "The guild's voice to the world. Turns silence into a steady call — the right people hear it, trust it, and answer. Marketing for trust-led businesses without breaking faith.",
    "deploy": "Marketing, growth, demand generation, content/SEO, brand positioning, email nurture, social/paid",

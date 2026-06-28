@@ -2,6 +2,32 @@
   "version": 1,
   "entries": [
     {
+      "id": 102,
+      "date": "2026-06-28",
+      "type": "member-upgrade",
+      "title": "Promote The Herald: Elite → Master",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Elite → Master (craft-depth tier). Prerequisite checklist for Master verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-herald"
+      ],
+      "from": "Elite",
+      "to": "Master"
+    },
+    {
+      "id": 101,
+      "date": "2026-06-28",
+      "type": "member-upgrade",
+      "title": "Promote The Butler: Foundational → Advanced",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Foundational → Advanced (craft-depth tier). Prerequisite checklist for Advanced verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-butler"
+      ],
+      "from": "Foundational",
+      "to": "Advanced"
+    },
+    {
       "id": 100,
       "date": "2026-06-28",
       "type": "member-upgrade",

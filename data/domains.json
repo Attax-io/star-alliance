@@ -88,7 +88,19 @@
         "pattern-library-discovery",
         "dev-ops-command-pack",
         "codebase-memory-mcp",
-        "penpot-design-platform"
+        "penpot-design-platform",
+        "automated-testing",
+        "frontend-react-engineering",
+        "code-review-craft",
+        "observability-incident-response",
+        "api-integration-design",
+        "contract-review",
+        "financial-data-reach",
+        "data-analysis-viz",
+        "ux-research",
+        "ux-copywriting",
+        "butler-onboarding",
+        "negotiation-deal-strategy"
       ],
       "members": [
         "the-butler",
@@ -101,7 +113,7 @@
         "the-merchant",
         "the-quartermaster"
       ],
-      "notes": "The home domain. All 9 guild members + 80 skills live here. Every other domain borrows from this skill pool."
+      "notes": "The home domain. All 9 guild members + 92 skills live here. Every other domain borrows from this skill pool."
     },
     {
       "id": "lex-council-app",

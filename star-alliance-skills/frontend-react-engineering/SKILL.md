@@ -1,6 +1,6 @@
 ---
 name: frontend-react-engineering
-description: "DESCRIPTION_PLACEHOLDER"
+description: "Production React / Next.js engineering craft for the-developer: component architecture, hooks discipline, server vs client components (App Router / RSC), state placement (local/URL/server/global), data fetching plus caching, Suspense streaming, forms and Server Actions, performance (re-render control, memoization that earns it, code-splitting, list virtualization), TypeScript prop contracts, and accessibility-aware components. Triggers: 'build this React component', 'fix this re-render', 'server or client component', 'wire this Next.js page', 'where should this state live', 'this page is slow'. Differs from image-to-code (screenshot to markup, one-shot), motion-design (the animation only), and design skills like design-tokens/design-unity (visual decisions, not engineering). Owns hardening the Designer to production-React handoff."
 metadata:
   version: 1.0.0
 type: Skill

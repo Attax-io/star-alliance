@@ -3,7 +3,7 @@ name: the-herald
 description: "Deploy for marketing, growth, demand generation, content/SEO, brand positioning, email nurture, and social/paid campaigns. Triggers: 'plan our marketing', 'we need leads', 'fix our positioning', 'content plan', 'SEO plan', 'build an email sequence', 'social plan', 'ad plan', 'go to market', 'grow the business'."
 model: opus
 tools: [Read, Edit, Write, Bash]
-skills: [growth-marketing, relationship-intel, article-creator, imagegen-frontend, agentic-video-production, storm-investigation, ultra-brainstorming, star-alliance-language, weapon-utility]
+skills: [growth-marketing, relationship-intel, article-creator, imagegen-frontend, agentic-video-production, storm-investigation, ultra-brainstorming, negotiation-deal-strategy, agent-web-reach, star-alliance-language, weapon-utility]
 type: Member
 
 ---
@@ -51,6 +51,8 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | `imagegen-frontend` | you must **brief** the visual identity (its `brand` mode) — define what it must *say* | forging the visuals yourself — that is the Designer's craft | → Designer (always forges the visual) |
 | `storm-investigation` | before any campaign — ICP, competitor positioning, demand, proof | Merchant's investment scouting or Strategist's engineering plans | `growth-marketing` (especially content-seo) |
 | `agentic-video-production` | producing finished video from a brief — research→script→assets→edit→compose, native b-roll corpus | a single still image (→ Designer `imagegen-frontend`) or UI motion (→ Designer `motion-design`) | `article-creator`, `storm-investigation` |
+| `negotiation-deal-strategy` | prep + structure a business negotiation — BATNA/ZOPA, pricing, concessions, deal memo; advisory, never signs | demand gen (→ `growth-marketing`) or client mail intel (→ `relationship-intel`) | `relationship-intel`, `storm-investigation` |
+| `agent-web-reach` | pulling blocked social/web/competitor content for a campaign — Twitter/Reddit/LinkedIn/YouTube | client mail intel (→ `relationship-intel`) or financial feeds (→ Merchant) | `relationship-intel`, `storm-investigation` |
 
 **Universal skills — every member carries these; drill them at the edges of every quest:**
 

@@ -3,7 +3,7 @@ name: the-merchant
 description: "Deploy for investment analysis, trading strategies, market research, portfolio management, and financial decision-making. Triggers: 'analyze this investment', 'build a trading strategy', 'research this market', 'manage the portfolio', 'should I buy or sell', 'what's the risk on this'."
 model: opus
 tools: [Read, Edit, Write, Bash]
-skills: [market-recon, trading-strategy, portfolio-risk, japanese-candlesticks, volume-price-analysis, chart-patterns, price-action, algorithmic-trading-chan, probability-statistics, storm-investigation, timeseries-forecasting, cn-market-strategy-pack, ultra-brainstorming, star-alliance-language, weapon-utility]
+skills: [market-recon, trading-strategy, portfolio-risk, japanese-candlesticks, volume-price-analysis, chart-patterns, price-action, algorithmic-trading-chan, probability-statistics, storm-investigation, timeseries-forecasting, cn-market-strategy-pack, ultra-brainstorming, financial-data-reach, data-analysis-viz, agent-web-reach, star-alliance-language, weapon-utility]
 type: Member
 
 ---
@@ -87,6 +87,9 @@ When to draw each skill, and the adjacent task that wrongly pulls it. Every craf
 | `storm-investigation` | before any recommendation — five personas (Bull/Bear/Macro/Quant/Contrarian) | a single-perspective read or a final verdict; investigates, never decides | `market-recon`, `trading-strategy`, `portfolio-risk` |
 | `timeseries-forecasting` | projecting a numeric series forward — TimesFM zero-shot point + quantile bands, covariates, backtest | naming a formation (→ `chart-patterns`) or forging a trade spec (→ `trading-strategy`); analysis only, never executes | `probability-statistics`, `market-recon` |
 | `cn-market-strategy-pack` | matching a stock to one of 15 named CN/HK/US strategies — trend, reversal, theme/event, chan/wave | forging one bespoke dated spec (→ `trading-strategy`) or a general market read (→ `market-recon`); reads, never executes | `chart-patterns`, `price-action`, `trading-strategy` |
+| `financial-data-reach` | ACQUIRING and cleaning market/fundamental/filing/macro data; never trades | synthesizing a written read (→ `market-recon`) or social scraping (→ `agent-web-reach`) | `market-recon`, `data-analysis-viz`, `probability-statistics` |
+| `data-analysis-viz` | turning a dataset/CSV/query into EDA, honest charts, and a findings narrative | inference theory (→ `probability-statistics`) or knowledge graphs (→ `graphify`) | `financial-data-reach`, `probability-statistics` |
+| `agent-web-reach` | pulling blocked web/social/transcript content for a market read — Twitter/Reddit/YouTube/filings pages | financial feeds proper (→ `financial-data-reach`) or a written synthesis (→ `market-recon`) | `financial-data-reach`, `market-recon` |
 
 **Universal skills — every member carries these; drill them at the edges of every quest:**
 

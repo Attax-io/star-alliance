@@ -329,6 +329,54 @@ const SKILLS = [
     id: "penpot-design-platform",
     prompt: `${STYLE}. A Fallen-Sword emblem on dark aged leather: an open design-platform canvas of glowing golden boards and component-symbols built from clean open-SVG vector paths, native design-token swatches ranged along the side, a sword-stylus driving an MCP-thread that inspects and generates a board, a small plugin-puzzle sigil docked at the frame — the craft of driving the open-source Penpot platform and its MCP, no text, no watermarks`,
   },
+  {
+    id: "automated-testing",
+    prompt: `${STYLE}. A Fallen-Sword emblem on dark aged leather: a golden testing pyramid of glowing glass vials — broad unit base, component middle, a single E2E capstone — a sword-probe striking each tier green while a red flaky-test crack is sealed shut, a brass coverage-gauge at the base — the craft of proving code works before it ships, no text, no watermarks`,
+  },
+  {
+    id: "frontend-react-engineering",
+    prompt: `${STYLE}. A Fallen-Sword emblem on dark aged leather: a glowing golden atom whose electron-orbits are nested component-boundaries, a server-shard and client-shard split by a luminous seam, hooks threaded as orbital rings, a sword forging a clean component from the design handoff — the craft of production React engineering, no text, no watermarks`,
+  },
+  {
+    id: "code-review-craft",
+    prompt: `${STYLE}. A Fallen-Sword emblem on dark aged leather: a golden magnifier-lens crossed with a sword passing over a scroll of code-diff lines, each flagged finding tagged by a small severity-rune (red/amber/grey) and pinned to its exact line, nitpick-noise swept off the margin — the craft of the deliberate evidenced code review, no text, no watermarks`,
+  },
+  {
+    id: "observability-incident-response",
+    prompt: `${STYLE}. A Fallen-Sword emblem on dark aged leather: a golden heartbeat-trace pulsing across a dark ops-board of log/metric/trace dials, an alert-klaxon flaring as a sword steadies a faltering pulse back to green, a runbook-scroll and a calm post-mortem lens beside it — the craft of run-time visibility and live-failure response, no text, no watermarks`,
+  },
+  {
+    id: "api-integration-design",
+    prompt: `${STYLE}. A Fallen-Sword emblem on dark aged leather: two golden systems joined by a glowing sword-shaped connector, a versioned contract-scroll between them, webhook-bolts arcing across with signature-seals, a circuit-breaker rune and a backoff-spring guarding the seam — the craft of the API and integration boundary, no text, no watermarks`,
+  },
+  {
+    id: "contract-review",
+    prompt: `${STYLE}. A Fallen-Sword emblem on dark aged leather: a golden contract-scroll under a sword-stylus drawing red redline strokes through one-sided clauses, a brass risk-scale weighing indemnity against liability, a flagged missing-clause gap glowing at the margin, a certify-seal left unsigned for a human hand — the advisory craft of inbound contract review, no text, no watermarks`,
+  },
+  {
+    id: "financial-data-reach",
+    prompt: `${STYLE}. A Fallen-Sword emblem on dark aged leather: a golden data-aqueduct carrying glowing streams of price-candles, filing-scrolls, and macro-series into a clean reservoir, a brass as-of dial guarding against look-ahead leakage, a sword filtering noise from signal — the read-only craft of acquiring and cleaning market data, never a trade in sight, no text, no watermarks`,
+  },
+  {
+    id: "data-analysis-viz",
+    prompt: `${STYLE}. A Fallen-Sword emblem on dark aged leather: a golden dataset resolving from a raw scattered grid into clean histogram bars, a trend-line, and a comparison chart, a sword-rule enforcing honest axis-zero, chart-junk swept away, a narrative-scroll summarizing the finding — the craft of exploratory data analysis and honest visualization, no text, no watermarks`,
+  },
+  {
+    id: "ux-research",
+    prompt: `${STYLE}. A Fallen-Sword emblem on dark aged leather: a golden microscope over a cluster of user-figures, sticky-note findings rising into an affinity-map and a journey-map ribbon, a persona-mask and a severity-dial beside it, a sword separating real evidence from guesswork — the Designer's craft of learning from real users, no text, no watermarks`,
+  },
+  {
+    id: "ux-copywriting",
+    prompt: `${STYLE}. A Fallen-Sword emblem on dark aged leather: a golden quill inscribing crisp words onto UI chips — a button label, an error toast, an empty-state line — a sword trimming a bloated sentence to its sharp core, a small screen-reader rune blessing the copy as accessible — the craft of the smallest unit of product writing, no text, no watermarks`,
+  },
+  {
+    id: "butler-onboarding",
+    prompt: `${STYLE}. A Fallen-Sword emblem on dark aged leather: a golden open door framed by a sword, beyond it the guild's roster and workflow-banners arrayed as a welcoming hall, three glowing starter-prompt scrolls offered on a tray to a hesitant newcomer — the Butler's craft of the open door, no text, no watermarks`,
+  },
+  {
+    id: "negotiation-deal-strategy",
+    prompt: `${STYLE}. A Fallen-Sword emblem on dark aged leather: two golden hands clasping over a deal-table, a sword laid flat as the agreed line, a BATNA-anchor and a ZOPA-band glowing beneath, a concession-ladder and a sealed deal-memo to the side — the Herald's advisory craft of the negotiated deal, never a signature given, no text, no watermarks`,
+  },
 ];
 
 function postJSON(url, headers, body) {

@@ -3,7 +3,7 @@ name: the-designer
 description: "Deploy for UI/UX design, frontend visual quality, brand kits, image-to-code conversion, and design system work. Triggers: 'design the UI', 'make it look premium', 'create a brand kit', 'convert this image to code', 'redesign this'."
 model: sonnet
 tools: [Read, Edit, Write, Bash]
-skills: [design-taste, design-unity, design-tokens, design-language, motion-design, image-to-code, imagegen-frontend, a11y-craft, penpot-design-platform, impeccable, star-alliance-language, weapon-utility]
+skills: [design-taste, design-unity, design-tokens, design-language, motion-design, image-to-code, imagegen-frontend, a11y-craft, penpot-design-platform, impeccable, ux-research, ux-copywriting, star-alliance-language, weapon-utility]
 type: Member
 
 ---
@@ -58,6 +58,8 @@ between `image-to-code` (production code) and `imagegen-frontend` (reference ima
 | `impeccable` | the **final QA gate** before ship — visual-regression against the token file, breakpoint/responsive verification, contrast + a11y re-audit, pixel-snap and polish on a *delivered* build | first-pass design, greenfield builds, or *setting* the visual language (→ `design-taste`) | `design-unity` (shares the a11y/token checks), `image-to-code` |
 | `a11y-craft` | making a UI accessible — WCAG 2.2 AA as a gate (`build`), running the a11y audit pass (`audit`), or contrast-as-token so AA can't be violated (`contrast`) | first-pass *taste* (→ `design-taste`) or pure visual-regression polish (→ `impeccable`) | `design-unity` (hosts the gate), `design-tokens` (contrast-as-token), `impeccable` |
 | `penpot-design-platform` | driving the Penpot platform or its MCP/plugin API — inspect a file, pull components/tokens, generate or modify boards, write a plugin | deciding the visual language (→ `design-taste`) or turning a screenshot into code (→ `image-to-code`) | `design-tokens` (consume exported tokens), `image-to-code` |
+| `ux-research` | learning from real users — interviews, usability tests, surveys, synthesis into personas/journeys | visual judgment (→ `design-taste`) or accessibility (→ `a11y-craft`) | `ux-copywriting`, `design-taste` |
+| `ux-copywriting` | functional in-product copy — error/empty/loading states, microcopy, onboarding, confirmations | brand voice/lore (→ `design-language`) or long-form marketing (→ `article-creator`) | `ux-research`, `design-language` |
 
 **Universal skills — every member carries these; drill them at the edges of every quest:**
 
