@@ -1,8 +1,8 @@
 ---
 name: high-alert
-description: "The guild's deployment brief. The Butler opens every working turn with a short, professional, plain-English brief so the Guild Master always knows what is running: the workflow, which agents are deployed, how many, and each agent's models. Three announcements: the Workflow line names the workflows.json procedure that begins, the Skill line names any Skill tool that fires (hook-enforced via high-alert.py), and the Agent-deployed line names the member dispatched and its model. Always on, every session, no toggle. Triggers automatically — this skill documents the standing announcement contract and its hook."
+description: "The guild's deployment brief. The Butler (the voice persona) opens every working turn with a short, professional, plain-English brief so the Guild Master always knows what is running: the workflow, which agents are deployed, how many, and each agent's three model slots — planning (the live thinker), execution (always the minimax-m3 doer), and critic (always glm-5.2). The fixed execution and critic slots are enforced at turn-end by workflow-banner-enforcer.py. Three announcements: the Workflow line names the workflows.json procedure that begins, the Skill line names any Skill tool that fires (hook-enforced via high-alert.py), and the Agent-deployed line names the member dispatched and its model. Always on, every session, no toggle. Triggers automatically — this skill documents the standing announcement contract and its hook."
 metadata:
-  version: 2.0.1
+  version: 2.1.0
 type: Skill
 
 ---
@@ -15,12 +15,13 @@ You exist so the Guild Master always knows what is running — in clean, profess
 ```
 ▸ Workflow — <workflow name>
 Deploying <N> agents:
-  • The <Member> — <planning model> (planning) · <execution model> (execution)
-  • The <Member> — <planning model> (planning) · <execution model> (execution)
+  • The <Member> — <planning model> (planning) · minimax-m3 (execution) · glm-5.2 (critic)
+  • The <Member> — <planning model> (planning) · minimax-m3 (execution) · glm-5.2 (critic)
 ```
 
 - The **`▸ Workflow — <name>`** line is mandatory — it names a real `workflows.json` entry and is the gate key (no workflow line → tools are blocked).
-- List **one bullet per agent** the workflow deploys, each with its planning and execution models. Keep the **`<N>` count** accurate.
+- List **one bullet per agent** the workflow deploys, each with all three model slots. Keep the **`<N>` count** accurate.
+- **Model slots are fixed and enforced at turn-end** (`workflow-banner-enforcer.py`): **planning** = the live thinker (usually `sonnet`, or whatever model the session runs); **execution** is ALWAYS `minimax-m3` (the doer); **critic** is ALWAYS `glm-5.2`. A brief whose execution or critic slot differs is bounced back to be fixed.
 - Single-agent turn → "Deploying 1 agent:" with one bullet. Keep it tight — a few lines, never a wall of text.
 
 ## The two auto-announcements
@@ -42,5 +43,6 @@ List each agent in the brief as it takes the field — the lead specialist when 
 
 ## Changelog
 
+- **2.1.0** — Brief gains a third model slot: the **critic** (`glm-5.2`) is now shown for every agent. Execution is pinned to the `minimax-m3` doer. Both fixed slots are mechanically enforced at turn-end by `workflow-banner-enforcer.py` (a brief with a wrong execution/critic slot is bounced back). Planning stays the live thinker. Reflects the uniform Sonnet-thinker / MiniMax-doer / GLM-critic loadout.
 - **2.0.1** — Rephrased the `description:` frontmatter to remove angle-bracket placeholders (Agent Skills validator rejects `<`/`>`); restored Cowork-installability. No behavior change.
 - **2.0.0** — Deployment-brief format: workflow line, agent list with models, two auto-announcements.

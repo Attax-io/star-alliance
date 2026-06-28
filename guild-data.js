@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 58,
       "patch": 78
     },
-    "generated": "2026-06-28T14:22:06Z",
+    "generated": "2026-06-28T14:32:52Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -4206,7 +4206,7 @@ const GUILD = {
     {
       "id": "high-alert",
       "name": "high-alert",
-      "version": "2.0.1",
+      "version": "2.1.0",
       "icon": "🚨",
       "art": "",
       "artPng": true,
@@ -4215,7 +4215,7 @@ const GUILD = {
       "ramp": "gray",
       "tabler": "ti-alert-triangle",
       "src": "own",
-      "desc": "The guild's deployment brief. The Butler opens every working turn with a short, professional, plain-English brief so the Guild Master always knows what is running: the workflow, which agents are deployed, how many, and each agent's models. Three announcements: the Workflow line names the workflows.json procedure that begins, the Skill line names any Skill tool that fires (hook-enforced via high-alert.py), and the Agent-deployed line names the member dispatched and its model. Always on, every session, no toggle. Triggers automatically — this skill documents the standing announcement contract and its hook.",
+      "desc": "The guild's deployment brief. The Butler (the voice persona) opens every working turn with a short, professional, plain-English brief so the Guild Master always knows what is running: the workflow, which agents are deployed, how many, and each agent's three model slots — planning (the live thinker), execution (always the minimax-m3 doer), and critic (always glm-5.2). The fixed execution and critic slots are enforced at turn-end by workflow-banner-enforcer.py. Three announcements: the Workflow line names the workflows.json procedure that begins, the Skill line names any Skill tool that fires (hook-enforced via high-alert.py), and the Agent-deployed line names the member dispatched and its model. Always on, every session, no toggle. Triggers automatically — this skill documents the standing announcement contract and its hook.",
       "intro": "You exist so the Guild Master always knows what is running — in clean, professional, plain language. The Butler opens every working turn with a short deployment brief, then proceeds. Brief first, prose after. No insider jargon, no game-y wording, no clutter.",
       "sections": [
         "The deployment brief (open every working turn)",
@@ -4230,8 +4230,8 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 39,
-        "words": 389
+        "lines": 41,
+        "words": 498
       },
       "global": false,
       "members": [

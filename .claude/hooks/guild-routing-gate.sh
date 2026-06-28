@@ -83,7 +83,7 @@ This looks like a quick, easily-reversible change. Proportional path:
   • If it IS a quick, low-stakes fix → open, as your FIRST line, the brief:
     ▸ Workflow — Quick Fix
     Deploying 1 agent:
-      • The <Member> — <planning model> (planning) · <execution model> (execution)
+      • The <Member> — <planning model> (planning) · minimax-m3 (execution) · glm-5.2 (critic)
     then proceed — no approval halt needed for a trivially-reversible edit.
   • Hand any doer-grade bulk/transform work to a cheap doer
     (python3 star-alliance-arsenal/summon.py minimax-m3 "<prompt>").
@@ -155,13 +155,16 @@ DEPLOYMENT BRIEF (always on, every working turn) — open with a short, professi
 the Guild Master can read at a glance. Clean and plain — no insider jargon. Format:
   ▸ Workflow — <workflow name>
   Deploying <N> agents:
-    • The <Member> — <planning model> (planning) · <execution model> (execution)
-    • The <Member> — <planning model> (planning) · <execution model> (execution)
+    • The <Member> — <planning model> (planning) · minimax-m3 (execution) · glm-5.2 (critic)
+    • The <Member> — <planning model> (planning) · minimax-m3 (execution) · glm-5.2 (critic)
 RULES:
   • The "▸ Workflow — <name>" line is mandatory and is the gate key (no workflow line →
     tools blocked). Name a real workflows.json entry.
-  • List one bullet per agent the workflow deploys, with that agent's models. Keep the
+  • List one bullet per agent the workflow deploys, with all three model slots. Keep the
     "<N>" count accurate. The cast is the workflow's steps[].actor list (skip `you`/gates).
+  • MODEL SLOTS (enforced at turn-end): planning = the live thinker (usually sonnet);
+    execution is ALWAYS `minimax-m3` (the doer); critic is ALWAYS `glm-5.2`. The execution
+    and critic slots are fixed — a brief with any other value is bounced back.
   • List each agent as it takes the field — the lead specialist when work begins, and the
     closing the-quartermaster at the conformance step. (The turn-end enforcer needs at least
     one of the workflow's agents listed, or it re-prompts.)

@@ -129,6 +129,52 @@ def assistant_blocks_since(lines, start):
     return "\n".join(texts), count
 
 
+# ── Model-line invariant ──────────────────────────────────────────────────────
+# Standing order from the Guild Master: every deployment-brief agent line reads
+#       • The <Member> — <planning> (planning) · minimax-m3 (execution) · glm-5.2 (critic)
+# Planning is the live thinker (varies); EXECUTION is pinned to the doer (minimax-m3)
+# and the CRITIC (glm-5.2) must be shown for every agent. We enforce the two fixed
+# slots, not planning. Placeholder template tokens ("<execution model>") are ignored.
+REQUIRED_EXEC = "minimax-m3"
+REQUIRED_CRIT = "glm-5.2"
+PLAN_RE = re.compile(r"`?([A-Za-z0-9.\-]+)`?\s*\(planning\)")
+EXEC_RE = re.compile(r"`?([A-Za-z0-9.\-]+)`?\s*\(execution\)")
+CRIT_RE = re.compile(r"`?([A-Za-z0-9.\-]+)`?\s*\(critic\)")
+
+
+def _model_toks(rx, text):
+    # Drop placeholder tokens like the "model" in "<execution model>".
+    return [t for t in rx.findall(text) if "model" not in t.lower() and "<" not in t]
+
+
+def check_model_line(text):
+    """Return an error string if the brief's per-agent model slots are wrong, else None.
+    Only fires once a real brief with at least one model slot is present."""
+    plan = _model_toks(PLAN_RE, text)
+    execs = _model_toks(EXEC_RE, text)
+    crit = _model_toks(CRIT_RE, text)
+    if not (plan or execs or crit):
+        return None  # no model-bearing brief this turn — nothing to enforce
+    problems = []
+    if not execs:
+        problems.append("the execution slot is missing")
+    bad_exec = sorted({t for t in execs if t != REQUIRED_EXEC})
+    if bad_exec:
+        problems.append(f"execution must be `{REQUIRED_EXEC}`, not {', '.join(bad_exec)}")
+    if not crit:
+        problems.append(f"the critic slot `{REQUIRED_CRIT}` is missing (now mandatory in every brief)")
+    bad_crit = sorted({t for t in crit if t != REQUIRED_CRIT})
+    if bad_crit:
+        problems.append(f"critic must be `{REQUIRED_CRIT}`, not {', '.join(bad_crit)}")
+    if not problems:
+        return None
+    return (
+        "MODEL LINE INVALID (turn-end) — every agent in the deployment brief must read:\n"
+        "      • The <Member> — <planning model> (planning) · minimax-m3 (execution) · glm-5.2 (critic)\n"
+        f"Fix: {'; '.join(problems)}. Re-emit ONLY the corrected banner block — no prose.\n"
+    )
+
+
 def main():
     try:
         data = json.load(sys.stdin)
@@ -200,7 +246,7 @@ def main():
             "the reply appear twice):\n"
             "    ▸ Workflow — <Name>\n"
             "    Deploying <N> agents:\n"
-            "      • The <Member> — <planning model> (planning) · <execution model> (execution)\n"
+            "      • The <Member> — <planning model> (planning) · minimax-m3 (execution) · glm-5.2 (critic)\n"
             "Pick the workflow from workflows.json — 'Conversation' for a greeting/ack/meta-"
             "question, 'Inquiry / Recon' for a read-only question; if none fits, run Workflow "
             "Forge.\n"
@@ -216,9 +262,18 @@ def main():
     #    The full roster is surfaced so each member — notably the closing
     #    the-quartermaster — announces as it acts. (Persona switches inside one context
     #    have no tool footprint, so per-turn we can only require ≥1, not the whole cast.)
+    def _enforce_models_then_allow():
+        # 3) MODEL-LINE INVARIANT — execution pinned to minimax-m3, critic glm-5.2 shown.
+        if not relent:
+            err = check_model_line(text)
+            if err:
+                sys.stderr.write(err)
+                sys.exit(2)
+        sys.exit(0)
+
     roster = rosters.get(declared, [])
     if not roster:
-        sys.exit(0)
+        _enforce_models_then_allow()
     roster_cores = {_core(r) for r in roster}
     announced = {_core(m.group(1)) for rx in MEMBER_RES for m in rx.finditer(text)}
     if announced & roster_cores or relent:
@@ -227,7 +282,7 @@ def main():
                 f"[banner-enforcer] no member of '{declared}' reported after "
                 f"{n_assistant} turns — relenting (anti-brick).\n"
             )
-        sys.exit(0)
+        _enforce_models_then_allow()
 
     roster_str = ", ".join(roster)
     sys.stderr.write(
@@ -237,7 +292,7 @@ def main():
         f"reproduce or summarize the answer above:\n"
         f"    ▸ Workflow — {declared}\n"
         f"    Deploying <N> agents:\n"
-        f"      • The <Member> — <planning model> (planning) · <execution model> (execution)\n"
+        f"      • The <Member> — <planning model> (planning) · minimax-m3 (execution) · glm-5.2 (critic)\n"
         f"This workflow's cast (steps[].actor): {roster_str} — list at least one (including the "
         f"closing the-quartermaster as it acts).\n"
     )
