@@ -1,0 +1,72 @@
+#!/usr/bin/env python3
+"""star-alliance — one entrypoint for the guild as a deployable product.
+
+The guild lives in this repo, but you can drop it into ANY project and call it from
+there. This is the single command that makes that easy. It wraps the proven
+installer and the dashboard server; nothing here re-implements them.
+
+Usage:
+  star-alliance install  --to /path/to/project [--all] [--domain ID] [--dev]
+        Install members + skills + arsenal into another project (the proven path).
+        The Butler and helpers work there as agents; the cheap-engine offload works.
+        NOTE: this does NOT yet carry the full gate machinery (hooks/workflows/
+        evolution) — that "full gated guild" deploy is the remaining roadmap piece.
+
+  star-alliance status   --to /path/to/project
+  star-alliance uninstall --to /path/to/project [--dry-run]
+
+  star-alliance serve    [--port 4178]
+        Open the guild dashboard for THIS repo (who's who, skills, live arsenal).
+
+  star-alliance doctor
+        Quick health check of THIS repo: conformity + device parity.
+
+Stdlib only. Run from anywhere — it locates the repo from its own path.
+"""
+from __future__ import annotations
+import os, sys, subprocess
+from pathlib import Path
+
+REPO = next((p for p in Path(__file__).resolve().parents
+             if (p / "VERSIONS.md").exists() and (p / ".git").exists()),
+            Path(__file__).resolve().parent.parent)
+
+
+def run(cmd: list[str]) -> int:
+    return subprocess.run(cmd).returncode
+
+
+def main(argv: list[str]) -> int:
+    if not argv or argv[0] in ("-h", "--help", "help"):
+        print(__doc__)
+        return 0
+    cmd, rest = argv[0], argv[1:]
+    install_py = str(REPO / "tools" / "install.py")
+
+    if cmd in ("install", "status", "uninstall"):
+        return run([sys.executable, install_py, cmd, *rest])
+    if cmd == "serve":
+        port = "4178"
+        if "--port" in rest:
+            i = rest.index("--port")
+            if i + 1 >= len(rest):
+                print("star-alliance serve: --port needs a value, e.g. --port 4178")
+                return 2
+            port = rest[i + 1]
+        env = dict(os.environ, PORT=port)
+        serve = REPO / ".claude" / "serve.cjs"
+        print(f"Dashboard → http://localhost:{port}   (Ctrl-C to stop)")
+        return subprocess.run(["node", str(serve)], env=env, cwd=str(REPO)).returncode
+    if cmd == "doctor":
+        print("== Guild health check ==")
+        rc1 = run([sys.executable, str(REPO / "tools" / "conformity_check.py")])
+        sync = REPO / "guild" / "device_sync.py"
+        rc2 = run([sys.executable, str(sync), "--check"]) if sync.exists() else 0
+        return rc1 or rc2
+
+    print(f"star-alliance: unknown command '{cmd}'. Try: install status uninstall serve doctor")
+    return 2
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv[1:]))
