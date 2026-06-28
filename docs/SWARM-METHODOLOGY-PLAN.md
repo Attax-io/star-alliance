@@ -189,9 +189,17 @@ progressive disclosure `AGENTS.md:163`).** Each worker loses all context — pac
 acceptance test, do-NOT-touch files, the model to use — model is a first-class brief field, per
 the Claude Code Agent schema), (3) file excerpts attached ONLY if the slice needs them.
 
-**MOVE 4 — Fan out in one message; integrate + verify inline; serialized revertible merge.**
-Failure isolation per slice (swarm-models `together_llm.py:96`): one worker fails → re-dispatch
-just that slice; bounded batch = the Ollama concurrency tier.
+**MOVE 4 — Fan out in one message; PER-SLICE critic; integrate + verify inline; serialized
+revertible merge.** Failure isolation per slice (swarm-models `together_llm.py:96`): one worker
+fails → re-dispatch just that slice; bounded batch = the Ollama concurrency tier.
+**Per-slice critic (REQUIRED — engine-audit fix #1):** as each worker returns, the Butler runs
+`evolution/verdict.run_cold(worker_slice_diff)` on that worker's SMALL diff *before* integrating.
+This is cheaper + parallel, and it keeps the critic invariant intact — the auto-critic gate skips
+diffs >60KB (`verify-gate.py:42,114`), and a swarm's AGGREGATE diff routinely exceeds that, so
+without per-slice review the Stop gate would fall to a manual bypass and the "nothing enters
+without a critic verdict" invariant becomes theater. Per-slice review means every constituent is
+blessed before the aggregate commit; the Stop-hook aggregate review then has a per-slice ledger
+trail behind it.
 
 ### Skill actions this adds (fold into the wave plan)
 - **codebase-memory-mcp skill — UPGRADE:** add a "Swarm Decomposition Scout" section (the 4
