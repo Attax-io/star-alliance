@@ -128,7 +128,11 @@ def _doer_calls_since(repo, start_epoch):
                 if str(r.get("backend", "")).lower() not in DOER_BACKENDS:
                     continue
                 ts = _epoch(r.get("ts"))
-                if ts is None or ts >= start_epoch - 1:   # 1s slack for clock skew
+                # A line whose time can't be established must NOT count as this-turn:
+                # usage-log.jsonl is append-only across ALL sessions, so a single
+                # malformed-ts doer entry anywhere in history would permanently satisfy
+                # the gate and silently defeat enforcement. Unknown ts → ignore.
+                if ts is not None and ts >= start_epoch - 1:   # 1s slack for clock skew
                     n += 1
     except Exception:
         pass
@@ -141,7 +145,7 @@ def _doer_calls_since(repo, start_epoch):
                 if (ev.get("meta") or {}).get("signal") != "doer-summon":
                     continue
                 ts = _epoch(ev.get("ts"))
-                if ts is None or ts >= start_epoch - 1:
+                if ts is not None and ts >= start_epoch - 1:   # unknown ts → ignore
                     n += 1
         except Exception:
             pass
@@ -210,9 +214,22 @@ def main():
             pass
 
     # One-turn LOGGED override — going solo is allowed but stays on the record.
-    if os.environ.get("SA_SOLO") == "1":
+    # Two channels, both honored: SA_SOLO=1 env (for a human re-ending the turn from a
+    # shell) and a .claude/state/solo-once file whose contents are the reason (for the
+    # AGENT itself, which cannot set session env for a Stop hook mid-turn — without this
+    # the gate is unclearable by the very actor it gates except by killing it). The file
+    # is NOT consumed here: a blocking Stop re-fires Stop, so consume-on-read would
+    # re-block on the next pass; turn-start.py clears it at the next real user turn.
+    once = os.path.join(state, "solo-once")
+    if os.environ.get("SA_SOLO") == "1" or os.path.exists(once):
+        reason = os.environ.get("SA_SOLO_REASON", "").strip()
+        if not reason and os.path.exists(once):
+            try:
+                reason = open(once).read().strip()
+            except OSError:
+                reason = ""
+        reason = reason or "no reason given"
         if bulk >= BULK_BYTES:
-            reason = os.environ.get("SA_SOLO_REASON", "").strip() or "no reason given"
             _ledger_once("solo-override", kind="delegation", author="thinker",
                          surface="arsenal", verdict="solo-override",
                          detail=f"solo override: {bulk}B inline, no doer — {reason}",
@@ -252,7 +269,9 @@ def main():
         "   Delegate the bulk and re-end the turn — the gate clears once a doer call is\n"
         "   on record. Nothing is committed while this blocks (forward-fix only).\n"
         "   If this work is genuinely non-offloadable (tool-orchestration, deep\n"
-        "   reasoning), go solo ON THE RECORD: SA_SOLO=1 SA_SOLO_REASON=\"why\" and re-end.\n"
+        "   reasoning), go solo ON THE RECORD — either:\n"
+        "     • human:  SA_SOLO=1 SA_SOLO_REASON=\"why\"  then re-end, or\n"
+        "     • agent:  echo \"why\" > .claude/state/solo-once  then re-end\n"
         "   Kill switch: touch evolution/DISARMED\n")
     sys.exit(2)
 

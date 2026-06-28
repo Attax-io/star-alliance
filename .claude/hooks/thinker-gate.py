@@ -65,7 +65,9 @@ def check(data):
     if tool not in ("Task", "Agent"):
         return {"exit": 0}
 
-    ti = data.get("tool_input", {}) or {}
+    ti = data.get("tool_input", {})
+    if not isinstance(ti, dict):
+        return {"exit": 0}
     sub = ti.get("subagent_type") or ti.get("subagentType") or ""
     override = ti.get("model")
     if not sub or not override:
@@ -121,4 +123,10 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        # Parity with the sibling gates: a broken gate must never brick the tool
+        # layer (in production sa-pretool.py also wraps check() → fail open).
+        sys.stderr.write(f"[thinker-gate] {e}, failing open\n")
+        sys.exit(0)
