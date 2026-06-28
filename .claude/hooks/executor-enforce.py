@@ -33,14 +33,14 @@
 #      should never be downgraded to a doer).
 #   6. Task/Agent with `model: minimax-m3` — ALLOW (the happy path).
 #
-# BYPASSES (logged, not silent)
-# ─────────────────────────────
-#   • Per-call human bypass: include the literal substring `SA_ALLOW_EXECUTOR`
-#     in the prompt/command. The hook BLOCKs first so the violation is on
-#     record, prints the bypass hint, then exits 0. (Symmetric with the
-#     verify-gate's `SA_SKIP_VERIFY`.)
+# BYPASSES — STRICT MODE
+# ──────────────────────
+# There is NO agent-controlled bypass. No prompt token, no env var, no string
+# the agent can put in its own message grants bypass. If the executor (MiniMax)
+# is unreachable, the agent must stop and the user must fire a kill switch.
+#
 #   • Engine kill switch: `evolution/DISARMED` or
-#     `.claude/state/executor-enforce-disarmed` → exit 0 silently.
+#     `.claude/state/executor-enforce-disarmed` (this hook only) → exit 0.
 #
 # FAIL POSTURE
 # ────────────
@@ -82,22 +82,20 @@ DOER_KEYWORDS = re.compile(
 # summon.py <model> parser — same shape weapon-gate uses, kept in sync.
 SUMMON_RE = re.compile(r"summon\.py\s+([A-Za-z0-9.\-]+)")
 MINIMAX_RE = re.compile(r"\bminimax\.py\b")
-# Self-bypass — requires an explicit reason. Format:
-#     SA_ALLOW_EXECUTOR: <reason text, ≥ 15 chars>
-# The reason is logged to the ledger so every override is auditable, and is
-# surfaced to the user at the next UserPromptSubmit so silent overrides are
-# impossible. Bare `SA_ALLOW_EXECUTOR` without a reason no longer grants bypass.
-OVERRIDE_RE = re.compile(r"SA_ALLOW_EXECUTOR\s*[:\-]\s*(.{15,400})")
-# The bare token (no reason) is no longer a bypass — it must be paired with a
-# reason. This string is kept for the "denied override" message.
-OVERRIDE_TOKEN = "SA_ALLOW_EXECUTOR"
+# STRICT MODE: there is NO agent-controlled override path. The hook can only be
+# disabled by the kill switch:
+#   • evolution/DISARMED                          (engine-wide)
+#   • .claude/state/executor-enforce-disarmed     (this hook only)
+# No prompt token, no env var, no string the agent can put in its own message
+# grants bypass. If MiniMax is unreachable, the agent must stop or the user
+# must fire the kill switch from the shell.
 # Tools that mutate files. The Butler must never call these directly — it must
 # spawn an agent. (Subagents are exempt because they ARE the executor seat.)
 WRITE_TOOLS = {"Edit", "Write", "MultiEdit", "NotebookEdit"}
 # MCP write-verb heuristic. Catches the Butler sneaking writes through MCP
 # (mcp__github__create_issue, mcp__postgres__execute, mcp__fs__write_file, etc.).
-# False positives on a read tool with one of these verbs are fixable via the
-# SA_ALLOW_EXECUTOR bypass; false negatives are the bug we're trying to kill.
+# STRICT MODE — false positives on a read tool with one of these verbs cannot
+# be bypassed by the agent. Add the verb to MCP_READ_VERBS (or kill switch).
 MCP_WRITE_VERBS = (
     "create_", "update_", "delete_", "insert_", "drop_", "truncate_",
     "put_", "patch_", "set_", "add_", "remove_", "upsert_", "merge_",
@@ -111,7 +109,8 @@ MCP_READ_VERBS = (
     "describe_", "show_", "view_", "lookup_", "select_",
 )
 # Bash commands that write files — Option C-style heuristic for the shell
-# escape hatch. False positives are cheap (re-run with SA_ALLOW_EXECUTOR).
+# escape hatch. STRICT MODE — false positives cannot be bypassed by the agent.
+# Fix the heuristic or use the kill switch.
 BASH_WRITE_PATTERNS = (
     r"\bsed\s+-i\b",                          # sed -i 's/.../' file
     r"(?<!\{)\bcat\s*>\s*\S",                # cat > file  (NOT { cat } in shell)
@@ -140,47 +139,6 @@ def _project_dir():
 
 def _state_dir():
     return os.path.join(_project_dir(), ".claude", "state")
-
-
-def _override_reason(text):
-    """If `text` contains a properly-formed override (`SA_ALLOW_EXECUTOR: <reason>`),
-    return the reason string. Otherwise return None.
-
-    Rules:
-      • Bare `SA_ALLOW_EXECUTOR` with no reason → None (denied).
-      • Reason must be ≥ 15 chars to force a real justification.
-      • Reason capped at 400 chars to keep the ledger sane.
-    """
-    if not text:
-        return None
-    m = OVERRIDE_RE.search(text)
-    if not m:
-        return None
-    reason = m.group(1).strip()
-    if len(reason) < 15:
-        return None
-    return reason[:400]
-
-
-def _record_override(reason, context):
-    """Log an override to the ledger AND drop a sentinel for turn-start to
-    surface to the user. Returns nothing."""
-    _ledger(
-        kind="executor-override",
-        author="executor-enforce",
-        surface="gates",
-        verdict="override",
-        detail=f"override reason: {reason}",
-        meta={"reason": reason, **context},
-    )
-    # Sentinel consumed by turn-start.py at next UserPromptSubmit.
-    try:
-        os.makedirs(_state_dir(), exist_ok=True)
-        with open(os.path.join(_state_dir(), "executor-override-last"),
-                  "w") as fh:
-            fh.write(f"{reason}\n")
-    except OSError:
-        pass
 
 
 def _ledger(**kw):
@@ -225,25 +183,8 @@ def _check_bash(data):
     """
     cmd = (data.get("tool_input") or {}).get("command", "") or ""
 
-    # Self-bypass — only honored with a real reason (≥ 15 chars).
-    reason = _override_reason(cmd)
-    if reason:
-        _record_override(reason, {"gate": "bash-summon"})
-        return "allow", "", ""
-
-    # Bare override token without reason → still block (deny the silent bypass).
-    if OVERRIDE_TOKEN in cmd:
-        return (
-            "block",
-            f"⛔ EXECUTOR ENFORCE — bare `{OVERRIDE_TOKEN}` no longer grants "
-            f"bypass. The override must include a real reason "
-            f"(≥ 15 chars), e.g.:\n"
-            f"     # SA_ALLOW_EXECUTOR: minimax-m3 is unreachable (HTTP 503)\n"
-            f"   The reason is logged to the ledger and surfaced to the user "
-            f"at the next turn — no silent overrides.\n",
-            "",
-        )
-
+    # STRICT MODE — no agent-controlled override. The hook can only be
+    # disabled by the kill switch (evolution/DISARMED or per-hook disarm).
     models = SUMMON_RE.findall(cmd)
     is_minimax_direct = bool(MINIMAX_RE.search(cmd))
     if is_minimax_direct:
@@ -272,8 +213,10 @@ def _check_bash(data):
                 f"UNREACHABLE, not for routine routing.\n"
                 f"   Re-draw the executor:\n"
                 f"     {fixed}\n"
-                f"   One-call bypass: append `{OVERRIDE_TOKEN}` to the prompt "
-                f"(logged as a solo-override on the ledger).\n",
+                f"   No agent-controlled bypass exists. If `{doer_default}` is\n"
+                f"unreachable, the user must disable the hook from a shell:\n"
+                f"     touch {_project_dir()}/.claude/state/executor-enforce-disarmed\n"
+                f"     (re-enable with: rm <that-file>)\n",
                 "",
             )
 
@@ -290,28 +233,8 @@ def _check_task(data):
     doer_default = (seats.get("doer") or {}).get("default", EXECUTOR_FALLBACK)
     brain_default = (seats.get("brain") or {}).get("default", "sonnet")
 
-    # Self-bypass — only honored with a real reason (≥ 15 chars).
-    reason = _override_reason(prompt)
-    if reason:
-        _record_override(reason, {
-            "gate": "task-spawn", "model": model, "agent": agent_type,
-        })
-        return "allow", "", ""
-
-    # Bare override token without reason → still block.
-    if OVERRIDE_TOKEN in prompt:
-        return (
-            "block",
-            f"⛔ EXECUTOR ENFORCE — bare `{OVERRIDE_TOKEN}` no longer grants "
-            f"bypass. The override must include a real reason "
-            f"(≥ 15 chars), e.g.:\n"
-            f"     Task(model='sonnet', prompt='... SA_ALLOW_EXECUTOR: "
-            f"planning task needs Claude judgment')\n"
-            f"   The reason is logged to the ledger and surfaced to the user "
-            f"at the next turn — no silent overrides.\n",
-            "",
-        )
-
+    # STRICT MODE — no agent-controlled override. The hook can only be
+    # disabled by the kill switch (evolution/DISARMED or per-hook disarm).
     # Brain-tier model explicitly chosen → this is a THINKER spawn, not an
     # executor spawn. The executor rule does not apply.
     if model and model.lower() in {b.lower() for b in BRAIN_TIER}:
@@ -328,11 +251,13 @@ def _check_task(data):
             f"cheap, fast, and a DIFFERENT family than the brain "
             f"(HARNESS-BOOKS: critic-style independence).\n"
             f"   Fix the spawn: pass `model: {doer_default}` explicitly.\n"
-            f"   If this is genuinely a BRAIN-tier task (planning, tool "
+            f"   If this is genuinely a BRAIN-tier task (planning, tool\n"
             f"orchestration, judgment), use a Claude model instead:\n"
             f"     model: {brain_default}    (or opus for high-stakes)\n"
-            f"   One-call bypass: append `{OVERRIDE_TOKEN}` to the prompt "
-            f"(logged as a solo-override on the ledger).\n",
+            f"   No agent-controlled bypass exists. If `{doer_default}` is\n"
+            f"unreachable, the user must disable the hook from a shell:\n"
+            f"     touch {_project_dir()}/.claude/state/executor-enforce-disarmed\n"
+            f"     (re-enable with: rm <that-file>)\n",
             "",
         )
 
@@ -346,8 +271,9 @@ def _check_task(data):
             f"thinker→executor→critic loop. Pin the executor explicitly:\n"
             f"     model: {doer_default}\n"
             f"   If this is a SMALL edit or a BRAIN-tier task, leave `model:` "
-            f"unset (it inherits) and prefix the prompt with "
-            f"`{OVERRIDE_TOKEN}` to acknowledge you're knowingly going solo.\n",
+            f"unset (it inherits). No bypass token exists; the user must "
+            f"disable the hook from a shell if the doer is unreachable:\n"
+            f"     touch {_project_dir()}/.claude/state/executor-enforce-disarmed\n",
             "",
         )
 
@@ -377,8 +303,9 @@ def _check_butler_direct_write(data, tool):
         f"   If this is genuinely a BRAIN-tier task that needs Claude "
         f"(planning, judgment), spawn a `{brain_default}`-model agent — not "
         f"do it yourself.\n"
-        f"   One-call bypass (logged as a solo-override): append "
-        f"`{OVERRIDE_TOKEN}` to the most recent user message.\n",
+        f"   No agent-controlled bypass exists. If the doer is "
+        f"unreachable, the user must disable the hook from a shell:\n"
+        f"     touch {_project_dir()}/.claude/state/executor-enforce-disarmed\n",
         "",
     )
 
@@ -391,23 +318,8 @@ def _check_butler_bash_write(data):
     status, git log, npm test, …) pass through unchanged.
     """
     cmd = (data.get("tool_input") or {}).get("command", "") or ""
-    reason = _override_reason(cmd)
-    if reason:
-        _record_override(reason, {"gate": "butler-bash-write"})
-        return "allow", "", ""
-    # Bare override without reason → still block (deny the silent bypass).
-    if OVERRIDE_TOKEN in cmd:
-        return (
-            "block",
-            f"⛔ EXECUTOR ENFORCE — bare `{OVERRIDE_TOKEN}` no longer grants "
-            f"bypass on Butler shell writes. The override must include a "
-            f"real reason (≥ 15 chars), e.g.:\n"
-            f"     sed -i s/old/new/g foo.py  # SA_ALLOW_EXECUTOR: one-line "
-            f"typo fix on a single file\n"
-            f"   The reason is logged to the ledger and surfaced to the user "
-            f"at the next turn.\n",
-            "",
-        )
+    # STRICT MODE — no agent-controlled override. The hook can only be
+    # disabled by the kill switch (evolution/DISARMED or per-hook disarm).
     if not BASH_WRITE_RE.search(cmd):
         return "allow", "", ""
     return (
@@ -418,8 +330,10 @@ def _check_butler_bash_write(data):
         f"to bypass the executor seat by going through Bash:\n"
         f"     Task(model=\"minimax-m3\", prompt=\"<the actual write work>\")\n"
         f"   If this is a read-only command that just happens to match the "
-        f"heuristic (false positive), append `{OVERRIDE_TOKEN}` to the most "
-        f"recent user message to bypass.\n",
+        f"heuristic (false positive), there is no token to bypass. The user "
+        f"can disable the hook from a shell:\n"
+        f"     touch {_project_dir()}/.claude/state/executor-enforce-disarmed\n"
+        f"     (or fix the heuristic so it doesn't false-positive)\n",
         "",
     )
 
@@ -450,8 +364,10 @@ def _check_butler_mcp(data, tool):
             f"   Spawn an agent:\n"
             f"     Task(model=\"minimax-m3\", prompt=\"<call {tool} with: "
             f"{preview}>\")\n"
-            f"   If this is actually a read (false positive), append "
-            f"`{OVERRIDE_TOKEN}` to the most recent user message.\n",
+            f"   If this is actually a read (false positive), there is no token to "
+            f"bypass. Either add the verb to the read-allowlist in "
+            f"executor-enforce.py or disable the hook from a shell:\n"
+            f"     touch {_project_dir()}/.claude/state/executor-enforce-disarmed\n",
             "",
         )
 
