@@ -48,6 +48,12 @@ Assume input is hostile and secrets are valuable.
 > Grounded finding shape: "L77: the cache key is `user:{id}` with no tenant prefix —
 > two tenants sharing a user id cross-read each other's records."
 
+For a security-sensitive diff, run the **OWASP Top-10 lens and the scan recipes** in
+`references/security-owasp.md`: it maps each finding above to an OWASP id (A01 broken
+access → RLS/auth, A03 injection → parameterized queries, A06 vulnerable deps →
+`npm audit --audit-level=high`, …) and gives copy-paste greps for hardcoded secrets,
+direct-DB-call-vs-context-wrapper counts, missing auth checks, and SSRF.
+
 ## 3. Simplification and reuse
 
 The best change removes code or reuses what exists.

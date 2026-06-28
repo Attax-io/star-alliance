@@ -2,7 +2,7 @@
 name: schema-evolution
 description: "The Architect's craft for evolving a structured data model without breaking what already reads it — adding an optional, backward-compatible field to a JSON (or table) schema and threading it through every consumer in lockstep. The method: add the field as OPTIONAL with a safe default, validate it where it's authored (fatal in the generator) and again at the conformance gate, render/consume it everywhere it should appear, document it in the authoring skill, and PROVE old data with the field absent still passes green. Use when adding a field to a shared data model, versioning a record shape, or making a non-breaking migration across producers and consumers. Triggers: 'add a field to', 'extend the schema', 'add an optional field', 'evolve the data model', 'thread this through every consumer', 'backward-compatible migration', 'version this record shape', 'add a column without breaking'. Differentiate from db-rename-sweep (renames an existing name) and transactions-domain-model (loads one fixed domain)."
 metadata:
-  version: 1.1.0
+  version: 1.2.0
 type: Skill
 
 ---
@@ -78,6 +78,39 @@ of truth is an evolution, not a rename — with its own moves:
   copies silently re-diverge; with them the gate fails loudly the instant one drifts — the guard that
   would have caught the original bug.
 
+## DB-Migration Mode — when the "field" is a Postgres table or column
+
+The five moves assume a JSON record shape, where *absence* is safe and the default lives in the
+reader. When the thing you are adding is an actual **Postgres table or column** — not a JSON
+field — additivity is necessary but not enough: a new table can read green and still be a *silent
+data leak*, because the additive instinct ("existing readers don't break") says nothing about
+*who is now allowed to read the rows*. This mode complements the additive-JSON guidance; it kicks
+in the moment the field is a column on, or the whole of, a tenant-scoped table.
+
+The contract, in one line: **security ships in the same migration file as the structure, or it
+does not ship.**
+
+- **RLS in the same migration file as the `CREATE TABLE` — a separate RLS file is forbidden.** The
+  same file that creates the table must also `ALTER TABLE … ENABLE ROW LEVEL SECURITY`, declare
+  the policies, `CREATE INDEX … ON tbl(user_id)` ("Index for RLS performance — MANDATORY"), and
+  add the GRANTs — in that order. Split the RLS into a second file and a window exists where the
+  table is live and unprotected; that window is the leak.
+- **A mandatory `user_id` index on every RLS-scoped table.** The policy's `USING` clause runs on
+  every read and filters on the scoping column, so without the index every query is a scan. The
+  index is part of the security change, created in the same file — never deferred.
+- **The migration checklist:** RLS-in-same-file → `user_id` index → GRANTs → data-dictionary
+  update. Run it in order; an undocumented scoped table is one the next author re-discovers from
+  the schema.
+- **Policies absent ⇒ stop-the-line.** A migration that creates/alters a tenant-scoped table with
+  RLS absent — no `ENABLE ROW LEVEL SECURITY`, a GRANTed path with no covering policy, or RLS in a
+  separate file — is a *security* defect, not a backward-compat one, and the additive proof is
+  silent about it. Stop; do not thread it through consumers or hand off until structure + RLS +
+  index + GRANTs are one atomic file.
+
+Full mode, with the in-order migration template and the stop-the-line rule: see
+[`references/db-migration-mode.md`](references/db-migration-mode.md). Grounded in the SAW
+`migration-patterns` discipline, adapted to the guild's additive-evolution voice.
+
 ## The craft
 
 1. **Name the field, its type, its default, and its absence-meaning** before touching code. "`class`:
@@ -141,5 +174,6 @@ generator validations added, gate invariants added, consumers threaded vs consum
 Own skill. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new section/move · MAJOR: method contract change). Regenerate `VERSIONS.md` with `python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.
 
 ## Changelog
+- **1.2.0** — New section **DB-Migration Mode — when the "field" is a Postgres table or column** (+ `references/db-migration-mode.md`): the case the additive-JSON moves don't cover, where additivity is necessary but not sufficient because a new tenant-scoped table can read green and still be a silent data leak. Contract: security ships in the same migration file as the structure — RLS (`ENABLE ROW LEVEL SECURITY` + policies) in the SAME file as `CREATE TABLE` (separate RLS file forbidden), a MANDATORY `user_id` index for RLS performance, the in-order checklist (RLS-in-file → user_id index → GRANTs → data-dictionary update), and policies-absent ⇒ stop-the-line as a security defect, not a backward-compat one. Grounded in the SAW `migration-patterns` skill, adapted to the guild's voice. New section + reference → MINOR.
 - **1.1.0** — New section **Consolidation — collapse duplicates onto one source**: the mirror move of additive evolution, for when a fact already lives in many drifted copies. Five moves — adopt-don't-create (grep for the existing SoT; verify an audit's "create X" claim first), let the canonical side win so drift auto-fixes, machine-extract/merge (never by hand or doer), emit-then-derive (with load-timing care), and seal with anti-drift conformity checks (fallback==source, sidecar⊆source, tile-per-id, prose==data). Mined from the model-armory consolidation that collapsed `app.js` MODELS + three role tables onto `star-alliance-arsenal/models.json`. New section → MINOR.
 - **1.0.0** — Initial release. The Architect's additive-migration method: add an optional field with a safe default, validate at the generator (fatal) and the conformance gate (when-present), render through every consumer, document it in the authoring skill, and prove records without the field still pass green. Mined from the weapon-fields (thinker/doers/ultra) and workflow `class` additions.

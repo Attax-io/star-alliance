@@ -1,8 +1,8 @@
 ---
 name: spec-driven-development
-description: "The Architect's discipline for building from an executable specification instead of vibe-coding — the spec→plan→tasks→implement pipeline distilled from GitHub Spec Kit. Write WHAT/WHY first (a testable spec, no tech stack), gate it against a checklist, derive a HOW plan checked against the constitution (CLAUDE.md), slice into independently-testable user-story tasks (P1=MVP), then implement story-by-story on checkpoints. Every phase is a gate: unresolved [NEEDS CLARIFICATION] or a failed constitution check stops the line. Use to plan a feature before code, stop vibe-coding, or structure a multi-surface build. Triggers: 'spec this out', 'spec-driven', 'write a spec first', 'plan before we build', 'turn this into a spec', 'break this into tasks', 'what's the MVP slice'. Differentiate from conquering-campaign (multi-wave execution engine — this is the planning discipline it runs on), ultra-brainstorming (model-ensemble fan-out), and schema-evolution (one additive data-model change)."
+description: "The Architect's discipline for building from an executable specification instead of vibe-coding — the spec→plan→tasks→implement→converge pipeline distilled from GitHub Spec Kit. Write WHAT/WHY first (a testable spec, no tech stack), gate it against a checklist (unit tests for the requirements writing, not the code), derive a HOW plan checked against the constitution (CLAUDE.md), slice into independently-testable user-story tasks (P1=MVP), analyze the artifacts for coverage/drift, implement story-by-story on checkpoints, then converge the built code back against spec/plan/tasks and append any remaining work. Every phase is a gate: unresolved clarifications or a failed constitution check stops the line. Use to plan a feature before code, stop vibe-coding, or structure a multi-surface build. Triggers: 'spec this out', 'spec-driven', 'write a spec first', 'plan before we build', 'turn this into a spec', 'break this into tasks', 'what's the MVP slice', 'converge the code', 'reconcile what we built'. Differentiate from conquering-campaign (multi-wave execution engine — this is the planning discipline it runs on), ultra-brainstorming (model-ensemble fan-out), and schema-evolution (one additive data-model change)."
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 type: Skill
 
 ---
@@ -19,8 +19,8 @@ Distilled from GitHub's Spec Kit. The CLI is theirs; the discipline is now yours
 ## The pipeline
 
 ```
-constitution → /specify → /clarify → /plan → /tasks → /analyze → /implement
-   (once)        WHAT       fill gaps    HOW     slices   audit    build
+constitution → /specify → /clarify → /plan → /tasks → /analyze → /implement → /converge
+   (once)        WHAT       fill gaps    HOW     slices   audit     build      reconcile
 ```
 
 Each arrow is a **gate**. You do not cross it until the prior artifact passes its checklist.
@@ -54,13 +54,27 @@ Each arrow is a **gate**. You do not cross it until the prior artifact passes it
    all stories) → US1 (MVP) → US2 → US3 → Polish. Models before services before endpoints.
    → `references/tasks-template.md`
 
-6. **Analyze** — cross-artifact consistency audit before building: does every requirement map
-   to a task? Does every task trace to a requirement? Any contradiction between spec, plan,
-   and tasks? Fix drift here, on paper, where it is cheap.
+6. **Analyze** — cross-artifact consistency audit before building, and it emits a **concrete
+   artifact** (strictly read-only — never edits a file): a severity-tagged findings table
+   (CRITICAL/HIGH/MEDIUM/LOW, capped at 50 rows), a requirement→task **coverage table**, and a
+   **metrics block** (Total Requirements, Total Tasks, Coverage %, Ambiguity Count, Duplication
+   Count, Critical Issues Count). Does every requirement map to a task? Every task trace to a
+   requirement? Any contradiction across spec/plan/tasks? Fix drift here, on paper, where it is
+   cheap. → `references/analyze-report.md`
 
 7. **Implement** — execute tasks in dependency order. **Stop at each checkpoint** (end of each
    user story) and validate that story independently before moving on. MVP-first: ship US1,
    prove it, then layer US2/US3 — each adds value without breaking the last.
+
+8. **Converge** (after Implement) — post-implement reconciliation: assess the **built code**
+   against spec/plan/tasks, classify each gap as `missing` / `partial` / `contradicts` /
+   `unrequested`, and **append** severity-ordered, traceable tasks to `tasks.md`
+   (`- [ ] T### … per <source-ref> (<gap-type>)`) under a new `## Phase N: Convergence` —
+   **APPEND-ONLY, never rewrite** an existing task — or report **"Converged."** when the code
+   already satisfies everything (leaving `tasks.md` byte-for-byte unchanged). Distinct from
+   /analyze: /analyze is paper-only (artifacts vs each other); /converge is code-vs-artifacts.
+   Re-run /implement on the appended tasks, then /converge again until converged.
+   → `references/converge-stage.md`
 
 ## The quality gates (why this beats vibe-coding)
 
@@ -71,9 +85,23 @@ Each arrow is a **gate**. You do not cross it until the prior artifact passes it
 - **Task gate** — every story independently testable; no cross-story dependency that breaks
   independence; no two `[P]` tasks touching the same file.
 - **Analyze gate** — full requirement↔task traceability, zero contradictions across artifacts.
+  Emits the concrete artifact: severity-tagged findings table + coverage table + metrics block
+  (Coverage %, Ambiguity/Duplication/Critical counts). (`references/analyze-report.md`)
+- **Converge gate** — after build, every gap between code and spec/plan/tasks is classified and
+  appended as a traceable task, or the result is a clean "Converged." (`references/converge-stage.md`)
 
 A vague requirement should **fail** the "testable and unambiguous" item. That failure is the
 point — catch it on paper, not in code.
+
+### Checklists are "unit tests for English"
+
+A checklist validates the **requirements writing**, not the implementation. It tests whether
+each requirement is complete, clear, consistent, measurable, and covers its scenarios — never
+whether the code works. **Ban** items that start with *Verify / Test / Confirm / Check* + a
+behavior ("Verify the button clicks") — those are QA steps, not requirement tests. Write
+quality questions instead ("Is 'prominent display' quantified? [Clarity, Spec §FR-004]"), tag
+each with `[Gap]` / `[Ambiguity]` / `[Conflict]`, number them `CHK###`, and keep **≥80%** of
+items traceable to a spec section or marker. → `references/checklist-unit-tests-for-english.md`
 
 ## Success criteria: measurable + technology-agnostic
 
@@ -99,6 +127,8 @@ Write the left column. The right column belongs in the plan, not the spec.
 5. **Slice to MVP.** Tasks grouped by user story, P1 is the smallest viable slice. Ship and
    validate US1 before US2.
 6. **Implement on checkpoints.** Stop after each story, prove it independently, then continue.
+7. **Converge to close.** After implement, reconcile the built code against spec/plan/tasks;
+   append remaining work as traceable tasks (append-only) and re-implement until "Converged."
 
 ## What it is / is not
 

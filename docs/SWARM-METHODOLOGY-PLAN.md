@@ -98,9 +98,17 @@ Deployment brief shows the multiplier + slices:
 ```
 ▸ Workflow — Architecture Build · Stage: Build (swarm)
 Deploying 4 agents:
-  • The Developer ×3 — MiniMax M3 — slices: [auth] [billing] [notifications]
+  • The Developer ×3 — Sonnet — slices: [auth] [billing] [notifications]
   • The Developer ×1 — Sonnet — integrate + verify (inline)
 ```
+**Model rule (corrected by the weapon-utility audit, 2026-06-28):** a swarm worker that
+EDITS FILES must run as the member's **brain** (a tool-capable Claude model, e.g. Sonnet) —
+NOT MiniMax/Ollama, which cannot hold the Edit/Write/Bash tools. MiniMax is the worker's
+*internal* bulk doer, not the worker itself. The saving is **N Sonnet workers under one
+Opus Butler** (cheaper than Opus doing every slice serially), not a doer-tier downgrade.
+Per-instance: planning = member brain (Sonnet/Opus per `model:`); execution-inside-instance
+= Doer seat (minimax-m3); coordinator + integration = the Opus Butler + Critic (glm-5.2) on
+the aggregate diff.
 The existing banner-enforcer bullet regex already matches `• The Developer ×3 — …` — **no
 hook change required.** Live feed shows N sibling rows under one stage header, derived from
 run status (no new source of truth).
@@ -131,3 +139,74 @@ v1 = Waves 0,1,2,3,5. Wave 4 is a later, separate, human-gated campaign.
 Each wave ends with: `conformity_check.py` exit 0, a real dry-run of the new behavior, and
 an independent review of the diff. The 8 existing fan-out steps must keep working at every
 wave.
+
+---
+
+## Skills Integration Route (4-agent audit, 2026-06-28)
+
+A read-only swarm (Quartermaster · Strategist · Architect · Developer, disjoint slices)
+audited the catalogue against the swarm upgrade. Result: **no merges among the fan-out
+family; a focused set of upgrades; one new skill.**
+
+### The fan-out family (keep all; swarm is the 4th corner)
+| Skill | Axis | Action |
+|---|---|---|
+| ultra-brainstorming | many MODELS, converge to one plan | KEEP (optional 1-line cross-ref) |
+| storm-investigation | many PERSONAS, converge to one briefing | KEEP (optional cross-ref) |
+| **decompose-and-swarm (NEW)** | many MEMBER INSTANCES, diverge then integrate | BUILD (Wave 0) |
+| members-formation | the chooser/router over the family | thin UPGRADE — recognize `swarm`, **delegate** to decompose-and-swarm (keep decomposition logic OUT) |
+| safe-agentic-orchestration | the safety doctrine over the family | KEEP + 1 cross-ref (it already states disjoint-files, independence-gate, bounded-size) |
+| high-alert | the deployment-brief contract | KEEP (regex already matches `×N`); optional doc patch with a `×N` example |
+
+### Upgrades the swarm needs to land (ranked)
+1. **weapon-utility — UPGRADE (load-bearing).** Today's "one thinker per member" rule
+   FORBIDS parallel member-instances outside ultra-brainstorming; its existing "swarm" is
+   doer-only. Add a **Member-instance swarm clause**: worker = member brain (tool-capable,
+   never a doer-tier model); Doer seat works inside each instance; Butler coordinates +
+   integrates inline. This is the rule that makes the model-correction above doctrine.
+2. **workflow-forge — UPGRADE (highest authoring leverage).** Teach it the `swarm`/`stage`
+   schema + the SW4 "integration step must follow" rule, so newly-forged workflows can
+   actually declare swarms. Without it the schema is write-only.
+3. **conquering-campaign — UPGRADE.** It already has a "fan-out sweep" (≥5 disjoint files,
+   one subagent each) = a swarm minus schema, but says "W3 writes by the main agent." Name
+   the equivalence; make a swarm the *sanctioned* parallel-write path at a wave, not a
+   context-exhaustion exception.
+4. **harness-efficiency — UPGRADE.** Add swarm economics: measure the real break-even
+   (instances × wall_ms vs serial) and feed it back to the worthiness gate (the ~1.5k
+   tokens/instance threshold is currently a guess). Watch over-decomposition as a regression.
+5. **guild-conformity — UPGRADE (swarm-close).** The orchestrator runs the conformity check
+   ONCE after all workers finish — workers never run it (intermediate states would fail).
+6. **models.json — small addition.** A `swarm` policy block (`max_instances:5`,
+   `worker_model:"brain"`) + clarify the Bench duty (model-swarm vs instance-swarm). No new
+   seat — Brain already is the worker.
+
+### Broad-sweep finds (81 other skills)
+- **Swarm-ready exemplars:** `graphify` already fans out subagents per file-chunk
+  correctly — make it the canonical example. `multimodal-model-wrappers` (has
+  batch_run/run_concurrently) is the doer-runner foundation a swarm should reuse, not
+  reinvent.
+- **Deploy-as-instances candidates:** `code-review-craft ×N` (needs a finding-merge/dedup
+  contract), `bug-fix-workflow` (one worker per bug above ~5), `spec-driven-development`
+  (its `[P]` parallel tasks → hand to a swarm).
+- **Defensive:** `claude-code-hooks` — add "never spawn a subagent from a hook body" (hooks
+  block the session).
+- **Merge candidate:** `guild-sync` + `portability-audit` → one `guild-deploy` skill, two
+  modes (device-sync · project-deploy); near-identical audit→reconcile procedure.
+- **Thin stub:** `strategies-review` — flesh out or absorb into `trading-strategy`.
+
+### Recommended route (revised wave order — folds skills in)
+- **Wave 0** — `decompose-and-swarm` skill **+** weapon-utility swarm clause (they are one
+  doctrine unit; the clause makes the new skill legal).
+- **Wave 1** — schema (`swarm`/`stage`) + `workflow-forge` authoring upgrade + models.json
+  `swarm` block + gen_workflows_lite pass-through.
+- **Wave 2** — Butler runs a real disjoint-file swarm; `conquering-campaign` + `guild-conformity`
+  swarm-close upgrades land here (campaign deploys swarms; conformity closes once).
+- **Wave 3** — brief/dashboard `×N` display; `members-formation` `swarm` arrangement;
+  `high-alert` doc patch.
+- **Wave 4 (deferred)** — worktrees (same-file).
+- **Wave 5** — guardrails SW1–SW5 + MAX_SWARM in conformity_check.py; `harness-efficiency`
+  swarm-economics; cross-ref patches (ultra-brainstorming, storm-investigation,
+  safe-agentic-orchestration).
+- **Separate later:** `guild-sync`+`portability-audit` merge; `code-review-craft`/`bug-fix-workflow`
+  swarm modes; `strategies-review` stub; `claude-code-hooks` defensive note. These are
+  swarm-adjacent, not blockers.

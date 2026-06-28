@@ -1,7 +1,7 @@
 ---
 name: code-review-craft
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 type: Skill
 description: A deliberate, member-invoked code review of a diff, PR, or file. Reviews four dimensions — correctness bugs, security, simplification and reuse, and efficiency — tags each finding by severity, holds one finding per line, and grounds every finding in evidence: the cited line and the concrete failure case. Refuses scope creep and nitpick noise. Use on "review this diff", "review my PR", "audit this file", "is this change safe", "look over my changes". Differs from the automatic verify-gate hook, which runs unbidden on Stop as a critic — this is the human-asked craft. Differs from bug-fix-workflow, which fixes a known reported bug, and from security-audit, which sweeps one risk dimension; this opens the lens across all four and ends in a review-then-verify loop.
 ---
@@ -122,3 +122,18 @@ either evidenced or explicitly marked "needs a run to confirm."
   finding; the finding line format; the review-then-verify handoff.
 - `references/severity-and-scope.md` — the severity scale, scope boundaries, and how to
   calibrate finding volume to the effort requested.
+- `references/security-owasp.md` — the OWASP Top-10 lens for the security dimension: a
+  Top-10 mapping (A01 broken access, A03 injection, A06 vulnerable deps, …) plus
+  copy-paste scan recipes (hardcoded-secret grep, direct-DB-vs-context-wrapper counts,
+  missing-auth and SSRF sweeps, `npm audit --audit-level=high`).
+
+## Changelog
+
+- **1.1.0** — Added `references/security-owasp.md`: an OWASP Top-10 mapping and concrete
+  scan recipes for the security dimension (hardcoded-credential grep, direct-DB-call vs
+  context-wrapper counts, missing-auth and SSRF sweeps, dependency-vuln audit), with a
+  pointer from the security dimension in `review-dimensions.md`. Adapted from the SAW
+  security-audit playbook; closes the prior principle-only-no-checklist gap.
+- **1.0.0** — Initial release: four-dimension on-demand review (correctness, security,
+  simplification/reuse, efficiency) with evidence-grounded, severity-tagged, one-per-line
+  findings and a review-then-verify close.

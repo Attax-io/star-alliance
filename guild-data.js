@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 58,
       "patch": 78
     },
-    "generated": "2026-06-28T10:22:42Z",
+    "generated": "2026-06-28T11:06:30Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -3124,7 +3124,7 @@ const GUILD = {
     {
       "id": "code-review-craft",
       "name": "code-review-craft",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "icon": "🔍",
       "art": "",
       "artPng": true,
@@ -3139,7 +3139,8 @@ const GUILD = {
         "What it is",
         "What it is not",
         "Principles",
-        "References"
+        "References",
+        "Changelog"
       ],
       "triggers": "'review this diff', 'review my PR', 'audit this file', 'is this change safe', 'look over my changes'",
       "modes": "review dimensions; grounding findings; severity & scope",
@@ -3147,12 +3148,13 @@ const GUILD = {
       "refs": [
         "grounding-findings.md",
         "review-dimensions.md",
+        "security-owasp.md",
         "severity-and-scope.md"
       ],
       "scripts": [],
       "stats": {
-        "lines": 118,
-        "words": 1068
+        "lines": 133,
+        "words": 1178
       },
       "global": true,
       "members": [
@@ -5244,7 +5246,9 @@ const GUILD = {
         "09-bayesian.md",
         "10-regression-anova.md",
         "11-stochastic-processes.md",
-        "12-glossary.md"
+        "12-glossary.md",
+        "13-nonparametric.md",
+        "14-quality-control.md"
       ],
       "scripts": [],
       "stats": {
@@ -5494,7 +5498,7 @@ const GUILD = {
     {
       "id": "schema-evolution",
       "name": "schema-evolution",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "icon": "🧬",
       "art": "",
       "artPng": true,
@@ -5509,6 +5513,7 @@ const GUILD = {
         "What it is / is not",
         "The method — the five moves, in order",
         "Consolidation — collapse duplicates onto one source",
+        "DB-Migration Mode — when the \"field\" is a Postgres table or column",
         "The craft",
         "Sharpening the craft",
         "Gotchas",
@@ -5518,11 +5523,13 @@ const GUILD = {
       "triggers": "'add a field to', 'extend the schema', 'add an optional field', 'evolve the data model', 'thread this through every consumer', 'backward-compatible migration', 'version this record shape', 'add a column without breaking'",
       "modes": "",
       "disabled": false,
-      "refs": [],
+      "refs": [
+        "db-migration-mode.md"
+      ],
       "scripts": [],
       "stats": {
-        "lines": 138,
-        "words": 1750
+        "lines": 172,
+        "words": 2264
       },
       "global": true,
       "members": [
@@ -5628,7 +5635,7 @@ const GUILD = {
     {
       "id": "spec-driven-development",
       "name": "spec-driven-development",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "icon": "📜",
       "art": "",
       "artPng": true,
@@ -5637,7 +5644,7 @@ const GUILD = {
       "ramp": "teal",
       "tabler": "ti-list-check",
       "src": "own",
-      "desc": "The Architect's discipline for building from an executable specification instead of vibe-coding — the spec→plan→tasks→implement pipeline distilled from GitHub Spec Kit. Write WHAT/WHY first (a testable spec, no tech stack), gate it against a checklist, derive a HOW plan checked against the constitution (CLAUDE.md), slice into independently-testable user-story tasks (P1=MVP), then implement story-by-story on checkpoints. Every phase is a gate: unresolved [NEEDS CLARIFICATION] or a failed constitution check stops the line. Use to plan a feature before code, stop vibe-coding, or structure a multi-surface build. Triggers: 'spec this out', 'spec-driven', 'write a spec first', 'plan before we build', 'turn this into a spec', 'break this into tasks', 'what's the MVP slice'. Differentiate from conquering-campaign (multi-wave execution engine — this is the planning discipline it runs on), ultra-brainstorming (model-ensemble fan-out), and schema-evolution (one additive data-model change).",
+      "desc": "The Architect's discipline for building from an executable specification instead of vibe-coding — the spec→plan→tasks→implement→converge pipeline distilled from GitHub Spec Kit. Write WHAT/WHY first (a testable spec, no tech stack), gate it against a checklist (unit tests for the requirements writing, not the code), derive a HOW plan checked against the constitution (CLAUDE.md), slice into independently-testable user-story tasks (P1=MVP), analyze the artifacts for coverage/drift, implement story-by-story on checkpoints, then converge the built code back against spec/plan/tasks and append any remaining work. Every phase is a gate: unresolved clarifications or a failed constitution check stops the line. Use to plan a feature before code, stop vibe-coding, or structure a multi-surface build. Triggers: 'spec this out', 'spec-driven', 'write a spec first', 'plan before we build', 'turn this into a spec', 'break this into tasks', 'what's the MVP slice', 'converge the code', 'reconcile what we built'. Differentiate from conquering-campaign (multi-wave execution engine — this is the planning discipline it runs on), ultra-brainstorming (model-ensemble fan-out), and schema-evolution (one additive data-model change).",
       "intro": "Code was king for decades; the spec was scaffolding thrown away once the \"real work\" began. Spec-Driven Development flips it: **the specification is the source of truth, and the implementation flows from it.** You do not start typing code. You write down WHAT the user needs and WHY, prove it is test",
       "sections": [
         "The pipeline",
@@ -5651,16 +5658,19 @@ const GUILD = {
       "modes": "specify; clarify; plan; tasks; analyze; implement",
       "disabled": false,
       "refs": [
+        "analyze-report.md",
         "checklist-template.md",
+        "checklist-unit-tests-for-english.md",
         "constitution-template.md",
+        "converge-stage.md",
         "plan-template.md",
         "spec-template.md",
         "tasks-template.md"
       ],
       "scripts": [],
       "stats": {
-        "lines": 120,
-        "words": 1005
+        "lines": 150,
+        "words": 1310
       },
       "global": true,
       "members": [
@@ -5795,7 +5805,7 @@ const GUILD = {
     {
       "id": "supabase",
       "name": "supabase",
-      "version": "0.1.2",
+      "version": "0.1.3",
       "icon": "⚡",
       "art": "",
       "artPng": true,
@@ -5808,22 +5818,25 @@ const GUILD = {
       "intro": "1. Supabase changes frequently — verify against changelog and current docs before implementing. Do not rely on training data for Supabase features. Function signatures, config.toml settings, and API conventions change between versions.",
       "sections": [
         "Core Principles",
+        "Postgres Performance Best Practices",
         "Supabase CLI",
         "Supabase MCP Server",
         "Supabase Documentation",
         "Making and Committing Schema Changes",
-        "Reference Guides"
+        "Reference Guides",
+        "Changelog"
       ],
       "triggers": "Supabase products (Database, Auth, Edge Functions, Realtime, Storage, Vectors, Cron, Queues); client libraries and SSR integrations (supabase-js, @supabase/ssr) in Next.js, React, SvelteKit, Astro, Remix; auth issues (login, logout, sessions, JWT, cookies, get",
       "modes": "",
       "disabled": false,
       "refs": [
+        "postgres-performance.md",
         "skill-feedback.md"
       ],
       "scripts": [],
       "stats": {
-        "lines": 105,
-        "words": 1184
+        "lines": 128,
+        "words": 1435
       },
       "global": true,
       "members": [

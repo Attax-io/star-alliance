@@ -3,7 +3,7 @@ name: supabase
 description: "Use when doing ANY task involving Supabase. Triggers: Supabase products (Database, Auth, Edge Functions, Realtime, Storage, Vectors, Cron, Queues); client libraries and SSR integrations (supabase-js, @supabase/ssr) in Next.js, React, SvelteKit, Astro, Remix; auth issues (login, logout, sessions, JWT, cookies, getSession, getUser, getClaims, RLS); Supabase CLI or MCP server; schema changes, migrations, security audits, Postgres extensions (pg_graphql, pg_cron, pg_vector)."
 metadata:
   author: supabase
-  version: "0.1.2"
+  version: "0.1.3"
 type: Skill
 
 ---
@@ -51,6 +51,18 @@ When working on any Supabase task that touches auth, RLS, views, storage, or use
   - **Storage upsert requires INSERT + SELECT + UPDATE.** Granting only INSERT allows new uploads but file replacement (upsert) silently fails. You need all three.
 
 For any security concern not covered above, fetch the Supabase product security index: `https://supabase.com/docs/guides/security/product-security.md`
+
+## Postgres Performance Best Practices
+
+Whenever you write queries, design schema, or debug slow operations, apply the Postgres performance rules. The single highest-impact one — an RLS policy that wraps an auth call in a `SELECT` subquery so Postgres evaluates it **once and caches** the result instead of once per row (up to ~100x speedup) — looks like:
+
+```sql
+-- CORRECT: evaluated once, result cached for the query
+create policy orders_policy on orders
+  using ((select auth.uid()) = user_id);
+```
+
+Full rules — `SECURITY DEFINER` helper-fn pattern, connection pooling (PgBouncer port 6543, transaction vs session mode), indexing for WHERE/JOIN/RLS predicates, N+1 / nested-select avoidance, and schema-design reminders (bigint PK, FK indexing) — are in [references/postgres-performance.md](references/postgres-performance.md). For the deep catalogue, see the companion `supabase-postgres-best-practices` skill (cross-linked under Reference Guides).
 
 ## Supabase CLI
 
@@ -111,3 +123,14 @@ Do NOT use `apply_migration` to change a local database schema — it writes a m
 
 - **Skill Feedback** → [references/skill-feedback.md](references/skill-feedback.md)
   **MUST read when** the user reports that this skill gave incorrect guidance or is missing information.
+
+- **Postgres Performance Best Practices** → [references/postgres-performance.md](references/postgres-performance.md)
+  **MUST read when** the user asks about query performance, slow RLS policies, index strategy, connection pooling, schema design, or anything related to Postgres optimization.
+
+- **Postgres Performance (companion skill)** → [../supabase-postgres-best-practices/SKILL.md](../supabase-postgres-best-practices/SKILL.md)
+  **MUST read when** you need the deep catalogue — 30+ rules across 8 categories with SQL examples and EXPLAIN output, beyond the summary in `references/postgres-performance.md`.
+
+## Changelog
+
+- **0.1.3** — Added a Postgres Performance Best Practices section (RLS `(select auth.uid())` caching rule for up to ~100x speedup, `SECURITY DEFINER` helper-fn pattern, PgBouncer connection pooling, WHERE/JOIN/RLS indexing, N+1 avoidance, schema-design reminders) in `references/postgres-performance.md`, with a SKILL.md pointer and cross-links to the companion `supabase-postgres-best-practices` skill.
+- **0.1.2** — Prior guild baseline (core principles, security checklist, CLI/MCP, schema-change workflow).
