@@ -79,7 +79,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`legal-rule-modeling`](star-alliance-skills/legal-rule-modeling/SKILL.md) | 1.0.0 | own | 133 / 931 | 1447 / 64 | ✓ lean | The Architect's craft for modelling a governing law into the exact calculation rules and i… |
 | [`letting-go`](star-alliance-skills/letting-go/SKILL.md) | 1.0.1 | own | 157 / 1005 | 444 / 52 | ✓ lean | A universal guardrail that kills retry-storms, perfectionism paralysis, and over-deliberat… |
 | [`market-recon`](star-alliance-skills/market-recon/SKILL.md) | 1.0.0 | own | 127 / 914 | 1115 / 55 | ✓ lean | The Merchant's craft for read-only market, investment, and risk analysis that ships a writ… |
-| [`members-formation`](star-alliance-skills/members-formation/SKILL.md) | 1.1.1 | own | 141 / 883 | 1805 / 179 | ✓ lean | The Butler's routing method — match an incoming request to the right star-map workflow in … |
+| [`members-formation`](star-alliance-skills/members-formation/SKILL.md) | 1.2.0 | own | 141 / 883 | 1939 / 189 | ✓ lean | The Butler's routing method — match an incoming request to the right star-map workflow in … |
 | [`metamorphosis-check`](star-alliance-skills/metamorphosis-check/SKILL.md) | 1.0.1 | own | 163 / 1007 | 408 / 52 | ✓ lean | A guardrail that catches the most dangerous agent failure: confidently running the OLD pla… |
 | [`motion-design`](star-alliance-skills/motion-design/SKILL.md) | 2.0.0 | own | 135 / 1018 | 1307 / 180 | ✓ lean | Two-mode motion & interaction design specialist for product UI |
 | [`multimodal-model-wrappers`](star-alliance-skills/multimodal-model-wrappers/SKILL.md) | 1.0.0 | own | 117 / 804 | 1031 / 109 | ✓ lean | Craft for building a unified, multi-provider model abstraction — one stable call surface (… |

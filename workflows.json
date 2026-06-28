@@ -2619,6 +2619,99 @@
         "bundle as an app",
         "make it an app"
       ]
+    },
+    {
+      "id": "guild-recruitment",
+      "name": "Guild Recruitment",
+      "icon": "🛡️",
+      "accent": "blue",
+      "category": "Guild Self",
+      "class": "mutating",
+      "tagline": "Scaffold a new guild member behind a gate — mandate, 3+ skills, a weapon, and a conformity pass.",
+      "when": "Use when the guild needs a NEW member (a new specialist role) — not a new weapon (that is Arsenal Forge) or a new skill (that is Skill Forge).",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Name the Role",
+          "act": "You name the role the guild lacks and the work it would own.",
+          "produces": "member request"
+        },
+        {
+          "kind": "member",
+          "actor": "the-butler",
+          "title": "Frame the Role",
+          "act": "Runs guild/frame_brief.py — the Butler frames the role request into a clean brief.",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "member request"
+          ],
+          "produces": "member brief"
+        },
+        {
+          "kind": "gate",
+          "gate": "approval",
+          "label": "You approve the role is real and worth a seat before it is scaffolded. Recruitment gate: the member must own 3 or more unique skills, at least one provisioned weapon, and pass conformity."
+        },
+        {
+          "kind": "member",
+          "actor": "the-strategist",
+          "title": "Design the Member",
+          "act": "The Strategist defines the member's mandate, the gap it fills, its three-or-more unique skills, and the seat/weapon it wields — and verifies it does not duplicate an existing member.",
+          "inputs": [
+            "member brief"
+          ],
+          "produces": "member design"
+        },
+        {
+          "kind": "member",
+          "actor": "the-designer",
+          "title": "Forge the Member Art",
+          "act": "The Designer commissions the member portrait via MiniMax and reviews it (runs Art Forge).",
+          "script": "guild/commission_art.py",
+          "args": {
+            "max-iter": 1
+          },
+          "inputs": [
+            "member design"
+          ],
+          "produces": "member art"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Scaffold the Member",
+          "act": "The Quartermaster writes the member dossier under star-alliance-members/, the members-meta entry, the domain assignment, and the Skill Drills rows, then rebuilds the dashboard.",
+          "inputs": [
+            "member design"
+          ],
+          "produces": "scaffolded member"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Guild Conformance",
+          "act": "Runs guild/conformance.py — wraps conformity_check.py and writes a signoff markdown; recruitment fails the gate if the member lacks 3 skills or a weapon.",
+          "script": "guild/conformance.py",
+          "produces": "conformance sign-off"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports the member recruited — its mandate, skills, weapon, and the conformity result — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+        }
+      ],
+      "trigger_phrases": [
+        "guild recruitment",
+        "recruit a new member",
+        "scaffold a new member",
+        "add a guild member",
+        "the guild needs a new specialist",
+        "create a new member"
+      ]
     }
   ]
 }

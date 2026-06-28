@@ -2,7 +2,7 @@
 name: members-formation
 description: "The Butler's routing method — match an incoming request to the right star-map workflow in `workflows.json` and follow it. The Butler does not assemble a fresh team per mission; each workflow already names its members and their arrangement, so routing is a *selection* problem: read the request, scan the workflows' triggers, pick the one that fits, follow its steps. Use when the Butler receives an order and must decide which workflow to run. Triggers: 'route this', 'which workflow', 'who should handle this', 'how do we run this', 'pick the workflow', 'what's the play', or any incoming order that must be matched to a procedure. Only when NO existing workflow fits does the Butler fall back to forming a fresh formation (members + arrangement + gates) and hand it to the Quartermaster's Workflow Forge to crystallize. Workflow-selection first; formation-building is the fallback."
 metadata:
-  version: 1.1.1
+  version: 1.2.0
 type: Skill
 
 ---
@@ -164,6 +164,15 @@ A one-off fallback is **not** crystallized — the Butler says so in his report 
 A compact worked example (request → no fit → formation → crystallized workflow) is in
 [`references/crystallize-to-workflow.md`](references/crystallize-to-workflow.md).
 
+## Failure-mode routing — route the stuck, not just the start
+
+The Butler routes the START of work by workflow. He also routes FAILURES: when a member or
+agent gets stuck mid-work, the stuck has a deterministic owner (bug → developer, missing spec →
+architect, scope overflow → strategist, vague intent → `butler-onboarding`, high-stakes ambiguity →
+HALT/Confusion Protocol, no workflow → Workflow Forge, missing role → Guild Recruitment). A blocked
+agent DECLARES the failure mode instead of silently retrying the same blind action. Full table:
+[`references/failure-mode-routing.md`](references/failure-mode-routing.md).
+
 ## Versioning
 
 Own skill. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new pattern/section ·
@@ -171,6 +180,7 @@ MAJOR: method contract change). Regenerate `VERSIONS.md` with
 `python3 skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.
 
 ## Changelog
+- **1.2.0** — New **failure-mode routing** section + `references/failure-mode-routing.md`: a table mapping every mid-work stuck (bug, missing spec, scope overflow, vague intent, high-stakes ambiguity, doer miss, no-workflow, missing-role) to a deterministic owner, so a blocked agent declares the failure mode instead of silently retrying. New section → MINOR.
 - **1.1.1** — Workflow-catalog fix: the Hygiene & Release row now lists **Compliance Audit** (the merged Conformity Sweep + OKF Tidy) instead of the old "Conformity Sweep". Wording/refs → PATCH.
 - **1.1.0** — Reframed around the Butler's true job: **workflow selection, not member assembly**.
   Workflow-matching is now the primary five-step method (scan `workflows.json` `when` triggers →

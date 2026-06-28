@@ -158,6 +158,10 @@ const WORKFLOWS = [
     id: "guild-self-audit",
     prompt: `${STYLE}. An EMERALD-GREEN polished scrying-mirror reflecting the guild's own rack of skill-blades, a few dull rusted blades flagged with red runes for weeding while bright ones gleam, golden scales weighing member-crests for balance, an open ledger of retired-idea glyphs crossed out, calm self-examination and pruning, no enemy present`,
   },
+  {
+    id: "guild-recruitment",
+    prompt: `${STYLE}. A Fallen-Sword guild-banner emblem on dark aged leather: a golden empty seat at a round war-table being filled by a new armored figure rising into the light, a recruitment-scroll listing three skill-runes and a single weapon-sigil beside a conformity-checkmark seal, a sword raised in oath — the rite of scaffolding a new guild member behind the gate, no text, no watermarks`,
+  },
 ];
 
 function postJSON(url, headers, body) {

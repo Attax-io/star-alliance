@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 58,
       "patch": 78
     },
-    "generated": "2026-06-28T08:12:07Z",
+    "generated": "2026-06-28T08:26:03Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -31,7 +31,7 @@ const GUILD = {
       "members": 9,
       "skills": 92,
       "domains": 3,
-      "workflows": 33,
+      "workflows": 34,
       "hooks": 7,
       "log": 162
     }
@@ -2719,7 +2719,7 @@ const GUILD = {
         "lines": 100,
         "words": 1159
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-architect"
       ]
@@ -2830,7 +2830,7 @@ const GUILD = {
         "lines": 171,
         "words": 1555
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-developer"
       ]
@@ -2909,7 +2909,7 @@ const GUILD = {
         "lines": 98,
         "words": 975
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-butler"
       ]
@@ -3153,7 +3153,7 @@ const GUILD = {
         "lines": 118,
         "words": 1068
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-developer"
       ]
@@ -3392,7 +3392,7 @@ const GUILD = {
         "lines": 112,
         "words": 1103
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-translator"
       ]
@@ -3467,7 +3467,7 @@ const GUILD = {
         "lines": 38,
         "words": 1264
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-merchant"
       ]
@@ -3793,7 +3793,7 @@ const GUILD = {
         "lines": 65,
         "words": 1412
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-merchant"
       ]
@@ -3831,7 +3831,7 @@ const GUILD = {
         "lines": 134,
         "words": 1375
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-developer"
       ]
@@ -4631,7 +4631,7 @@ const GUILD = {
     {
       "id": "members-formation",
       "name": "members-formation",
-      "version": "1.1.1",
+      "version": "1.2.0",
       "icon": "🧭",
       "art": "",
       "artPng": true,
@@ -4649,6 +4649,7 @@ const GUILD = {
         "The gates — guild standard, baked into every workflow",
         "Crystallizing a fallback formation into a star-map workflow",
         "How the Butler runs it — the full loop",
+        "Failure-mode routing — route the stuck, not just the start",
         "Versioning",
         "Changelog"
       ],
@@ -4656,12 +4657,13 @@ const GUILD = {
       "modes": "",
       "disabled": false,
       "refs": [
-        "crystallize-to-workflow.md"
+        "crystallize-to-workflow.md",
+        "failure-mode-routing.md"
       ],
       "scripts": [],
       "stats": {
-        "lines": 178,
-        "words": 1805
+        "lines": 188,
+        "words": 1939
       },
       "global": true,
       "members": [
@@ -4831,7 +4833,7 @@ const GUILD = {
         "lines": 55,
         "words": 1150
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-herald"
       ]
@@ -4870,7 +4872,7 @@ const GUILD = {
         "lines": 145,
         "words": 1273
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-developer"
       ]
@@ -6131,7 +6133,7 @@ const GUILD = {
         "lines": 127,
         "words": 1223
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-designer"
       ]
@@ -6169,7 +6171,7 @@ const GUILD = {
         "lines": 86,
         "words": 915
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-designer"
       ]
@@ -9203,6 +9205,100 @@ const GUILD = {
         "build an installer",
         "bundle as an app",
         "make it an app"
+      ],
+      "artPng": true
+    },
+    {
+      "id": "guild-recruitment",
+      "name": "Guild Recruitment",
+      "icon": "🛡️",
+      "accent": "blue",
+      "category": "Guild Self",
+      "class": "mutating",
+      "tagline": "Scaffold a new guild member behind a gate — mandate, 3+ skills, a weapon, and a conformity pass.",
+      "when": "Use when the guild needs a NEW member (a new specialist role) — not a new weapon (that is Arsenal Forge) or a new skill (that is Skill Forge).",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Name the Role",
+          "act": "You name the role the guild lacks and the work it would own.",
+          "produces": "member request"
+        },
+        {
+          "kind": "member",
+          "actor": "the-butler",
+          "title": "Frame the Role",
+          "act": "Runs guild/frame_brief.py — the Butler frames the role request into a clean brief.",
+          "script": "guild/frame_brief.py",
+          "args": {
+            "style": "shape"
+          },
+          "inputs": [
+            "member request"
+          ],
+          "produces": "member brief"
+        },
+        {
+          "kind": "gate",
+          "gate": "approval",
+          "label": "You approve the role is real and worth a seat before it is scaffolded. Recruitment gate: the member must own 3 or more unique skills, at least one provisioned weapon, and pass conformity."
+        },
+        {
+          "kind": "member",
+          "actor": "the-strategist",
+          "title": "Design the Member",
+          "act": "The Strategist defines the member's mandate, the gap it fills, its three-or-more unique skills, and the seat/weapon it wields — and verifies it does not duplicate an existing member.",
+          "inputs": [
+            "member brief"
+          ],
+          "produces": "member design"
+        },
+        {
+          "kind": "member",
+          "actor": "the-designer",
+          "title": "Forge the Member Art",
+          "act": "The Designer commissions the member portrait via MiniMax and reviews it (runs Art Forge).",
+          "script": "guild/commission_art.py",
+          "args": {
+            "max-iter": 1
+          },
+          "inputs": [
+            "member design"
+          ],
+          "produces": "member art"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Scaffold the Member",
+          "act": "The Quartermaster writes the member dossier under star-alliance-members/, the members-meta entry, the domain assignment, and the Skill Drills rows, then rebuilds the dashboard.",
+          "inputs": [
+            "member design"
+          ],
+          "produces": "scaffolded member"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Guild Conformance",
+          "act": "Runs guild/conformance.py — wraps conformity_check.py and writes a signoff markdown; recruitment fails the gate if the member lacks 3 skills or a weapon.",
+          "script": "guild/conformance.py",
+          "produces": "conformance sign-off"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports the member recruited — its mandate, skills, weapon, and the conformity result — back to you in plain English, and flags whether this run could be saved as a reusable star-map workflow."
+        }
+      ],
+      "trigger_phrases": [
+        "guild recruitment",
+        "recruit a new member",
+        "scaffold a new member",
+        "add a guild member",
+        "the guild needs a new specialist",
+        "create a new member"
       ],
       "artPng": true
     }
