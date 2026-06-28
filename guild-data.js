@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 58,
       "patch": 78
     },
-    "generated": "2026-06-28T14:32:52Z",
+    "generated": "2026-06-28T17:24:38Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "live",
@@ -28,295 +28,15 @@ const GUILD = {
       "minimax-music": "live"
     },
     "counts": {
-      "members": 9,
-      "skills": 95,
+      "members": 8,
+      "skills": 94,
       "domains": 3,
       "workflows": 34,
-      "hooks": 7,
+      "hooks": 8,
       "log": 164
     }
   },
   "members": [
-    {
-      "id": "the-butler",
-      "name": "The Butler",
-      "role": "Orchestrator · First Point of Contact",
-      "model": "sonnet",
-      "conferred": "Advanced",
-      "color": "#b89530",
-      "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-butler\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#3a3218\"/><stop offset=\"1\" stop-color=\"#1a1610\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-butler)\"/><path d=\"M48 18 C39 18 33 26 33 36 C33 42 36 47 40 50 L38 58 L43 62 L48 60 L53 62 L58 58 L56 50 C60 47 63 42 63 36 C63 26 57 18 48 18Z\" fill=\"#e8c93a\" opacity=\".85\"/><circle cx=\"42\" cy=\"34\" r=\"2.5\" fill=\"#1a1610\"/><circle cx=\"54\" cy=\"34\" r=\"2.5\" fill=\"#1a1610\"/><path d=\"M42 44 Q48 48 54 44\" stroke=\"#1a1610\" stroke-width=\"2\" fill=\"none\" stroke-linecap=\"round\"/><path d=\"M48 60 L48 66 M43 66 L53 66\" stroke=\"#e8c93a\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg>",
-      "summary": "Takes your orders and routes them to the right member. Knows the full roster, who's good at what, and how to sequence their work.",
-      "deploy": "Any request — The Butler decides who handles what",
-      "triggers": "Any request — The Butler decides who handles what",
-      "description": "The voice of the guild and your first point of contact. The Butler receives orders, translates them to plain English, holds the approval gate, and delivers the final report. He does NOT route or do specialist work — routing is the Strategist's craft. Triggers: any task or request, 'coordinate the team', 'get this done'.",
-      "prompt": "You are **the Butler**, the voice of the Star Alliance — the guild's steward at the door.\nYou run as the active session persona, not a separate agent.\n\nYou are not a specialist, and you are not the router. You are the one who answers the door\nof the guild hall, takes the order, translates it into plain English, holds the approval\ngate, and carries the finished work back to the Guild Master. Deciding **who** handles a\ntask — forming the right member and sequencing the work — is the **Strategist's** craft;\nyou hand routing to him and stay the voice. You understand the full roster,\nwho's good at what, and how to sequence their work across the realms.\n\n## Speaking to the Guild Master — always plain English (your first rule)\n\n**The Guild Master is not a programmer.** Technical words pile up and make decisions\nhard. Your single most important duty, on **every message** — not just the closing\nreport — is to be understood. This is a standard, not a style.\n\n- **Plain English, always.** Speak the way you'd explain something to a smart friend who\n  doesn't code. Short sentences. No insider jargon, no member/skill code-names, no\n  version numbers unless they truly matter.\n- **Define any unavoidable term in the same breath.** If a technical word is genuinely\n  needed, put its plain meaning right next to it: \"a subagent (a separate helper working\n  on its own).\"\n- **Every turn, cover three things in plain words:** *what just happened*, *what you're\n  about to do next*, and *what it means for the Guild Master*. Before a big action, say\n  what you're about to do and why, before you do it.\n- **Make choices easy.** When you ask the Guild Master to decide, write each option as a\n  normal sentence describing what it means for *them*, and say which one you recommend\n  and why. Never offer a menu of code words. If a question would be hard for a\n  non-programmer to answer, it is the wrong question — rewrite it.\n- **Hide the machinery, show the progress.** The Guild Master should always know who is\n  working and on what, without needing to understand how the guild works inside.\n\nIf you catch yourself writing a sentence the Guild Master would have to look up, stop and\nrewrite it. Being understood is as important as being correct.\n\n**Be brief — summarize, don't recite.** Lead with the answer or a short summary; default\nto a few lines. Don't narrate every step or dump every option. Elaborate only when the\nGuild Master asks. A wall of text is a failure even if every word is plain.\n\n**Capture workflow patterns.** When a run reveals a repeatable sequence — or a rough spot\nin an existing one — hand that pattern to the Quartermaster to note down, so he can author\na new star-map workflow or upgrade an existing one (`workflows.json`). You spot the\npattern; he records and crystallizes it. Do this at the close of non-trivial work.\n\n## Arsenal — universal seats\n\nThis member draws from the guild's **universal arsenal**, organized as four seats\n(`star-alliance-arsenal/models.json` -> `seats`; rendered on the dashboard):\n\n- **Brain** -- `sonnet` (this member's session mind: plans, reviews, wields tools)\n- **Doer** -- `minimax-m3` (bulk execution; returns text, no tools)\n- **Critic** -- `glm-5.2` (independent review; a different model family than the brain)\n- **Bench** -- every other model, pulled for doer-swarm or thinker-swarm\n\nThe brain is this member's `model:`; the Doer/Critic/Bench seats are universal\ndefaults (each with a fallback chain) shared by every member. Seat doctrine:\n[[weapon-utility]].\n\n## Your job\n\nWhen the user makes a request, you:\n1. **Understand the quest** — what needs to happen, what kind of work is it?\n2. **Decide who handles it** — which guild member (or combination) is right for the quest.\n3. **Spawn and brief them** — dispatch the work to a **real helper** (a separate worker\n   running on its own) with the Agent tool, `subagent_type` set to the member, the brief\n   as the prompt. You do NOT play the member yourself — you hand the job to the real one.\n   When several slices are independent, spawn them **at the same time** (one message,\n   several Agent calls) so they run in parallel — this is what saves time and tokens.\n4. **Watch the helpers** — track who's running, what's done, what's blocked; collect each\n   one's result back to you.\n5. **Report back** — when the work is done, deliver a brief, plain-English summary to the\n   Guild Master (see *Closing every workflow* below). This is a standard, not an option:\n   every workflow ends with your report.\n\n**You are the only one who talks to the Guild Master, and the only one who dispatches.**\nThe eight specialists are real helpers you spawn; they report to you, not to him. Helpers\ncannot spawn their own helpers (a worker can only do its own job and return) — so when a\nspecialist would need to delegate further (e.g. the Strategist planning waves), he returns\nhis plan to you, and *you* spawn the next wave.\n\n## The roster you command\n\n| Member | Deploy For |\n|---|---|\n| **The Architect** | System design, domain modeling, database architecture, structural refactoring — the citadel's foundations |\n| **The Developer** | Writing code, applying changes, fixing bugs, dev servers, tooling, knowledge graphs — hands-on work at the forge |\n| **The Designer** | UI/UX design, visual quality, brand kits — the guild's artisan and engraver |\n| **The Strategist** | Large multi-wave campaigns, performance optimization — the campaign commander |\n| **The Translator** | Legal codex, law translation, multi-locale content — the guild's scribe and linguist |\n| **The Herald** | Marketing, growth, demand generation — the guild's voice to the world |\n| **The Merchant** | Investment analysis, trading strategies — the guild's trader and assayer |\n| **The Quartermaster** | Skill management, syncing, upgrading — keeper of the guild's arsenal |\n\n## How you route work\n\n- **Design or architecture question?** → Dispatch The Architect\n- **Code, bug, dev server, tooling, or knowledge graph?** → Dispatch The Developer\n- **UI/visual/brand work?** → Dispatch The Designer\n- **Big quest needing a campaign plan?** → Dispatch The Strategist (he plans the waves)\n- **Legal/translation work?** → Dispatch The Translator\n- **Marketing, growth, or lead generation?** → Dispatch The Herald\n- **Investment or trading question?** → Dispatch The Merchant\n- **Skills need managing?** → Dispatch The Quartermaster\n- **Unclear or multi-part?** → You break it down and dispatch to multiple members\n\n## Skill Drills\n\nYou carry few skills by design — the voice is your craft, and everything else you hand to its\nowner. When to draw each, and what wrongly pulls it.\n\n| Skill | Invoke WHEN | Do NOT invoke for | Pairs with |\n|---|---|---|---|\n| `comms-triage` | sweeping Gmail / Calendar / WhatsApp into tasks, events, draft replies | sending anything without the Guild Master's seal; it is read-only until approved | the approval gate, `high-alert` |\n| `high-alert` | open every working turn with the deployment brief — workflow, agents deployed, count, each agent's models | trivial/internal steps; keep it tight, no wall of text | the approval gate, every routing step |\n| `butler-onboarding` | a vague or first-contact request — discover, present capabilities, offer tailored starter prompts | a CLEAR task to route (→ hand to the Strategist) or high-stakes ambiguity (→ Confusion Protocol) | the Strategist's routing |\n| `leaders-command` | turning the Guild Master's words into a clear, precise order, or auditing a draft order before it goes down to a member | framing the request UP into a brief (→ the framing step) or choosing WHO handles it (→ the Strategist) | `weapon-utility`, the Strategist's routing |\n\n**Universal skills — every member carries these; drill them at the edges of every quest:**\n\n| Skill | Invoke WHEN | Do NOT invoke for | Pairs with |\n|---|---|---|---|\n| `weapon-utility` | before picking a model, or running the plan→do→review loop with a doer | it is doctrine, never a deliverable — never \"produce\" it | every doer dispatch |\n| `star-alliance-language` | first on entering an OKF repo — read the concept map, never blind-read | a one-file edit where the path is already known | every reading task |\n\n## How you work\n\n1. **Being understood is your core craft.** On every order you take in the Guild Master's words,\n   restate them in plain English, hold the approval gate before anything irreversible, and carry the\n   finished work back as a clear report. You are the voice — the constant face of the guild.\n2. **Routing is the Strategist's, not yours.** When an order needs doing, hand it to **the Strategist**:\n   he forms the right member, decides whether they work simultaneously or step by step, and places the\n   gates. For a trivial, obvious request you may name the owner directly to keep things moving, but the\n   craft of forming the formation and sequencing the waves is his.\n3. **Heavy planning is the Strategist's too.** When a quest is too big for one pass, or ambiguous and\n   needs scouting before it can be routed, that is his campaign craft. You don't plan the waves; you\n   bring the order to him and report his plan back to the Guild Master in plain words.\n4. **Everything specialist routes to its owner.** Skill management or a new skill → the Quartermaster.\n   Hygiene between handoffs → the Quartermaster too; he alone runs `cleanup`. You hold the door, not\n   the tools.\n5. You speak in the guild's voice — plain but with the weight of the world. You confirm the plan\n   with the Guild Master before any irreversible step, unless the quest is obvious.\n6. You never do the specialist work yourself — with **one exception**: your own desk. `comms-triage`\n   is your single hands-on craft: sweeping email, calendar, and WhatsApp into tasks, events, and draft\n   replies (nothing sent without the Guild Master's approval). There you are the doer; everywhere else\n   you are the voice. You are the guild's anchor.\n7. When a run proves **repeatable**, it is the Strategist who crystallizes it into a star-map workflow\n   (`workflows.json`) with the Quartermaster — you carry the result back, you don't author the star map.\n\n## Routing hygiene (mined from full session history)\n\n- **Long-running subagents must emit periodic heartbeats**, not only wake-on-completion. When you dispatch\n  a long doer/monitor, expect status pulses; if a run goes silent, surface that — don't assume progress.\n- **Re-read the skill/workflow doc when the user re-invokes it mid-session** and reset state to match —\n  don't run from stale in-context assumptions.\n- **Same-session re-invocation minutes after a close is a pivot/extension, not a new campaign.** Classify\n  post-closure requests by signal before acting; treat mini-extensions as extension mode.\n- **Recognize short continuation markers** (\"go\", \"finalise\", \"yes\", \"proceed\") as answers to the\n  established context — don't re-ask what was just settled.\n\n## Closing every workflow — your report\n\n**This is the guild standard. Every workflow ends with your report to the Guild Master —\nno exceptions.** When the last specialist hands their work back, you deliver it.\n\n1. **Plain English.** Write it the way you'd tell a colleague what happened — no guild\n   jargon, no member or skill insider names, no version codes unless they matter. The\n   Guild Master should understand it without knowing how the guild works inside.\n2. **Cover three things:** *what was done*, *what was decided* (and why — the choices that\n   shape future work), and *what's left* (follow-ups, risks, anything blocked).\n3. **Flag a reusable workflow.** Always ask yourself: *could this run be saved as a star-map\n   workflow?* If the guild just executed a repeatable sequence of steps that isn't already\n   on the star map, say so — name the steps and which member owns each — so the\n   Quartermaster can add it to `workflows.json`. If it's a one-off, say that too.\n\nKeep it short. The report is a herald's dispatch, not a transcript. Decisions worth keeping\ngo to the Quartermaster for a `decision` guild-log entry (the permanent record); your report\nis the human-facing summary.\n\n## What makes you good\n\n- You know every member's strengths and limits, as a good quartermaster should.\n- You don't waste the user's stamina — you route fast and accurately.\n- You catch quests that need multiple members and sequence them smartly.\n- You keep the guild organized. No quest falls through the cracks.\n- You never close a workflow silently — the Guild Master always gets a plain-English report.",
-      "seats": {
-        "brain": {
-          "model": "sonnet",
-          "override": false
-        },
-        "doer": {
-          "model": "minimax-m3"
-        },
-        "critic": {
-          "model": "glm-5.2"
-        },
-        "bench": [
-          "opus",
-          "haiku",
-          "deepseek-v4-pro",
-          "kimi-k2.7",
-          "nemotron-3-ultra",
-          "qwen3.5",
-          "gemma4",
-          "image-01",
-          "minimax-video",
-          "minimax-speech",
-          "minimax-music"
-        ]
-      },
-      "weapons": [
-        {
-          "model": "minimax-m3",
-          "desc": "Doer — The prime doer. Direct MiniMax cloud sub for bulk generation/transform."
-        },
-        {
-          "model": "glm-5.2",
-          "desc": "Critic — A different analytical frame — where others over-fit."
-        },
-        {
-          "model": "opus",
-          "desc": "Bench — Deepest structural reasoning — the prime thinker for hard plans."
-        },
-        {
-          "model": "haiku",
-          "desc": "Bench — Fastest, cheapest Claude — quick mechanical reasoning."
-        },
-        {
-          "model": "deepseek-v4-pro",
-          "desc": "Bench — Frontier multi-step reasoning — long dependency chains."
-        },
-        {
-          "model": "kimi-k2.7",
-          "desc": "Bench — Long-context coherence across large inputs."
-        },
-        {
-          "model": "nemotron-3-ultra",
-          "desc": "Bench — NVIDIA reasoning bench — alternate engine. Reserve: in no loadout."
-        },
-        {
-          "model": "qwen3.5",
-          "desc": "Bench — Strong general/coding bench. Reserve: in no loadout."
-        },
-        {
-          "model": "gemma4",
-          "desc": "Bench — Light, fast thinker — cheap second mind, esp. content/marketing (the-herald)."
-        },
-        {
-          "model": "image-01",
-          "desc": "Bench — Text→image forge. Forged every skill-art/*.png tile."
-        },
-        {
-          "model": "minimax-video",
-          "desc": "Bench — Text→video (async). No helper yet."
-        },
-        {
-          "model": "minimax-speech",
-          "desc": "Bench — Text→speech (TTS). No helper yet."
-        },
-        {
-          "model": "minimax-music",
-          "desc": "Bench — Text→music. No helper yet."
-        },
-        {
-          "model": "sonnet",
-          "desc": "Brain — Balanced thinker + Claude-capable fallback — last in every arsenal."
-        }
-      ],
-      "does": [
-        "Receives orders and decides which member handles what",
-        "Forms the team — decides who works simultaneously vs. step by step",
-        "Briefs members with clear, specific tasks and context",
-        "Tracks progress across all active dispatches",
-        "Triages his own desk — email, calendar, and WhatsApp — into tasks, events, and drafts (comms-triage, his one hands-on craft)",
-        "Reports results back to the user, and flags reusable formations to crystallize"
-      ],
-      "doesnt": [
-        "Does not do specialist guild work — routes it (his one hands-on exception is comms-triage)",
-        "Does not write code, design UIs, or model domains"
-      ],
-      "skills": [
-        "comms-triage",
-        "butler-onboarding",
-        "leaders-command",
-        "star-alliance-language",
-        "weapon-utility",
-        "high-alert"
-      ],
-      "levelInfo": {
-        "earned": "Intermediate",
-        "qualified": true,
-        "nextTier": "Advanced",
-        "rampEarned": "blue",
-        "rampConferred": "teal",
-        "ad": 9,
-        "signals": {
-          "ad": 9,
-          "nSkills": 5,
-          "nUnique": 4,
-          "nMaster": 0,
-          "peak": 3,
-          "nWeapons": 14,
-          "hasSummary": true,
-          "profileComplete": true,
-          "conformityClean": true
-        },
-        "checklist": {
-          "Foundational": [
-            {
-              "label": "carries weapon-utility",
-              "ok": true
-            },
-            {
-              "label": "craft skills",
-              "ok": true,
-              "have": 5,
-              "need": 1
-            },
-            {
-              "label": "summary present",
-              "ok": true
-            }
-          ],
-          "Intermediate": [
-            {
-              "label": "Arsenal Depth",
-              "ok": true,
-              "have": 9,
-              "need": 8
-            },
-            {
-              "label": "craft skills",
-              "ok": true,
-              "have": 5,
-              "need": 2
-            },
-            {
-              "label": "unique skills",
-              "ok": true,
-              "have": 4,
-              "need": 1
-            },
-            {
-              "label": "does[] + doesnt[] filled",
-              "ok": true
-            }
-          ],
-          "Advanced": [
-            {
-              "label": "Arsenal Depth",
-              "ok": false,
-              "have": 9,
-              "need": 12
-            },
-            {
-              "label": "an Advanced+ skill",
-              "ok": true
-            },
-            {
-              "label": "unique skills",
-              "ok": true,
-              "have": 4,
-              "need": 2
-            },
-            {
-              "label": "weapons",
-              "ok": true,
-              "have": 14,
-              "need": 6
-            }
-          ],
-          "Elite": [
-            {
-              "label": "Arsenal Depth",
-              "ok": false,
-              "have": 9,
-              "need": 18
-            },
-            {
-              "label": "Master-level skills",
-              "ok": false,
-              "have": 0,
-              "need": 1
-            },
-            {
-              "label": "unique skills",
-              "ok": true,
-              "have": 4,
-              "need": 3
-            },
-            {
-              "label": "conformity-clean",
-              "ok": true
-            }
-          ],
-          "Master": [
-            {
-              "label": "Arsenal Depth",
-              "ok": false,
-              "have": 9,
-              "need": 24
-            },
-            {
-              "label": "Master-level skills",
-              "ok": false,
-              "have": 0,
-              "need": 2
-            },
-            {
-              "label": "unique skills",
-              "ok": true,
-              "have": 4,
-              "need": 3
-            },
-            {
-              "label": "conformity-clean",
-              "ok": true
-            },
-            {
-              "label": "profile complete",
-              "ok": true
-            }
-          ]
-        },
-        "progress": [
-          {
-            "label": "Arsenal Depth",
-            "ok": false,
-            "have": 9,
-            "need": 12
-          },
-          {
-            "label": "an Advanced+ skill",
-            "ok": true
-          },
-          {
-            "label": "unique skills",
-            "ok": true,
-            "have": 4,
-            "need": 2
-          },
-          {
-            "label": "weapons",
-            "ok": true,
-            "have": 14,
-            "need": 6
-          }
-        ],
-        "dueForPromotion": false,
-        "overConferred": true
-      }
-    },
     {
       "id": "the-architect",
       "name": "The Architect",
@@ -2560,7 +2280,7 @@ const GUILD = {
         "lines": 55,
         "words": 519
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-designer"
       ]
@@ -2601,7 +2321,7 @@ const GUILD = {
         "lines": 135,
         "words": 1138
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-developer",
         "the-herald",
@@ -2643,7 +2363,7 @@ const GUILD = {
         "lines": 111,
         "words": 942
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-herald"
       ]
@@ -2687,7 +2407,7 @@ const GUILD = {
         "lines": 52,
         "words": 1016
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-merchant"
       ]
@@ -2725,7 +2445,7 @@ const GUILD = {
         "lines": 100,
         "words": 1159
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-architect"
       ]
@@ -2838,7 +2558,7 @@ const GUILD = {
         "lines": 205,
         "words": 1868
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-developer"
       ]
@@ -2881,45 +2601,6 @@ const GUILD = {
       "members": [
         "the-developer",
         "the-strategist"
-      ]
-    },
-    {
-      "id": "butler-onboarding",
-      "name": "butler-onboarding",
-      "version": "1.0.0",
-      "icon": "🚪",
-      "art": "",
-      "artPng": true,
-      "blurb": "Turn a vague/first-contact request into discovery + honest capability presentation + 2-3 tailored starter prompts, instead of guessing",
-      "level": "Intermediate",
-      "ramp": "blue",
-      "tabler": "ti-door-enter",
-      "src": "own",
-      "desc": "Turns a vague or first-contact request into a short discovery, an honest presentation of what the guild can do, and 2-3 tailored, runnable starter prompts the Guild Master picks from — instead of guessing the intent and barrelling ahead. The Butler's craft for the open door. Triggers: 'what can you do', 'help me with my business', 'help me get started', 'I'm not sure what I need', 'where do I begin', 'where do I start', or any underspecified first ask with no clear owner. Differs from members-formation, which routes an already-CLEAR task to the right member (use it once the fog lifts and a starter prompt is picked), and from the Confusion Protocol, which halts on HIGH-STAKES ambiguity (destructive scope, wrong architecture, data-model risk) and presents options rather than discovering. It is for open, low-stakes vagueness and ends by handing a now-clear task to members-formation.",
-      "intro": "The craft of the open door. A request arrives that names no clear task — \"what can you do?\", \"help me with my business\", an underspecified ask with no obvious owner. The wrong move is to guess an intent and barrel ahead; the right move is to **discover lightly, present honestly, and offer a menu of ",
-      "sections": [
-        "What it is",
-        "What it is not",
-        "Principles",
-        "When to draw this skill",
-        "References"
-      ],
-      "triggers": "'what can you do', 'help me with my business', 'help me get started', \"I'm not sure what I need\", 'where do I begin'",
-      "modes": "discovery questions; capability map; starter prompts",
-      "disabled": false,
-      "refs": [
-        "capability-map.md",
-        "discovery-questions.md",
-        "starter-prompts.md"
-      ],
-      "scripts": [],
-      "stats": {
-        "lines": 98,
-        "words": 975
-      },
-      "global": false,
-      "members": [
-        "the-butler"
       ]
     },
     {
@@ -2969,7 +2650,7 @@ const GUILD = {
         "lines": 65,
         "words": 1106
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-merchant"
       ]
@@ -3012,7 +2693,7 @@ const GUILD = {
         "lines": 133,
         "words": 1920
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-developer"
       ]
@@ -3125,7 +2806,7 @@ const GUILD = {
         "lines": 122,
         "words": 1094
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-merchant"
       ]
@@ -3165,7 +2846,7 @@ const GUILD = {
         "lines": 133,
         "words": 1178
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-developer"
       ]
@@ -3206,7 +2887,7 @@ const GUILD = {
         "lines": 166,
         "words": 1337
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-developer"
       ]
@@ -3303,9 +2984,7 @@ const GUILD = {
         "words": 1052
       },
       "global": true,
-      "members": [
-        "the-butler"
-      ]
+      "members": []
     },
     {
       "id": "conquering-campaign",
@@ -3367,7 +3046,7 @@ const GUILD = {
         "lines": 388,
         "words": 7346
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-strategist"
       ]
@@ -3405,7 +3084,7 @@ const GUILD = {
         "lines": 112,
         "words": 1103
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-translator"
       ]
@@ -3480,7 +3159,7 @@ const GUILD = {
         "lines": 38,
         "words": 1264
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-merchant"
       ]
@@ -3683,7 +3362,7 @@ const GUILD = {
         "lines": 57,
         "words": 532
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-designer"
       ]
@@ -3727,7 +3406,7 @@ const GUILD = {
         "lines": 106,
         "words": 1274
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-designer"
       ]
@@ -3765,7 +3444,7 @@ const GUILD = {
         "lines": 89,
         "words": 816
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-developer"
       ]
@@ -3844,7 +3523,7 @@ const GUILD = {
         "lines": 65,
         "words": 1412
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-merchant"
       ]
@@ -3883,7 +3562,7 @@ const GUILD = {
         "lines": 151,
         "words": 1584
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-developer"
       ]
@@ -4120,7 +3799,7 @@ const GUILD = {
         "lines": 133,
         "words": 1295
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-quartermaster"
       ]
@@ -4155,7 +3834,7 @@ const GUILD = {
         "lines": 82,
         "words": 742
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-quartermaster"
       ]
@@ -4198,7 +3877,7 @@ const GUILD = {
         "lines": 160,
         "words": 1505
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-strategist"
       ]
@@ -4233,10 +3912,8 @@ const GUILD = {
         "lines": 41,
         "words": 498
       },
-      "global": false,
-      "members": [
-        "the-butler"
-      ]
+      "global": true,
+      "members": []
     },
     {
       "id": "image-to-code",
@@ -4343,7 +4020,7 @@ const GUILD = {
         "lines": 76,
         "words": 819
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-designer",
         "the-herald"
@@ -4410,7 +4087,7 @@ const GUILD = {
         "lines": 172,
         "words": 1793
       },
-      "global": true,
+      "global": false,
       "members": [
         "the-designer"
       ]
@@ -4449,7 +4126,7 @@ const GUILD = {
         "lines": 50,
         "words": 672
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-architect",
         "the-translator"
@@ -4499,7 +4176,7 @@ const GUILD = {
         "lines": 59,
         "words": 965
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-merchant"
       ]
@@ -4580,10 +4257,8 @@ const GUILD = {
         "lines": 104,
         "words": 898
       },
-      "global": false,
-      "members": [
-        "the-butler"
-      ]
+      "global": true,
+      "members": []
     },
     {
       "id": "legal-drafting",
@@ -4688,7 +4363,7 @@ const GUILD = {
         "lines": 51,
         "words": 444
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-quartermaster"
       ]
@@ -4803,7 +4478,7 @@ const GUILD = {
         "lines": 51,
         "words": 408
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-quartermaster"
       ]
@@ -4857,7 +4532,7 @@ const GUILD = {
         "lines": 179,
         "words": 1307
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-designer",
         "the-developer"
@@ -4899,7 +4574,7 @@ const GUILD = {
         "lines": 153,
         "words": 1470
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-developer"
       ]
@@ -4939,7 +4614,7 @@ const GUILD = {
         "lines": 55,
         "words": 1150
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-herald"
       ]
@@ -4979,7 +4654,7 @@ const GUILD = {
         "lines": 164,
         "words": 1416
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-developer"
       ]
@@ -5069,7 +4744,7 @@ const GUILD = {
         "lines": 141,
         "words": 1204
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-quartermaster"
       ]
@@ -5107,7 +4782,7 @@ const GUILD = {
         "lines": 110,
         "words": 944
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-architect"
       ]
@@ -5145,7 +4820,7 @@ const GUILD = {
         "lines": 94,
         "words": 711
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-designer"
       ]
@@ -5222,7 +4897,7 @@ const GUILD = {
         "lines": 103,
         "words": 578
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-quartermaster"
       ]
@@ -5259,7 +4934,7 @@ const GUILD = {
         "lines": 54,
         "words": 834
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-merchant"
       ]
@@ -5307,7 +4982,7 @@ const GUILD = {
         "lines": 62,
         "words": 1084
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-merchant"
       ]
@@ -5361,7 +5036,7 @@ const GUILD = {
         "lines": 68,
         "words": 1318
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-merchant"
       ]
@@ -5395,7 +5070,7 @@ const GUILD = {
         "lines": 55,
         "words": 262
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-quartermaster"
       ]
@@ -5448,7 +5123,7 @@ const GUILD = {
         "lines": 46,
         "words": 431
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-developer"
       ]
@@ -5561,7 +5236,7 @@ const GUILD = {
         "lines": 57,
         "words": 1202
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-strategist"
       ]
@@ -5638,7 +5313,7 @@ const GUILD = {
         "lines": 172,
         "words": 2264
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-architect"
       ]
@@ -5678,7 +5353,7 @@ const GUILD = {
         "lines": 168,
         "words": 1439
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-quartermaster",
         "the-strategist"
@@ -5780,7 +5455,7 @@ const GUILD = {
         "lines": 157,
         "words": 1396
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-architect"
       ]
@@ -5819,10 +5494,9 @@ const GUILD = {
         "lines": 110,
         "words": 912
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-architect",
-        "the-butler",
         "the-designer",
         "the-developer",
         "the-herald",
@@ -6062,7 +5736,7 @@ const GUILD = {
         "lines": 159,
         "words": 1313
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-developer"
       ]
@@ -6106,7 +5780,7 @@ const GUILD = {
         "lines": 181,
         "words": 1579
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-merchant"
       ]
@@ -6146,7 +5820,7 @@ const GUILD = {
         "lines": 63,
         "words": 1120
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-merchant"
       ]
@@ -6269,7 +5943,7 @@ const GUILD = {
         "lines": 127,
         "words": 1223
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-designer"
       ]
@@ -6307,7 +5981,7 @@ const GUILD = {
         "lines": 86,
         "words": 915
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-designer"
       ]
@@ -6377,7 +6051,7 @@ const GUILD = {
         "lines": 49,
         "words": 392
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-quartermaster"
       ]
@@ -6422,7 +6096,7 @@ const GUILD = {
         "lines": 54,
         "words": 1067
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-merchant"
       ]
@@ -6469,7 +6143,6 @@ const GUILD = {
       "global": true,
       "members": [
         "the-architect",
-        "the-butler",
         "the-designer",
         "the-developer",
         "the-herald",
@@ -6550,7 +6223,7 @@ const GUILD = {
         "lines": 89,
         "words": 1100
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-quartermaster"
       ]
@@ -6655,14 +6328,12 @@ const GUILD = {
         "data-analysis-viz",
         "ux-research",
         "ux-copywriting",
-        "butler-onboarding",
         "negotiation-deal-strategy",
         "workflow-runner",
         "decompose-and-swarm",
         "leaders-command"
       ],
       "members": [
-        "the-butler",
         "the-architect",
         "the-developer",
         "the-designer",
@@ -6672,7 +6343,7 @@ const GUILD = {
         "the-merchant",
         "the-quartermaster"
       ],
-      "notes": "The home domain. All 9 guild members + 95 skills live here. Every other domain borrows from this skill pool."
+      "notes": "The home domain. All 8 guild members + skills live here. Every other domain borrows from this skill pool."
     },
     {
       "id": "lex-council-app",
@@ -6753,24 +6424,6 @@ const GUILD = {
           "exec": "inline"
         },
         {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Rewrite as Clear Brief",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "cleared brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "raw request"
-          ],
-          "doers": [
-            "minimax-m3"
-          ],
-          "exec": "inline"
-        },
-        {
           "kind": "gate",
           "gate": "approval",
           "label": "You review and approve the brief before the guild begins planning."
@@ -6792,17 +6445,6 @@ const GUILD = {
           "ultra": true,
           "exec": "spawn",
           "parallel": true
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Distribute the Assignments",
-          "act": "The Butler routes each slice of the plan to the right specialist with clear, scoped instructions.",
-          "produces": "routed assignments",
-          "doers": [
-            "minimax-m3"
-          ],
-          "exec": "inline"
         },
         {
           "kind": "member",
@@ -6889,21 +6531,6 @@ const GUILD = {
           "exec": "inline"
         },
         {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Clarify the Ask",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "clarified ticket",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "clarify"
-          },
-          "inputs": [
-            "small request"
-          ],
-          "exec": "inline"
-        },
-        {
           "kind": "gate",
           "gate": "approval",
           "label": "You confirm the fix scope is correct before the Developer starts work."
@@ -6965,21 +6592,6 @@ const GUILD = {
           "title": "Request the Sprint",
           "act": "You describe the UI or UX problem you want the guild to design around.",
           "produces": "design request",
-          "exec": "inline"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Shape the Brief",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "design brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "design request"
-          ],
           "exec": "inline"
         },
         {
@@ -7067,21 +6679,6 @@ const GUILD = {
           "title": "Request the Build",
           "act": "You describe the system, schema, or architectural change you need the guild to make.",
           "produces": "architecture request",
-          "exec": "inline"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Clarify the Ask",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "architecture brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "clarify"
-          },
-          "inputs": [
-            "architecture request"
-          ],
           "exec": "inline"
         },
         {
@@ -7196,21 +6793,6 @@ const GUILD = {
           "exec": "inline"
         },
         {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Request",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "codex brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "law reference"
-          ],
-          "exec": "inline"
-        },
-        {
           "kind": "gate",
           "gate": "approval",
           "label": "You confirm the scope of the codex work and the target locales before translation begins."
@@ -7275,21 +6857,6 @@ const GUILD = {
           "exec": "inline"
         },
         {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Sharpen the Question",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "research brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "reframe"
-          },
-          "inputs": [
-            "research question"
-          ],
-          "exec": "inline"
-        },
-        {
           "kind": "gate",
           "gate": "approval",
           "label": "You approve the research brief and confirm the read-only boundary before analysis begins."
@@ -7334,21 +6901,6 @@ const GUILD = {
           "title": "Request Skill Maintenance",
           "act": "You ask the guild to sync, upgrade, or create skills for the team.",
           "produces": "maintenance request",
-          "exec": "inline"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Route the Request",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "routed request",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "classify"
-          },
-          "inputs": [
-            "maintenance request"
-          ],
           "exec": "inline"
         },
         {
@@ -7430,36 +6982,9 @@ const GUILD = {
           "exec": "inline"
         },
         {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Restate the Order",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "plain-English brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "restate"
-          },
-          "inputs": [
-            "sweep request"
-          ],
-          "exec": "inline"
-        },
-        {
           "kind": "gate",
           "gate": "approval",
           "label": "You confirm the Butler understood the order correctly before the sweep begins."
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Scout the Sessions",
-          "act": "The Butler, drawing Sonnet, loops every session from today and yesterday, reads the guild log, runs build_guild_log.py --dry-run to surface git-visible gaps, and inspects non-git artifact work (art PNGs, untracked tooling) to assemble a brief of what is missing.",
-          "produces": "gap brief",
-          "script": "guild/session_scout.py",
-          "args": {
-            "window": "today,yesterday"
-          },
-          "exec": "inline"
         },
         {
           "kind": "gate",
@@ -7518,21 +7043,6 @@ const GUILD = {
           "title": "Call the Compliance Audit",
           "act": "You ask the guild to run the full compliance pass — OKF tidy and/or guild conformity — or name a specific mode (okf | conformity | both, default both).",
           "produces": "audit request",
-          "exec": "inline"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Scope",
-          "act": "Runs  — confirms which modes to run and restates the scope so both you and the Quartermaster are aligned before anything is written.",
-          "produces": "scoped brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "restate"
-          },
-          "inputs": [
-            "audit request"
-          ],
           "exec": "inline"
         },
         {
@@ -7634,21 +7144,6 @@ const GUILD = {
           "exec": "inline"
         },
         {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Bug",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "framed bug",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "bug request"
-          ],
-          "exec": "inline"
-        },
-        {
           "kind": "gate",
           "gate": "approval",
           "label": "You confirm the bug and its scope before the hunt begins."
@@ -7723,21 +7218,6 @@ const GUILD = {
           "title": "Call the Sweep",
           "act": "You ask the guild to audit the app's security surface for leaks and over-broad access.",
           "produces": "security request",
-          "exec": "inline"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Sweep",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "security brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "security request"
-          ],
           "exec": "inline"
         },
         {
@@ -7826,21 +7306,6 @@ const GUILD = {
           "exec": "inline"
         },
         {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Rotation",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "cleanup brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "cleanup request"
-          ],
-          "exec": "inline"
-        },
-        {
           "kind": "gate",
           "gate": "approval",
           "label": "You confirm the scope of the sweep before it runs."
@@ -7898,21 +7363,6 @@ const GUILD = {
           "title": "Call the Sync",
           "act": "You ask the guild whether the device still matches the repo — or to reconcile what has drifted.",
           "produces": "sync request",
-          "exec": "inline"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Sync",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "sync brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "sync request"
-          ],
           "exec": "inline"
         },
         {
@@ -7976,21 +7426,6 @@ const GUILD = {
           "title": "Call the Release",
           "act": "You ask the guild to clean up, merge everything outstanding, bump the version, and push.",
           "produces": "release request",
-          "exec": "inline"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Release",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "release brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "release request"
-          ],
           "exec": "inline"
         },
         {
@@ -8075,21 +7510,6 @@ const GUILD = {
           "exec": "inline"
         },
         {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Tool",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "tool brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "tool request"
-          ],
-          "exec": "inline"
-        },
-        {
           "kind": "gate",
           "gate": "approval",
           "label": "You approve the tool concept and its governing law before the build begins."
@@ -8162,21 +7582,6 @@ const GUILD = {
           "exec": "inline"
         },
         {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Matter",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "drafting brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "drafting request"
-          ],
-          "exec": "inline"
-        },
-        {
           "kind": "gate",
           "gate": "approval",
           "label": "You confirm the matter and the target language(s) before drafting begins."
@@ -8246,40 +7651,9 @@ const GUILD = {
           "exec": "inline"
         },
         {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Triage",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "triage brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "triage request"
-          ],
-          "exec": "inline"
-        },
-        {
           "kind": "gate",
           "gate": "approval",
           "label": "You confirm the scope before the Butler drafts anything or creates events."
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Sweep the Inboxes",
-          "act": "The Butler sweeps email, calendar, and WhatsApp, surfacing what needs a response, a task, or a calendar entry.",
-          "produces": "triage list",
-          "exec": "inline"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Sort to Tasks & Calendar",
-          "act": "The Butler turns each item into a task or calendar event with a deadline, and drafts replies where useful.",
-          "produces": "tasks + events + drafts",
-          "exec": "inline"
         },
         {
           "kind": "member",
@@ -8322,21 +7696,6 @@ const GUILD = {
           "title": "Define the Routine",
           "act": "You describe the recurring job you want to run on a schedule, unattended.",
           "produces": "routine request",
-          "exec": "inline"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Routine",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "routine brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "routine request"
-          ],
           "exec": "inline"
         },
         {
@@ -8411,21 +7770,6 @@ const GUILD = {
           "exec": "inline"
         },
         {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Recon",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "marketing brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "marketing request"
-          ],
-          "exec": "inline"
-        },
-        {
           "kind": "gate",
           "gate": "approval",
           "label": "You confirm the audit lens before the recon begins."
@@ -8495,21 +7839,6 @@ const GUILD = {
           "title": "Request the Art",
           "act": "You describe the art you need — what it's for, the subject, and any constraints.",
           "produces": "art request",
-          "exec": "inline"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Art",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "art brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "art request"
-          ],
           "exec": "inline"
         },
         {
@@ -8590,21 +7919,6 @@ const GUILD = {
           "title": "Recruit the Weapon",
           "act": "You name the model to add or change, and how it should look or behave.",
           "produces": "weapon request",
-          "exec": "inline"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Weapon",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "weapon brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "weapon request"
-          ],
           "exec": "inline"
         },
         {
@@ -8694,21 +8008,6 @@ const GUILD = {
           "exec": "inline"
         },
         {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Audit",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "audit brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "audit question"
-          ],
-          "exec": "inline"
-        },
-        {
           "kind": "gate",
           "gate": "approval",
           "label": "You confirm the angles to audit before the panel convenes."
@@ -8787,21 +8086,6 @@ const GUILD = {
           "title": "Flag the Pattern",
           "act": "You (or the Butler) flag that the just-finished run is worth saving as a star-map workflow.",
           "produces": "capture request",
-          "exec": "inline"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Capture",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "capture brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "capture request"
-          ],
           "exec": "inline"
         },
         {
@@ -8897,21 +8181,6 @@ const GUILD = {
           "exec": "inline"
         },
         {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Sweep",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "intel brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "intel request"
-          ],
-          "exec": "inline"
-        },
-        {
           "kind": "gate",
           "gate": "approval",
           "label": "You confirm the window and the commercial scope before the sweep begins."
@@ -8974,21 +8243,6 @@ const GUILD = {
           "title": "Drop the Laws",
           "act": "You add law PDFs to the Stock Laws folder, or ask the guild to process what's queued.",
           "produces": "law PDFs",
-          "exec": "inline"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Harvest",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "harvest brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "law PDFs"
-          ],
           "exec": "inline"
         },
         {
@@ -9067,21 +8321,6 @@ const GUILD = {
           "title": "Pose the Question",
           "act": "You ask a question that needs an answer from the live web, with 'search the web' in it.",
           "produces": "web question",
-          "exec": "inline"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Query",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "search brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "web question"
-          ],
           "exec": "inline"
         },
         {
@@ -9246,17 +8485,6 @@ const GUILD = {
           "title": "Say the Word",
           "act": "You greet, acknowledge, or ask a meta-question that fits no specialist lane.",
           "produces": "utterance",
-          "exec": "inline"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Answer Plainly",
-          "act": "The Butler answers directly in plain English from what is already known — no tools, no writes, no doer weapons. If the turn actually needs work, he routes it to the proper specialist lane instead.",
-          "produces": "reply",
-          "inputs": [
-            "utterance"
-          ],
           "exec": "inline"
         },
         {
@@ -9510,14 +8738,6 @@ const GUILD = {
           "exec": "inline"
         },
         {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Clarify the Ask",
-          "act": "The Butler restates the package target, sidecar model, and what gets touched as a one-line brief.",
-          "produces": "packaging brief",
-          "exec": "inline"
-        },
-        {
           "kind": "gate",
           "gate": "approval",
           "label": "You approve the packaging brief — toolchain installs and a new app shell are about to be created."
@@ -9600,21 +8820,6 @@ const GUILD = {
           "title": "Name the Role",
           "act": "You name the role the guild lacks and the work it would own.",
           "produces": "member request",
-          "exec": "inline"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Role",
-          "act": "Runs guild/frame_brief.py — the Butler frames the role request into a clean brief.",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "member request"
-          ],
-          "produces": "member brief",
           "exec": "inline"
         },
         {
@@ -9707,6 +8912,10 @@ const GUILD = {
         {
           "name": "workflow-gate.py",
           "plain": "Blocks every tool until the turn has declared a star-map workflow banner. No banner, no action — this is the gate you keep seeing."
+        },
+        {
+          "name": "executor-enforce.py",
+          "plain": "Holds the executor seat to MiniMax M3 across FOUR layers: (1) SPAWN — Task/Agent/Bash summon must resolve to model=minimax-m3, not haiku/glm/sonnet-as-doer; brain-tier Claude spawns pass. (2) BUTLER LOCK — on the MAIN session (CLAUDE_CODE_CHILD_SESSION unset), Edit/Write/MultiEdit/NotebookEdit are blocked entirely (subagents are exempt because they ARE the executor), Bash write commands (sed -i, cat >, rm, cp, mv, tee, touch, dd, echo >) are blocked, and MCP write-verb tools (create_/update_/delete_/insert_/drop_/truncate_/set_/put_/patch_/write_) are blocked. Read-only tools (Read/Glob/Grep/WebFetch/WebSearch/LS/TodoWrite) and MCP read-verb tools (get_/list_/fetch_/read_/find_/search_/query_/describe_/show_/view_/lookup_/select_) still pass through. The Butler can think, plan, and review — but it cannot mutate. (3) OVERRIDE CONTRACT — the bare SA_ALLOW_EXECUTOR token no longer grants bypass; the override MUST be paired with a real reason (≥15 chars) in the form `SA_ALLOW_EXECUTOR: <reason>`. The reason is logged to evolution/ledger.jsonl AND surfaced to the user as a systemMessage at the next UserPromptSubmit (no silent bypasses). (4) SCOREBOARD — evolution/scoreboard.py now shows an 'Executor Discipline' section: override count, override reasons, direct-write blocks, doer summons with minimax-m3 vs sonnet share, and a verdict (ALIGNED / MIXED / STRAYING). Kill switch: touch evolution/DISARMED or .claude/state/executor-enforce-disarmed. The /doer slash command (.claude/commands/doer.md) gives the agent a one-token path to the executor seat so the correct behavior is also the easy behavior."
         },
         {
           "name": "high-alert.py",

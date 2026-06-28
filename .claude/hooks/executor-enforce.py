@@ -82,7 +82,14 @@ DOER_KEYWORDS = re.compile(
 # summon.py <model> parser — same shape weapon-gate uses, kept in sync.
 SUMMON_RE = re.compile(r"summon\.py\s+([A-Za-z0-9.\-]+)")
 MINIMAX_RE = re.compile(r"\bminimax\.py\b")
-# Self-bypass: if the prompt explicitly invokes the override, log it and pass.
+# Self-bypass — requires an explicit reason. Format:
+#     SA_ALLOW_EXECUTOR: <reason text, ≥ 15 chars>
+# The reason is logged to the ledger so every override is auditable, and is
+# surfaced to the user at the next UserPromptSubmit so silent overrides are
+# impossible. Bare `SA_ALLOW_EXECUTOR` without a reason no longer grants bypass.
+OVERRIDE_RE = re.compile(r"SA_ALLOW_EXECUTOR\s*[:\-]\s*(.{15,400})")
+# The bare token (no reason) is no longer a bypass — it must be paired with a
+# reason. This string is kept for the "denied override" message.
 OVERRIDE_TOKEN = "SA_ALLOW_EXECUTOR"
 # Tools that mutate files. The Butler must never call these directly — it must
 # spawn an agent. (Subagents are exempt because they ARE the executor seat.)
@@ -135,6 +142,47 @@ def _state_dir():
     return os.path.join(_project_dir(), ".claude", "state")
 
 
+def _override_reason(text):
+    """If `text` contains a properly-formed override (`SA_ALLOW_EXECUTOR: <reason>`),
+    return the reason string. Otherwise return None.
+
+    Rules:
+      • Bare `SA_ALLOW_EXECUTOR` with no reason → None (denied).
+      • Reason must be ≥ 15 chars to force a real justification.
+      • Reason capped at 400 chars to keep the ledger sane.
+    """
+    if not text:
+        return None
+    m = OVERRIDE_RE.search(text)
+    if not m:
+        return None
+    reason = m.group(1).strip()
+    if len(reason) < 15:
+        return None
+    return reason[:400]
+
+
+def _record_override(reason, context):
+    """Log an override to the ledger AND drop a sentinel for turn-start to
+    surface to the user. Returns nothing."""
+    _ledger(
+        kind="executor-override",
+        author="executor-enforce",
+        surface="gates",
+        verdict="override",
+        detail=f"override reason: {reason}",
+        meta={"reason": reason, **context},
+    )
+    # Sentinel consumed by turn-start.py at next UserPromptSubmit.
+    try:
+        os.makedirs(_state_dir(), exist_ok=True)
+        with open(os.path.join(_state_dir(), "executor-override-last"),
+                  "w") as fh:
+            fh.write(f"{reason}\n")
+    except OSError:
+        pass
+
+
 def _ledger(**kw):
     """Best-effort ledger append; observability must never break the hook."""
     try:
@@ -177,17 +225,24 @@ def _check_bash(data):
     """
     cmd = (data.get("tool_input") or {}).get("command", "") or ""
 
-    # Self-bypass token — allow once, log it.
-    if OVERRIDE_TOKEN in cmd:
-        _ledger(
-            kind="executor-override",
-            author="executor-enforce",
-            surface="gates",
-            verdict="override",
-            detail="SA_ALLOW_EXECUTOR bypass on Bash summon",
-            meta={"command": cmd[:200]},
-        )
+    # Self-bypass — only honored with a real reason (≥ 15 chars).
+    reason = _override_reason(cmd)
+    if reason:
+        _record_override(reason, {"gate": "bash-summon"})
         return "allow", "", ""
+
+    # Bare override token without reason → still block (deny the silent bypass).
+    if OVERRIDE_TOKEN in cmd:
+        return (
+            "block",
+            f"⛔ EXECUTOR ENFORCE — bare `{OVERRIDE_TOKEN}` no longer grants "
+            f"bypass. The override must include a real reason "
+            f"(≥ 15 chars), e.g.:\n"
+            f"     # SA_ALLOW_EXECUTOR: minimax-m3 is unreachable (HTTP 503)\n"
+            f"   The reason is logged to the ledger and surfaced to the user "
+            f"at the next turn — no silent overrides.\n",
+            "",
+        )
 
     models = SUMMON_RE.findall(cmd)
     is_minimax_direct = bool(MINIMAX_RE.search(cmd))
@@ -235,17 +290,27 @@ def _check_task(data):
     doer_default = (seats.get("doer") or {}).get("default", EXECUTOR_FALLBACK)
     brain_default = (seats.get("brain") or {}).get("default", "sonnet")
 
-    # Self-bypass token — allow once, log it.
-    if OVERRIDE_TOKEN in prompt:
-        _ledger(
-            kind="executor-override",
-            author="executor-enforce",
-            surface="gates",
-            verdict="override",
-            detail="SA_ALLOW_EXECUTOR bypass on Task/Agent spawn",
-            meta={"model": model, "agent": agent_type},
-        )
+    # Self-bypass — only honored with a real reason (≥ 15 chars).
+    reason = _override_reason(prompt)
+    if reason:
+        _record_override(reason, {
+            "gate": "task-spawn", "model": model, "agent": agent_type,
+        })
         return "allow", "", ""
+
+    # Bare override token without reason → still block.
+    if OVERRIDE_TOKEN in prompt:
+        return (
+            "block",
+            f"⛔ EXECUTOR ENFORCE — bare `{OVERRIDE_TOKEN}` no longer grants "
+            f"bypass. The override must include a real reason "
+            f"(≥ 15 chars), e.g.:\n"
+            f"     Task(model='sonnet', prompt='... SA_ALLOW_EXECUTOR: "
+            f"planning task needs Claude judgment')\n"
+            f"   The reason is logged to the ledger and surfaced to the user "
+            f"at the next turn — no silent overrides.\n",
+            "",
+        )
 
     # Brain-tier model explicitly chosen → this is a THINKER spawn, not an
     # executor spawn. The executor rule does not apply.
@@ -326,16 +391,23 @@ def _check_butler_bash_write(data):
     status, git log, npm test, …) pass through unchanged.
     """
     cmd = (data.get("tool_input") or {}).get("command", "") or ""
-    if OVERRIDE_TOKEN in cmd:
-        _ledger(
-            kind="executor-override",
-            author="executor-enforce",
-            surface="gates",
-            verdict="override",
-            detail="SA_ALLOW_EXECUTOR bypass on Butler bash write",
-            meta={"command": cmd[:200]},
-        )
+    reason = _override_reason(cmd)
+    if reason:
+        _record_override(reason, {"gate": "butler-bash-write"})
         return "allow", "", ""
+    # Bare override without reason → still block (deny the silent bypass).
+    if OVERRIDE_TOKEN in cmd:
+        return (
+            "block",
+            f"⛔ EXECUTOR ENFORCE — bare `{OVERRIDE_TOKEN}` no longer grants "
+            f"bypass on Butler shell writes. The override must include a "
+            f"real reason (≥ 15 chars), e.g.:\n"
+            f"     sed -i s/old/new/g foo.py  # SA_ALLOW_EXECUTOR: one-line "
+            f"typo fix on a single file\n"
+            f"   The reason is logged to the ledger and surfaced to the user "
+            f"at the next turn.\n",
+            "",
+        )
     if not BASH_WRITE_RE.search(cmd):
         return "allow", "", ""
     return (

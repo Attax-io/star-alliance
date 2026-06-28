@@ -195,12 +195,59 @@ run_case "" "mcp__something__unknown_tool (unknown, allow)" \
     0 no
 
 echo ""
-echo "== BUTLER: Bypass token =="
-run_case "" "Bash: sed -i with SA_ALLOW_EXECUTOR (allow + log)" \
+echo "== BUTLER: Override contract (reason required) =="
+run_case "" "Bash: bare SA_ALLOW_EXECUTOR no reason (block)" \
     '{"tool_name":"Bash","tool_input":{"command":"sed -i s/old/new/g foo.py # SA_ALLOW_EXECUTOR"}}' \
+    2 yes
+run_case "" "Bash: SA_ALLOW_EXECUTOR: <short reason> (block — too short)" \
+    '{"tool_name":"Bash","tool_input":{"command":"sed -i s/o/n/ f.py # SA_ALLOW_EXECUTOR: tiny"}}' \
+    2 yes
+run_case "" "Bash: SA_ALLOW_EXECUTOR: <real reason> (allow + log)" \
+    '{"tool_name":"Bash","tool_input":{"command":"sed -i s/old/new/g foo.py # SA_ALLOW_EXECUTOR: one-line typo fix on single file"}}' \
+    0 no
+run_case "" "Task: bare SA_ALLOW_EXECUTOR no reason (block)" \
+    '{"tool_name":"Task","tool_input":{"model":"haiku","prompt":"refactor # SA_ALLOW_EXECUTOR"}}' \
+    2 yes
+run_case "" "Task: SA_ALLOW_EXECUTOR: <real reason> (allow + log)" \
+    '{"tool_name":"Task","tool_input":{"model":"sonnet","prompt":"planning # SA_ALLOW_EXECUTOR: needs Claude judgment for architecture decision"}}' \
+    0 no
+run_case "" "Task: SA_ALLOW_EXECUTOR with colon separator (allow)" \
+    '{"tool_name":"Task","tool_input":{"model":"sonnet","prompt":"design # SA_ALLOW_EXECUTOR: this is a high-stakes architecture decision"}}' \
+    0 no
+run_case "" "Bash: SA_ALLOW_EXECUTOR mid-string not at end (still allow)" \
+    '{"tool_name":"Bash","tool_input":{"command":"echo hello # SA_ALLOW_EXECUTOR: this is informational only, no mutation"}}' \
+    0 no
+
+# Confirm the override sentinel was written and contains the reason
+echo ""
+echo "== Override sentinel =="
+(
+    cd "$REPO_ROOT"
+    rm -f ".claude/state/executor-override-last"
+    CLAUDE_PROJECT_DIR="$REPO_ROOT" python3 "$HOOK" <<< '{"tool_name":"Task","tool_input":{"model":"sonnet","prompt":"work # SA_ALLOW_EXECUTOR: this is the test reason that is long enough"}}' >/dev/null 2>&1
+    if [[ -f ".claude/state/executor-override-last" ]]; then
+        reason=$(cat ".claude/state/executor-override-last")
+        if [[ "$reason" == *"test reason that is long enough"* ]]; then
+            printf "  ✓ %-58s written\n" "override sentinel contains reason"
+            PASS=$((PASS+1))
+        else
+            printf "  ✗ %-58s wrong content: %s\n" "override sentinel" "$reason"
+            FAIL=$((FAIL+1))
+        fi
+        rm -f ".claude/state/executor-override-last"
+    else
+        printf "  ✗ %-58s file missing\n" "override sentinel written"
+        FAIL=$((FAIL+1))
+    fi
+)
+
+echo ""
+echo "== BUTLER: Bypass token =="
+run_case "" "Bash: sed -i with SA_ALLOW_EXECUTOR: <reason> (allow + log)" \
+    '{"tool_name":"Bash","tool_input":{"command":"sed -i s/old/new/g foo.py # SA_ALLOW_EXECUTOR: one-line typo fix on a single file"}}' \
     0 no
 run_case "" "Edit on .py — bypass only works on the prompt, not Edit args (still block)" \
-    '{"tool_name":"Edit","tool_input":{"file_path":"a.py # SA_ALLOW_EXECUTOR","old_string":"x","new_string":"y"}}' \
+    '{"tool_name":"Edit","tool_input":{"file_path":"a.py # SA_ALLOW_EXECUTOR: reason that is long enough","old_string":"x","new_string":"y"}}' \
     2 yes
 
 # ─── SUBAGENT (CLAUDE_CODE_CHILD_SESSION=1) — executor seat, full freedom ───

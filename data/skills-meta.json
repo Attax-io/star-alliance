@@ -71,14 +71,6 @@
     "triggers": "gotcha, the INSERT/push pattern (identity PK, trigger-filled names, reporter-uuid lookup, status=1, no notification fires), the \"doesn't work\" reproduction technique, and the rule for WHEN a bug may be marked Fixed (DB fixes now, frontend fixes only after depl",
     "modes": ""
   },
-  "butler-onboarding": {
-    "icon": "🚪",
-    "blurb": "Turn a vague/first-contact request into discovery + honest capability presentation + 2-3 tailored starter prompts, instead of guessing",
-    "level": "Intermediate",
-    "tabler": "ti-door-enter",
-    "triggers": "'what can you do', 'help me with my business', 'help me get started', \"I'm not sure what I need\", 'where do I begin'",
-    "modes": "discovery questions; capability map; starter prompts"
-  },
   "chart-patterns": {
     "icon": "📐",
     "blurb": "Identify & read every chart pattern (Bulkowski) — H&S, double/triple tops, triangles, flags, gaps + event patterns, with the odds",

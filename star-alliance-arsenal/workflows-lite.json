@@ -21,24 +21,6 @@
           "exec": "inline"
         },
         {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Rewrite as Clear Brief",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "cleared brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "raw request"
-          ],
-          "doers": [
-            "minimax-m3"
-          ],
-          "exec": "inline"
-        },
-        {
           "kind": "gate",
           "gate": "approval",
           "label": "You review and approve the brief before the guild begins planning."
@@ -60,17 +42,6 @@
           "ultra": true,
           "exec": "spawn",
           "parallel": true
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Distribute the Assignments",
-          "act": "The Butler routes each slice of the plan to the right specialist with clear, scoped instructions.",
-          "produces": "routed assignments",
-          "doers": [
-            "minimax-m3"
-          ],
-          "exec": "inline"
         },
         {
           "kind": "member",
@@ -156,21 +127,6 @@
           "exec": "inline"
         },
         {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Clarify the Ask",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "clarified ticket",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "clarify"
-          },
-          "inputs": [
-            "small request"
-          ],
-          "exec": "inline"
-        },
-        {
           "kind": "gate",
           "gate": "approval",
           "label": "You confirm the fix scope is correct before the Developer starts work."
@@ -231,21 +187,6 @@
           "title": "Request the Sprint",
           "act": "You describe the UI or UX problem you want the guild to design around.",
           "produces": "design request",
-          "exec": "inline"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Shape the Brief",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "design brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "design request"
-          ],
           "exec": "inline"
         },
         {
@@ -332,21 +273,6 @@
           "title": "Request the Build",
           "act": "You describe the system, schema, or architectural change you need the guild to make.",
           "produces": "architecture request",
-          "exec": "inline"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Clarify the Ask",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "architecture brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "clarify"
-          },
-          "inputs": [
-            "architecture request"
-          ],
           "exec": "inline"
         },
         {
@@ -460,21 +386,6 @@
           "exec": "inline"
         },
         {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Bug",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "framed bug",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "bug request"
-          ],
-          "exec": "inline"
-        },
-        {
           "kind": "gate",
           "gate": "approval",
           "label": "You confirm the bug and its scope before the hunt begins."
@@ -548,21 +459,6 @@
           "title": "Call the Sweep",
           "act": "You ask the guild to audit the app's security surface for leaks and over-broad access.",
           "produces": "security request",
-          "exec": "inline"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Sweep",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "security brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "security request"
-          ],
           "exec": "inline"
         },
         {
@@ -650,40 +546,9 @@
           "exec": "inline"
         },
         {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Frame the Triage",
-          "act": "Runs `guild/frame_brief.py` — the Butler's framing step as a runnable primitive.",
-          "produces": "triage brief",
-          "script": "guild/frame_brief.py",
-          "args": {
-            "style": "shape"
-          },
-          "inputs": [
-            "triage request"
-          ],
-          "exec": "inline"
-        },
-        {
           "kind": "gate",
           "gate": "approval",
           "label": "You confirm the scope before the Butler drafts anything or creates events."
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Sweep the Inboxes",
-          "act": "The Butler sweeps email, calendar, and WhatsApp, surfacing what needs a response, a task, or a calendar entry.",
-          "produces": "triage list",
-          "exec": "inline"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Sort to Tasks & Calendar",
-          "act": "The Butler turns each item into a task or calendar event with a deadline, and drafts replies where useful.",
-          "produces": "tasks + events + drafts",
-          "exec": "inline"
         },
         {
           "kind": "member",
@@ -776,17 +641,6 @@
           "title": "Say the Word",
           "act": "You greet, acknowledge, or ask a meta-question that fits no specialist lane.",
           "produces": "utterance",
-          "exec": "inline"
-        },
-        {
-          "kind": "member",
-          "actor": "the-butler",
-          "title": "Answer Plainly",
-          "act": "The Butler answers directly in plain English from what is already known — no tools, no writes, no doer weapons. If the turn actually needs work, he routes it to the proper specialist lane instead.",
-          "produces": "reply",
-          "inputs": [
-            "utterance"
-          ],
           "exec": "inline"
         },
         {

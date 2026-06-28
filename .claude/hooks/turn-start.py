@@ -31,6 +31,19 @@ def main():
         state.mkdir(parents=True, exist_ok=True)
         (state / "turn-start").write_text(str(time.time()))
 
+        # Surface any executor override from the previous turn as a systemMessage
+        # so the user sees "⚠️ EXECUTOR OVERRIDE last turn: <reason>" — no silent
+        # bypasses. Consumed-once: read and delete in one shot so the same
+        # override doesn't re-fire on subsequent prompts.
+        override_path = state / "executor-override-last"
+        override_reason = ""
+        if override_path.exists():
+            try:
+                override_reason = override_path.read_text().strip()
+                override_path.unlink()
+            except OSError:
+                override_reason = ""
+
         for s in RESET_SENTINELS:
             try:
                 (state / s).unlink()
@@ -47,6 +60,16 @@ def main():
             (state / "verify-baseline").write_text(cur)
         except Exception:
             pass
+
+        # Surface the override as a systemMessage so the user sees it.
+        if override_reason:
+            import json as _json
+            print(_json.dumps({
+                "systemMessage":
+                    f"⚠️ EXECUTOR OVERRIDE last turn — reason: {override_reason}\n"
+                    f"   (the executor-enforce hook was bypassed; this is logged "
+                    f"in evolution/ledger.jsonl)"
+            }))
     except Exception:
         pass
     sys.exit(0)

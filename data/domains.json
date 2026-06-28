@@ -99,14 +99,12 @@
         "data-analysis-viz",
         "ux-research",
         "ux-copywriting",
-        "butler-onboarding",
         "negotiation-deal-strategy",
         "workflow-runner",
         "decompose-and-swarm",
         "leaders-command"
       ],
       "members": [
-        "the-butler",
         "the-architect",
         "the-developer",
         "the-designer",
@@ -116,7 +114,7 @@
         "the-merchant",
         "the-quartermaster"
       ],
-      "notes": "The home domain. All 9 guild members + 95 skills live here. Every other domain borrows from this skill pool."
+      "notes": "The home domain. All 8 guild members + skills live here. Every other domain borrows from this skill pool."
     },
     {
       "id": "lex-council-app",

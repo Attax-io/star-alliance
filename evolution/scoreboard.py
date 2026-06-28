@@ -269,6 +269,95 @@ def _cli():
         print(f"  never-fired skills: held back — only {c['total_skill_fires']}/"
               f"{DEAD_SKILL_MIN_FIRES} fires observed (too little data to call dead)")
 
+    # ── Executor Discipline ──────────────────────────────────────────────────
+    # Reads from the ledger (same source of truth as the rest of the scoreboard).
+    # Catches the failure mode the executor-enforce hook was built to prevent:
+    # the agent bypassing the lock and running bulk work on the brain model
+    # (sonnet) instead of the executor seat (minimax-m3).
+    ed = _executor_discipline(since=s.get("since"))
+    print("\n── Executor Discipline ──")
+    if ed["override_count"] == 0 and ed["direct_write_blocks"] == 0:
+        print("  override count     : 0  (clean — no silent bypasses)")
+    else:
+        print(f"  override count     : {ed['override_count']}  "
+              f"(bypassed with reason; visible at next UserPromptSubmit)")
+        if ed["override_reasons"]:
+            top = ed["override_reasons"][:3]
+            print(f"  override reasons   : {top}")
+    print(f"  direct-write blocks: {ed['direct_write_blocks']}  "
+          f"(Butler tried Edit/Write directly)")
+    print(f"  doer summons       : {ed['doer_summons']} total, "
+          f"{ed['minimax_m3_share']} minimax-m3, "
+          f"{ed['sonnet_share']} sonnet")
+    if ed["verdict"] == "STRAYING":
+        print(f"  → STRAYING — sonnet-as-doer share is {ed['sonnet_share']}; "
+              f"the brain is doing the executor's job")
+    elif ed["verdict"] == "MIXED":
+        print(f"  → MIXED — minimax-m3 share is {ed['minimax_m3_share']}; "
+              f"target is >80% for bulk-doer work")
+    else:
+        print("  → ALIGNED — minimax-m3 is the dominant doer")
+
+
+def _executor_discipline(since: str | None = None) -> dict:
+    """Compute executor-seat discipline metrics from the ledger."""
+    # The override hook logs events as kind="metric" (same as weapon-gate and
+    # the rest of the gate family) with author="executor-enforce" and
+    # verdict="override" — filter on those, not on a kind that doesn't exist.
+    overrides = [e for e in ledger.read(since=since)
+                 if e.get("author") == "executor-enforce"
+                 and e.get("verdict") == "override"]
+    blocks = [e for e in ledger.read(since=since)
+              if e.get("author") == "executor-enforce"
+              and e.get("verdict") == "block"]
+    doer_signals = [e for e in ledger.read(since=since)
+                    if (e.get("meta") or {}).get("signal") == "doer-summon"]
+    # Models come from the weapon-gate which emits a comma-separated list.
+    # Each comma-separated model counts as one summon (approximate; multi-model
+    # fan-outs split evenly).
+    minimax = sonnet = other = 0
+    for e in doer_signals:
+        models = (e.get("meta") or {}).get("models", []) or []
+        for m in models:
+            ml = m.lower()
+            if ml == "minimax-m3":
+                minimax += 1
+            elif ml in ("sonnet", "opus", "haiku"):
+                sonnet += 1
+            else:
+                other += 1
+    total_doer = minimax + sonnet + other
+    if total_doer == 0:
+        mm_share = son_share = "n/a"
+        verdict = "ALIGNED"
+    else:
+        mm_pct = minimax / total_doer * 100
+        son_pct = sonnet / total_doer * 100
+        mm_share = f"{mm_pct:.0f}%"
+        son_share = f"{son_pct:.0f}%"
+        # Verdict thresholds tuned for project shape: minimax-m3 is the doer
+        # default per models.json seats.doer.default, so it should dominate.
+        if son_pct > 50:
+            verdict = "STRAYING"
+        elif mm_pct < 80:
+            verdict = "MIXED"
+        else:
+            verdict = "ALIGNED"
+    # Aggregate override reasons (top 5).
+    reasons = [e.get("detail", "") for e in overrides]
+    return {
+        "override_count": len(overrides),
+        "override_reasons": reasons,
+        "direct_write_blocks": len(blocks),
+        "doer_summons": total_doer,
+        "minimax_m3": minimax,
+        "sonnet": sonnet,
+        "other": other,
+        "minimax_m3_share": mm_share,
+        "sonnet_share": son_share,
+        "verdict": verdict,
+    }
+
 
 if __name__ == "__main__":
     _cli()
