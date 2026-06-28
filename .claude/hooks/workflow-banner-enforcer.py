@@ -147,14 +147,21 @@ def _model_toks(rx, text):
     return [t for t in rx.findall(text) if "model" not in t.lower() and "<" not in t]
 
 
+BRIEF_BULLET = re.compile(r"^[\s>]*[•\-\*]\s+(?:\*\*|`)?The\s+[A-Za-z].*\(planning\)", re.I)
+
+
 def check_model_line(text):
     """Return an error string if the brief's per-agent model slots are wrong, else None.
-    Only fires once a real brief with at least one model slot is present."""
-    plan = _model_toks(PLAN_RE, text)
-    execs = _model_toks(EXEC_RE, text)
-    crit = _model_toks(CRIT_RE, text)
-    if not (plan or execs or crit):
-        return None  # no model-bearing brief this turn — nothing to enforce
+    ONLY inspects actual deployment-brief bullet lines (a bullet naming "The <Member>"
+    that carries a "(planning)" slot). Prose that merely mentions "sonnet (execution)"
+    while discussing the format is NOT a brief line and must never trip the gate."""
+    lines = [ln for ln in text.splitlines() if BRIEF_BULLET.match(ln)]
+    if not lines:
+        return None  # no real brief bullet this turn — nothing to enforce
+    scope = "\n".join(lines)
+    plan = _model_toks(PLAN_RE, scope)
+    execs = _model_toks(EXEC_RE, scope)
+    crit = _model_toks(CRIT_RE, scope)
     problems = []
     if not execs:
         problems.append("the execution slot is missing")
