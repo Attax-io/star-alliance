@@ -223,6 +223,27 @@ swarm-models `base_llm.py:108`, `together_llm.py:71/96/99`, `base_multimodal_mod
 `claude-cowork-dispatch.md:14`, `claude-code-2.1.172-opus-4.8.md:62` · agent-skills
 `AGENTS.md:163` · codebase-memory `mcp.c:355/389/4191`, `README.md:17`.
 
+## Evolution Engine integration (audit 2026-06-28)
+
+The self-improving engine (SENSE→VERIFY→REMEMBER→DIAGNOSE; INVARIANT: nothing enters the repo
+without a critic verdict + a ledger event; Tier-A auto / Tier-B human-gated) was audited against
+swarm. **Verdict: TARGETED rework, not a redo — the safety envelope is intact; the three gaps are
+all in the observation/review path, mapped onto the existing waves. NOTHING blocks Wave 0 (pure
+doctrine).**
+
+| # | Gap (file:line) | Fix | Wave |
+|---|---|---|---|
+| 1 | Auto-critic skips diffs >60KB (`verify-gate.py:42,114`); a swarm aggregate diff exceeds it → every swarm would drop to manual bypass, invariant becomes theater | **Per-slice critic** in `decompose-and-swarm` MOVE 4: `verdict.run_cold(slice_diff)` per worker before integration (small, parallel, cheaper). No `verify-gate.py` change. | **0 (doctrine) / 2 (live)** |
+| 2 | `turn-cost.jsonl` is NOT in the ledger and sub-agent costs are invisible (`scoreboard.py:33`, `turn-cost.py:156`) → engine can't measure swarm economics | Engine **Phase 2**: route per-turn cost into `ledger.jsonl` as a `metric` event + capture per-worker cost (n_workers field). Prerequisite for the worthiness gate's "cheaper-net" empiricism. | **5** (with harness-efficiency; worthiness uses the ~1.5k heuristic until then) |
+| 3 | `member-dispatch` uncounted in capability metrics; doer-discipline rule (`engine.py:130`) FALSE-fires on swarm turns (N dispatches, 0 main-thread doer summons) | Add `SWARM_FANOUT` signal to `signals.py` (meta: n_workers, partition, redispatch); emit on fan-out; suppress doer-discipline when present | **2** |
+| 4 | No swarm diagnose rules (over-decomposition cost>serial, high re-dispatch = bad partition) | Add 2-3 `engine.py` diagnose rules using the `swarm-fanout` signal + Phase-2 cost data | **5** |
+| 5 | Tier-A/B + invariant under N parallel writers | **No change needed** — workers never commit; Butler integrates + commits once; existing surfaces (`arsenal`/`workflows`) already cover the new swarm config | — |
+
+**Blocks Wave 0:** nothing. **Blocks Wave 2 (real runs):** fix #1 (per-slice critic doctrine) and
+fix #3 (swarm signal). **Deferred to Wave 5:** fix #2 (cost-into-ledger) + fix #4 (diagnose rules).
+The per-slice critic (#1) is also a *win* for the prime goal — it reviews small diffs cheaply in
+parallel instead of one expensive aggregate pass.
+
 ## Verification per wave
 Each wave ends with: `conformity_check.py` exit 0, a real dry-run of the new behavior, and
 an independent review of the diff. The 8 existing fan-out steps must keep working at every
