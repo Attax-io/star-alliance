@@ -6,7 +6,13 @@
     "brain":  { "default": "opus",       "fallback": ["sonnet"],                       "role": "thinker", "duty": "Plans, reviews, owns the standard, wields the tools." },
     "doer":   { "default": "minimax-m3", "fallback": ["haiku", "sonnet"],              "role": "doer",    "duty": "Executes the plan, returns work as text. No tools." },
     "critic": { "default": "glm-5.2",    "fallback": ["deepseek-v4-pro", "kimi-k2.7"], "role": "thinker", "modes": ["cold", "grounded"], "duty": "Refutes the brain's work before it ships. Cold = GLM text-only; Grounded = a Claude agent that runs checks." },
-    "bench":  { "default": null,         "fallback": null,                             "role": "any",     "duty": "All non-seat models. Pulled N-at-a-time for doer-swarm or thinker-swarm." }
+    "bench":  { "default": null,         "fallback": null,                             "role": "any",     "duty": "All non-seat models. Pulled N-at-a-time for model-swarm (one member fires N bench models, as in ultra-brainstorming). NOT used for member-instance swarms — those run each instance as the member's Brain seat, not a bench weapon." }
+  },
+  "swarm": {
+    "max_instances": 5,
+    "worker_model": "brain",
+    "coordinator": "butler-brain",
+    "comment": "Member-instance swarm: each instance runs as the member's brain seat (tool-capable Claude model, e.g. Sonnet). Worker is NEVER a doer-tier model (minimax-m3/Ollama cannot hold Edit/Write/Bash tools). Bench feeds MODEL-swarms (one member fires N bench models, as in ultra-brainstorming), not member-instance swarms. Butler (Opus) decomposes, coordinates, and integrates inline; Critic (glm-5.2) reviews the aggregate diff."
   },
   "models": {
     "opus": {

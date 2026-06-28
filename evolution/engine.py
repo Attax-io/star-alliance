@@ -127,7 +127,10 @@ def diagnose(since: str | None = None) -> list[dict]:
 
     # 8. DOER discipline — real changes but zero doer offload → members may be doing
     #    bulk inline. A coaching signal (doctrine/member-files), not an auto-fix.
-    if s["changes"] >= 5 and cap["doer_summons"] == 0:
+    #    SUPPRESS when a swarm-fanout is present: N member-dispatch events but 0 main-thread
+    #    doer summons is the correct topology for a swarm turn (swarm-audit 2026-06-28).
+    _swarm_active = cap.get("swarm_fanouts", 0) > 0
+    if s["changes"] >= 5 and cap["doer_summons"] == 0 and not _swarm_active:
         proposals.append({
             "surface": "doctrine", "tier": "B",
             "detail": f"{s['changes']} changes but 0 doer summons — bulk work may be done inline",

@@ -67,9 +67,46 @@ filesystem scan for stray/orphan files** and never reads `runs/`. So run outputs
 never flagged as stray or missing, and no ignore-list is needed. To cap the scratch,
 use `guild/prune_runs.py [--keep N] [--dry-run]` (keeps the N most-recent run dirs).
 
+## Stage and swarm fields (Swarm v1 — Wave 1)
+
+Two new optional fields land the swarm pilot on `architecture-build`. Both are additive: a step
+without them behaves exactly as before.
+
+### `stage` (string)
+A named group tag shared by related steps. Steps carrying the same `stage` value belong to one
+logical wave; the Butler uses the tag to display a stage header in the deployment brief and to
+enforce the SW4 integration-follows-swarm invariant within that stage. A workflow with no `stage`
+tags is exactly today's flat list — zero migration cost.
+
+### `swarm` object
+An optional object on a `kind:"member"` step that tells the Butler to fan the work across N parallel
+instances of the same member, each owning a disjoint slice. Absent = today's behavior.
+
+```jsonc
+"swarm": {
+  "member": "the-developer",   // MUST equal the step's own actor (SW1)
+  "max_instances": 4,          // 1 < n <= 5 = MAX_SWARM (SW2)
+  "min_instances": 2,          // >= 2 and <= max_instances (SW2); below this, run as single step
+  "partition": "by-module",    // by-file | by-module | by-subtask (SW3)
+  "isolation": "shared-tree",  // shared-tree | worktree (SW3); worktree = Wave 4, deferred
+  "integration_step": true     // when true, an inline same-actor step MUST follow in the same stage (SW4)
+}
+```
+
+**Constraints enforced by `conformity_check.py` (SW1–SW5):**
+- **SW1** `swarm.member` must equal the step's `actor`.
+- **SW2** `1 < max_instances <= 5` and `2 <= min_instances <= max_instances`.
+- **SW3** `partition` ∈ `{by-file, by-module, by-subtask}` and `isolation` ∈ `{shared-tree, worktree}`.
+- **SW4** A swarm step with `integration_step: true` must be followed, within the **same `stage`**, by
+  a step with `exec: "inline"` and the same `actor`. The integration step is always inline so the
+  Stop-hook Critic reviews the aggregate diff before commit.
+- **SW5** `swarm.member` must be a real guild member id (present in `guild-data.json`).
+
+A `swarm` object implies `exec: "spawn"` and `parallel: true` on the same step.
+
 ## Deferred fields (in the proposal, NOT yet implemented — do not use until run.py supports them)
 
-`loop {over, per}` · `parallel` · workflow-level `state_dir` / `chain` / `pre` / `post`.
+`loop {over, per}` · workflow-level `state_dir` / `chain` / `pre` / `post`.
 Adding any of these is a follow-on slice that must extend `run.py` first.
 
 ## Example (the shape to apply to a real workflow once unblocked)

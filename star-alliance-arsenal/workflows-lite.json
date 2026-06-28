@@ -388,7 +388,26 @@
           "title": "Build Migrations and Code",
           "act": "The Developer writes the schema migrations and implements the system against the certified design.",
           "produces": "implemented system",
-          "exec": "spawn"
+          "exec": "spawn",
+          "parallel": true,
+          "stage": "build",
+          "swarm": {
+            "member": "the-developer",
+            "max_instances": 4,
+            "min_instances": 2,
+            "partition": "by-module",
+            "isolation": "shared-tree",
+            "integration_step": true
+          }
+        },
+        {
+          "kind": "member",
+          "actor": "the-developer",
+          "title": "Integrate the Modules",
+          "act": "The Developer assembles the slice diffs, reconciles seams against the shared contract, runs the build, and relies on the inline verify-gate Critic to review the aggregate diff before a single commit.",
+          "produces": "integrated system",
+          "exec": "inline",
+          "stage": "build"
         },
         {
           "kind": "member",

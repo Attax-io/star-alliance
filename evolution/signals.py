@@ -23,6 +23,7 @@ import sys
 # engine agree on the names; an unknown string still records, just won't be scored).
 SKILL_FIRE      = "skill-fire"        # a Skill tool was invoked
 MEMBER_DISPATCH = "member-dispatch"   # a real guild-member sub-agent was spawned
+SWARM_FANOUT    = "swarm-fanout"      # the Butler fanned out N instances of one member on disjoint slices
 DOER_SUMMON     = "doer-summon"       # a doer weapon (summon.py / minimax) was drawn
 WORKFLOW_FIRE   = "workflow-fire"     # a valid star-map workflow was declared
 WORKFLOW_UNKNOWN = "workflow-unknown" # a workflow name was declared that isn't registered

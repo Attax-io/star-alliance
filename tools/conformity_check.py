@@ -85,6 +85,11 @@ def main():
     if not mo or json.loads(mo.group(0)) != g:
         fails.append("P  parity: guild-data.js does NOT match guild-data.json (rerun build.py)")
 
+    # Swarm guardrail constants (§5 SWARM-METHODOLOGY-PLAN.md)
+    MAX_SWARM = 5
+    VALID_PARTITIONS = {"by-file", "by-module", "by-subtask"}
+    VALID_ISOLATIONS = {"shared-tree", "worktree"}
+
     # workflow-level checks
     for wf in g["workflows"]:
         wid = wf["id"]
@@ -93,6 +98,63 @@ def main():
         last = steps[-1] if steps else {}
         if last.get("kind") != "gate" or last.get("gate") != "report":
             fails.append(f"D23 {wid}: does not END with a 'report' gate (decision #23)")
+        # SW1–SW5 — swarm object guardrails (fail-soft: never crash the sweep)
+        try:
+            for si, s in enumerate(steps):
+                if s.get("kind") != "member":
+                    continue
+                sw = s.get("swarm")
+                if sw is None:
+                    continue
+                actor = s.get("actor", "")
+                # SW1 — swarm.member must equal the step's actor
+                if sw.get("member") != actor:
+                    fails.append(f"SW1 {wid} step '{s.get('title','?')}': swarm.member "
+                                 f"'{sw.get('member')}' != actor '{actor}'")
+                # SW2 — 1 < max_instances <= MAX_SWARM, 2 <= min_instances <= max_instances
+                max_i = sw.get("max_instances")
+                min_i = sw.get("min_instances")
+                if not (isinstance(max_i, int) and 1 < max_i <= MAX_SWARM):
+                    fails.append(f"SW2 {wid} step '{s.get('title','?')}': max_instances "
+                                 f"({max_i!r}) must satisfy 1 < n <= {MAX_SWARM}")
+                if not (isinstance(min_i, int) and isinstance(max_i, int)
+                        and 2 <= min_i <= max_i):
+                    fails.append(f"SW2 {wid} step '{s.get('title','?')}': min_instances "
+                                 f"({min_i!r}) must satisfy 2 <= min <= max_instances ({max_i!r})")
+                # SW3 — partition and isolation enums
+                part = sw.get("partition")
+                iso = sw.get("isolation")
+                if part not in VALID_PARTITIONS:
+                    fails.append(f"SW3 {wid} step '{s.get('title','?')}': partition "
+                                 f"'{part}' not in {sorted(VALID_PARTITIONS)}")
+                if iso not in VALID_ISOLATIONS:
+                    fails.append(f"SW3 {wid} step '{s.get('title','?')}': isolation "
+                                 f"'{iso}' not in {sorted(VALID_ISOLATIONS)}")
+                # SW4 — when integration_step:true, must be followed in-stage by an inline
+                # same-actor step
+                if sw.get("integration_step"):
+                    stage = s.get("stage")
+                    found_integration = False
+                    for s2 in steps[si + 1:]:
+                        if s2.get("stage") != stage:
+                            continue
+                        if (s2.get("kind") == "member"
+                                and s2.get("actor") == actor
+                                and s2.get("exec") == "inline"):
+                            found_integration = True
+                            break
+                    if not found_integration:
+                        fails.append(
+                            f"SW4 {wid} step '{s.get('title','?')}': integration_step:true "
+                            f"but no following inline same-actor step found in stage '{stage}'"
+                        )
+                # SW5 — swarm.member must be a real guild member id
+                if sw.get("member") and sw.get("member") not in members:
+                    fails.append(f"SW5 {wid} step '{s.get('title','?')}': swarm.member "
+                                 f"'{sw.get('member')}' is not a guild member id")
+        except Exception as _sw_exc:
+            notes.append(f"SW  {wid}: swarm guardrail check raised an exception "
+                         f"(skipped, fail-soft): {_sw_exc}")
         # R — actors + gates resolve
         for s in steps:
             if s.get("kind") == "member":
