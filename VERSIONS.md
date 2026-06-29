@@ -30,6 +30,11 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | Skill | Ver | Src | Desc (words / chars) | Body (words / lines) | Cowork | What it does |
 |---|---|---|---|---|---|---|---|
 | [`a11y-craft`](star-alliance-skills/a11y-craft/SKILL.md) | 1.0.0 | own | 146 / 981 | 519 / 56 | ✓ lean | The Designer's accessibility craft — make WCAG 2.2 AA a gate every surface clears before i… |
+| [`add-admin-permission`](star-alliance-skills/add-admin-permission/SKILL.md) | 1.0.0 | own | 127 / 895 | 1250 / 85 | ✓ lean | Add a granular permission flag to admin_perms and wire through 6 files in lock-step |
+| [`add-new-trigger`](star-alliance-skills/add-new-trigger/SKILL.md) | 1.0.0 | own | 122 / 850 | 1300 / 95 | ✓ lean | End-to-end procedure for creating a database trigger and its backing function |
+| [`add-new-view`](star-alliance-skills/add-new-view/SKILL.md) | 1.0.0 | own | 119 / 880 | 1200 / 88 | ✓ lean | End-to-end procedure for creating or revising a Supabase view |
+| [`admin-page-builder`](star-alliance-skills/admin-page-builder/SKILL.md) | 1.0.0 | own | 128 / 925 | 1400 / 110 | ✓ lean | Build new admin pages for Lex Council that match the design language |
+| [`admin-page-fixer`](star-alliance-skills/admin-page-fixer/SKILL.md) | 1.0.0 | own | 125 / 900 | 1350 / 100 | ✓ lean | Fix bugs and compliance issues across Lex Council admin pages |
 | [`agent-web-reach`](star-alliance-skills/agent-web-reach/SKILL.md) | 1.1.0 | own | 113 / 813 | 1138 / 136 | ✓ lean | Give an agent reliable internet reach — pull content from platforms that normally block ag… |
 | [`agentic-video-production`](star-alliance-skills/agentic-video-production/SKILL.md) | 1.1.0 | own | 113 / 895 | 942 / 112 | ✓ lean | Produce finished video agentically from a plain-language brief: the agent runs research, p… |
 | [`algorithmic-trading-chan`](star-alliance-skills/algorithmic-trading-chan/SKILL.md) | 1.0.0 | own | 116 / 960 | 1016 / 53 | ✓ lean | The Merchant's quant doctrine, distilled from Ernest Chan's Algorithmic Trading: Winning S… |
@@ -58,6 +63,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`design-unity`](star-alliance-skills/design-unity/SKILL.md) | 1.1.0 | own | 159 / 1016 | 1274 / 107 | ✓ lean | The Designer's UI-unity guardian — make ONE design language the single source of truth and… |
 | [`dev-ops-command-pack`](star-alliance-skills/dev-ops-command-pack/SKILL.md) | 1.0.0 | own | 107 / 768 | 816 / 90 | ✓ lean | Run a disciplined dev-ops command lifecycle as one gated loop: start work, validate before… |
 | [`dev-server`](star-alliance-skills/dev-server/SKILL.md) | 1.1.0 | own | 46 / 303 | 645 / 73 | ✓ lean | Use this skill whenever the user says 'open dev server', 'run dev server', 'restart dev se… |
+| [`file-access-model`](star-alliance-skills/file-access-model/SKILL.md) | 1.0.0 | own | 130 / 910 | 1250 / 92 | ✓ lean | Load context for the Lex Council file access model before related work |
 | [`financial-data-reach`](star-alliance-skills/financial-data-reach/SKILL.md) | 1.0.0 | own | 128 / 844 | 1412 / 66 | ✓ lean | The Merchant's data-layer craft: acquire and clean the financial data his read-only analys… |
 | [`frontend-react-engineering`](star-alliance-skills/frontend-react-engineering/SKILL.md) | 1.1.0 | own | 101 / 842 | 1584 / 152 | ✓ lean | Production React / Next.js engineering craft for the-developer: component architecture, ho… |
 | [`full-output-enforcement`](star-alliance-skills/full-output-enforcement/SKILL.md) | 1.0.0 | own | 25 / 203 | 382 / 46 | ✓ lean | Overrides default LLM truncation behavior |
@@ -79,6 +85,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`legal-drafting`](star-alliance-skills/legal-drafting/SKILL.md) | 1.0.0 | own | 122 / 935 | 1156 / 54 | ✓ lean | The Translator's craft for drafting client correspondence and bilingual (Arabic/French/Eng… |
 | [`legal-rule-modeling`](star-alliance-skills/legal-rule-modeling/SKILL.md) | 1.0.0 | own | 133 / 931 | 1447 / 64 | ✓ lean | The Architect's craft for modelling a governing law into the exact calculation rules and i… |
 | [`letting-go`](star-alliance-skills/letting-go/SKILL.md) | 1.0.1 | own | 157 / 1005 | 444 / 52 | ✓ lean | A universal guardrail that kills retry-storms, perfectionism paralysis, and over-deliberat… |
+| [`lex-system-audit`](star-alliance-skills/lex-system-audit/SKILL.md) | 1.0.0 | own | 126 / 895 | 1400 / 105 | ✓ lean | Structured audit methodology for any Lex Council backend subsystem |
 | [`market-recon`](star-alliance-skills/market-recon/SKILL.md) | 1.0.0 | own | 127 / 914 | 1115 / 55 | ✓ lean | The Merchant's craft for read-only market, investment, and risk analysis that ships a writ… |
 | [`members-formation`](star-alliance-skills/members-formation/SKILL.md) | 1.3.0 | own | 141 / 883 | 2318 / 228 | ✓ lean | The Butler's routing method — match an incoming request to the right star-map workflow in … |
 | [`metamorphosis-check`](star-alliance-skills/metamorphosis-check/SKILL.md) | 1.0.1 | own | 163 / 1007 | 408 / 52 | ✓ lean | A guardrail that catches the most dangerous agent failure: confidently running the OLD pla… |
@@ -91,6 +98,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`pattern-library-discovery`](star-alliance-skills/pattern-library-discovery/SKILL.md) | 1.0.0 | own | 114 / 896 | 944 / 111 | ✓ lean | Build and query a reusable code-pattern library so agents reuse a proven, security-validat… |
 | [`penpot-design-platform`](star-alliance-skills/penpot-design-platform/SKILL.md) | 1.0.0 | own | 112 / 885 | 711 / 95 | ✓ lean | Drive Penpot, the open-source design and prototyping platform (a self-hostable Figma alter… |
 | [`performance`](star-alliance-skills/performance/SKILL.md) | 1.0.3 | vendored | 32 / 219 | 1418 / 371 | ✓ lean | Optimize web performance for faster loading and better user experience |
+| [`phased-db-refactor`](star-alliance-skills/phased-db-refactor/SKILL.md) | 1.0.0 | own | 121 / 870 | 1300 / 98 | ✓ lean | Decision framework for multi-phase database refactors in Lex Council |
 | [`portability-audit`](star-alliance-skills/portability-audit/SKILL.md) | 1.0.0 | own | 75 / 481 | 578 / 104 | ✓ lean | Audit how portable a Claude Code project is — maps every layer (skills, members, hooks, en… |
 | [`portfolio-risk`](star-alliance-skills/portfolio-risk/SKILL.md) | 0.1.0 | own | 129 / 1005 | 834 / 55 | ✓ lean | The Merchant's craft for read-only, book-level portfolio construction and risk measurement… |
 | [`price-action`](star-alliance-skills/price-action/SKILL.md) | 1.0.0 | own | 141 / 1001 | 1084 / 63 | ✓ lean | The Merchant's read-only craft for reading price action and market structure, distilled fr… |
@@ -118,10 +126,13 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`ux-copywriting`](star-alliance-skills/ux-copywriting/SKILL.md) | 1.0.0 | own | 121 / 852 | 1223 / 128 | ✓ lean | Write functional in-product copy — the words a user reads while operating an interface |
 | [`ux-research`](star-alliance-skills/ux-research/SKILL.md) | 1.0.0 | own | 119 / 857 | 915 / 87 | ✓ lean | The Designer's UX research craft — learn from real users instead of guessing |
 | [`vault-log-compliance`](star-alliance-skills/vault-log-compliance/SKILL.md) | 1.1.0 | own | 128 / 807 | 1445 / 119 | ✓ lean | Enforces P8 vault-logging compliance for Lex Council |
+| [`vault-log-writer`](star-alliance-skills/vault-log-writer/SKILL.md) | 1.0.0 | own | 124 / 880 | 1200 / 90 | ✓ lean | Write and file a correct Lex Council vault log entry per P8 rule |
 | [`voices-check`](star-alliance-skills/voices-check/SKILL.md) | 1.0.1 | own | 145 / 1013 | 392 / 50 | ✓ lean | Integrate an agent's competing internal sub-voices into one coherent response instead of l… |
 | [`volume-price-analysis`](star-alliance-skills/volume-price-analysis/SKILL.md) | 1.0.0 | own | 137 / 1020 | 1067 / 55 | ✓ lean | The Merchant's read-only craft for Volume Price Analysis, distilled from Anna Coulling's A… |
 | [`weapon-utility`](star-alliance-skills/weapon-utility/SKILL.md) | 3.1.0 | own | 166 / 1009 | 4392 / 324 | ✓ lean | Every member's rule for which weapon (model) to draw and how thinker and doer weapons work… |
 | [`workflow-forge`](star-alliance-skills/workflow-forge/SKILL.md) | 1.4.0 | own | 153 / 997 | 2235 / 175 | ✓ lean | The Strategist's craft for distilling a finished run into a reusable star-map workflow in … |
 | [`workflow-runner`](star-alliance-skills/workflow-runner/SKILL.md) | 1.0.0 | own | 123 / 875 | 1100 / 90 | ✓ lean | The Quartermaster's craft for operating the guild's own machinery — RUN a star-map workflo… |
 
-_94 skills — 89 lean · 5 large (installable, over the 500-line ideal) · 0 near the word ceiling · 0 hard violations._
+_103 skills — 98 lean · 5 large (installable, over the 500-line ideal) · 0 near the word ceiling · 0 hard violations._
+
+_Note: 9 rows (`add-admin-permission`, `add-new-trigger`, `add-new-view`, `admin-page-builder`, `admin-page-fixer`, `file-access-model`, `lex-system-audit`, `phased-db-refactor`, `vault-log-writer`) were manually seeded pending the next `python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write` rebuild. The word/line/char counts above are estimates — re-run the registry script for exact counts._

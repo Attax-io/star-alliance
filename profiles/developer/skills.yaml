@@ -10,6 +10,15 @@
 - name: systematic-debugging
   reason: Structured triage from symptom to root cause; pairs with the "verify root cause, not symptom" loop.
 
+- name: add-admin-permission
+  reason: Granular permission design cascades through 6 backend files — must get the shape right in the schema before the Developer wires the UI.
+
+- name: admin-page-builder
+  reason: Every new admin page (Files, Users, Finances) requires canonical design patterns from advances/page.tsx — the design token set, KpiStrip, card grids, PermissionGate.
+
+- name: admin-page-fixer
+  reason: Audit findings (compliance, warnings, bugs) require methodical fixes across the admin surface — reproducible, testable, verifiable against the audit report.
+
 - name: automated-testing
   reason: Run and extend the project's existing test suite — every fix ships with verification.
 

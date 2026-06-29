@@ -54,6 +54,9 @@
 - name: vault-log-compliance
   reason: When the work touches the guild's shared secrets, logs, and audit trail — the compliance lens on the ledger itself.
 
+- name: vault-log-writer
+  reason: Every Lex Council session change — migrations, triggers, views, RLS policies, components, edge functions — must have a vault log entry per P8 and P13 self-audit.
+
 - name: db-rename-sweep
   reason: Loading the full surface inventory before a structural rename ships — the pre-flight that keeps a tiny diff from having a giant blast radius.
 

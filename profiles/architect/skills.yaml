@@ -23,6 +23,15 @@
 - name: spec-driven-development
   reason: For any non-trivial feature — write spec.md (WHAT/WHY), gate it, derive plan.md, slice into MVP tasks, build story-by-story.
 
+- name: add-admin-permission
+  reason: Permission shape flows from schema design — define the admin_perms columns, RLS gates, view hydration before the Developer wires the frontend toggles.
+
+- name: add-new-trigger
+  reason: Trigger functions carry critical logic — BEFORE/AFTER guards, transition detection, S7/S8 security hardening; must be architected for correctness and auditability.
+
+- name: add-new-view
+  reason: Supabase views are the schema's public contract to the frontend — design security_invoker properly, enumerate CASCADE dependents, maintain the view catalog.
+
 - name: api-integration-design
   reason: When designing the network boundary — resource shapes, versioning, idempotency, webhooks, auth, and resilient third-party integration.
 
@@ -38,8 +47,14 @@
 - name: supabase
   reason: When the design crosses into Supabase platform capabilities (RLS policies, edge functions, realtime) that the model must account for.
 
+- name: lex-system-audit
+  reason: Subsystem audits (notifications, file access, attendance, transactions) require methodical phase-by-phase review to surface P1/P2/P3 findings with effort estimates.
+
 - name: pattern-library-discovery
   reason: Before introducing a new abstraction, find what the codebase already does — duplicate patterns cost the Architect their credibility.
+
+- name: phased-db-refactor
+  reason: Multi-surface refactors touching ≥3 surfaces or money-adjacent columns must stay deployable at every phase boundary — requires a phase-plan discipline.
 
 - name: ultra-brainstorming
   reason: When the design space is wide and the first move is not yet obvious — fan out options before narrowing to a spec.
@@ -52,3 +67,6 @@
 
 - name: dual-model-review
   reason: The cross-system bridge's quality gate — MiniMax-M3 does the work, Kimi K2.7 + GLM-5.2 fire as parallel reviewer sub-agents through Hermes; both must PASS before the report goes back. The Architect reviews for spec conformance and invariant drift; the doer draft and both verdicts are reported to the bridge.
+
+- name: file-access-model
+  reason: File access inherits from the three-gate RLS pattern — users_access, file_admin, org_users, subers — must be loaded before any access refactor.

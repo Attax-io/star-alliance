@@ -53,6 +53,12 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | `supabase-postgres-best-practices` | Postgres schema, index, or query design and tuning at the foundation | application-level code or client state (→ Developer) | `supabase`, `transactions-domain-model` |
 | `pattern-library-discovery` | capturing a proven implementation as a reusable pattern, or reusing-before-reinventing across api/ci/db/security/testing/ui | a per-feature spec (→ `spec-driven-development`) or minting a model/tool weapon (→ `arsenal-forge`) | `spec-driven-development`, `schema-evolution` |
 | `api-integration-design` | designing a service/API contract (REST/GraphQL), webhooks, or integrating a third-party API | DB schema (→ `schema-evolution`) or Supabase platform features (→ `supabase`) | `schema-evolution`, `supabase-postgres-best-practices` |
+| `file-access-model` | file_access table, users_access, RLS gates, access inheritance, subers, or access logging must be read first | file permission UI work (→ Developer) or audit files' visibility rules (→ Lex audit) | `schema-evolution`, `supabase-postgres-best-practices` |
+| `add-admin-permission` | a new granular permission shape must be designed into admin_perms before the Developer wires it | frontend UI permission toggles (→ Developer) or pure cosmetic admin flags | `supabase-postgres-best-practices`, `schema-evolution` |
+| `add-new-trigger` | a database trigger or PL/pgSQL function must be created or modified — BEFORE/AFTER, transition guards, S7/S8 hardening | frontend logic or Lex app workflows (→ Developer / Strategist) | `supabase-postgres-best-practices`, `schema-evolution` |
+| `add-new-view` | a Supabase view must be created or revised — _js views, security_invoker, DROP CASCADE traps, dependents | frontend view consumption alone (→ Developer) | `supabase-postgres-best-practices`, `schema-evolution` |
+| `lex-system-audit` | any subsystem needs a structured audit — notifications, file access, attendance, transactions — five phases with P1/P2/P3 findings | a single quick lookup or fixing a known bug (→ Developer) | `schema-evolution`, `transactions-domain-model` |
+| `phased-db-refactor` | a multi-surface refactor must stay deployable at every phase — touches ≥3 surfaces, or involves money-adjacent columns | cosmetic column renames (→ `db-rename-sweep`) | `schema-evolution`, `supabase-postgres-best-practices` |
 
 **Universal skills — every member carries these; drill them at the edges of every quest:**
 

@@ -65,6 +65,9 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | `frontend-react-engineering` | building or hardening production React/Next.js — components, RSC, state, data, re-render perf | one-shot screenshot→markup (→ `image-to-code`) or the animation only (→ `motion-design`) | `automated-testing`, `image-to-code`, `motion-design` |
 | `code-review-craft` | a deliberate review of a diff/PR/file across correctness/security/simplify/efficiency | the auto verify-gate (runs on Stop, uninvoked) or fixing a known bug (→ `bug-fix-workflow`) | `bug-fix-workflow`, `automated-testing` |
 | `observability-incident-response` | a live service is down, or needs logs/metrics/alerting/runbook/post-mortem | the deploy/rollback loop (→ `dev-ops-command-pack`) or profiling healthy code (→ `performance`) | `dev-ops-command-pack`, `performance` |
+| `admin-page-fixer` | a compliance audit finds fixable issues — read the findings, triage, fix, re-audit | cosmetic renames unrelated to admin pages (→ `db-rename-sweep`) or designing a new page (→ `admin-page-builder`) | `admin-page-builder`, `code-review-craft` |
+| `add-admin-permission` | a granular permission (notifications_vap, td_delete, etc.) must gate a feature | changing a permission's name across all 6 files (→ Architect + `db-rename-sweep`) or the frontend UI alone | `supabase`, `frontend-react-engineering` |
+| `admin-page-builder` | a new admin page is needed under (admin)/admin/ — Files/Users/Finances tabs | restyling an existing page (→ the Designer + `design-taste`) or fixing bugs on an existing page (→ `bug-fix-workflow`) | `frontend-react-engineering`, `add-admin-permission` |
 
 **Universal skills — every member carries these; drill them at the edges of every quest:**
 
