@@ -550,7 +550,7 @@ ul, ol { list-style: none; }
 .workflow-card {
   position: relative;
 }
-.member-card:hover .card-tooltip,
+.member-card:hover > .card-tooltip,
 .skill-card:hover .card-tooltip,
 .workflow-card:hover .card-tooltip {
   opacity: 1;
