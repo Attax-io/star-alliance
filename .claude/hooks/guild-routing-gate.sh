@@ -11,17 +11,21 @@
 # PHASE 1 — PROPORTIONAL GATE. The old hook injected the SAME ~1,331-token
 # campaign-grade doctrine on EVERY turn, whether a typo fix or a 12-wave campaign.
 # It now governs on two axes — STAKES (reversibility/blast-radius) and SIZE — and
-# injects one of two tiers:
+# injects one of three tiers:
+#   • NONE (~0 tokens): clearly-chat AND short AND not-large — pure small talk /
+#     "what is X?" / acks. Injects nothing; the sidecar still gets written so
+#     turn-cost.py and workflow-banner-enforcer.py can read the tier.
 #   • LITE (~150 tokens): clearly-small AND clearly-low-stakes turns.
 #   • FULL (~1,331 tokens): everything else, including ALL high-stakes turns.
-# Stakes ALWAYS wins over size: a one-line edit to a migration is small but
+# Tier order (first match wins): stakes → chat → small → else-full. Stakes
+# ALWAYS wins over size: a one-line edit to a migration is small but
 # high-stakes and takes FULL + halt. Unknown/empty/garbled → FULL (fail-safe).
 # The keyword/size lists are POLICY, in data/harness.json → "policy"; edit there,
-# not here. Override: SA_GATE=full forces the old uniform behavior instantly;
-# SA_GATE=lite forces LITE (testing only).
+# not here. Override: SA_GATE=full|lite|none forces that tier instantly.
 #
-# Each block carries a marker line — SA-GATE:LITE / SA-GATE:FULL — so the
-# turn-cost Stop hook can record which tier fired and prove the savings (Phase 0).
+# Each block carries a marker line — SA-GATE:NONE / SA-GATE:LITE / SA-GATE:FULL
+# — so the turn-cost Stop hook can record which tier fired and prove the
+# savings (Phase 0).
 #
 # SLASH-SKILL KLAXON FIX (unchanged): a user-typed /slash skill loads via a
 # <command-name> injection and never calls the Skill tool, so the ⚡ banner went
@@ -30,8 +34,9 @@
 INPUT=$(cat)
 
 # ── Tier classifier ──────────────────────────────────────────────────────────
-# Reads the prompt + data/harness.json policy; prints LITE or FULL. Fails to
-# FULL on ANY ambiguity or error — a broken classifier must never WEAKEN the gate.
+# Reads the prompt + data/harness.json policy; prints NONE / LITE / FULL.
+# Fails to FULL on ANY ambiguity or error — a broken classifier must never
+# WEAKEN the gate.
 TIER=$(SA_INPUT="$INPUT" SA_GATE="${SA_GATE:-}" PROJ="${CLAUDE_PROJECT_DIR:-$(pwd)}" python3 - <<'PY'
 import os, json, sys
 gate = os.environ.get("SA_GATE", "").strip().lower()
@@ -39,6 +44,8 @@ if gate == "full":
     print("FULL"); sys.exit(0)
 if gate == "lite":
     print("LITE"); sys.exit(0)
+if gate == "none":
+    print("NONE"); sys.exit(0)
 try:
     data = json.loads(os.environ.get("SA_INPUT") or "")
     prompt = (data.get("prompt") or "")
@@ -55,13 +62,20 @@ except Exception:
 stakes = pol.get("stakes_keywords", [])
 small = pol.get("size_small_signals", [])
 large = pol.get("size_large_signals", [])
-# Stakes always wins over size.
+chat = pol.get("chat_signals", [])
+# Tier order (first match wins):
+#   1) stakes → FULL
+#   2) chat + short + no large → NONE
+#   3) small + short + no large → LITE
+#   4) else → FULL
 if any(k in p for k in stakes):
     print("FULL"); sys.exit(0)
 has_small = any(k in p for k in small)
 has_large = any(k in p for k in large)
+has_chat  = any(k in p for k in chat)
 short = len(p) <= int(pol.get("size_short_chars", 240))
-# Only clearly-small AND clearly-low-stakes AND short → LITE. Else FULL.
+if has_chat and short and not has_large:
+    print("NONE"); sys.exit(0)
 print("LITE" if (has_small and not has_large and short) else "FULL")
 PY
 )
@@ -72,6 +86,19 @@ PY
 # Sidecar file is the fix: one write here, one read+delete in turn-cost.py.
 mkdir -p "${CLAUDE_PROJECT_DIR:-$(pwd)}/.claude/state"
 printf '%s' "$TIER" > "${CLAUDE_PROJECT_DIR:-$(pwd)}/.claude/state/last-tier"
+
+# NONE tier: chat turn — inject ZERO doctrine. The sidecar above is the only
+# artifact (so turn-cost.py and workflow-banner-enforcer.py can read the tier
+# and act accordingly). A single one-line marker keeps the SA-GATE:TIER grep
+# pattern in turn-cost.py working without a body of doctrine to scan.
+# We do NOT `exit` here — the slash-skill banner directive below must still
+# run on NONE turns (a user could /slash a skill that's also "short and chat"
+# shaped by length, and we still want the ⚡ banner to fire).
+if [ "$TIER" = "NONE" ]; then
+cat <<'EOF'
+[SA-GATE:NONE]
+EOF
+fi
 
 if [ "$TIER" = "LITE" ]; then
 cat <<'EOF'
@@ -97,7 +124,7 @@ This looks like a quick, easily-reversible change. Proportional path:
     a one-line brief and wait for "go". Stakes beats size, always.
 The 🗺 banner is the gate key: no banner → every work tool is blocked.
 EOF
-else
+elif [ "$TIER" = "FULL" ]; then
 cat <<'EOF'
 ⚔ STAR ALLIANCE ROUTING GATE (harness-injected, binding) — ROUTE before you act.  [SA-GATE:FULL]
 The Butler is your VOICE — he receives the order, translates to plain English, holds the
@@ -195,6 +222,12 @@ RULES:
   • When a Skill tool fires it auto-announces "▸ Skill — <name>" — let it land, don't repeat.
 Keep it tight: the brief is a few lines, never a wall of text.
 EOF
+else
+  # Tier is NONE (chat turn). The [SA-GATE:NONE] marker is already on stdout
+  # above; the if/elif/else structure here exists only so the LITE and FULL
+  # banners do NOT print for NONE. Nothing else to emit for chat turns —
+  # the slash-skill directive below still runs.
+  :
 fi
 
 # ── SLASH-SKILL banner directive ─────────────────────────────────────────────

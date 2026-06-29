@@ -117,16 +117,29 @@ def last_user_index(lines):
 
 
 def assistant_blocks_since(lines, start):
-    """(joined assistant text, count of assistant messages) since `start`."""
-    texts, count = [], 0
+    """
+    (joined assistant text, count of assistant messages, count of tool_use
+    blocks) since `start`.
+
+    `tool_use_count` is the number of tool invocations the assistant emitted
+    since the last real user turn. A turn with ZERO tool_use blocks is purely
+    conversational (greeting, ack, meta-question, prose answer) — there is
+    nothing to enforce a workflow banner on, so the workflow-banner-enforcer
+    bails out early. This is the chat-tier / no-work exemption the routing
+    gate can't always classify (the "no tool fired" half of the NONE rule).
+    """
+    texts, count, tool_use_count = [], 0, 0
     for o in lines[start + 1:]:
         if o.get("type") != "assistant":
             continue
         count += 1
         for b in o.get("message", {}).get("content", []):
-            if isinstance(b, dict) and b.get("type") == "text":
-                texts.append(b.get("text", ""))
-    return "\n".join(texts), count
+            if isinstance(b, dict):
+                if b.get("type") == "text":
+                    texts.append(b.get("text", ""))
+                elif b.get("type") == "tool_use":
+                    tool_use_count += 1
+    return "\n".join(texts), count, tool_use_count
 
 
 # ── Model-line invariant: REMOVED 2026-06-28 (transparency over enforced uniformity) ──
@@ -169,9 +182,11 @@ def main():
         current_tier = "full"
     if current_tier == "lite":
         sys.exit(0)  # LITE turns exempt — no work-tool enforcement needed
+    if current_tier == "none":
+        sys.exit(0)  # NONE/CHAT turns exempt — pure small talk, no work-tool enforcement
 
     ui = last_user_index(lines)
-    text, n_assistant = assistant_blocks_since(lines, ui)
+    text, n_assistant, tool_use_count = assistant_blocks_since(lines, ui)
 
     # RACE GUARD: the Stop hook can fire before the finished assistant turn is
     # flushed to the transcript .jsonl. When that happens we see no assistant text
@@ -180,6 +195,16 @@ def main():
     # fail open. A real answer always carries text, so this only catches the race.
     if not text.strip():
         sys.stderr.write("[banner-enforcer] no assistant text yet (flush race) — failing open\n")
+        sys.exit(0)
+
+    # Zero-work-tools exemption: if the assistant emitted no tool_use blocks
+    # since the last real user turn, this is a pure-prose / no-work turn (a
+    # greeting, ack, prose answer, or meta-question). The workflow gate
+    # already covers tool-time; for a no-tool turn the banner adds no value
+    # and over-firing trains members to ignore the klaxon. Bail out the same
+    # way the LITE/NONE tier sidecar does. Fail-open — a broken transcript
+    # parse never bricks a session.
+    if tool_use_count == 0:
         sys.exit(0)
 
     relent = n_assistant >= CAP  # anti-brick: stop blocking after CAP banner-less turns

@@ -31,6 +31,13 @@
       "campaign", "audit", "build", "refactor", "feature", "multi", "phase",
       "migrate", "overhaul", "redesign", "architecture", "plan", "ship",
       "implement", "all phases", "across"
+    ],
+    "chat_signals": [
+      "hi", "hello", "thanks", "thank you", "ok", "okay", "got it", "gotcha",
+      "right", "yes", "no", "sure", "great", "good", "what is", "what's",
+      "what does", "what do", "how does", "how do", "why does", "why is",
+      "explain", "tell me", "show me", "describe", "recap", "summarize",
+      "in plain english"
     ]
   }
 }
