@@ -21,8 +21,8 @@ Steps:
     1. python3 guild/install_agents.py
     2. python3 build.py
     3. python3 tools/publish_profiles.py
-    4. python3 star-alliance-skills/skillsmith/scripts/skill_sync.py --all --direction install
-    5. python3 star-alliance-skills/skillsmith/scripts/skill_sync.py --profile-content
+    4. python3 star-alliance-skills/skillsmith/scripts/skill_sync.py plan
+    5. python3 star-alliance-skills/skillsmith/scripts/skill_sync.py apply --profile-content
     6. python3 .claude/tools/skill_fingerprint.py
     7. python3 tools/conformity_check.py
 """
@@ -64,17 +64,19 @@ SEQUENCE: List[Tuple[str, List[str]]] = [
         [str(REPO_ROOT / "tools" / "publish_profiles.py")],
     ),
     (
-        "skill_sync (--all --direction install)",
+        # step 4 only REPORTS the sync plan — the actual install of all skills
+        # into the profile directories happens in step 5 via `apply --profile-content`.
+        "skill_sync (plan)",
         [
             str(REPO_ROOT / "star-alliance-skills" / "skillsmith" / "scripts" / "skill_sync.py"),
-            "--all", "--direction", "install",
+            "plan",
         ],
     ),
     (
-        "skill_sync (--profile-content)",
+        "skill_sync (apply --profile-content)",
         [
             str(REPO_ROOT / "star-alliance-skills" / "skillsmith" / "scripts" / "skill_sync.py"),
-            "--profile-content",
+            "apply", "--profile-content",
         ],
     ),
     (
