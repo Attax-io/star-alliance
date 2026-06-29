@@ -2,6 +2,55 @@
   "version": 1,
   "workflows": [
     {
+      "id": "routing",
+      "name": "Routing",
+      "icon": "\ud83d\uddfa\ufe0f",
+      "accent": "indigo",
+      "category": "Guild Self",
+      "class": "read-only",
+      "tagline": "The intake lane: every request enters here so the Strategist can pick the right real workflow.",
+      "when": "Use this as the universal front door for any new request — quick or large. The Butler opens Routing on every intake turn; the Strategist then selects the real workflow (Quick Fix, Standard Mission, Architecture Build, Design Sprint, etc.) and the turn continues under that banner. Routing itself does no specialist or doer work \u2014 it routes.",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Submit the Request",
+          "act": "You describe what you want the guild to do, in plain language.",
+          "produces": "raw request",
+          "exec": "inline"
+        },
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Restate the Brief",
+          "act": "The Butler (the session voice) restates the request as a one-line brief and halts for the Guild Master's explicit approval \u2014 the approval gate.",
+          "produces": "cleared brief",
+          "exec": "inline"
+        },
+        {
+          "kind": "member",
+          "actor": "the-strategist",
+          "title": "Pick the Real Workflow",
+          "act": "The Strategist selects the actual workflows.json entry that fits (Quick Fix \u00b7 Standard Mission \u00b7 Architecture Build \u00b7 Design Sprint \u00b7 Legal Codex \u00b7 Market Recon \u00b7 Skill Forge \u00b7 \u2026) \u2014 or opens Workflow Forge if none fits. The Strategist chooses; the Butler does not.",
+          "produces": "selected workflow",
+          "exec": "inline"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports the chosen workflow to the Guild Master in plain English and asks for go \u2014 the actual specialist work begins under that workflow's banner."
+        }
+      ],
+      "trigger_phrases": [
+        "route this",
+        "who handles this",
+        "what workflow fits",
+        "intake",
+        "triage request",
+        "open the request"
+      ]
+    },
+    {
       "id": "standard-mission",
       "name": "Standard Mission",
       "icon": "\ud83d\udef0\ufe0f",

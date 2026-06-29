@@ -68,8 +68,11 @@ BASH_WRITE_PATTERNS = (
     r"\becho\s+.+?\s*>\s*\S",                # echo "..." > file
     r"\bprintf\s+.+?\s*>\s*\S",              # printf "..." > file
     r"\btee\s+\S",                            # tee file
-    r"(?<!\{)\b>\s*\S",                       # bare > redirect
-    r"\b>>\s*\S",                             # bare >> append
+    # Bare > / >> redirects require a leading shell position so they don't
+    # over-match on `>` inside filesystem paths (e.g. /Users/.../Projects/...).
+    # Allowed leading positions: start-of-line, ;, &, |, (, ), or whitespace.
+    r"(?:^|[;&|()\s])\s*>\s*\S",             # bare > redirect (shell-position)
+    r"(?:^|[;&|()\s])\s*>>\s*\S",            # bare >> append (shell-position)
     r":\s*>\s*\S",                           # : > truncate
     # File mutation commands
     r"\bsed\s+-i\b",                         # sed -i

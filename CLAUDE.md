@@ -96,6 +96,27 @@ summon.
 So: **doer-grade bulk → MiniMax first; thinking, judgment, tool-orchestration, and
 small jobs → the member's Claude thinker.**
 
+## Who selects the workflow (banner-selection contract)
+
+Workflow selection is a fixed three-way split — no role substitutes for another:
+
+- **The Butler** opens *Routing* — the universal intake banner (`▸ Workflow —
+  Routing`) — on every intake turn. He is the session voice; he does not pick the
+  real workflow from `workflows.json`.
+- **The Strategist** picks the real workflow. He reads the cleared brief,
+  selects the right entry (Quick Fix · Standard Mission · Architecture Build ·
+  Design Sprint · Legal Codex · Market Recon · Skill Forge · …), and the turn
+  continues under that banner. If none fits, the Strategist opens *Workflow
+  Forge* — never the Butler.
+- **The Guild Master** approves. The Butler restates, the Strategist chooses,
+  the Guild Master says go.
+
+So: **Butler voices, Strategist picks, Guild Master approves.** Hooked at the
+gate by `workflow-gate.py` (the turn banner must name a real `workflows.json`
+entry — Routing is the valid intake key while the Strategist is still
+deciding). Mirrored as doctrine in `.claude/hooks/guild-routing-gate.sh` and
+in the `high-alert` skill's "Who chooses the workflow" section.
+
 ## Reading discipline (every member)
 
 _Mined from full session history — 46 sessions hit this; it was the single most-repeated correction._

@@ -42,6 +42,13 @@ EXEMPT = {"Workflow", "Skill", "AskUserQuestion", "ExitPlanMode",
 
 # Accept the NEW clean brief ("▸ Workflow — <Name>") and the LEGACY klaxon
 # ("🗺 Starmap Workflow Started: <Name>!"). Recognizing both can never brick a turn.
+#
+# NOTE ON "ROUTING" — "Routing" is the universal INTAKE banner (the Butler
+# opens it on every intake turn so workflow-gate doesn't brick an empty
+# preamble) — it is NOT a real lane. The Strategist picks the actual
+# workflow (Quick Fix, Standard Mission, Architecture Build, …) from
+# workflows.json; the turn then continues under that banner. Routing exists
+# so the gate has a valid key while the Strategist is still deciding.
 BANNER_RES = [
     re.compile(r"Starmap Workflow Started:\s*(.+?)\s*!"),     # legacy
     re.compile(r"▸\s*Workflow\s*[—–\-]\s*([^\n·|]+)"),        # new clean brief

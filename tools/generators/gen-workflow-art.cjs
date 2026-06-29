@@ -162,6 +162,10 @@ const WORKFLOWS = [
     id: "guild-recruitment",
     prompt: `${STYLE}. A Fallen-Sword guild-banner emblem on dark aged leather: a golden empty seat at a round war-table being filled by a new armored figure rising into the light, a recruitment-scroll listing three skill-runes and a single weapon-sigil beside a conformity-checkmark seal, a sword raised in oath — the rite of scaffolding a new guild member behind the gate, no text, no watermarks`,
   },
+  {
+    id: "routing",
+    prompt: `${STYLE}. An INDIGO signpost-beacon on dark parchment at a crossroads, multiple glowing direction-arrows pointing to different colored workflow sigils (cyan for missions, rose for design, green for fixes, gold for legal), a robed Strategist-figure with a compass deciding which path to take, the guild banner planted at the center marking the start-point, a clear awaiting-choice scene — the intake gateway where work begins, no specialist yet engaged`,
+  },
 ];
 
 function postJSON(url, headers, body) {
