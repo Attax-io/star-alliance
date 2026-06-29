@@ -118,7 +118,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`strategies-review`](star-alliance-skills/strategies-review/SKILL.md) | 1.1.0 | own | 74 / 510 | 631 / 76 | ✓ lean | Review and housekeep strategies |
 | [`supabase`](star-alliance-skills/supabase/SKILL.md) | 0.1.4 | vendored | 58 / 475 | 1435 / 129 | ✓ lean | Use when doing ANY task involving Supabase |
 | [`supabase-postgres-best-practices`](star-alliance-skills/supabase-postgres-best-practices/SKILL.md) | 1.1.1 | vendored | 23 / 183 | 242 / 54 | ✓ lean | Postgres performance optimization and best practices from Supabase |
-| [`system-prompt-design-patterns`](star-alliance-skills/system-prompt-design-patterns/SKILL.md) | 1.2.0 | own | 145 / 1316 | 1741 / 194 | ✗ desc>1024 | Distills the recurring design patterns of effective production system prompts (Anthropic C… |
+| [`system-prompt-design-patterns`](star-alliance-skills/system-prompt-design-patterns/SKILL.md) | 1.2.0 | own | 109 / 1018 | 1741 / 194 | ✓ lean | Distills recurring design patterns of effective production system prompts (Anthropic Claud… |
 | [`timeseries-forecasting`](star-alliance-skills/timeseries-forecasting/SKILL.md) | 1.1.0 | own | 118 / 1019 | 1579 / 182 | ✓ lean | Project a numeric time series forward with Google's TimesFM zero-shot foundation model, re… |
 | [`transactions-domain-model`](star-alliance-skills/transactions-domain-model/SKILL.md) | 1.3.1 | own | 108 / 951 | 3263 / 399 | ✓ lean | Loads the complete Lex Council transactions domain model before any transaction-related wo… |
 | [`ultra-brainstorming`](star-alliance-skills/ultra-brainstorming/SKILL.md) | 1.3.1 | own | 129 / 873 | 2029 / 191 | ✓ lean | An ASSIGNABLE multi-thinker method — any member who carries it fires ALL his available thi… |
@@ -132,4 +132,4 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`workflow-forge`](star-alliance-skills/workflow-forge/SKILL.md) | 1.4.0 | own | 153 / 997 | 2235 / 175 | ✓ lean | The Strategist's craft for distilling a finished run into a reusable star-map workflow in … |
 | [`workflow-runner`](star-alliance-skills/workflow-runner/SKILL.md) | 1.0.0 | own | 123 / 875 | 1100 / 90 | ✓ lean | The Quartermaster's craft for operating the guild's own machinery — RUN a star-map workflo… |
 
-_102 skills — 95 lean · 5 large (installable, over the 500-line ideal) · 0 near the word ceiling · 2 hard violations._
+_102 skills — 96 lean · 5 large (installable, over the 500-line ideal) · 0 near the word ceiling · 1 hard violations._
