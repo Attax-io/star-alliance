@@ -2,11 +2,11 @@
 name: skillsmith
 description: "Manage, sync, upgrade, create, and auto-evolve Star Alliance skills across the star-alliance repo and the on-device copies (~/.claude/skills global + per-project .claude/skills). Modes — sync: reconcile repo and device by metadata.version, honoring fork+external exceptions. upgrade: bump a skill's version, regenerate the VERSIONS.md registry, run the Cowork-compliance check, add a changelog entry. create: author a new skill via the official skill-creator, then make it upgradeable. routine: a daily, fully-autonomous self-improvement loop that mines your code, projects, and sessions with the Stanford STORM method (5 personas, contradiction map, synthesis, peer review) to find upgrade routes, new-skill ideas, and bugs, then applies the high-confidence ones (skillsmith itself included). Triggers: 'sync my skills', 'upgrade a skill', 'create a skill', 'install my skills', 'run the skill routine', 'evolve my skills', '/skillsmith'. Scripts in scripts/; procedures in references/."
 metadata:
-  version: 1.7.0
+  version: 1.7.1
 type: Skill
 
 ---
-# skillsmith — manage, sync, upgrade, create & auto-evolve Star Alliance skills (v1.7.0)
+# skillsmith — manage, sync, upgrade, create & auto-evolve Star Alliance skills (v1.7.1)
 
 The control panel for the `star-alliance` repo. It keeps every skill **versioned**,
 **Cowork-installable**, and **in sync** between the git repo and the on-device copies — and it
@@ -138,12 +138,13 @@ Read **`references/deploy-playbook.md`**. The "Star Alliance is usable elsewhere
 
 ## Versioning
 
-This skill is versioned (`metadata.version` in frontmatter, currently **1.7.0**) and self-registers in `VERSIONS.md`. Bump it on every change — PATCH for fixes/wording, MINOR for a new mode or capability, MAJOR for a breaking workflow change — and add a §Changelog row. (The `routine` mode upgrades skillsmith through exactly this contract — see §R6.)
+This skill is versioned (`metadata.version` in frontmatter, currently **1.7.1**) and self-registers in `VERSIONS.md`. Bump it on every change — PATCH for fixes/wording, MINOR for a new mode or capability, MAJOR for a breaking workflow change — and add a §Changelog row. (The `routine` mode upgrades skillsmith through exactly this contract — see §R6.)
 
 ## Changelog
 
 | Version | Date | Summary |
 |---|---|---|
+| **1.7.1** | 2026-06-29 | **Dossier build guard — no hard-truncation of SKILL.md bodies for STORM.** Pass SKILL.md whole (most fit the 16000-token budget); if one overflows, summarize and disclose the summarization, or split across calls. A raw mid-sentence cut makes STORM flag a phantom "file truncated" top bug and wastes a slot. Observed on supabase, skillsmith, conquering-campaign (all >9000 chars). Doc-only fix → PATCH. |
 | **1.7.0** | 2026-06-28 | **New Invariant #10 — critic-gated autonomous commits (folds `routine` under the Evolution Engine's VERIFY organ).** Gap closed: `routine` commits each finding mid-run via its own `git commit`, which lands BEFORE the Stop-time verify-gate fires — so headless `run_routine.sh` commits were self-graded (the exact "implementer grades its own work" hole the Evolution Engine exists to close). Fix: every autonomous commit now runs `git diff HEAD \| python3 evolution/verdict.py --fail-closed` first — pass/concerns → commit; block or critic-unreachable → skip + ledger the verdict. Wired into `routine-playbook.md` Stage E (D→E). Interactive `/skillsmith` was already covered by the armed Stop gate; this closes the unattended path. New mandatory step → MINOR. |
 | **1.5.1** | 2026-06-27 | Reconciled the workflow rename in live prose: the conformance-close (Invariant #8 body + `routine-playbook` close step) now names the **Compliance Audit** workflow — the merged Conformity Sweep + OKF Tidy — instead of the old "Conformity Sweep". Historical changelog mentions left intact. Wording/refs → PATCH. |
 | **1.5.0** | 2026-06-27 | **Closed the 7 open upgrade paths from the deep-check audit in one pass.** (P1) **New `deploy-member` mode** — promoted the previously dangling `install.sh` reference (named in §When-to-invoke but with no Modes row + no playbook) into a real mode: added `references/deploy-playbook.md` (tiers 1/2/3, what each lands, the `project-start` consumer-side relationship), the Modes-table row, and a §Workflow subsection. (P1+P4) `install.sh` now appends every deploy to `references/deploy-ledger.md` — the durable reach signal that unblocks **member-leveling Wave 6**, now spec'd in `member-leveling.md` (reach/recency/tier-weight meter against the ledger, gated until rows accrue). (P5) **New `skill_registry.py scope` subcommand** classifies every skill Global vs Sector-specific from `guild-data.json` + surfaces share-candidates — it immediately surfaced the over-global classification (52/54 flagged `global`) the Guild Master flagged in-session. (P6) `create-playbook` art step rewritten as the **mandatory Designer handoff** the Skill Forge workflow already encodes (never optional/deferred). (P7) **`routine-playbook` Stage B now codifies the "re-aim the lens" rule** (convergence on one question ≠ no work — rotate to body-vs-reality / repo-device-drift / cross-skill-contradiction lenses before declaring no-op, the Run-12 lesson) and marks the `cleanup` docs-INDEX class **attended-only / out-of-autonomous-scope** so it stops consuming STORM budget every run. (P3) Device-config stale-path sweep **verified clean** — the scheduled-task def + settings + hooks + plist all already point at `star-alliance-skills/`; only stale hits are immutable transcripts; standing proposal closed. New mode + new capability → MINOR. |

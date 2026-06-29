@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """critique.py — COLD critique: hand a diff/plan as TEXT to the Critic seat (default
-glm-5.2) and get back a refutation-focused review.
+minimax-m3) and get back a refutation-focused review.
 
 The Critic is deliberately a DIFFERENT model family than the Brain (opus) — a critic
 that shares the author's lineage shares its blind spots. This is the cheap, fast,
@@ -33,12 +33,18 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 
 
 def _critic_default():
-    """seats.critic.default from the registry, or glm-5.2 if unreadable."""
+    """seats.critic.default from the registry, or minimax-m3 if unreadable.
+
+    The arsenal was stripped to two layers (Brain=Claude/opus + one shared MiniMax
+    doer; no dedicated critic seat), so seats.critic is normally absent and this
+    falls through to minimax-m3 — the surviving non-Claude family, which keeps the
+    Critic a DIFFERENT lineage than the opus Brain. (Was glm-5.2, removed from the
+    registry → summon rejected it → every cold verdict errored.)"""
     try:
         with open(os.path.join(HERE, "models.json"), encoding="utf-8") as fh:
-            return json.load(fh).get("seats", {}).get("critic", {}).get("default") or "glm-5.2"
+            return json.load(fh).get("seats", {}).get("critic", {}).get("default") or "minimax-m3"
     except Exception:
-        return "glm-5.2"
+        return "minimax-m3"
 
 
 SYSTEM = (
@@ -58,7 +64,7 @@ def main():
                     help="Text to critique. Omit or '-' to read stdin.")
     ap.add_argument("-f", "--file", default=None, help="Read the text from a file path.")
     ap.add_argument("-m", "--model", default=None,
-                    help="Critic model (default: seats.critic.default, i.e. glm-5.2).")
+                    help="Critic model (default: seats.critic.default, i.e. minimax-m3).")
     ap.add_argument("-s", "--system", default=SYSTEM, help="Override the critic system prompt.")
     ap.add_argument("--timeout", type=int, default=180, help="HTTP timeout seconds (default 180).")
     a = ap.parse_args()

@@ -94,6 +94,8 @@ pipeline(activeSkills,
 
 Budget the fan-out; don't STORM all 28 skills every day (see §R5).
 
+**Dossier build guard.** When assembling a per-skill dossier for the doer (SKILL.md body + scan signals), pass the SKILL.md body whole — most fit the 16000-token budget. Never hard-truncate mid-sentence to fit a cap; that makes STORM report a phantom "file truncated" top bug, wasting the slot and poisoning the dossier (observed 2026-06-29 on supabase, skillsmith, conquering-campaign, each SKILL.md > 9000 chars). If a body truly overflows, summarize it and tell STORM it was summarized, or split across calls — but never raw-cut.
+
 **Re-aim the lens — convergence on one question ≠ no work left (the Run-12 lesson, codified).** Runs
 1–11 graded only the *friction snippets* (is this mention noise?) and converged to a no-op for ten
 straight runs — yet Run 12 found a real, never-adjudicated defect the instant it changed the
