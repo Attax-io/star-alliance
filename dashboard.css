@@ -218,13 +218,14 @@ ul, ol { list-style: none; }
   background: var(--surface-1);
   border: 1px solid var(--border-soft);
   border-radius: 12px;
-  overflow: hidden;
+  overflow: visible;
   transition: all 0.2s ease;
   border-color: color-mix(in srgb, var(--member-color) 35%, var(--border-soft));
 }
 .member-card__topbar {
   height: 3px;
   background: var(--member-color);
+  border-radius: 12px 12px 0 0;
 }
 .member-card__body {
   display: flex;
@@ -681,7 +682,7 @@ ul, ol { list-style: none; }
 .skill-thumb:hover {
   transform: scale(1.12);
   box-shadow: 0 0 0 2px var(--gold-dim), 0 4px 16px rgba(0,0,0,0.5);
-  z-index: 10;
+  z-index: 50;
 }
 .skill-thumb .card-tooltip {
   left: 50%;
