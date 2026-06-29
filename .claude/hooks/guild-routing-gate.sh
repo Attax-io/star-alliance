@@ -149,15 +149,15 @@ Guild Master says go. The Butler frames; the Guild Master approves — the produ
 the brief never self-approves it.
 
 STEP 1 · THE STRATEGIST FORMS THE RIGHT MEMBER — he routes the task to ONE specialist:
-  • code · features · bug fixes · refactor code · dev server · tooling · knowledge graph → the-developer (haiku)
-  • database · system design · domain model · structural refactor                        → the-architect (haiku)
-  • UI · UX · brand kit · image-to-code · visual polish · design system                  → the-designer (haiku)
-  • marketing · growth · SEO · content · email nurture · social/paid · go-to-market      → the-herald (haiku)
-  • investment · trading · market research · portfolio · buy/sell/risk                    → the-merchant (haiku)
-  • skills (sync/upgrade/create) · guild log · daily skill routine                        → the-quartermaster (haiku)
+  • code · features · bug fixes · refactor code · dev server · tooling · knowledge graph → the-developer (glm-5.2)
+  • database · system design · domain model · structural refactor                        → the-architect (glm-5.2)
+  • UI · UX · brand kit · image-to-code · visual polish · design system                  → the-designer (glm-5.2)
+  • marketing · growth · SEO · content · email nurture · social/paid · go-to-market      → the-herald (glm-5.2)
+  • investment · trading · market research · portfolio · buy/sell/risk                    → the-merchant (glm-5.2)
+  • skills (sync/upgrade/create) · guild log · daily skill routine                        → the-quartermaster (glm-5.2)
   • large multi-wave projects · campaigns · bug workflow · performance optimization       → the-strategist (opus)
   • routing · "who handles this" · break the work into waves · sequence members           → the-strategist (opus)
-  • load/translate law · legal drafting · multi-locale content                            → the-translator (haiku)
+  • load/translate law · legal drafting · multi-locale content                            → the-translator (glm-5.2)
   • GAP-FILLER ONLY — the-connector (sonnet) is NEVER the first routing target for ordinary craft.
     The Strategist routes to the-connector in exactly two cases: (1) DIRECT — when the task itself
     needs a Claude connector (Supabase, WhatsApp, Gmail, Calendar, web search/fetch, computer-use);
@@ -191,7 +191,7 @@ STEP 2 · FOLLOW THE WORKFLOW (workflows.json) — MANDATORY, not optional:
 STEP 3 · THAT MEMBER WORKS IN TWO LAYERS (weapon-utility):
   Hand doer-grade work — bulk edits, extraction, generation, mechanical transforms, large reads/summaries —
   to the member Hermes profile first:  python3 tools/dispatch.py <agent-name> "<prompt>"
-  The member's BRAIN (opus for the Strategist, haiku for the rest) stays the mind — plan → prompt the
+  The member's BRAIN (opus for the Strategist, glm-5.2 for the rest) stays the mind — plan → prompt the
   doer → review against the plan → re-prompt until it conforms. minimax.py is the substitute used only
   when Hermes is unreachable:  python3 star-alliance-arsenal/minimax.py "<prompt>"  (-s · --json · -f)
   No other doer path exists: the sole sanctioned overflow when a member seat cannot do something is
@@ -226,7 +226,7 @@ RULES:
   • List one bullet per agent the workflow deploys, with all three model slots. Keep the
     "<N>" count accurate. The cast is the workflow's steps[].actor list (skip `you`/gates).
   • MODEL SLOTS — TRANSPARENCY RULE: report the models you ACTUALLY used, never a
-    template. Brain = the member's fixed model (opus for the Strategist, haiku for the
+    template. Brain = the member's fixed model (opus for the Strategist, glm-5.2 for the
     rest). The one doer is minimax-m3 — if you did NOT actually call it, write "none".
     A brief that claims a model you never invoked is a hallucination, not a formality.
   • List each agent as it takes the field — the lead specialist when work begins, and the
