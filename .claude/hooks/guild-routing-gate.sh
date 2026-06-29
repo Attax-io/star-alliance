@@ -190,10 +190,14 @@ STEP 2 · FOLLOW THE WORKFLOW (workflows.json) — MANDATORY, not optional:
 
 STEP 3 · THAT MEMBER WORKS IN TWO LAYERS (weapon-utility):
   Hand doer-grade work — bulk edits, extraction, generation, mechanical transforms, large reads/summaries —
-  to the one doer:  python3 star-alliance-arsenal/minimax.py "<prompt>"  (-s · --json · -f)
+  to the member Hermes profile first:  python3 tools/dispatch.py <agent-name> "<prompt>"
   The member's BRAIN (opus for the Strategist, haiku for the rest) stays the mind — plan → prompt the
-  doer → review against the plan → re-prompt until it conforms. If MiniMax is unreachable, STOP and
-  report rather than guessing on a weaker model.
+  doer → review against the plan → re-prompt until it conforms. minimax.py is the substitute used only
+  when Hermes is unreachable:  python3 star-alliance-arsenal/minimax.py "<prompt>"  (-s · --json · -f)
+  No other doer path exists: the sole sanctioned overflow when a member seat cannot do something is
+  The Connector, reached directly for connector work, or after seven logged attempts in the guild
+  log for escalation when a craft specialist is genuinely stuck. If Hermes AND the substitute are
+  both unreachable, STOP and report rather than guessing on a weaker model.
 
 Acting as the Butler to do a specialist's job, OR a member doing doer-grade work in its thinker, is the
 EXCEPTION — and must be justified out loud. Tool-access orchestration (git, file writes, MCP) stays with the
