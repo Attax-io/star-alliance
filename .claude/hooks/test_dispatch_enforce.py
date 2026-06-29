@@ -74,7 +74,7 @@ class DispatchEnforceTests(unittest.TestCase):
     def test_real_redirect_in_child_session_is_blocked(self):
         result = self._check('echo "x" > /tmp/foo', child=True)
         self.assertEqual(result["exit"], 2)
-        self.assertIn("DISPATCH ENFORCE", result.get("stderr", ""))
+        self.assertIn("⛔ BLOCKED", result.get("stderr", ""))
 
     # ── is_child guard: main session never blocked ──────────────────────
     def test_main_session_always_allowed(self):
@@ -91,7 +91,53 @@ class DispatchEnforceTests(unittest.TestCase):
     def test_sed_in_place_blocked(self):
         result = self._check("sed -i 's/a/b/' file.txt", child=True)
         self.assertEqual(result["exit"], 2)
-        self.assertIn("DISPATCH ENFORCE", result.get("stderr", ""))
+        self.assertIn("⛔ BLOCKED", result.get("stderr", ""))
+
+    # ── Quote-aware: write words inside quoted strings are NOT blocked ──
+    # These are the false positives that drove this fix.
+    def test_touch_word_in_quoted_prose_is_allowed(self):
+        """Prompt text containing 'touch' as a word must not trigger the
+        shell-write pattern."""
+        result = self._check(
+            'echo "do not touch this file"', child=True
+        )
+        self.assertEqual(result["exit"], 0)
+
+    def test_rm_word_in_quoted_prose_is_allowed(self):
+        result = self._check(
+            'echo "please rm the old backup later"', child=True
+        )
+        self.assertEqual(result["exit"], 0)
+
+    def test_pipe_in_quoted_md_table_is_allowed(self):
+        """Markdown tables with `|` columns must not look like a pipe chain."""
+        result = self._check(
+            'echo "col1 | col2 | col3" && echo done', child=True
+        )
+        self.assertEqual(result["exit"], 0)
+
+    def test_sed_word_in_quoted_prose_is_allowed(self):
+        """The word 'sed' inside prose must not trigger the sed -i rule."""
+        result = self._check(
+            'echo "you should sed the line in place"', child=True
+        )
+        self.assertEqual(result["exit"], 0)
+
+    def test_single_quoted_write_words_are_allowed(self):
+        result = self._check(
+            "echo 'touch /tmp/file' but don't", child=True
+        )
+        self.assertEqual(result["exit"], 0)
+
+    def test_chained_dispatch_with_write_piggyback_still_blocked(self):
+        """The quote-aware fix must not let a write command slip through
+        after a `&&` chain — only the quoted-prompt-prose case should be
+        exempt."""
+        result = self._check(
+            'python3 tools/dispatch.py the-architect "x" && touch /tmp/y',
+            child=True,
+        )
+        self.assertEqual(result["exit"], 2)
 
 
 if __name__ == "__main__":
