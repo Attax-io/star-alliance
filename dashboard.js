@@ -6,6 +6,7 @@ async function boot() {
     const GUILD = await fetch('guild-data.json').then(r => r.json())
     window._GUILD_SKILLS = GUILD.skills || []
     window._GUILD_MEMBERS = GUILD.members || []
+    window._GUILD_DOMAINS = GUILD.domains || []
     renderHeader(GUILD)
     renderStats(GUILD)
     renderRoster(GUILD)
@@ -20,6 +21,19 @@ async function boot() {
     if (page) page.insertAdjacentHTML('afterbegin',
       '<p style="color:#c9a227;padding:2rem;font-family:monospace">⚠ Could not load guild-data.json — run: node serve.cjs</p>')
   }
+}
+
+function skillMemberCount(sid) {
+  return (window._GUILD_MEMBERS || []).filter(m => (m.skills || []).includes(sid)).length
+}
+
+function skillDomainAccent(sid) {
+  // returns {color, domainName} if the skill is specific to a project domain, else null
+  const projectDomains = (window._GUILD_DOMAINS || []).filter(d => d.id !== 'star-alliance')
+  for (const d of projectDomains) {
+    if ((d.skills || []).includes(sid)) return { color: d.color || '#c9a227', domainName: d.name || '' }
+  }
+  return null
 }
 
 function renderHeader(g) {
@@ -128,6 +142,10 @@ function memberCard(m) {
     const skillObj = (window._GUILD_SKILLS || []).find(s => s.id === sid)
     const thumb = document.createElement('div')
     thumb.className = 'skill-thumb'
+    const count = skillMemberCount(sid)
+    const lvl = skillObj?.level || ''
+    const accent = skillDomainAccent(sid)
+    if (accent) thumb.style.setProperty('--thumb-accent', accent.color)
     const img = document.createElement('img')
     img.src = `art/skill-art/${sid}.png`
     img.alt = skillObj?.name || sid
@@ -141,7 +159,8 @@ function memberCard(m) {
     thumb.appendChild(img)
     const tip = document.createElement('div')
     tip.className = 'card-tooltip'
-    tip.innerHTML = `<strong>${skillObj?.name || sid}</strong><br>${(skillObj?.blurb || '').slice(0, 120)}`
+    const hl = accent ? accent.color : 'var(--gold)'
+    tip.innerHTML = `<strong style="color:${hl}">${skillObj?.name || sid}</strong><br>${(skillObj?.blurb || '').slice(0, 120)}<br><span style="color:${hl};font-size:0.66rem">${count} member${count===1?'':'s'} · ${lvl}${accent ? ' · ' + accent.domainName : ''}</span>`
     thumb.appendChild(tip)
     strip.appendChild(thumb)
   })
