@@ -1,7 +1,7 @@
 ---
 name: phased-db-refactor
 description: Decision framework and execution guide for multi-phase database refactors in Lex Council. Use whenever the user asks to refactor a table or column that touches ≥3 downstream surfaces, involves a money-adjacent column (wages, credits, transactions), must remain deployable at every step, or where rolling back would require a backup restore. Also trigger on phrases like "phased refactor", "phase plan", "multi-phase migration", "attendance v2 style", "frontend-first", "Phase 0 safety net", "dual-write window", or "byte-identical". Do NOT use this for pure cosmetic renames with no semantic change — use the db-rename-sweep skill for those. This skill exists because rushing a multi-surface refactor into a single migration has caused wage recompute bugs, broken trigger bodies, and post-rollback data loss in past sessions.
-version: 1.0.0
+version: 1.1.0
 ---
 
 # Phased DB Refactor — Framework
