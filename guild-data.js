@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 58,
       "patch": 80
     },
-    "generated": "2026-06-29T17:20:30Z",
+    "generated": "2026-06-29T18:20:47Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "reserve",
@@ -2096,7 +2096,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🧩",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "The Designer's accessibility craft — make WCAG 2.2 AA a gate every surface clears before it shi",
       "level": "Advanced",
       "ramp": "teal",
@@ -2134,7 +2134,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🧩",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Add a new granular permission flag to admin_perms in the Lex Council app and wire it throu…",
       "level": "Advanced",
       "ramp": "teal",
@@ -2179,7 +2179,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🧩",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "End-to-end procedure for creating or modifying a database trigger and its backing function in t",
       "level": "Advanced",
       "ramp": "teal",
@@ -2220,7 +2220,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🧩",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "End-to-end procedure for creating or revising a view in the Lex Council Supabase backend.",
       "level": "Advanced",
       "ramp": "teal",
@@ -2259,7 +2259,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🧩",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Build a new admin page for the Lex Council app under apps/web/app/(admin)/admin/…",
       "level": "Advanced",
       "ramp": "teal",
@@ -2305,7 +2305,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🧩",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Fix bugs and warnings found by the admin-page-auditor skill (or manually identified) acros…",
       "level": "Advanced",
       "ramp": "teal",
@@ -2345,7 +2345,7 @@ const GUILD = {
       "version": "1.1.0",
       "icon": "🌐",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Give an agent reliable web reach — YouTube/Bilibili transcripts, Twitter/Reddit/LinkedIn scraping, RSS, Exa search, cookies",
       "level": "Advanced",
       "ramp": "teal",
@@ -2388,7 +2388,7 @@ const GUILD = {
       "version": "1.1.0",
       "icon": "🎬",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Produce finished video agentically from a brief — research→script→assets→edit→compose, native b-roll corpus, gated stages",
       "level": "Advanced",
       "ramp": "teal",
@@ -2429,7 +2429,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "📈",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Ernie Chan's quant doctrine: mean reversion, momentum, backtesting pitfalls, Kelly risk",
       "level": "Advanced",
       "ramp": "teal",
@@ -2473,7 +2473,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🔌",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Design service/API contracts + integrate third-party APIs — REST/GraphQL, versioning, idempotency, webhooks, resilience, contract testing",
       "level": "Advanced",
       "ramp": "teal",
@@ -2511,7 +2511,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "⚔️",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Recruit or re-role a weapon — identity, role, wire to loadouts",
       "level": "Intermediate",
       "ramp": "blue",
@@ -2548,7 +2548,7 @@ const GUILD = {
       "version": "1.0.1",
       "icon": "📝",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "End-to-end Insights article creation pushed to production DB",
       "level": "Foundational",
       "ramp": "gray",
@@ -2584,7 +2584,7 @@ const GUILD = {
       "version": "1.1.0",
       "icon": "🧪",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Author automated tests for a web app — unit/component/integration/E2E (Vitest, Testing Library, Playwright); pyramid, coverage, flake-free",
       "level": "Advanced",
       "ramp": "teal",
@@ -2624,7 +2624,7 @@ const GUILD = {
       "version": "1.2.0",
       "icon": "🐛",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "End-to-end bug triage, reproduction, and root-cause fixing",
       "level": "Intermediate",
       "ramp": "blue",
@@ -2664,7 +2664,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "📐",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Identify & read every chart pattern (Bulkowski) — H&S, double/triple tops, triangles, flags, gaps + event patterns, with the odds",
       "level": "Advanced",
       "ramp": "teal",
@@ -2716,7 +2716,7 @@ const GUILD = {
       "version": "1.1.0",
       "icon": "🪝",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Author Claude Code hooks the right way — fail-open gates and banners",
       "level": "Advanced",
       "ramp": "teal",
@@ -2759,7 +2759,7 @@ const GUILD = {
       "version": "1.20.0",
       "icon": "🧹",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Multi-mode hygiene: i18n translations, dedup, hardcoded text",
       "level": "Intermediate",
       "ramp": "blue",
@@ -2830,7 +2830,7 @@ const GUILD = {
       "version": "1.1.0",
       "icon": "🐉",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Read-only pack of 15 CN/HK/US market strategies — trend, reversal, theme/event, chan & wave; thesis/entry/exit/regime",
       "level": "Advanced",
       "ramp": "teal",
@@ -2872,7 +2872,7 @@ const GUILD = {
       "version": "1.1.0",
       "icon": "🔍",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Deliberate member-invoked review of a diff/PR/file — correctness, security, simplification, efficiency; severity-tagged, evidence-grounded",
       "level": "Advanced",
       "ramp": "teal",
@@ -2912,7 +2912,7 @@ const GUILD = {
       "version": "1.2.0",
       "icon": "🕸️",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "MCP code-intelligence engine — tree-sitter knowledge graph over a repo (158 langs, 14 tools); where/what-calls/impact/dead-code",
       "level": "Advanced",
       "ramp": "teal",
@@ -2953,7 +2953,7 @@ const GUILD = {
       "version": "1.1.0",
       "icon": "⚖️",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Legal codex pipeline: load law, translate to five locales",
       "level": "Intermediate",
       "ramp": "blue",
@@ -3012,7 +3012,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "📨",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Sweep email, calendar, and WhatsApp into tasks, events, and replies",
       "level": "Intermediate",
       "ramp": "blue",
@@ -3050,7 +3050,7 @@ const GUILD = {
       "version": "3.9.0",
       "icon": "🚀",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Multi-wave campaign orchestrator: audit, build, run mega-work",
       "level": "Master",
       "ramp": "purple",
@@ -3116,7 +3116,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "📋",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Review an inbound contract/NDA for risk — clause-by-clause redline, one-sided/missing-term flags, risk score, reviewer's report. Advisory, never signs",
       "level": "Advanced",
       "ramp": "teal",
@@ -3154,7 +3154,7 @@ const GUILD = {
       "version": "1.1.0",
       "icon": "🪞",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Prove every change actually renders on the dashboard",
       "level": "Advanced",
       "ramp": "teal",
@@ -3191,7 +3191,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "📊",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Turn a dataset (CSV/query/table) into an analyzed, honestly-visualized report — EDA, cleaning, the right chart, axis integrity, a clear narrative",
       "level": "Advanced",
       "ramp": "teal",
@@ -3229,7 +3229,7 @@ const GUILD = {
       "version": "1.1.0",
       "icon": "🏷️",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Scans database schema for safe table and column renames",
       "level": "Foundational",
       "ramp": "gray",
@@ -3267,7 +3267,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🧩",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "The Butler's swarm craft — judge whether a task is worth parallelising, scout the codebase surf",
       "level": "Advanced",
       "ramp": "teal",
@@ -3305,7 +3305,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🗣️",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "The guild's multi-language voice engine — narrative vocabulary & tone, not visual",
       "level": "Master",
       "ramp": "purple",
@@ -3347,7 +3347,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🎨",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "The Designer's seven-mode premium taste engine, anti-AI-slop",
       "level": "Master",
       "ramp": "purple",
@@ -3394,7 +3394,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🧩",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Senior UI/UX Engineer…",
       "level": "Advanced",
       "ramp": "teal",
@@ -3434,7 +3434,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🧩",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "The Designer's token-architecture craft — structure a design-token system that scales, themes",
       "level": "Advanced",
       "ramp": "teal",
@@ -3473,7 +3473,7 @@ const GUILD = {
       "version": "1.1.0",
       "icon": "🧬",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "UI conformity engine — one source of truth, every surface in one design language",
       "level": "Advanced",
       "ramp": "teal",
@@ -3517,7 +3517,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🛠️",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Disciplined dev-ops lifecycle as one gated loop — start-work→pre-pr→deploy→health→rollback→retro, dev/remote symmetry",
       "level": "Advanced",
       "ramp": "teal",
@@ -3555,7 +3555,7 @@ const GUILD = {
       "version": "1.1.0",
       "icon": "🚀",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Launches, restarts, and manages your local development server",
       "level": "Foundational",
       "ramp": "gray",
@@ -3592,7 +3592,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🧩",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "The dual-review flow that backs the cross-system bridge.",
       "level": "Advanced",
       "ramp": "teal",
@@ -3628,7 +3628,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🧩",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Loads full context for the Lex Council file access model before any related work begins…",
       "level": "Advanced",
       "ramp": "teal",
@@ -3661,7 +3661,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "💹",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Acquire + clean financial data — quotes/OHLCV, fundamentals, filings, earnings, macro, sentiment; source choice, point-in-time correctness. Never trades",
       "level": "Advanced",
       "ramp": "teal",
@@ -3703,7 +3703,7 @@ const GUILD = {
       "version": "1.1.0",
       "icon": "⚛️",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Production React / Next.js engineering — RSC, hooks, state placement, data fetching, Suspense, perf, TS contracts",
       "level": "Advanced",
       "ramp": "teal",
@@ -3743,7 +3743,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🛡️",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Forces complete output with no truncation or placeholders",
       "level": "Foundational",
       "ramp": "gray",
@@ -3778,7 +3778,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🧩",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Elite UX/UI & Advanced GSAP Motion Engineer…",
       "level": "Advanced",
       "ramp": "teal",
@@ -3816,7 +3816,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🕸️",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Transforms any input into a navigable knowledge graph",
       "level": "Master",
       "ramp": "purple",
@@ -3862,7 +3862,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "📣",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Four-mode marketing engine: content/SEO, brand, email, social/paid",
       "level": "Master",
       "ramp": "purple",
@@ -3901,7 +3901,7 @@ const GUILD = {
       "version": "1.6.0",
       "icon": "🔎",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Prove the guild repo agrees with itself, then reconcile",
       "level": "Advanced",
       "ramp": "teal",
@@ -3941,7 +3941,7 @@ const GUILD = {
       "version": "1.2.1",
       "icon": "📓",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Logs non-git-visible guild changes via the two-tier pipeline",
       "level": "Foundational",
       "ramp": "gray",
@@ -3978,7 +3978,7 @@ const GUILD = {
       "version": "1.1.0",
       "icon": "🔁",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "The Quartermaster's self-improvement engine: reflect on a run, diagnose the seed, commit a doctrine diff.",
       "level": "Advanced",
       "ramp": "teal",
@@ -4019,7 +4019,7 @@ const GUILD = {
       "version": "1.0.1",
       "icon": "🔄",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Prove the device still matches the repo, then reconcile drift",
       "level": "Advanced",
       "ramp": "teal",
@@ -4054,7 +4054,7 @@ const GUILD = {
       "version": "1.3.0",
       "icon": "📊",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Prove & tune what the harness saves — net tokens, LITE/FULL tier split, offload health",
       "level": "Advanced",
       "ramp": "teal",
@@ -4097,7 +4097,7 @@ const GUILD = {
       "version": "2.3.0",
       "icon": "🚨",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Session klaxon: banners on workflow start, skill activation, member duty",
       "level": "Foundational",
       "ramp": "gray",
@@ -4169,7 +4169,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🖼️",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Elite pipeline that designs the image, then engineers matching code",
       "level": "Advanced",
       "ramp": "teal",
@@ -4237,7 +4237,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🖼️",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Premium image-generation engine — web sections, mobile app screens, and brand identity, images only",
       "level": "Master",
       "ramp": "purple",
@@ -4280,7 +4280,7 @@ const GUILD = {
       "version": "3.0.7",
       "icon": "✨",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Polish, critique, distill, and harden any design with Swiss precision",
       "level": "Intermediate",
       "ramp": "blue",
@@ -4384,7 +4384,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🧬",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Infer & prove a latent rule from good/bad examples (CEGIS), distilled from LoopInvGen",
       "level": "Advanced",
       "ramp": "teal",
@@ -4424,7 +4424,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🕯️",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Read & interpret Japanese candlestick charts (Nison) — every reversal, continuation & doji pattern",
       "level": "Advanced",
       "ramp": "teal",
@@ -4473,7 +4473,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "📚",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Ingest law PDFs verbatim into the verified Source-Law library",
       "level": "Intermediate",
       "ramp": "blue",
@@ -4510,7 +4510,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "📯",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "The Butler's down-command craft — turn the Guild Master's words into one concise, precise, complete order to a member/subagent/doer; COMPOSE + AUDIT + a runnable composer",
       "level": "Advanced",
       "ramp": "teal",
@@ -4552,7 +4552,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "✒️",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Client correspondence and bilingual legal instruments in the firm's register",
       "level": "Advanced",
       "ramp": "teal",
@@ -4589,7 +4589,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🧮",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Model a governing law into deterministic calculator rules",
       "level": "Advanced",
       "ramp": "teal",
@@ -4626,7 +4626,7 @@ const GUILD = {
       "version": "1.0.1",
       "icon": "🍃",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Kills retry-storms and perfectionism paralysis: name the ideal, see its harm, release it, act on reality.",
       "level": "Intermediate",
       "ramp": "blue",
@@ -4699,7 +4699,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "📈",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Read-only market, investment, and risk analysis that ships a report",
       "level": "Advanced",
       "ramp": "teal",
@@ -4737,7 +4737,7 @@ const GUILD = {
       "version": "1.3.0",
       "icon": "🧭",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "The Butler's routing method: who works, in what arrangement, then crystallize",
       "level": "Advanced",
       "ramp": "teal",
@@ -4780,7 +4780,7 @@ const GUILD = {
       "version": "1.0.1",
       "icon": "🦋",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Catches the agent running the old playbook on a changed state: stop, name the new state, re-plan.",
       "level": "Intermediate",
       "ramp": "blue",
@@ -4853,7 +4853,7 @@ const GUILD = {
       "version": "2.0.0",
       "icon": "🌀",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "The Designer's easing & timing specialist — exact curves, durations, transform-origins",
       "level": "Advanced",
       "ramp": "teal",
@@ -4908,7 +4908,7 @@ const GUILD = {
       "version": "1.1.0",
       "icon": "🧬",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Build a unified multi-provider model abstraction — one call surface over LLM/VLM/TTS/TTV/image-gen/embeddings",
       "level": "Advanced",
       "ramp": "teal",
@@ -4949,7 +4949,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🤝",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Business negotiation + deal strategy — BATNA/ZOPA prep, structuring, pricing & concession ladder, objection handling, deal memo. Advisory, never signs",
       "level": "Advanced",
       "ramp": "teal",
@@ -5025,7 +5025,7 @@ const GUILD = {
       "version": "1.1.0",
       "icon": "🚨",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Keep a live service observable and respond when it breaks — logs/metrics/traces, SLO alerting, detect→mitigate→post-mortem, runbooks",
       "level": "Advanced",
       "ramp": "teal",
@@ -5066,7 +5066,7 @@ const GUILD = {
       "version": "1.1.0",
       "icon": "📝",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Edit Obsidian-flavored markdown with wikilinks and callouts",
       "level": "Foundational",
       "ramp": "gray",
@@ -5117,7 +5117,7 @@ const GUILD = {
       "version": "1.2.0",
       "icon": "🧹",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Keep the whole repo tidy & conformant to the Open Knowledge Format (OKF v0.1)",
       "level": "Advanced",
       "ramp": "teal",
@@ -5156,7 +5156,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🗂️",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Build & query a reusable code-pattern library — capture proven patterns, reuse-before-reinvent across 7 categories",
       "level": "Advanced",
       "ramp": "teal",
@@ -5195,7 +5195,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🎨",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Drive Penpot — open-source design platform + its MCP & plugin API; boards/components/tokens, inspect-mode SVG/CSS, agent-driven design",
       "level": "Advanced",
       "ramp": "teal",
@@ -5233,7 +5233,7 @@ const GUILD = {
       "version": "1.0.3",
       "icon": "⚡",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Speed up websites with performance optimization best practices",
       "level": "Intermediate",
       "ramp": "blue",
@@ -5311,7 +5311,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🗺️",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Audit how portable a Claude Code project is — maps 6 layers, assigns tier gaps, produces an install plan",
       "level": "Intermediate",
       "ramp": "blue",
@@ -5346,7 +5346,7 @@ const GUILD = {
       "version": "0.1.0",
       "icon": "🛡️",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Book-level portfolio construction and risk metrics (VaR, drawdown, exposure)",
       "level": "Advanced",
       "ramp": "teal",
@@ -5383,7 +5383,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🌊",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Read price action & market structure (Grimes) — trends, ranges, regime interfaces, the order-flow imbalance behind the bars",
       "level": "Advanced",
       "ramp": "teal",
@@ -5431,7 +5431,7 @@ const GUILD = {
       "version": "1.1.0",
       "icon": "🎲",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Read-only probability & statistics — distributions, inference, testing, Bayes",
       "level": "Advanced",
       "ramp": "teal",
@@ -5485,7 +5485,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🚀",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Session health check for SA-equipped projects — verifies STAR_ALLIANCE_ROOT, diffs skill versions, reports stale skills",
       "level": "Foundational",
       "ramp": "gray",
@@ -5519,7 +5519,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🐍",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Build production-grade Python libraries & web apps end to end — 14 merged crafts",
       "level": "Advanced",
       "ramp": "teal",
@@ -5607,7 +5607,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🤝",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Turn email traffic into living client relationship intelligence",
       "level": "Advanced",
       "ramp": "teal",
@@ -5645,7 +5645,7 @@ const GUILD = {
       "version": "1.0.1",
       "icon": "🚂",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Merge every branch and PR, bump the version, stamp the docs, push",
       "level": "Intermediate",
       "ramp": "blue",
@@ -5682,7 +5682,7 @@ const GUILD = {
       "version": "1.1.0",
       "icon": "🎻",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Orchestrate a multi-agent AI team — role roster, spec-then-execute gate, escalation loop, independent QAS, human merge",
       "level": "Advanced",
       "ramp": "teal",
@@ -5721,7 +5721,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "⏱️",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Define a safe-to-resume unattended task on a cron cadence",
       "level": "Intermediate",
       "ramp": "blue",
@@ -5757,7 +5757,7 @@ const GUILD = {
       "version": "1.2.0",
       "icon": "🧬",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Add an optional field to a data model without breaking any reader",
       "level": "Advanced",
       "ramp": "teal",
@@ -5798,7 +5798,7 @@ const GUILD = {
       "version": "1.3.0",
       "icon": "⛏️",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Mine past sessions for lessons, verify against the live repo, ship a ranked upgrade plan",
       "level": "Advanced",
       "ramp": "teal",
@@ -5839,7 +5839,7 @@ const GUILD = {
       "version": "1.7.2",
       "icon": "🛠️",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Manage, sync, upgrade, and auto-evolve Star Alliance skills",
       "level": "Advanced",
       "ramp": "teal",
@@ -5894,7 +5894,7 @@ const GUILD = {
       "version": "1.1.0",
       "icon": "📜",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Build from an executable spec — spec→plan→tasks→implement, each phase gated",
       "level": "Advanced",
       "ramp": "teal",
@@ -5940,7 +5940,7 @@ const GUILD = {
       "version": "1.2.0",
       "icon": "🗣️",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "The guild's shared reading protocol for OKF-tidied repos — read the concept map, not whole files",
       "level": "Foundational",
       "ramp": "gray",
@@ -6032,7 +6032,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🌀",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Multi-perspective STORM research: 5 personas, contradiction map, peer-reviewed briefing",
       "level": "Advanced",
       "ramp": "teal",
@@ -6074,7 +6074,7 @@ const GUILD = {
       "version": "1.1.0",
       "icon": "📋",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Reviews pending strategies then promotes to executed and verifies",
       "level": "Foundational",
       "ramp": "gray",
@@ -6114,7 +6114,7 @@ const GUILD = {
       "version": "0.1.3",
       "icon": "⚡",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "All-in-one Supabase toolkit spanning database auth storage vectors",
       "level": "Intermediate",
       "ramp": "blue",
@@ -6156,7 +6156,7 @@ const GUILD = {
       "version": "1.1.1",
       "icon": "🐘",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Postgres performance optimization and best practices from Supabase",
       "level": "Foundational",
       "ramp": "gray",
@@ -6226,7 +6226,7 @@ const GUILD = {
       "version": "1.1.0",
       "icon": "📜",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Design & harden production system prompts — identity, capabilities, tool-use, refusal, persona, anti-jailbreak (8 vendors)",
       "level": "Advanced",
       "ramp": "teal",
@@ -6267,7 +6267,7 @@ const GUILD = {
       "version": "1.1.0",
       "icon": "📈",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Forecast a numeric series with Google TimesFM — zero-shot point + quantile intervals, covariates, rolling backtests",
       "level": "Advanced",
       "ramp": "teal",
@@ -6311,7 +6311,7 @@ const GUILD = {
       "version": "0.2.0",
       "icon": "🎯",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Read-only trading-strategy design: entry/exit rules, sizing, backtest framing",
       "level": "Advanced",
       "ramp": "teal",
@@ -6351,7 +6351,7 @@ const GUILD = {
       "version": "1.3.1",
       "icon": "💳",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Loads Lex Council transactions domain model before any work",
       "level": "Advanced",
       "ramp": "teal",
@@ -6395,7 +6395,7 @@ const GUILD = {
       "version": "1.3.1",
       "icon": "🧠",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "The Strategist's super-planning: fuse members' outputs into one plan across many models",
       "level": "Master",
       "ramp": "purple",
@@ -6437,7 +6437,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "✍️",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Functional in-product copy — microcopy, error/empty/loading/success states, onboarding, confirmations; one voice, plain-language, accessible",
       "level": "Advanced",
       "ramp": "teal",
@@ -6475,7 +6475,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🔬",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "UX research — pick a method (interviews/usability/surveys/card sort), write unbiased scripts, run studies, synthesize into personas/journeys/findings",
       "level": "Advanced",
       "ramp": "teal",
@@ -6513,7 +6513,7 @@ const GUILD = {
       "version": "1.1.0",
       "icon": "🛡️",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Enforces P8 vault-logging compliance across all backend code",
       "level": "Intermediate",
       "ramp": "blue",
@@ -6593,7 +6593,7 @@ const GUILD = {
       "version": "1.0.1",
       "icon": "🗣️",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Integrates an agent's competing sub-voices into one coherent answer instead of letting one dominate.",
       "level": "Intermediate",
       "ramp": "blue",
@@ -6629,7 +6629,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "📊",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Anna Coulling's VPA: read volume confirming/contradicting price, the insider cycle, VAP",
       "level": "Advanced",
       "ramp": "teal",
@@ -6674,7 +6674,7 @@ const GUILD = {
       "version": "3.1.0",
       "icon": "🗡️",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Each member's rule for drawing a weapon: thinkers plan & review, doers execute",
       "level": "Foundational",
       "ramp": "gray",
@@ -6726,7 +6726,7 @@ const GUILD = {
       "version": "1.4.0",
       "icon": "🗺️",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Distil a finished run into a reusable star-map workflow",
       "level": "Advanced",
       "ramp": "teal",
@@ -6765,7 +6765,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🎛️",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Operate the guild's own machinery — RUN a workflows.json workflow via guild/run.py; invoke the frame/plan/efficiency/leveling primitives",
       "level": "Advanced",
       "ramp": "teal",
@@ -7147,7 +7147,7 @@ const GUILD = {
         "big coordinated campaign",
         "wave of specialists"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "quick-fix",
@@ -7211,7 +7211,7 @@ const GUILD = {
         "minor change",
         "fast small fix"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "design-sprint",
@@ -7298,7 +7298,7 @@ const GUILD = {
         "ux polish",
         "visual quality pass"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "architecture-build",
@@ -7409,7 +7409,7 @@ const GUILD = {
         "structural change",
         "system design overhaul"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "legal-codex",
@@ -7473,7 +7473,7 @@ const GUILD = {
         "codex translation loop",
         "real laws into the codex"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "market-recon",
@@ -7520,7 +7520,7 @@ const GUILD = {
         "no code market research",
         "stock and market analysis"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "skill-forge",
@@ -7598,7 +7598,7 @@ const GUILD = {
         "create a skill",
         "forge a skill"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "guild-log-sync",
@@ -7662,7 +7662,7 @@ const GUILD = {
         "sweep recent sessions for log",
         "first stage closeout chain"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "compliance-audit",
@@ -7760,7 +7760,7 @@ const GUILD = {
         "fix the frontmatter",
         "keep the repo clean"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "bug-cycle",
@@ -7837,7 +7837,7 @@ const GUILD = {
         "rls permission denied on view",
         "missing db column bug"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "security-sweep",
@@ -7922,7 +7922,7 @@ const GUILD = {
         "seal the security leak",
         "supabase security audit"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "cleanup-rotation",
@@ -7982,7 +7982,7 @@ const GUILD = {
         "quartermaster hygiene pass",
         "middle stage closeout chain"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "sync-rotation",
@@ -8045,7 +8045,7 @@ const GUILD = {
         "sync rotation",
         "check for drift"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "release-train",
@@ -8126,7 +8126,7 @@ const GUILD = {
         "final stage closeout chain",
         "ship the release"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "tool-forge",
@@ -8198,7 +8198,7 @@ const GUILD = {
         "corporate legal tool",
         "public legal calculator"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "legal-draft",
@@ -8267,7 +8267,7 @@ const GUILD = {
         "bilingual ar fr en",
         "draft client correspondence"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "comms-triage",
@@ -8315,7 +8315,7 @@ const GUILD = {
         "inbox sweep",
         "prep for meetings"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "scheduled-routine",
@@ -8386,7 +8386,7 @@ const GUILD = {
         "unattended cron automation",
         "daily scheduled report"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "marketing-audit",
@@ -8458,7 +8458,7 @@ const GUILD = {
         "public site and brand",
         "marketing-firm audit"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "art-forge",
@@ -8538,7 +8538,7 @@ const GUILD = {
         "forge a new sigil",
         "fallensword art asset"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "arsenal-forge",
@@ -8624,7 +8624,7 @@ const GUILD = {
         "add to the arsenal",
         "re-role the weapon"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "strategic-audit",
@@ -8705,7 +8705,7 @@ const GUILD = {
         "audit the roster",
         "upgrade skills workflows members"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "workflow-forge",
@@ -8797,7 +8797,7 @@ const GUILD = {
         "make a starmap workflow",
         "no workflow fits"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "relationship-intel",
@@ -8862,7 +8862,7 @@ const GUILD = {
         "living contact profile",
         "harvest profile strategise"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "law-harvest",
@@ -8940,7 +8940,7 @@ const GUILD = {
         "verify and index laws",
         "feed the codex with laws"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "web-oracle",
@@ -8987,7 +8987,7 @@ const GUILD = {
         "scry the open web",
         "online cited response"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "inquiry-recon",
@@ -9039,7 +9039,7 @@ const GUILD = {
         "inquiry",
         "what does this do"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "local-session",
@@ -9104,7 +9104,7 @@ const GUILD = {
         "local claude doer",
         "isolated session"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "conversation",
@@ -9144,7 +9144,7 @@ const GUILD = {
         "did you",
         "explain"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "harness-calibration",
@@ -9218,7 +9218,7 @@ const GUILD = {
         "recalibrate harness",
         "harness audit"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "reflective-cycle",
@@ -9275,7 +9275,7 @@ const GUILD = {
         "self-improve this run",
         "log the lesson"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "guild-self-audit",
@@ -9354,7 +9354,7 @@ const GUILD = {
         "guild health check",
         "evolve the guild"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "app-packaging",
@@ -9439,7 +9439,7 @@ const GUILD = {
         "bundle as an app",
         "make it an app"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "guild-recruitment",
@@ -9524,7 +9524,7 @@ const GUILD = {
         "the guild needs a new specialist",
         "create a new member"
       ],
-      "artPng": false
+      "artPng": true
     },
     {
       "id": "star-alliance-deploy",
@@ -9595,7 +9595,7 @@ const GUILD = {
         "set up harness",
         "install star alliance"
       ],
-      "artPng": false
+      "artPng": true
     }
   ],
   "hooks": [

@@ -11,7 +11,6 @@ async function boot() {
     renderLog(GUILD)
     renderWorkflows(GUILD)
     renderDomains(GUILD)
-    renderSkills(GUILD)
     const fv = document.getElementById('footer-version')
     if (fv) fv.textContent = 'v' + (GUILD.meta.version || '4')
   } catch (err) {
@@ -192,38 +191,6 @@ function renderDomains(g) {
     card.style.setProperty('--domain-color', d.color || '#c9a227')
     const skillCount = d.skills?.length ?? 0
     card.innerHTML = `<div class="domain-card__strip"></div><div class="domain-card__body"><h3 class="domain-card__name">${d.name||''}</h3><p class="domain-card__tagline">${d.tagline||''}</p><p class="domain-card__count">${skillCount} skills</p></div>`
-    grid.appendChild(card)
-  })
-}
-
-function renderSkills(g) {
-  const grid = document.getElementById('skill-grid')
-  if (!grid) return
-  grid.innerHTML = ''
-  ;(g.skills || []).forEach(s => {
-    const card = document.createElement('div')
-    card.className = 'skill-card'
-    const rampColors = {teal:'#3da1a8',gold:'#c9a227',purple:'#b78cf7',emerald:'#4ec985',blue:'#7cc5f0',red:'#e05c5c',orange:'#e0883c',indigo:'#6366f1'}
-    const color = rampColors[s.ramp] || '#8a7320'
-    card.style.setProperty('--skill-color', color)
-
-    let imgHtml = ''
-    if (s.artPng) {
-      imgHtml = `<img src="art/skill-art/${s.id}.png" alt="" style="width:100%;height:110px;object-fit:cover;display:block;background:var(--surface-2)" onerror="this.style.display='none'">`
-    }
-
-    const levelColors = {Master:'#c9a227',Elite:'#b78cf7',Advanced:'#7cc5f0',Expert:'#4ec985',Foundational:'#8b8a83'}
-    const lc = levelColors[s.level] || '#8b8a83'
-
-    card.innerHTML = `
-      <div style="height:2px;background:var(--skill-color);"></div>
-      ${imgHtml}
-      <div style="padding:10px 12px;position:relative;min-height:52px;">
-        <div style="font-size:0.78rem;font-weight:600;color:var(--text-hi);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:48px">${s.icon||''} ${s.name||''}</div>
-        <div class="card-tooltip">${s.blurb||s.desc||''}</div>
-        <span style="position:absolute;bottom:8px;right:10px;font-size:0.65rem;font-weight:600;color:${lc};opacity:0.85">${s.level||''}</span>
-      </div>
-    `
     grid.appendChild(card)
   })
 }

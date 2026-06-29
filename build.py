@@ -271,7 +271,7 @@ def build_skill(name: str, skill_dir: Path, skill_md: Path, meta: dict, repo: Pa
         "version": version,
         "icon": m.get("icon", "📦"),
         "art": m.get("art", ""),  # optional inline-SVG sigil; falls back to icon
-        "artPng": bool(repo and (repo / "skill-art" / f"{name}.png").exists()),
+        "artPng": bool(repo and (repo / "art" / "skill-art" / f"{name}.png").exists()),
         "blurb": blurb,
         "level": level,
         "ramp": LEVEL_RAMP.get(level, "gray"),
@@ -440,7 +440,7 @@ def load_workflows(repo: Path) -> list[dict]:
     workflows = json.loads(p.read_text()).get("workflows", [])
     for wf in workflows:
         # Fallen Sword art tile for the Star Map, mirrors skill artPng → workflow-art/<id>.png
-        wf["artPng"] = bool((repo / "workflow-art" / f"{wf.get('id', '')}.png").exists())
+        wf["artPng"] = bool((repo / "art" / "workflow-art" / f"{wf.get('id', '')}.png").exists())
     return workflows
 
 
