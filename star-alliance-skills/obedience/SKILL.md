@@ -1,8 +1,8 @@
 ---
 name: obedience
-description: A turn-level discipline skill that constrains an agent to the literal scope of the user's request and the guild's declared doctrine. Use when an agent is tempted to add unrequested changes, paraphrase a clear instruction, or invent behavior the user did not ask for. Three checks: (1) honor the literal user request — `cancel` reverts, `proceed` continues, ambiguous prompts trigger one clarifying question rather than guessing; (2) honor explicit guild doctrine — the SOUL, AGENTS.md, and the profile's binding rules apply as written, not as paraphrased; (3) refuse to invent scope — no drive-by refactors, no unrequested files, no unrequested polish, no summarizing beyond what was asked. Triggers: "don't over-do it", "just do what I asked", "stop adding things", "follow the spec", "stay in scope", "no extras", "do exactly this". Distinct from letting-go (which fires on stuck/looping — obedience fires on over-reach), and distinct from guild-reflection (which learns after a run — obedience constrains during a run).
+description: A turn-level discipline skill that constrains an agent to the literal scope of the user's request and the guild's declared doctrine. Use when an agent is tempted to add unrequested changes, paraphrase a clear instruction, or invent behavior the user did not ask for. Three checks: (1) honor the literal user request — `cancel` reverts, `proceed` continues, ambiguous prompts trigger one clarifying question rather than guessing; (2) honor explicit guild doctrine — the SOUL, AGENTS.md, and the profile's binding rules apply as written, not as paraphrased; (3) refuse to invent scope — no drive-by refactors, no unrequested files, no unrequested polish, no summarizing beyond what was asked. **Gate obedience** is a fourth check: when a gate (verify, thinker, delegation, destructive, executor) fires, read the error literally, follow what it says to do, and do not falsely claim to be blocked. Triggers: "don't over-do it", "just do what I asked", "stop adding things", "follow the spec", "stay in scope", "no extras", "do exactly this", "why did the gate block me", "what does this gate error mean". Distinct from letting-go (which fires on stuck/looping — obedience fires on over-reach), and distinct from guild-reflection (which learns after a run — obedience constrains during a run).
 metadata:
-  version: 0.1.0
+  version: 1.0.0
 type: Skill
 ---
 
@@ -146,8 +146,78 @@ The user does not need to be told there was an over-reach unless it
 requires explanation; in most cases the clean state is itself the
 explanation.
 
+## Gate Obedience (the fourth check)
+
+A gate firing is the guild's machinery talking. Treat it the same way
+you treat a literal user instruction: read it as written, do what it
+says, do not invent around it. The same anti-patterns that break scope
+discipline — paraphrase drift, "spirit-of-the-rule," drive-by fixes —
+break gate obedience in exactly the same shape.
+
+### The five rules
+
+1. **Read gate errors literally.** The gate printed specific text with
+   a specific reason. That text is the message. Do not paraphrase it,
+   do not summarize it as "the gate is being strict," do not soften it
+   into "there was a concern." If the gate says "diff is empty" or
+   "executor violation: file write detected," that is what happened.
+2. **Gates redirect, not stop.** A gate that blocks you is telling you
+   to do something different, not that you are forbidden from
+   succeeding. The right response is almost always a small corrective
+   action (re-run, re-route, attest, declare solo) — not a halt, not a
+   complaint, not a "I'll work around it." Find the redirect inside
+   the error and take it.
+3. **The verify block is real before you report.** `sa_verify` is
+   invoked on the actual diff. If it says BLOCK, the work is not done
+   and reporting "done" is a lie. If it says pass/concerns, that is
+   the real verdict — report it as such, not as "I think it passed."
+   The block is the source of truth; your optimism is not.
+4. **Follow what the gate error says to do.** Most gate errors include
+   the corrective action: "call `sa_thinker_attest`," "declare
+   `SA_SOLO=1 SA_SOLO_REASON=...`," "re-run after `rm` of the empty
+   file," "pass `cross_profile=true` because the user explicitly
+   directed it." Do that thing. Do not invent a substitute. The gate
+   is more honest about what unblocks you than you are.
+5. **Never falsely claim to be blocked.** "The gate blocked me" is
+   only true when a gate actually blocked you and the work genuinely
+   cannot proceed. It is not a polite way to exit a turn you don't
+   want to finish. It is not a hedge when you're unsure. If you ran
+   the gate and it passed, you passed — say so. If you skipped the
+   gate (with `SA_SKIP_VERIFY=1` or similar) and did not ledger why,
+   you skipped — say so. The truth of the gate state is non-negotiable.
+
+### Recipes
+
+- **`dispatch-enforce` (BLOCK) → run the dispatcher literally.** When
+  the dispatch-enforce gate fires, the message is "you must call
+  `python3 tools/dispatch.py`." The action is to call exactly that:
+  `python3 tools/dispatch.py` from the repo root, with whatever args
+  the gate specified. Not a `delegate_task` to a doer. Not a
+  hand-written equivalent. Not a "I already dispatched via…". The
+  gate's name is the command. Run it.
+- **`verify` (BLOCK) → read the critic's findings, fix the root
+  cause, re-run.** The critic names the issue. Patch the issue
+  (not the symptom), re-run the gate, and only then report done.
+  A second BLOCK on the same diff means the fix was wrong, not that
+  the gate is wrong.
+- **`verify` (concerns / pass) → record the verdict and move on.**
+  The work is done from a verify standpoint. Do not chase a green
+  light the gate already gave you; do not re-run it for reassurance.
+- **`thinker-check` (BLOCK) → drop the override.** If you tried to
+  dispatch with an explicit `model:` that contradicts the profile's
+  declared thinker, the gate is correct. Remove the override, not
+  the gate.
+- **`executor` (BLOCK) on the Butler → route to the Developer.** The
+  Butler is forbidden from writing files. The redirect is
+  `delegate_task` to the Developer profile, not a bypass flag.
+- **Gate unavailability (infra error) → fail open, do not
+  fabricate.** When the MCP server is down, log the intent verbatim
+  and proceed without the gate — never invent a passing verdict you
+  never received.
+
 ## Changelog
 
 | Version | Date | Summary |
 |---|---|---|
+| **1.0.0** | 2026-06-29 | Added Gate Obedience as the fourth check. Five rules (read errors literally · gates redirect not stop · verify block is real · follow what the gate says · never falsely claim blocked) plus a recipes subsection mapping common gate BLOCKs to the literal corrective action (e.g. dispatch-enforce → `python3 tools/dispatch.py`). Description expanded to advertise gate-obedience alongside scope discipline; new trigger phrases added. |
 | **0.1.0** | 2026-06-29 | Initial draft. Three-check routine (literal request · doctrine as written · refuse-to-invent), anti-pattern table, composition notes with letting-go/guild-reflection/star-alliance-language/okf. |
