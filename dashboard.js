@@ -5,6 +5,7 @@ async function boot() {
   try {
     const GUILD = await fetch('guild-data.json').then(r => r.json())
     window._GUILD_SKILLS = GUILD.skills || []
+    window._GUILD_MEMBERS = GUILD.members || []
     renderHeader(GUILD)
     renderStats(GUILD)
     renderRoster(GUILD)
@@ -184,7 +185,9 @@ function renderWorkflows(g) {
     const tip = document.createElement('div')
     tip.className = 'card-tooltip'
     const whenSnippet = w.when ? w.when.slice(0, 100) : ''
-    tip.innerHTML = `<strong>${w.name || ''}</strong><br><em style='color:var(--gold);font-size:0.68rem'>${w.category||''}</em><br>${w.tagline || ''}${whenSnippet ? '<br><span style=opacity:.7>' + whenSnippet + '</span>' : ''}`
+    const memberIds = [...new Set((w.steps||[]).map(s => s.actor).filter(a => a && a.startsWith('the-')))]
+    const memberNames = memberIds.map(id => ((window._GUILD_MEMBERS||[]).find(m => m.id === id)?.name) || id).join(', ')
+    tip.innerHTML = `<strong>${w.name || ''}</strong><br><em style='color:var(--gold);font-size:0.68rem'>${w.category||''}</em><br>${w.tagline || ''}${whenSnippet ? '<br><span style=opacity:.7>' + whenSnippet + '</span>' : ''}${memberNames ? '<br><span style="color:var(--gold);font-size:0.66rem">Members: ' + memberNames + '</span>' : ''}`
     thumb.appendChild(tip)
     grid.appendChild(thumb)
   })
