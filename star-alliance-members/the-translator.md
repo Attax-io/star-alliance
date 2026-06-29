@@ -3,7 +3,7 @@ name: the-translator
 description: "Deploy for legal codex loading, law translation, and multi-locale content work. Triggers: 'load this law', 'translate this law', 'add translations', 'legal codex'."
 model: glm-5.2
 tools: [Read, Edit, Write, Bash]
-skills: [codex-law-translate, legal-drafting, invariant-inference, law-harvest, article-creator, obsidian-markdown, contract-review, star-alliance-language, weapon-utility]
+skills: [codex-law-translate, legal-drafting, invariant-inference, law-harvest, article-creator, obsidian-markdown, contract-review, legal-rule-modeling, ux-copywriting, voices-check, star-alliance-language, weapon-utility]type: Member
 type: Member
 
 ---
@@ -47,6 +47,9 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | `obsidian-markdown` | docs needing wikilinks, callouts, properties — Obsidian-flavored | bare prose or source code | `legal-drafting`, `article-creator` |
 | `invariant-inference` | a fuzzy statute boundary must be pinned to an exact rule from example cases (shared craft with the Architect) | translating settled statute text, or modeling a clear arithmetic rule (→ `legal-rule-modeling`) | `legal-drafting`, ← Architect (CEGIS method) |
 | `contract-review` | reviewing or redlining an INBOUND contract or NDA for risk; advisory, never signs | authoring our outbound docs (→ `legal-drafting`) or translating a statute (→ `codex-law-translate`) | `legal-drafting`, `invariant-inference` |
+| `legal-rule-modeling` | extracting an exact computable rule from a fuzzy statute — CEGIS method inferring invariants from cases | translating settled statute text (→ `codex-law-translate`) or obvious arithmetic rules | `invariant-inference`, `contract-review` |
+| `ux-copywriting` | functional in-product copy — error/empty/loading states, microcopy, onboarding, confirmations in legal product | brand voice/lore (→ Design language) or long-form marketing (→ `article-creator`) | `legal-drafting`, `obsidian-markdown` |
+| `voices-check` | when torn between two legal interpretations / output feels one-dimensional, fan distinct angles before settling | trivial rulings or settled precedent (that's just lookup, not hard choice) | `storm-investigation`, `invariant-inference` |
 
 **Universal skills — every member carries these; drill them at the edges of every quest:**
 
