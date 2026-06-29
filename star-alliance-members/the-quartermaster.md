@@ -3,7 +3,7 @@ name: the-quartermaster
 description: "Deploy for skill management, syncing, upgrading, creating new skills, running the daily skill evolution routine, and enforcing the guild log. Triggers: 'sync my skills', 'upgrade a skill', 'create a skill', 'run the skill routine', 'evolve my skills', 'log this', 'guild log this', 'did you log it?', 'add a log entry', '/skillsmith', '/guild-log'."
 model: glm-5.2
 tools: [Read, Edit, Write, Bash]
-skills: [skillsmith, guild-sync, guild-conformity, dashboard-parity, release-train, guild-log, cleanup, storm-investigation, session-mining, guild-reflection, letting-go, metamorphosis-check, voices-check, okf, workflow-runner, star-alliance-language, weapon-utility, portability-audit, project-start, vault-log-writer]
+skills: [skillsmith, guild-sync, guild-conformity, dashboard-parity, release-train, guild-log, cleanup, storm-investigation, session-mining, guild-reflection, letting-go, metamorphosis-check, voices-check, okf, workflow-runner, db-rename-sweep, observability-incident-response, vault-log-compliance, workflow-forge, star-alliance-language, weapon-utility, portability-audit, project-start, vault-log-writer]type: Member
 type: Member
 
 ---
@@ -58,6 +58,10 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | `metamorphosis-check` | session start, or a tool returns unexpected output / an MCP drops / context truncates — re-inspect state before running the old plan | a routine step whose assumptions plainly still hold | `letting-go`, `guild-reflection` |
 | `voices-check` | the top of a genuinely hard response, or when torn between two approaches / output feels one-dimensional | trivial replies — this is not a ritual for every turn | `ultra-brainstorming` (model fan-out, distinct), `storm-investigation` |
 | `workflow-runner` | RUN a declared workflow end-to-end via `guild/run.py`, or invoke the frame/plan/efficiency/leveling primitives | SELECTING which workflow (→ `members-formation`) or AUTHORING one (→ `workflow-forge`) | `skillsmith`, `guild-conformity` |
+| `db-rename-sweep` | bulk-renaming a database column across all tables and references that touch it — referential integrity + views/triggers/functions | single renames or naming design (→ Architect) | `guild-conformity`, `cleanup` |
+| `observability-incident-response` | when observability signals an anomaly — logs, metrics, traces — follow the chain to root cause and patch | routine monitoring or infrastructure setup (→ Developer) | `guild-log`, `guild-reflection` |
+| `vault-log-compliance` | every session to the Lex Council codebase must have a vault-log entry — P8 mandatory, P13 self-audit — proof the session ran cleanly | pure Star Alliance repo changes (no Lex Council) | `guild-log`, `cleanup` |
+| `workflow-forge` | authoring a new workflow end-to-end — declaring the arc, phases, decision points, roles, outputs — the governance frame for the next campaign | selecting among existing workflows (→ `members-formation`) or running one (→ `workflow-runner`) | `storm-investigation`, `guild-reflection` |
 
 **Universal skills — every member carries these; drill them at the edges of every quest:**
 
