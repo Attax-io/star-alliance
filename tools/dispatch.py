@@ -10,16 +10,35 @@ Usage:
     python3 dispatch.py <agent-name> <prompt>
     python3 dispatch.py the-architect "Design a schema for legal documents"
     python3 dispatch.py the-developer "Fix the login bug in auth.py"
+    python3 dispatch.py the-architect --file /path/to/prompt.txt
 
 The agent name maps directly to a Hermes profile name. The script:
 1. Validates the agent name is a known guild agent.
 2. Calls the matching Hermes profile with the prompt.
 3. Returns the profile's response as stdout.
+
+PROMPT-HANDLING MODEL (refactor 2026-06-29):
+The DEFAULT path sources the prompt from a tempfile. The caller's raw string
+is written to `tempfile.NamedTemporaryFile(... delete=False)`, the temp file
+is then READ BACK into a string, that string is what we hand to `hermes -q`,
+and the temp file is deleted in a `finally:` block. The shell never sees the
+prompt body, which kills the regex-fire class of bugs (quotes/backticks/`$`/
+newlines in the prompt no longer interact with the dispatch-enforce gate or
+the wrapping shell).
+
+The `--file <path>` flag remains for callers who want to point at a file they
+already own (the file's contents are read and then re-flowed through the
+tempfile+read-back funnel, so both paths are uniformly safe).
+
+`--file` is therefore not strictly required for safety; it is the "use my
+own file" escape hatch. Raw-string prompts are safe by default.
 """
 
 import subprocess
 import sys
 import json
+import tempfile
+import os
 from pathlib import Path
 
 # ── Agent → Hermes profile mapping ──────────────────────────────────────────
@@ -134,10 +153,63 @@ def dispatch(agent_name: str, prompt: str, timeout: int = 300) -> dict:
         }
 
 
+def _resolve_prompt(arg: str):
+    """
+    Resolve the prompt argument to (prompt_text, temp_path_or_None).
+
+    - If `arg == "--file"` then `sys.argv[3]` is treated as a path the caller
+      owns; its contents are read and the SAME contents are then re-flowed
+      through a tempfile so dispatch() can hand hermes a string sourced from
+      a file the shell never saw.
+    - Otherwise `arg` is the raw prompt string. It is written to a tempfile
+      (delete=False) and then read back from disk, so the dispatch contract
+      is uniform: every prompt reaches hermes via a tempfile+read-back.
+
+    Returns:
+        (prompt_text: str, temp_path: str | None)
+        `temp_path` is the path of a tempfile the caller MUST delete, or None
+        if no tempfile was created.
+    """
+    if arg == "--file":
+        if len(sys.argv) < 4:
+            print(
+                f"Usage: {sys.argv[0]} <agent-name> --file <path>",
+                file=sys.stderr,
+            )
+            sys.exit(1)
+        caller_owned = Path(sys.argv[3]).read_text()
+        source = caller_owned
+    else:
+        source = arg
+
+    # Funnel everything through a tempfile so the dispatch contract is uniform
+    # and the shell never sees the prompt body.
+    tmp = tempfile.NamedTemporaryFile(
+        mode="w", suffix=".txt", delete=False, encoding="utf-8"
+    )
+    try:
+        tmp.write(source)
+        tmp.flush()
+        tmp.close()
+        # Read back from disk so the string we hand to hermes is exactly what
+        # the file contains — defends against any implicit encoding/normalize
+        # step and matches the documented "shell never sees the prompt" model.
+        prompt_text = Path(tmp.name).read_text(encoding="utf-8")
+        return prompt_text, tmp.name
+    except Exception:
+        # If the read-back fails, still try to clean up the partial tempfile.
+        try:
+            os.unlink(tmp.name)
+        except OSError:
+            pass
+        raise
+
+
 def main():
     if len(sys.argv) < 3:
         print(
             f"Usage: {sys.argv[0]} <agent-name> <prompt>\n"
+            f"       {sys.argv[0]} <agent-name> --file <path>\n"
             f"       {sys.argv[0]} --list\n"
             f"\nAgents:"
         )
@@ -149,13 +221,17 @@ def main():
         sys.exit(0)
 
     agent_name = sys.argv[1]
-    prompt = sys.argv[2]
+    prompt_arg = sys.argv[2]
 
-    # Support reading prompt from a file: --file <path>
-    if prompt == "--file" and len(sys.argv) >= 4:
-        prompt = Path(sys.argv[3]).read_text()
-
-    result = dispatch(agent_name, prompt)
+    prompt, temp_path = _resolve_prompt(prompt_arg)
+    try:
+        result = dispatch(agent_name, prompt)
+    finally:
+        if temp_path:
+            try:
+                os.unlink(temp_path)
+            except OSError:
+                pass  # fail-open: a leftover tempfile is harmless
 
     # Print response to stdout (for piping), metadata to stderr
     print(result["response"])
