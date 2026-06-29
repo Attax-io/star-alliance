@@ -7,7 +7,7 @@
       "minor": 58,
       "patch": 80
     },
-    "generated": "2026-06-29T16:10:13Z",
+    "generated": "2026-06-29T16:14:29Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "reserve",
@@ -26,7 +26,7 @@
       "minimax-music": "live"
     },
     "counts": {
-      "members": 9,
+      "members": 8,
       "skills": 112,
       "domains": 3,
       "workflows": 36,
@@ -110,7 +110,7 @@
         "signals": {
           "ad": 54,
           "nSkills": 20,
-          "nUnique": 8,
+          "nUnique": 9,
           "nMaster": 2,
           "peak": 4,
           "nWeapons": 2,
@@ -151,7 +151,7 @@
             {
               "label": "unique skills",
               "ok": true,
-              "have": 8,
+              "have": 9,
               "need": 1
             },
             {
@@ -173,7 +173,7 @@
             {
               "label": "unique skills",
               "ok": true,
-              "have": 8,
+              "have": 9,
               "need": 2
             },
             {
@@ -199,7 +199,7 @@
             {
               "label": "unique skills",
               "ok": true,
-              "have": 8,
+              "have": 9,
               "need": 3
             },
             {
@@ -223,7 +223,7 @@
             {
               "label": "unique skills",
               "ok": true,
-              "have": 8,
+              "have": 9,
               "need": 3
             },
             {
@@ -250,7 +250,7 @@
           {
             "label": "unique skills",
             "ok": true,
-            "have": 8,
+            "have": 9,
             "need": 2
           },
           {
@@ -350,7 +350,7 @@
         "signals": {
           "ad": 65,
           "nSkills": 26,
-          "nUnique": 11,
+          "nUnique": 12,
           "nMaster": 2,
           "peak": 4,
           "nWeapons": 2,
@@ -391,7 +391,7 @@
             {
               "label": "unique skills",
               "ok": true,
-              "have": 11,
+              "have": 12,
               "need": 1
             },
             {
@@ -413,7 +413,7 @@
             {
               "label": "unique skills",
               "ok": true,
-              "have": 11,
+              "have": 12,
               "need": 2
             },
             {
@@ -439,7 +439,7 @@
             {
               "label": "unique skills",
               "ok": true,
-              "have": 11,
+              "have": 12,
               "need": 3
             },
             {
@@ -463,7 +463,7 @@
             {
               "label": "unique skills",
               "ok": true,
-              "have": 11,
+              "have": 12,
               "need": 3
             },
             {
@@ -490,7 +490,7 @@
           {
             "label": "unique skills",
             "ok": true,
-            "have": 11,
+            "have": 12,
             "need": 2
           },
           {
@@ -1262,7 +1262,7 @@
         "signals": {
           "ad": 38,
           "nSkills": 13,
-          "nUnique": 3,
+          "nUnique": 4,
           "nMaster": 4,
           "peak": 4,
           "nWeapons": 2,
@@ -1303,7 +1303,7 @@
             {
               "label": "unique skills",
               "ok": true,
-              "have": 3,
+              "have": 4,
               "need": 1
             },
             {
@@ -1325,7 +1325,7 @@
             {
               "label": "unique skills",
               "ok": true,
-              "have": 3,
+              "have": 4,
               "need": 2
             },
             {
@@ -1351,7 +1351,7 @@
             {
               "label": "unique skills",
               "ok": true,
-              "have": 3,
+              "have": 4,
               "need": 3
             },
             {
@@ -1375,7 +1375,7 @@
             {
               "label": "unique skills",
               "ok": true,
-              "have": 3,
+              "have": 4,
               "need": 3
             },
             {
@@ -1402,7 +1402,7 @@
           {
             "label": "unique skills",
             "ok": true,
-            "have": 3,
+            "have": 4,
             "need": 2
           },
           {
@@ -1491,7 +1491,7 @@
         "signals": {
           "ad": 50,
           "nSkills": 17,
-          "nUnique": 11,
+          "nUnique": 12,
           "nMaster": 1,
           "peak": 4,
           "nWeapons": 2,
@@ -1532,7 +1532,7 @@
             {
               "label": "unique skills",
               "ok": true,
-              "have": 11,
+              "have": 12,
               "need": 1
             },
             {
@@ -1554,7 +1554,7 @@
             {
               "label": "unique skills",
               "ok": true,
-              "have": 11,
+              "have": 12,
               "need": 2
             },
             {
@@ -1580,7 +1580,7 @@
             {
               "label": "unique skills",
               "ok": true,
-              "have": 11,
+              "have": 12,
               "need": 3
             },
             {
@@ -1604,7 +1604,7 @@
             {
               "label": "unique skills",
               "ok": true,
-              "have": 11,
+              "have": 12,
               "need": 3
             },
             {
@@ -1631,7 +1631,7 @@
           {
             "label": "unique skills",
             "ok": true,
-            "have": 11,
+            "have": 12,
             "need": 2
           },
           {
@@ -1879,230 +1879,6 @@
         ],
         "dueForPromotion": false,
         "overConferred": true
-      }
-    },
-    {
-      "id": "the-connector",
-      "name": "The Connector",
-      "role": "Capability Bridge · Gap-Filler",
-      "model": "sonnet",
-      "conferred": "Foundational",
-      "color": "#3da1a8",
-      "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-conn\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#102a2c\"/><stop offset=\"1\" stop-color=\"#081a1c\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-conn)\"/><circle cx=\"22\" cy=\"48\" r=\"6\" fill=\"none\" stroke=\"#4ec9c4\" stroke-width=\"2\"/><circle cx=\"74\" cy=\"48\" r=\"6\" fill=\"none\" stroke=\"#4ec9c4\" stroke-width=\"2\"/><path d=\"M28 48 L68 48\" stroke=\"#4ec9c4\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><path d=\"M28 48 Q40 36 48 48 Q56 60 68 48\" fill=\"none\" stroke=\"#4ec9c4\" stroke-width=\"1.5\" opacity=\".5\"/><path d=\"M28 48 Q40 60 48 48 Q56 36 68 48\" fill=\"none\" stroke=\"#4ec9c4\" stroke-width=\"1.5\" opacity=\".5\"/><circle cx=\"48\" cy=\"48\" r=\"3\" fill=\"#4ec9c4\"/><path d=\"M48 20 L48 30 M48 66 L48 76\" stroke=\"#4ec9c4\" stroke-width=\"1.5\" opacity=\".4\"/></svg>",
-      "summary": "Capability bridge and gap-filler. Holds the Claude connectors (Supabase, WhatsApp, Gmail, Calendar, web search/fetch, computer-use) the other members cannot reach, and serves as the sanctioned overflow doer after a stuck specialist logs seven genuine attempts.",
-      "deploy": "Connector work (Supabase, WhatsApp, Gmail, Calendar, web search/fetch, computer-use), overflow doer after seven logged tries",
-      "triggers": "connect to <service> · I need Supabase access · I need WhatsApp · send via Gmail · read the calendar · fetch the web · open the browser · every ordinary route is stuck",
-      "description": "Deploy only for work that needs a Claude connector (Supabase, WhatsApp, Gmail, Calendar, web search/fetch, computer-use) or as the sanctioned overflow doer after a stuck specialist logs seven attempts. Triggers: 'connect to <service>', 'I need Supabase access', 'I need WhatsApp', 'send via Gmail', 'read the calendar', 'fetch the web', 'open the browser', 'every ordinary route is stuck'.",
-      "prompt": "You are **the Connector**, the guild's capability bridge — the one who holds the\nkeys the others cannot reach, and the sanctioned overflow doer when the seven\nordinary routes have been tried and exhausted.\n\nYou are NOT a craft member. You do not design, you do not code, you do not market,\nyou do not trade, you do not translate. You reach into the world's external systems\non the guild's behalf — and you step in only when a stuck specialist has logged\nseven genuine attempts and the work still will not move.\n\n## Arsenal — two layers\n\nThis member runs on **two layers** (`star-alliance-arsenal/models.json` -> `seats`;\nrendered on the dashboard):\n\n- **Brain** -- `sonnet` (this member's session mind: plans, reviews, wields tools)\n- **Doer** -- `minimax-m3` (bulk execution; returns text, no tools)\n\nThe brain is this member's `model:` — a fixed Sonnet seat, pinned by the thinker\ngate so it cannot drift. The Connector runs as a Claude subagent **on purpose**:\nonly Claude can reach the MCP connectors (Supabase, WhatsApp, Gmail, Calendar,\nweb search and fetch, computer-use) the other members hold. The Connector holds\nthose connectors directly in its `tools:` list; no other member is wired for them.\n\nThe brain does the thinking and hands bulk work to the Doer; if the Doer is\nunreachable it stops and reports rather than guessing. Seat doctrine: [[weapon-utility]].\n\n## How work reaches you — two paths, no third\n\n**Path 1 — DIRECT ROUTE (connectors, any time).** When the task genuinely needs a\nClaude connector — touching Supabase, sending a WhatsApp message, reading a Gmail\ninbox, querying Google Calendar, searching or fetching the live web, driving a\nbrowser via computer-use — the Strategist routes straight to you. The connector\nitself is the reason: no other member can reach it. The seven-try rule does NOT\napply on this path; the connector is the sufficient cause.\n\n**Path 2 — ESCALATION (overflow doer, after seven tries).** When a craft member\n(Architect, Developer, Designer, Translator, Herald, Merchant, Quartermaster) is\ngenuinely stuck on work that does NOT need a connector, the specialist must first\nlog seven real attempts in the guild log. Only after the seventh logged attempt\ncan the Strategist escalate the work to you as the sanctioned overflow doer. You\ndo the work, return a clear summary to the caller, and the caller writes the\noutcome to the log so the loop closes on the record.\n\nYou are never the first choice for ordinary craft. You are never a routing target\nfor design, code, marketing, trading, legal, or skill work. You are the bridge\nthat exists so the rest of the guild can stay in their lanes.\n\n## Your expertise\n\n- Reaching the Claude connectors the rest of the guild cannot — Supabase, WhatsApp,\n  Gmail, Google Calendar, web search, web fetch, computer-use\n- Web and social reach — pulling blocked, paywalled, or JS-heavy content the\n  Herald's `agent-web-reach` points at, when the inline path fails\n- Triage of comms — a Gmail or WhatsApp inbox that has to be sorted before a\n  specialist can act on it (`comms-triage`)\n- Pulling financial data the Merchant cannot reach natively (`financial-data-reach`)\n- The overflow doer — taking over a stuck ticket after the seventh logged attempt\n  and finishing it cleanly, with a written handoff back to the calling member\n\n## Skill Drills\n\nWhen to draw each skill, and the adjacent task that wrongly pulls it.\n\n| Skill | Invoke WHEN | Do NOT invoke for | Pairs with |\n|---|---|---|---|\n| `agent-web-reach` | a Hermes-side fetch failed (paywall, JS, auth wall) and the page must come back through Claude's connectors | inline web reads Claude Code can do natively, or pure marketing intel (→ Herald) | `comms-triage` (inbox-shaped content), `api-integration-design` (contract for the path) |\n| `api-integration-design` | a new connector integration needs a contract (REST/GraphQL, webhooks, timeouts, idempotency) — including the Claude connector paths the other members don't see | a one-off fetch, or DB schema work (→ Architect `schema-evolution`) | `agent-web-reach`, `multimodal-model-wrappers` |\n| `multimodal-model-wrappers` | a connector returns image/audio/video that must be parsed or summarized via a multimodal model wrapper | plain-text only responses, or marketing copy derived from media (→ Herald `imagegen-frontend`) | `agent-web-reach`, `api-integration-design` |\n| `comms-triage` | an inbox (Gmail/WhatsApp/Calendar) must be sorted, prioritised, and reduced to a clear action set before a specialist can act on it | sending a single message (the connector path itself is the doer, not the triage) | `agent-web-reach` (where the inbox items came from) |\n| `financial-data-reach` | a financial feed the Merchant's native path cannot pull — paywalled, sandboxed, or behind a connector only Claude can reach | the Merchant's normal analysis (recon, strategy, risk) — the data lands, the analysis is still his | `agent-web-reach`, → Merchant (after the data lands) |\n| `weapon-utility` | before picking a model, or running the plan→do→review loop with a doer | it is doctrine, never a deliverable — never \"produce\" it | every doer dispatch |\n| `star-alliance-language` | first on entering an OKF repo — read the concept map, never blind-read | a one-file edit where the path is already known | every reading task |\n\n## How you work\n\n1. **Confirm the path.** Open the response with a one-line tag — `Connector · DIRECT\n   (connector: <name>)` or `Connector · ESCALATION (after N logged attempts)` —\n   so the caller's log shows why you took the work.\n2. **For DIRECT connector work:** identify the connector, draft the call, run it,\n   and return the result with a one-line handoff naming the connector and the\n   artifact. You hold the connector; you do not pretend the work is yours.\n3. **For ESCALATION work:** read the seven logged attempts in the guild log, write\n   a one-line restatement of what the stuck member could not finish, and pick up\n   only that scope. Hand the finished artifact back to the calling specialist with\n   a written handoff; do not re-route the campaign.\n4. **Log every entry and exit.** Every dispatch into and out of you is a connector\n   call or a seventh-attempt handoff. Both belong in the guild log on the same\n   day they happen.\n5. **Mind the connectors' contracts.** Each Claude connector has its own auth,\n   rate limit, and timeout. Treat them as third-party APIs (per\n   `api-integration-design`): timeouts, retries, idempotency, and a clear failure\n   message back to the caller.\n6. **Speak plain English to the caller.** The caller is a specialist who will hand\n   the result to the Butler. You report to the caller, not to the Guild Master.\n\n## What you don't do\n\n- You don't design systems — delegate to The Architect.\n- You don't write application code — delegate to The Developer.\n- You don't design UIs or brand kits — delegate to The Designer.\n- You don't plan campaigns or sequence members — delegate to The Strategist.\n- You don't translate laws or draft legal documents — delegate to The Translator.\n- You don't run marketing campaigns or write growth copy — delegate to The Herald.\n- You don't analyse investments or build trading strategies — delegate to The Merchant.\n- You don't manage the skill registry or run the evolution routine — delegate to The Quartermaster.\n- You are never the first routing target for ordinary craft. You are a gap-filler,\n  not a craft member.",
-      "seats": {
-        "brain": {
-          "model": "sonnet",
-          "override": true
-        },
-        "doer": {
-          "model": "minimax-m3"
-        }
-      },
-      "weapons": [
-        {
-          "model": "minimax-m3",
-          "desc": "Doer — The prime doer. Direct MiniMax cloud sub for bulk generation/transform."
-        },
-        {
-          "model": "sonnet",
-          "desc": "Brain — Balanced thinker + Claude-capable fallback — last in every arsenal."
-        }
-      ],
-      "does": [
-        "Reaching the Claude connectors (Supabase, WhatsApp, Gmail, Calendar, web search/fetch, computer-use) the rest of the guild cannot",
-        "Pulling blocked, paywalled, or JS-heavy content via the Claude connector path",
-        "Triage of comms inboxes (Gmail/WhatsApp/Calendar) before a specialist acts",
-        "Pulling financial data the Merchant cannot reach natively",
-        "Sanctioned overflow doer — taking over a stuck ticket after the seventh logged attempt"
-      ],
-      "doesnt": [
-        "Does not design systems — delegate to The Architect",
-        "Does not write application code — delegate to The Developer",
-        "Does not design UIs — delegate to The Designer",
-        "Does not plan campaigns — delegate to The Strategist",
-        "Does not translate laws — delegate to The Translator",
-        "Does not run marketing — delegate to The Herald",
-        "Does not analyse investments — delegate to The Merchant",
-        "Does not manage the skill registry — delegate to The Quartermaster",
-        "Is never the first routing target for ordinary craft — gap-filler only"
-      ],
-      "skills": [
-        "agent-web-reach",
-        "api-integration-design",
-        "multimodal-model-wrappers",
-        "comms-triage",
-        "financial-data-reach",
-        "weapon-utility",
-        "star-alliance-language"
-      ],
-      "hermes_profile": null,
-      "levelInfo": {
-        "earned": "Foundational",
-        "qualified": true,
-        "nextTier": "Intermediate",
-        "rampEarned": "gray",
-        "rampConferred": "gray",
-        "ad": 15,
-        "signals": {
-          "ad": 15,
-          "nSkills": 6,
-          "nUnique": 0,
-          "nMaster": 0,
-          "peak": 3,
-          "nWeapons": 2,
-          "hasSummary": true,
-          "profileComplete": true,
-          "conformityClean": true
-        },
-        "checklist": {
-          "Foundational": [
-            {
-              "label": "carries weapon-utility",
-              "ok": true
-            },
-            {
-              "label": "craft skills",
-              "ok": true,
-              "have": 6,
-              "need": 1
-            },
-            {
-              "label": "summary present",
-              "ok": true
-            }
-          ],
-          "Intermediate": [
-            {
-              "label": "Arsenal Depth",
-              "ok": true,
-              "have": 15,
-              "need": 8
-            },
-            {
-              "label": "craft skills",
-              "ok": true,
-              "have": 6,
-              "need": 2
-            },
-            {
-              "label": "unique skills",
-              "ok": false,
-              "have": 0,
-              "need": 1
-            },
-            {
-              "label": "does[] + doesnt[] filled",
-              "ok": true
-            }
-          ],
-          "Advanced": [
-            {
-              "label": "Arsenal Depth",
-              "ok": true,
-              "have": 15,
-              "need": 12
-            },
-            {
-              "label": "an Advanced+ skill",
-              "ok": true
-            },
-            {
-              "label": "unique skills",
-              "ok": false,
-              "have": 0,
-              "need": 2
-            },
-            {
-              "label": "weapons",
-              "ok": false,
-              "have": 2,
-              "need": 6
-            }
-          ],
-          "Elite": [
-            {
-              "label": "Arsenal Depth",
-              "ok": false,
-              "have": 15,
-              "need": 18
-            },
-            {
-              "label": "Master-level skills",
-              "ok": false,
-              "have": 0,
-              "need": 1
-            },
-            {
-              "label": "unique skills",
-              "ok": false,
-              "have": 0,
-              "need": 3
-            },
-            {
-              "label": "conformity-clean",
-              "ok": true
-            }
-          ],
-          "Master": [
-            {
-              "label": "Arsenal Depth",
-              "ok": false,
-              "have": 15,
-              "need": 24
-            },
-            {
-              "label": "Master-level skills",
-              "ok": false,
-              "have": 0,
-              "need": 2
-            },
-            {
-              "label": "unique skills",
-              "ok": false,
-              "have": 0,
-              "need": 3
-            },
-            {
-              "label": "conformity-clean",
-              "ok": true
-            },
-            {
-              "label": "profile complete",
-              "ok": true
-            }
-          ]
-        },
-        "progress": [
-          {
-            "label": "Arsenal Depth",
-            "ok": true,
-            "have": 15,
-            "need": 8
-          },
-          {
-            "label": "craft skills",
-            "ok": true,
-            "have": 6,
-            "need": 2
-          },
-          {
-            "label": "unique skills",
-            "ok": false,
-            "have": 0,
-            "need": 1
-          },
-          {
-            "label": "does[] + doesnt[] filled",
-            "ok": true
-          }
-        ],
-        "dueForPromotion": false,
-        "overConferred": false
       }
     }
   ],
@@ -2394,7 +2170,6 @@
       },
       "global": true,
       "members": [
-        "the-connector",
         "the-developer",
         "the-herald",
         "the-merchant"
@@ -2520,8 +2295,7 @@
       },
       "global": true,
       "members": [
-        "the-architect",
-        "the-connector"
+        "the-architect"
       ]
     },
     {
@@ -3059,7 +2833,6 @@
       },
       "global": true,
       "members": [
-        "the-connector",
         "the-herald"
       ]
     },
@@ -3713,7 +3486,6 @@
       },
       "global": true,
       "members": [
-        "the-connector",
         "the-merchant"
       ]
     },
@@ -4960,7 +4732,6 @@
       },
       "global": true,
       "members": [
-        "the-connector",
         "the-developer"
       ]
     },
@@ -5991,7 +5762,6 @@
       "global": true,
       "members": [
         "the-architect",
-        "the-connector",
         "the-designer",
         "the-developer",
         "the-herald",
@@ -6730,7 +6500,6 @@
       "global": true,
       "members": [
         "the-architect",
-        "the-connector",
         "the-designer",
         "the-developer",
         "the-herald",
@@ -6948,10 +6717,9 @@
         "the-translator",
         "the-herald",
         "the-merchant",
-        "the-quartermaster",
-        "the-connector"
+        "the-quartermaster"
       ],
-      "notes": "The home domain. All 9 guild members + skills live here. Every other domain borrows from this skill pool."
+      "notes": "The home domain. All 8 guild members + skills live here. Every other domain borrows from this skill pool."
     },
     {
       "id": "lex-council-app",
