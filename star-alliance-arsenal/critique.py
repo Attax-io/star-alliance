@@ -33,13 +33,12 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 
 
 def _critic_default():
-    """seats.critic.default from the registry, or minimax-m3 if unreadable.
+    """seats.critic.default from the registry, else minimax-m3.
 
-    The arsenal was stripped to two layers (Brain=Claude/opus + one shared MiniMax
-    doer; no dedicated critic seat), so seats.critic is normally absent and this
-    falls through to minimax-m3 — the surviving non-Claude family, which keeps the
-    Critic a DIFFERENT lineage than the opus Brain. (Was glm-5.2, removed from the
-    registry → summon rejected it → every cold verdict errored.)"""
+    The two-layer arsenal (Brain=opus + shared MiniMax doer) carries no critic seat,
+    so seats.critic is normally absent and the fallback fires. It must be minimax-m3,
+    not the retired glm-5.2 (no longer a known summon id) — still a non-Claude family,
+    so the Critic stays a DIFFERENT lineage than the opus Brain."""
     try:
         with open(os.path.join(HERE, "models.json"), encoding="utf-8") as fh:
             return json.load(fh).get("seats", {}).get("critic", {}).get("default") or "minimax-m3"
@@ -64,7 +63,7 @@ def main():
                     help="Text to critique. Omit or '-' to read stdin.")
     ap.add_argument("-f", "--file", default=None, help="Read the text from a file path.")
     ap.add_argument("-m", "--model", default=None,
-                    help="Critic model (default: seats.critic.default, i.e. minimax-m3).")
+                    help="Critic model (default: seats.critic.default, else minimax-m3).")
     ap.add_argument("-s", "--system", default=SYSTEM, help="Override the critic system prompt.")
     ap.add_argument("--timeout", type=int, default=180, help="HTTP timeout seconds (default 180).")
     a = ap.parse_args()
