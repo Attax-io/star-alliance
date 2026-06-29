@@ -4,6 +4,7 @@
 async function boot() {
   try {
     const GUILD = await fetch('guild-data.json').then(r => r.json())
+    window._GUILD_SKILLS = GUILD.skills || []
     renderHeader(GUILD)
     renderStats(GUILD)
     renderRoster(GUILD)
@@ -109,6 +110,33 @@ function memberCard(m) {
   tooltip.textContent = m.summary || m.description || ''
   article.appendChild(tooltip)
 
+  const strip = document.createElement('div')
+  strip.className = 'member-skills-strip'
+  const memberSkillIds = m.skills || []
+  // build a lookup of skill id -> skill object
+  memberSkillIds.forEach(sid => {
+    const skillObj = (window._GUILD_SKILLS || []).find(s => s.id === sid)
+    const thumb = document.createElement('div')
+    thumb.className = 'skill-thumb'
+    const img = document.createElement('img')
+    img.src = `art/skill-art/${sid}.png`
+    img.alt = skillObj?.name || sid
+    img.onerror = function() {
+      this.style.display = 'none'
+      const fb = document.createElement('div')
+      fb.style.cssText = 'width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;'
+      fb.textContent = skillObj?.icon || '⚔'
+      thumb.insertBefore(fb, thumb.firstChild)
+    }
+    thumb.appendChild(img)
+    const tip = document.createElement('div')
+    tip.className = 'card-tooltip'
+    tip.innerHTML = `<strong>${skillObj?.name || sid}</strong><br>${(skillObj?.blurb || '').slice(0, 120)}`
+    thumb.appendChild(tip)
+    strip.appendChild(thumb)
+  })
+  article.appendChild(strip)
+
   return article
 }
 
@@ -128,26 +156,28 @@ function renderWorkflows(g) {
   const list = document.getElementById('workflow-list')
   if (!list) return
   list.innerHTML = ''
-  const accentMap = {indigo:'#6366f1',emerald:'#4ec985',gold:'#c9a227',purple:'#b78cf7',red:'#e05c5c',teal:'#3da1a8'}
   const grid = document.createElement('div')
-  grid.className = 'workflow-card-grid'
+  grid.className = 'workflow-icon-grid'
   ;(g.workflows || []).forEach(w => {
-    const accent = accentMap[(w.accent || '').toLowerCase()] || '#c9a227'
-    const card = document.createElement('div')
-    card.className = 'workflow-card'
-    card.style.setProperty('--workflow-color', accent)
-    const whenCapped = w.when ? String(w.when).slice(0, 120) : ''
-    const tooltipText = [w.tagline, whenCapped].filter(Boolean).join('\n')
-    card.innerHTML = `
-      <div class="workflow-card__strip" style="background:${accent}"></div>
-      <img class="workflow-card__art" src="art/workflow-art/${w.id}.png" alt="" onerror="this.style.display='none'">
-      <div class="workflow-card__body">
-        <div class="workflow-card__name">${w.name || ''}</div>
-        <span class="workflow-card__pill">${w.category || ''}</span>
-        <div class="card-tooltip">${tooltipText}</div>
-      </div>
-    `
-    grid.appendChild(card)
+    const thumb = document.createElement('div')
+    thumb.className = 'workflow-thumb'
+    const img = document.createElement('img')
+    img.src = `art/workflow-art/${w.id}.png`
+    img.alt = w.name || ''
+    img.onerror = function() {
+      this.style.display = 'none'
+      const fb = document.createElement('div')
+      fb.style.cssText = 'width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;'
+      fb.textContent = w.icon || '⚙'
+      thumb.insertBefore(fb, thumb.firstChild)
+    }
+    thumb.appendChild(img)
+    const tip = document.createElement('div')
+    tip.className = 'card-tooltip'
+    const whenSnippet = w.when ? w.when.slice(0, 100) : ''
+    tip.innerHTML = `<strong>${w.name || ''}</strong><br><em style='color:var(--gold);font-size:0.68rem'>${w.category||''}</em><br>${w.tagline || ''}${whenSnippet ? '<br><span style=opacity:.7>' + whenSnippet + '</span>' : ''}`
+    thumb.appendChild(tip)
+    grid.appendChild(thumb)
   })
   list.appendChild(grid)
 }
