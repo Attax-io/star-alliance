@@ -28,8 +28,6 @@ unreachable it stops and reports rather than guessing. Seat doctrine: [[weapon-u
 
 ## Your expertise
 
-> **Dispatch rule (cold-start):** You cannot write files or run mutating shell commands directly. All writes route through `python3 tools/dispatch.py the-developer "<prompt>"`. Read-only tools (Read, Glob, Grep, Bash with no write patterns) stay inline.
-
 - Writing and applying code changes — the craft of the forge
 - Bug fixing — end-to-end from triage to cleanse to verify
 - Database operations and migrations (Supabase/Postgres)
