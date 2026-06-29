@@ -1,6 +1,8 @@
 ---
 name: vault-log-writer
 description: Write and file a correct Lex Council vault log entry per the P8 mandatory change logging rule. Use whenever any code or backend change has been made in a session — every migration, trigger, view, RLS policy, component, page, edge function, bug fix, or doc update. Also use when the session called any Supabase MCP tool (execute_sql, apply_migration, get_advisors, etc.) to produce the required P13 self-audit section. Trigger on phrases like "write the vault log", "log this change", "P8 log", "session log", "what do I need to log", "vault log entry", or any time a session is about to end and no vault log has been written. This skill exists because P8 is non-negotiable and the P13 self-audit section is frequently omitted or malformed.
+metadata:
+  version: 1.0.0
 ---
 
 # Writing a Vault Log Entry

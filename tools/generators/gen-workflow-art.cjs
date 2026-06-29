@@ -166,6 +166,10 @@ const WORKFLOWS = [
     id: "routing",
     prompt: `${STYLE}. An INDIGO signpost-beacon on dark parchment at a crossroads, multiple glowing direction-arrows pointing to different colored workflow sigils (cyan for missions, rose for design, green for fixes, gold for legal), a robed Strategist-figure with a compass deciding which path to take, the guild banner planted at the center marking the start-point, a clear awaiting-choice scene — the intake gateway where work begins, no specialist yet engaged`,
   },
+  {
+    id: "star-alliance-deploy",
+    prompt: `${STYLE}. A GOLDEN sealed manifest scroll bearing the Star Alliance crest being loaded onto a radiant merchant-vessel, glowing cargo crates of weaponized skills and lore being stacked on deck, a deployment-rune burnished into the hull, anchors lifting and the ship's sails catching celestial wind toward a distant harbor, the moment of grand release when the arsenal ships to the wider world`,
+  },
 ];
 
 function postJSON(url, headers, body) {
