@@ -71,6 +71,9 @@ def dispatch(agent_name: str, prompt: str, timeout: int = 300) -> dict:
     cmd = [
         "hermes",
         "-p", profile,
+        "--yolo",  # skip command approval prompts — the Claude-side hooks
+                   # already enforce what the specialist can and can't do, so
+                   # Hermes shouldn't block it with a second approval layer
         "chat",
         "-q", prompt,
         "-Q",  # quiet — suppress banner/spinner/tool previews
