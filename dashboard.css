@@ -666,7 +666,7 @@ ul, ol { list-style: none; }
   width: 48px;
   height: 48px;
   border-radius: 8px;
-  overflow: hidden;
+  overflow: visible;
   border: 1px solid var(--border-soft);
   background: var(--surface-2);
   cursor: default;
@@ -678,6 +678,7 @@ ul, ol { list-style: none; }
   height: 100%;
   object-fit: cover;
   display: block;
+  border-radius: 8px;
 }
 .skill-thumb:hover {
   transform: scale(1.12);
@@ -711,7 +712,7 @@ ul, ol { list-style: none; }
   width: 48px;
   height: 48px;
   border-radius: 8px;
-  overflow: hidden;
+  overflow: visible;
   border: 1px solid var(--border-soft);
   background: var(--surface-2);
   cursor: default;
@@ -723,6 +724,7 @@ ul, ol { list-style: none; }
   height: 100%;
   object-fit: cover;
   display: block;
+  border-radius: 8px;
 }
 .workflow-thumb .card-tooltip {
   left: 50%;
