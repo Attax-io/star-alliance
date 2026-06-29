@@ -129,6 +129,7 @@ python3 "$STAR_ALLIANCE_ROOT/star-alliance-arsenal/minimax.py" "<prompt>"
 # minimax.py flags: -s <system>  --json  -f <file>  (reads stdin if no arg)
 # key: ~/.config/minimax/m3.key
 # STAR_ALLIANCE_ROOT set in .claude/settings.json env block
+# Supabase SQL and DDL go through `star-alliance-arsenal/supabase.py`, Hermes-direct (connection string in an out-of-repo key file — no Claude connector needed).
 ```
 
 **Size threshold (don't offload small jobs).** A Hermes/MiniMax dispatch costs
