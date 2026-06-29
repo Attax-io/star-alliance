@@ -91,6 +91,23 @@ def dispatch(agent_name: str, prompt: str, timeout: int = 300) -> dict:
         if result.returncode != 0 and result.stderr:
             response = f"{response}\n--- stderr ---\n{result.stderr.strip()}" if response else result.stderr.strip()
 
+        # Strip Hermes CLI noise that leaks into stdout:
+        # - "session_id: ..." line (session metadata, not part of the response)
+        # - "Subdirectory context discovered: ..." (AGENTS.md auto-load notice)
+        # - leading blank lines
+        lines = response.split("\n")
+        cleaned = []
+        for line in lines:
+            if line.startswith("session_id:"):
+                continue
+            if line.startswith("Subdirectory context discovered:"):
+                continue
+            if line.startswith("[Subdirectory context"):
+                # Multi-line AGENTS.md block — skip until the closing bracket
+                continue
+            cleaned.append(line)
+        response = "\n".join(cleaned).strip()
+
         return {
             "success": result.returncode == 0,
             "agent": agent_name,
