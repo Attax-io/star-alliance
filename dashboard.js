@@ -101,19 +101,29 @@ function memberCard(m) {
   metaRow.innerHTML = `<span class="meta-chip"><span class="chip-glyph">⬡</span> ${m.model || ''}</span><span class="meta-chip">${skillCount} skills</span>`
 
   info.append(h3, role, statusDiv, metaRow)
-  body.append(img, info)
+
+  const portraitWrap = document.createElement('div')
+  portraitWrap.className = 'member-portrait-wrap'
+  portraitWrap.appendChild(img)
+  body.append(portraitWrap, info)
   article.append(topbar, body)
 
   const tooltip = document.createElement('div')
   tooltip.className = 'card-tooltip'
   tooltip.textContent = m.summary || m.description || ''
-  article.appendChild(tooltip)
+  portraitWrap.appendChild(tooltip)
 
   const strip = document.createElement('div')
   strip.className = 'member-skills-strip'
   const memberSkillIds = m.skills || []
+  // sort skill ids alphabetically by display NAME (fallback to id)
+  const sortedSkillIds = [...memberSkillIds].sort((a, b) => {
+    const na = ((window._GUILD_SKILLS || []).find(s => s.id === a)?.name || a).toLowerCase()
+    const nb = ((window._GUILD_SKILLS || []).find(s => s.id === b)?.name || b).toLowerCase()
+    return na.localeCompare(nb)
+  })
   // build a lookup of skill id -> skill object
-  memberSkillIds.forEach(sid => {
+  sortedSkillIds.forEach(sid => {
     const skillObj = (window._GUILD_SKILLS || []).find(s => s.id === sid)
     const thumb = document.createElement('div')
     thumb.className = 'skill-thumb'

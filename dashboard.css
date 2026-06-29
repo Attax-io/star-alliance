@@ -246,6 +246,9 @@ ul, ol { list-style: none; }
     inset 0 0 18px color-mix(in srgb, var(--member-color) 18%, transparent),
     0 0 18px color-mix(in srgb, var(--member-color) 18%, transparent);
 }
+.member-portrait-wrap { position: relative; display: inline-block; flex-shrink: 0; }
+.member-portrait-wrap > .card-tooltip { left: 0; right: auto; min-width: 220px; max-width: 280px; bottom: calc(100% + 8px); }
+.member-portrait-wrap:hover > .card-tooltip { opacity: 1; transform: translateY(0); }
 .member-card__info {
   flex: 1;
   min-width: 0;
@@ -550,7 +553,6 @@ ul, ol { list-style: none; }
 .workflow-card {
   position: relative;
 }
-.member-card:hover > .card-tooltip,
 .skill-card:hover .card-tooltip,
 .workflow-card:hover .card-tooltip {
   opacity: 1;
