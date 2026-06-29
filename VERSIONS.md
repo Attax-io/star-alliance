@@ -135,7 +135,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`ux-copywriting`](star-alliance-skills/ux-copywriting/SKILL.md) | 1.0.0 | own | 121 / 852 | 1223 / 128 | ✓ lean | Write functional in-product copy — the words a user reads while operating an interface |
 | [`ux-research`](star-alliance-skills/ux-research/SKILL.md) | 1.0.0 | own | 119 / 857 | 915 / 87 | ✓ lean | The Designer's UX research craft — learn from real users instead of guessing |
 | [`vault-log-compliance`](star-alliance-skills/vault-log-compliance/SKILL.md) | 1.1.0 | own | 128 / 807 | 1445 / 119 | ✓ lean | Enforces P8 vault-logging compliance for Lex Council |
-| [`vault-log-writer`](star-alliance-skills/vault-log-writer/SKILL.md) | — | own | 124 / 739 | 868 / 159 | ✓ lean | Write and file a correct Lex Council vault log entry per the P8 mandatory change logging r… |
+| [`vault-log-writer`](star-alliance-skills/vault-log-writer/SKILL.md) | 1.0.0 | own | 124 / 739 | 868 / 159 | ✓ lean | Write and file a correct Lex Council vault log entry per the P8 mandatory change logging r… |
 | [`voices-check`](star-alliance-skills/voices-check/SKILL.md) | 1.0.1 | own | 145 / 1013 | 392 / 50 | ✓ lean | Integrate an agent's competing internal sub-voices into one coherent response instead of l… |
 | [`volume-price-analysis`](star-alliance-skills/volume-price-analysis/SKILL.md) | 1.0.0 | own | 137 / 1020 | 1067 / 55 | ✓ lean | The Merchant's read-only craft for Volume Price Analysis, distilled from Anna Coulling's A… |
 | [`weapon-utility`](star-alliance-skills/weapon-utility/SKILL.md) | 3.1.0 | own | 166 / 1009 | 4392 / 324 | ✓ lean | Every member's rule for which weapon (model) to draw and how thinker and doer weapons work… |

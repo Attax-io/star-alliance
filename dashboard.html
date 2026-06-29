@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Star Alliance — Guild Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="dashboard.css" />
+</head>
+<body>
+  <!-- ============== GUILD HEADER ============== -->
+  <header class="guild-header">
+    <div class="guild-header__inner">
+      <div class="sigil" aria-hidden="true">★</div>
+      <div class="guild-header__titles">
+        <h1 class="guild-header__title">Star Alliance</h1>
+        <p class="guild-header__sub">A guild of AI agents, working as one</p>
+      </div>
+      <div class="guild-header__tag">
+        <span class="tag-version">v4</span>
+        <span class="tag-date">June 29 2026</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============== STATS BAR ============== -->
+  <section class="stats-bar" aria-label="Guild statistics">
+    <div class="stat-tile">
+      <div class="stat-tile__num">9</div>
+      <div class="stat-tile__label">Members</div>
+    </div>
+    <div class="stat-tile">
+      <div class="stat-tile__num">112</div>
+      <div class="stat-tile__label">Skills</div>
+    </div>
+    <div class="stat-tile">
+      <div class="stat-tile__num">36</div>
+      <div class="stat-tile__label">Workflows</div>
+    </div>
+    <div class="stat-tile">
+      <div class="stat-tile__num">3</div>
+      <div class="stat-tile__label">Active Today</div>
+    </div>
+  </section>
+
+  <main class="page">
+    <!-- ============== THE ROSTER ============== -->
+    <section class="section">
+      <header class="section-head">
+        <h2 class="section-title">The Roster</h2>
+        <div class="section-rule"></div>
+      </header>
+
+      <div class="member-grid">
+        <!-- ===== The Strategist (mock, hardcoded) ===== -->
+        <article class="member-card" style="--member-color: #7c5dc8;">
+          <div class="member-card__topbar"></div>
+          <div class="member-card__body">
+            <img class="member-card__portrait" src="art/member-art/the-strategist.png" alt="The Strategist" />
+            <div class="member-card__info">
+              <h3 class="member-card__name">The Strategist</h3>
+              <p class="member-card__meta">Campaign commander · Router</p>
+              <div class="member-card__status">
+                <span class="status-dot status-dot--ready"></span>
+                <span class="status-text">Ready</span>
+                <span class="tier-pill"><span class="tier-mark">◆</span> Master</span>
+              </div>
+              <div class="member-card__meta-row">
+                <span class="meta-chip"><span class="chip-glyph">⬡</span> claude-opus-4-8</span>
+                <span class="meta-chip">23 skills</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- ===== Ghost placeholders (8) ===== -->
+        <div class="member-ghost" aria-hidden="true"></div>
+        <div class="member-ghost" aria-hidden="true"></div>
+        <div class="member-ghost" aria-hidden="true"></div>
+        <div class="member-ghost" aria-hidden="true"></div>
+        <div class="member-ghost" aria-hidden="true"></div>
+        <div class="member-ghost" aria-hidden="true"></div>
+        <div class="member-ghost" aria-hidden="true"></div>
+        <div class="member-ghost" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <!-- ============== DOMAIN PANEL ============== -->
+    <section class="section">
+      <header class="section-head">
+        <h2 class="section-title">Domains</h2>
+        <div class="section-rule"></div>
+      </header>
+
+      <div class="domain-grid">
+        <div class="domain-card" style="--domain-color: #c94040;">
+          <div class="domain-card__strip"></div>
+          <div class="domain-card__body">
+            <h3 class="domain-card__name">Combat Arts</h3>
+            <p class="domain-card__count">42 skills</p>
+          </div>
+        </div>
+        <div class="domain-card" style="--domain-color: #7c5dc8;">
+          <div class="domain-card__strip"></div>
+          <div class="domain-card__body">
+            <h3 class="domain-card__name">Lore &amp; Law</h3>
+            <p class="domain-card__count">38 skills</p>
+          </div>
+        </div>
+        <div class="domain-card" style="--domain-color: #b89530;">
+          <div class="domain-card__strip"></div>
+          <div class="domain-card__body">
+            <h3 class="domain-card__name">Commerce</h3>
+            <p class="domain-card__count">32 skills</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== LOWER DECK ============== -->
+    <section class="lower-deck">
+      <!-- Guild Log -->
+      <div class="panel">
+        <header class="section-head">
+          <h2 class="section-title">Guild Log</h2>
+          <div class="section-rule"></div>
+        </header>
+        <ul class="log-list">
+          <li class="log-entry">
+            <span class="log-dot"></span>
+            <div class="log-body">
+              <div class="log-meta"><span class="log-date">2026-06-29</span><span class="log-tag tag-tag">tag</span><span class="log-actor">the-quartermaster</span></div>
+              <div class="log-title">Synced 4 new skills to active profile</div>
+            </div>
+          </li>
+          <li class="log-entry">
+            <span class="log-dot"></span>
+            <div class="log-body">
+              <div class="log-meta"><span class="log-date">2026-06-29</span><span class="log-tag tag-workflow">workflow</span><span class="log-actor">the-strategist</span></div>
+              <div class="log-title">Routed bug-fix to the-developer via workflow:bug</div>
+            </div>
+          </li>
+          <li class="log-entry">
+            <span class="log-dot"></span>
+            <div class="log-body">
+              <div class="log-meta"><span class="log-date">2026-06-28</span><span class="log-tag tag-skill">skill</span><span class="log-actor">the-architect</span></div>
+              <div class="log-title">Forged skill: supabase-postgres-best-practices</div>
+            </div>
+          </li>
+          <li class="log-entry">
+            <span class="log-dot"></span>
+            <div class="log-body">
+              <div class="log-meta"><span class="log-date">2026-06-28</span><span class="log-tag tag-evolve">evolve</span><span class="log-actor">evolution</span></div>
+              <div class="log-title">Ledger committed 3 entries (pass:3, block:0)</div>
+            </div>
+          </li>
+          <li class="log-entry">
+            <span class="log-dot"></span>
+            <div class="log-body">
+              <div class="log-meta"><span class="log-date">2026-06-27</span><span class="log-tag tag-critic">critic</span><span class="log-actor">kimi-k2.7</span></div>
+              <div class="log-title">Reviewed PR #142 — PASS (correctness)</div>
+            </div>
+          </li>
+          <li class="log-entry">
+            <span class="log-dot"></span>
+            <div class="log-body">
+              <div class="log-meta"><span class="log-date">2026-06-27</span><span class="log-tag tag-deploy">deploy</span><span class="log-actor">the-quartermaster</span></div>
+              <div class="log-title">Published profiles/the-strategist v4.1</div>
+            </div>
+          </li>
+          <li class="log-entry">
+            <span class="log-dot"></span>
+            <div class="log-body">
+              <div class="log-meta"><span class="log-date">2026-06-26</span><span class="log-tag tag-mission">mission</span><span class="log-actor">the-butler</span></div>
+              <div class="log-title">Mission #88 closed: dual-model review workflow</div>
+            </div>
+          </li>
+          <li class="log-entry">
+            <span class="log-dot"></span>
+            <div class="log-body">
+              <div class="log-meta"><span class="log-date">2026-06-26</span><span class="log-tag tag-critic">critic</span><span class="log-actor">glm-5.2</span></div>
+              <div class="log-title">Reviewed PR #139 — CONCERNS (security)</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Workflows -->
+      <div class="panel">
+        <header class="section-head">
+          <h2 class="section-title">Workflows</h2>
+          <div class="section-rule"></div>
+        </header>
+        <ul class="workflow-list">
+          <li class="workflow-row"><span class="workflow-name">bug-fix</span><span class="workflow-count">12</span></li>
+          <li class="workflow-row"><span class="workflow-name">feature-ship</span><span class="workflow-count">9</span></li>
+          <li class="workflow-row"><span class="workflow-name">code-review</span><span class="workflow-count">7</span></li>
+          <li class="workflow-row"><span class="workflow-name">dual-model-review</span><span class="workflow-count">5</span></li>
+          <li class="workflow-row"><span class="workflow-name">skill-forge</span><span class="workflow-count">4</span></li>
+          <li class="workflow-row"><span class="workflow-name">profile-publish</span><span class="workflow-count">3</span></li>
+          <li class="workflow-row"><span class="workflow-name">evolution-cycle</span><span class="workflow-count">2</span></li>
+          <li class="workflow-row"><span class="workflow-name">bench-swarm</span><span class="workflow-count">1</span></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    <span>Star Alliance v4 · Wave 1 (static mock)</span>
+  </footer>
+</body>
+</html>
