@@ -2,7 +2,7 @@
 name: members-formation
 description: "The Butler's routing method — match an incoming request to the right star-map workflow in `workflows.json` and follow it. The Butler does not assemble a fresh team per mission; each workflow already names its members and their arrangement, so routing is a *selection* problem: read the request, scan the workflows' triggers, pick the one that fits, follow its steps. Use when the Butler receives an order and must decide which workflow to run. Triggers: 'route this', 'which workflow', 'who should handle this', 'how do we run this', 'pick the workflow', 'what's the play', or any incoming order that must be matched to a procedure. Only when NO existing workflow fits does the Butler fall back to forming a fresh formation (members + arrangement + gates) and hand it to the Quartermaster's Workflow Forge to crystallize. Workflow-selection first; formation-building is the fallback."
 metadata:
-  version: 1.3.0
+  version: 1.4.0
 type: Skill
 
 ---
@@ -23,6 +23,25 @@ Keep the three layers separate — never mix them:
   a fixed cast + arrangement + gates.
 - **This skill** = the Butler's *method* for **selecting** the workflow that fits a request — and,
   only when none fits, for **forming a fresh formation** to hand off for crystallization.
+
+## Fast-Route Shortcuts
+
+For common task types, dispatch immediately — no deliberation needed:
+
+| Task involves... | Route to | Never do... |
+|---|---|---|
+| Skill create / upgrade / delete / sync / wire | **Quartermaster — immediately** | Manual bash, manual file edits |
+| build.py / conformity_check / publish_profiles / skillsmith | **Quartermaster — immediately** | Run these yourself from Butler |
+| Version bumps, SKILL.md edits, member file edits | **Quartermaster** | Edit directly from main session |
+| Code bugs, new features, tooling, dev server | Developer | |
+| DB schema, domain model, migrations, Supabase DDL | Architect | |
+| UI/UX, visual polish, design system | Designer | |
+| Marketing, content, SEO, growth | Herald | |
+| Trading, market analysis, portfolio | Merchant | |
+| Legal, law translation, contracts | Translator | |
+| Multi-wave campaigns, routing decisions, performance | Strategist | |
+
+**Rule:** If the task mentions a skill name, a version bump, build.py, conformity_check, publish_profiles, or skillsmith — stop, dispatch to QM. Do not attempt it in the main session first.
 
 ## The primary method — workflow selection (five steps)
 
@@ -215,6 +234,13 @@ MAJOR: method contract change). Regenerate `VERSIONS.md` with
 `python3 skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.
 
 ## Changelog
+- **1.4.0** — New **Fast-Route Shortcuts** table right after the three-layers framing: a one-glance
+  dispatch cheatsheet (skill name / build.py / conformity_check / publish_profiles / skillsmith /
+  version bumps / SKILL.md edits → Quartermaster immediately; code → Developer; schema → Architect;
+  UI → Designer; marketing → Herald; trading → Merchant; legal → Translator; campaigns →
+  Strategist). Hard rule: if the task mentions a skill name, version bump, build.py, conformity_check,
+  publish_profiles, or skillsmith, stop and dispatch to QM — never attempt it in the main session.
+  New section → MINOR.
 - **1.3.0** — New **swarm arrangement** row in the formation patterns table + "Swarm — recognize
   and route" section: members-formation recognizes `swarm` as a pattern and delegates all
   decomposition to `[[decompose-and-swarm]]`; no decomposition logic lives here. New pattern row
