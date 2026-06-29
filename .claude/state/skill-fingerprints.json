@@ -1,6 +1,42 @@
 {
+  "a11y-craft": {
+    "sha": "ae36141bcf3aa81a",
+    "version": "1.0.0"
+  },
+  "add-admin-permission": {
+    "sha": "4116c24baa067535",
+    "version": "1.0.0"
+  },
+  "add-new-trigger": {
+    "sha": "57ea1a936aa0965c",
+    "version": "1.0.0"
+  },
+  "add-new-view": {
+    "sha": "5646b6ecc49a8e69",
+    "version": "1.0.0"
+  },
+  "admin-page-builder": {
+    "sha": "cfb3408c448049e7",
+    "version": "1.0.0"
+  },
+  "admin-page-fixer": {
+    "sha": "c8d72ace4609a123",
+    "version": "1.0.0"
+  },
+  "agent-web-reach": {
+    "sha": "1e0494c6228204fc",
+    "version": "1.1.0"
+  },
+  "agentic-video-production": {
+    "sha": "790a7b605b52b9ce",
+    "version": "1.1.0"
+  },
   "algorithmic-trading-chan": {
     "sha": "54845dfa21f8f504",
+    "version": "1.0.0"
+  },
+  "api-integration-design": {
+    "sha": "3a769f306f668594",
     "version": "1.0.0"
   },
   "arsenal-forge": {
@@ -10,6 +46,10 @@
   "article-creator": {
     "sha": "f99e45952367db74",
     "version": "1.0.1"
+  },
+  "automated-testing": {
+    "sha": "53f73d93a82ba455",
+    "version": "1.1.0"
   },
   "bug-fix-workflow": {
     "sha": "478f8156e761e290",
@@ -27,6 +67,18 @@
     "sha": "e9d1e4c4844dfbbb",
     "version": "1.20.0"
   },
+  "cn-market-strategy-pack": {
+    "sha": "2a7c3d49605ae85b",
+    "version": "1.1.0"
+  },
+  "code-review-craft": {
+    "sha": "041a5c2546328885",
+    "version": "1.1.0"
+  },
+  "codebase-memory-mcp": {
+    "sha": "2720202d1dfc1b39",
+    "version": "1.2.0"
+  },
   "codex-law-translate": {
     "sha": "c30b62e1d1639fcb",
     "version": "1.1.0"
@@ -36,16 +88,28 @@
     "version": "1.0.0"
   },
   "conquering-campaign": {
-    "sha": "19eb07416dffdb19",
-    "version": "3.8.3"
+    "sha": "b1e394f65bf144e2",
+    "version": "3.9.0"
+  },
+  "contract-review": {
+    "sha": "58fd6309392f8af1",
+    "version": "1.0.0"
   },
   "dashboard-parity": {
     "sha": "59e2307b8a715b83",
     "version": "1.1.0"
   },
+  "data-analysis-viz": {
+    "sha": "8668081c3758790e",
+    "version": "1.0.0"
+  },
   "db-rename-sweep": {
     "sha": "4074ce712f914b2c",
     "version": "1.1.0"
+  },
+  "decompose-and-swarm": {
+    "sha": "3be6f1a69867a527",
+    "version": "1.0.0"
   },
   "design-language": {
     "sha": "010f35286f99dd4f",
@@ -55,16 +119,48 @@
     "sha": "900066bccb3bd1cc",
     "version": "1.0.0"
   },
+  "design-taste-frontend": {
+    "sha": "d2d87131597d75d2",
+    "version": "1.0.0"
+  },
+  "design-tokens": {
+    "sha": "7491557c9dea5bed",
+    "version": "1.0.0"
+  },
   "design-unity": {
     "sha": "400baba086196afd",
     "version": "1.1.0"
+  },
+  "dev-ops-command-pack": {
+    "sha": "8472b21f5a9363e5",
+    "version": "1.0.0"
   },
   "dev-server": {
     "sha": "ffdbad83c82c93cd",
     "version": "1.1.0"
   },
+  "dual-model-review": {
+    "sha": "06fab50143d9aaab",
+    "version": "1.0.0"
+  },
+  "file-access-model": {
+    "sha": "27c6d9c55dc2f8f9",
+    "version": "1.0.0"
+  },
+  "financial-data-reach": {
+    "sha": "a9f25ebe6388f6fd",
+    "version": "1.0.0"
+  },
+  "frontend-react-engineering": {
+    "sha": "b6a91c09b6a5c202",
+    "version": "1.1.0"
+  },
   "full-output-enforcement": {
     "sha": "a59fa406f8b4af45",
+    "version": "1.0.0"
+  },
+  "gpt-taste": {
+    "sha": "1eab4e602206843a",
     "version": "1.0.0"
   },
   "graphify": {
@@ -76,27 +172,31 @@
     "version": "1.0.0"
   },
   "guild-conformity": {
-    "sha": "9abcf4a577dd7935",
-    "version": "1.4.1"
+    "sha": "4e9834a9b9f2c084",
+    "version": "1.6.0"
   },
   "guild-log": {
     "sha": "96acfd0c3772f395",
     "version": "1.2.1"
   },
   "guild-reflection": {
-    "sha": "f349945ad20bac25",
-    "version": "1.0.1"
+    "sha": "e79942ab184d576a",
+    "version": "1.1.0"
   },
   "guild-sync": {
     "sha": "31e234782253c75f",
     "version": "1.0.1"
   },
   "harness-efficiency": {
-    "sha": "b09f4dfd7b504137",
-    "version": "1.2.0"
+    "sha": "3e02c0a4a5edf0c8",
+    "version": "1.3.0"
   },
   "high-alert": {
-    "sha": "e4a9c0b8e277d3a7",
+    "sha": "7cf905e5ef162c5b",
+    "version": "2.3.0"
+  },
+  "high-end-visual-design": {
+    "sha": "77f39f6149fdf5f3",
     "version": "1.0.0"
   },
   "image-to-code": {
@@ -111,6 +211,10 @@
     "sha": "bec53fdc312be194",
     "version": "3.0.7"
   },
+  "industrial-brutalist-ui": {
+    "sha": "05da28d113f1974d",
+    "version": "1.0.0"
+  },
   "invariant-inference": {
     "sha": "9acf0e882aa91ef2",
     "version": "1.0.0"
@@ -121,6 +225,10 @@
   },
   "law-harvest": {
     "sha": "50b63cb7ec55c817",
+    "version": "1.0.0"
+  },
+  "leaders-command": {
+    "sha": "bc57d139908fe66e",
     "version": "1.0.0"
   },
   "legal-drafting": {
@@ -135,33 +243,69 @@
     "sha": "0aa53dabeefaa3cf",
     "version": "1.0.1"
   },
+  "lex-system-audit": {
+    "sha": "80004e037f06a62c",
+    "version": "1.0.0"
+  },
   "market-recon": {
     "sha": "cdc5853a23b68e67",
     "version": "1.0.0"
   },
   "members-formation": {
-    "sha": "d4958fdafe1574b2",
-    "version": "1.1.1"
+    "sha": "d40876d5b6a68a9c",
+    "version": "1.3.0"
   },
   "metamorphosis-check": {
     "sha": "d5d21e31b54ead03",
     "version": "1.0.1"
   },
+  "minimalist-ui": {
+    "sha": "0678ba109812933d",
+    "version": "1.0.0"
+  },
   "motion-design": {
     "sha": "1529be2ae0ae54fe",
     "version": "2.0.0"
   },
-  "obsidian-markdown": {
-    "sha": "9afaa8d4a964c65d",
+  "multimodal-model-wrappers": {
+    "sha": "8519fe133a7cbbaf",
+    "version": "1.1.0"
+  },
+  "negotiation-deal-strategy": {
+    "sha": "8477fc8384998022",
     "version": "1.0.0"
+  },
+  "obedience": {
+    "sha": "9d930f347a45bdb0",
+    "version": "1.0.0"
+  },
+  "observability-incident-response": {
+    "sha": "0376a84609aaf159",
+    "version": "1.1.0"
+  },
+  "obsidian-markdown": {
+    "sha": "5cc103d91d20a323",
+    "version": "1.1.0"
   },
   "okf": {
     "sha": "4d21a80dc645f1f7",
     "version": "1.2.0"
   },
+  "pattern-library-discovery": {
+    "sha": "143b68504a30eaf2",
+    "version": "1.0.0"
+  },
+  "penpot-design-platform": {
+    "sha": "a9cbb1d24cdf4a1e",
+    "version": "1.0.0"
+  },
   "performance": {
     "sha": "23e1efb777ab9082",
     "version": "1.0.3"
+  },
+  "phased-db-refactor": {
+    "sha": "2c74e7dc10bb52b7",
+    "version": "1.0.0"
   },
   "portability-audit": {
     "sha": "75a46502081d36de",
@@ -171,9 +315,13 @@
     "sha": "c17d1e42f5edfcb3",
     "version": "0.1.0"
   },
-  "probability-statistics": {
-    "sha": "439e4a5f050c4fd7",
+  "price-action": {
+    "sha": "dad1f0a8bfb11a0c",
     "version": "1.0.0"
+  },
+  "probability-statistics": {
+    "sha": "8a7e3f7bd7a0ce6a",
+    "version": "1.1.0"
   },
   "project-start": {
     "sha": "a562726046b9d112",
@@ -181,6 +329,10 @@
   },
   "python-master": {
     "sha": "3786474d69472c60",
+    "version": "1.0.0"
+  },
+  "redesign-existing-projects": {
+    "sha": "ae21a12c7051e8c5",
     "version": "1.0.0"
   },
   "relationship-intel": {
@@ -191,61 +343,89 @@
     "sha": "47fa23dfa590d174",
     "version": "1.0.1"
   },
+  "safe-agentic-orchestration": {
+    "sha": "f0b7117f6a49b366",
+    "version": "1.1.0"
+  },
   "scheduled-watch": {
     "sha": "5db735784c6215c2",
     "version": "1.0.0"
   },
   "schema-evolution": {
-    "sha": "e3f7245be14885c5",
-    "version": "1.1.0"
+    "sha": "38af641540c980a5",
+    "version": "1.2.0"
   },
   "session-mining": {
     "sha": "a378a59f06a00c30",
     "version": "1.3.0"
   },
   "skillsmith": {
-    "sha": "c25586e3ecf96b79",
-    "version": "1.6.0"
+    "sha": "21db07ae27d1049e",
+    "version": "1.7.2"
   },
   "spec-driven-development": {
-    "sha": "6f186da20c3aacff",
-    "version": "1.0.0"
+    "sha": "19360a4a1122f8fe",
+    "version": "1.1.0"
   },
   "star-alliance-language": {
     "sha": "8cb172bae9832466",
     "version": "1.2.0"
+  },
+  "stitch-design-taste": {
+    "sha": "7a4b6adc909683c9",
+    "version": "1.0.0"
   },
   "storm-investigation": {
     "sha": "ae5516a64d8e59de",
     "version": "1.0.0"
   },
   "strategies-review": {
-    "sha": "639ff62c0a02d642",
-    "version": "1.0.0"
+    "sha": "d4f3195e9a2ebb7b",
+    "version": "1.1.0"
   },
   "supabase": {
-    "sha": "2f9af5d1ce63b555",
-    "version": "0.1.2"
+    "sha": "a5e99dc48a6b2223",
+    "version": "0.1.3"
   },
   "supabase-postgres-best-practices": {
     "sha": "717031d85d4783f1",
     "version": "1.1.1"
   },
+  "system-prompt-design-patterns": {
+    "sha": "48e38c44ce47eae5",
+    "version": "1.1.0"
+  },
+  "timeseries-forecasting": {
+    "sha": "544c3709b1b53810",
+    "version": "1.1.0"
+  },
   "trading-strategy": {
-    "sha": "8f0eaf5c96e0dfd1",
-    "version": "0.1.0"
+    "sha": "f1159f5f720bf659",
+    "version": "0.2.0"
   },
   "transactions-domain-model": {
     "sha": "da2f29ea60d21b3c",
     "version": "1.3.1"
   },
   "ultra-brainstorming": {
-    "sha": "e0792f56176b80c7",
-    "version": "1.3.0"
+    "sha": "c29df74d12cce20b",
+    "version": "1.3.1"
+  },
+  "ux-copywriting": {
+    "sha": "ebda4a4e642708f6",
+    "version": "1.0.0"
+  },
+  "ux-research": {
+    "sha": "76a444689f070c5b",
+    "version": "1.0.0"
   },
   "vault-log-compliance": {
     "sha": "632e55e4209b5ae8",
     "version": "1.1.0"
+  },
+  "vault-log-writer": {
+    "sha": "44113794c0a8676a",
+    "version": "?"
   },
   "voices-check": {
     "sha": "7804760321c65358",
@@ -256,11 +436,15 @@
     "version": "1.0.0"
   },
   "weapon-utility": {
-    "sha": "0f8a8bf19181550a",
-    "version": "2.1.0"
+    "sha": "2d1a5dfcfc120a4c",
+    "version": "3.1.0"
   },
   "workflow-forge": {
-    "sha": "a3f706ae16241ff3",
-    "version": "1.3.0"
+    "sha": "72cd795af0127a90",
+    "version": "1.4.0"
+  },
+  "workflow-runner": {
+    "sha": "65afaeea23ab9788",
+    "version": "1.0.0"
   }
 }
