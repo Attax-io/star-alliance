@@ -25,3 +25,6 @@ desktop/src-tauri/binaries/node-*
 
 # Evolution Engine — local kill switch, never committed
 evolution/DISARMED
+
+# Hermes runtime state (profiles/, sessions, caches — not source)
+state/

@@ -7,14 +7,14 @@ timestamp: 2026-06-27T00:00:00Z
 
 # haiku
 
-**Status:** LIVE  
-**Role:** both · **Backend:** claude · **Kind:** text
+**Status:** LIVE (reserve) — pulled & reachable  
+**Role:** doer · **Backend:** claude · **Kind:** text
 
-Fast, cheap Claude brain — the session mind for every helper but the Strategist.
+Fastest, cheapest Claude — quick mechanical reasoning.
 
 ## Backend
 
-Claude-native. **No script, no pull.** The orchestrator IS this model.
+Claude-native. **No script, no pull.** Reserve model — dispatched via delegate_task.
 
 ## How to pull
 
@@ -22,7 +22,7 @@ _None._ Nothing to pull — Claude runs inside the harness.
 
 ## How to summon
 
-Run via the **Task tool** with `model=haiku`. `summon.py haiku` only prints a reminder (exit 0) — it does NOT call a backend.
+Run via **delegate_task** with `model=haiku`. `summon.py haiku` only prints a reminder (exit 0) — it does NOT call a backend.
 
 Counts against your **Claude plan** 5h window, not Ollama — a separate pool, safe to overlap with Ollama/MiniMax calls.
 

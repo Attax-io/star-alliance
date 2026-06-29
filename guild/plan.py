@@ -30,16 +30,16 @@ from delegate import delegate  # noqa: E402
 DEFAULT_WEAPON = "minimax-m3"
 
 # Per-template planning directives. Each shapes the same brief into a
-# different deliverable the downstream members can act on.
+# different deliverable the downstream agents can act on.
 TEMPLATES: dict[str, str] = {
     "campaign": (
         "Produce a CAMPAIGN PLAN: break the work into ordered waves. For each "
-        "wave give its goal, the member roles it engages, and a checkpoint that "
+        "wave give its goal, the agent roles it engages, and a checkpoint that "
         "decides whether to proceed. End with the overall success condition."
     ),
     "sprint": (
         "Produce a SPRINT PLAN as a list of tickets. Each ticket: a title, the "
-        "owning member, a one-line acceptance criterion, and its dependencies. "
+        "owning agent, a one-line acceptance criterion, and its dependencies. "
         "Order them so dependencies come first."
     ),
     "scope": (

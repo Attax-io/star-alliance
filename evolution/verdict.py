@@ -11,7 +11,7 @@
 # structured verdict that a gate or a routine can branch on. It is the single
 # choke point every self-modifying path routes its review through.
 #
-#   run_cold(diff_text)  -> Verdict   # text-only critic (glm-5.2), ~60-120s
+#   run_cold(diff_text)  -> Verdict   # text-only critic (kimi-k2.7), ~60-120s
 #
 # Verdict = {decision: pass|concerns|block|error, raw: <critic text>, model: <id>}
 #
@@ -27,7 +27,7 @@
 #
 # COLD vs GROUNDED: cold critique reads TEXT only and misses *absence* bugs (a
 # stale id in a file the diff didn't include). For load-bearing source the gate
-# should escalate to a GROUNDED Claude review agent. Cold is the always-available
+# should escalate to a GROUNDED Hermes review agent. Cold is the always-available
 # floor; grounded is the backstop. See weapon-utility §The Critic seat.
 # ─────────────────────────────────────────────────────────────────────────────
 from __future__ import annotations

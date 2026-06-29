@@ -48,7 +48,7 @@ STYLES: dict[str, str] = {
     ),
     "classify": (
         "Classify the request. Identify its type, the workflow it belongs to, and "
-        "the members/skills it should route to, then frame it accordingly."
+        "the agents/skills it should route to, then frame it accordingly."
     ),
     "reframe": (
         "Reframe the request from the guild's vantage. Sharpen the underlying "

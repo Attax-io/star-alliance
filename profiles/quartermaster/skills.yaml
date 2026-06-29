@@ -1,0 +1,79 @@
+# Skills owned by the Quartermaster profile.
+# Curated from the project's 94-skill inventory (star-alliance-skills/) and
+# the active Hermes skill tree (~/.hermes/skills/). Each skill is referenced
+# by directory name; the runtime resolves it from the project inventory or the
+# active profile's skill tree. Only skills that resolve on disk are included.
+#
+# The Quartermaster's craft is the skill lifecycle itself — syncing, upgrading,
+# forging, fingerprinting, and enforcing conformance. Cross-craft skills that
+# belong to other specialists (e.g. design-taste, legal-drafting, trading-strategy)
+# are NOT included here, even when the Quartermaster certifies them.
+
+- name: skillsmith
+  reason: The canonical authoring path for forging new skills — frontmatter, manifest, examples — used whenever the arsenal needs a new capability.
+
+- name: workflow-forge
+  reason: When the Strategist and I crystallize a proven campaign shape into workflows.json — agents, gates, fallback — so the next run is reproducible.
+
+- name: workflow-runner
+  reason: When I need to drive a workflow end-to-end during a conformance pass, to see what the specialist actually saw, not what they said they saw.
+
+- name: guild-sync
+  reason: The canonical reconcile path between the repo's skill catalog and the active profile's installed skills — keeps the fleet in lockstep.
+
+- name: guild-conformity
+  reason: The certify gate's own instrument — runs the formal conformance pass and emits the report the Butler carries to the Guild Master.
+
+- name: guild-log
+  reason: Writing and reading the ledger of non-git-visible changes — registry edits, profile swaps, arsenal rotations — the audit trail that keeps the arsenal honest.
+
+- name: guild-reflection
+  reason: Reviewing the guild's recent work for patterns the self-improvement loop should learn from — what worked, what drifted, what earned retirement.
+
+- name: session-mining
+  reason: Digging through past sessions for skills that earned their keep, skills that drifted, and skills that earned retirement — the input to the daily evolution routine.
+
+- name: project-start
+  reason: Bringing a new device to parity from scratch — initial profile, initial skill set, initial arsenal — so it can join the fleet without "works on my machine."
+
+- name: release-train
+  reason: Merging, version-bumping, changelog-writing, and pushing a body of work from "done in my editor" to "live on every device" — the train that keeps the fleet current.
+
+- name: observability-incident-response
+  reason: When a skill or a profile breaks in production, telling the fleet fast and in plain English — the muscle behind the conformance pass when something has already gone wrong.
+
+- name: dashboard-parity
+  reason: Making sure the dashboards the guild relies on read from the same source of truth across every device — no "my dashboard says green, yours says red."
+
+- name: hermes-agent-skill-authoring
+  reason: When I need to author or extend a skill mid-task and cannot wait for the next sync — the on-the-spot forge path.
+
+- name: portability-audit
+  reason: Certifying that a profile, a workflow, or a skill set survives a move between devices or profiles — the audit before the cutover.
+
+- name: vault-log-compliance
+  reason: When the work touches the guild's shared secrets, logs, and audit trail — the compliance lens on the ledger itself.
+
+- name: db-rename-sweep
+  reason: Loading the full surface inventory before a structural rename ships — the pre-flight that keeps a tiny diff from having a giant blast radius.
+
+- name: okf
+  reason: The one-keystroke fix path for things the rest of the arsenal should know about — the small tool that keeps big tools honest.
+
+- name: storm-investigation
+  reason: Breadth-first structured investigation when something in the arsenal is in chaos — symptom to cause, before I commit to a fix or a retirement.
+
+- name: letting-go
+  reason: When a skill has decayed past its edge — retiring it cleanly so the arsenal stays honest about what it actually carries.
+
+- name: voices-check
+  reason: When the conformance report has to integrate several registers at once (formal ledger entries, plain-English summaries, specialist-specific notes) without fragmenting the message.
+
+- name: star-alliance-language
+  reason: Universal guild idiom — speak and write in the Star Alliance's plain-English register, especially in the conformance report the Butler carries to the Guild Master.
+
+- name: weapon-utility
+  reason: Shared house utility — operate the guild's instruments (arsenal, models, profiles) without leaking craft across the wrong boundary when I am running the certify gate.
+
+- name: dual-model-review
+  reason: The cross-system bridge's quality gate — MiniMax-M3 produces the conformance report, Kimi K2.7 + GLM-5.2 fire as parallel reviewer sub-agents through Hermes; both must PASS before the report goes back. The Quartermaster's reviewer prompts check skill-tree integrity and arsenal registry consistency — the gatekeeper must not be the only gatekeeper on its own work.

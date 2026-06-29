@@ -13,14 +13,14 @@ The order shape (adapts the military BLUF / SMEAC order):
 Right-sizing (axiom 7) is chosen by --target:
     doer     — full spec in the prompt; stateless; no autonomy assumed (maps to summon -s/-f)
     subagent — full spec + output contract; one-shot, isolated, no shared memory
-    member   — intent + latitude (mission command); trust the craft, don't micro-spec
+    agent    — intent + latitude (mission command); trust the craft, don't micro-spec
     human    — plain English, BLUF, options + a recommendation; minimal jargon
 
 Importable API:
     compose_command(target, intent, weapon="minimax-m3") -> str
 
 CLI:
-    python3 guild/command.py --target doer|subagent|member|human \
+    python3 guild/command.py --target doer|subagent|agent|human \
         --in <intent_file_or_text> --out <order.md> [--weapon <model>]
 
 Default weapon is minimax-m3 (cheap, unattended-friendly). Reuses guild/delegate.py's
@@ -51,10 +51,10 @@ TARGETS: dict[str, str] = {
         "memory of this conversation). Include every fact, path, and prior decision it needs; "
         "state exactly what files it may touch and the exact shape of the result it must return."
     ),
-    "member": (
+    "agent": (
         "The subordinate is a peer MEMBER with their own craft. Command by INTENT, not "
         "micro-steps (mission command): give the end-state, the why, and the bounds, then "
-        "trust the member to choose the method. Keep latitude wide inside clear constraints."
+        "trust the agent to choose the method. Keep latitude wide inside clear constraints."
     ),
     "human": (
         "The subordinate is the GUILD MASTER (a human, NOT a programmer). Write in plain "

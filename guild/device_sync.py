@@ -3,13 +3,13 @@
 The Quartermaster's device-parity primitive. One read-only pass over every
 surface where the on-device install can fall behind the repo source of truth:
 
-  1. skills      — repo vs ~/.claude/skills (delegates to skillsmith skill_sync.py plan)
-  2. scheduled   — ~/.claude/scheduled-tasks/* point at the canonical repo path (not a stale rename)
-  3. members     — star-alliance-members/*.md committed (no uncommitted roster drift)
-  4. config      — repo .claude/ hooks + settings tracked (state/* runtime files ignored)
+  1. skills      — repo vs ~/.hermes/skills (delegates to skillsmith skill_sync.py plan)
+  2. cron        — ~/.hermes/cron/* point at the canonical repo path (not a stale rename)
+  3. agents      — agents/*.md committed (no uncommitted roster drift)
+  4. config      — repo AGENTS.md + state/* tracked (runtime files ignored)
 
 Default is --check (read-only): prints a parity table and exits non-zero only on
-a HARD drift (skills repo-ahead of device, or a scheduled-task pointing at a dead
+a HARD drift (skills repo-ahead of device, or a cron job pointing at a dead
 path). Pass --reconcile to install repo-ahead skills onto the device via skillsmith.
 
 CLI:
@@ -29,8 +29,8 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SKILLS_REPO = REPO_ROOT / "star-alliance-skills"
 SKILL_SYNC = SKILLS_REPO / "skillsmith" / "scripts" / "skill_sync.py"
-HOME_CLAUDE = Path(os.path.expanduser("~/.claude"))
-SCHED_DIR = HOME_CLAUDE / "scheduled-tasks"
+HERMES_HOME = Path(os.environ.get("HERMES_HOME", Path.home() / ".hermes"))
+CRON_DIR = HERMES_HOME / "cron"
 CANONICAL = str(REPO_ROOT)
 
 
@@ -67,11 +67,11 @@ def sweep_skills() -> tuple[bool, str, list[str]]:
     return hard, summ, install
 
 
-def sweep_scheduled() -> tuple[bool, str]:
-    if not SCHED_DIR.exists():
-        return False, "scheduled SKIP  no ~/.claude/scheduled-tasks"
+def sweep_cron() -> tuple[bool, str]:
+    if not CRON_DIR.exists():
+        return False, "cron      SKIP  no ~/.hermes/cron"
     stale = []
-    for f in SCHED_DIR.rglob("*"):
+    for f in CRON_DIR.rglob("*"):
         if not f.is_file():
             continue
         try:
@@ -84,7 +84,7 @@ def sweep_scheduled() -> tuple[bool, str]:
     stale = sorted(set(stale))
     hard = bool(stale)
     flag = "DRIFT" if hard else "OK"
-    summ = f"scheduled {flag:5} {len(stale)} stale-path task(s)" + (f": {', '.join(stale)}" if stale else "")
+    summ = f"cron      {flag:5} {len(stale)} stale-path task(s)" + (f": {', '.join(stale)}" if stale else "")
     return hard, summ
 
 
@@ -94,26 +94,26 @@ def _git_dirty(pathspec: str) -> list[str]:
     for line in out.splitlines():
         if not line.strip():
             continue
-        # ignore untracked runtime state under .claude/state/
+        # ignore untracked runtime state under state/
         name = line[3:].strip()
-        if name.startswith(".claude/state/") or "/state/" in name:
+        if name.startswith("state/") or "/state/" in name:
             continue
         rows.append(line.rstrip())
     return rows
 
 
-def sweep_members() -> tuple[bool, str]:
-    rows = _git_dirty("star-alliance-members")
+def sweep_agents() -> tuple[bool, str]:
+    rows = _git_dirty("agents")
     # roster drift is informational, not hard — surfaces for the operator
     flag = "INFO" if rows else "OK"
-    summ = f"members   {flag:5} {len(rows)} uncommitted roster file(s)"
+    summ = f"agents    {flag:5} {len(rows)} uncommitted roster file(s)"
     return False, summ
 
 
 def sweep_config() -> tuple[bool, str]:
-    rows = _git_dirty(".claude")
+    rows = _git_dirty("AGENTS.md") + _git_dirty("state")
     flag = "INFO" if rows else "OK"
-    summ = f"config    {flag:5} {len(rows)} uncommitted .claude file(s) (runtime state ignored)"
+    summ = f"config    {flag:5} {len(rows)} uncommitted config/state file(s) (runtime state ignored)"
     return False, summ
 
 
@@ -128,11 +128,11 @@ def main() -> int:
     print("─" * 60)
 
     hard_skills, s_skills, install = sweep_skills()
-    hard_sched, s_sched = sweep_scheduled()
-    _, s_members = sweep_members()
+    hard_cron, s_cron = sweep_cron()
+    _, s_agents = sweep_agents()
     _, s_config = sweep_config()
 
-    for s in (s_skills, s_sched, s_members, s_config):
+    for s in (s_skills, s_cron, s_agents, s_config):
         print("  " + s)
 
     if args.reconcile and install and SKILL_SYNC.exists():
@@ -147,7 +147,7 @@ def main() -> int:
             print(f"   {skill}: {tail}")
         hard_skills = False  # reconciled
 
-    hard = hard_skills or hard_sched
+    hard = hard_skills or hard_cron
     print("─" * 60)
     if hard:
         print(" ✗ DRIFT — device is behind repo. Run --reconcile (skills) / repoint stale tasks.")

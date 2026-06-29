@@ -10,7 +10,7 @@ timestamp: 2026-06-27T00:00:00Z
 **Status:** LIVE  
 **Role:** doer · **Backend:** minimax-direct · **Kind:** text
 
-The one doer. Direct MiniMax cloud sub for all bulk generation/transform.
+The prime doer. Direct MiniMax cloud sub for bulk generation/transform.
 
 ## Backend
 

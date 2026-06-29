@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """critique.py — COLD critique: hand a diff/plan as TEXT to the Critic seat (default
-minimax-m3) and get back a refutation-focused review.
+kimi-k2.7) and get back a refutation-focused review.
 
-The Critic is deliberately a DIFFERENT model family than the Brain (opus) — a critic
+The Critic is deliberately a DIFFERENT model family than the Brain (glm-5.2) — a critic
 that shares the author's lineage shares its blind spots. This is the cheap, fast,
 tool-free review mode.
 
-TEXT-ONLY by nature: the Critic is a non-Claude weapon, so it CANNOT inspect the repo
+TEXT-ONLY by nature: the Critic is a non-thinker weapon, so it CANNOT inspect the repo
 (no grep/build/git/file reads). It judges only what you paste in. When the check must
 RUN something — grep for a regression, run the build, read a file the diff didn't
-include — use GROUNDED mode instead: Task a Claude review agent. Cold critique alone
+include — use GROUNDED mode instead: delegate_task a grounded review agent. Cold critique alone
 misses *absence* bugs (a stale id left in a file nobody pasted), so grounded verify is
 the backstop on real source changes. See weapon-utility §The Critic seat.
 
@@ -33,17 +33,12 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 
 
 def _critic_default():
-    """seats.critic.default from the registry, else minimax-m3.
-
-    The two-layer arsenal (Brain=opus + shared MiniMax doer) carries no critic seat,
-    so seats.critic is normally absent and the fallback fires. It must be minimax-m3,
-    not the retired glm-5.2 (no longer a known summon id) — still a non-Claude family,
-    so the Critic stays a DIFFERENT lineage than the opus Brain."""
+    """seats.critic.default from the registry, or kimi-k2.7 if unreadable."""
     try:
         with open(os.path.join(HERE, "models.json"), encoding="utf-8") as fh:
-            return json.load(fh).get("seats", {}).get("critic", {}).get("default") or "minimax-m3"
+            return json.load(fh).get("seats", {}).get("critic", {}).get("default") or "kimi-k2.7"
     except Exception:
-        return "minimax-m3"
+        return "kimi-k2.7"
 
 
 SYSTEM = (
@@ -63,7 +58,7 @@ def main():
                     help="Text to critique. Omit or '-' to read stdin.")
     ap.add_argument("-f", "--file", default=None, help="Read the text from a file path.")
     ap.add_argument("-m", "--model", default=None,
-                    help="Critic model (default: seats.critic.default, else minimax-m3).")
+                    help="Critic model (default: seats.critic.default, i.e. kimi-k2.7).")
     ap.add_argument("-s", "--system", default=SYSTEM, help="Override the critic system prompt.")
     ap.add_argument("--timeout", type=int, default=180, help="HTTP timeout seconds (default 180).")
     a = ap.parse_args()

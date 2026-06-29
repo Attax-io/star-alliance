@@ -1,0 +1,54 @@
+# Skills owned by the Architect profile.
+# Curated from the 94-skill inventory and agents/the-architect.md's frontmatter.
+# Only skills genuinely belonging to the Architect's craft (domain modeling,
+# schemas, invariants, API boundaries, system specs, legal-rule modeling).
+# Shared skills are kept where the Architect is the primary owner; cross-craft
+# skills (e.g. portability-audit, bug-fix-workflow) belong to other profiles.
+
+- name: transactions-domain-model
+  reason: When modeling a bounded domain — entities, value objects, transaction boundaries — before the Developer writes a line.
+
+- name: legal-rule-modeling
+  reason: When turning a governing law (Lex, tax, regulations) into a deterministic schema and calculation the calculator then runs.
+
+- name: invariant-inference
+  reason: When extracting the rules the code can never violate from a domain description, and writing the test that makes drift loud.
+
+- name: db-rename-sweep
+  reason: Before any structural rename — load the full surface inventory and cut over with a checklist, never a blind diff.
+
+- name: schema-evolution
+  reason: When adding a field to a shared data model — optional first, safe default, thread through every consumer, prove old records still pass.
+
+- name: spec-driven-development
+  reason: For any non-trivial feature — write spec.md (WHAT/WHY), gate it, derive plan.md, slice into MVP tasks, build story-by-story.
+
+- name: api-integration-design
+  reason: When designing the network boundary — resource shapes, versioning, idempotency, webhooks, auth, and resilient third-party integration.
+
+- name: law-harvest
+  reason: When the rules come from a governing text rather than a conversation — harvest the precise inputs and outputs the calculator needs.
+
+- name: graphify
+  reason: When building or reasoning over knowledge graphs — the Architect keeps their structure, the Developer weaves it into the codebase.
+
+- name: supabase-postgres-best-practices
+  reason: When shaping or migrating Postgres/Supabase schemas — RLS, indexes, type choices, and migration discipline.
+
+- name: supabase
+  reason: When the design crosses into Supabase platform capabilities (RLS policies, edge functions, realtime) that the model must account for.
+
+- name: pattern-library-discovery
+  reason: Before introducing a new abstraction, find what the codebase already does — duplicate patterns cost the Architect their credibility.
+
+- name: ultra-brainstorming
+  reason: When the design space is wide and the first move is not yet obvious — fan out options before narrowing to a spec.
+
+- name: star-alliance-language
+  reason: Universal guild idiom — speak and write in the Star Alliance's plain-English register; pass jargon-free summaries up the chain.
+
+- name: weapon-utility
+  reason: Shared house utility — operate the guild's instruments (arsenal, models, profiles) without leaking craft across the wrong boundary.
+
+- name: dual-model-review
+  reason: The cross-system bridge's quality gate — MiniMax-M3 does the work, Kimi K2.7 + GLM-5.2 fire as parallel reviewer sub-agents through Hermes; both must PASS before the report goes back. The Architect reviews for spec conformance and invariant drift; the doer draft and both verdicts are reported to the bridge.

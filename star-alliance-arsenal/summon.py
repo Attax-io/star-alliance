@@ -8,8 +8,8 @@ Usage examples:
     # 2. Route to an Ollama cloud bench model (e.g. glm-5.2 -> glm-5.2:cloud).
     python summon.py glm-5.2 "Solve: 17 * 23" --json
 
-    # 3. Opus is Claude-native: dispatched locally, not via a backend script.
-    #    The orchestrator should use the Task tool directly.
+    # 3. Claude models (opus/sonnet/haiku) are reserve models: dispatched via
+    #    delegate_task with a model override, not via a backend script.
     python summon.py opus "Draft a release note."
 """
 
@@ -23,11 +23,15 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 # Canonical model facts live in models.json (read via models_registry). The
 # literals below are a FAIL-SAFE only — used if the registry can't be read so a
 # broken file never bricks dispatch. Edit models.json, not these.
-# Two-layer system: no Ollama/cloud bench models remain, so there are no cloud
-# tags. Kept as an (empty) fail-safe mirror of models.json so dispatch and the
-# conformity FB(tags) check stay satisfied by construction.
-_FALLBACK_CLOUD_TAG = {}
-_FALLBACK_CLAUDE = {'opus', 'haiku'}
+_FALLBACK_CLOUD_TAG = {
+    'glm-5.2': 'glm-5.2:cloud',
+    'kimi-k2.7': 'kimi-k2.7-code:cloud',
+    'deepseek-v4-pro': 'deepseek-v4-pro:cloud',
+    'nemotron-3-ultra': 'nemotron-3-super:cloud',
+    'qwen3.5': 'qwen3.5:cloud',
+    'gemma4': 'gemma4:cloud',
+}
+_FALLBACK_CLAUDE = {'opus', 'sonnet', 'haiku'}
 
 if HERE not in sys.path:
     sys.path.insert(0, HERE)
@@ -44,15 +48,21 @@ except Exception:
 KNOWN_IDS = sorted(_KNOWN | {'minimax-m3'} | set(CLOUD_TAG) | CLAUDE)
 
 
-def _passthrough(args, token_flag=None):
+def _passthrough(args, token_flag=None, prompt_first=False):
     """Build the trailing flag/positional portion shared by every backend.
-
-    -s VALUE is prepended, --json and -f VALUE are appended, prompt is last.
 
     token_flag names the backend's max-output flag (minimax: --max-tokens,
     ollama_cloud: --num-predict); --timeout is shared across both backends.
+
+    prompt_first=True puts the prompt directly after the model positional —
+    required by backends (ollama_cloud.py) whose prompt arg uses nargs="?".
+    argparse treats an unmatched trailing token as unrecognized when the
+    optionals have already been greedily consumed, so the prompt MUST come
+    before the optionals for those backends.
     """
     parts = []
+    if prompt_first and args.prompt is not None:
+        parts.append(args.prompt)
     if args.system is not None:
         parts += ['-s', args.system]
     if getattr(args, 'json'):
@@ -63,7 +73,7 @@ def _passthrough(args, token_flag=None):
         parts += [token_flag, str(args.max_tokens)]
     if getattr(args, 'timeout', None) is not None:
         parts += ['--timeout', str(args.timeout)]
-    if args.prompt is not None:
+    if not prompt_first and args.prompt is not None:
         parts.append(args.prompt)
     return parts
 
@@ -121,21 +131,21 @@ def main():
         sys.exit(subprocess.run(cmd, env=env).returncode)
 
     # 2. CLOUD_TAG models -> ollama_cloud.py with the cloud tag FIRST,
-    #    then the standard passthrough (prompt trailing).
+    #    then prompt immediately (nargs="?" argparse trap), then optionals.
     if args.model_id in CLOUD_TAG:
         cmd = [
             sys.executable,
             os.path.join(HERE, 'ollama_cloud.py'),
             CLOUD_TAG[args.model_id],
         ]
-        cmd += _passthrough(args, token_flag='--num-predict')
+        cmd += _passthrough(args, token_flag='--num-predict', prompt_first=True)
         sys.exit(subprocess.run(cmd, env=env).returncode)
 
     # 3. Claude models are native to the orchestrator; no backend script.
     if args.model_id in CLAUDE:
         print(
             f"summon: {args.model_id} is Claude (native) \u2014 you are the "
-            f"orchestrator; use the Task tool with model={args.model_id}, "
+            f"orchestrator; use delegate_task with model={args.model_id}, "
             f"no script needed.",
             file=sys.stderr,
         )

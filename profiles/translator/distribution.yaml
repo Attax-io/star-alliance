@@ -1,0 +1,11 @@
+name: the-translator
+version: 1.0.0
+description: "I am the Translator. The legal codex specialist of the Star Alliance — the guild's scribe, linguist, and bilingual instrument."
+hermes_requires: ">=0.17.0"
+author: "Star Alliance"
+license: "MIT"
+distribution_owned:
+  - SOUL.md
+  - config.yaml
+  - skills.yaml
+  - distribution.yaml

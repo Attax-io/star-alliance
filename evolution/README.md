@@ -38,23 +38,23 @@ ledger    engine       engine     verify-    scoreboard  │
 | Organ | File | Role |
 |---|---|---|
 | **SENSE** | `ledger.py` → `ledger.jsonl` | one append-only, git-tracked event stream (`change`, `verdict`, `learning`, `metric`, `proposal`, `revert`, `block`) |
-| **VERIFY** | `verdict.py` | *runs* the Critic (`critique.py`, glm-5.2 — a different model family) and returns a parsed `pass`/`concerns`/`block`/`error` |
+| **VERIFY** | `verdict.py` | *runs* the Critic (`critique.py`, kimi-k2.7 — a different model family) and returns a parsed `pass`/`concerns`/`block`/`error` |
 | **DIAGNOSE + CHANGE** | `engine.py` | reads the scoreboard → tier-tagged proposals → routes them (Tier-A reversible vs Tier-B human-gated) |
 | **REMEMBER** | `scoreboard.py` | turns the ledger into fitness numbers: regression escapes, block rate, concern density, repeated learnings, cost trend |
-| **The gate** | `.claude/hooks/verify-gate.py` | the VERIFY organ wired into the Stop hook — armed by default, auto-runs the critic, auto-clears on pass, blocks on block |
+| **The gate** | `server/star_alliance_mcp.py` (sa_verify) | the VERIFY organ wired as an MCP gate — armed by default, auto-runs the critic, auto-clears on pass, blocks on block |
 
 ## Reversibility tiers — the safety line
 
 - **Tier A** — `skills`, `memory`, `docs`. Reversible. *May* be auto-applied (only
   with `--apply`, only after an independent pass).
-- **Tier B** — `hooks`, `doctrine`, `gates`, `arsenal`, `workflows`. Load-bearing.
+- **Tier B** — `gates`, `doctrine`, `arsenal`, `workflows`. Load-bearing.
   **Never** auto-applied. The engine files a proposal and waits for a human "go".
   This is the line that stops an unsupervised nightly run from rewriting its own
   safety rails.
 
 ## Risk posture — fail OPEN on infra, fail CLOSED on judgment
 
-- **Critic unreachable** (no network): the Stop gate *degrades to manual* — it
+- **Critic unreachable** (no network): the MCP verify gate *degrades to manual* — it
   never hard-traps a human session on infrastructure. Unsupervised routines get
   their fail-closed guarantee in their own flow (`verdict.py --fail-closed` before
   commit), because an unattended run must not commit unreviewed.
@@ -64,8 +64,8 @@ ledger    engine       engine     verify-    scoreboard  │
 
 ```
 touch evolution/DISARMED      # kill switch — stands the whole engine + gate down
-SA_SKIP_VERIFY=1              # one-turn human bypass of the gate
-SA_AUTO_CRITIC=0             # gate falls back to manual review (no auto-critic)
+SA_SKIP_VERIFY=1              # one-turn human bypass of the verify gate
+SA_AUTO_CRITIC=0             # verify gate falls back to manual review (no auto-critic)
 python3 evolution/engine.py            # shadow: propose only, commit nothing (default)
 python3 evolution/engine.py --apply    # leave shadow (still Tier-B-gated, still honors DISARMED)
 python3 evolution/scoreboard.py        # read the fitness scoreboard
@@ -74,7 +74,7 @@ python3 evolution/ledger.py tail -n 20 # inspect the event stream
 
 ## Evaluated, not changed — small-diff auto-critic skip (2026-06-28)
 
-The gate runs a synchronous ~150s cold critic in the Stop hook on every
+The MCP verify gate runs a synchronous ~150s cold critic on every
 source-touching turn. A proposed optimization was to skip the auto-critic for
 small interactive diffs (< N changed lines) and defer them to routine-time
 grounded review, to keep interactive UX snappy.
@@ -96,7 +96,7 @@ that catches regressions. So the rebuild is a strangler:
 
 - **Phase 0 — Shadow + ledger.** ✅ `ledger`/`verdict`/`scoreboard`/`engine` built;
   engine runs read-only, commits nothing.
-- **Phase 1 — Mandatory critic-gate.** ✅ `verify-gate.py` v2 — armed by default,
+- **Phase 1 — Mandatory critic-gate.** ✅ the MCP verify gate — armed by default,
   auto-runs the critic, auto-clears on pass, ledgers every verdict.
 - **Phase 2 — Unify the ledger.** ⏳ route `turn-cost.py` + `learn.py` into the one
   stream; old stores become compat views, then retire.

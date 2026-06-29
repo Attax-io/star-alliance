@@ -61,7 +61,7 @@ def scout(window: str, apply: bool) -> int:
         print(f"ERROR: build_guild_log.py exited {code}: {err.strip()}", file=sys.stderr)
         return code
 
-    # NOTE: log_event.py is for *manual* entries git cannot derive (skill/member
+    # NOTE: log_event.py is for *manual* entries git cannot derive (skill/agent
     # creation, dashboard redesigns). It needs a human-authored --type/--title and
     # is therefore not auto-invoked here; the scout surfaces git-derivable entries
     # and rebuilds. Manual events stay an explicit `python3 log_event.py ...` call.

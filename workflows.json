@@ -110,7 +110,7 @@
           "title": "Implement the Plan",
           "act": "The Developer writes the code, fixes any bugs, and self-tests everything before handing it back.",
           "produces": "working implementation",
-          "thinker": "haiku",
+          "thinker": "glm-5.2",
           "doers": [
             {
               "model": "minimax-m3",

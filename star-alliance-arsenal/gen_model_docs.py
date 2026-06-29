@@ -8,7 +8,7 @@ shared concurrency/findings notes. Re-run after editing models.json:
     python3 star-alliance-arsenal/gen_model_docs.py
 
 Writes star-alliance-arsenal/models/<id>.md + README.md. Bypasses the okf-gate
-PreToolUse hook (plain file writes) but emits conformant `type:` frontmatter.
+MCP gate hook (plain file writes) but emits conformant `type:` frontmatter.
 """
 import json
 import os
@@ -61,9 +61,9 @@ def backend_doc(mid, d):
     be = d.get("backend")
     if be == "claude":
         return (
-            "Claude-native. **No script, no pull.** The orchestrator IS this model.",
+            "Claude-native. **No script, no pull.** Reserve model — dispatched via delegate_task.",
             "_None._ Nothing to pull — Claude runs inside the harness.",
-            "Run via the **Task tool** with `model=%s`. `summon.py %s` only prints a "
+            "Run via **delegate_task** with `model=%s`. `summon.py %s` only prints a "
             "reminder (exit 0) — it does NOT call a backend." % (mid, mid),
             False,
             "Counts against your **Claude plan** 5h window, not Ollama — a separate "

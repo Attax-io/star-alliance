@@ -2,7 +2,7 @@
 """
 imagegen.py — Star Alliance image-01 weapon runner.
 
-Generates 1024x1024 skill/member/workflow art tiles via MiniMax image-01.
+Generates 1024x1024 skill/agent/workflow art tiles via MiniMax image-01.
 Output is always JPEG bytes saved with the requested filename (even if .png).
 Matches the house format: every *.png tile in skill-art/ is JPEG bytes.
 

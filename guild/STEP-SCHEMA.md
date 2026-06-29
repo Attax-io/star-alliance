@@ -16,8 +16,8 @@ plain prose step and behaves exactly as before. Prose never breaks.
 | Field | Type | Meaning |
 |---|---|---|
 | `title` | string | Display name. Also a routing key for the human handoff fallback (see `HUMAN_TITLES` in `run.py`). |
-| `act` | string | The prose instruction. For a prose step, this becomes the prompt sent to the member's weapon. |
-| `actor` | string | Member id (`the-butler`, `the-developer`, …) **or** `user`/`you`. `user` ⇒ the step is a human handoff (skipped by the runner). |
+| `act` | string | The prose instruction. For a prose step, this becomes the prompt sent to the agent's weapon. |
+| `actor` | string | Agent id (`the-butler`, `the-developer`, …) **or** `user`/`you`. `user` ⇒ the step is a human handoff (skipped by the runner). |
 | `weapon` | string | Arsenal model id (`minimax-m3`, `kimi-k2.7`, …). Defaults to `minimax-m3` if absent. The weapon that executes a prose step. |
 | `script` | string | Path to a runnable script (repo-relative). If present, the step runs the script instead of a model. **Highest-priority resolver.** |
 | `args` | object | Literal `{key: value}` flags for a **script** step. The runner translates them to `--key value` CLI flags appended to the invocation (see *args → flags* below). Steps with no `args` invoke the script exactly as before — fully backward-compatible. |
@@ -62,7 +62,7 @@ A run writes its artifacts under a **state dir** — `runs/<workflow id>/` by de
 per-step `produces` files (`*.md`) plus a `run_summary.md`. **`runs/` is gitignored
 scratch** (`.gitignore` line `runs/`) and is **outside conformity scope**:
 `conformity_check.py` audits only the JSON guild model and a fixed set of known
-source dirs (`star-alliance-skills/`, `star-alliance-members/`, …) — it performs **no
+source dirs (`star-alliance-skills/`, `agents/`, …) — it performs **no
 filesystem scan for stray/orphan files** and never reads `runs/`. So run outputs are
 never flagged as stray or missing, and no ignore-list is needed. To cap the scratch,
 use `guild/prune_runs.py [--keep N] [--dry-run]` (keeps the N most-recent run dirs).
@@ -79,12 +79,12 @@ enforce the SW4 integration-follows-swarm invariant within that stage. A workflo
 tags is exactly today's flat list — zero migration cost.
 
 ### `swarm` object
-An optional object on a `kind:"member"` step that tells the Butler to fan the work across N parallel
-instances of the same member, each owning a disjoint slice. Absent = today's behavior.
+An optional object on a `kind:"agent"` step that tells the Butler to fan the work across N parallel
+instances of the same agent, each owning a disjoint slice. Absent = today's behavior.
 
 ```jsonc
 "swarm": {
-  "member": "the-developer",   // MUST equal the step's own actor (SW1)
+  "agent": "the-developer",   // MUST equal the step's own actor (SW1)
   "max_instances": 4,          // 1 < n <= 5 = MAX_SWARM (SW2)
   "min_instances": 2,          // >= 2 and <= max_instances (SW2); below this, run as single step
   "partition": "by-module",    // by-file | by-module | by-subtask (SW3)
@@ -94,13 +94,13 @@ instances of the same member, each owning a disjoint slice. Absent = today's beh
 ```
 
 **Constraints enforced by `conformity_check.py` (SW1–SW5):**
-- **SW1** `swarm.member` must equal the step's `actor`.
+- **SW1** `swarm.agent` must equal the step's `actor`.
 - **SW2** `1 < max_instances <= 5` and `2 <= min_instances <= max_instances`.
 - **SW3** `partition` ∈ `{by-file, by-module, by-subtask}` and `isolation` ∈ `{shared-tree, worktree}`.
 - **SW4** A swarm step with `integration_step: true` must be followed, within the **same `stage`**, by
   a step with `exec: "inline"` and the same `actor`. The integration step is always inline so the
   Stop-hook Critic reviews the aggregate diff before commit.
-- **SW5** `swarm.member` must be a real guild member id (present in `guild-data.json`).
+- **SW5** `swarm.agent` must be a real guild agent id (present in `guild-data.json`).
 
 A `swarm` object implies `exec: "spawn"` and `parallel: true` on the same step.
 
@@ -131,7 +131,7 @@ The additive fields are now applied to `workflows.json`:
 - **24 × "Confirm Guild Conformance"** steps carry `"script": "guild/conformance.py"` in the
   data. The runner resolves them via the step's own `script` field — the `TITLE_SCRIPT` crutch
   is removed from `run.py`.
-- Every other member step stays **prose** (judgement). Steps that *touch* tooling but bundle
+- Every other agent step stays **prose** (judgement). Steps that *touch* tooling but bundle
   judgement or chain multiple calls — *Reconcile to Conformity* (decide which contradiction is
   real → fix at source → `build.py` → re-run), *Log the Missing Entries* (`build_guild_log.py`
   + `log_event.py` + `build.py`), *Scout the Sessions*, *Write to the Star Map*, *Wire the Art*

@@ -1,0 +1,11 @@
+name: the-developer
+version: 1.0.0
+description: "I am the Developer. I am the smith at the forge of the Star Alliance guild."
+hermes_requires: ">=0.17.0"
+author: "Star Alliance"
+license: "MIT"
+distribution_owned:
+  - SOUL.md
+  - config.yaml
+  - skills.yaml
+  - distribution.yaml

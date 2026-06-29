@@ -272,8 +272,8 @@ def _cli():
     # ── Executor Discipline ──────────────────────────────────────────────────
     # Reads from the ledger (same source of truth as the rest of the scoreboard).
     # Catches the failure mode the executor-enforce hook was built to prevent:
-    # the agent bypassing the lock and running bulk work on the brain model
-    # (sonnet) instead of the executor seat (minimax-m3).
+    # the agent bypassing the lock and running bulk work on the thinker model
+    # (thinker) instead of the executor seat (minimax-m3).
     ed = _executor_discipline(since=s.get("since"))
     print("\n── Executor Discipline ──")
     if ed["override_count"] == 0 and ed["direct_write_blocks"] == 0:
@@ -288,9 +288,9 @@ def _cli():
           f"(Butler tried Edit/Write directly)")
     print(f"  doer summons       : {ed['doer_summons']} total, "
           f"{ed['minimax_m3_share']} minimax-m3, "
-          f"{ed['sonnet_share']} sonnet")
+          f"{ed['thinker_share']} thinker")
     if ed["verdict"] == "STRAYING":
-        print(f"  → STRAYING — sonnet-as-doer share is {ed['sonnet_share']}; "
+        print(f"  → STRAYING — thinker-as-doer share is {ed['thinker_share']}; "
               f"the brain is doing the executor's job")
     elif ed["verdict"] == "MIXED":
         print(f"  → MIXED — minimax-m3 share is {ed['minimax_m3_share']}; "
@@ -315,24 +315,24 @@ def _executor_discipline(since: str | None = None) -> dict:
     # Models come from the weapon-gate which emits a comma-separated list.
     # Each comma-separated model counts as one summon (approximate; multi-model
     # fan-outs split evenly).
-    minimax = sonnet = other = 0
+    minimax = thinker = other = 0
     for e in doer_signals:
         models = (e.get("meta") or {}).get("models", []) or []
         for m in models:
             ml = m.lower()
             if ml == "minimax-m3":
                 minimax += 1
-            elif ml in ("sonnet", "opus", "haiku"):
-                sonnet += 1
+            elif ml in ("glm-5.2", "kimi-k2.7", "opus", "sonnet", "haiku"):
+                thinker += 1
             else:
                 other += 1
-    total_doer = minimax + sonnet + other
+    total_doer = minimax + thinker + other
     if total_doer == 0:
         mm_share = son_share = "n/a"
         verdict = "ALIGNED"
     else:
         mm_pct = minimax / total_doer * 100
-        son_pct = sonnet / total_doer * 100
+        son_pct = thinker / total_doer * 100
         mm_share = f"{mm_pct:.0f}%"
         son_share = f"{son_pct:.0f}%"
         # Verdict thresholds tuned for project shape: minimax-m3 is the doer
@@ -351,10 +351,10 @@ def _executor_discipline(since: str | None = None) -> dict:
         "direct_write_blocks": len(blocks),
         "doer_summons": total_doer,
         "minimax_m3": minimax,
-        "sonnet": sonnet,
+        "thinker": thinker,
         "other": other,
         "minimax_m3_share": mm_share,
-        "sonnet_share": son_share,
+        "thinker_share": son_share,
         "verdict": verdict,
     }
 

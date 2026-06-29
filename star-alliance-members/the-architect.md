@@ -1,7 +1,7 @@
 ---
 name: the-architect
 description: "Deploy for system design, domain modeling, database architecture, and structural refactoring. Triggers: 'design the system', 'model the domain', 'architect the database', 'refactor the structure'."
-model: haiku
+model: glm-5.2
 tools: [Read, Edit, Write, Bash]
 skills: [transactions-domain-model, legal-rule-modeling, invariant-inference, db-rename-sweep, schema-evolution, spec-driven-development, law-harvest, graphify, supabase, supabase-postgres-best-practices, pattern-library-discovery, ultra-brainstorming, api-integration-design, star-alliance-language, weapon-utility]
 type: Member

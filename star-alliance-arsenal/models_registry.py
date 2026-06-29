@@ -63,7 +63,7 @@ def weight_map(path=None):
 
 def seats(path=None):
     """The universal role seats block (Brain/Doer/Critic/Bench) from models.json.
-    {} if absent or unreadable — callers degrade to per-member defaults."""
+    {} if absent or unreadable — callers degrade to per-agent defaults."""
     try:
         with open(path or _PATH, encoding="utf-8") as fh:
             return json.load(fh).get("seats", {})

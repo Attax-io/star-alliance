@@ -1,0 +1,65 @@
+# Skills owned by the Merchant profile.
+# Curated from the project's 94-skill inventory (star-alliance-skills/) and
+# agents/the-merchant.md's frontmatter. Only skills that resolve on disk
+# under star-alliance-skills/ or ~/.hermes/skills/ are included; the suggested
+# polymarket skill was not present on disk and is documented as dropped below.
+#
+# Each skill is a directory reference; the runtime resolves it from the
+# project inventory or the active Hermes profile's skill tree.
+
+- name: market-recon
+  reason: First-pass market reconnaissance — filings, news, flows, order book, social signal before any model is built.
+
+- name: trading-strategy
+  reason: Designing, critiquing, and backtesting trading strategies; the canonical home of strategy work.
+
+- name: algorithmic-trading-chan
+  reason: Ernest Chan doctrine — mean-reversion and momentum at the right horizon, cost-aware, out-of-sample discipline.
+
+- name: portfolio-risk
+  reason: Position sizing, correlation, drawdown budget, regime-shift detection — portfolio construction over single bets.
+
+- name: japanese-candlesticks
+  reason: Reading single-candle and multi-candle structure as the market's own data type, not as decoration.
+
+- name: chart-patterns
+  reason: Recognizing high-level structural patterns as one input among five, never as a sole signal.
+
+- name: price-action
+  reason: Price behavior at levels — rejection, acceptance, failure — the tape's plain-English commentary.
+
+- name: volume-price-analysis
+  reason: Volume confirms or denies price; the second opinion that turns a pattern into a thesis or a warning.
+
+- name: probability-statistics
+  reason: The math under every signal — distributions, hypothesis tests, Bayesian updates, expected value.
+
+- name: timeseries-forecasting
+  reason: Forecasting horizon, stationarity, regime — when a series is forecastable and when it is just noise.
+
+- name: cn-market-strategy-pack
+  reason: China-market-specific structure, flows, and constraints — the A-share playbook when the venue demands it.
+
+- name: financial-data-reach
+  reason: Reaching authoritative financial data sources (filings, official feeds) through the web layer with provenance.
+
+- name: data-analysis-viz
+  reason: Showing the user what the analysis actually says — chart the distribution, the drawdown, the regime.
+
+- name: agent-web-reach
+  reason: Pulling primary sources from the live web — earnings calls, regulatory pages, market microstructure data.
+
+- name: storm-investigation
+  reason: When a position, a portfolio, or a market is in chaos — structured investigation from symptom to cause.
+
+- name: ultra-brainstorming
+  reason: Fanning out research angles before narrowing to a thesis — Bull / Bear / Macro / Quant / Contrarian.
+
+- name: star-alliance-language
+  reason: Universal guild idiom — speak and write in the Star Alliance's plain-English register; pass jargon-free summaries up the chain.
+
+- name: weapon-utility
+  reason: Shared house utility — operate the guild's instruments (arsenal, models, profiles) without leaking craft across the wrong boundary.
+
+- name: dual-model-review
+  reason: The cross-system bridge's quality gate — MiniMax-M3 produces the analysis or backtest, Kimi K2.7 + GLM-5.2 fire as parallel reviewer sub-agents through Hermes; both must PASS before the report goes back. The Merchant tunes the reviewer prompts to check methodology (probability-statistics) and risk (portfolio-risk) dimensions — neither reviewer duplicates the other's lens.

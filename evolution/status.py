@@ -28,10 +28,10 @@ def _safe(fn, default):
 
 
 def routines() -> list:
-    """Recurring scheduled tasks, read from ~/.claude/scheduled-tasks/*/SKILL.md
+    """Recurring scheduled tasks, read from Hermes cron jobs
     frontmatter — the same store the app's 'Scheduled' sidebar uses. cron is best-
     effort (the MCP keeps the canonical schedule outside the file)."""
-    base = os.path.join(os.path.expanduser("~"), ".claude", "scheduled-tasks")
+    base = os.path.join(os.path.expanduser("~"), ".hermes", "cron")
     out = []
     try:
         ids = sorted(os.listdir(base))

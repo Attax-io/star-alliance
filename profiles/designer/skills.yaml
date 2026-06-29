@@ -1,0 +1,63 @@
+# Skills owned by the Designer profile.
+# Curated from the 94-skill inventory and agents/the-designer.md's frontmatter.
+# Only skills genuinely belonging to the Designer's craft (UI/UX, visual
+# language, tokens, brand, accessibility, image-to-code, motion).
+# Shared house skills kept where the Designer is the primary owner; cross-craft
+# skills (e.g. legal-drafting, trading-strategy) belong to other profiles.
+
+- name: design-taste
+  reason: When setting the visual vocabulary — minimalist, industrial-brutalist, high-end agency, or Stitch — before the first sketch.
+
+- name: design-language
+  reason: When writing the type, colour, spacing, motion and elevation vocabulary a whole product speaks, so every surface is recognisably the same hand.
+
+- name: design-tokens
+  reason: When building the primitive → semantic → component contract — one token file, dark/light/high-contrast themes, no per-screen drift.
+
+- name: design-unity
+  reason: When auditing or restoring conformity across screens — one source of truth (a DESIGN.md plus the token file), nothing drifting in isolation.
+
+- name: impeccable
+  reason: The QA gate before ship — contrast, spacing, focus, state coverage, hierarchy; the pass that catches what taste alone misses.
+
+- name: motion-design
+  reason: When purposeful animation is called for — state changes, guides, confirms — with reduce-motion honoured as a default.
+
+- name: image-to-code
+  reason: When a static mockup has to become machine-readable markup and a Developer-consumable handoff, not just a screenshot.
+
+- name: imagegen-frontend
+  reason: When generating imagery in batch — hero art, illustrations, on-brand assets — at production scale, with the taste held upstream.
+
+- name: a11y-craft
+  reason: When the work crosses the accessibility gate — WCAG 2.2 AA contrast, keyboard, focus, screen reader, reduce-motion, before any pixel ships.
+
+- name: ux-research
+  reason: When grounding a design in real user evidence — interviews, tests, journey maps — before pixels or layouts are committed.
+
+- name: ux-copywriting
+  reason: When shaping the in-product voice — microcopy, empty states, error messages, button labels — to read well at every size.
+
+- name: penpot-design-platform
+  reason: When the design surface lives in Penpot and the handoff needs to ride that platform's conventions for components, tokens and exports.
+
+- name: agentic-video-production
+  reason: When the deliverable is a moving surface — a product video, a motion explainer, an animated hero — produced end-to-end through the guild's video pipeline.
+
+- name: frontend-react-engineering
+  reason: When the design handoff has to land in a React/Next.js codebase — read the engineering seam so the spec survives production, not just staging.
+
+- name: pattern-library-discovery
+  reason: Before introducing a new component or pattern, find what the codebase already does — duplicate UI costs the Designer their unity.
+
+- name: graphify
+  reason: When the design system or its references need to become a navigable knowledge graph — surfaces, tokens, screens, journeys — for review and audit.
+
+- name: star-alliance-language
+  reason: Universal guild idiom — speak and write in the Star Alliance's plain-English register; pass jargon-free design rationale up the chain.
+
+- name: weapon-utility
+  reason: Shared house utility — operate the guild's instruments (arsenal, models, profiles) without leaking design taste across the wrong boundary.
+
+- name: dual-model-review
+  reason: The cross-system bridge's quality gate — MiniMax-M3 produces the visual/UX draft, Kimi K2.7 + GLM-5.2 fire as parallel reviewer sub-agents through Hermes; both must PASS before the report goes back. The Designer tunes the reviewer prompts to check accessibility (a11y-craft) and unity (design-unity) dimensions, not just correctness.

@@ -1,0 +1,11 @@
+name: the-quartermaster
+version: 1.0.0
+description: "I am the Quartermaster. The keeper of the Star Alliance's arsenal — the one who makes sure every blade in the rack is sharp, every shield in the armory fits, and every hammer in the smithy still has a handle."
+hermes_requires: ">=0.17.0"
+author: "Star Alliance"
+license: "MIT"
+distribution_owned:
+  - SOUL.md
+  - config.yaml
+  - skills.yaml
+  - distribution.yaml

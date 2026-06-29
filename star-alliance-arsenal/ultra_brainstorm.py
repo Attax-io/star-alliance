@@ -15,7 +15,8 @@ plan cap either way.
 
 Claude thinkers (opus/sonnet/haiku) are NOT run here — they are native to the
 orchestrator. The runner lists them in `run_via_task` so the caller knows to spawn
-them with the Task tool (model=opus, …) and fold those minds into the same panel.
+them with delegate_task (model=glm-5.2, …) and fold those minds into the same panel.
+Note: opus/sonnet/haiku are reserve models — pass them via --models if wanted.
 
 Usage:
     python ultra_brainstorm.py "<brief>"                 # auto-detect panel
@@ -50,7 +51,7 @@ except Exception:  # pragma: no cover - summon must be importable in practice
 
 # Default panel — the guild's THINKER set. minimax-m3 is direct-API (its own pool,
 # costs no Ollama slot); the rest are Ollama-cloud thinkers. nemotron-3-ultra and
-# qwen3.5 are reserve (not in any member loadout) — pass them via --models if wanted.
+# qwen3.5 are reserve (not in any agent loadout) — pass them via --models if wanted.
 _DEFAULT_ORDER = [
     "minimax-m3",
     "deepseek-v4-pro",
@@ -177,7 +178,7 @@ def main():
     result = {
         "brief": brief,
         "panel": panel,
-        "run_via_task": run_via_task,  # orchestrator runs these with the Task tool
+        "run_via_task": run_via_task,  # orchestrator runs these with delegate_task
         "ran": len(panel),
         "failed": failed,
     }

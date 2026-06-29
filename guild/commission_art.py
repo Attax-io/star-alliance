@@ -1,7 +1,7 @@
 """commission_art.py — Art Forge: commission an image asset from a brief.
 
 Drives the REAL image weapon: star-alliance-arsenal/imagegen.py (MiniMax image-01,
-direct API, 1024x1024 JPEG-as-png — the same forge that makes every skill/member/
+direct API, 1024x1024 JPEG-as-png — the same forge that makes every skill/agent/
 workflow tile). image-01 is NOT routable by summon.py (only text weapons are wired
 there), so this calls imagegen.py directly instead.
 

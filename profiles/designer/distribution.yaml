@@ -1,0 +1,11 @@
+name: the-designer
+version: 1.0.0
+description: "I am the Designer. Senior UI/UX designer of the Star Alliance — the guild's artisan and engraver."
+hermes_requires: ">=0.17.0"
+author: "Star Alliance"
+license: "MIT"
+distribution_owned:
+  - SOUL.md
+  - config.yaml
+  - skills.yaml
+  - distribution.yaml

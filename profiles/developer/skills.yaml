@@ -1,0 +1,68 @@
+# Skills owned by the Developer profile.
+# Each skill is referenced by directory name; the runtime resolves it from the
+# project inventory (star-alliance-skills/) or the active Hermes skill tree
+# (~/.hermes/skills/). Source candidates were drawn from the project's 94-skill
+# inventory AND members/the-developer.md's skills: frontmatter.
+
+- name: python-master
+  reason: Default craft — Python is the guild's primary implementation language for tools, scripts, and services.
+
+- name: systematic-debugging
+  reason: Structured triage from symptom to root cause; pairs with the "verify root cause, not symptom" loop.
+
+- name: automated-testing
+  reason: Run and extend the project's existing test suite — every fix ships with verification.
+
+- name: test-driven-development
+  reason: When a scaffold is needed, write the failing test first so the implementation has a target.
+
+- name: dev-server
+  reason: Lifecycle management for local dev servers — start, restart, inspect, recover when something is wedged.
+
+- name: bug-fix-workflow
+  reason: The canonical end-to-end bug loop — reproduce, locate root cause, patch, regression-test, verify.
+
+- name: code-review-craft
+  reason: Read other agents' diffs before and after my own work — and prepare mine for review.
+
+- name: requesting-code-review
+  reason: Hand my diffs to the Critic for an independent verdict before declaring work done.
+
+- name: hermes-agent-skill-authoring
+  reason: When a new capability is needed mid-task, I can author or extend a skill instead of blocking the mission.
+
+- name: simplify-code
+  reason: After a fix lands, I take a pass to delete dead branches, rename for clarity, and reduce surface area.
+
+- name: db-rename-sweep
+  reason: Pre-flight check before any structural rename — see the surface before I cut.
+
+- name: performance
+  reason: Catch obvious perf cliffs (O(n²) loops, N+1 queries) during implementation, not as a follow-up.
+
+- name: frontend-react-engineering
+  reason: Implement Designer intent on the UI layer — React components, hooks, state, accessibility wiring.
+
+- name: computer-use
+  reason: Drive the local GUI when a CLI path is blocked — verify a running app visually, click through a flow.
+
+- name: full-output-enforcement
+  reason: When I need to see the whole output of a long-running command (build logs, test runs), I suppress truncation.
+
+- name: python-debugpy
+  reason: Step-debug Python processes when print-debugging isn't enough — breakpoints, inspection, post-mortem.
+
+- name: node-inspect-debugger
+  reason: Same as debugpy, for the Node/JS side of the stack when the dev server is the thing that's broken.
+
+- name: spike
+  reason: Quick throwaway probes when I need to confirm an approach before committing to an implementation.
+
+- name: plan
+  reason: Lightweight planning for tasks that span a few files — what to change, in what order, with what verification.
+
+- name: github-pr-workflow
+  reason: Open, label, review, and merge the pull requests that carry my work into the main branch.
+
+- name: dual-model-review
+  reason: The cross-system bridge's quality gate — MiniMax-M3 writes the code, Kimi K2.7 + GLM-5.2 fire as parallel reviewer sub-agents through Hermes; both must PASS before the report goes back. The Developer tunes the reviewer prompts to check correctness and security dimensions (different families → diverse blind spots); re-dispatches the doer on any BLOCK.

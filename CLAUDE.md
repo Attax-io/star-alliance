@@ -60,6 +60,51 @@ write. Read-only Bash commands (ls, cat, grep, git status, git log, git diff) re
 allowed in child sessions. The main session (Butler) is separately blocked by executor-enforce.py and must
 also route writes through dispatch. Kill switch shared by both gates: .claude/state/executor-enforce-disarmed or evolution/DISARMED.
 
+## The three-layer architecture (Claude → dispatch → Hermes)
+
+This repo runs a three-layer system. Claude is the orchestrator; Hermes profiles
+do the actual specialist work. The `models.json` in `star-alliance-arsenal/`
+describes the Hermes-side model seats — **do not edit it from the Claude side**
+unless you understand the triple-seat system below.
+
+**Layer 1 — Claude Butler (this repo, this session).**
+The Butler runs as a Claude model (Opus/Sonnet). It takes orders, restates them,
+hands them to the Strategist, tracks the gates, and reports the result. It never
+writes files directly — the executor-enforce hook blocks that.
+
+**Layer 2 — Claude subagents (Strategist, specialists).**
+The Strategist and any specialist subagents run as Claude models too. They plan,
+route, and frame work. When a specialist needs to *write* files or execute code,
+the dispatch-enforce hook forces them through `tools/dispatch.py` — they cannot
+write files directly. The dispatch script calls the matching Hermes profile.
+
+**Layer 3 — Hermes profiles (the triple-seat system).**
+Each Hermes profile (Architect, Developer, Designer, etc.) runs its own model
+internally. The model assignments live in `star-alliance-arsenal/models.json`
+and are managed by the Hermes side — **not by Claude**. The three seats are:
+
+| Seat | Default Model | Fallback | Role |
+|---|---|---|---|
+| **Thinker (Brain)** | GLM-5.2 | kimi-k2.7 → deepseek-v4-pro | Plans, reviews, wields tools |
+| **Doer** | MiniMax M3 | — | Executes bulk work, returns text |
+| **Critic** | Kimi K2.7 | glm-5.2 → deepseek-v4-pro | Refutes the brain before shipping |
+
+Claude models (Opus, Sonnet, Haiku) are **reserves only** in the Hermes profiles
+— available for bench-swarm and ultra-brainstorming, but never a default seat.
+
+**What this means for Claude:**
+- **Do not touch `models.json`** — it's the Hermes arsenal registry. The Hermes
+  side manages it. Claude's job is orchestration, not model assignment.
+- **Do not change the dispatch flow** — `dispatch.py` → `hermes -p <profile>`
+  → Hermes profile reads from `~/.hermes/profiles/<slug>/`. That installed profile
+  is a distribution sourced from `profiles/<agent>/` in this repo.
+- **Profile parity** — `tools/conformity_check.py` includes a `PD` check that
+  verifies the repo `profiles/<agent>/` matches the installed `~/.hermes/profiles/`.
+  If they drift, run `python3 tools/publish_profiles.py --update` to sync.
+- **When you change a profile's SOUL.md or config** — edit in `profiles/<agent>/`
+  in this repo, then run `python3 tools/publish_profiles.py --update` to push it
+  to the installed Hermes profiles. Memories, sessions, and auth are preserved.
+
 ## Two layers: Claude thinker plans & reviews · MiniMax doer executes bulk
 
 There is **no single "default model"** — there are two roles, and "MiniMax first"

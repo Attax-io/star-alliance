@@ -1,5 +1,5 @@
 """wire.py — Arsenal / Skill / Workflow Forge: read a spec JSON, update the right
-registry, optionally propagate to member loadouts, then rebuild guild-data.
+registry, optionally propagate to agent loadouts, then rebuild guild-data.
 
 Registries by --kind:
     weapon    -> star-alliance-arsenal/models-usage.json  (arsenal usage entry)
@@ -103,12 +103,12 @@ def apply_mutations(kind: str, spec: dict) -> None:
 
 
 def propagate_loadouts(kind: str, spec: dict, dry_run: bool) -> list[str]:
-    """Add a skill/weapon to the member loadouts named in spec['propagate_to'].
+    """Add a skill/weapon to the agent loadouts named in spec['propagate_to'].
 
-    Only applies to kind weapon|skill. Member source of truth is guild-data.json;
-    the actual loadout edit belongs in each member's .md frontmatter, so here we
+    Only applies to kind weapon|skill. Agent source of truth is guild-data.json;
+    the actual loadout edit belongs in each agent's .md frontmatter, so here we
     only REPORT the intended propagation and leave the .md edit to build inputs —
-    keeping wire.py from silently rewriting member prompts.
+    keeping wire.py from silently rewriting agent prompts.
     """
     targets = spec.get("propagate_to") or []
     notes: list[str] = []
@@ -119,8 +119,8 @@ def propagate_loadouts(kind: str, spec: dict, dry_run: bool) -> list[str]:
         notes.append("propagate: spec has no \"propagate_to\" list — nothing to do")
         return notes
     for mid in targets:
-        notes.append(f"propagate: would add {kind} {spec['id']!r} to member {mid!r} loadout"
-                     + ("" if dry_run else " (edit member .md, then rebuild)"))
+        notes.append(f"propagate: would add {kind} {spec['id']!r} to agent {mid!r} loadout"
+                     + ("" if dry_run else " (edit agent .md, then rebuild)"))
     return notes
 
 
@@ -139,7 +139,7 @@ def main() -> int:
     # (resolve_io_args supplies --in from the step's first `inputs` entry).
     ap.add_argument("--spec", "--in", dest="spec", required=True, help="Path to the spec JSON")
     ap.add_argument("--propagate", choices=("loadouts",), default=None,
-                    help="Propagate a skill/weapon into member loadouts")
+                    help="Propagate a skill/weapon into agent loadouts")
     ap.add_argument("--dry-run", action="store_true",
                     help="Print planned mutations; write nothing and skip the rebuild")
     # Tolerate the runner's --out rail (this step writes its own registry target).

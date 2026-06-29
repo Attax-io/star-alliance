@@ -11,9 +11,20 @@ One file per weapon, **generated from [models.json](../models.json)** — the ca
 
 | Weapon | Role | Backend | Status |
 |---|---|---|---|
-| [opus](opus.md) | thinker | claude | live |
-| [haiku](haiku.md) | both | claude | live |
+| [opus](opus.md) | thinker | claude | reserve |
+| [sonnet](sonnet.md) | both | claude | reserve |
+| [haiku](haiku.md) | doer | claude | reserve |
 | [minimax-m3](minimax-m3.md) | doer | minimax-direct | live |
+| [deepseek-v4-pro](deepseek-v4-pro.md) | thinker | ollama-cloud | reserve |
+| [glm-5.2](glm-5.2.md) | thinker | ollama-cloud | live |
+| [kimi-k2.7](kimi-k2.7.md) | thinker | ollama-cloud | live |
+| [nemotron-3-ultra](nemotron-3-ultra.md) | thinker | ollama-cloud | reserve |
+| [qwen3.5](qwen3.5.md) | thinker | ollama-cloud | reserve |
+| [gemma4](gemma4.md) | thinker | ollama-cloud | reserve |
+| [image-01](image-01.md) | media | minimax-media | live |
+| [minimax-video](minimax-video.md) | media | minimax-media | live |
+| [minimax-speech](minimax-speech.md) | media | minimax-media | live |
+| [minimax-music](minimax-music.md) | media | minimax-media | live |
 
 ## Concurrency (cloud)
 

@@ -77,7 +77,7 @@ def diagnose(since: str | None = None) -> list[dict]:
             "surface": "doctrine", "tier": "B",
             "detail": f"concern density {s['concern_density']}/change — review recurring "
                       f"critic concerns for a doctrine gap",
-            "action": "cluster recent 'concerns' verdicts; propose a CLAUDE.md axiom if a pattern repeats",
+            "action": "cluster recent 'concerns' verdicts; propose an AGENTS.md axiom if a pattern repeats",
         })
 
     # 4. Cost trend rising sharply → efficiency regression.
@@ -125,16 +125,16 @@ def diagnose(since: str | None = None) -> list[dict]:
             "action": "run skillsmith to assess merge/retire of unused skills (critic-gated)",
         })
 
-    # 8. DOER discipline — real changes but zero doer offload → members may be doing
-    #    bulk inline. A coaching signal (doctrine/member-files), not an auto-fix.
-    #    SUPPRESS when a swarm-fanout is present: N member-dispatch events but 0 main-thread
+    # 8. DOER discipline — real changes but zero doer offload → agents may be doing
+    #    bulk inline. A coaching signal (doctrine/agent-files), not an auto-fix.
+    #    SUPPRESS when a swarm-fanout is present: N agent-dispatch events but 0 main-thread
     #    doer summons is the correct topology for a swarm turn (swarm-audit 2026-06-28).
     _swarm_active = cap.get("swarm_fanouts", 0) > 0
     if s["changes"] >= 5 and cap["doer_summons"] == 0 and not _swarm_active:
         proposals.append({
             "surface": "doctrine", "tier": "B",
             "detail": f"{s['changes']} changes but 0 doer summons — bulk work may be done inline",
-            "action": "reinforce doer-first routing (weapon-utility); coach members to offload bulk",
+            "action": "reinforce doer-first routing (weapon-utility); coach agents to offload bulk",
         })
 
     if not proposals:

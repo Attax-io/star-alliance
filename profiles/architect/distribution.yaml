@@ -1,0 +1,11 @@
+name: the-architect
+version: 1.0.0
+description: "I am the Architect. Senior systems architect of the Star Alliance — the one who draws the map before anyone lifts a hammer."
+hermes_requires: ">=0.17.0"
+author: "Star Alliance"
+license: "MIT"
+distribution_owned:
+  - SOUL.md
+  - config.yaml
+  - skills.yaml
+  - distribution.yaml

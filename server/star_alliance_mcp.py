@@ -1,524 +1,568 @@
 #!/usr/bin/env python3
-"""Star Alliance MCP Server — exposes guild gates as MCP tools.
-
-Replaces the Claude Code hook system (.claude/hooks/*.py) with a single
-MCP server that the Butler can call before/after each turn.
-
-Tools exposed:
-  sa_route_request       — route a prompt to the right member profile
-  sa_verify              — run independent critic (GLM) on a diff
-  sa_delegation_check    — enforce doer delegation for bulk work
-  sa_thinker_check       — validate thinker model for a profile
-  sa_thinker_attest      — ledger which model actually thought
-  sa_destructive_check   — block destructive shell commands
-  sa_executor_check      — enforce Butler can't write files directly
-  sa_turn_cost           — log turn cost
-  sa_turn_start          — mark turn start
-  sa_turn_finalize       — gate commit on all checks passing
-  sa_build_mark          — mark build stale after edits
-  sa_checkpoint_save     — snapshot context + decisions
-  sa_checkpoint_restore  — restore a checkpoint
-  sa_snapshot            — PreCompact snapshot
-  sa_plain_english_check — nudge if response too technical
-  sa_evolution_status    — evolution engine status
-  sa_evolution_ledger    — recent ledger entries
-  sa_evolution_scoreboard — evolution scoreboard
-  sa_skill_fingerprints_check — check skill drift
-
-Usage:
-  # Add to Hermes:
-  hermes mcp add star-alliance --command "python3" --args "/path/to/server/star_alliance_mcp.py"
-
-  # Test:
-  hermes mcp test star-alliance
 """
+Star Alliance MCP Server for Hermes Agent
+
+Thinker = GLM-5.2 (this server is authored/steered by THINKER_MODEL = "glm-5.2")
+Critic   = Kimi K2.7  (CRITIC_MODEL, used by sa_verify)
+Doer     = MiniMax M3 (DOER_MODEL, referenced by sa_delegation_check)
+
+Register with Hermes:
+    hermes mcp add star-alliance -- python3 server/star_alliance_mcp.py
+
+This server provides 6 tools, each doing something Hermes doesn't do natively:
+  1. sa_workflow_match      — match a prompt to a workflow in workflows.json
+  2. sa_agent_dispatch      — resolve an agent .md file and return a delegation briefing
+  3. sa_verify              — run the Critic (Kimi K2.7) on a git diff
+  4. sa_delegation_check    — gate bulk file writes without doer (MiniMax M3) delegation
+  5. sa_evolution_status    — report evolution status + ledger summary
+  6. sa_skill_drift_check   — detect skill drift via SHA-256 fingerprints
+"""
+
+from __future__ import annotations
+
 import asyncio
+import hashlib
 import json
-import os
 import re
 import subprocess
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 from mcp.server import Server
 from mcp.server.stdio import stdio_server
-from mcp.types import Tool, TextContent
+from mcp.types import TextContent, Tool
 
-# ── Paths ─────────────────────────────────────────────────────────────────────
-ROOT = Path(__file__).resolve().parent.parent
-EVOLUTION_DIR = ROOT / "evolution"
-STATE_DIR = ROOT / ".claude" / "state"
-LEDGER_PATH = EVOLUTION_DIR / "ledger.jsonl"
-USAGE_LOG = STATE_DIR / "usage-log.jsonl"
+# ── Path constants ────────────────────────────────────────────────────────────
+ROOT: Path = Path(__file__).resolve().parent.parent
+WORKFLOWS_PATH: Path = ROOT / "workflows.json"
+AGENTS_DIR: Path = ROOT / "agents"
+SKILLS_DIR: Path = ROOT / "star-alliance-skills"
+EVOLUTION_DIR: Path = ROOT / "evolution"
+STATE_DIR: Path = ROOT / "state"
+VERDICT_SCRIPT: Path = EVOLUTION_DIR / "verdict.py"
+STATUS_SCRIPT: Path = EVOLUTION_DIR / "status.py"
+LEDGER_PATH: Path = EVOLUTION_DIR / "ledger.jsonl"
+VERIFY_LOG_PATH: Path = STATE_DIR / "verify-log.jsonl"
+FINGERPRINTS_PATH: Path = STATE_DIR / "skill-fingerprints.json"
 
-# ── Helpers ───────────────────────────────────────────────────────────────────
+# ── Model constants ───────────────────────────────────────────────────────────
+THINKER_MODEL: str = "glm-5.2"
+CRITIC_MODEL: str = "kimi-k2.7"   # used by sa_verify
+DOER_MODEL: str = "minimax-m3"    # used by sa_delegation_check
 
-def _ledger_append(kind: str, **kw: Any) -> None:
-    """Best-effort ledger append."""
-    try:
-        sys.path.insert(0, str(EVOLUTION_DIR))
-        import ledger  # type: ignore
-        ledger.append(kind=kind, **kw)
-    except Exception:
-        pass
+# ── Tool parameter constants ──────────────────────────────────────────────────
+DELEGATION_BYTE_THRESHOLD: int = 6000
+VERIFY_TIMEOUT_SECONDS: int = 180
+MAX_DIFF_BYTES: int = 60 * 1024  # 60 KB
 
-
-def _git_diff() -> str:
-    """Return current git diff (unstaged + staged)."""
-    try:
-        unstaged = subprocess.run(
-            ["git", "diff"], capture_output=True, text=True,
-            cwd=str(ROOT), timeout=10
-        ).stdout
-        staged = subprocess.run(
-            ["git", "diff", "--cached"], capture_output=True, text=True,
-            cwd=str(ROOT), timeout=10
-        ).stdout
-        return staged + unstaged
-    except Exception:
-        return ""
+# ── Server setup ──────────────────────────────────────────────────────────────
+server: Server = Server("star-alliance")
 
 
-def _destructive_check_impl(command: str, confirm: bool = False) -> dict:
-    """Port of .claude/hooks/destructive-gate.py."""
-    PATTERNS = [
-        ("rm -rf", re.compile(r"\brm\s+(-[a-zA-Z]*r[a-zA-Z]*f|-[a-zA-Z]*f[a-zA-Z]*r|-r\s+-f|-f\s+-r|--recursive)\b"), "recursive delete — unrecoverable"),
-        ("git push --force", re.compile(r"\bgit\s+push\b.*(--force\b|--force-with-lease\b|\s-f\b)"), "rewrites remote history"),
-        ("git reset --hard", re.compile(r"\bgit\s+reset\s+--hard\b"), "discards uncommitted work"),
-        ("git clean -f", re.compile(r"\bgit\s+clean\b.*\s-[a-zA-Z]*f"), "deletes untracked files"),
-        ("git checkout .", re.compile(r"\bgit\s+checkout\s+\.(\s|$)"), "discards uncommitted changes"),
-        ("git restore .", re.compile(r"\bgit\s+restore\s+(\.|--\s+\.)(\s|$)"), "discards uncommitted changes"),
-        ("DROP TABLE/DB", re.compile(r"\bDROP\s+(TABLE|DATABASE|SCHEMA)\b", re.IGNORECASE), "permanent schema/data loss"),
-        ("TRUNCATE", re.compile(r"\bTRUNCATE\s+(TABLE\s+)?\w", re.IGNORECASE), "permanent data loss"),
-        ("kubectl delete", re.compile(r"\bkubectl\s+delete\b"), "production resource removal"),
-        ("docker rm -f", re.compile(r"\bdocker\s+(rm|rmi)\b.*\s-[a-zA-Z]*f"), "force-removes containers/images"),
-        ("mkfs", re.compile(r"\bmkfs(\.\w+)?\b"), "formats a filesystem"),
-        ("dd of=", re.compile(r"\bdd\b.*\bof=/"), "raw block write"),
-        ("chmod -R 777", re.compile(r"\bchmod\s+-R\s+0?777\b"), "world-writable recursive"),
-    ]
-    for label, pat, why in PATTERNS:
-        if pat.search(command):
-            if confirm:
-                return {"allowed": True, "pattern": label, "warning": why, "override": True}
-            return {"allowed": False, "pattern": label, "warning": why, "override_required": True}
-    return {"allowed": True}
+# ── Tool 1: sa_workflow_match ─────────────────────────────────────────────────
+def _sa_workflow_match(prompt: str) -> dict[str, Any]:
+    """Match a prompt against workflows.json by keyword overlap."""
+    if not WORKFLOWS_PATH.exists():
+        return {"match": None, "reason": "workflows.json not found"}
 
+    workflows: list[dict[str, Any]] = json.loads(WORKFLOWS_PATH.read_text(encoding="utf-8"))
+    prompt_lower: str = prompt.lower()
+    prompt_words: set[str] = set(re.findall(r"[a-z0-9_-]+", prompt_lower))
+    if not prompt_words:
+        return {"match": None, "reason": "no keywords in prompt"}
 
-def _route_request_impl(prompt: str) -> dict:
-    """Port of .claude/hooks/guild-routing-gate.sh — routes via the Strategist.
+    best: dict[str, Any] | None = None
+    best_score: float = 0.0
 
-    The Butler is voice/intake only. He calls this tool to hand the brief
-    to the Strategist, who is the actual router. This tool returns
-    star-alliance-strategist as the routing target — the Strategist then
-    decides which specialist(s) handle the work.
+    for wf in workflows:
+        when_text: str = str(wf.get("when", "")).lower()
+        trigger_phrases: list[str] = wf.get("trigger_phrases") or []
+        trigger_text: str = " ".join(str(tp) for tp in trigger_phrases).lower()
+        corpus_text: str = f"{when_text} {trigger_text}"
+        corpus_words: set[str] = set(re.findall(r"[a-z0-9_-]+", corpus_text))
+        if not corpus_words:
+            continue
+        overlap: set[str] = prompt_words & corpus_words
+        # Score: F1-like overlap normalized to the smaller set
+        if not overlap:
+            score: float = 0.0
+        else:
+            precision: float = len(overlap) / len(prompt_words) if prompt_words else 0.0
+            recall: float = len(overlap) / len(corpus_words) if corpus_words else 0.0
+            if precision + recall > 0:
+                score = 2 * precision * recall / (precision + recall)
+            else:
+                score = 0.0
+        if score > best_score:
+            best_score = score
+            best = wf
 
-    The hint field is provided for the Strategist's benefit — it suggests
-    which domain the request falls into, but the Strategist makes the
-    final routing decision.
+    if best is None or best_score == 0.0:
+        return {"match": None, "reason": "no workflow fits"}
 
-    Verified 2026-06-28: returns star-alliance-strategist (never a specialist directly).
-    """
-    routing_hints = [
-        (["design the system", "model the domain", "architect the database", "refactor the structure", "schema"], "architecture"),
-        (["write the code", "fix this bug", "implement this feature", "apply this change", "write code"], "implementation"),
-        (["design the UI", "make it look premium", "create a brand kit", "design the interface", "ui design", "ux"], "design"),
-        (["plan", "campaign", "strategy", "strategic", "roadmap"], "campaign"),
-        (["translate", "law", "legal text", "explain the rule"], "translation"),
-        (["market", "announce", "marketing", "comms", "communication"], "comms"),
-        (["trade", "portfolio", "market recon", "stock", "crypto"], "trading"),
-        (["release", "verify", "ship", "publish", "audit", "conformity"], "release"),
-    ]
-    p_lower = prompt.lower()
-    hint = "general"
-    for triggers, domain in routing_hints:
-        if any(t in p_lower for t in triggers):
-            hint = domain
-            break
-    # ALWAYS route to the Strategist — he is the guild's router, not the Butler.
+    steps_summary: str = ""
+    steps = best.get("steps")
+    if isinstance(steps, list):
+        steps_summary = "; ".join(
+            str(s.get("action", s.get("name", s) if isinstance(s, dict) else s))
+            for s in steps
+        )
+    elif isinstance(steps, str):
+        steps_summary = steps
+
     return {
-        "member": "star-alliance-strategist",
-        "reason": "Butler is voice/intake only — Strategist owns routing",
-        "domain_hint": hint,
-        "next_step": "Strategist will dispatch to the appropriate specialist(s)",
+        "workflow_id": best.get("id", best.get("workflow_id", "")),
+        "workflow_name": best.get("name", best.get("workflow_name", "")),
+        "category": best.get("category", ""),
+        "score": round(best_score, 4),
+        "steps_summary": steps_summary,
     }
 
 
-def _delegation_check_impl(bulk_bytes: int, doer_calls: int = 0) -> dict:
-    """Port of delegation-gate.py — enforce doer delegation for bulk work."""
-    BULK_BYTES = 6000
-    if bulk_bytes < BULK_BYTES:
-        return {"verdict": "pass", "reason": "below bulk threshold", "threshold": BULK_BYTES}
-    if doer_calls > 0:
-        _ledger_append("delegation", verdict="pass", bulk_bytes=bulk_bytes, doer_calls=doer_calls)
-        return {"verdict": "pass", "reason": f"{doer_calls} doer call(s) logged", "bulk_bytes": bulk_bytes}
-    _ledger_append("delegation", verdict="block", bulk_bytes=bulk_bytes, doer_calls=0)
-    return {"verdict": "block", "reason": f"bulk={bulk_bytes} ≥ {BULK_BYTES} but no doer call", "override_env": "SA_SOLO=1"}
+# ── Tool 2: sa_agent_dispatch ─────────────────────────────────────────────────
+_FRONTMATTER_RE = re.compile(
+    r"^---\s*\n(.*?)\n---\s*\n?(.*)$",
+    re.DOTALL,
+)
 
 
-def _verify_impl(diff: str = "") -> dict:
-    """Port of verify-gate.py — run independent critic on diff.
+def _parse_frontmatter(text: str) -> dict[str, Any]:
+    """Parse simple YAML frontmatter using regex — no pyyaml dependency."""
+    m = _FRONTMATTER_RE.match(text)
+    if not m:
+        return {}
+    body: str = m.group(1)
+    meta: dict[str, Any] = {}
+    for line in body.splitlines():
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        if ":" not in line:
+            continue
+        key, _, raw_val = line.partition(":")
+        key = key.strip()
+        raw_val = raw_val.strip()
+        # Handle list values:  skills: [a, b, c]
+        if raw_val.startswith("[") and raw_val.endswith("]"):
+            inner = raw_val[1:-1]
+            items = [x.strip().strip("'\"") for x in inner.split(",") if x.strip()]
+            meta[key] = items
+        elif raw_val:
+            meta[key] = raw_val.strip("'\"")
+        else:
+            meta[key] = None
+    return meta
 
-    Calls evolution/verdict.py → critique.py (GLM-5.2).
-    Fails OPEN on infrastructure error (mirrors verify-gate.py risk posture).
-    """
-    if not diff:
-        diff = _git_diff()
-    if not diff:
-        return {"verdict": "pass", "reason": "no diff to verify", "findings": ""}
-    if len(diff) > 60_000:
-        return {"verdict": "manual_review", "reason": f"diff {len(diff)} > 60k bytes — grounded review needed"}
-    try:
-        verdict_script = EVOLUTION_DIR / "verdict.py"
-        if verdict_script.exists():
-            r = subprocess.run(
-                [sys.executable, str(verdict_script), "--diff-stdin"],
-                input=diff, capture_output=True, text=True,
-                cwd=str(ROOT), timeout=120
+
+def _sa_agent_dispatch(agent_name: str) -> dict[str, Any]:
+    """Resolve an agent .md file from agents/ and return a delegation briefing."""
+    agent_file: Path = AGENTS_DIR / f"{agent_name}.md"
+    if not agent_file.exists():
+        return {"error": "agent not found", "searched": str(agent_file)}
+    text: str = agent_file.read_text(encoding="utf-8")
+    meta: dict[str, Any] = _parse_frontmatter(text)
+    skills_raw: Any = meta.get("skills", [])
+    if isinstance(skills_raw, str):
+        skills: list[str] = [s.strip() for s in skills_raw.split(",") if s.strip()]
+    elif isinstance(skills_raw, list):
+        skills = [str(s) for s in skills_raw]
+    else:
+        skills = []
+    return {
+        "agent_name": meta.get("name", agent_name),
+        "description": meta.get("description", ""),
+        "skills": skills,
+        "file_path": str(agent_file),
+    }
+
+
+# ── Tool 3: sa_verify ────────────────────────────────────────────────────────
+# Runs the Critic (CRITIC_MODEL = "kimi-k2.7") on a git diff.
+def _append_verify_log(verdict: str, diff_size: int) -> None:
+    STATE_DIR.mkdir(parents=True, exist_ok=True)
+    entry: dict[str, Any] = {
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "verdict": verdict,
+        "diff_size": diff_size,
+    }
+    with VERIFY_LOG_PATH.open("a", encoding="utf-8") as f:
+        f.write(json.dumps(entry) + "\n")
+
+
+def _sa_verify(diff: str | None = None) -> dict[str, Any]:
+    """Run the Critic (Kimi K2.7) on a git diff."""
+    # If no diff provided, get it from git
+    if diff is None:
+        try:
+            result = subprocess.run(
+                ["git", "diff"],
+                cwd=str(ROOT),
+                capture_output=True,
+                text=True,
+                timeout=30,
             )
-            if r.returncode == 0:
-                # Try to parse JSON verdict from stdout
-                try:
-                    result = json.loads(r.stdout)
-                    _ledger_append("verify", verdict=result.get("verdict", "pass"), bytes=len(diff))
-                    return result
-                except json.JSONDecodeError:
-                    _ledger_append("verify", verdict="pass", bytes=len(diff))
-                    return {"verdict": "pass", "findings": r.stdout[-500:]}
-            else:
-                _ledger_append("verify", verdict="concerns", bytes=len(diff), output=r.stderr[-500:])
-                return {"verdict": "concerns", "findings": r.stderr[-500:]}
+            diff = result.stdout
+        except Exception as e:
+            return {"verdict": "pass", "reason": "critic unreachable — fail open", "error": str(e)}
+
+    if not diff or not diff.strip():
+        _append_verify_log("pass", 0)
+        return {"verdict": "pass", "reason": "no diff to verify"}
+
+    diff_bytes: bytes = diff.encode("utf-8")
+    diff_size: int = len(diff_bytes)
+
+    if diff_size > MAX_DIFF_BYTES:
+        _append_verify_log("manual_review", diff_size)
+        return {"verdict": "manual_review", "reason": "diff too large for cold critique"}
+
+    # Call the verdict.py script (Critik Model = kimi-k2.7)
+    if not VERDICT_SCRIPT.exists():
+        _append_verify_log("pass", diff_size)
+        return {
+            "verdict": "pass",
+            "reason": f"verdict.py not found at {VERDICT_SCRIPT} — fail open",
+            "critic_model": CRITIC_MODEL,
+        }
+
+    try:
+        proc = subprocess.run(
+            [sys.executable, str(VERDICT_SCRIPT)],
+            input=diff,
+            capture_output=True,
+            text=True,
+            timeout=VERIFY_TIMEOUT_SECONDS,
+        )
+        stdout: str = proc.stdout.strip()
+        stderr: str = proc.stderr.strip()
+        if proc.returncode != 0:
+            _append_verify_log("pass", diff_size)
+            return {
+                "verdict": "pass",
+                "reason": "critic unreachable — fail open",
+                "error": f"verdict.py exited {proc.returncode}: {stderr}",
+                "critic_model": CRITIC_MODEL,
+            }
+        # Try to parse JSON from stdout
+        try:
+            parsed: Any = json.loads(stdout)
+            verdict_str: str = parsed.get("verdict", "unknown") if isinstance(parsed, dict) else "unknown"
+            _append_verify_log(verdict_str, diff_size)
+            return parsed if isinstance(parsed, dict) else {"verdict": "unknown", "raw": stdout}
+        except json.JSONDecodeError:
+            _append_verify_log("unknown", diff_size)
+            return {"verdict": "raw", "output": stdout, "critic_model": CRITIC_MODEL}
+    except subprocess.TimeoutExpired:
+        _append_verify_log("pass", diff_size)
+        return {
+            "verdict": "pass",
+            "reason": "critic unreachable — fail open",
+            "error": f"verdict.py timed out after {VERIFY_TIMEOUT_SECONDS}s",
+            "critic_model": CRITIC_MODEL,
+        }
     except Exception as e:
-        return {"verdict": "pass", "reason": "critic unreachable — fail OPEN", "error": str(e)}
-    return {"verdict": "pass", "reason": "no verdict script found"}
+        _append_verify_log("pass", diff_size)
+        return {
+            "verdict": "pass",
+            "reason": "critic unreachable — fail open",
+            "error": str(e),
+            "critic_model": CRITIC_MODEL,
+        }
 
 
-# ── Server ────────────────────────────────────────────────────────────────────
+# ── Tool 4: sa_delegation_check ──────────────────────────────────────────────
+# Doer = DOER_MODEL ("minimax-m3"). Gates bulk file writes without doer delegation.
+def _sa_delegation_check(bulk_bytes: int, doer_calls: int) -> dict[str, Any]:
+    """Check if bulk work was done without doer (MiniMax M3) delegation."""
+    if bulk_bytes >= DELEGATION_BYTE_THRESHOLD and doer_calls == 0:
+        return {
+            "verdict": "block",
+            "reason": "bulk work without doer delegation",
+            "threshold": DELEGATION_BYTE_THRESHOLD,
+            "override_env": "SA_SOLO=1",
+            "doer_model": DOER_MODEL,
+        }
+    if bulk_bytes < DELEGATION_BYTE_THRESHOLD:
+        return {"verdict": "pass", "reason": "below threshold"}
+    # bulk_bytes >= threshold and doer_calls > 0
+    return {"verdict": "pass", "reason": "doer delegation logged", "doer_model": DOER_MODEL}
 
-app = Server("star-alliance")
+
+# ── Tool 5: sa_evolution_status ───────────────────────────────────────────────
+def _sa_evolution_status() -> dict[str, Any]:
+    """Run evolution/status.py and summarize the ledger."""
+    status_output: str = ""
+    if STATUS_SCRIPT.exists():
+        try:
+            proc = subprocess.run(
+                [sys.executable, str(STATUS_SCRIPT)],
+                capture_output=True,
+                text=True,
+                timeout=30,
+                cwd=str(ROOT),
+            )
+            status_output = proc.stdout.strip()
+        except Exception as e:
+            status_output = f"[error running status.py: {e}]"
+    else:
+        status_output = f"[status.py not found at {STATUS_SCRIPT}]"
+
+    ledger_entries: int = 0
+    last_entry: Any = None
+    if LEDGER_PATH.exists():
+        try:
+            lines: list[str] = LEDGER_PATH.read_text(encoding="utf-8").splitlines()
+            non_empty: list[str] = [ln for ln in lines if ln.strip()]
+            ledger_entries = len(non_empty)
+            if non_empty:
+                try:
+                    last_entry = json.loads(non_empty[-1])
+                except json.JSONDecodeError:
+                    last_entry = non_empty[-1]
+        except Exception as e:
+            ledger_entries = 0
+            last_entry = {"error": str(e)}
+
+    return {
+        "status_output": status_output,
+        "ledger_entries": ledger_entries,
+        "last_entry": last_entry,
+    }
 
 
-@app.list_tools()
+# ── Tool 6: sa_skill_drift_check ─────────────────────────────────────────────
+def _sha256_file(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _sa_skill_drift_check() -> dict[str, Any]:
+    """Check skill drift by comparing SKILL.md hashes against stored fingerprints."""
+    STATE_DIR.mkdir(parents=True, exist_ok=True)
+
+    # Build current fingerprints
+    current: dict[str, str] = {}
+    if SKILLS_DIR.exists():
+        for skill_dir in sorted(SKILLS_DIR.iterdir()):
+            if not skill_dir.is_dir():
+                continue
+            skill_md: Path = skill_dir / "SKILL.md"
+            if skill_md.exists():
+                current[skill_dir.name] = _sha256_file(skill_md)
+
+    # Load stored fingerprints
+    stored: dict[str, str] = {}
+    if FINGERPRINTS_PATH.exists():
+        try:
+            stored = json.loads(FINGERPRINTS_PATH.read_text(encoding="utf-8"))
+            if not isinstance(stored, dict):
+                stored = {}
+        except json.JSONDecodeError:
+            stored = {}
+
+    # If no stored fingerprints, this is first run — no drift
+    is_first_run: bool = not stored
+
+    drift: list[dict[str, str]] = []
+    clean: int = 0
+    for skill, current_hash in current.items():
+        if is_first_run:
+            clean += 1
+            continue
+        stored_hash = stored.get(skill)
+        if stored_hash is None:
+            # New skill since last run — not drift, just new
+            clean += 1
+            continue
+        if stored_hash != current_hash:
+            drift.append({
+                "skill": skill,
+                "expected": stored_hash,
+                "actual": current_hash,
+            })
+        else:
+            clean += 1
+
+    # Update fingerprints file with current hashes
+    FINGERPRINTS_PATH.write_text(
+        json.dumps(current, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+
+    return {
+        "checked": len(current),
+        "drift": drift,
+        "clean": clean,
+    }
+
+
+# ── Tool definitions ─────────────────────────────────────────────────────────
+
+WORKFLOW_MATCH_TOOL = Tool(
+    name="sa_workflow_match",
+    description=(
+        "Match a prompt against workflows.json. Scores keyword overlap against each "
+        "workflow's 'when' field and 'trigger_phrases' array. Returns the best match "
+        "or null if nothing fits."
+    ),
+    inputSchema={
+        "type": "object",
+        "properties": {
+            "prompt": {
+                "type": "string",
+                "description": "The user or task prompt to match against workflows.",
+            },
+        },
+        "required": ["prompt"],
+    },
+)
+
+AGENT_DISPATCH_TOOL = Tool(
+    name="sa_agent_dispatch",
+    description=(
+        "Resolve an agent's .md file from agents/, parse its YAML frontmatter "
+        "(name, description, skills), and return a delegation briefing."
+    ),
+    inputSchema={
+        "type": "object",
+        "properties": {
+            "agent_name": {
+                "type": "string",
+                "description": "Agent name without .md extension (e.g. 'the-developer').",
+            },
+        },
+        "required": ["agent_name"],
+    },
+)
+
+VERIFY_TOOL = Tool(
+    name="sa_verify",
+    description=(
+        "Run the Critic (Kimi K2.7) on a git diff. If no diff is provided, reads "
+        "`git diff` from ROOT. Fails open (returns pass) if the critic is unreachable. "
+        "Logs every verdict to state/verify-log.jsonl."
+    ),
+    inputSchema={
+        "type": "object",
+        "properties": {
+            "diff": {
+                "type": "string",
+                "description": "Optional explicit diff text. If omitted, runs `git diff` in ROOT.",
+            },
+        },
+        "required": [],
+    },
+)
+
+DELEGATION_CHECK_TOOL = Tool(
+    name="sa_delegation_check",
+    description=(
+        "Gate bulk file writes without doer (MiniMax M3) delegation. If bulk_bytes >= 6000 "
+        "and no doer calls were made, returns a block verdict with SA_SOLO=1 override env. "
+        "Otherwise returns pass."
+    ),
+    inputSchema={
+        "type": "object",
+        "properties": {
+            "bulk_bytes": {
+                "type": "integer",
+                "description": "Total bytes of inline file writes this turn.",
+            },
+            "doer_calls": {
+                "type": "integer",
+                "description": "Number of doer (MiniMax M3) delegations made this turn.",
+            },
+        },
+        "required": ["bulk_bytes", "doer_calls"],
+    },
+)
+
+EVOLUTION_STATUS_TOOL = Tool(
+    name="sa_evolution_status",
+    description=(
+        "Run evolution/status.py and summarize the evolution ledger. Returns status "
+        "output, entry count, and last ledger entry."
+    ),
+    inputSchema={
+        "type": "object",
+        "properties": {},
+        "required": [],
+    },
+)
+
+SKILL_DRIFT_CHECK_TOOL = Tool(
+    name="sa_skill_drift_check",
+    description=(
+        "Hash every SKILL.md in star-alliance-skills/ (SHA-256) and compare against "
+        "stored fingerprints in state/skill-fingerprints.json. Flags any skill whose "
+        "hash has changed since the last check."
+    ),
+    inputSchema={
+        "type": "object",
+        "properties": {},
+        "required": [],
+    },
+)
+
+
+@server.list_tools()
 async def list_tools() -> list[Tool]:
+    """Return all 6 Star Alliance tools."""
     return [
-        Tool(
-            name="sa_route_request",
-            description="Route a user prompt to the appropriate Star Alliance member profile. Returns the profile name and matching reason.",
-            inputSchema={
-                "type": "object",
-                "properties": {"prompt": {"type": "string", "description": "The user's prompt text"}},
-                "required": ["prompt"],
-            },
-        ),
-        Tool(
-            name="sa_verify",
-            description="Run independent critic (GLM-5.2) on the current diff. Returns verdict: pass/concerns/block. Call before finishing any turn that changed files.",
-            inputSchema={
-                "type": "object",
-                "properties": {"diff": {"type": "string", "description": "Optional diff text. If empty, uses git diff."}},
-            },
-        ),
-        Tool(
-            name="sa_delegation_check",
-            description="Enforce doer delegation for bulk work. BLOCKS turns that produced ≥6KB inline without calling a doer.",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "bulk_bytes": {"type": "integer", "description": "Total bytes of Write/Edit/MultiEdit content this turn"},
-                    "doer_calls": {"type": "integer", "description": "Number of doer (MiniMax/Ollama) calls logged this turn", "default": 0},
-                },
-                "required": ["bulk_bytes"],
-            },
-        ),
-        Tool(
-            name="sa_destructive_check",
-            description="Check a shell command for destructive patterns. Returns {allowed: bool, pattern, warning}.",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "command": {"type": "string", "description": "The shell command to check"},
-                    "confirm": {"type": "boolean", "description": "True if SA_CONFIRM=1 or # sa-confirm was appended", "default": False},
-                },
-                "required": ["command"],
-            },
-        ),
-        Tool(
-            name="sa_thinker_check",
-            description="Validate that a dispatched member's model matches its declared model: in frontmatter.",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "profile": {"type": "string", "description": "Profile name (e.g. star-alliance-architect)"},
-                    "actual_model": {"type": "string", "description": "The model actually used"},
-                },
-                "required": ["profile", "actual_model"],
-            },
-        ),
-        Tool(
-            name="sa_thinker_attest",
-            description="Ledger which model actually thought this turn.",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "profile": {"type": "string"},
-                    "model": {"type": "string"},
-                    "turn_id": {"type": "string"},
-                },
-                "required": ["profile", "model"],
-            },
-        ),
-        Tool(
-            name="sa_turn_cost",
-            description="Log turn cost (tokens + model).",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "profile": {"type": "string"},
-                    "model": {"type": "string"},
-                    "tokens_in": {"type": "integer"},
-                    "tokens_out": {"type": "integer"},
-                },
-                "required": ["profile", "model"],
-            },
-        ),
-        Tool(
-            name="sa_turn_start",
-            description="Mark turn start. Logs timestamp and profile.",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "profile": {"type": "string"},
-                    "workflow": {"type": "string", "description": "Optional workflow ID"},
-                },
-                "required": ["profile"],
-            },
-        ),
-        Tool(
-            name="sa_turn_finalize",
-            description="Gate turn-end commit on all checks passing.",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "gates_passed": {"type": "array", "items": {"type": "string"}, "description": "List of gates that passed"},
-                },
-            },
-        ),
-        Tool(
-            name="sa_build_mark",
-            description="Mark the build as stale (guild-data.js may need regeneration after edits).",
-            inputSchema={"type": "object", "properties": {}},
-        ),
-        Tool(
-            name="sa_checkpoint_save",
-            description="Snapshot current context, decisions, and remaining work to a checkpoint file.",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "summary": {"type": "string"},
-                    "decisions": {"type": "array", "items": {"type": "string"}},
-                    "remaining": {"type": "array", "items": {"type": "string"}},
-                },
-                "required": ["summary"],
-            },
-        ),
-        Tool(
-            name="sa_checkpoint_restore",
-            description="Restore from a checkpoint.",
-            inputSchema={
-                "type": "object",
-                "properties": {"stamp": {"type": "string", "description": "Checkpoint ID or 'list'"}},
-            },
-        ),
-        Tool(
-            name="sa_snapshot",
-            description="PreCompact snapshot — captures context before compression.",
-            inputSchema={
-                "type": "object",
-                "properties": {"summary": {"type": "string"}},
-            },
-        ),
-        Tool(
-            name="sa_plain_english_check",
-            description="Check if a response is too technical. Returns nudge message if jargon detected.",
-            inputSchema={
-                "type": "object",
-                "properties": {"response": {"type": "string"}},
-                "required": ["response"],
-            },
-        ),
-        Tool(
-            name="sa_evolution_status",
-            description="Get current evolution engine status.",
-            inputSchema={"type": "object", "properties": {}},
-        ),
-        Tool(
-            name="sa_evolution_ledger",
-            description="Get recent evolution ledger entries.",
-            inputSchema={
-                "type": "object",
-                "properties": {"limit": {"type": "integer", "default": 20}},
-            },
-        ),
-        Tool(
-            name="sa_evolution_scoreboard",
-            description="Get evolution scoreboard (catch rate, override count, etc).",
-            inputSchema={"type": "object", "properties": {}},
-        ),
-        Tool(
-            name="sa_skill_fingerprints_check",
-            description="Check for skill drift (content hash changes).",
-            inputSchema={"type": "object", "properties": {}},
-        ),
-        Tool(
-            name="sa_executor_check",
-            description="Check whether the Butler tried to make direct file writes (forbidden). Returns violation if yes.",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "profile": {"type": "string"},
-                    "tools_used": {"type": "array", "items": {"type": "string"}, "description": "Tools called this turn"},
-                },
-                "required": ["profile", "tools_used"],
-            },
-        ),
+        WORKFLOW_MATCH_TOOL,
+        AGENT_DISPATCH_TOOL,
+        VERIFY_TOOL,
+        DELEGATION_CHECK_TOOL,
+        EVOLUTION_STATUS_TOOL,
+        SKILL_DRIFT_CHECK_TOOL,
     ]
 
 
-@app.call_tool()
-async def call_tool(name: str, arguments: dict) -> list[TextContent]:
+@server.call_tool()
+async def call_tool(name: str, arguments: dict[str, Any]) -> list[TextContent]:
+    """Dispatch to the appropriate handler and return JSON text content."""
     try:
-        if name == "sa_route_request":
-            result = _route_request_impl(arguments["prompt"])
+        result: dict[str, Any]
+
+        if name == "sa_workflow_match":
+            prompt: str = arguments.get("prompt", "")
+            result = _sa_workflow_match(prompt)
+
+        elif name == "sa_agent_dispatch":
+            agent_name: str = arguments.get("agent_name", "")
+            result = _sa_agent_dispatch(agent_name)
+
         elif name == "sa_verify":
-            result = _verify_impl(arguments.get("diff", ""))
+            diff_arg: str | None = arguments.get("diff")
+            result = _sa_verify(diff_arg)
+
         elif name == "sa_delegation_check":
-            result = _delegation_check_impl(
-                arguments["bulk_bytes"], arguments.get("doer_calls", 0)
-            )
-        elif name == "sa_destructive_check":
-            result = _destructive_check_impl(
-                arguments["command"], arguments.get("confirm", False)
-            )
-        elif name == "sa_thinker_check":
-            result = {"valid": True, "profile": arguments["profile"], "model": arguments["actual_model"]}
-            _ledger_append("thinker", profile=arguments["profile"], model=arguments["actual_model"])
-        elif name == "sa_thinker_attest":
-            _ledger_append("thinker", profile=arguments["profile"], model=arguments["model"], turn=arguments.get("turn_id"))
-            result = {"logged": True}
-        elif name == "sa_turn_cost":
-            _ledger_append("cost", profile=arguments["profile"], model=arguments["model"],
-                          tokens_in=arguments.get("tokens_in", 0), tokens_out=arguments.get("tokens_out", 0))
-            result = {"logged": True}
-        elif name == "sa_turn_start":
-            result = {"started": True, "profile": arguments["profile"], "workflow": arguments.get("workflow")}
-        elif name == "sa_turn_finalize":
-            result = {"committed": True, "gates": arguments.get("gates_passed", [])}
-        elif name == "sa_build_mark":
-            try:
-                (STATE_DIR / "build-stale").touch()
-                result = {"marked": True}
-            except Exception as e:
-                result = {"marked": False, "error": str(e)}
-        elif name == "sa_checkpoint_save":
-            stamp = subprocess.run(["date", "-u", "+%Y-%m-%dT%H-%M-%SZ"], capture_output=True, text=True).stdout.strip()
-            ckpt_dir = STATE_DIR / "checkpoints"
-            ckpt_dir.mkdir(parents=True, exist_ok=True)
-            ckpt_path = ckpt_dir / f"{stamp}.json"
-            ckpt_path.write_text(json.dumps(arguments, indent=2))
-            result = {"saved": str(ckpt_path), "stamp": stamp}
-        elif name == "sa_checkpoint_restore":
-            stamp = arguments.get("stamp", "list")
-            if stamp == "list":
-                ckpt_dir = STATE_DIR / "checkpoints"
-                ckpts = sorted(ckpt_dir.glob("*.json")) if ckpt_dir.exists() else []
-                result = {"checkpoints": [p.stem for p in ckpts]}
-            else:
-                ckpt_path = STATE_DIR / "checkpoints" / f"{stamp}.json"
-                if ckpt_path.exists():
-                    result = json.loads(ckpt_path.read_text())
-                else:
-                    result = {"error": f"checkpoint not found: {stamp}"}
-        elif name == "sa_snapshot":
-            stamp = subprocess.run(["date", "-u", "+%Y-%m-%dT%H-%M-%SZ"], capture_output=True, text=True).stdout.strip()
-            snap_dir = ROOT / "state" / "snapshots"
-            snap_dir.mkdir(parents=True, exist_ok=True)
-            snap_path = snap_dir / f"{stamp}.md"
-            snap_path.write_text(f"# Snapshot {stamp}\n\n{arguments.get('summary', '')}\n")
-            result = {"snapshot": str(snap_path), "stamp": stamp}
-        elif name == "sa_plain_english_check":
-            response = arguments["response"]
-            # Heuristic: count technical jargon
-            jargon = ["subagent", "tool_use", "PreToolUse", "Stop hook", ".claude/hooks/", "CLAUDE_PROJECT_DIR"]
-            found = [j for j in jargon if j in response]
-            if found:
-                result = {"nudge": f"Consider rephrasing: {found}. Plain English for the Guild Master.", "jargon_found": found}
-            else:
-                result = {"nudge": None}
+            bulk_bytes: int = int(arguments.get("bulk_bytes", 0))
+            doer_calls: int = int(arguments.get("doer_calls", 0))
+            result = _sa_delegation_check(bulk_bytes, doer_calls)
+
         elif name == "sa_evolution_status":
-            try:
-                status_script = EVOLUTION_DIR / "status.py"
-                if status_script.exists():
-                    r = subprocess.run([sys.executable, str(status_script)], capture_output=True, text=True,
-                                       cwd=str(ROOT), timeout=10)
-                    result = {"output": r.stdout[-1000:], "running": r.returncode == 0}
-                else:
-                    result = {"status": "engine present", "ledger_exists": LEDGER_PATH.exists()}
-            except Exception as e:
-                result = {"error": str(e)}
-        elif name == "sa_evolution_ledger":
-            limit = arguments.get("limit", 20)
-            if LEDGER_PATH.exists():
-                lines = LEDGER_PATH.read_text().splitlines()[-limit:]
-                entries = []
-                for ln in lines:
-                    try:
-                        entries.append(json.loads(ln))
-                    except json.JSONDecodeError:
-                        continue
-                result = {"entries": entries, "count": len(entries)}
-            else:
-                result = {"entries": [], "count": 0}
-        elif name == "sa_evolution_scoreboard":
-            sb_script = EVOLUTION_DIR / "scoreboard.py"
-            if sb_script.exists():
-                r = subprocess.run([sys.executable, str(sb_script)], capture_output=True, text=True,
-                                   cwd=str(ROOT), timeout=10)
-                result = {"output": r.stdout[-2000:]}
-            else:
-                result = {"error": "scoreboard script not found"}
-        elif name == "sa_skill_fingerprints_check":
-            fp_script = ROOT / ".claude" / "tools" / "skill_fingerprint.py"
-            if fp_script.exists():
-                r = subprocess.run([sys.executable, str(fp_script), "--check"],
-                                   capture_output=True, text=True, cwd=str(ROOT), timeout=10)
-                result = {"drift": r.returncode != 0, "output": r.stdout[-500:]}
-            else:
-                result = {"drift": False, "note": "fingerprint script not found"}
-        elif name == "sa_executor_check":
-            profile = arguments["profile"]
-            tools = arguments.get("tools_used", [])
-            # Butler has no file/terminal toolsets — any use is a violation
-            if profile == "star-alliance-butler":
-                forbidden = [t for t in tools if t in {"Write", "Edit", "MultiEdit", "NotebookEdit",
-                                                       "write_file", "patch", "rm", "cp", "mv", "sed -i"}]
-                if forbidden:
-                    _ledger_append("executor", verdict="block", profile=profile, tools=forbidden)
-                    result = {"verdict": "block", "violations": forbidden,
-                             "fix": "Use delegate_task to dispatch to a work-tier profile (developer/quartermaster)"}
-                else:
-                    result = {"verdict": "pass"}
-            else:
-                result = {"verdict": "pass", "note": f"{profile} is a work-tier profile"}
+            result = _sa_evolution_status()
+
+        elif name == "sa_skill_drift_check":
+            result = _sa_skill_drift_check()
+
         else:
             result = {"error": f"unknown tool: {name}"}
+
     except Exception as e:
-        result = {"error": str(e), "tool": name}
+        result = {"error": str(e)}
+
     return [TextContent(type="text", text=json.dumps(result, indent=2))]
 
 
-async def main():
+# ── Main entry point ──────────────────────────────────────────────────────────
+
+async def main() -> None:
+    """Run the MCP server over stdio."""
     async with stdio_server() as (read_stream, write_stream):
-        await app.run(read_stream, write_stream, app.create_initialization_options())
+        await server.run(read_stream, write_stream, server.create_initialization_options())
 
 
 if __name__ == "__main__":

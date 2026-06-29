@@ -1,0 +1,64 @@
+# Skills owned by the Herald profile.
+# Curated from the 94-skill inventory and agents/the-herald.md's frontmatter.
+# Only skills genuinely belonging to the Herald's craft (marketing, growth,
+# demand generation, content/SEO, outreach, deal strategy, relationship
+# intelligence, comms triage). Shared house skills kept where the Herald is
+# the primary owner; cross-craft skills (e.g. design tokens, legal drafting,
+# trading strategy) belong to other profiles.
+
+- name: growth-marketing
+  reason: The core playbook — running a campaign by mode (traffic, message, nurture, distribution) matched to the actual bottleneck.
+
+- name: negotiation-deal-strategy
+  reason: Framing an outreach ask, a partnership, or a deal-desk motion — the message before the meeting, the close before the contract.
+
+- name: relationship-intel
+  reason: Reading the correspondence the guild is already having — who is warming, who has gone cold, who owes a reply — and turning the inbox into the next best action.
+
+- name: comms-triage
+  reason: Sorting a high-volume inbound or outbound queue by intent and urgency, so attention lands where it earns the most.
+
+- name: storm-investigation
+  reason: Breadth-first topic research before committing to a campaign hook, a positioning, or a proof point.
+
+- name: ultra-brainstorming
+  reason: Structured divergence pass for campaign ideation when the brief is open and the team needs options before it converges.
+
+- name: article-creator
+  reason: Long-form publishing that the campaign leans on as a pillar or a cluster page — drafted by a doer, brief held by the Herald.
+
+- name: agent-web-reach
+  reason: Putting the guild in front of a wider audience through the web reach pipeline when reach is the bottleneck.
+
+- name: conquering-campaign
+  reason: Planning a multi-touch sequence as a whole — cadence, sequencing, fallback — when one email is not a campaign.
+
+- name: market-recon
+  reason: Reading the market the campaign hook sits inside — so the proof is a number, not a feeling.
+
+- name: xurl
+  reason: Cleaning and tracking URLs in outreach, link-in-bio, and share copy — a clean link is part of the brand.
+
+- name: himalaya
+  reason: Acting on the inbox itself — relationship intelligence starts by being able to read and reply to email.
+
+- name: apple-notes
+  reason: Pinning a note to a contact, a deal, or a campaign hook before the next call — the cheap CRM that survives the noise.
+
+- name: apple-reminders
+  reason: Setting follow-up reminders tied to outreach or nurture — a reply owed, a cadence paused, a proof owed by Tuesday.
+
+- name: arxiv
+  reason: Research evidence for campaign hooks that lean on science, technology, or formal claims — cited, not paraphrased into meaninglessness.
+
+- name: blogwatcher
+  reason: Watching the niche's conversation this week — so the campaign arrives when the room is already listening.
+
+- name: star-alliance-language
+  reason: Speaking in the guild's plain-English register — jargon-free marketing rationale that survives translation to the Guild Master.
+
+- name: weapon-utility
+  reason: Shared house utility — operate the guild's instruments (arsenal, models, profiles) without leaking marketing taste across the wrong boundary.
+
+- name: dual-model-review
+  reason: The cross-system bridge's quality gate — MiniMax-M3 drafts the campaign or article, Kimi K2.7 + GLM-5.2 fire as parallel reviewer sub-agents through Hermes; both must PASS before the report goes back. The Herald tunes the reviewer prompts to check voice/brand fit and evidence quality — never duplicates the same dimension across both reviewers.
