@@ -60,6 +60,50 @@ DISPATCH_MARKER = "dispatch.py"
 # Chain delimiters that separate sub-commands in a Bash string.
 CHAIN_SPLIT_RE = re.compile(r'(?:&&|\|\||;|\|)')
 
+
+def _strip_quoted(command):
+    """Replace content inside quoted strings with spaces, preserving length.
+
+    This lets the write-pattern regex match against the command structure
+    (where write operators actually appear) without false-positiving on
+    incidental words like 'touch', 'rm', or pipes inside prose, markdown
+    tables, or prompt text wrapped in quotes.
+
+    Handles single quotes, double quotes, and backslash-escaped quotes.
+    Quote characters themselves are left in place so positional anchors
+    (^, ;, &, etc.) still match correctly.
+    """
+    out = []
+    i = 0
+    n = len(command)
+    while i < n:
+        ch = command[i]
+        if ch == "\\" and i + 1 < n:
+            # Skip escape — preserve the next char's slot
+            out.append(command[i])
+            out.append(" ")
+            i += 2
+            continue
+        if ch in ('"', "'"):
+            quote = ch
+            out.append(quote)
+            i += 1
+            while i < n and command[i] != quote:
+                if command[i] == "\\" and i + 1 < n:
+                    out.append(" ")
+                    out.append(" ")
+                    i += 2
+                else:
+                    out.append(" ")
+                    i += 1
+            if i < n:
+                out.append(quote)  # closing quote
+                i += 1
+            continue
+        out.append(ch)
+        i += 1
+    return "".join(out)
+
 # ── Shell write patterns ────────────────────────────────────────────────────
 # Commands that mutate files via shell. Applied to each sub-command individually.
 BASH_WRITE_PATTERNS = (
@@ -283,9 +327,12 @@ def check(data):
     if tool == "Bash":
         command = tool_input.get("command", "") or ""
 
-        # Split the command on chain operators (&&, ||, ;, |) so that a
+        # Strip quoted-string contents first so write-pattern matches target
+        # the command structure (where operators actually live) and not the
+        # prose inside prompt text. Then split on chain operators so a
         # dispatch.py call can't be used as a piggyback for a write command.
-        sub_commands = _split_commands(command)
+        scan_command = _strip_quoted(command)
+        sub_commands = _split_commands(scan_command)
 
         for sub_cmd in sub_commands:
             # If this sub-command is the dispatch.py call, allow it.
@@ -321,7 +368,10 @@ def check(data):
 
             # Check for shell write commands.
             if BASH_WRITE_RE.search(sub_cmd):
-                preview = sub_cmd[:200] + ("..." if len(sub_cmd) > 200 else "")
+                # Show the user the ORIGINAL (unstripped) command so the
+                # block message includes the prose they actually wrote,
+                # not blanks where the quoted content used to be.
+                preview = command[:200] + ("..." if len(command) > 200 else "")
                 return {
                     "exit": 2,
                     "stderr": (
