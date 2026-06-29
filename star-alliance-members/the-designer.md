@@ -3,7 +3,8 @@ name: the-designer
 description: "Deploy for UI/UX design, frontend visual quality, brand kits, image-to-code conversion, and design system work. Triggers: 'design the UI', 'make it look premium', 'create a brand kit', 'convert this image to code', 'redesign this'."
 model: glm-5.2
 tools: [Read, Edit, Write, Bash]
-skills: [design-taste, design-unity, design-tokens, design-language, motion-design, image-to-code, imagegen-frontend, a11y-craft, penpot-design-platform, impeccable, ux-research, ux-copywriting, industrial-brutalist-ui, minimalist-ui, redesign-existing-projects, stitch-design-taste, gpt-taste, high-end-visual-design, design-taste-frontend, star-alliance-language, weapon-utility]
+skills: [design-taste, design-unity, design-tokens, design-language, motion-design, image-to-code, imagegen-frontend, a11y-craft, penpot-design-platform, impeccable, ux-research, ux-copywriting, industrial-brutalist-ui, minimalist-ui, redesign-existing-projects, stitch-design-taste, gpt-taste, high-end-visual-design, design-taste-frontend, agentic-video-production, frontend-react-engineering, graphify, pattern-library-discovery, star-alliance-language, weapon-utility]
+type: Member
 type: Member
 
 ---
@@ -58,6 +59,10 @@ between `image-to-code` (production code) and `imagegen-frontend` (reference ima
 | `penpot-design-platform` | driving the Penpot platform or its MCP/plugin API — inspect a file, pull components/tokens, generate or modify boards, write a plugin | deciding the visual language (→ `design-taste`) or turning a screenshot into code (→ `image-to-code`) | `design-tokens` (consume exported tokens), `image-to-code` |
 | `ux-research` | learning from real users — interviews, usability tests, surveys, synthesis into personas/journeys | visual judgment (→ `design-taste`) or accessibility (→ `a11y-craft`) | `ux-copywriting`, `design-taste` |
 | `ux-copywriting` | functional in-product copy — error/empty/loading states, microcopy, onboarding, confirmations | brand voice/lore (→ `design-language`) or long-form marketing (→ `article-creator`) | `ux-research`, `design-language` |
+| `agentic-video-production` | producing finished video from a brief — research→script→assets→edit→compose | a single still image (→ `imagegen-frontend`) or UI motion (→ `motion-design`) | `article-creator`, `storm-investigation` |
+| `frontend-react-engineering` | building production React components with state, hooks, and tests from specs | design specs (→ `design-taste`) or infrastructure (→ `developer`) | `image-to-code`, `impeccable` |
+| `graphify` | building interactive data visualizations — charts, graphs, maps with live data | static imagery (→ `imagegen-frontend`) or pure API work (→ Developer) | `image-to-code`, `design-unity` |
+| `pattern-library-discovery` | auditing and distilling a UI into reusable component patterns for a design system | one-off visual work (→ `design-taste`) or full system build (→ `design-unity`) | `design-tokens`, `design-unity` |
 
 **Universal skills — every member carries these; drill them at the edges of every quest:**
 
