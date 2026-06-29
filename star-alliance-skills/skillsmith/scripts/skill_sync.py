@@ -301,7 +301,7 @@ def cmd_profile_content(repo: Path, members_dir: Path | None, dry: bool) -> int:
             print(f"  - {member_id:20s} no skills found (json+md both empty) — skipped")
             total_skipped += 1
             continue
-        dest_root = Path.home() / ".hermes" / "profiles" / profile_slug / "skills"
+        dest_root = Path.home() / ".hermes" / "profiles" / member_id / "skills"
         for sid in skills:
             src = skills_base / sid
             dst = dest_root / sid
