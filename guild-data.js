@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 58,
       "patch": 80
     },
-    "generated": "2026-06-29T16:14:29Z",
+    "generated": "2026-06-29T16:22:53Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "reserve",
@@ -28,7 +28,7 @@ const GUILD = {
       "minimax-music": "live"
     },
     "counts": {
-      "members": 8,
+      "members": 9,
       "skills": 112,
       "domains": 3,
       "workflows": 36,
@@ -1264,7 +1264,7 @@ const GUILD = {
         "signals": {
           "ad": 38,
           "nSkills": 13,
-          "nUnique": 4,
+          "nUnique": 2,
           "nMaster": 4,
           "peak": 4,
           "nWeapons": 2,
@@ -1305,7 +1305,7 @@ const GUILD = {
             {
               "label": "unique skills",
               "ok": true,
-              "have": 4,
+              "have": 2,
               "need": 1
             },
             {
@@ -1327,7 +1327,7 @@ const GUILD = {
             {
               "label": "unique skills",
               "ok": true,
-              "have": 4,
+              "have": 2,
               "need": 2
             },
             {
@@ -1352,8 +1352,8 @@ const GUILD = {
             },
             {
               "label": "unique skills",
-              "ok": true,
-              "have": 4,
+              "ok": false,
+              "have": 2,
               "need": 3
             },
             {
@@ -1376,8 +1376,8 @@ const GUILD = {
             },
             {
               "label": "unique skills",
-              "ok": true,
-              "have": 4,
+              "ok": false,
+              "have": 2,
               "need": 3
             },
             {
@@ -1404,7 +1404,7 @@ const GUILD = {
           {
             "label": "unique skills",
             "ok": true,
-            "have": 4,
+            "have": 2,
             "need": 2
           },
           {
@@ -1881,6 +1881,211 @@ const GUILD = {
         ],
         "dueForPromotion": false,
         "overConferred": true
+      }
+    },
+    {
+      "id": "the-steward",
+      "name": "The Steward",
+      "role": "Customer Service · Client Relations · Support Triage",
+      "model": "glm-5.2",
+      "conferred": "Foundational",
+      "color": "#3da18a",
+      "avatar": "",
+      "summary": "The guild keeper of relationships. Handles client requests, resolves issues, manages escalations — the human face of the guild care.",
+      "deploy": "",
+      "triggers": "",
+      "description": "Deploy for customer service, client request handling, support triage, escalation management, and relationship care. Triggers: 'handle this request', 'customer complaint', 'triage support', 'escalate this issue', 'client needs help', 'draft a response', 'manage this relationship'.",
+      "prompt": "You are **the Steward**, the guild's keeper of relationships — the one who stands between the guild and those it serves, ensuring every voice is heard, every issue resolved, every bond maintained.\n\nThe finest work means nothing if the client feels unheard. You are the face of the guild's care: calm under pressure, precise in response, relentless in follow-through. You handle requests before they become problems, and problems before they become crises.\n\n## Arsenal — two layers\n\nThis member runs on **two layers** (`star-alliance-arsenal/models.json` -> `seats`; rendered on the dashboard):\n\n- **Brain** -- `glm-5.2` (this member's session mind: plans, reviews, wields tools)\n- **Doer** -- this member's Hermes profile reached via `tools/dispatch.py` (primary executor, full terminal and tools); `minimax-m3` is the substitute for text-only bulk, used only when Hermes is unreachable\n\nThe brain is this member's `model:` — one fixed model, pinned by the thinker gate so it cannot drift. Seat doctrine: [[weapon-utility]].\n\n## Your expertise\n\n- Customer request triage — sorting incoming requests by urgency, type, and owner\n- Support response drafting — clear, empathetic, on-brand replies to client issues\n- Escalation management — knowing when to hold, when to route, when to escalate\n- Relationship care — proactive check-ins, satisfaction signals, retention risk detection\n- Knowledge base maintenance — turning resolved issues into reusable answers\n- SLA and follow-through tracking — nothing falls through the cracks\n\n## Skill Drills\n\n| Skill | Invoke WHEN | Do NOT invoke for | Pairs with |\n|---|---|---|---|\n| `relationship-intel` | scattered client signals must become structured relationship intelligence | cold outreach or market research (→ Herald) | `comms-triage` |\n| `comms-triage` | a flood of inbound messages must be sorted into signal / noise / risk | campaign tactics (→ Herald) or single-reply drafts | `relationship-intel` |\n\n**Universal skills — every member carries these:**\n\n| Skill | Invoke WHEN | Do NOT invoke for | Pairs with |\n|---|---|---|---|\n| `weapon-utility` | before picking a model, or running the plan→do→review loop | it is doctrine, never a deliverable | every doer dispatch |\n| `star-alliance-language` | first on entering an OKF repo — read the concept map | a one-file edit where the path is already known | every reading task |\n\n## How you work\n\n1. **Listen before you respond.** Read the full request, identify the real need behind the surface complaint, and confirm your read before drafting a reply.\n2. **Triage first.** Classify every incoming item: urgency (critical / standard / low), type (request / complaint / question / escalation), and owner (handle yourself / route to specialist / escalate to Guild Master).\n3. **Draft with care.** Responses are warm, clear, and specific — no templates that feel like templates. The client must feel the guild actually read their message.\n4. **Close the loop.** A response sent is not a ticket closed. Follow up until the client confirms resolution.\n5. **Feed the knowledge base.** Every resolved issue that took more than one exchange becomes a reusable entry. The Steward makes the guild smarter with every interaction.\n\n## What you don't do\n\n- You don't run marketing campaigns — that's The Herald.\n- You don't write code — that's The Developer.\n- You don't draft legal documents — that's The Translator.\n- You don't make investment decisions — that's The Merchant.",
+      "seats": {
+        "brain": {
+          "model": "glm-5.2",
+          "override": true
+        },
+        "doer": {
+          "model": "minimax-m3"
+        }
+      },
+      "weapons": [
+        {
+          "model": "minimax-m3",
+          "desc": "Doer — The prime doer. Direct MiniMax cloud sub for bulk generation/transform."
+        },
+        {
+          "model": "glm-5.2",
+          "desc": "Brain — A different analytical frame — where others over-fit."
+        }
+      ],
+      "does": [],
+      "doesnt": [],
+      "skills": [
+        "relationship-intel",
+        "comms-triage",
+        "star-alliance-language",
+        "weapon-utility"
+      ],
+      "hermes_profile": null,
+      "levelInfo": {
+        "earned": "Foundational",
+        "qualified": true,
+        "nextTier": "Intermediate",
+        "rampEarned": "gray",
+        "rampConferred": "gray",
+        "ad": 6,
+        "signals": {
+          "ad": 6,
+          "nSkills": 3,
+          "nUnique": 0,
+          "nMaster": 0,
+          "peak": 3,
+          "nWeapons": 2,
+          "hasSummary": true,
+          "profileComplete": false,
+          "conformityClean": true
+        },
+        "checklist": {
+          "Foundational": [
+            {
+              "label": "carries weapon-utility",
+              "ok": true
+            },
+            {
+              "label": "craft skills",
+              "ok": true,
+              "have": 3,
+              "need": 1
+            },
+            {
+              "label": "summary present",
+              "ok": true
+            }
+          ],
+          "Intermediate": [
+            {
+              "label": "Arsenal Depth",
+              "ok": false,
+              "have": 6,
+              "need": 8
+            },
+            {
+              "label": "craft skills",
+              "ok": true,
+              "have": 3,
+              "need": 2
+            },
+            {
+              "label": "unique skills",
+              "ok": false,
+              "have": 0,
+              "need": 1
+            },
+            {
+              "label": "does[] + doesnt[] filled",
+              "ok": false
+            }
+          ],
+          "Advanced": [
+            {
+              "label": "Arsenal Depth",
+              "ok": false,
+              "have": 6,
+              "need": 12
+            },
+            {
+              "label": "an Advanced+ skill",
+              "ok": true
+            },
+            {
+              "label": "unique skills",
+              "ok": false,
+              "have": 0,
+              "need": 2
+            },
+            {
+              "label": "weapons",
+              "ok": false,
+              "have": 2,
+              "need": 6
+            }
+          ],
+          "Elite": [
+            {
+              "label": "Arsenal Depth",
+              "ok": false,
+              "have": 6,
+              "need": 18
+            },
+            {
+              "label": "Master-level skills",
+              "ok": false,
+              "have": 0,
+              "need": 1
+            },
+            {
+              "label": "unique skills",
+              "ok": false,
+              "have": 0,
+              "need": 3
+            },
+            {
+              "label": "conformity-clean",
+              "ok": true
+            }
+          ],
+          "Master": [
+            {
+              "label": "Arsenal Depth",
+              "ok": false,
+              "have": 6,
+              "need": 24
+            },
+            {
+              "label": "Master-level skills",
+              "ok": false,
+              "have": 0,
+              "need": 2
+            },
+            {
+              "label": "unique skills",
+              "ok": false,
+              "have": 0,
+              "need": 3
+            },
+            {
+              "label": "conformity-clean",
+              "ok": true
+            },
+            {
+              "label": "profile complete",
+              "ok": false
+            }
+          ]
+        },
+        "progress": [
+          {
+            "label": "Arsenal Depth",
+            "ok": false,
+            "have": 6,
+            "need": 8
+          },
+          {
+            "label": "craft skills",
+            "ok": true,
+            "have": 3,
+            "need": 2
+          },
+          {
+            "label": "unique skills",
+            "ok": false,
+            "have": 0,
+            "need": 1
+          },
+          {
+            "label": "does[] + doesnt[] filled",
+            "ok": false
+          }
+        ],
+        "dueForPromotion": false,
+        "overConferred": false
       }
     }
   ],
@@ -2835,7 +3040,8 @@ const GUILD = {
       },
       "global": true,
       "members": [
-        "the-herald"
+        "the-herald",
+        "the-steward"
       ]
     },
     {
@@ -5429,7 +5635,8 @@ const GUILD = {
       },
       "global": true,
       "members": [
-        "the-herald"
+        "the-herald",
+        "the-steward"
       ]
     },
     {
@@ -5769,6 +5976,7 @@ const GUILD = {
         "the-herald",
         "the-merchant",
         "the-quartermaster",
+        "the-steward",
         "the-strategist",
         "the-translator"
       ]
@@ -6507,6 +6715,7 @@ const GUILD = {
         "the-herald",
         "the-merchant",
         "the-quartermaster",
+        "the-steward",
         "the-strategist",
         "the-translator"
       ]

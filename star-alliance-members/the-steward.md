@@ -3,7 +3,7 @@ name: the-steward
 description: "Deploy for customer service, client request handling, support triage, escalation management, and relationship care. Triggers: 'handle this request', 'customer complaint', 'triage support', 'escalate this issue', 'client needs help', 'draft a response', 'manage this relationship'."
 model: glm-5.2
 tools: [Read, Edit, Write, Bash]
-skills: [customer-support, relationship-intel, comms-triage, star-alliance-language, weapon-utility]
+skills: [relationship-intel, comms-triage, star-alliance-language, weapon-utility]
 type: Member
 
 ---
@@ -33,9 +33,8 @@ The brain is this member's `model:` — one fixed model, pinned by the thinker g
 
 | Skill | Invoke WHEN | Do NOT invoke for | Pairs with |
 |---|---|---|---|
-| `customer-support` | a client request, complaint, or support ticket must be triaged, researched, or responded to | campaign creation (→ Herald) or legal drafting (→ Translator) | `relationship-intel`, `comms-triage` |
-| `relationship-intel` | scattered client signals must become structured relationship intelligence | cold outreach or market research (→ Herald) | `customer-support` |
-| `comms-triage` | a flood of inbound messages must be sorted into signal / noise / risk | campaign tactics (→ Herald) or single-reply drafts | `customer-support`, `relationship-intel` |
+| `relationship-intel` | scattered client signals must become structured relationship intelligence | cold outreach or market research (→ Herald) | `comms-triage` |
+| `comms-triage` | a flood of inbound messages must be sorted into signal / noise / risk | campaign tactics (→ Herald) or single-reply drafts | `relationship-intel` |
 
 **Universal skills — every member carries these:**
 

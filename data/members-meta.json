@@ -193,6 +193,13 @@
       "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-quart\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#2d2010\"/><stop offset=\"1\" stop-color=\"#1f1408\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-quart)\"/><path d=\"M48 14 L62 20 L62 36 C62 45 56 51 48 53 C40 51 34 45 34 36 L34 20 Z\" fill=\"none\" stroke=\"#e8b84e\" stroke-width=\"2.5\" stroke-linejoin=\"round\"/><path d=\"M40 28 L45 33 L56 22\" stroke=\"#e8b84e\" stroke-width=\"2.5\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M48 53 L48 60 M40 60 L56 60 L56 68 L40 68 Z\" fill=\"#e8b84e\" opacity=\".4\"/></svg>",
       "exit_state": "CONFORMANCE_PASSED",
       "handoff": "Conformance {severity} for {scope}: {summary}. Registry {registry_version}. Logged."
+    },
+    "the-steward": {
+      "name": "The Steward",
+      "role": "Customer Service · Client Relations · Support Triage",
+      "level": "Foundational",
+      "color": "#3da18a",
+      "summary": "The guild keeper of relationships. Handles client requests, resolves issues, manages escalations — the human face of the guild care."
     }
   }
 }
