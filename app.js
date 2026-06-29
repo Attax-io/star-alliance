@@ -1165,24 +1165,21 @@ function renderMemberDossier(id) {
   const sharedN = active.filter(isShared).length;
 
   const eff = effectiveWeapons(m);
-  const seats = m.seats || {};                                                // 4-seat arsenal (Phase 2): brain/doer/critic/bench
+  const seats = m.seats || {};                                                // two layers: brain + doer
   const brainModel = (seats.brain && seats.brain.model) || m.model;           // brain = the model the agent RUNS AS (its mind)
   const primeDoerModel = (seats.doer && seats.doer.model)                     // hands = the Doer seat (minimax-m3)
     || eff.find((w) => modelMeta(w.model).role === "doer")?.model;
-  const criticModel = (seats.critic && seats.critic.model) || null;           // independent reviewer (glm-5.2, a different family than the brain)
   const weapons = eff.map((w, i) => {
     const mm = modelMeta(w.model);
     const role = mm.role ? ROLE_META[mm.role] : null;
     const isBrain = w.model === brainModel;
     const isDoer = w.model === primeDoerModel;
-    const isCritic = w.model === criticModel;
-    return `<div class="weapon-card${w.added ? " added" : ""}${isBrain ? " is-brain" : ""}${isDoer ? " is-doer" : ""}${isCritic ? " is-critic" : ""}" draggable="true" data-model="${esc(w.model)}" data-member="${esc(m.id)}" style="--wc:${esc(mm.color)}">
+    return `<div class="weapon-card${w.added ? " added" : ""}${isBrain ? " is-brain" : ""}${isDoer ? " is-doer" : ""}" draggable="true" data-model="${esc(w.model)}" data-member="${esc(m.id)}" style="--wc:${esc(mm.color)}">
       <div class="weapon-thumb-wrap">
         <img class="weapon-thumb" src="weapon-art/${esc(w.model)}.png" alt="${esc(mm.label)}" loading="lazy">
         ${role ? `<img class="weapon-role-pip" src="${esc(role.icon)}" alt="${esc(role.label)}" title="${esc(role.label)}: ${esc(role.rule)}" style="--rc:${esc(role.color)}">` : ""}
         ${isBrain ? `<span class="weapon-brain-flag" title="Brain — the model this agent runs as and thinks with">BRAIN</span>` : ""}
-        ${isDoer ? `<span class="weapon-doer-flag" title="Prime doer — the hands that do the bulk execution">DOER</span>` : ""}
-        ${isCritic ? `<span class="weapon-critic-flag" title="Critic — independent reviewer, a different model family than the brain">CRITIC</span>` : ""}
+        ${isDoer ? `<span class="weapon-doer-flag" title="Doer — the hands that do the bulk execution">DOER</span>` : ""}
         <div class="weapon-thumb-tip">
           <div class="wtt-header">
             <div class="wtt-name">${esc(mm.label)}</div>
@@ -1291,7 +1288,7 @@ function renderMemberDossier(id) {
             <span>Models · ${pluralize(eff.length, "model")}</span>
             <a class="reset-btn" href="#/models">Manage in Models →</a>
           </div>
-          <p class="skill-hint">The <strong>universal model set</strong>, projected for this agent as four seats — <strong>Brain</strong> (its <code>model:</code>) · <strong>Doer</strong> · <strong>Critic</strong> · <strong>Bench</strong>. Defined once in <code>models.json → seats</code>; not per-agent editable.</p>
+          <p class="skill-hint">The <strong>two-layer</strong> model set for this agent — <strong>Brain</strong> (its <code>model:</code>, the mind) · <strong>Doer</strong> (MiniMax, the hands). Defined once in <code>models.json → seats</code>; not per-agent editable.</p>
           <div class="arsenal-grid">${weapons}</div>
         </div>
       </div>
@@ -1494,7 +1491,7 @@ function renderArsenal() {
   else liveTag = "";
 
   // Delegation ledger headline — REAL doer work logged by the backends. The
-  // figure that proves the harness is offloading work to the cheap bench.
+  // figure that proves the harness is offloading work to the cheap doer.
   let ledgerBanner = "";
   const lg = arsenalLive && arsenalLive.ledger;
   if (lg && lg.week && lg.week.doerCalls > 0) {
@@ -1503,7 +1500,7 @@ function renderArsenal() {
     ledgerBanner = `<div class="ledger-banner glass" title="Real token spend logged by summon.py → minimax.py / ollama_cloud.py">
       <span class="lb-icon">⚔</span>
       <div class="lb-stats">
-        <div class="lb-headline"><b>${lg.week.doerCalls}</b> doer call${lg.week.doerCalls > 1 ? "s" : ""} · <b>${fmtK(lg.week.doerOut)}</b> tokens offloaded to the bench <span class="lb-win">7d</span></div>
+        <div class="lb-headline"><b>${lg.week.doerCalls}</b> doer call${lg.week.doerCalls > 1 ? "s" : ""} · <b>${fmtK(lg.week.doerOut)}</b> tokens offloaded to the doer <span class="lb-win">7d</span></div>
         <div class="lb-sub">~${fmtK(lg.week.doerOut)} Opus output tokens the doers absorbed${showRate ? ` · <b>${rate}%</b> of recent output delegated <span class="lb-win">5h</span>` : ""}</div>
       </div>
     </div>`;
@@ -1511,7 +1508,7 @@ function renderArsenal() {
     ledgerBanner = `<div class="ledger-banner glass empty" title="No doer calls logged yet — fire one via summon.py">
       <span class="lb-icon">⚔</span>
       <div class="lb-stats"><div class="lb-headline">No delegated work logged yet</div>
-      <div class="lb-sub">Doer calls via <code>summon.py</code> will appear here — proof the bench is carrying load.</div></div>
+      <div class="lb-sub">Doer calls via <code>summon.py</code> will appear here — proof the doer is carrying load.</div></div>
     </div>`;
   }
 

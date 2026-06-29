@@ -61,13 +61,12 @@
           "title": "Implement the Plan",
           "act": "The Developer writes the code, fixes any bugs, and self-tests everything before handing it back.",
           "produces": "working implementation",
-          "thinker": "opus",
+          "thinker": "haiku",
           "doers": [
             {
               "model": "minimax-m3",
               "count": 3
-            },
-            "haiku"
+            }
           ],
           "exec": "spawn",
           "parallel": true

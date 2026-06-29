@@ -8,9 +8,9 @@ timestamp: 2026-06-27T00:00:00Z
 # haiku
 
 **Status:** LIVE  
-**Role:** doer · **Backend:** claude · **Kind:** text
+**Role:** both · **Backend:** claude · **Kind:** text
 
-Fastest, cheapest Claude — quick mechanical reasoning.
+Fast, cheap Claude brain — the session mind for every helper but the Strategist.
 
 ## Backend
 

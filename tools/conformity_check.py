@@ -29,12 +29,9 @@ ROOT = next((p for p in pathlib.Path(__file__).resolve().parents
 # (star-alliance-arsenal/models.json). The literal below is a FAIL-SAFE only.
 # Media weapons are normalized to "doer" for arsenal ordering; sonnet "both" forced last.
 _FALLBACK_ROLE = {
-    "opus": "thinker", "deepseek-v4-pro": "thinker",
-    "glm-5.2": "thinker", "kimi-k2.7": "thinker", "nemotron-3-ultra": "thinker",
-    "qwen3.5": "thinker", "qwen-3.5": "thinker", "gemma4": "thinker",
-    "sonnet": "both",
-    "haiku": "doer", "minimax-m3": "doer",
-    "image-01": "doer", "minimax-video": "doer", "minimax-speech": "doer", "minimax-music": "doer",
+    "opus": "thinker",      # Strategist brain + orchestrator
+    "haiku": "both",        # every other member's brain (thinks + can do)
+    "minimax-m3": "doer",   # the one shared doer
 }
 
 
@@ -56,8 +53,8 @@ def _load_role():
 
 ROLE = _load_role()
 
-CLAUDE_NATIVE = {"opus", "sonnet", "haiku"}
-MEDIA_WEAPONS = {"image-01", "minimax-video", "minimax-speech", "minimax-music"}
+CLAUDE_NATIVE = {"opus", "haiku"}
+MEDIA_WEAPONS = set()  # two-layer system: no media weapons in the arsenal
 
 
 def frontmatter_list(text, key):

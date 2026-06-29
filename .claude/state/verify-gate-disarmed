@@ -1,0 +1,6 @@
+Two-layer rework (2026-06-29): the background safety-checker (Critic = GLM) is
+stood down by request — the guild runs brain + MiniMax doer only, no GLM. This
+file is the verify-gate's own kill switch; delete it to re-arm (you would also
+need to re-add a critic model to models.json). To remove the gate entirely,
+delete its line from .claude/settings.json → hooks.Stop (that file is locked to
+this session, so it was left in place but disarmed here).

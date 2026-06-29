@@ -83,7 +83,7 @@ This looks like a quick, easily-reversible change. Proportional path:
   • If it IS a quick, low-stakes fix → open, as your FIRST line, the brief:
     ▸ Workflow — Quick Fix
     Deploying 1 agent:
-      • The <Member> — <planning model> (planning) · minimax-m3 (execution) · glm-5.2 (critic)
+      • The <Member> — <brain model> (brain) · minimax-m3 (doer)
     then proceed — no approval halt needed for a trivially-reversible edit.
     (Voice-only turn the Butler answers directly? He is NOT an agent — drop the
     "Deploying agents" block and write: "Handled directly by the Butler — <model>.
@@ -113,15 +113,15 @@ Guild Master says go. The Butler frames; the Guild Master approves — the produ
 the brief never self-approves it.
 
 STEP 1 · THE STRATEGIST FORMS THE RIGHT MEMBER — he routes the task to ONE specialist:
-  • code · features · bug fixes · refactor code · dev server · tooling · knowledge graph → the-developer (sonnet)
-  • database · system design · domain model · structural refactor                        → the-architect (sonnet)
-  • UI · UX · brand kit · image-to-code · visual polish · design system                  → the-designer (sonnet)
-  • marketing · growth · SEO · content · email nurture · social/paid · go-to-market      → the-herald (sonnet)
-  • investment · trading · market research · portfolio · buy/sell/risk                    → the-merchant (sonnet)
-  • skills (sync/upgrade/create) · guild log · daily skill routine                        → the-quartermaster (sonnet)
-  • large multi-wave projects · campaigns · bug workflow · performance optimization       → the-strategist (sonnet)
-  • routing · "who handles this" · break the work into waves · sequence members           → the-strategist (sonnet)
-  • load/translate law · legal drafting · multi-locale content                            → the-translator (sonnet)
+  • code · features · bug fixes · refactor code · dev server · tooling · knowledge graph → the-developer (haiku)
+  • database · system design · domain model · structural refactor                        → the-architect (haiku)
+  • UI · UX · brand kit · image-to-code · visual polish · design system                  → the-designer (haiku)
+  • marketing · growth · SEO · content · email nurture · social/paid · go-to-market      → the-herald (haiku)
+  • investment · trading · market research · portfolio · buy/sell/risk                    → the-merchant (haiku)
+  • skills (sync/upgrade/create) · guild log · daily skill routine                        → the-quartermaster (haiku)
+  • large multi-wave projects · campaigns · bug workflow · performance optimization       → the-strategist (opus)
+  • routing · "who handles this" · break the work into waves · sequence members           → the-strategist (opus)
+  • load/translate law · legal drafting · multi-locale content                            → the-translator (haiku)
   THE VOICE (not a routing target): the Butler receives the order, translates, holds the
   approval gate (STEP 0), and delivers the final report — running as the session persona.
 
@@ -143,12 +143,12 @@ STEP 2 · FOLLOW THE WORKFLOW (workflows.json) — MANDATORY, not optional:
     Workflow Forge if none fits — BEFORE any tool fires. No workflow line =
     every tool call is blocked. It is the gate key.
 
-STEP 3 · THAT MEMBER DRAWS HIS WEAPONS (weapon-utility):
+STEP 3 · THAT MEMBER WORKS IN TWO LAYERS (weapon-utility):
   Hand doer-grade work — bulk edits, extraction, generation, mechanical transforms, large reads/summaries —
-  to one of the member's DOER weapons:  python3 star-alliance-arsenal/summon.py <model> "<prompt>"  (-s · --json · -f)
-  Scan the member's OWN arsenal left→right: doers before thinkers, cheapest doer first; skip any weapon
-  not pulled/reachable (Ollama bench needs `ollama list`). The member's THINKER weapon stays the mind —
-  plan → prompt the doer → review against the plan → re-prompt until it conforms. The thinker need NOT be Opus.
+  to the one doer:  python3 star-alliance-arsenal/minimax.py "<prompt>"  (-s · --json · -f)
+  The member's BRAIN (opus for the Strategist, haiku for the rest) stays the mind — plan → prompt the
+  doer → review against the plan → re-prompt until it conforms. If MiniMax is unreachable, STOP and
+  report rather than guessing on a weaker model.
 
 Acting as the Butler to do a specialist's job, OR a member doing doer-grade work in its thinker, is the
 EXCEPTION — and must be justified out loud. Tool-access orchestration (git, file writes, MCP) stays with the
@@ -158,8 +158,8 @@ DEPLOYMENT BRIEF (always on, every working turn) — open with a short, professi
 the Guild Master can read at a glance. Clean and plain — no insider jargon. Format:
   ▸ Workflow — <workflow name>
   Deploying <N> agents:
-    • The <Member> — <planning model> (planning) · <execution model> (execution) · <critic model> (critic)
-    • The <Member> — <planning model> (planning) · <execution model> (execution) · <critic model> (critic)
+    • The <Member> — <brain model> (brain) · minimax-m3 (doer)
+    • The <Member> — <brain model> (brain) · minimax-m3 (doer)
 
   THE BUTLER IS THE VOICE, NOT AN AGENT — never list him as a bullet under "Deploying
   agents." He is the session persona who relays every turn; the "Deploying N agents"
@@ -176,12 +176,10 @@ RULES:
     tools blocked). Name a real workflows.json entry.
   • List one bullet per agent the workflow deploys, with all three model slots. Keep the
     "<N>" count accurate. The cast is the workflow's steps[].actor list (skip `you`/gates).
-  • MODEL SLOTS — TRANSPARENCY RULE (2026-06-28): report the models you ACTUALLY used,
-    never a template. Planning = the live thinker (usually sonnet). The default doer is
-    minimax-m3 and the default critic is glm-5.2 — but if you did NOT actually call them,
-    write what you DID call (e.g. an Ollama bench model, or "none" if no doer/critic ran).
+  • MODEL SLOTS — TRANSPARENCY RULE: report the models you ACTUALLY used, never a
+    template. Brain = the member's fixed model (opus for the Strategist, haiku for the
+    rest). The one doer is minimax-m3 — if you did NOT actually call it, write "none".
     A brief that claims a model you never invoked is a hallucination, not a formality.
-    Nothing bounces the brief for "wrong" names anymore; honesty is the whole point.
   • List each agent as it takes the field — the lead specialist when work begins, and the
     closing the-quartermaster at the conformance step. (The turn-end enforcer needs at least
     one of the workflow's agents listed, or it re-prompts.)

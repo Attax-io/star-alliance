@@ -23,15 +23,11 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 # Canonical model facts live in models.json (read via models_registry). The
 # literals below are a FAIL-SAFE only — used if the registry can't be read so a
 # broken file never bricks dispatch. Edit models.json, not these.
-_FALLBACK_CLOUD_TAG = {
-    'glm-5.2': 'glm-5.2:cloud',
-    'kimi-k2.7': 'kimi-k2.7-code:cloud',
-    'deepseek-v4-pro': 'deepseek-v4-pro:cloud',
-    'nemotron-3-ultra': 'nemotron-3-super:cloud',
-    'qwen3.5': 'qwen3.5:cloud',
-    'gemma4': 'gemma4:cloud',
-}
-_FALLBACK_CLAUDE = {'opus', 'sonnet', 'haiku'}
+# Two-layer system: no Ollama/cloud bench models remain, so there are no cloud
+# tags. Kept as an (empty) fail-safe mirror of models.json so dispatch and the
+# conformity FB(tags) check stay satisfied by construction.
+_FALLBACK_CLOUD_TAG = {}
+_FALLBACK_CLAUDE = {'opus', 'haiku'}
 
 if HERE not in sys.path:
     sys.path.insert(0, HERE)

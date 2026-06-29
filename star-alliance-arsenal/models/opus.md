@@ -10,7 +10,7 @@ timestamp: 2026-06-27T00:00:00Z
 **Status:** LIVE  
 **Role:** thinker · **Backend:** claude · **Kind:** text
 
-Deepest structural reasoning — the prime thinker for hard plans.
+Deepest structural reasoning — the Strategist's brain and the master orchestrator.
 
 ## Backend
 
