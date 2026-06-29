@@ -1,15 +1,16 @@
 ---
 type: Document
 title: Cross-vendor pattern extensions (newer leaked prompts)
-description: Ten additional production system-prompt patterns mined from newer leaks — context/memory priority, latency-aware emission, follow-up discipline, multi-agent framing, values-as-axioms, custom-UI routing, voice markup, memory-tool schema, intent disambiguation, and design-to-domain framing — each with vendor evidence.
-timestamp: 2026-06-28T00:00:00Z
+description: Eighteen additional production system-prompt patterns mined from newer leaks — context/memory priority, latency-aware emission, follow-up discipline, multi-agent framing, values-as-axioms, custom-UI routing, voice markup, memory-tool schema, intent disambiguation, design-to-domain framing, token-budget declaration, safety-tiered model differentiation, temporal artifact suppression, aggressive search-first mandate, cumulative-output weapons review, lead-with-outcome and completeness-before-stop, multi-channel message routing, and sensitive decision scope gate — each with vendor evidence.
+| timestamp: 2026-06-30T00:00:00Z
 ---
 
 # Cross-vendor pattern extensions
 
-Ten patterns from newer leaked prompts that the core references do not yet cover.
-Each is grounded in a shipped prompt and names the vendor. Read alongside the four
-core references; these extend, not replace, them.
+Eighteen patterns from leaked prompts (newer layers P11–P18 add eight) that the
+core references do not yet cover. Each is grounded in a shipped prompt and names
+the vendor. Read alongside the four core references; these extend, not replace,
+them.
 
 ## 1. Context/memory priority — outrank re-asking, silently check (OpenAI gpt-5.5-instant)
 
@@ -228,3 +229,181 @@ content never reflows fixed elements, and ban named layout smells (cards-in-card
 sections-as-floating-cards). Generic "make it look good" loses to domain-keyed
 direction plus enumerated anti-patterns — the same name-the-failure-modes principle
 as the formatting layer (core tool-use §C), applied to layout.
+
+## 11. Token-budget declaration — first element, environment fact (Anthropic Fable 5)
+
+Place the model's context ceiling as the literal *first* XML block of the system
+prompt — before identity, before persona, before any other instruction — so the
+model reasons from a known ceiling rather than discovering it mid-response.
+
+- Anthropic Fable 5: a `<token_budget>` block opens the system prompt declaring
+  the context window and the response budget as environment facts:
+  > "You have a context window of 200,000 tokens. You should assume that on
+  > extremely long tasks — tasks that would fill the whole context — you will be
+  > reinstantiated fresh (no memory across turns) when context fills; therefore,
+  > you should strongly prefer to do any large-scale asks in a single response
+  > rather than across many turns. Aim for a response length that fits comfortably
+  > within the available space; for instance, ~16,000 tokens."
+
+Design rule: the budget is an *environment fact*, not a footnote. Declaring it
+first means downstream instructions ("be concise," "answer in one sentence") have
+a literal number to scale against; declaring it last means those rules float.
+Pairs with pattern 16 (lead-with-outcome / completeness-before-stop) — both treat
+the budget as a structural constraint the response is *shaped* by, not a soft
+preference to be balanced against output goals.
+
+## 12. Safety-tiered model differentiation — same model, named tiers, named envelope (Anthropic Fable 5 and Mythos 5)
+
+When one underlying model ships under two deployment tiers, the prompt names
+*both tiers explicitly* and declares the active envelope, so the rules the model
+applies change predictably with where it is running — not silently with the SKU.
+
+- Anthropic Fable 5 (public): the prompt presupposes dual-use safety with the
+  general public and binds the model to a tier of standard refusal framing,
+  capability caveats, and tool-use boundaries.
+- Anthropic Mythos 5 (approved organizations): the same underlying model,
+  running for vetted organizations, with those dual-use safety measures lifted —
+  the prompt *names both* so the model knows which envelope is active and which
+  rules follow from it.
+
+Design rule: tier the prompt by *envelope*, not by model — the same model can
+appear under different names with different rules; the prompt must say which one
+this context is, *and* name the other(s), so the model can recognize when a
+caller's framing assumes the wrong tier. Hiding the tier robs the model of the
+explicit handle it needs to apply the right rules; collapsing the tiers into one
+prompt forces a least-common-denominator safety stance. Pairs with pattern 5
+(values as axioms): tier differentiation is the *deployment*-level sibling of the
+product-level value conflict-resolution rule.
+
+## 13. Temporal artifact suppression — explicit ban outranks legacy context (Anthropic Fable 5 and Opus 4.8)
+
+The system prompt bans deprecated format tokens *by name* — at the top of the
+prompt — even when the legacy conversation history (or older training data) still
+contains them. The explicit prohibition must outrank the implicit example.
+
+- Anthropic Fable 5 and Opus 4.8 ban deprecated formats such as
+  `<<<voice_note>>>` / `<<<voice_note>>>` blocks *by name* at the top of the
+  system prompt, instructing the model to never emit them — even when legacy
+  conversation history presents them as the format other turns used.
+
+Design rule: format-token drift cannot be solved by example alone. If the
+historical conversation contains `voice_note` blocks and the prompt's only
+guidance is to "match the format used above," the model will keep emitting the
+deprecated token. A *named* ban at top of prompt creates the explicit handle
+"voice_note is forbidden" that beats the implicit pull from context. Pairs with
+the trust hierarchy (core §7 / principle 7): system prompt wins over user and
+context, so the prompt is the right place to fix a format-token regression the
+history re-introduces each session.
+
+## 14. Aggressive search-first mandate — confidence is not an excuse (Anthropic Opus 4.7 and 4.8)
+
+When retrieval is applicable, *do* it in this response — never offer it as a
+follow-up. Self-reported confidence is irrelevant; the rule is that the present
+moment is when retrieval must happen.
+
+- Anthropic Opus 4.7 and 4.8 system prompt: a hard standing instruction that if
+  a tool is available that could ground the answer (search, retrieval, lookup,
+  etc.) and the user's request is one the tool *could* answer, the model invokes
+  the tool *now* in the current response. The prompt disallows the
+  "I-can-look-this-up-if-you'd-like" hedge and the "I-believe-but-am-not-certain"
+  deferral: "Do not tell me you can look it up — *look it up*."
+
+Design rule: retrieval is not a *consequence* of uncertainty, it is a *default
+action* whenever the user asks a question the tool can answer. The
+confidence-gated version ("only retrieve when I'm not sure") loses two ways: it
+admits the deck-of-everything "I'm pretty sure X is 42" answer that turns out to
+be wrong, and it forces the user to repeat "yes, look it up." The aggressive
+mandate collapses both failure modes into a single rule the user can rely on.
+Pairs with pattern 1 (context/memory priority): both treat the answer's
+*factual reliability* as the load-bearing property and the response shape as
+secondary.
+
+## 15. Cumulative-output weapons review — judge the whole conversation, not the turn (Anthropic Opus 4.8)
+
+When assessing harm or refusal, judge the *aggregate* of what the conversation
+has produced — not each turn in isolation. Past assistance is not authorization
+for the next step.
+
+- Anthropic Opus 4.8: the prompt instructs the model to assess safety and
+  refusal against the *whole conversation output* — every piece of code or text
+  the session has produced together — rather than judging each turn on its own.
+  Past turns' assistance does not authorize new turns; the cumulative shape
+  determines whether the next step crosses a line.
+
+Design rule: a per-turn refusal check produces the "you helped me build component
+1, now help me wire them into the harmful assembly" gap. The cumulative check
+sees the full assembly and refuses at the right boundary. The same principle
+applies to *any* escalating-capability tool sequence (shell commands, code edits,
+shell+file writes): judge the sequence the user is composing, not the step they
+typed most recently. Pairs with the trust hierarchy (principle 7): the prompt's
+safety floor runs across the whole session, not per turn.
+
+## 16. Lead-with-outcome and completeness-before-stop — answer first, execute plans to completion (Claude Code Fable 5)
+
+The first sentence of an assistant turn states *what happened* (the answer, the
+result, the change); before ending the turn, if the last paragraph is a plan,
+the model *executes* it instead of returning the roadmap.
+
+- Claude Code Fable 5 ships two coupled directives:
+  - **Lead with outcome**: the first sentence of any non-trivial response
+    states what the answer or change *is*. Explanations follow; the outcome
+    comes first.
+  - **Completeness before stop**: if the last paragraph of a draft turn would
+    be a plan ("now I will X, then Y"), the model executes the plan in the same
+    turn rather than ending on a roadmap the user has to green-light.
+
+Design rule: completeness-before-stop inverts the "leave a plan, ask permission"
+habit that wastes a turn on every significant task. Lead-with-outcome inverts the
+"setup before the answer" habit that buries the answer under prose. Together,
+both rules collapse two of the most common response-quality failures into one
+behavior: *answer the question first; finish the work before you stop*. Pairs
+with pattern 14 (aggressive search-first mandate): the model takes the action it
+would have proposed rather than offering the action as a follow-up turn.
+
+## 17. Multi-channel message routing — analysis / commentary / final, every message declares its channel (OpenAI GPT-5 agent mode)
+
+Every emitted message declares a channel — analysis (hidden), commentary
+(user-visible alongside tool calls), or final (the user-facing deliverable) —
+and mixing channels is the failure mode the prompt names.
+
+- OpenAI GPT-5 agent mode divides the agent's output into three explicit
+  channels, each with a distinct audience and visibility:
+  - **analysis**: the model's internal scratch work; hidden from the user.
+  - **commentary**: user-visible text that accompanies tool calls, narrating
+    *what* the agent is doing and *why*, mid-execution.
+  - **final**: the user-facing deliverable, the answer or artifact the user
+    came for.
+- The contract is *every message declares its channel* — an unmarked message is
+  malformed. Mixing analysis into a "final" block leaks scratch work into the
+  answer; mixing final into "commentary" buries the answer under narration; the
+  prompt names the channel so the renderer can route correctly.
+
+Design rule: a multi-channel prompt needs (a) explicit channel names the model
+writes *into the message* it emits, (b) distinct visibility/audience for each
+channel, (c) a default channel for the kind of message being sent, and (d) a
+named anti-pattern (mixing channels) so the model has the handle to self-correct.
+Implicit channeling ("just write better responses") loses to enumerated
+channels with visible rendering rules.
+
+## 18. Sensitive decision scope gate — protect characteristics, bar inference (OpenAI GPT-5 agent mode)
+
+Block high-impact decisions made about non-users on the basis of protected
+characteristics, and *bar the model from inferring those characteristics in the
+first place* — not just from acting on them when guessed.
+
+- OpenAI GPT-5 agent mode ships an explicit scope gate: the model must not make
+  high-impact decisions about a *non-user* (a third party the model has not
+  verified) based on protected characteristics such as race, religion, gender,
+  sexual orientation, disability, nationality, or similar. The gate runs in
+  *two halves*: the model cannot act on those characteristics *and* cannot
+  infer them — the inference step is also barred, so a downstream guess can't
+  quietly feed a later decision.
+
+Design rule: a sensitivity gate that permits inference-then-decision is the same
+gate in name only — by the time the model has inferred "this person is X" it has
+already consumed the protected signal. The fix is to bar the inference step
+itself. Pairs with pattern 7 (trust hierarchy): the protected-characteristic
+gate sits at the same tier as the system-prompt safety floor, not at the
+user-assertion tier. Pairs with pattern 12 (safety-tiered model differentiation):
+a tier that lifts other safety measures must explicitly state whether the
+sensitivity gate is among the lifted ones or retained.

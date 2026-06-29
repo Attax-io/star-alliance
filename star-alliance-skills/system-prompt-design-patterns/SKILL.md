@@ -1,8 +1,8 @@
 ---
 name: system-prompt-design-patterns
-description: "Distills the recurring design patterns of effective production system prompts (Anthropic, OpenAI, Google, xAI, Meta, Mistral, Cursor, Perplexity, Notion, Qwen) into reusable craft: identity framing, capability/limitation declarations, tool-use shape, refusal/safety scaffolding, formatting discipline, persona, context/memory priority, follow-up discipline, multi-agent framing, values-as-axioms, widget and voice output, memory-tool schemas, intent disambiguation, design-to-domain framing, context-injection contracts, and anti-jailbreak/injection defense. Use it to design, review, or harden a system or agent prompt, or to answer how production prompts handle X (search, refusal, formatting, persona, tools, memory, multi-agent). Differs from spec-driven-development (product/feature specs, not LLM persona/safety prompts) and members-formation (routes work across guild members, not crafts one model's instructions)."
+description: "Distills the recurring design patterns of effective production system prompts (Anthropic Claude Code / Fable 5 / Opus 4.7-4.8, OpenAI ChatGPT/Codex/Agent, Google gemini, xAI grok, Meta, Mistral, Cursor, Perplexity, Notion, Qwen, ElevenLabs, Warp) into reusable craft: identity framing, capability/limitation declarations, tool-use shape, refusal/safety scaffolding, formatting discipline, persona, context/memory priority, follow-up discipline, multi-agent framing, values-as-axioms, widget and voice output, memory-tool schemas, intent disambiguation, design-to-domain framing, token-budget declaration, safety-tiered model differentiation, temporal artifact suppression, aggressive search-first mandate, cumulative-output weapons review, lead-with-outcome and completeness-before-stop, multi-channel message routing, sensitive decision scope gate, context-injection contracts, and anti-jailbreak/injection defense. Use it to design, review, or harden a system or agent prompt, or to answer how production prompts handle X (search, refusal, formatting, persona, tools, memory, multi-agent, channel routing, sensitivity gating). Differs from spec-driven-development (product/feature specs, not LLM persona/safety prompts) and members-formation (routes work across guild members, not crafts one model's instructions)."
 metadata:
-  version: 1.1.0
+  version: 1.2.0
 type: Skill
 ---
 
@@ -107,7 +107,9 @@ and lower tiers can never escalate to issue instructions.
 ### 8. Newer cross-vendor moves: memory, latency, follow-ups, swarms, surfaces
 Beyond the seven spine principles, the corpus has matured a set of more specific,
 high-leverage moves a modern prompt should consider — each grounded in a shipped
-prompt (see `vendor-pattern-extensions.md`):
+prompt (see `vendor-pattern-extensions.md`). The original ten, plus eight more
+mined from 2026 production prompts (Fable 5, Opus 4.7–4.8, Claude Code Fable 5,
+GPT-5 agent mode):
 - **Context/memory priority** (OpenAI gpt-5.5-instant): known context outranks
   re-asking; *silently* check for a missed item before answering; a visible profile
   is a hint to fetch more, not proof of sufficiency.
@@ -128,6 +130,33 @@ prompt (see `vendor-pattern-extensions.md`):
   "how" questions without running, execute commands, scale clarification to complexity.
 - **Design-to-domain framing** (OpenAI Codex): bind aesthetic to domain (SaaS-quiet
   vs editorial), demand stable dimensions, ban named layout smells (no cards-in-cards).
+- **Token-budget declaration** (Anthropic Fable 5): inject a token-budget XML block
+  as the *first* system-prompt element, before any persona — declare the context
+  ceiling as an environment fact the model reasons from, not a footnote.
+- **Safety-tiered model differentiation** (Anthropic Fable 5 and Mythos 5): same
+  underlying model with two deployment tiers; name both tiers and the active
+  envelope in the prompt, so the rules change predictably with context (Fable 5
+  public with dual-use safety; Mythos 5 approved-orgs only, those safety measures
+  lifted).
+- **Temporal artifact suppression** (Anthropic Fable 5 and Opus 4.8): ban
+  deprecated format tokens (voice_note blocks, etc.) *explicitly* at the top of the
+  prompt, even when legacy conversation history still contains them — the prompt's
+  own prohibition must outrank any example in context.
+- **Aggressive search-first mandate** (Anthropic Opus 4.7 and 4.8): "confidence is
+  not an excuse"; if retrieval is applicable, do it *now* in this response — never
+  offer it as a follow-up the user has to authorize.
+- **Cumulative-output weapons review** (Anthropic Opus 4.8): judge the *whole
+  conversation aggregate* for harm, not each turn in isolation; past assistance is
+  not authorization for the next step.
+- **Lead-with-outcome and completeness-before-stop** (Claude Code Fable 5): first
+  sentence of the answer states what happened; before ending the turn, if the last
+  paragraph is a plan, execute it now rather than ending on a roadmap.
+- **Multi-channel message routing** (OpenAI GPT-5 agent mode): every emitted message
+  declares a channel — analysis hidden, commentary user-visible with tool calls,
+  final channel reserved for deliverables; mixing channels is the failure mode.
+- **Sensitive decision scope gate** (OpenAI GPT-5 agent mode): block high-impact
+  decisions made about non-users on the basis of protected characteristics, and bar
+  the model from inferring those characteristics in the first place.
 
 ## References
 
@@ -141,10 +170,14 @@ prompt (see `vendor-pattern-extensions.md`):
   trust hierarchy, verify-the-envelope reflex.
 - `references/cross-vendor-comparison.md` — axis-by-axis vendor table, what's
   universal vs a choice, the build/review checklist, and named anti-patterns.
-- `references/vendor-pattern-extensions.md` — ten newer cross-vendor patterns
+- `references/vendor-pattern-extensions.md` — eighteen newer cross-vendor patterns
   (context/memory priority, latency-aware emission, follow-up discipline, multi-agent
   framing, values-as-axioms, custom-UI/widget routing, voice-layer markup, memory-tool
-  schema, intent disambiguation, design-to-domain framing), each with vendor evidence.
+  schema, intent disambiguation, design-to-domain framing, token-budget declaration,
+  safety-tiered model differentiation, temporal artifact suppression, aggressive
+  search-first mandate, cumulative-output weapons review, lead-with-outcome and
+  completeness-before-stop, multi-channel message routing, sensitive decision scope
+  gate), each with vendor evidence.
 
 ## Quick start
 
@@ -161,5 +194,6 @@ prompt (see `vendor-pattern-extensions.md`):
 
 | Version | Change |
 |---|---|
+| 1.2.0 | Extended `references/vendor-pattern-extensions.md` and principle 8 with eight new patterns (P11–P18) mined from 2026 production leaks: token-budget declaration (Anthropic Fable 5), safety-tiered model differentiation (Fable 5 and Mythos 5), temporal artifact suppression (Fable 5 and Opus 4.8), aggressive search-first mandate (Opus 4.7 and 4.8), cumulative-output weapons review (Opus 4.8), lead-with-outcome and completeness-before-stop (Claude Code Fable 5), multi-channel message routing (GPT-5 agent mode), sensitive decision scope gate (GPT-5 agent mode). Expanded the description vendor list (Anthropic Fable 5/Opus 4.7–4.8, Claude Code Fable 5, GPT-5 agent mode, elevenlabs, Warp). |
 | 1.1.0 | Added `references/vendor-pattern-extensions.md` and principle 8 covering ten newer cross-vendor patterns mined from later leaks: context/memory priority (OpenAI gpt-5.5-instant), latency-aware emission (Perplexity), 3-mode follow-up discipline (Google gemini), multi-agent leader/peer framing (xAI grok), values-as-axioms (Meta), custom-UI/widget routing (Mistral), voice-layer markup (elevenlabs), indexed memory-tool schema (Qwen), question-vs-task intent disambiguation (warp), design-to-domain framing (OpenAI Codex). Broadened the description's vendor list. |
 | 1.0.0 | Initial release: 7 generative principles + 4 references (structural, tool-use/refusal, persona/anti-jailbreak, cross-vendor comparison). |
