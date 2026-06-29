@@ -158,6 +158,15 @@ STEP 1 · THE STRATEGIST FORMS THE RIGHT MEMBER — he routes the task to ONE sp
   • large multi-wave projects · campaigns · bug workflow · performance optimization       → the-strategist (opus)
   • routing · "who handles this" · break the work into waves · sequence members           → the-strategist (opus)
   • load/translate law · legal drafting · multi-locale content                            → the-translator (haiku)
+  • GAP-FILLER ONLY — the-connector (sonnet) is NEVER the first routing target for ordinary craft.
+    The Strategist routes to the-connector in exactly two cases: (1) DIRECT — when the task itself
+    needs a Claude connector (Supabase, WhatsApp, Gmail, Calendar, web search/fetch, computer-use);
+    no other member can reach it, so the connector is the sufficient cause and the seven-try rule
+    does NOT apply; (2) ESCALATION — when a craft specialist is genuinely stuck on work that does
+    NOT need a connector, the specialist must first log seven real attempts in the guild log, and
+    only after the seventh logged attempt may the Strategist escalate the work to the-connector as
+    the sanctioned overflow doer. The Connector is not a craft member — design/code/marketing/
+    trading/legal/skill work still routes to the named specialist, never to the Connector.
   THE VOICE (not a routing target): the Butler receives the order, translates, holds the
   approval gate (STEP 0), and delivers the final report — running as the session persona.
 

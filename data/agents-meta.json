@@ -193,6 +193,45 @@
       "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-quart\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#2d2010\"/><stop offset=\"1\" stop-color=\"#1f1408\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-quart)\"/><path d=\"M48 14 L62 20 L62 36 C62 45 56 51 48 53 C40 51 34 45 34 36 L34 20 Z\" fill=\"none\" stroke=\"#e8b84e\" stroke-width=\"2.5\" stroke-linejoin=\"round\"/><path d=\"M40 28 L45 33 L56 22\" stroke=\"#e8b84e\" stroke-width=\"2.5\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M48 53 L48 60 M40 60 L56 60 L56 68 L40 68 Z\" fill=\"#e8b84e\" opacity=\".4\"/></svg>",
       "exit_state": "CONFORMANCE_PASSED",
       "handoff": "Conformance {severity} for {scope}: {summary}. Registry {registry_version}. Logged."
+    },
+    "the-connector": {
+      "name": "The Connector",
+      "role": "Capability Bridge · Gap-Filler",
+      "level": "Foundational",
+      "color": "#3da1a8",
+      "summary": "Capability bridge and gap-filler. Holds the Claude connectors (Supabase, WhatsApp, Gmail, Calendar, web search/fetch, computer-use) the other members cannot reach, and serves as the sanctioned overflow doer after a stuck specialist logs seven genuine attempts.",
+      "deploy": "Connector work (Supabase, WhatsApp, Gmail, Calendar, web search/fetch, computer-use), overflow doer after seven logged tries",
+      "triggers": "connect to <service> · I need Supabase access · I need WhatsApp · send via Gmail · read the calendar · fetch the web · open the browser · every ordinary route is stuck",
+      "does": [
+        "Reaching the Claude connectors (Supabase, WhatsApp, Gmail, Calendar, web search/fetch, computer-use) the rest of the guild cannot",
+        "Pulling blocked, paywalled, or JS-heavy content via the Claude connector path",
+        "Triage of comms inboxes (Gmail/WhatsApp/Calendar) before a specialist acts",
+        "Pulling financial data the Merchant cannot reach natively",
+        "Sanctioned overflow doer — taking over a stuck ticket after the seventh logged attempt"
+      ],
+      "doesnt": [
+        "Does not design systems — delegate to The Architect",
+        "Does not write application code — delegate to The Developer",
+        "Does not design UIs — delegate to The Designer",
+        "Does not plan campaigns — delegate to The Strategist",
+        "Does not translate laws — delegate to The Translator",
+        "Does not run marketing — delegate to The Herald",
+        "Does not analyse investments — delegate to The Merchant",
+        "Does not manage the skill registry — delegate to The Quartermaster",
+        "Is never the first routing target for ordinary craft — gap-filler only"
+      ],
+      "avatar": "<svg viewBox=\"0 0 96 96\"><defs><radialGradient id=\"a-conn\" cx=\"50%\" cy=\"35%\" r=\"60%\"><stop offset=\"0\" stop-color=\"#102a2c\"/><stop offset=\"1\" stop-color=\"#081a1c\"/></radialGradient></defs><rect width=\"96\" height=\"96\" rx=\"12\" fill=\"url(#a-conn)\"/><circle cx=\"22\" cy=\"48\" r=\"6\" fill=\"none\" stroke=\"#4ec9c4\" stroke-width=\"2\"/><circle cx=\"74\" cy=\"48\" r=\"6\" fill=\"none\" stroke=\"#4ec9c4\" stroke-width=\"2\"/><path d=\"M28 48 L68 48\" stroke=\"#4ec9c4\" stroke-width=\"2.5\" stroke-linecap=\"round\"/><path d=\"M28 48 Q40 36 48 48 Q56 60 68 48\" fill=\"none\" stroke=\"#4ec9c4\" stroke-width=\"1.5\" opacity=\".5\"/><path d=\"M28 48 Q40 60 48 48 Q56 36 68 48\" fill=\"none\" stroke=\"#4ec9c4\" stroke-width=\"1.5\" opacity=\".5\"/><circle cx=\"48\" cy=\"48\" r=\"3\" fill=\"#4ec9c4\"/><path d=\"M48 20 L48 30 M48 66 L48 76\" stroke=\"#4ec9c4\" stroke-width=\"1.5\" opacity=\".4\"/></svg>",
+      "exit_state": "CONNECTOR_HANDED_OFF",
+      "handoff": "Connector {connector} delivered to {agent}: {artifact}. Or: escalation handoff after {attempts} logged attempts — {summary}.",
+      "seats": {
+        "brain": {
+          "model": "sonnet",
+          "override": true
+        },
+        "doer": {
+          "model": "minimax-m3"
+        }
+      }
     }
   }
 }

@@ -130,9 +130,10 @@
         "the-translator",
         "the-herald",
         "the-merchant",
-        "the-quartermaster"
+        "the-quartermaster",
+        "the-connector"
       ],
-      "notes": "The home domain. All 8 guild members + skills live here. Every other domain borrows from this skill pool."
+      "notes": "The home domain. All 9 guild members + skills live here. Every other domain borrows from this skill pool."
     },
     {
       "id": "lex-council-app",
