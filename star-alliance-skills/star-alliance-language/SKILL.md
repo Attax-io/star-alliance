@@ -3,7 +3,7 @@ name: star-alliance-language
 type: Skill
 description: The guild's shared reading protocol for OKF-tidied repos — how every member quickly, cheaply, and reliably takes in a repo the Quartermaster has kept conformant, on future runs. Read the concept map first (frontmatter + cross-links), open only the few concepts the task needs, never blind-read. Universal — rides every member, like weapon-utility. Use whenever a member starts work in a repo, needs to find where knowledge lives, or asks 'read the repo', 'what's in here', 'map this', 'orient me', 'where is X documented'.
 metadata:
-  version: 1.2.0
+  version: 1.2.1
 ---
 
 # Star Alliance Language — the OKF reading protocol
@@ -53,6 +53,9 @@ This skill turns that guarantee into a routine.
    ```
    prints outbound and inbound links — the OKF graph. Walk the graph to related
    concepts instead of full-text searching the repo.
+   > **No concept map yet, or a non-OKF input?** Reach for [[graphify]] first — it
+   > BUILDS a navigable knowledge graph from any input (code, docs, papers,
+   > images, video), then return to this cheap-read protocol once a map exists.
 5. **Open the few that matter — with discipline.** When you finally read a body,
    honour the guild's reading rules: `offset`/`limit` or `grep` for large/unknown
    files, never a blind full read; loop files one at a time in autonomous runs.

@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 58,
       "patch": 80
     },
-    "generated": "2026-06-29T18:38:23Z",
+    "generated": "2026-06-29T18:47:50Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "reserve",
@@ -3813,7 +3813,7 @@ const GUILD = {
     {
       "id": "graphify",
       "name": "graphify",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "icon": "🕸️",
       "art": "",
       "artPng": true,
@@ -3846,8 +3846,8 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 1024,
-        "words": 5904
+        "lines": 1028,
+        "words": 6006
       },
       "global": true,
       "members": [
@@ -5114,7 +5114,7 @@ const GUILD = {
     {
       "id": "okf",
       "name": "okf",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "icon": "🧹",
       "art": "",
       "artPng": true,
@@ -5142,8 +5142,8 @@ const GUILD = {
         "okf_audit.py"
       ],
       "stats": {
-        "lines": 141,
-        "words": 1204
+        "lines": 146,
+        "words": 1253
       },
       "global": true,
       "members": [
@@ -5937,7 +5937,7 @@ const GUILD = {
     {
       "id": "star-alliance-language",
       "name": "star-alliance-language",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "icon": "🗣️",
       "art": "",
       "artPng": true,
@@ -5965,8 +5965,8 @@ const GUILD = {
         "okf_read.py"
       ],
       "stats": {
-        "lines": 110,
-        "words": 912
+        "lines": 113,
+        "words": 952
       },
       "global": true,
       "members": [

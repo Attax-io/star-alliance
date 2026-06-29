@@ -2,7 +2,7 @@
 name: graphify
 description: "any input (code, docs, papers, images, videos) to knowledge graph. Use when user asks any question about a codebase, documents, or project content - especially if graphify-out/ exists, treat the question as a /graphify query."
 metadata:
-  version: 1.0.0
+  version: 1.0.1
   trigger: /graphify
 type: Skill
 
@@ -47,6 +47,10 @@ Turn any folder of files into a navigable knowledge graph with community detecti
 ## What graphify is for
 
 Drop any folder of code, docs, papers, images, or video into graphify and get a queryable knowledge graph. Persistent across sessions, honest audit trail (EXTRACTED/INFERRED/AMBIGUOUS), community detection surfaces cross-document connections you wouldn't think to ask about.
+
+> **Related guild skills**
+> - For a repo the Quartermaster already keeps in OKF form, prefer [[star-alliance-language]] — read the curated concept map cheaply (one concept per file, already cross-linked). Graphify is the right tool **only when there is no concept map yet or the input is not an OKF repo**: raw code, papers, images, video, or anything outside the guild's tidy format.
+> - The curated OKF format is produced by [[okf]] (one concept per `.md`, `type:` frontmatter, cross-linked). Graphify is *not* a substitute for OKF — use it to build the first map, then let okf keep it tidy.
 
 ## What You Must Do When Invoked
 

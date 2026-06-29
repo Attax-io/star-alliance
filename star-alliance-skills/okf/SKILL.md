@@ -3,7 +3,7 @@ name: okf
 type: Skill
 description: Keep the whole Star Alliance repo tidy and conformant to the Open Knowledge Format (OKF v0.1) — one concept per markdown file, each carrying a `type:` frontmatter, cross-linked, with non-knowledge files swept and placed by concept-path. The Quartermaster's repo-hygiene standard. Use when the user says 'tidy the repo', 'OKF', 'keep it clean', 'make it OKF-conformant', 'run the OKF audit', 'fix frontmatter', or after any campaign that left new files behind. Pairs with star-alliance-language (the reader half).
 metadata:
-  version: 1.2.0
+  version: 1.2.1
 ---
 
 # OKF — Open Knowledge Format hygiene
@@ -17,6 +17,11 @@ directory of markdown files. Its companion is **star-alliance-language**, the
 > **OKF *is* the Star Alliance Language** — the guild's one knowledge standard from here
 > on. The Quartermaster **produces** in it (this skill); every member **reads** it back via
 > [[star-alliance-language]]. One format spoken across every member, skill, and doc.
+
+> The OKF graph here is for **hand-tidied repo knowledge** — one concept per file,
+> curated cross-links. For **auto-building a graph from non-OKF or raw inputs**
+> (raw code, papers, images, video), see [[graphify]] to construct the first map,
+> then hand it off to OKF for curation.
 
 ## What OKF requires (the whole spec, one screen)
 
