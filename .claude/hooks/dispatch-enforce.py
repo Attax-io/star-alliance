@@ -189,10 +189,28 @@ def _check_mcp(tool, data):
         return {
             "exit": 2,
             "stderr": (
-                f"⛔ DISPATCH ENFORCE — MCP write tool `{tool}` is not allowed for specialists.\n"
-                f"You must dispatch this work to your Hermes counterpart:\n"
-                f"  python3 tools/dispatch.py <your-agent-name> \"<prompt>\"\n"
-                f"  (e.g. python3 tools/dispatch.py the-architect \"design the schema\")\n"
+                f"⛔ BLOCKED — MCP write tool `{tool}` is not allowed for specialists.\n"
+                f"\n"
+                f"WHY: You are a Claude-side specialist. All file and data writes must go\n"
+                f"through your Hermes counterpart so the work is done with the right model,\n"
+                f"the right tools, and the right audit trail. Writing directly — whether\n"
+                f"through file edits, shell commands, or MCP tools — bypasses that pipeline\n"
+                f"and is blocked by the dispatch enforcement hook.\n"
+                f"\n"
+                f"WHAT TO DO: Send this task to your Hermes profile via the dispatch script.\n"
+                f"Frame the prompt so Hermes can do the work with its own tools:\n"
+                f"\n"
+                f"  python3 tools/dispatch.py <your-agent-name> \"<describe the task in detail>\"\n"
+                f"\n"
+                f"  Examples:\n"
+                f"    python3 tools/dispatch.py the-architect \"Create a table called 'orders' with columns: id uuid, total numeric, created_at timestamptz\"\n"
+                f"    python3 tools/dispatch.py the-developer \"Insert a row into the users table with name='test' and email='test@test.com'\"\n"
+                f"\n"
+                f"  The Hermes profile will receive your prompt, do the work with its own tools,\n"
+                f"  and return the result. You then relay that result back to the caller.\n"
+                f"\n"
+                f"NOTE: Read-only MCP tools (get_, list_, search_, query_, describe_, etc.)\n"
+                f"are still allowed — you can read data directly. Only writes are dispatched.\n"
             ),
         }
 
@@ -228,11 +246,29 @@ def check(data):
         return {
             "exit": 2,
             "stderr": (
-                f"⛔ DISPATCH ENFORCE — {tool} is not allowed for specialists.\n"
-                f"You must dispatch this work to your Hermes counterpart:\n"
-                f"  python3 tools/dispatch.py <your-agent-name> \"<prompt>\"\n"
-                f"  (e.g. python3 tools/dispatch.py the-architect \"design the schema\")\n"
-                f"Do not write or edit files directly — Hermes has its own tools for that.\n"
+                f"⛔ BLOCKED — {tool} is not allowed for specialists.\n"
+                f"\n"
+                f"WHY: You are a Claude-side specialist. Your job is to frame the task\n"
+                f"and relay it to your Hermes counterpart — not to write files yourself.\n"
+                f"Hermes has its own file tools, its own model, and its own audit trail.\n"
+                f"Writing directly here bypasses that entire pipeline, which is why the\n"
+                f"dispatch enforcement hook blocks it.\n"
+                f"\n"
+                f"WHAT TO DO: Send this task to your Hermes profile via the dispatch script.\n"
+                f"Describe the edit in enough detail that Hermes can do it with its own tools:\n"
+                f"\n"
+                f"  python3 tools/dispatch.py <your-agent-name> \"<describe the task in detail>\"\n"
+                f"\n"
+                f"  Examples:\n"
+                f"    python3 tools/dispatch.py the-architect \"Add a 'created_at' column to the orders table\"\n"
+                f"    python3 tools/dispatch.py the-developer \"Fix the login bug in auth.py — the token check is missing a return statement on line 42\"\n"
+                f"    python3 tools/dispatch.py the-designer \"Update the button color in styles.css to use the brand-blue token\"\n"
+                f"\n"
+                f"  The Hermes profile will receive your prompt, make the edit with its own\n"
+                f"  tools, and return the result. You then relay that result back to the caller.\n"
+                f"\n"
+                f"NOTE: Reading files is still allowed — you can read any file to understand\n"
+                f"the codebase before dispatching. Only writes and edits are dispatched.\n"
             ),
         }
 
@@ -262,10 +298,24 @@ def check(data):
                     return {
                         "exit": 2,
                         "stderr": (
-                            f"⛔ DISPATCH ENFORCE — Direct `hermes` calls are not allowed.\n"
-                            f"Use the dispatch script instead:\n"
-                            f"  python3 tools/dispatch.py <your-agent-name> \"<prompt>\"\n"
-                            f"This ensures your work goes to the correct Hermes profile.\n"
+                            f"⛔ BLOCKED — Direct `hermes` calls are not allowed for specialists.\n"
+                            f"\n"
+                            f"WHY: Calling `hermes -p ...` directly bypasses the dispatch script,\n"
+                            f"which means the call isn't logged, the profile name isn't validated,\n"
+                            f"and there's no audit trail. The dispatch enforcement hook blocks\n"
+                            f"this so every dispatch goes through one sanctioned, logged path.\n"
+                            f"\n"
+                            f"WHAT TO DO: Use the dispatch script instead. It does the same thing\n"
+                            f"(calls your Hermes profile) but with validation and logging:\n"
+                            f"\n"
+                            f"  python3 tools/dispatch.py <your-agent-name> \"<describe the task in detail>\"\n"
+                            f"\n"
+                            f"  Examples:\n"
+                            f"    python3 tools/dispatch.py the-architect \"Design a schema for a legal document system\"\n"
+                            f"    python3 tools/dispatch.py the-developer \"Refactor the auth module to use async/await\"\n"
+                            f"\n"
+                            f"  The script sends your prompt to the correct Hermes profile and returns\n"
+                            f"  the result. You then relay that result back to the caller.\n"
                         ),
                     }
 
@@ -275,10 +325,35 @@ def check(data):
                 return {
                     "exit": 2,
                     "stderr": (
-                        f"⛔ DISPATCH ENFORCE — Specialist tried to mutate files via shell:\n"
-                        f"  {preview}\n"
-                        f"Dispatch to your Hermes counterpart instead:\n"
-                        f"  python3 tools/dispatch.py <your-agent-name> \"<prompt>\"\n"
+                        f"⛔ BLOCKED — Shell command writes a file, which is not allowed for specialists.\n"
+                        f"\n"
+                        f"WHY: You tried to modify files via a shell command. Whether it's a redirect\n"
+                        f"(echo >, cat >), an in-place edit (sed -i), a copy/move (cp, mv), a git\n"
+                        f"mutation (checkout, reset, stash, rm), an interpreter one-liner\n"
+                        f"(python3 -c, perl -e, ruby -e, node -e), a package install (pip, npm),\n"
+                        f"or an archive extraction (tar -x, unzip) — all file writes must go through\n"
+                        f"your Hermes counterpart, not the shell. The dispatch enforcement hook blocks\n"
+                        f"these so the work is done with the right model and the right audit trail.\n"
+                        f"\n"
+                        f"  Command that was blocked:\n"
+                        f"    {preview}\n"
+                        f"\n"
+                        f"WHAT TO DO: Send this task to your Hermes profile via the dispatch script.\n"
+                        f"Describe what the shell command was supposed to do so Hermes can do it\n"
+                        f"with its own tools:\n"
+                        f"\n"
+                        f"  python3 tools/dispatch.py <your-agent-name> \"<describe the task in detail>\"\n"
+                        f"\n"
+                        f"  Examples:\n"
+                        f"    python3 tools/dispatch.py the-developer \"Run the test suite and report results\"\n"
+                        f"    python3 tools/dispatch.py the-architect \"Install the Supabase CLI and run a migration\"\n"
+                        f"\n"
+                        f"  The Hermes profile has full terminal access and can run shell commands itself.\n"
+                        f"You frame the task; Hermes executes it.\n"
+                        f"\n"
+                        f"NOTE: Read-only shell commands (ls, cat, grep, git status, git log, git diff)\n"
+                        f"are still allowed — you can inspect the codebase directly. Only writes are\n"
+                        f"dispatched.\n"
                     ),
                 }
 

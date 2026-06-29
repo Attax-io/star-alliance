@@ -343,3 +343,4 @@
 {"ts":"2026-06-29T06:24:37Z","tier":"full","assistant_msgs":3,"in":53496,"out":474,"cache_read":70844,"cache_create":58888,"wall_ms":12112}
 {"ts":"2026-06-29T07:24:37Z","tier":"full","assistant_msgs":3,"in":53258,"out":503,"cache_read":70721,"cache_create":58608,"wall_ms":11654}
 {"ts":"2026-06-29T08:13:05Z","tier":"lite","assistant_msgs":5,"in":5038,"out":4402,"cache_read":307542,"cache_create":323225,"wall_ms":40940}
+{"ts":"2026-06-29T08:24:41Z","tier":"full","assistant_msgs":4,"in":79358,"out":792,"cache_read":89179,"cache_create":74767,"wall_ms":15130}
