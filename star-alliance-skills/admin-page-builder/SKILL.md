@@ -1,6 +1,8 @@
 ---
 name: admin-page-builder
 description: Build a new admin page for the Lex Council app under apps/web/app/(admin)/admin/. Use this skill whenever the user asks to create an admin page, build a management UI, add a page under the Files/Users/Finances tab, scaffold a new page inside (admin)/admin/, build a kind/list/grid/table admin screen, add an admin tool, or create a dashboard for admins. Also trigger on "new admin page for X", "admin management UI", "build an admin panel for Y", "admin screen that lets me edit Z", even if design tokens aren't mentioned. This skill exists because without it Claude tends to invent hex colors, miss the navy page frame, and skip the KpiStrip pattern — resulting in pages that read as foreign against every other admin page.
+metadata:
+  version: 1.0.0
 ---
 
 # Lex Council admin-page builder

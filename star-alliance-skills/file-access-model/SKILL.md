@@ -9,6 +9,7 @@ description: >
   Also trigger when the user says "work on access", "build the access table", "write the access migration",
   "access model", "permission model", "who has access", or references anything about granting
   or revoking access to files. Load silently in the background — no need to announce the skill is running.
+version: 1.0.0
 ---
 
 # File Access Model — Context Loader

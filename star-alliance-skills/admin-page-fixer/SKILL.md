@@ -8,6 +8,7 @@ description: >
   Also trigger when the user says "fix", "fix these", "apply fixes", "fix the bugs", "fix all issues",
   or references an audit report and wants the findings resolved. This is the companion to admin-page-auditor —
   the auditor finds issues, this skill fixes them.
+version: 1.0.0
 ---
 
 # Admin Page Fixer

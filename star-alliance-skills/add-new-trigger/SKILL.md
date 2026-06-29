@@ -1,6 +1,7 @@
 ---
 name: add-new-trigger
 description: "End-to-end procedure for creating or modifying a database trigger and its backing function in the Lex Council Supabase backend. Use whenever the user asks to add a trigger, create a trigger function, modify trigger logic, wire a BEFORE/AFTER trigger, fire on INSERT/UPDATE/DELETE, add a transition guard, or write a PL/pgSQL function. Also trigger on mentions of CREATE OR REPLACE FUNCTION in private schema, pg_trigger, FOR EACH ROW, AFTER UPDATE, NEW.col IS DISTINCT FROM OLD.col, S7 hardening, S8 privilege lockdown, or SECURITY DEFINER in a trigger context. This skill exists because trigger bugs have caused three separate production incidents: duplicate notifications from missing transition guards, broken INSERT flows from stale column refs in function bodies after renames, and privilege escalation from missing S7 search_path pinning."
+version: 1.0.0
 ---
 
 # Adding or Modifying a Trigger in Lex Council

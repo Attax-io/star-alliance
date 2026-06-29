@@ -22,6 +22,78 @@ const STYLE = "fantasy RPG skill icon, Fallen Sword MMORPG style, dark parchment
 
 const SKILLS = [
   {
+    id: "vault-log-writer",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "", no text, no watermarks`,
+  },
+  {
+    id: "stitch-design-taste",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "", no text, no watermarks`,
+  },
+  {
+    id: "redesign-existing-projects",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "", no text, no watermarks`,
+  },
+  {
+    id: "phased-db-refactor",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "", no text, no watermarks`,
+  },
+  {
+    id: "obedience",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "", no text, no watermarks`,
+  },
+  {
+    id: "minimalist-ui",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "", no text, no watermarks`,
+  },
+  {
+    id: "lex-system-audit",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "", no text, no watermarks`,
+  },
+  {
+    id: "industrial-brutalist-ui",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "", no text, no watermarks`,
+  },
+  {
+    id: "high-end-visual-design",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "", no text, no watermarks`,
+  },
+  {
+    id: "gpt-taste",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "", no text, no watermarks`,
+  },
+  {
+    id: "file-access-model",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "", no text, no watermarks`,
+  },
+  {
+    id: "dual-model-review",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "The dual-review flow that backs the cross-system bridge.", no text, no watermarks`,
+  },
+  {
+    id: "design-taste-frontend",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "", no text, no watermarks`,
+  },
+  {
+    id: "admin-page-fixer",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "", no text, no watermarks`,
+  },
+  {
+    id: "admin-page-builder",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "", no text, no watermarks`,
+  },
+  {
+    id: "add-new-view",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "End-to-end procedure for creating or revising a view in the Lex Council Supabase backend.", no text, no watermarks`,
+  },
+  {
+    id: "add-new-trigger",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "End-to-end procedure for creating or modifying a database trigger and its backing function in t", no text, no watermarks`,
+  },
+  {
+    id: "add-admin-permission",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "", no text, no watermarks`,
+  },
+  {
     id: "decompose-and-swarm",
     prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "The Butler's swarm craft — judge whether a task is worth parallelising, scout the codebase surf", no text, no watermarks`,
   },

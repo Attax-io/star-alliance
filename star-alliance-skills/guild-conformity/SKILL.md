@@ -2,7 +2,7 @@
 name: guild-conformity
 description: "The Quartermaster's craft for proving the whole guild repo agrees with itself and with every logged decision, then reconciling any contradiction at its source. Wraps the read-only conformity_check.py (which emits a contradiction map across members, members-meta, skills, skills-meta, domains, workflows, the guild log, and the generated guild-data) plus fixing each real contradiction at its source of truth and rebuilding with build.py until the check passes clean. It is the closing step of every guild workflow and the spine of the Compliance Audit. Use when a workflow is closing, after any structural change, or when you need proof nothing contradicts. Triggers: 'run the conformity check', 'confirm guild conformance', 'does the repo agree with itself', 'conformity sweep', 'reconcile the guild data', 'is everything consistent'. Differentiate from cleanup (app/i18n hygiene) and skillsmith (skill versioning)."
 metadata:
-  version: 1.5.0
+  version: 1.6.0
 type: Skill
 
 ---
@@ -72,6 +72,42 @@ makes a consolidation *stay* consolidated:
 Each still earns its negative test (hand-break the copy → confirm the tag fires → revert → green).
 Without these, copies silently re-diverge the moment someone edits one; with them the gate bites loudly.
 
+### The three skill surfaces — Hermes profiles, Claude store, and deployment
+
+Skills live on THREE layers, each a copy to keep in sync:
+
+| Layer | Location | Role | SoT |
+|---|---|---|---|
+| **Repo** | `star-alliance-skills/<id>/SKILL.md` | Distribution source; git version control | YES |
+| **Claude Store** | `~/.claude/skills/<id>/` | What Claude sessions load locally | derived |
+| **Hermes Profiles** | `~/.hermes/profiles/the-<member>/skills/<id>/` | Per-member live arsenal in Hermes | derived |
+
+**Key rule: Hermes profile SLUG must match PROFILE_MAP in skill_sync.py.** The slug is `the-<member>` (with prefix), NOT the bare member folder name. Using `architect` instead of `the-architect` creates a junk duplicate profile — this bug happened 2026-06-29 and was caught by the Lex-skill wiring audit.
+
+**Drift detection and reconciliation:**
+
+- **HS (content drift):** The `skill_fingerprint.py` generates a SHA per skill; `conformity_check.py` compares repo fingerprint ↔ Claude store and profile copies. If they diverge, content is stale.
+  - **Claude-store drift:** Run `python3 star-alliance-skills/skillsmith/scripts/skill_sync.py apply --skill <name> --direction install` to pull the repo copy into the Claude store.
+  - **Profile-content drift:** Run `python3 star-alliance-skills/skillsmith/scripts/skill_sync.py apply --profile-content` to sync all member profiles' skill rosters and their content from the repo.
+
+- **PS (present-but-undeclared):** A Hermes profile has a skill in its `skills/` folder, but the member's `skills:` array in the member's .md does NOT declare it. OR the reverse: declared but the profile dir is missing. Triage:
+  - **Profile has skill, member doesn't declare:** Decide per skill — is it a vendor/private skill the profile installed that the member should ignore (add to `HERMES_VENDOR_SKILLS` allow-list in `conformity_check.py`), or should the member add it to their `skills:` array? (Assignment requires adding a drill row too.)
+  - **Member declares skill, profile missing:** The skill must be installed in the profile. Re-run `skill_sync.py apply --profile-content` and re-check.
+
+**Device deployment — the install seal:**
+
+Deployment checklist (`guild/deploy_device.py` runs all 7 steps):
+
+1. ✓ STAR_ALLIANCE_ROOT set in `.claude/settings.json`
+2. ✓ `~/.config/minimax/m3.key` exists (MiniMax API key)
+3. ✓ `node` on PATH (for post-install hook)
+4. ✓ `hermes` CLI on PATH
+5. ✓ `pyyaml` installed (local dev)
+6. ✓ Repo `conformity_check.py` is GREEN
+7. ✓ Profile content synced: `skill_sync.py apply --profile-content` returns 0 errors
+
+**Not ready until conformity_check.py is green and profile sync reports no errors.**
+
 ## Sharpening the craft
 
 You improve along four rungs, and your measure is the count of clean sweeps versus the contradictions you let leak.
@@ -125,7 +161,7 @@ assembled repo). The Butler collects every slice, integrates, then calls this cr
 seal, exactly as in any other workflow. Nothing else changes.
 
 ## Versioning
-Own skill. Current: **1.5.0**. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new mode/section · MAJOR: method contract change). Regenerate `VERSIONS.md` with `python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.
+Own skill. Current: **1.6.0**. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new mode/section · MAJOR: method contract change). Regenerate `VERSIONS.md` with `python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.
 
 ## Member-table consistency check (1.3.0)
 
@@ -147,6 +183,7 @@ python3 conformity_check.py
 **Invariant to watch:** after any member `.md` edit, confirm `build.py` ran this turn (check `.claude/state/last-build.log`, or that `build-mark.py` (PostToolUse) + `turn-finalize.sh` (Stop) are wired in `settings.json`). If they are missing, flag it as a harness gap before closing.
 
 ## Changelog
+- **1.6.0** — New §The three skill surfaces: documents the three-layer sync model (repo → Claude store → Hermes profiles), the profile-slug bug fix (the-<member> not bare name), HS/PS triage rules, and the 7-step device deployment checklist. Also warns: not ready to deploy until conformity_check is green AND profile-content sync has 0 errors. Mined from the Lex-skill wiring audit (2026-06-29). New section → MINOR.
 - **1.5.0** — Added §Swarm-close: the orchestrator (Butler) runs the conformity check ONCE after ALL swarm workers finish; workers never run it themselves (intermediate parallel states would fail). New section → MINOR.
 - **1.4.2** — Updated §Member-table consistency check to the current build chain (`build-mark.py` PostToolUse → `turn-finalize.sh` Stop); the old `member-table-sync.py` + `autocommit.sh` invariant was stale (those hooks are archived under `.claude/hooks/.deprecated/`). Refs → PATCH.
 - **1.4.1** — Reconciled the workflow rename: live references to the old "Conformity Sweep" workflow now read **Compliance Audit** (the merged Conformity Sweep + OKF Tidy workflow); historical/changelog mentions left intact. Wording/refs → PATCH.

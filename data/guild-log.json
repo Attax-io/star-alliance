@@ -2,6 +2,35 @@
   "version": 1,
   "entries": [
     {
+      "id": 106,
+      "date": "2026-06-29",
+      "type": "chore",
+      "title": "9 Lex skills wired + guild-conformity 1.6.0 deployed",
+      "who": "Atta",
+      "detail": "Architecture Build close: 9 new Lex-Council skills (file-access-model, add-admin-permission, add-new-trigger, add-new-view, lex-system-audit, phased-db-refactor, admin-page-fixer, admin-page-builder, design-taste-frontend) assigned to Architect and Developer members; added version:1.0.0 to all; auto-registered via wire_skill.py --all; synced Hermes profile-content via skill_sync.py apply --profile-content. Upgraded guild-conformity to 1.6.0: new section on three-layer skill surfaces (repo/Claude-store/Hermes-profiles), profile-slug bug fix (the-<member> not bare), PS/HS triage, 7-step device deployment checklist. Conformity check: 208 contradictions remain (133 pre-existing SD Skill Drills backlog, 59 HS Claude-store drift expected, 4 PS profile-roster decisions awaiting Guild Master). Repo source green, Hermes synced, ready for device deployment.",
+      "ref": [
+        "guild-conformity",
+        "skillsmith",
+        "the-architect",
+        "the-developer"
+      ]
+    },
+    {
+      "id": 105,
+      "date": "2026-06-29",
+      "type": "skill-upgrade",
+      "title": "9 Lex Council skills wired + conformity fold",
+      "who": "the-quartermaster",
+      "detail": "Architecture Build close: wired 9 new Lex-Council skills (file-access-model, add-admin-permission, add-new-trigger, add-new-view, lex-system-audit, phased-db-refactor, admin-page-fixer, admin-page-builder, design-taste-frontend) to Architect and Developer members; added version: 1.0.0 to all; ran wire_skill.py --all to auto-register in skills-meta.json; synced Hermes profile-content via skill_sync.py --profile-content; upgraded guild-conformity skill to 1.6.0 with new section on three-layer skill surfaces (repo/Claude-store/Hermes-profiles), profile-slug bug fix doc (the-<member> not bare name), PS/HS triage doctrine, and 7-step device deployment checklist. Conformity check: 208 remaining contradictions (133 SD Skill Drills rows pre-existing backlog, 59 HS Claude-store drift expected, 4 PS profile-roster decisions for Guild Master). Final status: repo source green, Hermes profile content synced, ready for dashboard wiring and device deployment per deploy_device.py checklist.",
+      "ref": [
+        "guild-conformity",
+        "skillsmith",
+        "the-architect",
+        "the-developer"
+      ],
+      "to": "1.6.0"
+    },
+    {
       "id": 104,
       "date": "2026-06-28",
       "type": "decision",

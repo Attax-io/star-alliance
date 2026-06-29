@@ -7,6 +7,46 @@
     "triggers": "'is this accessible', 'a11y audit', 'check contrast', 'WCAG', 'fix focus states', 'keyboard navigation', 'make it accessible'",
     "modes": ""
   },
+  "add-admin-permission": {
+    "icon": "🧩",
+    "blurb": "",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "",
+    "modes": ""
+  },
+  "add-new-trigger": {
+    "icon": "🧩",
+    "blurb": "End-to-end procedure for creating or modifying a database trigger and its backing function in t",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "",
+    "modes": ""
+  },
+  "add-new-view": {
+    "icon": "🧩",
+    "blurb": "End-to-end procedure for creating or revising a view in the Lex Council Supabase backend.",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "",
+    "modes": ""
+  },
+  "admin-page-builder": {
+    "icon": "🧩",
+    "blurb": "",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "",
+    "modes": ""
+  },
+  "admin-page-fixer": {
+    "icon": "🧩",
+    "blurb": "",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "",
+    "modes": ""
+  },
   "agent-web-reach": {
     "icon": "🌐",
     "blurb": "Give an agent reliable web reach — YouTube/Bilibili transcripts, Twitter/Reddit/LinkedIn scraping, RSS, Exa search, cookies",
@@ -199,6 +239,14 @@
     "triggers": "'design the UI', 'make it premium', 'pick a style', 'minimalist', 'brutalist', 'add motion', 'write a DESIGN.md', 'redesign this', 'anti-slop'",
     "modes": "engineer; agency; minimal; brutalist; motion; encode; redesign"
   },
+  "design-taste-frontend": {
+    "icon": "🧩",
+    "blurb": "",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "",
+    "modes": ""
+  },
   "design-tokens": {
     "icon": "🧩",
     "blurb": "The Designer's token-architecture craft — structure a design-token system that scales, themes",
@@ -231,6 +279,22 @@
     "triggers": "",
     "modes": ""
   },
+  "dual-model-review": {
+    "icon": "🧩",
+    "blurb": "The dual-review flow that backs the cross-system bridge.",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "'dual review', 'two reviewers', 'kimi and glm review', 'review in parallel', 'M3 does, reviewers check', 'three-way review'",
+    "modes": ""
+  },
+  "file-access-model": {
+    "icon": "🧩",
+    "blurb": "",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "",
+    "modes": ""
+  },
   "financial-data-reach": {
     "icon": "💹",
     "blurb": "Acquire + clean financial data — quotes/OHLCV, fundamentals, filings, earnings, macro, sentiment; source choice, point-in-time correctness. Never trades",
@@ -252,6 +316,14 @@
     "blurb": "Forces complete output with no truncation or placeholders",
     "level": "Foundational",
     "tabler": "ti-arrows-maximize",
+    "triggers": "",
+    "modes": ""
+  },
+  "gpt-taste": {
+    "icon": "🧩",
+    "blurb": "",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
     "triggers": "",
     "modes": ""
   },
@@ -319,6 +391,14 @@
     "triggers": "always on, no invocation — fires automatically on workflow start, Skill tool use (hook-enforced), and member formation at routing STEP 1",
     "modes": ""
   },
+  "high-end-visual-design": {
+    "icon": "🧩",
+    "blurb": "",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "",
+    "modes": ""
+  },
   "image-to-code": {
     "icon": "🖼️",
     "blurb": "Elite pipeline that designs the image, then engineers matching code",
@@ -340,6 +420,14 @@
     "blurb": "Polish, critique, distill, and harden any design with Swiss precision",
     "level": "Intermediate",
     "tabler": "ti-award",
+    "triggers": "",
+    "modes": ""
+  },
+  "industrial-brutalist-ui": {
+    "icon": "🧩",
+    "blurb": "",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
     "triggers": "",
     "modes": ""
   },
@@ -367,6 +455,14 @@
     "triggers": "'harvest the laws', 'extract this law', 'process the stock laws', 'identify these law PDFs', 'law harvest'",
     "modes": ""
   },
+  "leaders-command": {
+    "icon": "📯",
+    "blurb": "The Butler's down-command craft — turn the Guild Master's words into one concise, precise, complete order to a member/subagent/doer; COMPOSE + AUDIT + a runnable composer",
+    "level": "Advanced",
+    "tabler": "ti-speakerphone",
+    "triggers": "'command the team', 'turn this into a clear order', 'write the prompt for the doer', 'brief the agent', 'make this instruction precise', 'audit this order'",
+    "modes": "COMPOSE (write an order, right-sized to subordinate); AUDIT (critique + rewrite)"
+  },
   "legal-drafting": {
     "icon": "✒️",
     "blurb": "Client correspondence and bilingual legal instruments in the firm's register",
@@ -390,6 +486,14 @@
     "modes": "",
     "blurb": "Kills retry-storms and perfectionism paralysis: name the ideal, see its harm, release it, act on reality.",
     "triggers": "'I am stuck', 'stop retrying', 'ship the current best', 'we are looping', 'let it go', 'stop over-thinking this', 'good enough'"
+  },
+  "lex-system-audit": {
+    "icon": "🧩",
+    "blurb": "",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "",
+    "modes": ""
   },
   "market-recon": {
     "icon": "📈",
@@ -415,6 +519,14 @@
     "blurb": "Catches the agent running the old playbook on a changed state: stop, name the new state, re-plan.",
     "triggers": "'something changed', 'tool failed', 'unexpected output', 'recheck state', 'did the context drift', 'capability check', 'why is this failing now'"
   },
+  "minimalist-ui": {
+    "icon": "🧩",
+    "blurb": "",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "",
+    "modes": ""
+  },
   "motion-design": {
     "icon": "🌀",
     "blurb": "The Designer's easing & timing specialist — exact curves, durations, transform-origins",
@@ -438,6 +550,14 @@
     "tabler": "ti-businessplan",
     "triggers": "'prep this negotiation', 'structure this deal', \"what's my BATNA\", 'pricing strategy for X', 'handle this objection', 'write a deal memo'",
     "modes": "preparation (BATNA/ZOPA); structuring & concessions; deal memo"
+  },
+  "obedience": {
+    "icon": "🧩",
+    "blurb": "",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "",
+    "modes": ""
   },
   "observability-incident-response": {
     "icon": "🚨",
@@ -484,6 +604,14 @@
     "blurb": "Speed up websites with performance optimization best practices",
     "level": "Intermediate",
     "tabler": "ti-gauge",
+    "triggers": "",
+    "modes": ""
+  },
+  "phased-db-refactor": {
+    "icon": "🧩",
+    "blurb": "",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
     "triggers": "",
     "modes": ""
   },
@@ -534,6 +662,14 @@
     "tabler": "ti-brand-python",
     "triggers": "'set up a python library', 'write pytest tests', 'package for pypi', 'audit python security', 'build a python cli', 'review this python library'",
     "modes": "project setup; packaging; code quality; testing; docs; api design; cli; performance; security; web-app; git hygiene; release; community; review"
+  },
+  "redesign-existing-projects": {
+    "icon": "🧩",
+    "blurb": "",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "",
+    "modes": ""
   },
   "relationship-intel": {
     "icon": "🤝",
@@ -606,6 +742,14 @@
     "tabler": "ti-map-search",
     "triggers": "automatic — every member orients through it when starting work in a repo. 'read the repo', 'what's in here', 'map this', 'orient me', 'where is X documented'. Universal — rides every member like weapon-utility. The consumer half of the OKF pair (okf produces, this reads).",
     "modes": "map (default) — one-shot concept map via okf_read.py (frontmatter + cross-links, grouped, index.md first); --dir/--type/--grep narrow; --links walk one concept's graph; --json feed a doer"
+  },
+  "stitch-design-taste": {
+    "icon": "🧩",
+    "blurb": "",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "",
+    "modes": ""
   },
   "storm-investigation": {
     "icon": "🌀",
@@ -703,6 +847,14 @@
     "triggers": ", RPC functions, RLS policies, edge functions, cron jobs), frontend code (components, pages, hooks, mutations, stores), schema changes, or bug fixes — even if the user doesn't explicitly ask for a vault log. Also use when the user says phrases like \"vault log ",
     "modes": ""
   },
+  "vault-log-writer": {
+    "icon": "🧩",
+    "blurb": "",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "",
+    "modes": ""
+  },
   "voices-check": {
     "icon": "🗣️",
     "tabler": "ti-messages",
@@ -742,13 +894,5 @@
     "tabler": "ti-player-play",
     "triggers": "'run the X workflow', 'execute this workflow', 'dry-run the workflow', 'frame this brief', 'show the efficiency report', 'show the promotion queue'",
     "modes": "running a workflow; the script primitives; run outputs & gates"
-  },
-  "leaders-command": {
-    "icon": "📯",
-    "blurb": "The Butler's down-command craft — turn the Guild Master's words into one concise, precise, complete order to a member/subagent/doer; COMPOSE + AUDIT + a runnable composer",
-    "level": "Advanced",
-    "tabler": "ti-speakerphone",
-    "triggers": "'command the team', 'turn this into a clear order', 'write the prompt for the doer', 'brief the agent', 'make this instruction precise', 'audit this order'",
-    "modes": "COMPOSE (write an order, right-sized to subordinate); AUDIT (critique + rewrite)"
   }
 }

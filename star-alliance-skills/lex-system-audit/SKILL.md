@@ -1,6 +1,7 @@
 ---
 name: lex-system-audit
 description: Methodology for auditing any backend subsystem in Lex Council — surveys schema, RLS, triggers, view security, state machines, dead aliases, inactive catalog entries; cross-references vault-logs and architecture docs; reads frontend for silent failures; produces a P1/P2/P3 finding list with effort and risk. Use when the user asks to audit, review, re-evaluate, health-check, find issues in, or assess the cleanliness of any subsystem — notifications, file access, attendance, transactions, advances, chat, agreements, ETO, customer portal, permissions, or any X system the user names. Also trigger on "is X clean", "find issues across X", "system review of Y", "what's wrong with Z", "what would you improve in W". This skill exists because the codebase has recurring trap families — security_invoker dropped on view rewrites, stale trigger bodies after renames, silent-swallow frontend patterns, dead aliases, namespace collisions, never-fired catalog rows — that reward a methodical pass over freeform investigation.
+version: 1.0.0
 ---
 
 # Auditing a Lex Council subsystem

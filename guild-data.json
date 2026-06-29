@@ -1,13 +1,13 @@
 {
   "meta": {
     "name": "Star Alliance",
-    "version": "6.58.78",
+    "version": "6.58.80",
     "versionTiers": {
       "major": 6,
       "minor": 58,
-      "patch": 78
+      "patch": 80
     },
-    "generated": "2026-06-29T13:57:00Z",
+    "generated": "2026-06-29T14:21:48Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "reserve",
@@ -31,7 +31,7 @@
       "domains": 3,
       "workflows": 36,
       "hooks": 8,
-      "log": 164
+      "log": 166
     }
   },
   "members": [
@@ -106,9 +106,9 @@
         "nextTier": "Advanced",
         "rampEarned": "blue",
         "rampConferred": "purple",
-        "ad": 42,
+        "ad": 54,
         "signals": {
-          "ad": 42,
+          "ad": 54,
           "nSkills": 20,
           "nUnique": 11,
           "nMaster": 2,
@@ -139,7 +139,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 42,
+              "have": 54,
               "need": 8
             },
             {
@@ -163,7 +163,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 42,
+              "have": 54,
               "need": 12
             },
             {
@@ -187,7 +187,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 42,
+              "have": 54,
               "need": 18
             },
             {
@@ -211,7 +211,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 42,
+              "have": 54,
               "need": 24
             },
             {
@@ -240,7 +240,7 @@
           {
             "label": "Arsenal Depth",
             "ok": true,
-            "have": 42,
+            "have": 54,
             "need": 12
           },
           {
@@ -346,9 +346,9 @@
         "nextTier": "Advanced",
         "rampEarned": "blue",
         "rampConferred": "purple",
-        "ad": 59,
+        "ad": 65,
         "signals": {
-          "ad": 59,
+          "ad": 65,
           "nSkills": 26,
           "nUnique": 14,
           "nMaster": 2,
@@ -379,7 +379,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 59,
+              "have": 65,
               "need": 8
             },
             {
@@ -403,7 +403,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 59,
+              "have": 65,
               "need": 12
             },
             {
@@ -427,7 +427,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 59,
+              "have": 65,
               "need": 18
             },
             {
@@ -451,7 +451,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 59,
+              "have": 65,
               "need": 24
             },
             {
@@ -480,7 +480,7 @@
           {
             "label": "Arsenal Depth",
             "ok": true,
-            "have": 59,
+            "have": 65,
             "need": 12
           },
           {
@@ -578,9 +578,9 @@
         "nextTier": "Advanced",
         "rampEarned": "blue",
         "rampConferred": "purple",
-        "ad": 46,
+        "ad": 60,
         "signals": {
-          "ad": 46,
+          "ad": 60,
           "nSkills": 20,
           "nUnique": 17,
           "nMaster": 3,
@@ -611,7 +611,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 46,
+              "have": 60,
               "need": 8
             },
             {
@@ -635,7 +635,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 46,
+              "have": 60,
               "need": 12
             },
             {
@@ -659,7 +659,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 46,
+              "have": 60,
               "need": 18
             },
             {
@@ -683,7 +683,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 46,
+              "have": 60,
               "need": 24
             },
             {
@@ -712,7 +712,7 @@
           {
             "label": "Arsenal Depth",
             "ok": true,
-            "have": 46,
+            "have": 60,
             "need": 12
           },
           {
@@ -1709,9 +1709,9 @@
         "nextTier": "Advanced",
         "rampEarned": "blue",
         "rampConferred": "teal",
-        "ad": 43,
+        "ad": 45,
         "signals": {
-          "ad": 43,
+          "ad": 45,
           "nSkills": 19,
           "nUnique": 16,
           "nMaster": 0,
@@ -1742,7 +1742,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 43,
+              "have": 45,
               "need": 8
             },
             {
@@ -1766,7 +1766,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 43,
+              "have": 45,
               "need": 12
             },
             {
@@ -1790,7 +1790,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 43,
+              "have": 45,
               "need": 18
             },
             {
@@ -1814,7 +1814,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 43,
+              "have": 45,
               "need": 24
             },
             {
@@ -1843,7 +1843,7 @@
           {
             "label": "Arsenal Depth",
             "ok": true,
-            "have": 43,
+            "have": 45,
             "need": 12
           },
           {
@@ -1910,14 +1910,14 @@
     {
       "id": "add-admin-permission",
       "name": "add-admin-permission",
-      "version": "—",
-      "icon": "📦",
+      "version": "1.0.0",
+      "icon": "🧩",
       "art": "",
       "artPng": false,
       "blurb": "Add a new granular permission flag to admin_perms in the Lex Council app and wire it throu…",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-puzzle",
       "src": "own",
       "desc": "Add a new granular permission flag to admin_perms in the Lex Council app and wire it through every file that must stay in sync. Use this skill whenever the user asks to add a new permission, gate a page with a new flag, add an X_vap boolean, create an admin capability, restrict a feature to certain admins, or add a column to admin_perms. Also trigger on \"make this admin-only\", \"grant X access to Y\", \"only these admins can see this\", \"add permission for Z\", \"lock this behind a permission\". This skill exists because adding a permission requires 6 files in lock-step — if you miss any (especially the cm_ap_js view), the permission silently fails to hydrate in the Zustand store and the UI behaves as if the flag is always false.",
       "intro": "Adding a new granular permission — e.g., notifications_vap, td_manual_advance, reports_vap — requires 6 files in lock-step. Missing any one causes silent failures because the admin UI hydrates permissions from a view, not from the underlying table, and several non-obvious parts of the frontend have ",
@@ -1955,14 +1955,14 @@
     {
       "id": "add-new-trigger",
       "name": "add-new-trigger",
-      "version": "—",
-      "icon": "📦",
+      "version": "1.0.0",
+      "icon": "🧩",
       "art": "",
       "artPng": false,
-      "blurb": "End-to-end procedure for creating or modifying a database trigger and its backing function…",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "",
+      "blurb": "End-to-end procedure for creating or modifying a database trigger and its backing function in t",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-puzzle",
       "src": "own",
       "desc": "End-to-end procedure for creating or modifying a database trigger and its backing function in the Lex Council Supabase backend. Use whenever the user asks to add a trigger, create a trigger function, modify trigger logic, wire a BEFORE/AFTER trigger, fire on INSERT/UPDATE/DELETE, add a transition guard, or write a PL/pgSQL function. Also trigger on mentions of CREATE OR REPLACE FUNCTION in private schema, pg_trigger, FOR EACH ROW, AFTER UPDATE, NEW.col IS DISTINCT FROM OLD.col, S7 hardening, S8 privilege lockdown, or SECURITY DEFINER in a trigger context. This skill exists because trigger bugs have caused three separate production incidents: duplicate notifications from missing transition guards, broken INSERT flows from stale column refs in function bodies after renames, and privilege escalation from missing S7 search_path pinning.",
       "intro": "``` lex_council/docs/architecture/backend/SUPABASE-FUNCTIONS.md ```",
@@ -1996,14 +1996,14 @@
     {
       "id": "add-new-view",
       "name": "add-new-view",
-      "version": "—",
-      "icon": "📦",
+      "version": "1.0.0",
+      "icon": "🧩",
       "art": "",
       "artPng": false,
-      "blurb": "End-to-end procedure for creating or revising a view in the Lex Council Supabase backend…",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "",
+      "blurb": "End-to-end procedure for creating or revising a view in the Lex Council Supabase backend.",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-puzzle",
       "src": "own",
       "desc": "End-to-end procedure for creating or revising a view in the Lex Council Supabase backend. Use whenever the user asks to create a view, add a _js view, rewrite a view, fix a SECURITY DEFINER view lint error, update view columns, rename a view, or drop a view. Also trigger on mentions of security_invoker, CREATE OR REPLACE VIEW, get_advisors security, VIEW DEFINER, view consumer, or any task that involves the pg_views or VIEWS-CATALOG surface. This skill exists because two traps have each caused production regressions: (1) CREATE OR REPLACE VIEW silently drops security_invoker — every view rewrite must be followed by ALTER VIEW SET (security_invoker=true); (2) DROP VIEW ... CASCADE silently drops every downstream dependent — always enumerate dependents before dropping. Without this skill, Claude reliably hits one of these two traps.",
       "intro": "``` lex_council/docs/architecture/backend/VIEWS-CATALOG.md ```",
@@ -2035,14 +2035,14 @@
     {
       "id": "admin-page-builder",
       "name": "admin-page-builder",
-      "version": "—",
-      "icon": "📦",
+      "version": "1.0.0",
+      "icon": "🧩",
       "art": "",
       "artPng": false,
       "blurb": "Build a new admin page for the Lex Council app under apps/web/app/(admin)/admin/…",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-puzzle",
       "src": "own",
       "desc": "Build a new admin page for the Lex Council app under apps/web/app/(admin)/admin/. Use this skill whenever the user asks to create an admin page, build a management UI, add a page under the Files/Users/Finances tab, scaffold a new page inside (admin)/admin/, build a kind/list/grid/table admin screen, add an admin tool, or create a dashboard for admins. Also trigger on \"new admin page for X\", \"admin management UI\", \"build an admin panel for Y\", \"admin screen that lets me edit Z\", even if design tokens aren't mentioned. This skill exists because without it Claude tends to invent hex colors, miss the navy page frame, and skip the KpiStrip pattern — resulting in pages that read as foreign against every other admin page.",
       "intro": "Build new admin pages that match the rest of the admin surface (Files, Users, Finances tabs). This skill encodes the design language established by the Advance Management page (finances/advances/page.tsx, shipped 2026-04-23), which is the canonical reference.",
@@ -2081,14 +2081,14 @@
     {
       "id": "admin-page-fixer",
       "name": "admin-page-fixer",
-      "version": "—",
-      "icon": "📦",
+      "version": "1.0.0",
+      "icon": "🧩",
       "art": "",
       "artPng": false,
       "blurb": "Fix bugs and warnings found by the admin-page-auditor skill (or manually identified) acros…",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-puzzle",
       "src": "own",
       "desc": "Fix bugs and warnings found by the admin-page-auditor skill (or manually identified) across Lex Council admin pages. Use this skill whenever the user asks to: fix audit findings, fix admin page bugs, apply fixes from an audit report, fix file hierarchy filter issues, fix branches_access scoping, fix page-reset dependencies, fix SELECT_COLS, extract filter bars, standardize thresholds, or resolve any compliance issues identified in admin pages. Also trigger when the user says \"fix\", \"fix these\", \"apply fixes\", \"fix the bugs\", \"fix all issues\", or references an audit report and wants the findings resolved. This is the companion to admin-page-auditor — the auditor finds issues, this skill fixes them.",
       "intro": "Fix bugs, warnings, and compliance issues across Lex Council admin pages. This is the action companion to admin-page-auditor — it takes audit findings (from an HTML report or from conversation context) and applies the correct code fixes, verifies them, and optionally re-audits.",
@@ -3165,13 +3165,13 @@
       "id": "design-taste-frontend",
       "name": "design-taste-frontend",
       "version": "1.0.0",
-      "icon": "📦",
+      "icon": "🧩",
       "art": "",
       "artPng": false,
       "blurb": "Senior UI/UX Engineer…",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-puzzle",
       "src": "own",
       "desc": "Senior UI/UX Engineer. Architect digital interfaces overriding default LLM biases. Enforces metric-based rules, strict component architecture, CSS hardware acceleration, and balanced design engineering.",
       "intro": "AI Instruction: The standard baseline for all generations is strictly set to these values (8, 6, 4). Do not ask the user to edit this file. Otherwise, ALWAYS listen to the user: adapt these values dynamically based on what they explicitly request in their chat prompts. Use these baseline (or user-ov",
@@ -3363,13 +3363,13 @@
       "id": "dual-model-review",
       "name": "dual-model-review",
       "version": "1.0.0",
-      "icon": "📦",
+      "icon": "🧩",
       "art": "",
       "artPng": false,
-      "blurb": "The dual-review flow that backs the cross-system bridge…",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "",
+      "blurb": "The dual-review flow that backs the cross-system bridge.",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-puzzle",
       "src": "own",
       "desc": "The dual-review flow that backs the cross-system bridge. A specialist CLI profile receives an order from a Claude Code subagent, dispatches MiniMax-M3 (the doer) to do the actual work, and simultaneously fires Kimi K2.7 (Ollama Cloud) and GLM-5.2 (Ollama Cloud) as parallel reviewer sub-agents through Hermes. Both reviewers must independently pass before the work is reported back. Triggers: 'dual review', 'two reviewers', 'kimi and glm review', 'review in parallel', 'M3 does, reviewers check', 'three-way review', or any time a profile is about to declare a piece of work done for the cross-system bridge. Pairs with weapon-utility (seat doctrine — M3 is the doer, Kimi + GLM are independent thinkers), decompose-and-swarm (when many slices each need dual review), and the cross-system dispatch bridge (tools/dispatch.py).",
       "intro": "The dual-review flow is the cross-system bridge's quality gate. A specialist CLI profile (Architect, Developer, Designer, Herald, Merchant, Quartermaster, Translator) receives an order from a Claude Code subagent. It dispatches MiniMax-M3 as the doer to do the work, then in parallel fires two Ollama",
@@ -3383,7 +3383,7 @@
         "Cross-links",
         "Changelog"
       ],
-      "triggers": "",
+      "triggers": "'dual review', 'two reviewers', 'kimi and glm review', 'review in parallel', 'M3 does, reviewers check', 'three-way review'",
       "modes": "",
       "disabled": false,
       "refs": [],
@@ -3398,14 +3398,14 @@
     {
       "id": "file-access-model",
       "name": "file-access-model",
-      "version": "—",
-      "icon": "📦",
+      "version": "1.0.0",
+      "icon": "🧩",
       "art": "",
       "artPng": false,
       "blurb": "Loads full context for the Lex Council file access model before any related work begins…",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-puzzle",
       "src": "own",
       "desc": "Loads full context for the Lex Council file access model before any related work begins. Use this skill whenever the user mentions or asks about: file_access table, users_access, file_owner, file_admin, member_assistants, external_assistants, org_users, file_access_log, view_for_customer flag, RLS for files, file permissions, who can see a file, access inheritance, subers, subscriptions, the three-gate RLS pattern, or any migration related to file access. Also trigger when the user says \"work on access\", \"build the access table\", \"write the access migration\", \"access model\", \"permission model\", \"who has access\", or references anything about granting or revoking access to files. Load silently in the background — no need to announce the skill is running.",
       "intro": "This skill loads the full design context for the Lex Council file_access model so work can continue without re-explaining prior decisions.",
@@ -3548,13 +3548,13 @@
       "id": "gpt-taste",
       "name": "gpt-taste",
       "version": "1.0.0",
-      "icon": "📦",
+      "icon": "🧩",
       "art": "",
       "artPng": false,
       "blurb": "Elite UX/UI & Advanced GSAP Motion Engineer…",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-puzzle",
       "src": "own",
       "desc": "Elite UX/UI & Advanced GSAP Motion Engineer. Enforces Python-driven true randomization for layout variance, strict AIDA page structure, wide editorial typography (bans 6-line wraps), gapless bento grids, strict GSAP ScrollTriggers (pinning, stacking, scrubbing), inline micro-images, and massive section spacing.",
       "intro": "You are an elite, award-winning frontend design engineer. Standard LLMs possess severe statistical biases: they generate massive 6-line wrapped headings by using narrow containers, leave ugly empty gaps in bento grids, use cheap meta-labels (\"QUESTION 05\", \"SECTION 01\"), output invisible button text",
@@ -3669,7 +3669,7 @@
     {
       "id": "guild-conformity",
       "name": "guild-conformity",
-      "version": "1.5.0",
+      "version": "1.6.0",
       "icon": "🔎",
       "art": "",
       "artPng": false,
@@ -3698,8 +3698,8 @@
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 150,
-        "words": 2357
+        "lines": 187,
+        "words": 2792
       },
       "global": true,
       "members": [
@@ -3900,13 +3900,13 @@
       "id": "high-end-visual-design",
       "name": "high-end-visual-design",
       "version": "1.0.0",
-      "icon": "📦",
+      "icon": "🧩",
       "art": "",
       "artPng": false,
       "blurb": "Teaches the AI to design like a high-end agency…",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-puzzle",
       "src": "own",
       "desc": "Teaches the AI to design like a high-end agency. Defines the exact fonts, spacing, shadows, card structures, and animations that make a website feel expensive. Blocks all the common defaults that make AI designs look cheap or generic.",
       "intro": "If your generated code includes ANY of the following, the design instantly fails:",
@@ -4115,13 +4115,13 @@
       "id": "industrial-brutalist-ui",
       "name": "industrial-brutalist-ui",
       "version": "1.0.0",
-      "icon": "📦",
+      "icon": "🧩",
       "art": "",
       "artPng": false,
       "blurb": "Raw mechanical interfaces fusing Swiss typographic print with military terminal aesthetics…",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-puzzle",
       "src": "own",
       "desc": "Raw mechanical interfaces fusing Swiss typographic print with military terminal aesthetics. Rigid grids, extreme type scale contrast, utilitarian color, analog degradation effects. For data-heavy dashboards, portfolios, or editorial sites that need to feel like declassified blueprints.",
       "intro": "Name: Industrial Brutalism & Tactical Telemetry Interface Engineering Description: Advanced proficiency in architecting web interfaces that synthesize mid-century Swiss Typographic design, industrial manufacturing manuals, and retro-futuristic aerospace/military terminal interfaces. This discipline ",
@@ -4428,14 +4428,14 @@
     {
       "id": "lex-system-audit",
       "name": "lex-system-audit",
-      "version": "—",
-      "icon": "📦",
+      "version": "1.0.0",
+      "icon": "🧩",
       "art": "",
       "artPng": false,
       "blurb": "Methodology for auditing any backend subsystem in Lex Council — surveys schema, RLS, trigg…",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-puzzle",
       "src": "own",
       "desc": "Methodology for auditing any backend subsystem in Lex Council — surveys schema, RLS, triggers, view security, state machines, dead aliases, inactive catalog entries; cross-references vault-logs and architecture docs; reads frontend for silent failures; produces a P1/P2/P3 finding list with effort and risk. Use when the user asks to audit, review, re-evaluate, health-check, find issues in, or assess the cleanliness of any subsystem — notifications, file access, attendance, transactions, advances, chat, agreements, ETO, customer portal, permissions, or any X system the user names. Also trigger on \"is X clean\", \"find issues across X\", \"system review of Y\", \"what's wrong with Z\", \"what would you improve in W\". This skill exists because the codebase has recurring trap families — security_invoker dropped on view rewrites, stale trigger bodies after renames, silent-swallow frontend patterns, dead aliases, namespace collisions, never-fired catalog rows — that reward a methodical pass over freeform investigation.",
       "intro": "Walks through a structured five-phase audit of a named subsystem (notifications, file access, attendance, transactions, etc.). Produces a ranked finding list at the end — real bugs (P1), design smells with small fixes (P2), improvements (P3) — plus a recommended next move.",
@@ -4582,13 +4582,13 @@
       "id": "minimalist-ui",
       "name": "minimalist-ui",
       "version": "1.0.0",
-      "icon": "📦",
+      "icon": "🧩",
       "art": "",
       "artPng": false,
       "blurb": "Clean editorial-style interfaces…",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-puzzle",
       "src": "own",
       "desc": "Clean editorial-style interfaces. Warm monochrome palette, typographic contrast, flat bento grids, muted pastels. No gradients, no heavy shadows.",
       "intro": "Name: Premium Utilitarian Minimalism & Editorial UI Description: An advanced frontend engineering directive for generating highly refined, ultra-minimalist, \"document-style\" web interfaces analogous to top-tier workspace platforms. This protocol strictly enforces a high-contrast warm monochrome pale",
@@ -4756,13 +4756,13 @@
       "id": "obedience",
       "name": "obedience",
       "version": "1.0.0",
-      "icon": "📦",
+      "icon": "🧩",
       "art": "",
       "artPng": false,
       "blurb": "A turn-level discipline skill that constrains an agent to the literal scope of the user's …",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-puzzle",
       "src": "own",
       "desc": "A turn-level discipline skill that constrains an agent to the literal scope of the user's request and the guild's declared doctrine. Use when an agent is tempted to add unrequested changes, paraphrase a clear instruction, or invent behavior the user did not ask for. Three checks: (1) honor the literal user request — `cancel` reverts, `proceed` continues, ambiguous prompts trigger one clarifying question rather than guessing; (2) honor explicit guild doctrine — the SOUL, AGENTS.md, and the profile's binding rules apply as written, not as paraphrased; (3) refuse to invent scope — no drive-by refactors, no unrequested files, no unrequested polish, no summarizing beyond what was asked. **Gate obedience** is a fourth check: when a gate (verify, thinker, delegation, destructive, executor) fires, read the error literally, follow what it says to do, and do not falsely claim to be blocked. Triggers: \"don't over-do it\", \"just do what I asked\", \"stop adding things\", \"follow the spec\", \"stay in scope\", \"no extras\", \"do exactly this\", \"why did the gate block me\", \"what does this gate error mean\". Distinct from letting-go (which fires on stuck/looping — obedience fires on over-reach), and distinct from guild-reflection (which learns after a run — obedience constrains during a run).",
       "intro": "An agent that over-delivers is just as broken as one that under-delivers. Over-delivery looks helpful — a \"while I was in there\" refactor, a \"helpful\" extra file, a \"while you didn't ask, but...\" follow-up — and ships as drift. The user's spec is the spec. The guild's doctrine is the doctrine. Every",
@@ -5039,14 +5039,14 @@
     {
       "id": "phased-db-refactor",
       "name": "phased-db-refactor",
-      "version": "—",
-      "icon": "📦",
+      "version": "1.0.0",
+      "icon": "🧩",
       "art": "",
       "artPng": false,
       "blurb": "Decision framework and execution guide for multi-phase database refactors in Lex Council…",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-puzzle",
       "src": "own",
       "desc": "Decision framework and execution guide for multi-phase database refactors in Lex Council. Use whenever the user asks to refactor a table or column that touches ≥3 downstream surfaces, involves a money-adjacent column (wages, credits, transactions), must remain deployable at every step, or where rolling back would require a backup restore. Also trigger on phrases like \"phased refactor\", \"phase plan\", \"multi-phase migration\", \"attendance v2 style\", \"frontend-first\", \"Phase 0 safety net\", \"dual-write window\", or \"byte-identical\". Do NOT use this for pure cosmetic renames with no semantic change — use the db-rename-sweep skill for those. This skill exists because rushing a multi-surface refactor into a single migration has caused wage recompute bugs, broken trigger bodies, and post-rollback data loss in past sessions.",
       "intro": "Full reference doc: lex_council/docs/architecture/backend/DB-REFACTOR-PHASED-PLAN.md",
@@ -5337,13 +5337,13 @@
       "id": "redesign-existing-projects",
       "name": "redesign-existing-projects",
       "version": "1.0.0",
-      "icon": "📦",
+      "icon": "🧩",
       "art": "",
       "artPng": false,
       "blurb": "Upgrades existing websites and apps to premium quality…",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-puzzle",
       "src": "own",
       "desc": "Upgrades existing websites and apps to premium quality. Audits current design, identifies generic AI patterns, and applies high-end design standards without breaking functionality. Works with any CSS framework or vanilla CSS.",
       "intro": "When applied to an existing project, follow this sequence:",
@@ -5750,13 +5750,13 @@
       "id": "stitch-design-taste",
       "name": "stitch-design-taste",
       "version": "1.0.0",
-      "icon": "📦",
+      "icon": "🧩",
       "art": "",
       "artPng": false,
       "blurb": "Semantic Design System Skill for Google Stitch…",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-puzzle",
       "src": "own",
       "desc": "Semantic Design System Skill for Google Stitch. Generates agent-friendly DESIGN.md files that enforce premium, anti-generic UI standards — strict typography, calibrated color, asymmetric layouts, perpetual micro-motion, and hardware-accelerated performance.",
       "intro": "This skill generates DESIGN.md files optimized for Google Stitch screen generation. It translates the battle-tested anti-slop frontend engineering directives into Stitch's native semantic design language — descriptive, natural-language rules paired with precise values that Stitch's AI agent can inte",
@@ -6310,13 +6310,13 @@
       "id": "vault-log-writer",
       "name": "vault-log-writer",
       "version": "—",
-      "icon": "📦",
+      "icon": "🧩",
       "art": "",
       "artPng": false,
       "blurb": "Write and file a correct Lex Council vault log entry per the P8 mandatory change logging r…",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-puzzle",
       "src": "own",
       "desc": "Write and file a correct Lex Council vault log entry per the P8 mandatory change logging rule. Use whenever any code or backend change has been made in a session — every migration, trigger, view, RLS policy, component, page, edge function, bug fix, or doc update. Also use when the session called any Supabase MCP tool (execute_sql, apply_migration, get_advisors, etc.) to produce the required P13 self-audit section. Trigger on phrases like \"write the vault log\", \"log this change\", \"P8 log\", \"session log\", \"what do I need to log\", \"vault log entry\", or any time a session is about to end and no vault log has been written. This skill exists because P8 is non-negotiable and the P13 self-audit section is frequently omitted or malformed.",
       "intro": "``` lex_council/docs/vault-logs/YYYY-MM-DD_short-description.md ```",
@@ -6660,7 +6660,25 @@
         "negotiation-deal-strategy",
         "workflow-runner",
         "decompose-and-swarm",
-        "leaders-command"
+        "leaders-command",
+        "add-admin-permission",
+        "add-new-trigger",
+        "add-new-view",
+        "admin-page-builder",
+        "admin-page-fixer",
+        "design-taste-frontend",
+        "dual-model-review",
+        "file-access-model",
+        "gpt-taste",
+        "high-end-visual-design",
+        "industrial-brutalist-ui",
+        "lex-system-audit",
+        "minimalist-ui",
+        "obedience",
+        "phased-db-refactor",
+        "redesign-existing-projects",
+        "stitch-design-taste",
+        "vault-log-writer"
       ],
       "members": [
         "the-architect",
@@ -9400,6 +9418,35 @@
   "log": {
     "entries": [
       {
+        "id": 106,
+        "date": "2026-06-29",
+        "type": "chore",
+        "title": "9 Lex skills wired + guild-conformity 1.6.0 deployed",
+        "who": "Atta",
+        "detail": "Architecture Build close: 9 new Lex-Council skills (file-access-model, add-admin-permission, add-new-trigger, add-new-view, lex-system-audit, phased-db-refactor, admin-page-fixer, admin-page-builder, design-taste-frontend) assigned to Architect and Developer members; added version:1.0.0 to all; auto-registered via wire_skill.py --all; synced Hermes profile-content via skill_sync.py apply --profile-content. Upgraded guild-conformity to 1.6.0: new section on three-layer skill surfaces (repo/Claude-store/Hermes-profiles), profile-slug bug fix (the-<member> not bare), PS/HS triage, 7-step device deployment checklist. Conformity check: 208 contradictions remain (133 pre-existing SD Skill Drills backlog, 59 HS Claude-store drift expected, 4 PS profile-roster decisions awaiting Guild Master). Repo source green, Hermes synced, ready for device deployment.",
+        "ref": [
+          "guild-conformity",
+          "skillsmith",
+          "the-architect",
+          "the-developer"
+        ]
+      },
+      {
+        "id": 105,
+        "date": "2026-06-29",
+        "type": "skill-upgrade",
+        "title": "9 Lex Council skills wired + conformity fold",
+        "who": "the-quartermaster",
+        "detail": "Architecture Build close: wired 9 new Lex-Council skills (file-access-model, add-admin-permission, add-new-trigger, add-new-view, lex-system-audit, phased-db-refactor, admin-page-fixer, admin-page-builder, design-taste-frontend) to Architect and Developer members; added version: 1.0.0 to all; ran wire_skill.py --all to auto-register in skills-meta.json; synced Hermes profile-content via skill_sync.py --profile-content; upgraded guild-conformity skill to 1.6.0 with new section on three-layer skill surfaces (repo/Claude-store/Hermes-profiles), profile-slug bug fix doc (the-<member> not bare name), PS/HS triage doctrine, and 7-step device deployment checklist. Conformity check: 208 remaining contradictions (133 SD Skill Drills rows pre-existing backlog, 59 HS Claude-store drift expected, 4 PS profile-roster decisions for Guild Master). Final status: repo source green, Hermes profile content synced, ready for dashboard wiring and device deployment per deploy_device.py checklist.",
+        "ref": [
+          "guild-conformity",
+          "skillsmith",
+          "the-architect",
+          "the-developer"
+        ],
+        "to": "1.6.0"
+      },
+      {
         "id": 104,
         "date": "2026-06-28",
         "type": "decision",
@@ -11374,7 +11421,7 @@
         "id": "g-650b7781-add-skill-impeccable"
       }
     ],
-    "count": 164
+    "count": 166
   },
   "models": {
     "opus": {

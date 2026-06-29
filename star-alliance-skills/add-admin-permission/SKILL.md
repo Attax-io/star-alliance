@@ -1,6 +1,7 @@
 ---
 name: add-admin-permission
 description: Add a new granular permission flag to admin_perms in the Lex Council app and wire it through every file that must stay in sync. Use this skill whenever the user asks to add a new permission, gate a page with a new flag, add an X_vap boolean, create an admin capability, restrict a feature to certain admins, or add a column to admin_perms. Also trigger on "make this admin-only", "grant X access to Y", "only these admins can see this", "add permission for Z", "lock this behind a permission". This skill exists because adding a permission requires 6 files in lock-step — if you miss any (especially the cm_ap_js view), the permission silently fails to hydrate in the Zustand store and the UI behaves as if the flag is always false.
+version: 1.0.0
 ---
 
 # Lex Council: add an admin_perms permission
