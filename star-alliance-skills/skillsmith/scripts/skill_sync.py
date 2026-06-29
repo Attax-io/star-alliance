@@ -23,6 +23,7 @@ Direction is inferred from the versions unless --direction is given. Forks and e
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import re
 import subprocess
@@ -38,6 +39,18 @@ EXCEPTIONS = {
 }
 
 RSYNC_EXCLUDES = ["--exclude", ".git", "--exclude", "__pycache__", "--exclude", "*.pyc"]
+
+# member_slug → installed profile folder name. Mirrors tools/publish_profiles.py so the
+# profile name on disk matches the profile the member runs under. Keep in sync if slugs change.
+PROFILE_MAP = {
+    "the-architect":     "architect",
+    "the-developer":     "developer",
+    "the-designer":      "designer",
+    "the-translator":    "translator",
+    "the-herald":        "herald",
+    "the-merchant":      "merchant",
+    "the-quartermaster": "quartermaster",
+}
 
 
 def default_repo() -> Path:
@@ -209,6 +222,133 @@ def cmd_apply(repo, glob, name, direction, dry):
     return r.returncode
 
 
+def _member_skills_from_json(repo: Path, member_id: str) -> list[str] | None:
+    """Pull a member's `skills:` list out of guild-data.json (members[].skills). Returns
+    None if the JSON isn't reachable or the member isn't present — caller falls back."""
+    gd = repo / "guild-data.json"
+    if not gd.exists():
+        return None
+    try:
+        data = json.loads(gd.read_text())
+    except (json.JSONDecodeError, OSError):
+        return None
+    for m in data.get("members", []) or []:
+        if m.get("id") == member_id:
+            return [str(s) for s in (m.get("skills") or [])]
+    return None
+
+
+def _member_skills_from_md(md_path: Path) -> list[str]:
+    """Pull a member's `skills:` array out of star-alliance-members/<id>.md YAML frontmatter.
+    Skills are listed inline: `skills: [a, b, c]`."""
+    if not md_path.exists():
+        return []
+    text = md_path.read_text()
+    parts = text.split("---", 2)
+    if len(parts) < 3:
+        return []
+    fm = parts[1]
+    m = re.search(r"(?m)^skills:\s*\[(.*)\]\s*$", fm)
+    if not m:
+        # Could be multi-line YAML list — handle `skills:\n  - foo\n  - bar` too.
+        out: list[str] = []
+        if re.search(r"(?m)^skills:\s*$", fm):
+            for line in fm.splitlines()[1:]:
+                mm = re.match(r"\s*-\s*(.+?)\s*$", line)
+                if not mm:
+                    break
+                out.append(mm.group(1).strip().strip('"').strip("'"))
+        return out
+    raw = m.group(1)
+    return [s.strip().strip('"').strip("'") for s in raw.split(",") if s.strip()]
+
+
+def cmd_profile_content(repo: Path, members_dir: Path | None, dry: bool) -> int:
+    """For each member in PROFILE_MAP, mirror that member's skills from
+    <repo>/star-alliance-skills/<id>/ into ~/.hermes/profiles/<slug>/skills/<id>/ using
+    rsync -a --delete (byte-faithful — never re-encodes; PNGs containing JPEG bytes survive).
+
+    Skill roster is read from guild-data.json:members[].skills; if that's missing or the
+    member isn't there, falls back to star-alliance-members/<id>.md YAML frontmatter.
+
+    Idempotent: rsync -a --delete makes a second run a no-op for matching content. The
+    output of `rsync --stats` is captured so the log shows what changed (works on both
+    modern rsync 3.1+ and the older 2.6.x that ships with macOS)."""
+    skills_base = repo / "star-alliance-skills"
+    if not skills_base.is_dir():
+        print(f"ERROR: skills base not found at {skills_base}", file=sys.stderr)
+        return 2
+
+    # member_id → [skill_id, ...]
+    rosters: dict[str, list[str]] = {}
+    for member_id in PROFILE_MAP:
+        from_json = _member_skills_from_json(repo, member_id)
+        if from_json is not None:
+            rosters[member_id] = from_json
+            continue
+        md_path = (members_dir / f"{member_id}.md") if members_dir else None
+        if md_path is None:
+            # Last resort: probe the canonical repo location.
+            md_path = repo / "star-alliance-members" / f"{member_id}.md"
+        rosters[member_id] = _member_skills_from_md(md_path)
+
+    any_fail = False
+    total_copied = 0
+    total_skipped = 0
+    for member_id, profile_slug in PROFILE_MAP.items():
+        skills = rosters.get(member_id, [])
+        if not skills:
+            print(f"  - {member_id:20s} no skills found (json+md both empty) — skipped")
+            total_skipped += 1
+            continue
+        dest_root = Path.home() / ".hermes" / "profiles" / profile_slug / "skills"
+        for sid in skills:
+            src = skills_base / sid
+            dst = dest_root / sid
+            if not src.is_dir():
+                print(f"  ✗ {member_id} → {sid:32s} source missing: {src}", file=sys.stderr)
+                any_fail = True
+                continue
+            if not (src / "SKILL.md").exists():
+                print(f"  ✗ {member_id} → {sid:32s} no SKILL.md at {src} (not a skill?)", file=sys.stderr)
+                any_fail = True
+                continue
+            cmd = [
+                "rsync", "-a", "--delete", "--stats",
+                *RSYNC_EXCLUDES,
+                f"{src}/", f"{dst}/",
+            ]
+            ver = ver_of(src / "SKILL.md") or "—"
+            if dry:
+                print(f"  ~ {member_id} → {profile_slug}/{sid:30s} ({ver}) (dry-run)")
+                continue
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            r = subprocess.run(cmd, capture_output=True, text=True)
+            # rsync --stats prints "Number of files transferred: N" (and on 3.1+ also
+            # "Number of regular files transferred: N"). On macOS-bundled rsync 2.6.x the
+            # stats land on stdout; on 3.1+ they land on stderr. Scan both.
+            transferred = "—"
+            for stream in (r.stdout, r.stderr):
+                for line in (stream or "").splitlines():
+                    m = re.search(r"Number of (?:regular )?files transferred:\s*([\d,]+)", line)
+                    if m:
+                        transferred = m.group(1).replace(",", "")
+                        break
+                if transferred != "—":
+                    break
+            status = "✓" if r.returncode == 0 else "✗"
+            print(f"  {status} {member_id} → {profile_slug}/{sid:30s} ({ver}) "
+                  f"files_transferred={transferred}")
+            if r.returncode != 0:
+                any_fail = True
+            else:
+                total_copied += 1
+    print()
+    print(f"profile-content summary: copied={total_copied}, skipped={total_skipped}, "
+          f"errors={1 if any_fail else 0}")
+    return 1 if any_fail else 0
+
+
 def main():
     ap = argparse.ArgumentParser(description="skillsmith repo↔device sync")
     ap.add_argument("cmd", choices=["status", "plan", "apply"])
@@ -218,9 +358,18 @@ def main():
     ap.add_argument("--skill", help="skill name (required for apply)")
     ap.add_argument("--direction", choices=["install", "push"])
     ap.add_argument("--dry", action="store_true")
+    ap.add_argument("--profile-content", action="store_true",
+                    help="mirror each member's skills from star-alliance-skills/ into the "
+                         "matching ~/.hermes/profiles/<slug>/skills/. Pairs with apply.")
+    ap.add_argument("--members-dir", type=Path,
+                    help="override location of star-alliance-members/*.md "
+                         "(fallback roster when guild-data.json is unavailable)")
     a = ap.parse_args()
     repo, glob = a.repo.expanduser().resolve(), a.glob.expanduser().resolve()
     repo = discover_skills_root(repo)   # repo side is a skills base; point it at where skills live
+    # For --profile-content the `repo` we want is the *project* root (guild-data.json lives there,
+    # not inside star-alliance-skills/). Recompute from the original argument.
+    project_root = a.repo.expanduser().resolve()
     locs = locations(repo, glob, a.project.expanduser())
     if a.cmd == "status":
         cmd_status(locs)
@@ -229,9 +378,12 @@ def main():
         cmd_plan(locs)
         return 0
     if a.cmd == "apply":
-        if not a.skill:
-            print("apply requires --skill NAME", file=sys.stderr)
+        if not a.profile_content and not a.skill:
+            print("apply requires --skill NAME (or --profile-content to sync member skill rosters)",
+                  file=sys.stderr)
             return 2
+        if a.profile_content:
+            return cmd_profile_content(project_root, a.members_dir, a.dry)
         return cmd_apply(repo, glob, a.skill, a.direction, a.dry)
 
 

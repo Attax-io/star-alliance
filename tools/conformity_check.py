@@ -118,6 +118,43 @@ HERMES_NATIVE = {"glm-5.2", "minimax-m3", "kimi-k2.7"}
 CLAUDE_NATIVE = {"opus", "haiku", "sonnet"}
 MEDIA_WEAPONS = {"image-01", "minimax-video", "minimax-speech", "minimax-music"}
 
+# Vendor-published skills ship with every Hermes profile by default (they're the
+# shared toolbox: apple, github, research, etc.). When checking that a profile's
+# installed skill-set matches the member's declared `skills:`, we EXCLUDE these
+# vendor skills from the equality check — they are present by convention, not by
+# declaration. The list lives here (not in guild-data) because it's a property of
+# the Hermes skill registry, not of the guild data model.
+HERMES_VENDOR_SKILLS = {
+    "apple", "autonomous-ai-agents", "computer-use", "creative", "data-science",
+    "dogfood", "email", "github", "media", "mlops", "note-taking", "productivity",
+    "research", "smart-home", "social-media", "software-development", "yuanbao",
+    "hermes-project-anchoring",
+}
+
+
+def _skill_fingerprint(skill_dir):
+    """SHA-256 fingerprint of a skill directory's full content.
+
+    Mirrors the approach used by .claude/tools/skill_fingerprint.py: every file
+    under the directory (relative path + sha256 of bytes), sorted by relative
+    path for determinism, then the resulting list-of-pairs is hashed as JSON.
+
+    Returns None if the directory does not exist or has no SKILL.md (a skill
+    without SKILL.md is not a real skill — let the caller decide whether that's
+    a fail or a skip).
+    """
+    import hashlib
+    if not skill_dir.is_dir():
+        return None
+    skill_md = skill_dir / "SKILL.md"
+    if not skill_md.is_file():
+        return None
+    files = []
+    for p in sorted(skill_dir.rglob("*")):
+        if p.is_file():
+            files.append((str(p.relative_to(skill_dir)), hashlib.sha256(p.read_bytes()).hexdigest()))
+    return hashlib.sha256(json.dumps(files, sort_keys=True).encode()).hexdigest()
+
 
 def frontmatter_list(text, key):
     m = re.search(rf'^{key}:\s*\[([^\]]*)\]', text, re.M)
@@ -696,6 +733,112 @@ def main():
             if repo_y != inst_y:
                 fails.append(f"PD {slug}: distribution.yaml has drifted — repo != installed "
                              f"(run: python3 tools/publish_profiles.py --update)")
+
+    # === PS — Profile Skill-set parity: profile's installed skills/ == member's declared skills ===
+    # For each spawnable profile, the set of non-vendor skills present under
+    # ~/.hermes/profiles/<slug>/skills/ must equal the set declared in the member's
+    # `skills:` array in guild-data.json. Fail-open (INFO/note) when the installed
+    # profile is absent — mirrors PD's contract: a missing profile is a separate,
+    # louder failure (PD), and PS only fires when there IS a profile to audit.
+    #
+    # Build the per-member declared-skills map: slug -> set(skill ids).
+    # Source priority:
+    #   1. agents/members array in guild-data.json (the SSOT)
+    #   2. Fall back to scanning star-alliance-members/*.md frontmatter
+    _member_declared_skills = {}
+    for _m in agents_list:
+        _ms = _m.get("skills") or []
+        if _ms:
+            _member_declared_skills[_m["id"]] = set(_ms)
+    if not _member_declared_skills:
+        # Fallback: scan star-alliance-members/*.md frontmatter
+        _sam_dir = ROOT / "star-alliance-members"
+        if _sam_dir.is_dir():
+            for _md in sorted(_sam_dir.glob("the-*.md")):
+                _skills = frontmatter_list(_md.read_text(), "skills")
+                if _skills:
+                    _member_declared_skills[_md.stem] = set(_skills)
+
+    for slug, folder in _PROFILE_MAP.items():
+        if slug == "the-butler":
+            continue  # not a spawnable profile
+        inst_skills_dir = _profiles_root / slug / "skills"
+        if not inst_skills_dir.is_dir():
+            notes.append(f"PS {slug}: profile skills/ missing at {inst_skills_dir} "
+                         f"(skipped, fail-open — install via publish_profiles.py)")
+            continue
+        # Installed = every directory under skills/ that has a SKILL.md
+        inst_skill_ids = {d.name for d in inst_skills_dir.iterdir()
+                          if d.is_dir() and (d / "SKILL.md").is_file()}
+        # Declared = member's `skills:` minus vendor-published (vendor skills ship
+        # by default with every profile; they're not part of the equality contract)
+        declared = {s for s in _member_declared_skills.get(slug, set())
+                    if s not in HERMES_VENDOR_SKILLS}
+        declared_but_missing = sorted(declared - inst_skill_ids)
+        present_but_undeclared = sorted(
+            (inst_skill_ids - declared) - HERMES_VENDOR_SKILLS
+        )
+        if declared_but_missing:
+            fails.append(
+                f"PS {slug}: declared-but-missing in skills/: {declared_but_missing} "
+                f"— run publish_profiles --update + skill_sync --profile-content"
+            )
+        if present_but_undeclared:
+            fails.append(
+                f"PS {slug}: present-but-undeclared in skills/: {present_but_undeclared} "
+                f"— remove from profile or add to member array"
+            )
+
+    # === HS — Hermes/Claude content parity: skill content drift ===
+    # For every declared skill in every member's `skills:`, the on-disk content
+    # (fingerprinted as a directory hash) must match the repo's SSOT under
+    # star-alliance-skills/<id>/. Two destinations are checked:
+    #
+    #   Hermes profile (~/.hermes/profiles/<slug>/skills/<id>/)  — fail-OPEN if
+    #     the directory is missing (the profile may not be installed; PD owns that)
+    #   Claude store    (~/.claude/skills/<id>/)                  — fail-HARD if
+    #     missing or drifted. The Claude store is a SHARED resource across all
+    #     agents; a missing or drifted skill breaks every Claude-side member.
+    _claude_skills_dir = pathlib.Path.home() / ".claude" / "skills"
+    for slug, _folder in _PROFILE_MAP.items():
+        if slug == "the-butler":
+            continue
+        declared = _member_declared_skills.get(slug, set())
+        for sid in sorted(declared):
+            # Repo fingerprint (the SSOT) — must always exist
+            repo_skill = ROOT / "star-alliance-skills" / sid
+            repo_fp = _skill_fingerprint(repo_skill)
+            if not repo_fp:
+                # Repo is missing a skill the member declares — already caught by R,
+                # don't double-report. Skip the HS check for this id.
+                continue
+            # Hermes profile fingerprint — fail-open if the dir is missing
+            hermes_skill = _profiles_root / slug / "skills" / sid
+            hermes_fp = _skill_fingerprint(hermes_skill)
+            if hermes_fp is None:
+                notes.append(f"HS {slug}/{sid}: profile skills/{sid}/ missing "
+                             f"(skipped, fail-open — install via publish_profiles.py)")
+            elif hermes_fp != repo_fp:
+                fails.append(
+                    f"HS {slug}/{sid}: profile content drift — "
+                    f"repo fp {repo_fp[:12]} != profile fp {hermes_fp[:12]} "
+                    f"— run skill_sync --profile-content"
+                )
+            # Claude store fingerprint — fail-HARD if missing or drifted
+            claude_skill = _claude_skills_dir / sid
+            claude_fp = _skill_fingerprint(claude_skill)
+            if not claude_fp:
+                fails.append(
+                    f"HS {sid}: Claude-store drift/absent "
+                    f"(~/.claude/skills/{sid}) "
+                    f"— run skill_sync --direction install"
+                )
+            elif claude_fp != repo_fp:
+                fails.append(
+                    f"HS {sid}: Claude-store content drift — "
+                    f"repo fp {repo_fp[:12]} != Claude fp {claude_fp[:12]} "
+                    f"— run skill_sync --direction install"
+                )
 
     # === AL — architecture-layer coherence (CLAUDE.md + AGENTS.md) ===
     # Both instruction files must describe the three-layer architecture and the
