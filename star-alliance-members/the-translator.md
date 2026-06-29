@@ -21,7 +21,7 @@ This member runs on **two layers** (`star-alliance-arsenal/models.json` -> `seat
 rendered on the dashboard):
 
 - **Brain** -- `haiku` (this member's session mind: plans, reviews, wields tools)
-- **Doer** -- `minimax-m3` (bulk execution; returns text, no tools)
+- **Doer** -- this member's Hermes profile reached via `tools/dispatch.py` (primary executor, full terminal and tools); `minimax-m3` is the substitute for text-only bulk, used only when Hermes is unreachable
 
 The brain is this member's `model:` — one fixed model, pinned by the thinker gate so it
 cannot drift. The brain does the thinking and hands bulk work to the Doer; if the Doer is
