@@ -52,12 +52,13 @@ routing-gate roster==guild-data · `FB` fallback dicts==models.json. A green run
 drift. If you must change a member/agent, edit the member file then run
 `guild/install_agents.py` — never touch `.claude/agents/` by hand.
 
-**Helper-safety fact (verified 2026-06-28):** this project's hooks/gates run on the MAIN
-session only — they do NOT fire inside a spawned helper (a subagent runs hook-free:
-`CLAUDE_CODE_CHILD_SESSION=1`, no `CLAUDE_PROJECT_DIR`). So a deployed helper edits files
-freely; no spawn-boundary mechanism is needed. Don't debug "why didn't the gate fire"
-inside a helper — by design it doesn't. The main thread's end-of-turn verify covers the
-aggregate diff.
+**Helper-safety fact (updated 2026-06-29):** dispatch-enforce.py fires in child sessions (subagents) and blocks
+Write, Edit, MultiEdit, and shell file-writes. Helpers are NOT free to write files
+directly. The correct write path for a specialist subagent is: call python3 tools/dispatch.py with the agent name and task as arguments via Bash — this
+routes the work through Hermes, which has full terminal access and does the actual file
+write. Read-only Bash commands (ls, cat, grep, git status, git log, git diff) remain
+allowed in child sessions. The main session (Butler) is separately blocked by executor-enforce.py and must
+also route writes through dispatch. Kill switch shared by both gates: .claude/state/executor-enforce-disarmed or evolution/DISARMED.
 
 ## Two layers: Claude thinker plans & reviews · MiniMax doer executes bulk
 
