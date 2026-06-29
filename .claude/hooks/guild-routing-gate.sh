@@ -111,7 +111,9 @@ This looks like a quick, easily-reversible change. Proportional path:
   • If it IS a quick, low-stakes fix → open, as your FIRST line, the brief:
     ▸ Workflow — Quick Fix
     Deploying 1 agent:
-      • The <Member> — <brain model> (brain) · minimax-m3 (doer)
+      • The <Member> — <brain model> (planning)
+    (Optionally append a doer slot ONLY if a doer call actually ran this turn, and a critic
+    slot ONLY if the verify/critic gate actually fired — never stamp a placeholder.)
     then proceed — no approval halt needed for a trivially-reversible edit.
     (Voice-only turn the Butler answers directly? He is NOT an agent — drop the
     "Deploying agents" block and write: "Handled directly by the Butler — <model>.
@@ -210,8 +212,8 @@ DEPLOYMENT BRIEF (always on, every working turn) — open with a short, professi
 the Guild Master can read at a glance. Clean and plain — no insider jargon. Format:
   ▸ Workflow — <workflow name>
   Deploying <N> agents:
-    • The <Member> — <brain model> (brain) · minimax-m3 (doer)
-    • The <Member> — <brain model> (brain) · minimax-m3 (doer)
+    • The <Member> — <brain model> (planning) [· <doer model> (execution)] [· <critic model> (critic)]
+    • The <Member> — <brain model> (planning) [· <doer model> (execution)] [· <critic model> (critic)]
 
   THE BUTLER IS THE VOICE, NOT AN AGENT — never list him as a bullet under "Deploying
   agents." He is the session persona who relays every turn; the "Deploying N agents"
@@ -226,12 +228,20 @@ the Guild Master can read at a glance. Clean and plain — no insider jargon. Fo
 RULES:
   • The "▸ Workflow — <name>" line is mandatory and is the gate key (no workflow line →
     tools blocked). Name a real workflows.json entry.
-  • List one bullet per agent the workflow deploys, with all three model slots. Keep the
-    "<N>" count accurate. The cast is the workflow's steps[].actor list (skip `you`/gates).
-  • MODEL SLOTS — TRANSPARENCY RULE: report the models you ACTUALLY used, never a
-    template. Brain = the member's fixed model (opus for the Strategist, glm-5.2 for the
-    rest). The one doer is minimax-m3 — if you did NOT actually call it, write "none".
-    A brief that claims a model you never invoked is a hallucination, not a formality.
+  • List one bullet per agent the workflow deploys. Keep the "<N>" count accurate. The
+    cast is the workflow's steps[].actor list (skip `you`/gates).
+  • MODEL SLOTS — TRANSPARENCY RULE: report only what actually ran this turn; never
+    stamp a template. Three slots, but execution and critic are CONDITIONAL.
+    — Brain (planning) — ALWAYS present. Voice-only turn: the session model that actually
+      answered (for example Opus). Dispatched-specialist turn: the member Hermes profile
+      brain — its DEFAULT seat chain. Name the model that actually answered if known,
+      otherwise say profile-default rather than guessing. Do NOT pin a specific brain
+      model for a member class.
+    — Doer (execution) — name the doer model ONLY if a doer call actually ran this turn.
+      Otherwise omit the slot entirely. Do not write a placeholder doer.
+    — Critic — name the critic model ONLY if the verify or critic gate actually fired
+      this turn. Otherwise omit the slot entirely. Do not hardcode any critic model.
+    A slot naming a model that did not run is a hallucination, not a formality.
   • List each agent as it takes the field — the lead specialist when work begins, and the
     closing the-quartermaster at the conformance step. (The turn-end enforcer needs at least
     one of the workflow's agents listed, or it re-prompts.)
