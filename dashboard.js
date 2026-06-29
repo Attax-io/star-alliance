@@ -82,8 +82,10 @@ function memberCard(m) {
 
   const img = document.createElement('img')
   img.className = 'member-card__portrait'
-  img.src = `art/member-art/${m.id}.png`
+  img.src = `art/member-art-thumb/${m.id}.png`
   img.alt = m.name || ''
+  img.loading = 'lazy'
+  img.decoding = 'async'
   img.onerror = function () {
     this.style.display = 'none'
     const initials = (m.name || 'M').split(' ').filter(w => w !== 'The').map(w => w[0]).join('')
@@ -147,8 +149,10 @@ function memberCard(m) {
     const accent = skillDomainAccent(sid)
     if (accent) thumb.style.setProperty('--thumb-accent', accent.color)
     const img = document.createElement('img')
-    img.src = `art/skill-art/${sid}.png`
+    img.src = `art/skill-art-thumb/${sid}.png`
     img.alt = skillObj?.name || sid
+    img.loading = 'lazy'
+    img.decoding = 'async'
     img.onerror = function() {
       this.style.display = 'none'
       const fb = document.createElement('div')
@@ -191,8 +195,10 @@ function renderWorkflows(g) {
     const thumb = document.createElement('div')
     thumb.className = 'workflow-thumb'
     const img = document.createElement('img')
-    img.src = `art/workflow-art/${w.id}.png`
+    img.src = `art/workflow-art-thumb/${w.id}.png`
     img.alt = w.name || ''
+    img.loading = 'lazy'
+    img.decoding = 'async'
     img.onerror = function() {
       this.style.display = 'none'
       const fb = document.createElement('div')

@@ -12,12 +12,17 @@ star-alliance-arsenal/models.json →  guild-data.json
 workflows.json                    →  workflow-md.js
 data/*.json                       →  guild-data.json
 art/skill-art/, art/workflow-art/  →  artPng flags in guild-data.json
+art/*-art/                         →  art/*-thumb/   (Pillow thumbs for dashboard)
 
 Output:
   - guild/AGENTS.md
   - guild-data.json, guild-data.js
   - skill-md.js, workflow-md.js
   - VERSIONS.md
+  - art/skill-art-thumb/, art/workflow-art-thumb/, art/member-art-thumb/
+
+Requires: Pillow (PIL) for the thumb step. If missing, install with:
+  python3 -m pip install pillow
 
 Usage:
   python3 sync.py
@@ -55,15 +60,21 @@ def main() -> int:
     print(f"  python: {PY}")
 
     # Step 1: regenerate Hermes profile AGENTS.md from star-alliance-members/
-    banner("Step 1/2 · Regenerate guild profile AGENTS.md")
+    banner("Step 1/3 · Regenerate guild profile AGENTS.md")
     run(
         "install_agents.py",
         [PY, str(REPO / "guild" / "install_agents.py")],
     )
 
-    # Step 2: regenerate guild-data.json, guild-data.js, skill-md.js,
+    # Step 2: regenerate dashboard thumbnails from art/*.  Idempotent — skips
+    #         thumbs that already exist and are newer than their source, so
+    #         untouched art is a near no-op.
+    banner("Step 2/3 · Generate dashboard thumbnails")
+    run("make_thumbs.py", [PY, str(REPO / "tools" / "make_thumbs.py")])
+
+    # Step 3: regenerate guild-data.json, guild-data.js, skill-md.js,
     #         workflow-md.js, VERSIONS.md from sources of truth.
-    banner("Step 2/2 · Rebuild dashboard data bundles")
+    banner("Step 3/3 · Rebuild dashboard data bundles")
     run("build.py", [PY, str(REPO / "build.py")])
 
     # Final summary
