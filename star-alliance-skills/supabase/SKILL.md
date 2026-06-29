@@ -52,6 +52,18 @@ When working on any Supabase task that touches auth, RLS, views, storage, or use
 
 For any security concern not covered above, fetch the Supabase product security index: `https://supabase.com/docs/guides/security/product-security.md`
 
+## Star Alliance Hermes Path (supabase.py)
+
+Within the Star Alliance guild, bulk SQL and DDL runs through the Hermes-direct path — not the MCP server. The connection string lives in an out-of-repo key file.
+
+```bash
+python3 star-alliance-arsenal/supabase.py 'SELECT count(*) FROM users'
+python3 star-alliance-arsenal/supabase.py -f migration.sql
+```
+
+Use `supabase.py` when: running DDL migrations, bulk data ops, any Hermes profile needs to touch the database directly.
+Use MCP `execute_sql` for: interactive exploration, one-off queries, when Hermes path unavailable.
+
 ## Postgres Performance Best Practices
 
 Whenever you write queries, design schema, or debug slow operations, apply the Postgres performance rules. The single highest-impact one — an RLS policy that wraps an auth call in a `SELECT` subquery so Postgres evaluates it **once and caches** the result instead of once per row (up to ~100x speedup) — looks like:

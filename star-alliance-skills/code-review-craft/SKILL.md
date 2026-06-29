@@ -114,6 +114,13 @@ input to try, the query to inspect. For a Critical or High finding, prefer to ac
 reproduce it rather than assert it. The review is done when its load-bearing claims are
 either evidenced or explicitly marked "needs a run to confirm."
 
+### 7. Ship complete output — no truncation, no placeholders
+
+A review is worthless if the fix itself is a skeleton. When writing code or prose as part of a review fix:
+- **Banned code patterns:** `// ...`, `// rest of code`, `// implement here`, bare `...` as omission, `// similar to above`
+- **Banned prose patterns:** "for brevity, the rest follows the same pattern", "I'll leave that as an exercise"
+- **At token limit:** pause at a clean breakpoint and end with `[PAUSED — X of Y complete. Send continue to resume from: <next section>]`. On continue, resume exactly — no recap.
+
 ## References
 
 - `references/review-dimensions.md` — the four lenses (correctness, security,

@@ -47,6 +47,24 @@ Load only the file(s) the task needs — do not read all 14 up front.
 | `scripts/bump_version.py` | Semver bump for a release (paired with reference 12). |
 | `scripts/security_scan.py` | Run the Bandit/pip-audit/Semgrep/detect-secrets sweep (paired with reference 09). |
 
+## Quick Recipes (at a glance)
+
+Common patterns that don't need a full reference file:
+
+**Modern Python:**
+- f-strings with format specs
+- `dataclass` with `field(default_factory=list)`
+- type hints: `list[str]`, `dict[str, int]`, `X | Y` (3.10+), `Optional[X]`
+- pathlib: `Path(__file__).parent / 'data'`, `.read_text()`, `list(p.glob('**/*.py'))`
+
+**pandas:** `pd.read_csv(path)` · `df.groupby('col').agg({'val':'sum'}).reset_index()` · `df.merge(other, on='key')` · `df.to_dict('records')`
+
+**async:** `asyncio.run(main())` · `await asyncio.gather(*tasks)`
+
+**pytest:** `@pytest.fixture` · `@pytest.mark.parametrize('x,y', [(1,2)])` · `tmp_path`
+
+**Pitfalls:** late binding → `lambda i=i: i`; never shadow `list`/`id`/`type`; venv → `python3 -m venv .venv && source .venv/bin/activate`
+
 ## Provenance
 
 Merged verbatim (bodies + sub-references concatenated under `## Reference:` headers) from the
