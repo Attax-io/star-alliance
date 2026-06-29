@@ -1,0 +1,283 @@
+#!/usr/bin/env python3
+# ─────────────────────────────────────────────────────────────────────────────
+# Star Alliance — DISPATCH ENFORCEMENT  (PreToolUse gate, BLOCKING)
+#
+# PROBLEM THIS HOOK CLOSES
+# ────────────────────────────
+# executor-enforce.py blocks the BUTLER (main session) from writing files
+# directly. But subagents (specialists) were allowed to write freely. With the
+# Hermes bridge in place, specialists must dispatch their work through
+# tools/dispatch.py to their Hermes counterparts instead of writing files
+# themselves.
+#
+# WHAT THIS HOOK DOES
+# ──────────────────
+# For subagent (child) sessions only — the main session is handled by
+# executor-enforce.py:
+#
+#   1. Write/Edit/MultiEdit/NotebookEdit → BLOCK (must dispatch to Hermes)
+#   2. Bash command containing `hermes -p ...` or `hermes chat` → BLOCK
+#   3. Bash command containing `dispatch.py` → ALLOW *that sub-command only*
+#      (chained write commands after && or ; are still blocked)
+#   4. Bash write commands (sed -i, echo >, cat >, tee, cp, mv, rm, touch,
+#      chmod, chown, > redirect, >> append, python3 -c, perl -i, ruby -e,
+#      node -e, heredocs, git checkout/reset/stash/rebase, pip install,
+#      npm install, etc.) → BLOCK
+#   5. MCP write-verb tools (create_, update_, delete_, write_, etc.) → BLOCK
+#   6. Read-only tools and commands → ALLOW
+#
+# BYPASSES
+# ────────
+# Same kill switch as executor-enforce.py:
+#   • evolution/DISARMED            (engine-wide)
+#   • .claude/state/executor-enforce-disarmed  (shared with executor-enforce)
+#
+# FAIL POSTURE
+# ────────────
+# Fail OPEN on any internal error — a broken hook must never brick the session.
+# ─────────────────────────────────────────────────────────────────────────────
+import os
+import sys
+import json
+import re
+import shlex
+
+# Tools that specialists are NOT allowed to use directly — they must dispatch
+# through dispatch.py to their Hermes counterpart.
+BLOCKED_TOOLS = {"Write", "Edit", "MultiEdit", "NotebookEdit"}
+
+# Patterns that indicate a direct Hermes call (bypassing dispatch.py).
+HERMES_DIRECT_PATTERNS = [
+    re.compile(r'\bhermes\s+(-p\b|--profile\b)', re.IGNORECASE),
+    re.compile(r'\bhermes\s+chat\b', re.IGNORECASE),
+]
+
+# dispatch.py is the allowed path — but only for the sub-command that contains
+# it. Chained commands after &&, ||, ;, | are checked separately.
+DISPATCH_MARKER = "dispatch.py"
+
+# ── Shell command splitting ─────────────────────────────────────────────────
+# Chain delimiters that separate sub-commands in a Bash string.
+CHAIN_SPLIT_RE = re.compile(r'(?:&&|\|\||;|\|)')
+
+# ── Shell write patterns ────────────────────────────────────────────────────
+# Commands that mutate files via shell. Applied to each sub-command individually.
+BASH_WRITE_PATTERNS = (
+    # Direct file redirects
+    r"(?<!\{)\bcat\s*>\s*\S",                # cat > file
+    r"\becho\s+.+?\s*>\s*\S",                # echo "..." > file
+    r"\bprintf\s+.+?\s*>\s*\S",              # printf "..." > file
+    r"\btee\s+\S",                            # tee file
+    r"(?<!\{)\b>\s*\S",                       # bare > redirect
+    r"\b>>\s*\S",                             # bare >> append
+    r":\s*>\s*\S",                           # : > truncate
+    # File mutation commands
+    r"\bsed\s+-i\b",                         # sed -i
+    r"\bcp\s+\S+\s+\S+",                     # cp src dst
+    r"\bmv\s+\S+\s+\S+",                      # mv src dst
+    r"\brm\s+(-\w+\s+)*\S",                   # rm [flags] path
+    r"\brmdir\s+\S",                          # rmdir path
+    r"\bmkdir\s+(-\w+\s+)*\S",                # mkdir [flags] path
+    r"\btouch\s+\S",                          # touch file
+    r"\bchmod\s+",                            # chmod
+    r"\bchown\s+",                            # chown
+    r"\bdd\s+",                               # dd of=...
+    # Interpreters that can write files
+    r"\bpython3?\s+-c\b",                     # python3 -c "..."
+    r"\bpython3?\s+--?b\b",                    # python3 -b (boundary issue, rare)
+    r"\bperl\s+-i\b",                          # perl -i (in-place edit)
+    r"\bperl\s+-e\b",                          # perl -e "..."
+    r"\bruby\s+-e\b",                          # ruby -e "..."
+    r"\bnode\s+-e\b",                          # node -e "..."
+    r"\bnode\s+--eval\b",                      # node --eval
+    # Heredocs (can feed arbitrary code to an interpreter)
+    r"<<\s*['\"]?\w+",                         # << EOF, <<'EOF', <<WORD
+    # Package managers that write to disk
+    r"\bpip3?\s+install\b",                    # pip install
+    r"\buv\s+pip\s+install\b",                # uv pip install
+    r"\bnpm\s+install\b",                     # npm install
+    r"\bnpm\s+i\b(?!\S)",                      # npm i (short form)
+    r"\byarn\s+add\b",                         # yarn add
+    r"\bcargo\s+install\b",                    # cargo install
+    # Git mutations that overwrite files
+    r"\bgit\s+checkout\s+--\s*\S",             # git checkout -- file
+    r"\bgit\s+checkout\s+\S+\s+--\s*\S",       # git checkout <ref> -- file
+    r"\bgit\s+reset\s+--hard\b",               # git reset --hard
+    r"\bgit\s+stash\b",                        # git stash (modifies working tree)
+    r"\bgit\s+rebase\b",                       # git rebase (rewrites history)
+    r"\bgit\s+clean\s+-[a-zA-Z]*f",            # git clean -f (deletes files)
+    r"\bgit\s+rm\b",                           # git rm
+    # Other file-writing commands
+    r"\binstall\s+-m\b",                       # install -m (copies with perms)
+    r"\brsync\b",                              # rsync can write files
+    r"\bscp\b",                                # scp copies files
+    r"\bcurl\s+.+?\s*>\s*\S",                  # curl ... > file
+    r"\bwget\b",                               # wget (can write files with -O or default)
+    r"\bunpack\s+\S",                          # unpack
+    r"\bunzip\s+\S",                           # unzip
+    r"\btar\s+.*-[a-zA-Z]*x",                  # tar -x, tar -xf, tar -xz, tar -xzf, etc.
+    r"\b7z\s+.*\s+e\b",                        # 7z e (extracts)
+    r"\bmake\b(?!\s+--version)(?!.*check)",    # make (can write build artifacts)
+    # Text editors (interactive, but can write)
+    r"\bvim?\b\s+\S",                          # vim/vi file
+    r"\bnano\b\s+\S",                          # nano file
+    r"\bemacs\b\s+\S",                         # emacs file
+)
+BASH_WRITE_RE = re.compile("|".join(BASH_WRITE_PATTERNS))
+
+# ── MCP write-verb detection ────────────────────────────────────────────────
+# MCP tools whose names start with a write verb are blocked for specialists.
+MCP_WRITE_VERBS = (
+    "create_", "update_", "delete_", "insert_", "drop_", "truncate_",
+    "put_", "patch_", "set_", "add_", "remove_", "upsert_", "merge_",
+    "write_", "append_", "modify_", "rename_", "move_",
+    "alter_", "execute_", "run_", "apply_", "save_",
+)
+# Explicit read-verb allowlist — overrides the write heuristic.
+MCP_READ_VERBS = (
+    "get_", "list_", "fetch_", "read_", "find_", "search_", "query_",
+    "describe_", "show_", "view_", "lookup_", "select_",
+)
+
+
+def _project_dir():
+    return os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
+
+
+def _state_dir():
+    return os.path.join(_project_dir(), ".claude", "state")
+
+
+def _is_kill_switch():
+    if os.path.exists(os.path.join(_project_dir(), "evolution", "DISARMED")):
+        return True
+    if os.path.exists(os.path.join(_state_dir(), "executor-enforce-disarmed")):
+        return True
+    return False
+
+
+def _split_commands(command):
+    """Split a Bash command string on chain operators (&&, ||, ;, |).
+
+    Returns a list of sub-command strings. Handles quoting minimally —
+    if shlex.split fails, falls back to regex splitting.
+    """
+    # Try shlex first (respects quotes), but shlex doesn't understand shell
+    # control operators well. Use regex split instead — good enough for
+    # security checks since we're looking for patterns, not executing.
+    parts = CHAIN_SPLIT_RE.split(command)
+    return [p.strip() for p in parts if p.strip()]
+
+
+def _check_mcp(tool, data):
+    """Check if an MCP tool call is a write operation. Returns block dict or None."""
+    # Extract the tool part of `mcp__<server>__<tool>`.
+    parts = tool.split("__")
+    tool_part = parts[-1] if len(parts) >= 2 else tool
+    tool_lower = tool_part.lower()
+
+    # Explicit read-verb allowlist wins.
+    if any(tool_lower.startswith(v) for v in MCP_READ_VERBS):
+        return None
+
+    if any(tool_lower.startswith(v) for v in MCP_WRITE_VERBS):
+        ti = data.get("tool_input") or {}
+        preview = json.dumps(ti)[:200] if ti else ""
+        return {
+            "exit": 2,
+            "stderr": (
+                f"⛔ DISPATCH ENFORCE — MCP write tool `{tool}` is not allowed for specialists.\n"
+                f"You must dispatch this work to your Hermes counterpart:\n"
+                f"  python3 tools/dispatch.py <your-agent-name> \"<prompt>\"\n"
+                f"  (e.g. python3 tools/dispatch.py the-architect \"design the schema\")\n"
+            ),
+        }
+
+    # Unknown MCP tool — allow but don't block (fail open for new MCP servers).
+    return None
+
+
+def check(data):
+    """Gate entry point — called by sa-pretool.py dispatcher.
+
+    Returns a dict: {"exit": 0|2, "stderr": str, "systemMessage": str}
+    Exit 0 = allow, Exit 2 = block.
+    """
+    if _is_kill_switch():
+        return {"exit": 0}
+
+    # Only enforce for child sessions (subagents / specialists).
+    # The main session (Butler) is already handled by executor-enforce.py.
+    is_child = os.environ.get("CLAUDE_CODE_CHILD_SESSION") == "1"
+    if not is_child:
+        return {"exit": 0}
+
+    tool = data.get("tool_name", "")
+    tool_input = data.get("tool_input", {})
+
+    # ── Block direct file edits (Write/Edit/MultiEdit/NotebookEdit) ──────
+    if tool in BLOCKED_TOOLS:
+        file_path = (
+            tool_input.get("file_path")
+            or tool_input.get("notebook_path")
+            or "<unknown>"
+        )
+        return {
+            "exit": 2,
+            "stderr": (
+                f"⛔ DISPATCH ENFORCE — {tool} is not allowed for specialists.\n"
+                f"You must dispatch this work to your Hermes counterpart:\n"
+                f"  python3 tools/dispatch.py <your-agent-name> \"<prompt>\"\n"
+                f"  (e.g. python3 tools/dispatch.py the-architect \"design the schema\")\n"
+                f"Do not write or edit files directly — Hermes has its own tools for that.\n"
+            ),
+        }
+
+    # ── Block MCP write tools ───────────────────────────────────────────
+    if tool.startswith("mcp__"):
+        result = _check_mcp(tool, data)
+        if result:
+            return result
+        return {"exit": 0}
+
+    # ── Block shell writes and direct Hermes calls ──────────────────────
+    if tool == "Bash":
+        command = tool_input.get("command", "") or ""
+
+        # Split the command on chain operators (&&, ||, ;, |) so that a
+        # dispatch.py call can't be used as a piggyback for a write command.
+        sub_commands = _split_commands(command)
+
+        for sub_cmd in sub_commands:
+            # If this sub-command is the dispatch.py call, allow it.
+            if DISPATCH_MARKER in sub_cmd:
+                continue
+
+            # Check for direct hermes calls.
+            for pattern in HERMES_DIRECT_PATTERNS:
+                if pattern.search(sub_cmd):
+                    return {
+                        "exit": 2,
+                        "stderr": (
+                            f"⛔ DISPATCH ENFORCE — Direct `hermes` calls are not allowed.\n"
+                            f"Use the dispatch script instead:\n"
+                            f"  python3 tools/dispatch.py <your-agent-name> \"<prompt>\"\n"
+                            f"This ensures your work goes to the correct Hermes profile.\n"
+                        ),
+                    }
+
+            # Check for shell write commands.
+            if BASH_WRITE_RE.search(sub_cmd):
+                preview = sub_cmd[:200] + ("..." if len(sub_cmd) > 200 else "")
+                return {
+                    "exit": 2,
+                    "stderr": (
+                        f"⛔ DISPATCH ENFORCE — Specialist tried to mutate files via shell:\n"
+                        f"  {preview}\n"
+                        f"Dispatch to your Hermes counterpart instead:\n"
+                        f"  python3 tools/dispatch.py <your-agent-name> \"<prompt>\"\n"
+                    ),
+                }
+
+    # Everything else — allow.
+    return {"exit": 0}

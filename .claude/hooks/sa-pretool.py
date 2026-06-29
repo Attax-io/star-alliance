@@ -35,6 +35,11 @@ GATES = [
     ("stop-line-gate.py",   {"Write", "Edit", "MultiEdit"}),
     ("weapon-gate.py",      {"Bash", "Task", "Agent"}),
     ("destructive-gate.py", {"Bash"}),
+    # Dispatch enforcement — specialists must route through dispatch.py, not
+    # call hermes directly or write files themselves. Only fires in child
+    # sessions (subagents); the main session is handled by executor-enforce.py.
+    # Note: None = all tools, so MCP write tools are covered too.
+    ("dispatch-enforce.py", None),
 ]
 
 _cache = {}
