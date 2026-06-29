@@ -4,21 +4,17 @@
   "seats": {
     "_comment": "Universal role SEATS — each is a DEFAULT model + FALLBACK chain, NOT a hardcoded model (the gpt-5.5 lesson). Brain = the thinking mind (wields tools — MUST be the thinker model (GLM-5.2); bench/doer models cannot hold tools); Doer = the hands (text only, no tools); Critic = the independent reviewer, deliberately a DIFFERENT backend family than the Brain (diverse blind spots); Bench = every non-seat model, pulled N-at-a-time for doer-swarm or thinker-swarm — Opus lives here, off-seat, reserved. An agent's `model:` overrides the brain default. When a seat's model is unreachable it walks its fallback chain, drawing the strongest available bench model. critique.py drives the Critic's COLD text mode; a grounded review agent drives its GROUNDED tool-using mode. Consumers DERIVE from here; conformity_check ST enforces seat ids exist + critic-family != brain-family.",
     "brain": {
-      "default": "glm-5.2",
+      "default": "minimax-m3",
       "fallback": [
-        "kimi-k2.7",
-        "deepseek-v4-pro"
+        "minimax-m3"
       ],
-      "role": "thinker",
-      "duty": "Plans, reviews, owns the standard, wields the tools. The thinker model (GLM-5.2)."
+      "_note": "TEMPORARY: switched from glm-5.2 to minimax-m3 because Ollama Cloud hit concurrency cap (HTTP 429). All profiles now call api.minimax.io directly. Revert when Ollama Cloud plan upgrades."
     },
     "doer": {
       "default": "minimax-m3",
       "fallback": [
         "minimax-m3"
-      ],
-      "role": "doer",
-      "duty": "Executes the plan, returns work as text. No tools."
+      ]
     },
     "critic": {
       "default": "kimi-k2.7",
@@ -26,12 +22,7 @@
         "glm-5.2",
         "deepseek-v4-pro"
       ],
-      "role": "thinker",
-      "modes": [
-        "cold",
-        "grounded"
-      ],
-      "duty": "Refutes the brain's work before it ships — a different family than the GLM-5.2 brain. Cold = Kimi text-only; Grounded = a grounded review agent that runs checks."
+      "_note": "TEMPORARILY UNAVAILABLE — requires Ollama Cloud (429 rate-limited). Critic disabled until Ollama recovers."
     },
     "bench": {
       "default": null,
@@ -139,7 +130,7 @@
       "role": "thinker",
       "backend": "ollama-cloud",
       "cloud_tag": "deepseek-v4-pro:cloud",
-      "status": "reserve",
+      "status": "rate-limited",
       "pull": "ollama pull deepseek-v4-pro:cloud",
       "weight": 0.5,
       "kind": "text",
@@ -159,13 +150,14 @@
         "est": true,
         "pool": "Ollama Cloud",
         "note": "est · shares Ollama Cloud pool"
-      }
+      },
+      "_note": "HTTP 429 from Ollama Cloud — concurrency cap reached. Will reactivate when Ollama plan upgrades."
     },
     "glm-5.2": {
       "role": "thinker",
       "backend": "ollama-cloud",
       "cloud_tag": "glm-5.2:cloud",
-      "status": "live",
+      "status": "rate-limited",
       "pull": "ollama pull glm-5.2:cloud",
       "weight": 0.7,
       "kind": "text",
@@ -185,13 +177,14 @@
         "est": true,
         "pool": "Ollama Cloud",
         "note": "est · shares the Ollama Cloud pool"
-      }
+      },
+      "_note": "HTTP 429 from Ollama Cloud — concurrency cap reached. Will reactivate when Ollama plan upgrades."
     },
     "kimi-k2.7": {
       "role": "thinker",
       "backend": "ollama-cloud",
       "cloud_tag": "kimi-k2.7-code:cloud",
-      "status": "live",
+      "status": "rate-limited",
       "pull": "ollama pull kimi-k2.7-code:cloud",
       "weight": 0.5,
       "kind": "text",
@@ -211,13 +204,14 @@
         "est": true,
         "pool": "Ollama Cloud",
         "note": "est · shares Ollama Cloud pool"
-      }
+      },
+      "_note": "HTTP 429 from Ollama Cloud — concurrency cap reached. Will reactivate when Ollama plan upgrades."
     },
     "nemotron-3-ultra": {
       "role": "thinker",
       "backend": "ollama-cloud",
       "cloud_tag": "nemotron-3-super:cloud",
-      "status": "reserve",
+      "status": "rate-limited",
       "pull": "ollama pull nemotron-3-super:cloud",
       "weight": 0.4,
       "kind": "text",
@@ -237,13 +231,14 @@
         "est": true,
         "pool": "Ollama Cloud",
         "note": "est · shares Ollama Cloud pool"
-      }
+      },
+      "_note": "HTTP 429 from Ollama Cloud — concurrency cap reached. Will reactivate when Ollama plan upgrades."
     },
     "qwen3.5": {
       "role": "thinker",
       "backend": "ollama-cloud",
       "cloud_tag": "qwen3.5:cloud",
-      "status": "reserve",
+      "status": "rate-limited",
       "pull": "ollama pull qwen3.5:cloud",
       "weight": 0.4,
       "kind": "text",
@@ -263,13 +258,14 @@
         "est": true,
         "pool": "Ollama Cloud",
         "note": "est · shares Ollama Cloud pool"
-      }
+      },
+      "_note": "HTTP 429 from Ollama Cloud — concurrency cap reached. Will reactivate when Ollama plan upgrades."
     },
     "gemma4": {
       "role": "thinker",
       "backend": "ollama-cloud",
       "cloud_tag": "gemma4:cloud",
-      "status": "reserve",
+      "status": "rate-limited",
       "pull": "ollama pull gemma4:cloud",
       "weight": 0.3,
       "kind": "text",
@@ -289,7 +285,8 @@
         "est": true,
         "pool": "Ollama Cloud",
         "note": "est · shares Ollama Cloud pool"
-      }
+      },
+      "_note": "HTTP 429 from Ollama Cloud — concurrency cap reached. Will reactivate when Ollama plan upgrades."
     },
     "image-01": {
       "role": "media",

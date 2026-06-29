@@ -1,8 +1,8 @@
 ---
 name: high-alert
-description: "The guild's deployment brief. The Butler (the voice persona) opens every working turn with a short, professional, plain-English brief so the Guild Master always knows what is running: the workflow, which agents are deployed, how many, and each agent's three model slots — planning (the live thinker), execution (always the minimax-m3 doer), and critic (always glm-5.2). The fixed execution and critic slots are enforced at turn-end by workflow-banner-enforcer.py. Three announcements: the Workflow line names the workflows.json procedure that begins, the Skill line names any Skill tool that fires (hook-enforced via high-alert.py), and the Agent-deployed line names the member dispatched and its model. Always on, every session, no toggle. Triggers automatically — this skill documents the standing announcement contract and its hook."
+description: "The guild's deployment brief. The Butler (the voice persona) opens every working turn with a short, professional, plain-English brief so the Guild Master always knows what is running: the workflow, which agents are deployed, how many, and each agent's three model slots — planning (the live thinker), execution (minimax-m3 when actually invoked, otherwise reported as none), and critic (glm-5.2 when the verify gate fires, otherwise reported as none). Only report models that actually ran — never stamp a template. Three announcements: the Workflow line names the workflows.json procedure that begins, the Skill line names any Skill tool that fires (hook-enforced via high-alert.py), and the Agent-deployed line names the member dispatched and its model. Always on, every session, no toggle. Triggers automatically — this skill documents the standing announcement contract and its hook."
 metadata:
-  version: 2.2.0
+  version: 2.3.0
 type: Skill
 
 ---
@@ -21,7 +21,7 @@ Deploying <N> agents:
 
 - The **`▸ Workflow — <name>`** line is mandatory — it names a real `workflows.json` entry and is the gate key (no workflow line → tools are blocked).
 - List **one bullet per agent** the workflow deploys, each with all three model slots. Keep the **`<N>` count** accurate.
-- **Model slots are fixed and enforced at turn-end** (`workflow-banner-enforcer.py`): **planning** = the live thinker (usually `sonnet`, or whatever model the session runs); **execution** is ALWAYS `minimax-m3` (the doer); **critic** is ALWAYS `glm-5.2`. A brief whose execution or critic slot differs is bounced back to be fixed.
+- **Model slots — transparency rule**: planning = the live thinker (whatever model the session runs); execution = minimax-m3 if a doer call was made this turn, otherwise none; critic = glm-5.2 if the verify gate fired this turn, otherwise none. Report what actually ran — never stamp a template. A brief that claims a model never invoked is a hallucination, not a formality.
 - Single-agent turn → "Deploying 1 agent:" with one bullet. Keep it tight — a few lines, never a wall of text.
 
 ## The two auto-announcements
@@ -53,6 +53,7 @@ So: Butler voices, Strategist picks, Guild Master approves. The division is fixe
 
 ## Changelog
 
+- **2.3.0** — Transparency fix: replaced ALWAYS minimax-m3 / ALWAYS glm-5.2 with when-invoked / none-if-not-called language. Model slots now reflect what actually ran. Aligns with the transparency rule in CLAUDE.md.
 - **2.2.0** — Added the "Who chooses the workflow (the banner contract)" section: **the Butler OPENS Routing on intake; the Strategist PICKS the real lane; the Guild Master APPROVES.** The Butler never selects the actual workflow from `workflows.json` — that is the Strategist's job. Routing exists as the universal intake banner so workflow-gate always has a valid key while the Strategist is still deciding.
 - **2.1.0** — Brief gains a third model slot: the **critic** (`glm-5.2`) is now shown for every agent. Execution is pinned to the `minimax-m3` doer. Both fixed slots are mechanically enforced at turn-end by `workflow-banner-enforcer.py` (a brief with a wrong execution/critic slot is bounced back). Planning stays the live thinker. Reflects the uniform Sonnet-thinker / MiniMax-doer / GLM-critic loadout.
 - **2.0.1** — Rephrased the `description:` frontmatter to remove angle-bracket placeholders (Agent Skills validator rejects `<`/`>`); restored Cowork-installability. No behavior change.
