@@ -1,7 +1,7 @@
 ---
 name: code-review-craft
 metadata:
-  version: 1.1.0
+  version: 1.1.1
 type: Skill
 description: A deliberate, member-invoked code review of a diff, PR, or file. Reviews four dimensions — correctness bugs, security, simplification and reuse, and efficiency — tags each finding by severity, holds one finding per line, and grounds every finding in evidence: the cited line and the concrete failure case. Refuses scope creep and nitpick noise. Use on "review this diff", "review my PR", "audit this file", "is this change safe", "look over my changes". Differs from the automatic verify-gate hook, which runs unbidden on Stop as a critic — this is the human-asked craft. Differs from bug-fix-workflow, which fixes a known reported bug, and from security-audit, which sweeps one risk dimension; this opens the lens across all four and ends in a review-then-verify loop.
 ---

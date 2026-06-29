@@ -4,7 +4,7 @@ description: "The Developer's craft for building production-grade Python librari
 license: MIT
 metadata:
   author: wdm0006/python-skills (merged by Star Alliance)
-  version: 1.0.0
+  version: 1.1.0
 type: Skill
 ---
 
