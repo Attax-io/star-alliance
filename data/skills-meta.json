@@ -111,6 +111,14 @@
     "triggers": "gotcha, the INSERT/push pattern (identity PK, trigger-filled names, reporter-uuid lookup, status=1, no notification fires), the \"doesn't work\" reproduction technique, and the rule for WHEN a bug may be marked Fixed (DB fixes now, frontend fixes only after depl",
     "modes": ""
   },
+  "bundled-rls": {
+    "icon": "🛡️",
+    "blurb": "Compose Postgres RLS from a named bundle catalog — one FOR ALL policy per table, (SELECT auth.uid()) caching, zero inline drift.",
+    "level": "Advanced",
+    "tabler": "ti-shield-lock",
+    "triggers": "'write a new RLS policy', 'standardize our policies', 'compose a bundle', 'replace inline EXISTS', 'audit RLS coverage', 'add FOR SELECT visibility'",
+    "modes": "compose from bundle catalog; one FOR ALL policy per table; append-only coverage; initplan auth.uid caching"
+  },
   "chart-patterns": {
     "icon": "📐",
     "blurb": "Identify & read every chart pattern (Bulkowski) — H&S, double/triple tops, triangles, flags, gaps + event patterns, with the odds",
@@ -854,6 +862,14 @@
     "tabler": "ti-puzzle",
     "triggers": "",
     "modes": ""
+  },
+  "view-registry": {
+    "icon": "📇",
+    "blurb": "Type every Supabase view name through VIEWS-dot-key — refactor-safe, append-only columns, one view per page.",
+    "level": "Advanced",
+    "tabler": "ti-book-2",
+    "triggers": "'add a new view', 'rename a view', 'find which page reads this view', 'avoid view drift', 'wire a page to a view', 'list our views'",
+    "modes": "typed VIEWS constant; append-only columns; one view per page; registry + migration + consumer in one commit"
   },
   "voices-check": {
     "icon": "🗣️",

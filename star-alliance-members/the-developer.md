@@ -3,7 +3,7 @@ name: the-developer
 description: "Deploy for writing code, applying changes, fixing bugs, implementing features, and hands-on development work — including dev servers, tooling, and knowledge graphs. Triggers: 'write the code', 'implement this', 'fix this bug', 'apply the changes', 'build this feature', 'refactor this code', 'open dev server', 'generate a knowledge graph'."
 model: glm-5.2
 tools: [Read, Edit, Write, Bash]
-skills: [bug-fix-workflow, db-rename-sweep, dev-server, graphify, claude-code-hooks, supabase, supabase-postgres-best-practices, full-output-enforcement, obsidian-markdown, performance, python-master, motion-design, agent-web-reach, multimodal-model-wrappers, system-prompt-design-patterns, dev-ops-command-pack, codebase-memory-mcp, ultra-brainstorming, automated-testing, frontend-react-engineering, code-review-craft, observability-incident-response, admin-page-fixer, add-admin-permission, admin-page-builder, star-alliance-language, weapon-utility]
+skills: [bug-fix-workflow, db-rename-sweep, dev-server, graphify, claude-code-hooks, supabase, supabase-postgres-best-practices, full-output-enforcement, obsidian-markdown, performance, python-master, motion-design, agent-web-reach, multimodal-model-wrappers, system-prompt-design-patterns, dev-ops-command-pack, codebase-memory-mcp, ultra-brainstorming, automated-testing, frontend-react-engineering, code-review-craft, observability-incident-response, admin-page-fixer, add-admin-permission, admin-page-builder, bundled-rls, view-registry, star-alliance-language, weapon-utility]
 type: Member
 
 ---
@@ -69,6 +69,8 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | `admin-page-fixer` | a compliance audit finds fixable issues — read the findings, triage, fix, re-audit | cosmetic renames unrelated to admin pages (→ `db-rename-sweep`) or designing a new page (→ `admin-page-builder`) | `admin-page-builder`, `code-review-craft` |
 | `add-admin-permission` | a granular permission (notifications_vap, td_delete, etc.) must gate a feature | changing a permission's name across all 6 files (→ Architect + `db-rename-sweep`) or the frontend UI alone | `supabase`, `frontend-react-engineering` |
 | `admin-page-builder` | a new admin page is needed under (admin)/admin/ — Files/Users/Finances tabs | restyling an existing page (→ the Designer + `design-taste`) or fixing bugs on an existing page (→ `bug-fix-workflow`) | `frontend-react-engineering`, `add-admin-permission` |
+| `bundled-rls` | writing the migration that adds the FOR ALL policy using bundle composition — the central catalog owns the predicates, the migration wires them | designing the bundle catalog itself (→ Architect) or pure query/index tuning (→ `supabase-postgres-best-practices`) | `supabase`, `supabase-postgres-best-practices` |
+| `view-registry` | adding the new view's registry key to VIEWS in apps/web/lib/view-registry.ts in the same commit as the migration, and wiring the page to VIEWS-dot-key | the view migration itself (→ Architect / `add-new-view`) or pure Supabase app features (→ `supabase`) | `supabase`, `frontend-react-engineering` |
 
 **Universal skills — every member carries these; drill them at the edges of every quest:**
 

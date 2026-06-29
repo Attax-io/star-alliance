@@ -155,3 +155,87 @@ Use the `vault-log-writer` skill for the log structure.
 ## Why this skill exists
 
 On 2026-04-23 a `CREATE OR REPLACE VIEW` on `fd_access_js` silently dropped its `security_invoker` flag. The view reverted to SECURITY DEFINER behaviour for the rest of the session. On 2026-05-01 a `DROP VIEW ... CASCADE` on a view silently took out two downstream views — neither was listed in the migration plan. Both traps are 30-second checks that this skill makes habitual.
+
+## Lex Council Additions
+
+Rules harvested from Lex Council CLAUDE.md W2/W3/W5. These supersede (not augment) the legacy `{entity}_{purpose}_js` naming convention from Step 2 when conflicts arise.
+
+### V2 view-naming convention
+
+The V2 naming convention is `{portal}_{section}_{entity}_{purpose}`:
+
+- `{portal}` ∈ `{admin, members, clients}` — the surface that consumes the view. Use `admin` for back-office, `members` for the logged-in members portal, `clients` for the client-facing portal. This is fixed vocabulary; do not invent new portals without an architecture review.
+- `{section}` — the page or section within the portal (e.g. `dashboard`, `hr`, `notifications`).
+- `{entity}` — the primary table or domain abbreviated, same as before (`cm`, `fd`, `td`, etc.).
+- `{purpose}` — what the view computes or who it serves within that section (`list`, `detail`, `ap`, `hr`).
+
+Foundation views (cross-cutting, used by many FE consumers): `{entity}_{role}` (e.g. `fd_admin`, `cm_owner`, `td_worker`). Foundation views are exempt from the portal prefix because they are not portal-specific.
+
+**Retired naming rules** (do not use in new code):
+- `_js` suffix — retired. The backend schema no longer requires a sentinel suffix; the `VIEWS.<key>` registry key is the canonical reference.
+- `shared_*` prefix — retired. Per the "no shared views" rule below, every portal/section owns its own view.
+
+**Examples:**
+- `admin_dashboard_cm_ap` — admin portal, dashboard section, council_members entity, admin perms purpose.
+- `members_hr_fd_detail` — members portal, HR section, fd entity, detail purpose.
+- `clients_dashboard_notifications_list` — clients portal, dashboard section, notifications, list purpose.
+- `fd_admin` — foundation view, exempt from portal prefix.
+
+### security_invoker = true (mandatory, no exceptions)
+
+Already covered in Step 3/4. Reinforced as the Lex Council W5 ban: **SECURITY DEFINER views are banned**. Every view — new or rewritten — must ship with `WITH (security_invoker = true)` and the `ALTER VIEW ... SET (security_invoker = true)` follow-up after any `CREATE OR REPLACE VIEW`. `get_advisors security` must show zero `0010_security_definer_view` errors after every view change.
+
+### view-registry sync (new view = new registry key, same commit)
+
+Every new view must be added to `apps/web/lib/view-registry.ts` as a new `VIEWS.<key>` entry **in the same commit** as the migration that creates the view. Frontend callsites MUST use `VIEWS.<key>` — never raw SQL string literals.
+
+**Rationale:** the registry is the single inventory of "what views exist and what they expose". When a view is renamed, the FE rename is a one-line grep on `VIEWS.<key>`. When a view is dropped, the registry teardown catches every consumer at compile time. Raw SQL strings scattered through the FE bypass the registry and re-introduce the "which view is this column on?" problem.
+
+**Process:**
+1. Author the migration adding the view.
+2. Add the corresponding entry to `VIEWS.<key>` in `view-registry.ts` (with column shape + entity tag).
+3. Migrate FE callsites from raw SQL → `VIEWS.<key>` lookup as part of the same change. Search for any string literal that names the view and replace with the registry key.
+4. Vault log note: "registry key `<key>` added; previous FE callsite count = N (now 0 raw-string refs)".
+
+Anti-pattern: shipping the migration first and "we'll wire the registry next sprint" leaves the FE calling the view by raw string for the interim, which means the rename-after-the-fact will break at runtime, not at compile time.
+
+### append-only column rule
+
+When amending a view (via `CREATE OR REPLACE VIEW`), new columns must be added **at the END** of the SELECT list — never inserted in the middle or before existing columns.
+
+**Why:** reordering columns in a `CREATE OR REPLACE VIEW` triggers Postgres error 42P16 (`cannot change name of view column`). The error is a deliberate guard — Postgres treats column position as part of the view's identity. Append is the only safe direction.
+
+```sql
+-- RIGHT — new column appended at end
+CREATE OR REPLACE VIEW public.foo_js AS
+SELECT
+  fd_id,
+  fd_title,
+  fd_status,
+  fd_created_at,
+  fd_owner_avatar_url  -- new column, appended
+FROM public.foo;
+
+-- WRONG — inserting the new column anywhere other than the end
+-- Postgres will reject with 42P16
+```
+
+**Implication:** the SELECT order inside the view is part of its public contract. Once the view is shipped, the column order is frozen. Subsequent schemas can only extend at the tail.
+
+### no-shared-views (one view per FE consumer page)
+
+Every frontend consumer page gets its own **dedicated** view — even if the SELECT is identical to a sibling page's view. Reusing a single view across pages is banned.
+
+**Why:** as soon as two pages share a view, each new column or filter is a negotiation. Page A wants a join, page B wants a different join, and the shared view becomes a least-common-denominator compromise that hides intent. Dedicated views also localize blast radius — a rewrite to satisfy page A's needs does not regress page B's renders.
+
+**Consequence for naming:** `admin_dashboard_fd_ap` and `admin_audit_fd_ap` are two different views even when the current SELECT is identical. They may diverge in the future; treating them as identical today locks in a coupling the day they need to differ.
+
+If a SELECT truly needs sharing, extract it into a `private.fn_xxx_for_yyy()` SQL function called by both views — not into a view shared across consumers.
+
+## Changelog
+
+| Version | Date | Change |
+|---|---|---|
+| 1.1.0 | 2026-06-30 | Lex Council additions: V2 naming `{portal}_{section}_{entity}_{purpose}` (retires `_js` suffix and `shared_*` prefix), `security_invoker = true` reinforced, view-registry sync (new view = new VIEWS.<key> + same-commit FE migration), append-only column rule, no-shared-views rule. Source: W2/W3/W5. |
+| 1.0.0 | Apr 2026 | Initial — VIEWS-CATALOG + security_invoker + dependents checklist + types + vault log. |
+

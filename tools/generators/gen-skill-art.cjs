@@ -22,6 +22,14 @@ const STYLE = "fantasy RPG skill icon, Fallen Sword MMORPG style, dark parchment
 
 const SKILLS = [
   {
+    id: "view-registry",
+    prompt: `${STYLE}. A heavy leather-bound codex with a golden eye clasp, glowing typed registry page listing three view names, a magnifying glass hovering over a Supabase scroll, no text, no watermarks`,
+  },
+  {
+    id: "bundled-rls",
+    prompt: `${STYLE}. A medieval tower shield with an interlocking padlock and three glowing rune-stones set into its face, each stone a different named bundle, a faint blue initplan sigil glowing at the shield's core, no text, no watermarks`,
+  },
+  {
     id: "vault-log-writer",
     prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "", no text, no watermarks`,
   },

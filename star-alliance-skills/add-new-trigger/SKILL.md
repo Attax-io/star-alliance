@@ -249,3 +249,110 @@ Three production incidents from trigger bugs:
 3. **Missing search_path pin** — SECURITY DEFINER function callable via shadowed schema (caught during April 2026 security audit).
 
 Every step in this skill addresses one of these failure modes.
+
+## Lex Council Additions
+
+Rules harvested from Lex Council CLAUDE.md W2/W5. These refine (not replace) the S7/S8 hardening from Step 3/4 — the search_path and privilege-lockdown rules still apply; the W2/W5 rules tighten the naming and schema placement.
+
+### private-schema-only for trigger functions
+
+All trigger functions live in the `private` schema, not `public`. Example shape: `private.{owning_entity}_on_{watched_table}_{timing}_{ops}`.
+
+**Why:** trigger functions are implementation detail. Putting them in `public` exposes the function names to PostgREST's auto-generated `/{schema}/...` routes — `public.folders_on_folders_bef_ins_upd_main` would be reachable as `POST /rpc/folders_on_folders_bef_ins_upd_main` even though it is meant to be wired by trigger only. The `private` schema is excluded from PostgREST's exposure by convention; the function is invocable by the trigger and by other `private` RPCs but not by `.rpc()` from the FE.
+
+### SECURITY DEFINER + search_path empty + fully-qualified refs (mandatory combination)
+
+Every trigger function ships with all three, applied together:
+
+1. `SECURITY DEFINER` — fires as the `postgres` owner.
+2. `SET search_path TO ''` (empty, not `'public', 'private'`) — schema injection guard. The legacy `SET search_path TO 'public', 'private'` form is retired.
+3. **Fully-qualified table references** — every reference in the function body uses `public.tablename`, never bare `tablename`. With `search_path` empty, unqualified names fail to resolve, so this is also a forcing function.
+
+```sql
+CREATE OR REPLACE FUNCTION private.folders_on_folders_bef_ins_upd_main()
+RETURNS trigger
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path TO ''                              -- empty, not 'public, private'
+AS $$
+DECLARE
+  v_owner_id uuid;
+BEGIN
+  -- auth.uid() in subquery form, fully-qualified target
+  IF (SELECT auth.uid()) IS NULL THEN RAISE EXCEPTION 'unauthorized'; END IF;
+
+  SELECT public.folders.f_owner_id
+    INTO v_owner_id
+    FROM public.folders
+   WHERE public.folders.f_id = NEW.f_parent_id;
+
+  IF v_owner_id IS DISTINCT FROM (SELECT auth.uid()) THEN
+    RAISE EXCEPTION 'permission denied';
+  END IF;
+
+  RETURN NEW;
+END;
+$$;
+```
+
+The `(SELECT auth.uid())` and `IF ... RAISE EXCEPTION 'unauthorized';` forms are the Lex Council standard — see the `supabase-postgres-best-practices` skill for the cross-cutting rationale.
+
+### Trigger-function naming convention
+
+Function name format: `{owning_entity}_on_{watched_table}_{timing}_{ops}[_{purpose}]`
+
+- `{owning_entity}` — the entity/domain that owns the trigger logic (e.g. `folders`, `notifications`, `cm`).
+- `on_{watched_table}` — the table the trigger is fired on. Note the explicit `on_` separator (no schema prefix).
+- `{timing}` — `bef` (BEFORE) or `aft` (AFTER). Three-letter shorthand.
+- `{ops}` — the events in order, shorthand letters: `ins` (INSERT), `upd` (UPDATE), `del` (DELETE). Combine as needed: `ins`, `upd`, `del`, `ins_upd`, `iud`, etc.
+- `_{purpose}` — optional trailing token for specialization: `main`, `audit`, `notify`, `denorm`. Use `_main` when there is one canonical trigger per table and a `_audit` companion; use a clear verb when there are several (e.g. `_notify`, `_denorm`).
+
+**Length constraint:** Postgres identifiers are capped at **63 characters** (the default `NAMEDATALEN`). Plan the name accordingly — pick the shortest entity/table abbreviations that still disambiguate.
+
+**Examples:**
+- `private.folders_on_folders_bef_ins_upd_main` — folders entity, ON folders table, BEFORE INSERT/UPDATE, main trigger.
+- `private.cm_on_cm_bef_ins_main_iu` — council_members entity, ON cm table, BEFORE INSERT, main (with `iu` event suffix flag — ok if all convention followers agree).
+- `private.notifications_on_folders_aft_del_denorm` — notifications entity, ON folders table, AFTER DELETE, denormalization purpose.
+- `private.fd_on_cm_aft_upd_notify` — fd entity, ON cm table, AFTER UPDATE, notify purpose.
+
+### pg_trigger naming convention
+
+The pg_trigger object (the `CREATE TRIGGER` name) follows a **different** convention from the function name — its purpose is to be short and to reflect timing + events only, because the table is already implicit in the `ON {table}` clause:
+
+`trg_{timing}_{ops}[_{purpose}]`
+
+- `trg_` literal prefix.
+- `{timing}` — `bef` or `aft`.
+- `{ops}` — `ins`, `upd`, `del`, combinations (`ins_upd`, `iud`).
+- `_{purpose}` — optional, same vocabulary as above (`_main`, `_audit`, `_notify`, etc.).
+
+The table name is **never** repeated in the trigger name — it is already in the `ON public.{table}` clause. Repeating it produces names like `trg_bef_ins_upd_main_on_folders` which are over the 63-char limit and noise.
+
+**Worked example (canonical):**
+
+```sql
+-- The function
+CREATE OR REPLACE FUNCTION private.folders_on_folders_bef_ins_upd_main()
+RETURNS trigger
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path TO ''
+AS $$ ... $$;
+
+-- The trigger — short name, table is in the ON clause
+DROP TRIGGER IF EXISTS trg_bef_ins_upd_main ON public.folders;
+CREATE TRIGGER trg_bef_ins_upd_main
+  BEFORE INSERT OR UPDATE ON public.folders
+  FOR EACH ROW
+  EXECUTE FUNCTION private.folders_on_folders_bef_ins_upd_main();
+```
+
+The `DROP TRIGGER IF EXISTS ... CREATE TRIGGER` idempotency pattern (already in Step 7) is the standard here.
+
+## Changelog
+
+| Version | Date | Change |
+|---|---|---|
+| 1.1.0 | 2026-06-30 | Lex Council additions: trigger functions live in `private` (never `public`); mandatory combo `SECURITY DEFINER + SET search_path TO ''` + fully-qualified refs; function naming `{owning_entity}_on_{watched_table}_{timing}_{ops}[_{purpose}]` with 63-char cap; trigger naming `trg_{timing}_{ops}[_{purpose}]` (table never repeated). Source: W2/W5. |
+| 1.0.0 | Apr 2026 | Initial — naming convention + S7/S8 hardening + transition guards + branches + vault log. |
+

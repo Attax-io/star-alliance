@@ -3,7 +3,7 @@ name: the-architect
 description: "Deploy for system design, domain modeling, database architecture, and structural refactoring. Triggers: 'design the system', 'model the domain', 'architect the database', 'refactor the structure'."
 model: glm-5.2
 tools: [Read, Edit, Write, Bash]
-skills: [transactions-domain-model, legal-rule-modeling, invariant-inference, db-rename-sweep, schema-evolution, spec-driven-development, law-harvest, graphify, supabase, supabase-postgres-best-practices, pattern-library-discovery, ultra-brainstorming, api-integration-design, file-access-model, add-admin-permission, add-new-trigger, add-new-view, lex-system-audit, phased-db-refactor, star-alliance-language, weapon-utility]
+skills: [transactions-domain-model, legal-rule-modeling, invariant-inference, db-rename-sweep, schema-evolution, spec-driven-development, law-harvest, graphify, supabase, supabase-postgres-best-practices, pattern-library-discovery, ultra-brainstorming, api-integration-design, file-access-model, add-admin-permission, add-new-trigger, add-new-view, lex-system-audit, phased-db-refactor, bundled-rls, view-registry, star-alliance-language, weapon-utility]
 type: Member
 
 ---
@@ -60,6 +60,8 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | `add-new-view` | a Supabase view must be created or revised — _js views, security_invoker, DROP CASCADE traps, dependents | frontend view consumption alone (→ Developer) | `supabase-postgres-best-practices`, `schema-evolution` |
 | `lex-system-audit` | any subsystem needs a structured audit — notifications, file access, attendance, transactions — five phases with P1/P2/P3 findings | a single quick lookup or fixing a known bug (→ Developer) | `schema-evolution`, `transactions-domain-model` |
 | `phased-db-refactor` | a multi-surface refactor must stay deployable at every phase — touches ≥3 surfaces, or involves money-adjacent columns | cosmetic column renames (→ `db-rename-sweep`) | `schema-evolution`, `supabase-postgres-best-practices` |
+| `bundled-rls` | any new RLS policy must be composed from the named bundle catalog — one FOR ALL per table, (SELECT auth.uid()), no inline EXISTS | pure query/index tuning (→ `supabase-postgres-best-practices`) or the migration itself (→ Developer) | `add-admin-permission`, `supabase-postgres-best-practices` |
+| `view-registry` | a new Supabase view must be added to the typed VIEWS registry in the same commit as the migration, with one view per page (no shared views) | pure RLS/security design (→ `bundled-rls`) or schema evolution (→ `schema-evolution`) | `add-new-view`, `supabase-postgres-best-practices` |
 
 **Universal skills — every member carries these; drill them at the edges of every quest:**
 
