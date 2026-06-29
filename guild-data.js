@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 58,
       "patch": 80
     },
-    "generated": "2026-06-29T16:22:53Z",
+    "generated": "2026-06-29T17:20:30Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "reserve",
@@ -3104,7 +3104,7 @@ const GUILD = {
         "lines": 388,
         "words": 7346
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-herald",
         "the-strategist"
@@ -4335,7 +4335,7 @@ const GUILD = {
         "lines": 172,
         "words": 1793
       },
-      "global": false,
+      "global": true,
       "members": [
         "the-designer"
       ]
@@ -6928,9 +6928,10 @@ const GUILD = {
         "the-translator",
         "the-herald",
         "the-merchant",
-        "the-quartermaster"
+        "the-quartermaster",
+        "the-steward"
       ],
-      "notes": "The home domain. All 8 guild members + skills live here. Every other domain borrows from this skill pool."
+      "notes": "The home domain. All 9 guild members + skills live here. Every other domain borrows from this skill pool."
     },
     {
       "id": "lex-council-app",

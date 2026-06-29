@@ -158,7 +158,7 @@ STEP 1 · THE STRATEGIST FORMS THE RIGHT MEMBER — he routes the task to ONE sp
   • large multi-wave projects · campaigns · bug workflow · performance optimization       → the-strategist (opus)
   • routing · "who handles this" · break the work into waves · sequence members           → the-strategist (opus)
   • load/translate law · legal drafting · multi-locale content                            → the-translator (glm-5.2)
-  • GAP-FILLER ONLY — the-connector (sonnet) is NEVER the first routing target for ordinary craft.
+  • GAP-FILLER ONLY — the-connector is NEVER the first routing target for ordinary craft.
     The Strategist routes to the-connector in exactly two cases: (1) DIRECT — when the task itself
     needs a Claude connector (WhatsApp, Gmail, Calendar, web search/fetch, computer-use);
     no other member can reach it, so the connector is the sufficient cause and the seven-try rule
