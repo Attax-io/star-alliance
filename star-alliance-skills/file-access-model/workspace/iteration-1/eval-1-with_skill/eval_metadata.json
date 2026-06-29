@@ -1,0 +1,32 @@
+{
+  "eval_id": 1,
+  "eval_name": "migration-sql-generation",
+  "prompt": "write the migration SQL for the file_access table",
+  "assertions": [
+    {
+      "text": "users_access is NOT a stored column in the CREATE TABLE — it must be virtual/computed in a view",
+      "passed": null,
+      "evidence": ""
+    },
+    {
+      "text": "RLS policy includes the 3-gate pattern: branches_access, direct users_access, and ancestor EXISTS check",
+      "passed": null,
+      "evidence": ""
+    },
+    {
+      "text": "GIN indexes created on branches_access and at minimum one array column",
+      "passed": null,
+      "evidence": ""
+    },
+    {
+      "text": "view_for_customer boolean column is present",
+      "passed": null,
+      "evidence": ""
+    },
+    {
+      "text": "Agent proceeded autonomously without stopping to ask clarifying questions",
+      "passed": null,
+      "evidence": ""
+    }
+  ]
+}
