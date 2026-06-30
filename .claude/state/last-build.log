@@ -1,5 +1,5 @@
 
-BUILD WARNINGS (22):
+BUILD WARNINGS (10):
   ⚠ skill 'bug-fix-closer' has no skills-meta.json entry — using defaults
   ⚠ skill 'code-crime-scene' has no skills-meta.json entry — using defaults
   ⚠ skill 'code-unity' has no skills-meta.json entry — using defaults
@@ -8,18 +8,6 @@ BUILD WARNINGS (22):
   ⚠ skill 'hotspot-radar' has no skills-meta.json entry — using defaults
   ⚠ skill 'new-member-onboarding' has no skills-meta.json entry — using defaults
   ⚠ skill 'temporal-coupling-audit' has no skills-meta.json entry — using defaults
-  ⚠ domain 'star-alliance' references skill 'full-output-enforcement' not in the guild pool
-  ⚠ domain 'star-alliance' references skill 'trading-strategy' not in the guild pool
-  ⚠ domain 'star-alliance' references skill 'portfolio-risk' not in the guild pool
-  ⚠ domain 'star-alliance' references skill 'design-taste-frontend' not in the guild pool
-  ⚠ domain 'star-alliance' references skill 'dual-model-review' not in the guild pool
-  ⚠ domain 'star-alliance' references skill 'gpt-taste' not in the guild pool
-  ⚠ domain 'star-alliance' references skill 'high-end-visual-design' not in the guild pool
-  ⚠ domain 'star-alliance' references skill 'industrial-brutalist-ui' not in the guild pool
-  ⚠ domain 'star-alliance' references skill 'minimalist-ui' not in the guild pool
-  ⚠ domain 'star-alliance' references skill 'stitch-design-taste' not in the guild pool
-  ⚠ domain 'lex-council-app' references skill 'full-output-enforcement' not in the guild pool
-  ⚠ domain 'lex-council-business' references skill 'full-output-enforcement' not in the guild pool
   ⚠ domain 'lex-council-business' references member 'bd-research-agent' not in the guild (external)
   ⚠ domain 'lex-council-business' references member 'intake-agent' not in the guild (external)
-Wrote guild-data.js (657,467 bytes) + guild-data.json + skill-md.js (1,211,702 bytes, 112 skills) + workflow-md.js (69,151 bytes, 36 workflows)
+Wrote guild-data.js (657,399 bytes) + guild-data.json + skill-md.js (1,211,702 bytes, 112 skills) + workflow-md.js (69,151 bytes, 36 workflows)

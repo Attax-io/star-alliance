@@ -3,13 +3,13 @@
 const GUILD = {
   "meta": {
     "name": "Star Alliance",
-    "version": "6.62.101",
+    "version": "6.62.102",
     "versionTiers": {
       "major": 6,
       "minor": 62,
-      "patch": 101
+      "patch": 102
     },
-    "generated": "2026-06-30T22:53:01Z",
+    "generated": "2026-06-30T22:57:27Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "reserve",
@@ -33,7 +33,7 @@ const GUILD = {
       "domains": 3,
       "workflows": 36,
       "hooks": 8,
-      "log": 191
+      "log": 192
     }
   },
   "members": [
@@ -6837,7 +6837,6 @@ const GUILD = {
         "supabase-postgres-best-practices",
         "bug-fix-workflow",
         "dev-server",
-        "full-output-enforcement",
         "obsidian-markdown",
         "image-to-code",
         "imagegen-frontend",
@@ -6869,8 +6868,6 @@ const GUILD = {
         "design-taste",
         "design-unity",
         "dashboard-parity",
-        "trading-strategy",
-        "portfolio-risk",
         "harness-efficiency",
         "high-alert",
         "japanese-candlesticks",
@@ -6926,18 +6923,11 @@ const GUILD = {
         "add-new-view",
         "admin-page-builder",
         "admin-page-fixer",
-        "design-taste-frontend",
-        "dual-model-review",
         "file-access-model",
-        "gpt-taste",
-        "high-end-visual-design",
-        "industrial-brutalist-ui",
         "lex-system-audit",
-        "minimalist-ui",
         "obedience",
         "phased-db-refactor",
         "redesign-existing-projects",
-        "stitch-design-taste",
         "vault-log-writer",
         "bundled-rls",
         "daily-stock-analysis",
@@ -6969,7 +6959,6 @@ const GUILD = {
         "performance",
         "design-taste",
         "design-unity",
-        "full-output-enforcement",
         "image-to-code",
         "imagegen-frontend",
         "impeccable",
@@ -6995,7 +6984,6 @@ const GUILD = {
         "imagegen-frontend",
         "codex-law-translate",
         "obsidian-markdown",
-        "full-output-enforcement",
         "vault-log-compliance",
         "growth-marketing",
         "design-language"
@@ -11912,9 +11900,17 @@ const GUILD = {
         "who": "quartermaster-auto",
         "commit": "",
         "id": "h-sync-rotation-star-alliance-arsenal-work"
+      },
+      {
+        "date": "2026-06-30",
+        "type": "upgrade",
+        "title": "Sync Rotation: .claude/hooks/guild-routing-gate.sh, README.md, agents/the-steward 2.md",
+        "who": "quartermaster-auto",
+        "commit": "",
+        "id": "h-sync-rotation-claude-hooks-guild-routing"
       }
     ],
-    "count": 191
+    "count": 192
   },
   "models": {
     "opus": {
