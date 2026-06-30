@@ -1,7 +1,7 @@
 ---
 name: add-new-trigger
 description: "End-to-end procedure for creating or modifying a database trigger and its backing function in the Lex Council Supabase backend. Use whenever the user asks to add a trigger, create a trigger function, modify trigger logic, wire a BEFORE/AFTER trigger, fire on INSERT/UPDATE/DELETE, add a transition guard, or write a PL/pgSQL function. Also trigger on mentions of CREATE OR REPLACE FUNCTION in private schema, pg_trigger, FOR EACH ROW, AFTER UPDATE, NEW.col IS DISTINCT FROM OLD.col, S7 hardening, S8 privilege lockdown, or SECURITY DEFINER in a trigger context. This skill exists because trigger bugs have caused three separate production incidents: duplicate notifications from missing transition guards, broken INSERT flows from stale column refs in function bodies after renames, and privilege escalation from missing S7 search_path pinning."
-version: 1.1.0
+version: 1.1.1
 ---
 
 # Adding or Modifying a Trigger in Lex Council
@@ -348,6 +348,31 @@ CREATE TRIGGER trg_bef_ins_upd_main
 ```
 
 The `DROP TRIGGER IF EXISTS ... CREATE TRIGGER` idempotency pattern (already in Step 7) is the standard here.
+
+## Private Schema + Naming Convention
+
+### All trigger functions go in private schema
+  CREATE OR REPLACE FUNCTION private.my_trigger_fn() RETURNS trigger ...
+Never public schema — private is not exposed via PostgREST.
+
+### Mandatory security attributes
+Every trigger function must have SECURITY DEFINER + SET search_path TO '' + fully-qualified table refs:
+  INSERT INTO public.audit_log (...) -- correct
+  INSERT INTO audit_log (...)        -- wrong, schema injection risk
+
+### Naming — trigger functions
+Pattern: {owning_entity}_on_{watched_table}_{timing}_{ops}[_{purpose}]
+  timing = bef / aft | ops = ins / upd / del
+  Examples:
+    private.folders_on_folders_bef_ins_upd_main
+    private.tasks_on_task_status_log_aft_ins_upd
+63-char Postgres identifier limit applies.
+
+### Naming — pg_trigger objects
+Pattern: trg_{timing}_{ops}[_{purpose}] — never repeat the table name.
+  CREATE TRIGGER trg_bef_ins_upd_main
+    BEFORE INSERT OR UPDATE ON public.folders
+    FOR EACH ROW EXECUTE FUNCTION private.folders_on_folders_bef_ins_upd_main();
 
 ## Changelog
 

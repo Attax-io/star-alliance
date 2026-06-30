@@ -4,7 +4,7 @@ description: Postgres performance optimization and best practices from Supabase.
 license: MIT
 metadata:
   author: supabase
-  version: "1.2.0"
+  version: "1.2.1"
   organization: Supabase
   date: January 2026
   abstract: Comprehensive Postgres performance optimization guide for developers using Supabase and Postgres. Contains performance rules across 8 categories, prioritized by impact from critical (query performance, connection management) to incremental (advanced features). Each rule includes detailed explanations, incorrect vs. correct SQL examples, query plan analysis, and specific performance metrics to guide automated optimization and code generation.
@@ -187,6 +187,32 @@ Always:
 1. Generate the FK with `{current_table_name}_{col_name}_fkey`.
 2. After any RENAME TABLE migration, grep for FK names that don't match and rename them in a follow-up migration.
 3. The `db-rename-sweep` skill's 14-surface checklist should include "all FK constraint names match current table+column names".
+
+## Lex Council Security Additions
+Rules extracted from a 287-migration production Supabase codebase (2026).
+
+### (SELECT auth.uid()) — always wrap, never bare
+In RLS policy bodies, NEVER use bare auth.uid(). Always:
+  USING ((SELECT auth.uid()) = owner_id)
+Bare auth.uid() re-evaluates per row. The initplan form evaluates once per query. Critical performance difference on large tables.
+
+### SECURITY DEFINER + search_path lock
+Every SECURITY DEFINER object must include SET search_path TO '' and reference all tables fully-qualified: public.my_table, never bare my_table. Missing search_path allows schema injection.
+
+### REVOKE anon execute on all RPCs
+  REVOKE EXECUTE ON FUNCTION public.my_rpc FROM PUBLIC, anon;
+  GRANT EXECUTE ON FUNCTION public.my_rpc TO authenticated, service_role;
+First line of every RPC body: IF (SELECT auth.uid()) IS NULL THEN RAISE EXCEPTION 'unauthorized'; END IF;
+
+### security_invoker = true on every view
+  CREATE OR REPLACE VIEW public.my_view WITH (security_invoker = true) AS ...
+SECURITY DEFINER views bypass RLS entirely — banned.
+
+### One FOR ALL policy per table
+USING = read predicate. WITH CHECK = write predicate. Raw inline EXISTS(...) in policy bodies is banned — use named bundle predicates (see bundled-rls skill).
+
+### FK constraint naming after renames
+{table}_{col}_fkey using the NEW table name — never stale names after a rename.
 
 ## Changelog
 

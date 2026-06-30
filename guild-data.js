@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 58,
       "patch": 80
     },
-    "generated": "2026-06-29T23:27:10Z",
+    "generated": "2026-06-30T00:12:18Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "reserve",
@@ -2172,7 +2172,7 @@ const GUILD = {
     {
       "id": "add-new-trigger",
       "name": "add-new-trigger",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "icon": "🧩",
       "art": "",
       "artPng": true,
@@ -2196,6 +2196,7 @@ const GUILD = {
         "Self-check before declaring done",
         "Why this skill exists",
         "Lex Council Additions",
+        "Private Schema + Naming Convention",
         "Changelog"
       ],
       "triggers": "",
@@ -2204,8 +2205,8 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 354,
-        "words": 1971
+        "lines": 379,
+        "words": 2094
       },
       "global": true,
       "members": [
@@ -2215,7 +2216,7 @@ const GUILD = {
     {
       "id": "add-new-view",
       "name": "add-new-view",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "icon": "🧩",
       "art": "",
       "artPng": true,
@@ -5096,7 +5097,7 @@ const GUILD = {
     {
       "id": "phased-db-refactor",
       "name": "phased-db-refactor",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "icon": "🧩",
       "art": "",
       "artPng": true,
@@ -5899,7 +5900,7 @@ const GUILD = {
     {
       "id": "supabase-postgres-best-practices",
       "name": "supabase-postgres-best-practices",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "icon": "🐘",
       "art": "",
       "artPng": true,
@@ -5916,6 +5917,7 @@ const GUILD = {
         "How to Use",
         "References",
         "Lex Council Additions",
+        "Lex Council Security Additions",
         "Changelog"
       ],
       "triggers": "",
@@ -5959,8 +5961,8 @@ const GUILD = {
       ],
       "scripts": [],
       "stats": {
-        "lines": 185,
-        "words": 1247
+        "lines": 211,
+        "words": 1448
       },
       "global": true,
       "members": [
