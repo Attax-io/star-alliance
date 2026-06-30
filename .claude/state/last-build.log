@@ -1,6 +1,7 @@
 
-BUILD WARNINGS (23):
+BUILD WARNINGS (24):
   ⚠ skill 'bug-fix-closer' has no skills-meta.json entry — using defaults
+  ⚠ skill 'code-unity' has no skills-meta.json entry — using defaults
   ⚠ skill 'daily-stock-analysis' has no skills-meta.json entry — using defaults
   ⚠ skill 'new-member-onboarding' has no skills-meta.json entry — using defaults
   ⚠ domain 'star-alliance' references skill 'full-output-enforcement' not in the guild pool
