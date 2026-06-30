@@ -67,6 +67,15 @@ if [ ! -f "$repo/evolution/DISARMED" ] && [ ! -f "$state/delegation-gate-disarme
   exit 0
 fi
 
+# 0c. Honor the conformance gate. Same sibling-Stop pattern: on BLOCK it drops
+#     .claude/state/conformance-block. If that sentinel exists, skip the commit.
+#     The gate clears it on pass / SA_SKIP_CONFORMANCE override.
+if [ ! -f "$repo/evolution/DISARMED" ] && [ ! -f "$state/conformance-gate-disarmed" ] \
+   && [ "${SA_SKIP_CONFORMANCE:-}" != "1" ] && [ -f "$state/conformance-block" ]; then
+  echo "[turn-finalize] conformance-gate blocked this turn (no Quartermaster conformance pass) — commit skipped" >&2
+  exit 0
+fi
+
 # 1. Single rebuild if any build-source changed this turn (flag set by build-mark.py).
 #    Build output is kept in a state log (not /dev/null) so a regression is
 #    diagnosable from the next session — an independent-review finding.

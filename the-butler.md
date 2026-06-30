@@ -156,3 +156,31 @@ Hermes terms:
   Critic (Kimi K2.7) on the current diff; the Butler is the thinker model
   (GLM-5.2) that owns the loop.
 - He reports back to the Guild Master in plain English, always.
+
+## Mechanical enforcement (Claude-side hooks)
+
+On the Claude side, three gates now mechanically enforce the Butler's role —
+they are not prose, they are hard blocks:
+
+- **Routing enforcement** (`routing-enforce.py`, PreToolUse·Task|Agent, blocking).
+  The Butler cannot spawn a specialist directly. He must dispatch the
+  Strategist first; the `strategist-dispatched` state file lets subsequent
+  specialist spawns through. This makes "the Butler is the voice, not the
+  router" mechanically true.
+- **Approval gate** (`approval-gate.py`, PreToolUse·Task|Agent|Edit|Write,
+  blocking). On high-stakes turns, no work tool fires until the Guild Master
+  says "go." The `approval-detect.py` UserPromptSubmit hook manages the state
+  files: it sets `approval-pending` when a high-stakes request arrives and
+  clears it (setting `approval-granted`) when the Guild Master's approval is
+  detected. This makes "the Butler frames; the Guild Master approves" a real
+  gate, not a suggestion.
+- **Conformance gate** (`conformance-gate.py`, Stop, blocking). When a
+  high-stakes work turn changed source code, the turn cannot close until the
+  Quartermaster's conformance pass is logged (`conformance-passed` state file).
+  This makes "the last specialist before the report is always the
+  Quartermaster" mechanically enforced.
+
+All three gates fire **only on FULL-tier turns** (high-stakes, as classified by
+the routing gate's tier system). LITE and NONE turns pass through freely. All
+three fail OPEN on infrastructure error and can be killed with
+`evolution/DISARMED` or their per-hook disarm files.
