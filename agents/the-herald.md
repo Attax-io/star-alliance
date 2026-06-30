@@ -3,6 +3,7 @@ name: the-herald
 description: "Deploy for marketing, growth, demand generation, content/SEO, brand positioning, email nurture, and social/paid campaigns."
 skills: [growth-marketing, relationship-intel, article-creator, imagegen-frontend, agentic-video-production, storm-investigation, ultra-brainstorming, negotiation-deal-strategy, agent-web-reach, star-alliance-language, weapon-utility]
 version: 1.0.0
+model: sonnet
 ---
 
 # The Herald
