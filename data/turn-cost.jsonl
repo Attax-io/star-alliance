@@ -602,3 +602,7 @@
 {"ts":"2026-06-30T18:18:08Z","tier":"full","assistant_msgs":2,"in":6,"out":706,"cache_read":254474,"cache_create":9500,"wall_ms":14246}
 {"ts":"2026-06-30T18:19:13Z","tier":"full","assistant_msgs":2,"in":6,"out":344,"cache_read":263974,"cache_create":8846,"wall_ms":9820}
 {"ts":"2026-06-30T18:19:49Z","tier":"full","assistant_msgs":2,"in":6,"out":194,"cache_read":272820,"cache_create":8484,"wall_ms":8760}
+{"ts":"2026-06-30T18:20:30Z","tier":"full","assistant_msgs":2,"in":6,"out":1728,"cache_read":281304,"cache_create":11480,"wall_ms":25390}
+{"ts":"2026-06-30T18:20:58Z","tier":"full","assistant_msgs":2,"in":6,"out":530,"cache_read":292784,"cache_create":9868,"wall_ms":13102}
+{"ts":"2026-06-30T18:21:34Z","tier":"full","assistant_msgs":2,"in":6,"out":716,"cache_read":302652,"cache_create":5552,"wall_ms":13850}
+{"ts":"2026-06-30T18:21:56Z","tier":"none","assistant_msgs":2,"in":6,"out":1048,"cache_read":308204,"cache_create":790,"wall_ms":15179}
