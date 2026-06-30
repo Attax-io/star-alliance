@@ -202,3 +202,4 @@
 {"ts":"2026-06-30T23:10:12Z","tier":"full","assistant_msgs":5,"in":8886,"out":2397,"cache_read":369008,"cache_create":69335,"wall_ms":29216}
 {"ts":"2026-06-30T23:14:17Z","tier":"full","assistant_msgs":1,"in":3591,"out":118,"cache_read":90163,"cache_create":109,"wall_ms":10998}
 {"ts":"2026-06-30T23:15:07Z","tier":"full","assistant_msgs":7,"in":7321,"out":1863,"cache_read":543609,"cache_create":138488,"wall_ms":34805}
+{"ts":"2026-06-30T23:15:43Z","tier":"none","assistant_msgs":2,"in":204,"out":498,"cache_read":198186,"cache_create":602,"wall_ms":10496}
