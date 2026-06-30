@@ -30,6 +30,12 @@
             "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/executor-enforce.py\""
           }
         ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit|Bash",
+        "hooks": [
+          {"type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/unity-gate.py\""}
+        ]
       }
     ],
     "PostToolUse": [
