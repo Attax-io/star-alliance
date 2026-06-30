@@ -11,7 +11,7 @@ Guild Master  ←→  Butler (voice/intake/approval/report)
                     ↓ delegate_task
                 Strategist (the ROUTER — decides who handles what)
                     ↓ delegate_task
-                [Architect | Developer | Designer | Translator | Herald | Merchant | Quartermaster]
+                [Architect | Developer | Designer | Interpreter | Herald | Merchant | Quartermaster]
 ```
 
 - **The Butler** is the only agent who speaks to the Guild Master directly. He
@@ -19,7 +19,7 @@ Guild Master  ←→  Butler (voice/intake/approval/report)
   the result in plain English.
 - **The Strategist** is the router. He decides which specialist(s) handle the work
   and in what sequence. The Butler never picks specialists.
-- **Specialists** (Architect, Developer, Designer, Translator, Herald, Merchant,
+- **Specialists** (Architect, Developer, Designer, Interpreter, Herald, Merchant,
   Quartermaster) do the craft. Each is dispatched via `delegate_task` with a
   self-contained goal and context.
 
@@ -32,7 +32,7 @@ Guild Master  ←→  Butler (voice/intake/approval/report)
 | The Architect | `agents/the-architect.md` | Systems design, domain modeling, database architecture |
 | The Developer | `agents/the-developer.md` | Writing code, fixing bugs, implementation, dev servers |
 | The Designer | `agents/the-designer.md` | UI/UX design, visual quality, brand kits, image-to-code |
-| The Translator | `agents/the-translator.md` | Legal codex, law translation, multi-locale content |
+| The Interpreter | `agents/the-interpreter.md` | Legal codex, law translation, multi-locale content |
 | The Herald | `agents/the-herald.md` | Marketing, growth, demand generation, content/SEO |
 | The Merchant | `agents/the-merchant.md` | Investment analysis, trading strategies, market research |
 | The Quartermaster | `agents/the-quartermaster.md` | Skill management, syncing, upgrading, conformance |

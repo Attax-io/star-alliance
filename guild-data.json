@@ -1,13 +1,13 @@
 {
   "meta": {
     "name": "Star Alliance",
-    "version": "6.62.102",
+    "version": "6.63.103",
     "versionTiers": {
       "major": 6,
-      "minor": 62,
-      "patch": 102
+      "minor": 63,
+      "patch": 103
     },
-    "generated": "2026-06-30T22:57:27Z",
+    "generated": "2026-06-30T23:03:56Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "reserve",
@@ -31,7 +31,7 @@
       "domains": 3,
       "workflows": 36,
       "hooks": 8,
-      "log": 192
+      "log": 194
     }
   },
   "members": [
@@ -112,9 +112,9 @@
         "nextTier": "Advanced",
         "rampEarned": "blue",
         "rampConferred": "purple",
-        "ad": 64,
+        "ad": 72,
         "signals": {
-          "ad": 64,
+          "ad": 72,
           "nSkills": 26,
           "nUnique": 9,
           "nMaster": 2,
@@ -145,7 +145,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 64,
+              "have": 72,
               "need": 8
             },
             {
@@ -169,7 +169,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 64,
+              "have": 72,
               "need": 12
             },
             {
@@ -193,7 +193,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 64,
+              "have": 72,
               "need": 18
             },
             {
@@ -217,7 +217,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 64,
+              "have": 72,
               "need": 24
             },
             {
@@ -246,7 +246,7 @@
           {
             "label": "Arsenal Depth",
             "ok": true,
-            "have": 64,
+            "have": 72,
             "need": 12
           },
           {
@@ -357,9 +357,9 @@
         "nextTier": "Advanced",
         "rampEarned": "blue",
         "rampConferred": "purple",
-        "ad": 74,
+        "ad": 82,
         "signals": {
-          "ad": 74,
+          "ad": 82,
           "nSkills": 31,
           "nUnique": 11,
           "nMaster": 2,
@@ -390,7 +390,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 74,
+              "have": 82,
               "need": 8
             },
             {
@@ -414,7 +414,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 74,
+              "have": 82,
               "need": 12
             },
             {
@@ -438,7 +438,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 74,
+              "have": 82,
               "need": 18
             },
             {
@@ -462,7 +462,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 74,
+              "have": 82,
               "need": 24
             },
             {
@@ -491,7 +491,7 @@
           {
             "label": "Arsenal Depth",
             "ok": true,
-            "have": 74,
+            "have": 82,
             "need": 12
           },
           {
@@ -818,9 +818,9 @@
         "nextTier": "Advanced",
         "rampEarned": "blue",
         "rampConferred": "purple",
-        "ad": 43,
+        "ad": 47,
         "signals": {
-          "ad": 43,
+          "ad": 47,
           "nSkills": 18,
           "nUnique": 7,
           "nMaster": 2,
@@ -851,7 +851,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 43,
+              "have": 47,
               "need": 8
             },
             {
@@ -875,7 +875,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 43,
+              "have": 47,
               "need": 12
             },
             {
@@ -899,7 +899,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 43,
+              "have": 47,
               "need": 18
             },
             {
@@ -923,7 +923,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 43,
+              "have": 47,
               "need": 24
             },
             {
@@ -952,7 +952,7 @@
           {
             "label": "Arsenal Depth",
             "ok": true,
-            "have": 43,
+            "have": 47,
             "need": 12
           },
           {
@@ -1494,9 +1494,9 @@
         "nextTier": "Advanced",
         "rampEarned": "blue",
         "rampConferred": "amber",
-        "ad": 45,
+        "ad": 47,
         "signals": {
-          "ad": 45,
+          "ad": 47,
           "nSkills": 16,
           "nUnique": 11,
           "nMaster": 1,
@@ -1527,7 +1527,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 45,
+              "have": 47,
               "need": 8
             },
             {
@@ -1551,7 +1551,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 45,
+              "have": 47,
               "need": 12
             },
             {
@@ -1575,7 +1575,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 45,
+              "have": 47,
               "need": 18
             },
             {
@@ -1599,7 +1599,7 @@
             {
               "label": "Arsenal Depth",
               "ok": true,
-              "have": 45,
+              "have": 47,
               "need": 24
             },
             {
@@ -1628,7 +1628,7 @@
           {
             "label": "Arsenal Depth",
             "ok": true,
-            "have": 45,
+            "have": 47,
             "need": 12
           },
           {
@@ -2632,13 +2632,13 @@
       "id": "bug-fix-closer",
       "name": "bug-fix-closer",
       "version": "1.0.0",
-      "icon": "📦",
+      "icon": "🧩",
       "art": "",
       "artPng": false,
-      "blurb": "Mark one or more Lex Council bug_reports rows as Fixed (br_status=4) in the DB…",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "",
+      "blurb": "Mark one or more Lex Council bug_reports rows as Fixed (br_status=4) in the DB.",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-puzzle",
       "src": "own",
       "desc": "Mark one or more Lex Council bug_reports rows as Fixed (br_status=4) in the DB. Use when the user says 'close bug #NNN', 'mark bug fixed', 'mark bugs NNN and MMM fixed', 'close these bugs in DB', or any phrasing about manually closing bugs in the database — after a fix landed but the Stop hook didn't auto-close them (title didn't match), or for batch closes of multiple bugs at once.",
       "intro": "The Quartermaster's manual override for marking Lex Council bugs as Fixed in the database. A Stop hook (tools/bug-fix-closer.py) already auto-closes bugs when a session whose title contains #NNN ends — this skill is the manual fallback for when the hook didn't fire, or when a batch of bugs needs clo",
@@ -2953,13 +2953,13 @@
       "id": "code-crime-scene",
       "name": "code-crime-scene",
       "version": "1.0.0",
-      "icon": "📦",
+      "icon": "🧩",
       "art": "",
       "artPng": false,
       "blurb": "Forensic investigation style for any codebase, system, or process — treat it as a crime sc…",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-puzzle",
       "src": "own",
       "desc": "Forensic investigation style for any codebase, system, or process — treat it as a crime scene. Gather historical evidence first (never just the current snapshot), cross-reference multiple signals, and find where those signals converge (the \"hotspot\"). Use when someone says \"investigate this codebase\", \"audit the system health\", \"where are the real problems in this code\", \"find the bottlenecks\", \"where should we focus refactoring\", \"why does this area keep breaking\", or any open-ended investigation of a system's health, quality, or organizational dynamics. Based on Adam Tornhill's forensic psychology method from *Your Code as a Crime Scene* (Pragmatic Bookshelf, 2015).",
       "intro": "The core principle: the current snapshot of a codebase tells you what exists. The history of commits tells you where the real problems are. Static code analysis sees the body; forensic analysis finds the killer.",
@@ -3030,13 +3030,13 @@
       "id": "code-unity",
       "name": "code-unity",
       "version": "1.0.0",
-      "icon": "📦",
+      "icon": "🧩",
       "art": "",
       "artPng": false,
-      "blurb": "The Developer's and Architect's code-unity guardian — enforce ONE source of truth for ever…",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "",
+      "blurb": "The Developer's and Architect's code-unity guardian — enforce ONE source of truth for every typ",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-puzzle",
       "src": "own",
       "desc": "The Developer's and Architect's code-unity guardian — enforce ONE source of truth for every type, constant, config value, utility function, API client, service, and data schema the codebase carries. Three phases: establish (locate or mint the canonical SoT module for each domain — one types file, one constants module, one config object, one API/service layer); audit (scan every surface for fragmentation — the same type defined in two files, a config value scattered across pages, a utility re-implemented per feature folder); unify (merge all duplicates into the canonical SoT and update every import — without breaking what already runs). Use to stop duplication before it multiplies, enforce a single import path for shared logic, or stand up clean module boundaries. Triggers: 'one source of truth', 'stop duplicating', 'this type is defined twice', 'unify these constants', 'single import path', 'deduplicate types', 'code unity', 'audit duplication'. Differentiate from design-unity (UI tokens / visual language) and guild-conformity (repo cross-references / generated guild files).",
       "intro": "This is the Developer's and Architect's craft for code conformity and unity. A codebase stays maintainable only when every shared fact — a type, a constant, a config value, a utility, an API client — lives in exactly one place. This skill finds and enforces that single source of truth (SoT) across e",
@@ -3050,7 +3050,7 @@
         "Versioning",
         "Changelog"
       ],
-      "triggers": "",
+      "triggers": "'one source of truth', 'stop duplicating', 'this type is defined twice', 'unify these constants', 'single import path', 'deduplicate types', 'code unity', 'audit duplication'",
       "modes": "",
       "disabled": false,
       "refs": [],
@@ -3169,13 +3169,13 @@
       "id": "cognitive-bias-guard",
       "name": "cognitive-bias-guard",
       "version": "1.0.0",
-      "icon": "📦",
+      "icon": "🧩",
       "art": "",
       "artPng": false,
       "blurb": "A structured protocol to catch and neutralize cognitive and social biases before they corr…",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-puzzle",
       "src": "own",
       "desc": "A structured protocol to catch and neutralize cognitive and social biases before they corrupt a group decision, code review, investigation, or design session. Use when someone asks \"are we reasoning clearly here?\", \"run the bias check\", \"am I falling for something?\", before any group decision or vote, before finalizing a hotspot verdict, before accepting a root-cause analysis, or when a team's conclusion feels suspiciously unanimous. Also apply proactively any time groupthink, hindsight bias, anchoring, or pluralistic ignorance might be distorting the outcome. Based on the forensic psychology chapters of Adam Tornhill's *Your Code as a Crime Scene* and supporting research in behavioral psychology.",
       "intro": "The forensic psychologist's observation: when programmers diagnose code problems, evaluate designs, or conduct post-mortems, they are not reasoning machines — they are humans running on the same cognitive hardware that our ancestors used to navigate social tribes. The same biases that produce false ",
@@ -3348,13 +3348,13 @@
       "id": "daily-stock-analysis",
       "name": "daily-stock-analysis",
       "version": "1.0.0",
-      "icon": "📦",
+      "icon": "🧩",
       "art": "",
       "artPng": false,
-      "blurb": "AI-powered daily stock analysis for A-share HK US JP KR markets generating a structured De…",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "",
+      "blurb": "AI-powered daily stock analysis for A-share HK US JP KR markets generating a structured Decisio",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-puzzle",
       "src": "own",
       "desc": "AI-powered daily stock analysis for A-share HK US JP KR markets generating a structured Decision Dashboard per stock with verdict, score, trend, buy/sell levels, risk alerts, catalyst factors, and operation checklist. 15 built-in strategies: MA, Wyckoff, Elliott Wave, trend, hotspot, event-driven, growth, sentiment, capital flow, chip distribution, technical composite, valuation, backtesting, expectation, Agent Q&A. Runs automated daily analysis via GitHub Actions (zero-cost), Docker, or local scheduled task; pushes to WeChat Work Feishu Lark Telegram Discord Slack or email. Includes web workbench and multi-round Agent Q&A. Distilled from ZhuLinsen/daily_stock_analysis. Triggers: daily analysis, stock decision dashboard, multi-market stock report, automated stock analysis, push stock alerts. Differs from trading-strategy (systematic strategies, no automation infra), chart-patterns (reading formations, no pipeline), portfolio-risk (risk management, no daily report).",
       "intro": "A working trader does not want one perfect read; he wants **yesterday's verdict, today's verdict, every weekday, in his chat, before the market reopens**. This pack is the Merchant's deployment grade for the daily-stock-analysis system: a five-market (A-share, HK, US, JP, KR) AI-driven analyzer that",
@@ -3370,7 +3370,7 @@
         "Quick start — eight steps",
         "Changelog"
       ],
-      "triggers": "",
+      "triggers": "daily analysis, stock decision dashboard, multi-market stock report, automated stock analysis, push stock alerts. Differs from trading-strategy (systematic strategies, no automation infra), chart-patterns (reading formations, no pipeline), ",
       "modes": "",
       "disabled": false,
       "refs": [
@@ -4222,13 +4222,13 @@
       "id": "hotspot-radar",
       "name": "hotspot-radar",
       "version": "1.0.0",
-      "icon": "📦",
+      "icon": "🧩",
       "art": "",
       "artPng": false,
       "blurb": "Mine a git repository's change history to produce a ranked hotspot list — files ranked by …",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-puzzle",
       "src": "own",
       "desc": "Mine a git repository's change history to produce a ranked hotspot list — files ranked by the combined signal of change frequency and complexity. Use when someone says \"find the worst parts of this codebase\", \"what should we refactor first\", \"which files have the most churn\", \"prioritize our refactoring backlog\", \"find the maintenance bottlenecks\", or before any refactoring sprint that needs an objective starting point. Outputs a scored table of hotspots with complexity and frequency evidence. Based on Adam Tornhill's forensic code analysis method.",
       "intro": "A fast, git-native technique to objectively rank files by maintenance risk: **change frequency × complexity**. No special tools required beyond git and a terminal.",
@@ -5004,13 +5004,13 @@
       "id": "new-member-onboarding",
       "name": "new-member-onboarding",
       "version": "1.0.0",
-      "icon": "📦",
+      "icon": "🧩",
       "art": "",
       "artPng": false,
-      "blurb": "The exact checklist to run whenever a new guild member is recruited…",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "",
+      "blurb": "The exact checklist to run whenever a new guild member is recruited.",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-puzzle",
       "src": "own",
       "desc": "The exact checklist to run whenever a new guild member is recruited. Profiles must be created, installed, art-forged, and committed — in that order. Use when: 'onboard new member', 'recruit a member', 'add a new profile', 'new the-<slug>', 'create profiles/<slug>/'. Pairs with skillsmith, workflow-forge, dual-model-review.",
       "intro": "When a new guild member is recruited, eight steps must run in order. Skip a step and the member exists in star-alliance-members/ but is missing from the runtime: no Hermes profile, no art tile, no conformity pass, no commit. This skill is the source of truth for the sequence.",
@@ -5026,7 +5026,7 @@
         "Pitfalls",
         "Verification"
       ],
-      "triggers": "",
+      "triggers": "'onboard new member', 'recruit a member', 'add a new profile', 'new the-<slug>', 'create profiles/<slug>/'",
       "modes": "",
       "disabled": false,
       "refs": [],
@@ -6245,13 +6245,13 @@
       "id": "temporal-coupling-audit",
       "name": "temporal-coupling-audit",
       "version": "1.0.0",
-      "icon": "📦",
+      "icon": "🧩",
       "art": "",
       "artPng": false,
       "blurb": "Detect hidden dependencies between modules by analyzing which files co-change in commits…",
-      "level": "Foundational",
-      "ramp": "gray",
-      "tabler": "",
+      "level": "Advanced",
+      "ramp": "teal",
+      "tabler": "ti-puzzle",
       "src": "own",
       "desc": "Detect hidden dependencies between modules by analyzing which files co-change in commits. Files that always change together are coupled — even if the architecture diagram shows them as separate. Use when someone asks \"are our module boundaries holding?\", \"where are the hidden dependencies?\", \"why does changing X always break Y?\", \"check for architectural decay\", \"audit our layering\", \"find cross-boundary coupling\", or as a follow-up to a hotspot-radar sweep. Produces a coupling map ranked by co-change strength, with expected vs. surprising coupling clearly labeled. Based on Adam Tornhill's temporal coupling method.",
       "intro": "The detective's insight: two modules that always change together at the same time are coupled — regardless of what the import graph, dependency diagram, or documentation says. Temporal coupling (co-change) reveals the real architecture, not the intended one.",
@@ -6929,7 +6929,14 @@
         "vault-log-writer",
         "bundled-rls",
         "daily-stock-analysis",
-        "view-registry"
+        "view-registry",
+        "bug-fix-closer",
+        "code-crime-scene",
+        "code-unity",
+        "cognitive-bias-guard",
+        "hotspot-radar",
+        "new-member-onboarding",
+        "temporal-coupling-audit"
       ],
       "members": [
         "the-architect",
@@ -9094,7 +9101,7 @@
           "kind": "member",
           "actor": "the-developer",
           "title": "Scope & Spawn",
-          "act": "The routed member scopes a disjoint brief and spawns a CLAUDE session-doer via the Agent tool — haiku if the member carries it (dev/translator/quartermaster), else sonnet; NEVER MiniMax, whose summon.py doers have no tool access and cannot be a session. The subagent runs its scoped task in isolation and returns structured findings.",
+          "act": "The routed member scopes a disjoint brief and spawns a CLAUDE session-doer via the Agent tool — haiku if the member carries it (dev/interpreter/quartermaster), else sonnet; NEVER MiniMax, whose summon.py doers have no tool access and cannot be a session. The subagent runs its scoped task in isolation and returns structured findings.",
           "produces": "session findings",
           "inputs": [
             "session task"
@@ -11906,9 +11913,25 @@
         "who": "quartermaster-auto",
         "commit": "",
         "id": "h-sync-rotation-claude-hooks-guild-routing"
+      },
+      {
+        "date": "2026-06-30",
+        "type": "upgrade",
+        "title": "Sync Rotation: data/skills-meta.json, tools/generators/gen-skill-art.cjs",
+        "who": "quartermaster-auto",
+        "commit": "",
+        "id": "h-sync-rotation-data-skills-meta-json-tool"
+      },
+      {
+        "date": "2026-06-30",
+        "type": "workflow",
+        "title": "Sync Rotation: AGENTS.md, IDEA.md, README.md (+10 more)",
+        "who": "quartermaster-auto",
+        "commit": "",
+        "id": "h-sync-rotation-agents-md-idea-md-readme-m"
       }
     ],
-    "count": 192
+    "count": 194
   },
   "models": {
     "opus": {

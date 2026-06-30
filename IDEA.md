@@ -17,7 +17,7 @@ star-alliance-hermes/
 │   ├── the-developer.md
 │   ├── the-designer.md
 │   ├── the-strategist.md
-│   ├── the-translator.md
+│   ├── the-interpreter.md
 │   ├── the-herald.md
 │   ├── the-merchant.md
 │   └── the-quartermaster.md
@@ -41,7 +41,7 @@ star-alliance-hermes/
 | The Architect | `agents/the-architect.md` | Systems design, domain modeling, databases | Thinker (GLM-5.2) |
 | The Developer | `agents/the-developer.md` | Code, bugs, implementation, dev servers | Thinker (GLM-5.2) + Doer (MiniMax M3) |
 | The Designer | `agents/the-designer.md` | UI/UX, visual quality, brand kits | Thinker (GLM-5.2) + Doer (MiniMax M3) |
-| The Translator | `agents/the-translator.md` | Legal codex, law translation, locales | Thinker (GLM-5.2) + Doer (MiniMax M3) |
+| The Interpreter | `agents/the-interpreter.md` | Legal codex, law translation, locales | Thinker (GLM-5.2) + Doer (MiniMax M3) |
 | The Herald | `agents/the-herald.md` | Marketing, growth, demand generation | Thinker (GLM-5.2) + Doer (MiniMax M3) |
 | The Merchant | `agents/the-merchant.md` | Investment analysis, trading, markets | Thinker (GLM-5.2) + Doer (MiniMax M3) |
 | The Quartermaster | `agents/the-quartermaster.md` | Skills, syncing, conformance | Thinker (GLM-5.2) |

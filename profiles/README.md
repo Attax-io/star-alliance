@@ -52,7 +52,7 @@ and `agents/` in the repo root. They are not distributions.
 | Architect | `the-architect` | Systems design, domain modeling, database architecture |
 | Developer | `the-developer` | Writing code, fixing bugs, implementation |
 | Designer | `the-designer` | UI/UX design, visual quality, brand kits |
-| Translator | `the-translator` | Legal codex, law translation, multi-locale content |
+| Interpreter | `the-interpreter` | Legal codex, law translation, multi-locale content |
 | Herald | `the-herald` | Marketing, growth, demand generation, content/SEO |
 | Merchant | `the-merchant` | Investment analysis, trading strategies, market research |
 | Quartermaster | `the-quartermaster` | Skill management, syncing, upgrading, conformance |

@@ -98,8 +98,8 @@
       "exit_state": "PLAN_APPROVED",
       "handoff": "Plan ready: {goal} in {waves} waves. KPIs: {kpis}. Lead: {agent}."
     },
-    "the-translator": {
-      "name": "The Translator",
+    "the-interpreter": {
+      "name": "The Interpreter",
       "role": "Legal Codex · Law Translation",
       "level": "Advanced",
       "color": "#b89530",

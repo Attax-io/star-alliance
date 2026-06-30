@@ -1,22 +1,22 @@
-# Skills owned by the Translator profile.
-# Curated from the 94-skill inventory and agents/the-translator.md's frontmatter.
-# Only skills genuinely belonging to the Translator's craft (legal codex loading,
+# Skills owned by the Interpreter profile.
+# Curated from the 94-skill inventory and agents/the-interpreter.md's frontmatter.
+# Only skills genuinely belonging to the Interpreter's craft (legal codex loading,
 # law translation, multi-locale content, contracts, client correspondence, bilingual
 # legal instruments, jurisdiction shifts). Shared house skills kept where the
-# Translator is the primary owner; cross-craft skills (e.g. transactions-domain-model,
+# Interpreter is the primary owner; cross-craft skills (e.g. transactions-domain-model,
 # spec-driven-development, design-taste) belong to other profiles.
 
 - name: codex-law-translate
-  reason: End-to-end pipeline for loading a real-world law into the legal codex, translating into every non-Arabic locale, and adversarially revising — the Translator's defining craft.
+  reason: End-to-end pipeline for loading a real-world law into the legal codex, translating into every non-Arabic locale, and adversarially revising — the Interpreter's defining craft.
 
 - name: law-harvest
   reason: When the source law arrives as a raw PDF — ingest it into the Source Law library verbatim (Arabic canonical, page ranges intact) before it enters the codex.
 
 - name: legal-rule-modeling
-  reason: When the Translator feeds the Architect the prose behind a statute — the inputs, brackets, exemptions, edge cases — that becomes a calculator's deterministic rules.
+  reason: When the Interpreter feeds the Architect the prose behind a statute — the inputs, brackets, exemptions, edge cases — that becomes a calculator's deterministic rules.
 
 - name: legal-drafting
-  reason: The Translator's craft for client correspondence and bilingual legal instruments — contracts, declarations, resignation letters, memos, client emails.
+  reason: The Interpreter's craft for client correspondence and bilingual legal instruments — contracts, declarations, resignation letters, memos, client emails.
 
 - name: contract-review
   reason: When the other side has drafted the contract — read it, name the risks, surface what the client should push back on, without rewriting the deal.
@@ -25,7 +25,7 @@
   reason: When the deliverable is a public Insights article — push it to the production DB in all six locales, side-by-side, never half-finished.
 
 - name: obsidian-markdown
-  reason: For any documentation the Translator writes — wikilinks, callouts, properties, and the guild's reading protocol live in Obsidian flavor.
+  reason: For any documentation the Interpreter writes — wikilinks, callouts, properties, and the guild's reading protocol live in Obsidian flavor.
 
 - name: ux-copywriting
   reason: When a client-facing gloss has to land on a screen and read like the firm's voice — only invoked for client correspondence / consent / disclaimer surfaces, never as a general copywriting tool.
@@ -40,4 +40,4 @@
   reason: Shared house utility — pick the right thinker/doer weapon for a translation, and run the plan → do → review loop without leaking craft across the wrong boundary.
 
 - name: dual-model-review
-  reason: The cross-system bridge's quality gate — MiniMax-M3 produces the translation draft, Kimi K2.7 + GLM-5.2 fire as parallel reviewer sub-agents through Hermes; both must PASS before the report goes back. The Translator tunes the reviewer prompts to check legal register (voices-check) and source-fidelity (codex-law-translate) — the doer cannot be the only translator's eye on a statute.
+  reason: The cross-system bridge's quality gate — MiniMax-M3 produces the translation draft, Kimi K2.7 + GLM-5.2 fire as parallel reviewer sub-agents through Hermes; both must PASS before the report goes back. The Interpreter tunes the reviewer prompts to check legal register (voices-check) and source-fidelity (codex-law-translate) — the doer cannot be the only interpreter's eye on a statute.

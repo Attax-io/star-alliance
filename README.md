@@ -20,7 +20,7 @@ star-alliance/
 │   ├── the-merchant.md
 │   ├── the-quartermaster.md
 │   ├── the-strategist.md
-│   └── the-translator.md
+│   └── the-interpreter.md
 ├── star-alliance-skills/  ← shared skill pool (112 skills, each a directory with SKILL.md)
 │   ├── algorithmic-trading-chan/
 │   ├── article-creator/
@@ -57,7 +57,7 @@ your project's `.claude/agents/` and installing their skills.
 | **The Developer** | Writing code, fixing bugs, implementation, dev servers, tooling, knowledge graphs | bug-fix-workflow, db-rename-sweep, dev-server, graphify, supabase, supabase-postgres-best-practices, full-output-enforcement, obsidian-markdown | "write the code", "fix this bug", "implement this feature", "open dev server", "generate a knowledge graph" |
 | **The Designer** | UI/UX design, visual quality, brand kits, image-to-code | design-taste, design-language, motion-design, image-to-code, imagegen-frontend, impeccable | "design the UI", "make it look premium", "create a brand kit" |
 | **The Strategist** | Multi-wave campaigns, deep multi-model planning, bug workflows, performance | ultra-brainstorming, conquering-campaign, storm-investigation, bug-fix-workflow, performance, strategies-review, vault-log-compliance | "plan the campaign", "break this into waves", "ultra-brainstorm this", "run the bug workflow" |
-| **The Translator** | Legal codex, law translation, multi-locale content | codex-law-translate, article-creator, obsidian-markdown | "load this law", "translate this law", "add translations" |
+| **The Interpreter** | Legal codex, law translation, multi-locale content | codex-law-translate, article-creator, obsidian-markdown | "load this law", "translate this law", "add translations" |
 | **The Herald** | Marketing, growth, demand generation — content/SEO, brand, email, social/paid | growth-marketing, article-creator, imagegen-frontend, storm-investigation | "plan our marketing", "we need leads", "fix our positioning", "go to market" |
 | **The Merchant** | Investment analysis, trading strategies, market research, portfolio management | market-recon, trading-strategy, portfolio-risk, storm-investigation | "analyze this investment", "build a trading strategy", "research this market" |
 | **The Quartermaster** | Skill management, syncing, upgrading, daily evolution | skillsmith, guild-log, cleanup, storm-investigation | "sync my skills", "upgrade a skill", "run the skill routine" |
@@ -77,7 +77,7 @@ operate it with `python3 member_level.py report | promote`.
 | **Master** | The Strategist |
 | **Elite** | The Designer |
 | **Advanced** | The Quartermaster · The Herald · The Developer · The Architect · The Merchant |
-| **Intermediate** | The Translator |
+| **Intermediate** | The Interpreter |
 | **Foundational** | The Butler |
 
 The thinnest arsenal (the Butler) sits at Foundational by design — that's the "who's lagging"
@@ -91,8 +91,8 @@ These skills appear across multiple members — they're the guild's common toolk
 - `star-alliance-language` — carried by **every** member; the read side of the guild's knowledge language, **OKF** (the *Star Alliance Language*). Its producer half, `okf`, is the Quartermaster's alone.
 - `supabase`, `supabase-postgres-best-practices`, `db-rename-sweep` — The Architect and The Developer
 - `bug-fix-workflow` — The Developer and The Strategist
-- `obsidian-markdown` — The Developer and The Translator
-- `article-creator` — The Translator and The Herald
+- `obsidian-markdown` — The Developer and The Interpreter
+- `article-creator` — The Interpreter and The Herald
 - `imagegen-frontend` — The Designer and The Herald (the Herald briefs its `brand` mode; the Designer forges)
 - `storm-investigation` — The Strategist, The Merchant, The Quartermaster, and The Herald
 
@@ -106,7 +106,7 @@ These skills belong to one member only — they define the member's specialty:
 - `members-formation` — The Butler's routing method: form the team, decide parallel vs. sequential
 - `ultra-brainstorming` — The Strategist's multi-model super-planning hub: many minds in, one plan out
 - `conquering-campaign` — The Strategist's campaign framework
-- `codex-law-translate` — The Translator's legal pipeline
+- `codex-law-translate` — The Interpreter's legal pipeline
 - `graphify` — The Developer's knowledge graph engine (folded in from the retired Engineer)
 - `skillsmith` — The Quartermaster's management toolkit
 - `growth-marketing` — The Herald's four-mode marketing engine (content/SEO, brand, email, social/paid)

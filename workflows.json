@@ -2072,7 +2072,7 @@
           "kind": "member",
           "actor": "the-developer",
           "title": "Scope & Spawn",
-          "act": "The routed member scopes a disjoint brief and spawns a CLAUDE session-doer via the Agent tool — haiku if the member carries it (dev/translator/quartermaster), else sonnet; NEVER MiniMax, whose summon.py doers have no tool access and cannot be a session. The subagent runs its scoped task in isolation and returns structured findings.",
+          "act": "The routed member scopes a disjoint brief and spawns a CLAUDE session-doer via the Agent tool — haiku if the member carries it (dev/interpreter/quartermaster), else sonnet; NEVER MiniMax, whose summon.py doers have no tool access and cannot be a session. The subagent runs its scoped task in isolation and returns structured findings.",
           "produces": "session findings",
           "inputs": [
             "session task"

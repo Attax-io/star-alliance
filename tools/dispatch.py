@@ -50,7 +50,7 @@ AGENTS = {
     "the-architect":    "Systems design, domain modeling, database architecture",
     "the-developer":    "Writing code, fixing bugs, implementation",
     "the-designer":     "UI/UX design, visual quality, brand kits",
-    "the-translator":   "Legal codex, law translation, multi-locale content",
+    "the-interpreter": "Legal codex, law translation, multi-locale content",
     "the-herald":       "Marketing, growth, demand generation, content/SEO",
     "the-merchant":     "Investment analysis, trading strategies, market research",
     "the-quartermaster":"Skill management, syncing, upgrading, conformance",

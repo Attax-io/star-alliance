@@ -692,7 +692,7 @@ def main():
         "the-architect":     "architect",
         "the-developer":     "developer",
         "the-designer":      "designer",
-        "the-translator":    "translator",
+        "the-interpreter": "interpreter",
         "the-herald":        "herald",
         "the-merchant":      "merchant",
         "the-quartermaster": "quartermaster",

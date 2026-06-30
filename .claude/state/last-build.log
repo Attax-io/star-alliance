@@ -1,13 +1,5 @@
 
-BUILD WARNINGS (10):
-  ⚠ skill 'bug-fix-closer' has no skills-meta.json entry — using defaults
-  ⚠ skill 'code-crime-scene' has no skills-meta.json entry — using defaults
-  ⚠ skill 'code-unity' has no skills-meta.json entry — using defaults
-  ⚠ skill 'cognitive-bias-guard' has no skills-meta.json entry — using defaults
-  ⚠ skill 'daily-stock-analysis' has no skills-meta.json entry — using defaults
-  ⚠ skill 'hotspot-radar' has no skills-meta.json entry — using defaults
-  ⚠ skill 'new-member-onboarding' has no skills-meta.json entry — using defaults
-  ⚠ skill 'temporal-coupling-audit' has no skills-meta.json entry — using defaults
+BUILD WARNINGS (2):
   ⚠ domain 'lex-council-business' references member 'bd-research-agent' not in the guild (external)
   ⚠ domain 'lex-council-business' references member 'intake-agent' not in the guild (external)
-Wrote guild-data.js (657,399 bytes) + guild-data.json + skill-md.js (1,211,702 bytes, 112 skills) + workflow-md.js (69,151 bytes, 36 workflows)
+Wrote guild-data.js (658,723 bytes) + guild-data.json + skill-md.js (1,211,702 bytes, 112 skills) + workflow-md.js (69,152 bytes, 36 workflows)
