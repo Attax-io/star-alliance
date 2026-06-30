@@ -2111,6 +2111,13 @@
       "title": "Standard Mission: dashboard.css, dashboard.html, dashboard.js (+2 more)",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "workflow",
+      "title": "Sync Rotation: star-alliance-arsenal/workflows-lite.json, workflows.json",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130
