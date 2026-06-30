@@ -2139,6 +2139,13 @@
       "title": "Sync Rotation: AGENTS.md, IDEA.md, README.md (+10 more)",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Sync Rotation: data/skills-meta.json",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130
