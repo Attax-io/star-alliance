@@ -1,0 +1,76 @@
+{
+  "skill_name": "file-access-model",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "write the migration SQL for the file_access table",
+      "expected_output": "A complete CREATE TABLE SQL for file_access with correct columns (file_owner, file_admin, member_assistants, external_assistants, customer_uuid, subers, branches_access, view_for_customer), correct types, GIN indexes, FK constraints, and RLS policy using the 3-gate pattern. Should NOT include users_access as a stored column.",
+      "assertions": [
+        {
+          "name": "users_access_not_stored",
+          "description": "users_access is NOT a stored column in the CREATE TABLE — it is virtual",
+          "type": "no_mention_of_stored_users_access"
+        },
+        {
+          "name": "three_gate_rls",
+          "description": "RLS policy includes all three gates: branches_access, users_access (via view), and ancestor EXISTS check",
+          "type": "contains_three_rls_gates"
+        },
+        {
+          "name": "gin_indexes",
+          "description": "GIN indexes are created on branches_access and users_access",
+          "type": "contains_gin_indexes"
+        },
+        {
+          "name": "view_for_customer_flag",
+          "description": "view_for_customer column is present as a boolean",
+          "type": "contains_view_for_customer"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "what roles can be on a file and how does the exclusion flag work?",
+      "expected_output": "Accurate explanation of all 5 roles (owner, admin, member assistants, external assistants, customer), the view_for_customer flag behaviour (when false: both customer AND external assistants excluded from users_access), and the subers opt-in layer.",
+      "assertions": [
+        {
+          "name": "all_five_roles_mentioned",
+          "description": "Mentions all 5 role types: owner, admin, member assistants, external assistants, customer",
+          "type": "contains_all_roles"
+        },
+        {
+          "name": "exclusion_covers_both",
+          "description": "Correctly states that view_for_customer=false excludes BOTH customer AND external assistants",
+          "type": "correct_exclusion_logic"
+        },
+        {
+          "name": "owner_is_partner",
+          "description": "States that owner must be a partner (is_partner=true)",
+          "type": "owner_partner_constraint"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "i need to add access to a file for an external lawyer from a firm we work with, walk me through how that works",
+      "expected_output": "Explains that external users must first be registered in the org_users table, then their UUID can be added to external_assistants on the file_access row. Should mention the view_for_customer flag must be true for them to appear in users_access. Should NOT suggest adding them to council_members.",
+      "assertions": [
+        {
+          "name": "org_users_mentioned",
+          "description": "Mentions that the external user must first exist in org_users before being added",
+          "type": "mentions_org_users"
+        },
+        {
+          "name": "external_assistants_column",
+          "description": "Directs to external_assistants column, not member_assistants or council_members",
+          "type": "uses_correct_column"
+        },
+        {
+          "name": "exclusion_flag_awareness",
+          "description": "Notes that view_for_customer must be true for external access to be active",
+          "type": "mentions_exclusion_flag"
+        }
+      ]
+    }
+  ]
+}

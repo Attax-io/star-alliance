@@ -1,0 +1,27 @@
+{
+  "eval_id": 3,
+  "eval_name": "adding-external-lawyer",
+  "prompt": "i need to add access to a file for an external lawyer from a firm we work with, walk me through how that works",
+  "assertions": [
+    {
+      "text": "Mentions that the external user must first exist in org_users before being added",
+      "passed": null,
+      "evidence": ""
+    },
+    {
+      "text": "Directs to external_assistants column, not member_assistants",
+      "passed": null,
+      "evidence": ""
+    },
+    {
+      "text": "Notes that view_for_customer must be true for external access to be active",
+      "passed": null,
+      "evidence": ""
+    },
+    {
+      "text": "Does NOT suggest adding the external lawyer to council_members",
+      "passed": null,
+      "evidence": ""
+    }
+  ]
+}

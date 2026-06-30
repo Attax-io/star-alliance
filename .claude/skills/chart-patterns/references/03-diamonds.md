@@ -1,0 +1,33 @@
+# Diamond Tops & Bottoms
+
+## Diamond Bottoms
+
+**Type:** Bullish reversal (short-term); downward breakouts act as bearish continuations. Forms at the end of a downtrend.
+
+**Identification:** Prices enter the pattern from the top via a prior downtrend. The shape widens first (higher highs and lower lows, like a broadening bottom), then narrows (lower highs and higher lows, like a symmetrical triangle). The top or bottom is often pushed to one side, so the diamond may look tilted. Volume typically trends downward through the formation, with a surge on the breakout day (breakout day volume is above the 1-month average 53% of the time). A breakout is a close outside the diamond boundary; premature breakouts (close outside, return within a day or two) occur in fewer than a dozen of 288 samples. Bull-market upward breakouts have the lowest failure rates.
+
+**Psychology:** Demand pushes prices to a new minor high until selling pressure drives them to a new minor low; the widening continues briefly. On the second half, greedy holders sell into strength, blunting upward moves; early buyers step in before prices make a new low, producing higher minor lows. Eventually, one side wins and prices break out. Upward breakouts often throw back to the diamond trend line; downward breakouts often see bargain-hunters pull prices back, but the smart money uses the bounce to distribute, and the decline resumes for weeks to months.
+
+**Measure rule:** Compute the formation height by subtracting the lowest low from the highest high within the diamond. Add the height to the breakout price for an upward breakout; subtract it for a downward breakout. The result is the minimum expected price move. Alternatively, when a quick drop precedes the diamond, prices often return to that launch point.
+
+**Key numbers:**
+- Upward breakouts: bull market break-even failure 4%, average rise 36%, change after trend ends −33%, throwbacks 53%, meeting target 81% (rank 8/23); bear market break-even failure 3%, average rise 36%, change after trend ends −36%, throwbacks 60%, meeting target 60% (rank 2/19). Best performers break out near the yearly low; tall or wide patterns outperform short or narrow; throwbacks hurt, breakout day gaps help.
+- Downward breakouts: bull market break-even failure 10%, average decline 21%, change after trend ends 59%, pullbacks 71%, meeting target 63% (rank 1/21); bear market break-even failure 0%, average decline 44% (low samples), change after trend ends 48%, pullbacks 40%, meeting target 80% (rank 2/21). Best performers break out near the yearly low; pullbacks hurt; tall patterns outperform; random volume shape or heavy breakout volume help.
+
+**Trading tactics:** Wait for the breakout direction to be confirmed before entry, since diamonds can break either way. Place a stop just below the diamond base (or below nearby support) for long trades, and just above the diamond top for short trades. Once at the price target, take profits rather than buy and hold—after reaching the ultimate high prices typically give back roughly 30–36% of the gain. Use a limit order at the target to capture the turn. For best performance: trade with the trend (upward breakouts in bull markets, downward breakouts in bear markets); select breakouts near the yearly low; prefer tall and wide patterns; rising volume trends work best in bull markets, falling in bear markets; heavy breakout volume is preferred for bottoms; avoid diamonds with nearby support/resistance that may invite a throwback or pullback; expect a trend reversal roughly 5–6 weeks after the breakout.
+
+## Diamond Tops
+
+**Type:** Bearish reversal (short-term); upward breakouts act as bullish continuations. Forms at the end of an uptrend.
+
+**Identification:** Prices enter the pattern from the bottom via a prior uptrend. Minor highs and lows connect to form a diamond (often not symmetrical; one side commonly leans). Volume diminishes over the length of the formation, especially in the latter half as price action narrows. Breakout volume is usually high but is not a prerequisite. The breakout is a close outside the diamond boundary. Support and resistance commonly appear at the top of the formation (SAR can last a year or more). Diamond tops also frequently mask a head-and-shoulders top.
+
+**Psychology:** Same mechanics as the bottom, inverted—initial swings widen, then narrow as one side gains the upper hand and triggers a reversal. A quick run-up into the pattern is often erased as prices return to the launch level; when support is absent, the decline continues.
+
+**Measure rule:** Same as bottoms: subtract the lowest low from the highest high to get the formation height. Add the height to the breakout price for upward breakouts; subtract for downward breakouts. Alternative: prices often return to the price level from which the diamond began.
+
+**Key numbers:**
+- Upward breakouts: bull market break-even failure 10%, average rise 27%, change after trend ends −29%, throwbacks 59%, meeting target 69% (rank 21/23); bear market break-even failure 0% (small sample), average rise 33%, change after trend ends −34%, throwbacks 54%, meeting target 79% (rank 2/19). Throwbacks hurt performance; breakout day gaps help.
+- Downward breakouts: bull market break-even failure 6%, average decline 21%, change after trend ends 47%, pullbacks 57%, meeting target 76% (rank 7/21); bear market break-even failure 4%, average decline 24%, change after trend ends 47%, pullbacks 57%, meeting target 59% (rank 10/21). Pullbacks hurt performance; breakout day gaps hurt; tall and narrow patterns outperform other combinations; light breakout volume outperforms. Upward breakouts do better near the yearly low; downward breakouts do better near the yearly high.
+
+**Trading tactics:** Wait for the breakout; trading against an unconfirmed diamond risks a resumption of the prior trend. Identify support (risk) and resistance (reward) zones first and require a compelling risk/reward ratio (at least 1:2) before entering. Place a stop just above the diamond top for shorts, or just below the diamond bottom for longs; raise the stop as the trade moves in your favor. For best performance: correctly identify the pattern (use the guidelines table); favor downward breakouts as they are more common and perform well; downward breakouts have the lowest failure rates for small declines while upward breakouts have fewer failures for larger moves; avoid nearby support and resistance to minimize throwbacks and pullbacks; note that breakout day gaps suggest poor performance for tops; expect a trend change about a month after the breakout; tall patterns usually outperform short ones; avoid short and wide diamonds; prefer light breakout volume for tops.

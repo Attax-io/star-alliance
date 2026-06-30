@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eval Review</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" integrity="sha384-EnyY0/GSHQGSxSgMwaIPzSESbqoOLSexfnSMN2AP+39Ckmn92stwABZynq1JyzdT" crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --bg: #faf9f5;
+      --surface: #ffffff;
+      --border: #e8e6dc;
+      --text: #141413;
+      --text-muted: #b0aea5;
+      --accent: #d97757;
+      --accent-hover: #c4613f;
+      --green: #788c5d;
+      --green-bg: #eef2e8;
+      --red: #c44;
+      --red-bg: #fceaea;
+      --header-bg: #141413;
+      --header-text: #faf9f5;
+      --radius: 6px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Lora', Georgia, serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ---- Header ---- */
+    .header {
+      background: var(--header-bg);
+      color: var(--header-text);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .header h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    .header .instructions {
+      font-size: 0.8rem;
+      opacity: 0.7;
+      margin-top: 0.25rem;
+    }
+    .header .progress {
+      font-size: 0.875rem;
+      opacity: 0.8;
+      text-align: right;
+    }
+
+    /* ---- Main content ---- */
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    /* ---- Sections ---- */
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      flex-shrink: 0;
+    }
+    .section-header {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.75rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .section-body {
+      padding: 1rem;
+    }
+
+    /* ---- Config badge ---- */
+    .config-badge {
+      display: inline-block;
+      padding: 0.2rem 0.625rem;
+      border-radius: 9999px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-left: 0.75rem;
+      vertical-align: middle;
+    }
+    .config-badge.config-primary {
+      background: rgba(33, 150, 243, 0.12);
+      color: #1976d2;
+    }
+    .config-badge.config-baseline {
+      background: rgba(255, 193, 7, 0.15);
+      color: #f57f17;
+    }
+
+    /* ---- Prompt ---- */
+    .prompt-text {
+      white-space: pre-wrap;
+      font-size: 0.9375rem;
+      line-height: 1.6;
+    }
+
+    /* ---- Outputs ---- */
+    .output-file {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .output-file + .output-file {
+      margin-top: 1rem;
+    }
+    .output-file-header {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      font-family: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .output-file-header .dl-btn {
+      font-size: 0.7rem;
+      color: var(--accent);
+      text-decoration: none;
+      cursor: pointer;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-weight: 500;
+      opacity: 0.8;
+    }
+    .output-file-header .dl-btn:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+    .output-file-content {
+      padding: 0.75rem;
+      overflow-x: auto;
+    }
+    .output-file-content pre {
+      font-size: 0.8125rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+    }
+    .output-file-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+    }
+    .output-file-content iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+    }
+    .output-file-content table {
+      border-collapse: collapse;
+      font-size: 0.8125rem;
+      width: 100%;
+    }
+    .output-file-content table td,
+    .output-file-content table th {
+      border: 1px solid var(--border);
+      padding: 0.375rem 0.5rem;
+      text-align: left;
+    }
+    .output-file-content table th {
+      background: var(--bg);
+      font-weight: 600;
+    }
+    .output-file-content .download-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.875rem;
+      cursor: pointer;
+    }
+    .output-file-content .download-link:hover {
+      background: var(--border);
+    }
+    .empty-state {
+      color: var(--text-muted);
+      font-style: italic;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    /* ---- Feedback ---- */
+    .prev-feedback {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.625rem 0.75rem;
+      margin-top: 0.75rem;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .prev-feedback-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.25rem;
+      color: var(--text-muted);
+    }
+    .feedback-textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 0.9375rem;
+      line-height: 1.5;
+      resize: vertical;
+      color: var(--text);
+    }
+    .feedback-textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    .feedback-status {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      min-height: 1.1em;
+    }
+
+    /* ---- Grades (collapsible) ---- */
+    .grades-toggle {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
+    .grades-toggle:hover {
+      color: var(--accent);
+    }
+    .grades-toggle .arrow {
+      margin-right: 0.5rem;
+      transition: transform 0.15s;
+      font-size: 0.75rem;
+    }
+    .grades-toggle .arrow.open {
+      transform: rotate(90deg);
+    }
+    .grades-content {
+      display: none;
+      margin-top: 0.75rem;
+    }
+    .grades-content.open {
+      display: block;
+    }
+    .grades-summary {
+      font-size: 0.875rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .grade-badge {
+      display: inline-block;
+      padding: 0.125rem 0.5rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .grade-pass { background: var(--green-bg); color: var(--green); }
+    .grade-fail { background: var(--red-bg); color: var(--red); }
+    .assertion-list {
+      list-style: none;
+    }
+    .assertion-item {
+      padding: 0.625rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.8125rem;
+    }
+    .assertion-item:last-child { border-bottom: none; }
+    .assertion-status {
+      font-weight: 600;
+      margin-right: 0.5rem;
+    }
+    .assertion-status.pass { color: var(--green); }
+    .assertion-status.fail { color: var(--red); }
+    .assertion-evidence {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+      padding-left: 1.5rem;
+    }
+
+    /* ---- View tabs ---- */
+    .view-tabs {
+      display: flex;
+      gap: 0;
+      padding: 0 2rem;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .view-tab {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.625rem 1.25rem;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      border-bottom: 2px solid transparent;
+      transition: all 0.15s;
+    }
+    .view-tab:hover { color: var(--text); }
+    .view-tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    .view-panel { display: none; }
+    .view-panel.active { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
+
+    /* ---- Benchmark view ---- */
+    .benchmark-view {
+      padding: 1.5rem 2rem;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .benchmark-table {
+      border-collapse: collapse;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.8125rem;
+      width: 100%;
+      margin-bottom: 1.5rem;
+    }
+    .benchmark-table th, .benchmark-table td {
+      padding: 0.625rem 0.75rem;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+    .benchmark-table th {
+      font-family: 'Poppins', sans-serif;
+      background: var(--header-bg);
+      color: var(--header-text);
+      font-weight: 500;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .benchmark-table tr:hover { background: var(--bg); }
+    .benchmark-table tr.benchmark-row-with { background: rgba(33, 150, 243, 0.06); }
+    .benchmark-table tr.benchmark-row-without { background: rgba(255, 193, 7, 0.06); }
+    .benchmark-table tr.benchmark-row-with:hover { background: rgba(33, 150, 243, 0.12); }
+    .benchmark-table tr.benchmark-row-without:hover { background: rgba(255, 193, 7, 0.12); }
+    .benchmark-table tr.benchmark-row-avg { font-weight: 600; border-top: 2px solid var(--border); }
+    .benchmark-table tr.benchmark-row-avg.benchmark-row-with { background: rgba(33, 150, 243, 0.12); }
+    .benchmark-table tr.benchmark-row-avg.benchmark-row-without { background: rgba(255, 193, 7, 0.12); }
+    .benchmark-delta-positive { color: var(--green); font-weight: 600; }
+    .benchmark-delta-negative { color: var(--red); font-weight: 600; }
+    .benchmark-notes {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+    }
+    .benchmark-notes h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.875rem;
+      margin-bottom: 0.75rem;
+    }
+    .benchmark-notes ul {
+      list-style: disc;
+      padding-left: 1.25rem;
+    }
+    .benchmark-notes li {
+      font-size: 0.8125rem;
+      line-height: 1.6;
+      margin-bottom: 0.375rem;
+    }
+    .benchmark-empty {
+      color: var(--text-muted);
+      font-style: italic;
+      text-align: center;
+      padding: 3rem;
+    }
+
+    /* ---- Navigation ---- */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      flex-shrink: 0;
+    }
+    .nav-btn {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.5rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text);
+      transition: all 0.15s;
+    }
+    .nav-btn:hover:not(:disabled) {
+      background: var(--bg);
+      border-color: var(--text-muted);
+    }
+    .nav-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .done-btn {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.5rem 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.15s;
+    }
+    .done-btn:hover {
+      background: var(--bg);
+      border-color: var(--text-muted);
+    }
+    .done-btn.ready {
+      border: none;
+      background: var(--accent);
+      color: white;
+      font-weight: 600;
+    }
+    .done-btn.ready:hover {
+      background: var(--accent-hover);
+    }
+    /* ---- Done overlay ---- */
+    .done-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+    }
+    .done-overlay.visible {
+      display: flex;
+    }
+    .done-card {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 2rem 3rem;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 500px;
+    }
+    .done-card h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .done-card p {
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+    .done-card .btn-row {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+    .done-card button {
+      padding: 0.5rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      cursor: pointer;
+      font-size: 0.875rem;
+    }
+    .done-card button:hover {
+      background: var(--bg);
+    }
+    /* ---- Toast ---- */
+    .toast {
+      position: fixed;
+      bottom: 5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--header-bg);
+      color: var(--header-text);
+      padding: 0.625rem 1.25rem;
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+      z-index: 200;
+    }
+    .toast.visible {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div id="app" style="height:100vh; display:flex; flex-direction:column;">
+    <div class="header">
+      <div>
+        <h1>Eval Review: <span id="skill-name"></span></h1>
+        <div class="instructions">Review each output and leave feedback below. Navigate with arrow keys or buttons. When done, copy feedback and paste into Claude Code.</div>
+      </div>
+      <div class="progress" id="progress"></div>
+    </div>
+
+    <!-- View tabs (only shown when benchmark data exists) -->
+    <div class="view-tabs" id="view-tabs" style="display:none;">
+      <button class="view-tab active" onclick="switchView('outputs')">Outputs</button>
+      <button class="view-tab" onclick="switchView('benchmark')">Benchmark</button>
+    </div>
+
+    <!-- Outputs panel (qualitative review) -->
+    <div class="view-panel active" id="panel-outputs">
+    <div class="main">
+      <!-- Prompt -->
+      <div class="section">
+        <div class="section-header">Prompt <span class="config-badge" id="config-badge" style="display:none;"></span></div>
+        <div class="section-body">
+          <div class="prompt-text" id="prompt-text"></div>
+        </div>
+      </div>
+
+      <!-- Outputs -->
+      <div class="section">
+        <div class="section-header">Output</div>
+        <div class="section-body" id="outputs-body">
+          <div class="empty-state">No output files found</div>
+        </div>
+      </div>
+
+      <!-- Previous Output (collapsible) -->
+      <div class="section" id="prev-outputs-section" style="display:none;">
+        <div class="section-header">
+          <div class="grades-toggle" onclick="togglePrevOutputs()">
+            <span class="arrow" id="prev-outputs-arrow">&#9654;</span>
+            Previous Output
+          </div>
+        </div>
+        <div class="grades-content" id="prev-outputs-content"></div>
+      </div>
+
+      <!-- Grades (collapsible) -->
+      <div class="section" id="grades-section" style="display:none;">
+        <div class="section-header">
+          <div class="grades-toggle" onclick="toggleGrades()">
+            <span class="arrow" id="grades-arrow">&#9654;</span>
+            Formal Grades
+          </div>
+        </div>
+        <div class="grades-content" id="grades-content"></div>
+      </div>
+
+      <!-- Feedback -->
+      <div class="section">
+        <div class="section-header">Your Feedback</div>
+        <div class="section-body">
+          <textarea
+            class="feedback-textarea"
+            id="feedback"
+            placeholder="What do you think of this output? Any issues, suggestions, or things that look great?"
+          ></textarea>
+          <div class="feedback-status" id="feedback-status"></div>
+          <div class="prev-feedback" id="prev-feedback" style="display:none;">
+            <div class="prev-feedback-label">Previous feedback</div>
+            <div id="prev-feedback-text"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav" id="outputs-nav">
+      <button class="nav-btn" id="prev-btn" onclick="navigate(-1)">&#8592; Previous</button>
+      <button class="done-btn" id="done-btn" onclick="showDoneDialog()">Submit All Reviews</button>
+      <button class="nav-btn" id="next-btn" onclick="navigate(1)">Next &#8594;</button>
+    </div>
+    </div><!-- end panel-outputs -->
+
+    <!-- Benchmark panel (quantitative stats) -->
+    <div class="view-panel" id="panel-benchmark">
+      <div class="benchmark-view" id="benchmark-content">
+        <div class="benchmark-empty">No benchmark data available. Run a benchmark to see quantitative results here.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Done overlay -->
+  <div class="done-overlay" id="done-overlay">
+    <div class="done-card">
+      <h2>Review Complete</h2>
+      <p>Your feedback has been saved. Go back to your Claude Code session and tell Claude you're done reviewing.</p>
+      <div class="btn-row">
+        <button onclick="closeDoneDialog()">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ---- Embedded data (injected by generate_review.py) ----
+    const EMBEDDED_DATA = {"skill_name": "file-access-model", "runs": [{"id": "eval-1-with_skill", "prompt": "write the migration SQL for the file_access table", "eval_id": 1, "outputs": [{"name": "response.md", "type": "text", "content": "# file_access Table Migration SQL\n\n## Overview\n\nThis migration creates the `file_access` table \u2014 the single source of truth for who can access a file. It replaces the legacy `fd_access` satellite table with a formally-typed model that stores roles and computes `users_access` at query time.\n\n**Status:** Ready for approval\n**Date:** 3 April 2026\n**Total rows affected:** All files (backfill from fd_access required after table creation)\n\n---\n\n## Migration SQL\n\n```sql\n-- \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n-- file_access Table \u2014 Core Table Creation\n-- \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n--\n-- Purpose: Single source of truth for file access. Replaces fd_access.\n--\n-- Roles (stored):\n--   \u2022 file_owner: council member (is_partner = true), default from ppl\n--   \u2022 file_admin: any council member, defaults to owner at creation\n--   \u2022 member_assistants: attorney council members, manually added\n--   \u2022 external_assistants: pre-registered org_users, manually added\n--   \u2022 customer_uuid: auto-resolved from ppl.user_ref, null if no account\n--   \u2022 subers: opt-in notification subscribers (subset of users_access)\n--   \u2022 branches_access: branch-level RLS (GIN indexed)\n--\n-- Virtual (computed in file_access_full view):\n--   \u2022 users_access: deduplicated union of all roles, respects view_for_customer flag\n--   \u2022 tasks_access: computed live from tasks table\n--\n-- RLS: Three-gate pattern (Gates 1-3 in views)\n--   1. branches_access @> ARRAY[user's branch]\n--   2. auth.uid() = ANY(users_access)\n--   3. EXISTS on ancestor file_access rows (via fd.gfn_ref/mfn_ref/bfn_ref/sfn_ref)\n--\n-- \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n\n-- Create table\nCREATE TABLE IF NOT EXISTS public.file_access (\n  file_id                uuid NOT NULL PRIMARY KEY,\n  file_owner             uuid NOT NULL,\n  file_admin             uuid NOT NULL,\n  member_assistants      uuid[] NOT NULL DEFAULT '{}',\n  external_assistants    uuid[] NOT NULL DEFAULT '{}',\n  customer_uuid          uuid,\n  branches_access        uuid[] NOT NULL,\n  subers                 uuid[] NOT NULL DEFAULT '{}',\n  view_for_customer      boolean NOT NULL DEFAULT true,\n  updated_at             timestamptz NOT NULL DEFAULT now(),\n  CONSTRAINT file_access_file_id_fk FOREIGN KEY (file_id) REFERENCES fd(file_id) ON DELETE CASCADE,\n  CONSTRAINT file_access_owner_fk FOREIGN KEY (file_owner) REFERENCES council_members(id),\n  CONSTRAINT file_access_admin_fk FOREIGN KEY (file_admin) REFERENCES council_members(id)\n);\n\n-- Create indexes\nCREATE INDEX IF NOT EXISTS file_access_owner_idx ON file_access(file_owner);\nCREATE INDEX IF NOT EXISTS file_access_admin_idx ON file_access(file_admin);\nCREATE INDEX IF NOT EXISTS file_access_customer_uuid_idx ON file_access(customer_uuid);\n\n-- GIN indexes for array columns (used by RLS Gate 2 and Gate 3)\nCREATE INDEX IF NOT EXISTS file_access_branches_access_gin ON file_access USING gin(branches_access);\nCREATE INDEX IF NOT EXISTS file_access_member_assistants_gin ON file_access USING gin(member_assistants);\nCREATE INDEX IF NOT EXISTS file_access_external_assistants_gin ON file_access USING gin(external_assistants);\nCREATE INDEX IF NOT EXISTS file_access_subers_gin ON file_access USING gin(subers);\n\n-- \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n-- Row-Level Security (RLS)\n-- \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n-- RLS is deferred to the file_access_full view and _js views that use it.\n-- The table itself allows authenticated read; the view enforces the three-gate pattern.\n-- \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n\nALTER TABLE public.file_access ENABLE ROW LEVEL SECURITY;\n\n-- Allow authenticated users to read (RLS enforcement happens at view layer)\nCREATE POLICY file_access_select_authenticated ON public.file_access\n  FOR SELECT\n  USING (auth.role() = 'authenticated');\n\n-- Only system / trigger can modify file_access directly\n-- (Frontend changes go through _js views and API routes)\nCREATE POLICY file_access_update_system_only ON public.file_access\n  FOR UPDATE\n  USING (false)  -- Fallback: never allow direct updates at table level\n  WITH CHECK (false);\n\nCREATE POLICY file_access_delete_system_only ON public.file_access\n  FOR DELETE\n  USING (false);  -- Fallback: never allow direct deletes\n\n-- \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n-- Backfill from fd_access (if migrating from legacy fd_access table)\n-- \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n-- This step assumes the legacy fd_access table exists and has been populated.\n-- If fd_access does not exist or is already integrated into fd, skip this block.\n--\n-- INSERT INTO file_access (\n--   file_id,\n--   file_owner,\n--   file_admin,\n--   member_assistants,\n--   external_assistants,\n--   customer_uuid,\n--   branches_access,\n--   subers,\n--   view_for_customer,\n--   updated_at\n-- )\n-- SELECT\n--   fa.file_id,\n--   fa.file_owner,\n--   fa.file_admin,\n--   fa.member_assistants,\n--   fa.external_assistants,\n--   fa.customer_uuid,\n--   fa.branches_access,\n--   fa.subers,\n--   true AS view_for_customer,  -- Default to true for legacy data\n--   NOW()\n-- FROM fd_access fa\n-- ON CONFLICT (file_id) DO NOTHING;\n--\n-- \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n\n-- Grant permissions\nGRANT SELECT ON public.file_access TO authenticated;\nGRANT SELECT ON public.file_access TO anon;  -- For signed URLs via storage_check_doc_access\n\n-- \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n-- Trigger Function: fa_on_fd_a_insert\n-- \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n-- Fires: AFTER INSERT ON fd\n-- Does: Creates file_access row; resolves defaults; sets branches_access\n--\n-- This is a TEMPLATE. To be implemented in a separate migration after this table\n-- exists and the org_users table is created. The trigger must:\n--   1. Resolve file_owner from ppl.user_ref (customer) \u2192 council_members (partner)\n--   2. Set file_admin = file_owner\n--   3. Resolve customer_uuid from ppl.user_ref if customer has an account\n--   4. Set branches_access from the file's owner's primary branch\n--\n-- Note: external_assistants and member_assistants validation FK \u2192 org_users / council_members\n--       will be enforced by constraint after org_users table is created.\n-- \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n\n-- Template signature (implementation deferred):\n-- CREATE OR REPLACE FUNCTION fa_on_fd_a_insert()\n-- RETURNS TRIGGER AS $$\n-- DECLARE\n--   v_owner_id uuid;\n--   v_owner_branch uuid;\n--   v_customer_uuid uuid;\n-- BEGIN\n--   -- 1. Resolve file_owner from customer (ppl.user_ref \u2192 council_members)\n--   SELECT cm.id INTO v_owner_id\n--   FROM ppl p\n--   JOIN council_members cm ON cm.id = p.partner_id\n--   WHERE p.ppl_id = NEW.ppl_ref\n--     AND cm.is_partner = true\n--     AND cm.in_service = true\n--   LIMIT 1;\n--\n--   IF v_owner_id IS NULL THEN\n--     RAISE EXCEPTION 'Cannot resolve owner: no active partner for customer';\n--   END IF;\n--\n--   -- 2. Get owner's primary branch\n--   SELECT in_branch INTO v_owner_branch\n--   FROM council_members\n--   WHERE id = v_owner_id;\n--\n--   -- 3. Resolve customer_uuid from ppl.user_ref\n--   SELECT p.user_ref INTO v_customer_uuid\n--   FROM ppl p\n--   WHERE p.ppl_id = NEW.ppl_ref;\n--\n--   -- 4. Create file_access row\n--   INSERT INTO file_access (\n--     file_id,\n--     file_owner,\n--     file_admin,\n--     member_assistants,\n--     external_assistants,\n--     customer_uuid,\n--     branches_access,\n--     subers,\n--     view_for_customer,\n--     updated_at\n--   ) VALUES (\n--     NEW.file_id,\n--     v_owner_id,\n--     v_owner_id,\n--     '{}',\n--     '{}',\n--     v_customer_uuid,\n--     ARRAY[v_owner_branch],\n--     '{}',\n--     true,\n--     NOW()\n--   );\n--\n--   RETURN NEW;\n-- END;\n-- $$ LANGUAGE plpgsql SECURITY DEFINER;\n\n-- \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n-- Trigger Function: fa_on_ppl_a_user_ref\n-- \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n-- Fires: AFTER UPDATE OF user_ref ON ppl\n-- Does: Updates customer_uuid on all linked file_access rows when customer gains/loses account\n--\n-- This is a TEMPLATE. To be implemented in a separate migration.\n-- \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n\n-- Template signature (implementation deferred):\n-- CREATE OR REPLACE FUNCTION fa_on_ppl_a_user_ref()\n-- RETURNS TRIGGER AS $$\n-- BEGIN\n--   UPDATE file_access\n--   SET customer_uuid = NEW.user_ref, updated_at = NOW()\n--   WHERE file_id IN (\n--     SELECT file_id FROM fd WHERE ppl_ref = NEW.ppl_id\n--   );\n--   RETURN NEW;\n-- END;\n-- $$ LANGUAGE plpgsql SECURITY DEFINER;\n\n-- \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n-- Pending Items\n-- \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n--\n-- The following are defined in TABLE STRUCTURE but require separate migrations:\n--\n-- 1. org_users table \u2014 External user registry\n--    Columns: id (uuid, PK), full_name (text), org_name (text), email (text),\n--             is_active (boolean), created_at (timestamptz)\n--    After creation, add FK constraint:\n--      ALTER TABLE file_access\n--      ADD CONSTRAINT file_access_external_assistants_fk\n--      FOREIGN KEY (external_assistants) REFERENCES org_users(id);\n--\n-- 2. file_access_log table \u2014 Audit trail (AFTER UPDATE trigger required)\n--    Columns: id (uuid, PK), file_id (uuid, FK), changed_at (timestamptz),\n--             changed_by (uuid, FK), field (text), old_value (text), new_value (text)\n--\n-- 3. file_access_full view \u2014 Computes users_access + tasks_access\n--    Uses:\n--      array_distinct(\n--        array_remove(\n--          ARRAY[file_owner, file_admin] || member_assistants\n--          || CASE WHEN view_for_customer = true\n--               THEN external_assistants || COALESCE(ARRAY[customer_uuid], '{}')\n--               ELSE '{}'\n--             END\n--          || (SELECT array_agg(DISTINCT assigned_uuid) FROM tasks\n--              WHERE file_ref = fa.file_id AND NOT is_done),\n--          NULL\n--        )\n--      ) AS users_access\n--\n-- 4. Rewrite 30+ _js views to use file_access_full instead of fd_access\n--\n-- 5. Update storage_check_doc_access() to read from file_access_full\n--\n-- 6. Trigger functions: fa_on_fd_a_insert, fa_on_ppl_a_user_ref\n--\n-- 7. Backfill from legacy fd_access (if applicable)\n--\n-- \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n\n```\n\n---\n\n## Constraints & Validation Rules\n\n| Rule | Enforcement | Trigger/Function |\n|---|---|---|\n| Owner must be active partner | `is_partner = true AND in_service = true` | `fa_on_fd_a_insert` |\n| Admin must be council member | FK \u2192 `council_members.id` | Table constraint |\n| Member assistants must be attorneys | `is_attorney = true` for each UUID | Trigger validation (deferred) |\n| External assistants must be pre-registered | FK \u2192 `org_users.id` (after org_users created) | Table constraint (deferred) |\n| `subers` are soft constraint | Checked at notification dispatch time, not DB level | Application logic |\n| `users_access` no NULLs/duplicates | `array_remove(..., NULL)` + `array_distinct(...)` | `file_access_full` view computation |\n\n---\n\n## Notes\n\n1. **RLS is enforced at the view layer**, not the table. The `file_access` table itself allows authenticated SELECT; the three-gate predicate is implemented in `file_access_full` view and all `_js` views that consume it.\n\n2. **`users_access` is never stored** \u2014 it is computed at query time in the `file_access_full` view. This avoids synchronization costs and keeps the table lean.\n\n3. **Triggers are templates** \u2014 actual implementation deferred to separate migrations after dependencies (org_users table) are created.\n\n4. **Backfill is optional** \u2014 only needed if migrating from legacy `fd_access`. If this is a fresh table, the trigger `fa_on_fd_a_insert` will populate new files automatically.\n\n5. **Array constraints** \u2014 FK constraints on array columns (member_assistants \u2192 council_members, external_assistants \u2192 org_users) require triggers or application-level validation; they cannot be enforced directly at the DB level.\n\n---\n\n## Approval Required\n\nBefore applying this migration:\n\n1. Confirm the `org_users` table exists or will be created separately\n2. Confirm the backfill logic (or skip if starting fresh)\n3. Confirm the trigger implementations (deferred)\n4. Get approval from the team lead\n\n**Once approved, apply via Supabase migrations directory:**\n\n```bash\n# File name: supabase/migrations/20260403_create_file_access_table.sql\n# Then apply in Supabase dashboard or via CLI\n```\n"}], "grading": null}, {"id": "eval-1-without_skill", "prompt": "write the migration SQL for the file_access table", "eval_id": 1, "outputs": [{"name": "response.md", "type": "text", "content": "# No Output Produced\n\nThe agent read the INDEX.md (via CLAUDE.md), found the FILE-ACCESS-MODEL.md doc, then stopped to ask a clarifying question rather than writing the SQL:\n\n> \"Should I proceed with writing the complete migration SQL following this specification?\"\n\nNo migration SQL was written to a file. The agent did not proceed autonomously.\n"}], "grading": null}, {"id": "eval-2-with_skill", "prompt": "what roles can be on a file and how does the exclusion flag work?", "eval_id": 2, "outputs": [{"name": "response.md", "type": "text", "content": "# File Roles and the Exclusion Flag\n\n## What Roles Can Be On a File?\n\nEvery file has **five role types** in the `file_access` table. All of them feed into the computed `users_access` virtual column.\n\n| Role | Column | Type | Who Can Hold It | Default |\n|---|---|---|---|---|\n| **Owner** | `file_owner` | `uuid` | Council member with `is_partner = true` | Partner linked to the customer in `ppl` |\n| **Admin** | `file_admin` | `uuid` | Any council member | Same as `file_owner` at creation |\n| **Member Assistants** | `member_assistants` | `uuid[]` | Council members with `is_attorney = true` | `{}` (empty) |\n| **External Assistants** | `external_assistants` | `uuid[]` | Pre-registered org users (`org_users` table) | `{}` (empty) |\n| **Customer** | `customer_uuid` | `uuid` or `null` | The customer (if they have a user account) | Auto-resolved from `ppl.user_ref` |\n\nAdditionally, **task holders** are automatically derived at query time from the `tasks` table \u2014 they are not stored in `file_access` but are included in the computed `users_access`.\n\n### Role Distinctions\n\n- **Owner** = holds financial/monetary ownership only; no operational responsibility.\n- **Admin** = manages the file day-to-day and can differ from the owner.\n- **Member Assistants** = internal attorneys from the council; same-branch members surface first in the picker UI.\n- **External Assistants** = users from organizations Lex Council is contracted with; must be pre-registered in the `org_users` table before they can be added.\n- **Customer** = automatically included if the customer has a user account; NULL if they don't.\n\n---\n\n## How Does the Exclusion Flag Work?\n\nThe exclusion flag is a single boolean column called **`view_for_customer`** (default: `true`).\n\n### When `view_for_customer = true` (default)\n\nAll roles are included in the computed `users_access`:\n- File owner\n- File admin\n- Member assistants\n- External assistants\n- Customer (if they have an account)\n- Task holders (auto-derived)\n\n### When `view_for_customer = false`\n\nThe file is treated as **internal-only**. Both the customer and external assistants are **excluded** from `users_access`. More specifically:\n\n- File owner, admin, member assistants, and task holders **remain** in access\n- **Customer is excluded** from `users_access`\n- **External assistants are excluded** from `users_access`\n\n### Important Characteristics\n\n1. **Single flag, dual effect** \u2014 There is no separate flag for external assistants. The one `view_for_customer` flag controls visibility for both customer and external parties together.\n\n2. **Non-destructive exclusion** \u2014 When the flag is `false`, customer and external assistants are not removed from the table. Their UUIDs remain stored in those columns. If the flag is later re-enabled to `true`, they automatically regain access.\n\n3. **Applied at query time** \u2014 The exclusion happens during computation of `users_access` in the `file_access_full` view, not at storage time.\n\n4. **Per-file setting** \u2014 The flag is set independently on each file. A customer excluded on a child file does not inherit access even if included on the parent file.\n\n### Pseudocode for `users_access` Computation\n\n```sql\n-- Simplified; see FILE-ACCESS-MODEL.md for full details\narray_distinct(\n  array_remove(\n    ARRAY[file_owner, file_admin]\n    || member_assistants\n    || CASE WHEN view_for_customer = true\n         THEN external_assistants || COALESCE(ARRAY[customer_uuid], '{}')\n         ELSE '{}'\n       END\n    || (SELECT array_agg(DISTINCT assigned_uuid)\n        FROM tasks\n        WHERE file_ref = fa.file_id AND NOT is_done),\n    NULL\n  )\n)\n```\n\nThe result is always deduplicated and NULL-free. A user holding multiple roles appears exactly once.\n\n---\n\n## Soft Constraint on Subscribers\n\nThe `subers` column is an opt-in list of notification subscribers \u2014 a subset of `users_access`. If a user loses access (e.g., the flag changes or a role is revoked), they are not automatically removed from `subers`. Instead, **notification dispatch checks `subers \u2229 users_access` at send time**, so stale entries are harmlessly skipped.\n\n---\n\n**References:**\n- `FILE-ACCESS-MODEL.md` \u00a7 2 (Access Roles), \u00a7 4 (The Exclusion Flag), \u00a7 5 (`users_access` Composition)\n- `FILE-HIERARCHY.md` \u00a7 5 (Access Inheritance and per-file flag behavior)\n"}], "grading": null}, {"id": "eval-2-without_skill", "prompt": "what roles can be on a file and how does the exclusion flag work?", "eval_id": 2, "outputs": [{"name": "response.md", "type": "text", "content": "# File Access Model: Roles and Exclusion Flag\n\n## What Roles Can Be on a File\n\nEvery file in Lex Council has five distinct role types, all of which feed into the computed `users_access` list:\n\n| Role | Column | Type | Who Can Have It | Details |\n|---|---|---|---|---|\n| **Owner** | `file_owner` | `uuid` | Council member with `is_partner = true` | Financial/monetary ownership only. No operational responsibility. Auto-resolved from the customer (`ppl`) at file creation. |\n| **Admin** | `file_admin` | `uuid` | Any council member | Manages and follows up the file day-to-day. Can differ from owner. Defaults to same as `file_owner` at creation. |\n| **Member Assistants** | `member_assistants` | `uuid[]` | Council members with `is_attorney = true` | Internal attorneys from the same branch surface first in the picker. Array allows multiple. |\n| **External Assistants** | `external_assistants` | `uuid[]` | Registered org users (`org_users` table) | Users from organizations Lex Council is contracted with. Must be pre-registered in `org_users` before they can be added. Array allows multiple. |\n| **Customer** | `customer_uuid` | `uuid \\| null` | Customer with an account (`ppl.user_ref`) | Automatically included if the customer has a user account; NULL if they don't. Auto-resolved from `ppl` at file creation. |\n\n### Additional Access Derived at Query Time\n\n**Task Holders** \u2014 Users assigned to active (non-completed) tasks on the file are automatically included in `users_access` at query time. These are derived from the `tasks` table (where `is_done = false`), not stored in `file_access`.\n\n---\n\n## How the Exclusion Flag Works\n\nThe **`view_for_customer`** boolean flag controls all external party visibility. It is stored in the `file_access` table with a default value of `true`.\n\n### Behavior\n\n**When `view_for_customer = true` (default):**\n- External parties have access to the file\n- Both `external_assistants` and `customer_uuid` are included in the computed `users_access`\n\n**When `view_for_customer = false` (internal-only mode):**\n- The file is hidden from all external parties\n- Both `customer_uuid` **and** `external_assistants` are **excluded** from `users_access`\n- They are **not removed** from the table \u2014 the roles remain stored unchanged\n- If the flag is re-enabled later, they regain access automatically with no additional work\n\n### Key Points\n\n- **Single flag, comprehensive control** \u2014 There is no separate flag for external assistants; `view_for_customer` gates both customer and external assistant visibility\n- **Non-destructive** \u2014 Excluded parties are simply not added to the computed access list, not deleted from the table\n- **Reversible** \u2014 Re-enabling the flag restores access immediately without re-entry of contact information\n\n### Computation in `file_access_full` View\n\nThe `users_access` is computed in the `file_access_full` view using this logic (pseudocode):\n\n```sql\narray_distinct(\n  array_remove(\n    ARRAY[file_owner, file_admin]\n    || member_assistants\n    || CASE WHEN view_for_customer = true\n         THEN external_assistants || COALESCE(ARRAY[customer_uuid], '{}')\n         ELSE '{}'\n       END\n    || (SELECT array_agg(DISTINCT assigned_uuid)\n        FROM tasks\n        WHERE file_ref = fa.file_id AND NOT is_done),\n    NULL\n  )\n)\n```\n\nThe result is always deduplicated (no duplicates) and NULL-free. A user holding multiple roles (e.g., admin who also has a task) appears exactly once in `users_access`.\n\n---\n\n## Summary\n\n- **Five stored roles** + **task-derived access** = the complete access set\n- **`view_for_customer` flag** provides single-toggle control over all external visibility\n- **No destructive exclusion** \u2014 external parties are simply filtered out of `users_access` when the flag is off, not removed from the table\n- **Inherited hierarchy access** \u2014 Access on parent files is automatically inherited by descendant files via RLS predicates, not via cascade triggers\n"}], "grading": null}, {"id": "eval-3-with_skill", "prompt": "i need to add access to a file for an external lawyer from a firm we work with, walk me through how that works", "eval_id": 3, "outputs": [{"name": "response.md", "type": "text", "content": "# How to Add File Access for an External Lawyer\n\n## Overview\n\nIn Lex Council, when you need to grant a file to an external lawyer from a partner firm, you're assigning them as an **external assistant**. This is one of five access roles in the file access model.\n\nThe process has two parts:\n1. **Pre-registration** \u2014 The external lawyer must exist in the `org_users` registry\n2. **File assignment** \u2014 Add them to the file via the external assistants picker\n\n---\n\n## The Five Access Roles (Background)\n\nEvery file in Lex Council has five role types. External lawyers fit into one of them:\n\n| Role | Who | How They're Added |\n|---|---|---|\n| **File Owner** | Partner (financial/monetary ownership) | Set automatically from the customer contact in the matter |\n| **File Admin** | Council member (day-to-day manager) | Manually selected, usually same as owner at creation |\n| **Member Assistants** | Internal attorneys from your firm | Manually selected from the picker |\n| **External Assistants** | Users from partner firms (like your external lawyer) | Manually selected from the pre-registered `org_users` list |\n| **Customer** | The client/customer with a user account | Automatically included if they have signed up |\n\n---\n\n## How It Works: Three Key Rules\n\n### 1. Pre-Registration Requirement\n\nBefore an external lawyer can be assigned to **any** file, they must exist in the **`org_users`** registry. This is a secure allowlist maintained by your administrator.\n\n**What this means:**\n- Your organization/partner firm manages who is pre-registered\n- Once registered, that person can be added to any file\n- Registration includes: full name, email, organization, and active status\n- Only active users (`is_active = true`) can be assigned\n\n**Who handles this:** Contact your administrator to register the external lawyer (usually a one-time setup per person per partner firm).\n\n### 2. The Exclusion Flag: `view_for_customer`\n\nEvery file has an **exclusion flag** called `view_for_customer`. This controls whether external parties can see the file.\n\n**When it's ON (`true`):**\n- External assistants CAN access the file\n- The customer CAN access the file (if they have an account)\n\n**When it's OFF (`false`):**\n- File is internal only\n- External assistants and customers are blocked, even if listed\n- Other roles (owner, admin, member assistants) still have access\n\n**What this means:** Even if an external lawyer is added to the external assistants list, they can only see the file if the `view_for_customer` flag is enabled. This is a safety valve for internal-only work.\n\n### 3. Access Inheritance Down the Hierarchy\n\nFiles in Lex Council are organized in a 5-level hierarchy:\n\n```\nGFN  (root matter)\n \u251c\u2500\u2500 MFN  (major division)\n \u2502    \u251c\u2500\u2500 BFN  (branch-scoped work)\n \u2502    \u2502    \u251c\u2500\u2500 SFN  (sub-task)\n \u2502    \u2502    \u2502    \u2514\u2500\u2500 AFN  (leaf task)\n```\n\n**Inheritance rule:** When you add an external lawyer to a **parent file** (e.g., a GFN or MFN), they automatically inherit access to all **child files** below it \u2014 without needing to add them separately.\n\n**Example:** If you add an external lawyer as an external assistant on the main MFN (level 2), they can access all BFN, SFN, and AFN files under it automatically.\n\n---\n\n## The Workflow: Step-by-Step\n\n### Step 1: Ensure Pre-Registration\n\n1. Confirm with your administrator that the external lawyer exists in `org_users`\n   - If they're not yet registered, ask your admin to register them\n   - This includes their full name, email, firm name, and confirmation of active status\n2. Once registered, their UUID is in the system and ready to use\n\n### Step 2: Navigate to the File\n\n1. Open the Lex Council app\n2. Navigate to the file you want to grant access to (GFN, MFN, BFN, SFN, or AFN)\n3. Look for the **file settings** or **access management** section (usually in a sidebar or drawer)\n\n### Step 3: Add the External Assistant\n\n1. In the file's access settings, find the **External Assistants** field\n2. Click the picker/dropdown\n3. Select the external lawyer from the `org_users` list\n4. Their UUID is added to the `external_assistants` array for that file\n5. Save the change\n\n### Step 4: Check the Exclusion Flag (Optional but Recommended)\n\n1. While you're in the access settings, verify the **`view_for_customer`** flag\n2. Make sure it's set to **ON (`true`)** if you want the external lawyer to actually see the file\n3. If it's OFF, they won't have access even though they're listed as an external assistant\n\n### Step 5: Consider Inheritance\n\n1. Think about the file hierarchy level you're granting access on\n2. **If granting on a parent file (GFN or MFN):** The external lawyer automatically inherits access to all child files\n3. **If granting on a leaf file (AFN):** Access is only to that specific file; other files in the hierarchy are not affected\n4. Choose the level that matches your intent\n\n---\n\n## What the External Lawyer Sees\n\nOnce added with the exclusion flag enabled, the external lawyer will:\n\n1. **See the file** in their file list (if using the Lex Council client)\n2. **Access documents** associated with that file and child files (via inheritance)\n3. **Participate in discussions** or task work linked to the file (depending on app features)\n4. **NOT see** internal-only files where the exclusion flag is OFF\n\n---\n\n## Safety Notes\n\n### Audit Trail\nEvery change to file access is logged in the **`file_access_log`** audit table. This records:\n- Who made the change\n- When it was made\n- Which role was modified (e.g., `external_assistants`)\n- The old and new values\n\n### Remove Access\nTo revoke access, simply remove the external lawyer's UUID from the `external_assistants` array on that file. The change is logged immediately.\n\n### Access Via Tasks\nFiles can also be accessed via **task assignment**. If an external lawyer is assigned a task on a file, they gain access to that file even without being listed as an external assistant (as long as the exclusion flag is ON). This is automatic.\n\n---\n\n## Common Scenarios\n\n### Scenario 1: Grant Access to One File\n- Pre-register the lawyer (if needed)\n- Navigate to the file\n- Add them to external assistants\n- Verify `view_for_customer = true`\n\n### Scenario 2: Grant Access to an Entire Matter Branch\n- Pre-register the lawyer (if needed)\n- Navigate to the **MFN** (main file node) at the top of that branch\n- Add them to external assistants on the MFN\n- **They automatically inherit access to all BFN/SFN/AFN files below it**\n- Verify `view_for_customer = true` on the MFN (and any child files where you want them blocked can have the flag turned OFF individually)\n\n### Scenario 3: Block the Client But Allow External Lawyer\n- Add the lawyer to external assistants\n- Set `view_for_customer = true` (so they can see)\n- The customer will NOT see the file (they have a separate `customer_uuid` role)\n- (This requires the customer to also NOT be assigned directly, or the exclusion applies to both customer and external assistants together)\n\n### Scenario 4: Revoke Access\n- Remove the lawyer's UUID from the `external_assistants` array\n- Change is logged immediately\n- They lose access (inheritance still applies upward to parent files they have direct access to)\n\n---\n\n## Technical Details (For Reference)\n\n### How Access Is Computed\nThe system computes a virtual `users_access` list for each file by combining:\n- File owner\n- File admin\n- Member assistants (internal attorneys)\n- **External assistants** (if `view_for_customer = true`)\n- Customer (if they have an account and `view_for_customer = true`)\n- Task holders (anyone assigned a non-completed task on the file)\n\n**Result:** The external lawyer sees the file if:\n1. They're in the `external_assistants` list, **AND**\n2. `view_for_customer = true`, **OR**\n3. They're assigned a task on the file (regardless of the flag)\n\n### RLS Protection\nAll file queries use **Row-Level Security (RLS)** to enforce access. The system checks:\n1. **Gate 1 (Fast):** Is the user's branch in the file's `branches_access`?\n2. **Gate 2 (Fast):** Is the user in the file's `users_access`?\n3. **Gate 3 (Bounded):** Is the user in the `users_access` of any ancestor file? (max 4 lookups)\n\nIf any gate passes, access is granted.\n\n---\n\n## Questions to Ask Before Proceeding\n\n- Is the external lawyer already registered in `org_users`? If not, contact your admin to register them first.\n- Should they see the entire matter (assign at GFN/MFN level) or just a specific file?\n- Should they see all files, or should some be blocked (check `view_for_customer` per file)?\n- Do you need to audit the change later? (All changes are logged automatically.)\n\n---\n\n*Last updated: 3 April 2026 \u2014 based on FILE-ACCESS-MODEL.md and FILE-HIERARCHY.md*\n"}], "grading": null}, {"id": "eval-3-without_skill", "prompt": "i need to add access to a file for an external lawyer from a firm we work with, walk me through how that works", "eval_id": 3, "outputs": [{"name": "response.md", "type": "text", "content": "# Adding File Access for an External Lawyer from a Partner Firm\n\n## Overview\n\nTo grant a file to an external lawyer from a partner firm, there are **two prerequisites** that must be met before you can add them to any file:\n\n1. **Their organization must be registered** in the system\n2. **They must have a user account** (be registered in `org_users`)\n\nOnce these prerequisites are in place, you then add them to the specific file.\n\n---\n\n## Step-by-Step Workflow\n\n### Step 1: Verify the External Lawyer is Pre-Registered in `org_users`\n\nBefore you can add an external lawyer to a file, they must exist in the `org_users` table. This is a **one-time setup** per external lawyer.\n\n**What is `org_users`?**\n- It's the registry of external users from organizations Lex Council is contracted with\n- Each external user needs a UUID entry here before they can be added to any file\n- Minimum required data per user:\n  - `id` (UUID) \u2014 unique identifier\n  - `full_name` \u2014 their name\n  - `org_name` \u2014 their organization/firm name\n  - `email` \u2014 contact email\n  - `is_active` \u2014 boolean flag (should be `true`)\n  - `created_at` \u2014 timestamp\n\n**What to do:**\n- If the external lawyer's firm/organization is new, confirm they have been registered in `org_users` first\n- If they already have an entry there, you're ready to proceed to Step 2\n- If they don't exist yet, contact your admin to create an `org_users` entry for them\n\n---\n\n### Step 2: Navigate to the File and Open Access Settings\n\nOnce the external lawyer is registered in `org_users`:\n\n1. Find the file you want to share (navigate to the specific General File Node, Main File Node, Branch File Node, Sub File Node, or Atomic File Node)\n2. Open the file's **access management interface** (typically a \"Share\", \"Access\", or \"Permissions\" button/panel \u2014 exact UI location depends on the page you're on)\n3. Look for the **\"External Assistants\"** field or section\n\n---\n\n### Step 3: Add the External Lawyer as an External Assistant\n\nIn the file access settings:\n\n1. **Locate the \"External Assistants\" field** \u2014 this is specifically for external users from partner firms\n2. **Search or select** the external lawyer's name from the dropdown\n   - The picker will display names from `org_users`\n   - You can search by name or organization\n   - Only active (`is_active = true`) users appear in the picker\n3. **Confirm the selection** to add them to the `external_assistants` array for that file\n\n**Important:** External lawyers are only added to `external_assistants` \u2014 not to `member_assistants` (which are for internal council members who are attorneys).\n\n---\n\n### Step 4: Verify the `view_for_customer` Flag (if applicable)\n\n**What is this flag?**\n- When `view_for_customer = false`, the file is marked as **internal-only**\n- This exclusion automatically hides the file from:\n  - All external assistants (including your newly added external lawyer)\n  - The customer (if they have an account)\n- When `view_for_customer = true` (the default), external assistants can see the file\n\n**What to check:**\n- If you want the external lawyer to see the file: **ensure `view_for_customer = true`** (this is the default)\n- If the file should remain internal-only: leave `view_for_customer = false` (the external lawyer will not have access, even if added to `external_assistants`)\n\n---\n\n## Access Inheritance: Automatic Coverage of Sub-Files\n\n**Key benefit:** If you add an external lawyer to a **parent file** (e.g., a Main File Node), they automatically inherit access to **all descendant files** (Branch File Nodes, Sub File Nodes, Atomic File Nodes) without needing to add them individually.\n\n**How it works:**\n- The system checks three access gates in order:\n  1. **Branch access** \u2014 does the user belong to the right branch?\n  2. **Direct access** \u2014 are they listed in `users_access` for this specific file?\n  3. **Inherited access** \u2014 are they listed in `users_access` for any ancestor file?\n- If the external lawyer appears in any ancestor's `users_access`, they can see all descendants\n\n**Practical example:**\n- If you add the external lawyer to a General File Node (GFN) level, they will automatically see all Main File Nodes, Branch File Nodes, Sub File Nodes, and Atomic Files under it\n- If you add them to a lower level (e.g., Branch File Node), they only see that branch and its descendants, not siblings or parents\n\n---\n\n## User Roles Explained\n\nWhen managing file access, there are **five distinct roles**. External lawyers from partner firms can only hold one role:\n\n| Role | Who | Can Add | Notes |\n|---|---|---|---|\n| **Owner** | Council member with `is_partner = true` | No \u2014 for external lawyers | Controls financial/monetary ownership only |\n| **Admin** | Any council member | No \u2014 for external lawyers | Day-to-day management; can differ from owner |\n| **Member Assistants** | Council members who are attorneys (`is_attorney = true`) | No \u2014 for external lawyers | For internal team members only |\n| **External Assistants** | Pre-registered org users from partner firms | **Yes \u2014 use this for external lawyers** | Can view files (unless `view_for_customer = false`) |\n| **Customer** | The customer (`ppl.user_ref`) | No \u2014 automatic if they have an account | Auto-included if customer is a registered user |\n\n---\n\n## Common Scenarios\n\n### Scenario 1: Share a Specific File with an External Lawyer\n1. Verify the lawyer is in `org_users`\n2. Open the file's access settings\n3. Add them to `external_assistants`\n4. Ensure `view_for_customer = true`\n5. **Done** \u2014 they have access to that file\n\n### Scenario 2: Share a Matter (GFN) and All Sub-Files\n1. Verify the lawyer is in `org_users`\n2. Open the General File Node (GFN) access settings\n3. Add them to `external_assistants` on the GFN\n4. Ensure `view_for_customer = true`\n5. **Done** \u2014 they automatically inherit access to all MFN, BFN, SFN, and AFN files under it\n\n### Scenario 3: Keep a File Internal-Only (Hide from External Lawyers)\n1. If the file already has external assistants added\n2. Set `view_for_customer = false`\n3. **Done** \u2014 the file is now hidden from external assistants (they remain in the record but cannot view it)\n4. When you're ready to share again, set `view_for_customer = true`\n\n### Scenario 4: Multiple External Lawyers from the Same Firm\n1. Each lawyer needs their own `org_users` entry (unique UUID, email, etc.)\n2. Add each lawyer individually to the `external_assistants` array\n3. Both will appear in the file's access list and can view the file (if `view_for_customer = true`)\n\n---\n\n## Important Constraints & Safeguards\n\n**Before adding an external lawyer, confirm:**\n\n| Check | Requirement | Why |\n|---|---|---|\n| **Pre-registered in `org_users`?** | UUID must exist in the `org_users` table | External assistants have a foreign key constraint to `org_users.id` |\n| **`is_active = true`?** | The user record must have `is_active` set to `true` | Inactive users do not appear in the picker and cannot be added |\n| **Correct role?** | They must be added to `external_assistants`, not `member_assistants` | Member assistants must be internal attorneys (`is_attorney = true`); external lawyers cannot hold this role |\n| **Correct file level?** | Choose the right level (GFN vs. MFN vs. BFN, etc.) to add them | Think about inheritance: adding at GFN is simpler than adding at each BFN individually |\n| **Visibility flag?** | Verify `view_for_customer = true` if you want them to see the file | Setting `view_for_customer = false` hides the file from all external assistants, regardless of the list |\n\n---\n\n## Technical Details (For Reference)\n\n**How external lawyers are stored:**\n- They are stored as a **UUID array** in the `file_access.external_assistants` column\n- The file access system computes a virtual column called `users_access` (in the `file_access_full` view) that includes:\n  - `file_owner`\n  - `file_admin`\n  - All members in `member_assistants`\n  - All members in `external_assistants` (if `view_for_customer = true`)\n  - The customer (if they have an account and `view_for_customer = true`)\n  - Any task assignees for open tasks on the file\n\n**Audit trail:**\n- Every change to `external_assistants` is logged in the `file_access_log` table (append-only audit trail)\n- The log records: which file, what changed, old value, new value, who made the change, and when\n\n**Row-level security (RLS):**\n- The system enforces access via RLS policies on the `file_access` table\n- External lawyers can only view files where they appear in the computed `users_access` (or in an ancestor's `users_access`)\n- The system automatically checks inheritance up to 4 levels (GFN \u2192 MFN \u2192 BFN \u2192 SFN)\n\n---\n\n## Summary\n\nTo add file access for an external lawyer:\n\n1. **Check prerequisites** \u2014 Lawyer must be registered in `org_users` (contact your admin if not)\n2. **Navigate to the file** \u2014 Open the file you want to share\n3. **Add to External Assistants** \u2014 Select the lawyer from the picker and add them\n4. **Verify visibility** \u2014 Confirm `view_for_customer = true` (default)\n5. **Inheritance is automatic** \u2014 If you add them at a parent level, all sub-files are covered\n\n**No additional steps needed.** The system automatically applies RLS and ensures they can only see files they're assigned to.\n\n"}], "grading": null}], "previous_feedback": {}, "previous_outputs": {}};
+
+    // ---- State ----
+    let feedbackMap = {};  // run_id -> feedback text
+    let currentIndex = 0;
+    let visitedRuns = new Set();
+
+    // ---- Init ----
+    async function init() {
+      // Load saved feedback from server — but only if this isn't a fresh
+      // iteration (indicated by previous_feedback being present). When
+      // previous feedback exists, the feedback.json on disk is stale from
+      // the prior iteration and should not pre-fill the textareas.
+      const hasPrevious = Object.keys(EMBEDDED_DATA.previous_feedback || {}).length > 0
+        || Object.keys(EMBEDDED_DATA.previous_outputs || {}).length > 0;
+      if (!hasPrevious) {
+        try {
+          const resp = await fetch("/api/feedback");
+          const data = await resp.json();
+          if (data.reviews) {
+            for (const r of data.reviews) feedbackMap[r.run_id] = r.feedback;
+          }
+        } catch { /* first run, no feedback yet */ }
+      }
+
+      document.getElementById("skill-name").textContent = EMBEDDED_DATA.skill_name;
+      showRun(0);
+
+      // Wire up feedback auto-save
+      const textarea = document.getElementById("feedback");
+      let saveTimeout = null;
+      textarea.addEventListener("input", () => {
+        clearTimeout(saveTimeout);
+        document.getElementById("feedback-status").textContent = "";
+        saveTimeout = setTimeout(() => saveCurrentFeedback(), 800);
+      });
+    }
+
+    // ---- Navigation ----
+    function navigate(delta) {
+      const newIndex = currentIndex + delta;
+      if (newIndex >= 0 && newIndex < EMBEDDED_DATA.runs.length) {
+        saveCurrentFeedback();
+        showRun(newIndex);
+      }
+    }
+
+    function updateNavButtons() {
+      document.getElementById("prev-btn").disabled = currentIndex === 0;
+      document.getElementById("next-btn").disabled =
+        currentIndex === EMBEDDED_DATA.runs.length - 1;
+    }
+
+    // ---- Show a run ----
+    function showRun(index) {
+      currentIndex = index;
+      const run = EMBEDDED_DATA.runs[index];
+
+      // Progress
+      document.getElementById("progress").textContent =
+        `${index + 1} of ${EMBEDDED_DATA.runs.length}`;
+
+      // Prompt
+      document.getElementById("prompt-text").textContent = run.prompt;
+
+      // Config badge
+      const badge = document.getElementById("config-badge");
+      const configMatch = run.id.match(/(with_skill|without_skill|new_skill|old_skill)/);
+      if (configMatch) {
+        const config = configMatch[1];
+        const isBaseline = config === "without_skill" || config === "old_skill";
+        badge.textContent = config.replace(/_/g, " ");
+        badge.className = "config-badge " + (isBaseline ? "config-baseline" : "config-primary");
+        badge.style.display = "inline-block";
+      } else {
+        badge.style.display = "none";
+      }
+
+      // Outputs
+      renderOutputs(run);
+
+      // Previous outputs
+      renderPrevOutputs(run);
+
+      // Grades
+      renderGrades(run);
+
+      // Previous feedback
+      const prevFb = (EMBEDDED_DATA.previous_feedback || {})[run.id];
+      const prevEl = document.getElementById("prev-feedback");
+      if (prevFb) {
+        document.getElementById("prev-feedback-text").textContent = prevFb;
+        prevEl.style.display = "block";
+      } else {
+        prevEl.style.display = "none";
+      }
+
+      // Feedback
+      document.getElementById("feedback").value = feedbackMap[run.id] || "";
+      document.getElementById("feedback-status").textContent = "";
+
+      updateNavButtons();
+
+      // Track visited runs and promote done button when all visited
+      visitedRuns.add(index);
+      const doneBtn = document.getElementById("done-btn");
+      if (visitedRuns.size >= EMBEDDED_DATA.runs.length) {
+        doneBtn.classList.add("ready");
+      }
+
+      // Scroll main content to top
+      document.querySelector(".main").scrollTop = 0;
+    }
+
+    // ---- Render outputs ----
+    function renderOutputs(run) {
+      const container = document.getElementById("outputs-body");
+      container.innerHTML = "";
+
+      const outputs = run.outputs || [];
+      if (outputs.length === 0) {
+        container.innerHTML = '<div class="empty-state">No output files</div>';
+        return;
+      }
+
+      for (const file of outputs) {
+        const fileDiv = document.createElement("div");
+        fileDiv.className = "output-file";
+
+        // Always show file header with download link
+        const header = document.createElement("div");
+        header.className = "output-file-header";
+        const nameSpan = document.createElement("span");
+        nameSpan.textContent = file.name;
+        header.appendChild(nameSpan);
+        const dlBtn = document.createElement("a");
+        dlBtn.className = "dl-btn";
+        dlBtn.textContent = "Download";
+        dlBtn.download = file.name;
+        dlBtn.href = getDownloadUri(file);
+        header.appendChild(dlBtn);
+        fileDiv.appendChild(header);
+
+        const content = document.createElement("div");
+        content.className = "output-file-content";
+
+        if (file.type === "text") {
+          const pre = document.createElement("pre");
+          pre.textContent = file.content;
+          content.appendChild(pre);
+        } else if (file.type === "image") {
+          const img = document.createElement("img");
+          img.src = file.data_uri;
+          img.alt = file.name;
+          content.appendChild(img);
+        } else if (file.type === "pdf") {
+          const iframe = document.createElement("iframe");
+          iframe.src = file.data_uri;
+          content.appendChild(iframe);
+        } else if (file.type === "xlsx") {
+          renderXlsx(content, file.data_b64);
+        } else if (file.type === "binary") {
+          const a = document.createElement("a");
+          a.className = "download-link";
+          a.href = file.data_uri;
+          a.download = file.name;
+          a.textContent = "Download " + file.name;
+          content.appendChild(a);
+        } else if (file.type === "error") {
+          const pre = document.createElement("pre");
+          pre.textContent = file.content;
+          pre.style.color = "var(--red)";
+          content.appendChild(pre);
+        }
+
+        fileDiv.appendChild(content);
+        container.appendChild(fileDiv);
+      }
+    }
+
+    // ---- XLSX rendering via SheetJS ----
+    function renderXlsx(container, b64Data) {
+      try {
+        const raw = Uint8Array.from(atob(b64Data), c => c.charCodeAt(0));
+        const wb = XLSX.read(raw, { type: "array" });
+
+        for (let i = 0; i < wb.SheetNames.length; i++) {
+          const sheetName = wb.SheetNames[i];
+          const ws = wb.Sheets[sheetName];
+
+          if (wb.SheetNames.length > 1) {
+            const sheetLabel = document.createElement("div");
+            sheetLabel.style.cssText =
+              "font-weight:600; font-size:0.8rem; color:#b0aea5; margin-top:0.5rem; margin-bottom:0.25rem;";
+            sheetLabel.textContent = "Sheet: " + sheetName;
+            container.appendChild(sheetLabel);
+          }
+
+          const htmlStr = XLSX.utils.sheet_to_html(ws, { editable: false });
+          const wrapper = document.createElement("div");
+          wrapper.innerHTML = htmlStr;
+          container.appendChild(wrapper);
+        }
+      } catch (err) {
+        container.textContent = "Error rendering spreadsheet: " + err.message;
+      }
+    }
+
+    // ---- Grades ----
+    function renderGrades(run) {
+      const section = document.getElementById("grades-section");
+      const content = document.getElementById("grades-content");
+
+      if (!run.grading) {
+        section.style.display = "none";
+        return;
+      }
+
+      const grading = run.grading;
+      section.style.display = "block";
+      // Reset to collapsed
+      content.classList.remove("open");
+      document.getElementById("grades-arrow").classList.remove("open");
+
+      const summary = grading.summary || {};
+      const expectations = grading.expectations || [];
+
+      let html = '<div style="padding: 1rem;">';
+
+      // Summary line
+      const passRate = summary.pass_rate != null
+        ? Math.round(summary.pass_rate * 100) + "%"
+        : "?";
+      const badgeClass = summary.pass_rate >= 0.8 ? "grade-pass" : summary.pass_rate >= 0.5 ? "" : "grade-fail";
+      html += '<div class="grades-summary">';
+      html += '<span class="grade-badge ' + badgeClass + '">' + passRate + '</span>';
+      html += '<span>' + (summary.passed || 0) + ' passed, ' + (summary.failed || 0) + ' failed of ' + (summary.total || 0) + '</span>';
+      html += '</div>';
+
+      // Assertions list
+      html += '<ul class="assertion-list">';
+      for (const exp of expectations) {
+        const statusClass = exp.passed ? "pass" : "fail";
+        const statusIcon = exp.passed ? "\u2713" : "\u2717";
+        html += '<li class="assertion-item">';
+        html += '<span class="assertion-status ' + statusClass + '">' + statusIcon + '</span>';
+        html += '<span>' + escapeHtml(exp.text) + '</span>';
+        if (exp.evidence) {
+          html += '<div class="assertion-evidence">' + escapeHtml(exp.evidence) + '</div>';
+        }
+        html += '</li>';
+      }
+      html += '</ul>';
+
+      html += '</div>';
+      content.innerHTML = html;
+    }
+
+    function toggleGrades() {
+      const content = document.getElementById("grades-content");
+      const arrow = document.getElementById("grades-arrow");
+      content.classList.toggle("open");
+      arrow.classList.toggle("open");
+    }
+
+    // ---- Previous outputs (collapsible) ----
+    function renderPrevOutputs(run) {
+      const section = document.getElementById("prev-outputs-section");
+      const content = document.getElementById("prev-outputs-content");
+      const prevOutputs = (EMBEDDED_DATA.previous_outputs || {})[run.id];
+
+      if (!prevOutputs || prevOutputs.length === 0) {
+        section.style.display = "none";
+        return;
+      }
+
+      section.style.display = "block";
+      // Reset to collapsed
+      content.classList.remove("open");
+      document.getElementById("prev-outputs-arrow").classList.remove("open");
+
+      // Render the files into the content area
+      content.innerHTML = "";
+      const wrapper = document.createElement("div");
+      wrapper.style.padding = "1rem";
+
+      for (const file of prevOutputs) {
+        const fileDiv = document.createElement("div");
+        fileDiv.className = "output-file";
+
+        const header = document.createElement("div");
+        header.className = "output-file-header";
+        const nameSpan = document.createElement("span");
+        nameSpan.textContent = file.name;
+        header.appendChild(nameSpan);
+        const dlBtn = document.createElement("a");
+        dlBtn.className = "dl-btn";
+        dlBtn.textContent = "Download";
+        dlBtn.download = file.name;
+        dlBtn.href = getDownloadUri(file);
+        header.appendChild(dlBtn);
+        fileDiv.appendChild(header);
+
+        const fc = document.createElement("div");
+        fc.className = "output-file-content";
+
+        if (file.type === "text") {
+          const pre = document.createElement("pre");
+          pre.textContent = file.content;
+          fc.appendChild(pre);
+        } else if (file.type === "image") {
+          const img = document.createElement("img");
+          img.src = file.data_uri;
+          img.alt = file.name;
+          fc.appendChild(img);
+        } else if (file.type === "pdf") {
+          const iframe = document.createElement("iframe");
+          iframe.src = file.data_uri;
+          fc.appendChild(iframe);
+        } else if (file.type === "xlsx") {
+          renderXlsx(fc, file.data_b64);
+        } else if (file.type === "binary") {
+          const a = document.createElement("a");
+          a.className = "download-link";
+          a.href = file.data_uri;
+          a.download = file.name;
+          a.textContent = "Download " + file.name;
+          fc.appendChild(a);
+        }
+
+        fileDiv.appendChild(fc);
+        wrapper.appendChild(fileDiv);
+      }
+
+      content.appendChild(wrapper);
+    }
+
+    function togglePrevOutputs() {
+      const content = document.getElementById("prev-outputs-content");
+      const arrow = document.getElementById("prev-outputs-arrow");
+      content.classList.toggle("open");
+      arrow.classList.toggle("open");
+    }
+
+    // ---- Feedback (saved to server -> feedback.json) ----
+    function saveCurrentFeedback() {
+      const run = EMBEDDED_DATA.runs[currentIndex];
+      const text = document.getElementById("feedback").value;
+
+      if (text.trim() === "") {
+        delete feedbackMap[run.id];
+      } else {
+        feedbackMap[run.id] = text;
+      }
+
+      // Build reviews array from map
+      const reviews = [];
+      for (const [run_id, feedback] of Object.entries(feedbackMap)) {
+        if (feedback.trim()) {
+          reviews.push({ run_id, feedback, timestamp: new Date().toISOString() });
+        }
+      }
+
+      fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reviews, status: "in_progress" }),
+      }).then(() => {
+        document.getElementById("feedback-status").textContent = "Saved";
+      }).catch(() => {
+        // Static mode or server unavailable — no-op on auto-save,
+        // feedback will be downloaded on final submit
+        document.getElementById("feedback-status").textContent = "Will download on submit";
+      });
+    }
+
+    // ---- Done ----
+    function showDoneDialog() {
+      // Save current textarea to feedbackMap (but don't POST yet)
+      const run = EMBEDDED_DATA.runs[currentIndex];
+      const text = document.getElementById("feedback").value;
+      if (text.trim() === "") {
+        delete feedbackMap[run.id];
+      } else {
+        feedbackMap[run.id] = text;
+      }
+
+      // POST once with status: complete — include ALL runs so the model
+      // can distinguish "no feedback" (looks good) from "not reviewed"
+      const reviews = [];
+      const ts = new Date().toISOString();
+      for (const r of EMBEDDED_DATA.runs) {
+        reviews.push({ run_id: r.id, feedback: feedbackMap[r.id] || "", timestamp: ts });
+      }
+      const payload = JSON.stringify({ reviews, status: "complete" }, null, 2);
+      fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: payload,
+      }).then(() => {
+        document.getElementById("done-overlay").classList.add("visible");
+      }).catch(() => {
+        // Server not available (static mode) — download as file
+        const blob = new Blob([payload], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "feedback.json";
+        a.click();
+        URL.revokeObjectURL(url);
+        document.getElementById("done-overlay").classList.add("visible");
+      });
+    }
+
+    function closeDoneDialog() {
+      // Reset status back to in_progress
+      saveCurrentFeedback();
+      document.getElementById("done-overlay").classList.remove("visible");
+    }
+
+    // ---- Toast ----
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("visible");
+      setTimeout(() => toast.classList.remove("visible"), 2000);
+    }
+
+    // ---- Keyboard nav ----
+    document.addEventListener("keydown", (e) => {
+      // Don't capture when typing in textarea
+      if (e.target.tagName === "TEXTAREA") return;
+
+      if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        e.preventDefault();
+        navigate(-1);
+      } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+        e.preventDefault();
+        navigate(1);
+      }
+    });
+
+    // ---- Util ----
+    function getDownloadUri(file) {
+      if (file.data_uri) return file.data_uri;
+      if (file.data_b64) return "data:application/octet-stream;base64," + file.data_b64;
+      if (file.type === "text") return "data:text/plain;charset=utf-8," + encodeURIComponent(file.content);
+      return "#";
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement("div");
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // ---- View switching ----
+    function switchView(view) {
+      document.querySelectorAll(".view-tab").forEach(t => t.classList.remove("active"));
+      document.querySelectorAll(".view-panel").forEach(p => p.classList.remove("active"));
+      document.querySelector(`[onclick="switchView('${view}')"]`).classList.add("active");
+      document.getElementById("panel-" + view).classList.add("active");
+    }
+
+    // ---- Benchmark rendering ----
+    function renderBenchmark() {
+      const data = EMBEDDED_DATA.benchmark;
+      if (!data) return;
+
+      // Show the tabs
+      document.getElementById("view-tabs").style.display = "flex";
+
+      const container = document.getElementById("benchmark-content");
+      const summary = data.run_summary || {};
+      const metadata = data.metadata || {};
+      const notes = data.notes || [];
+
+      let html = "";
+
+      // Header
+      html += "<h2 style='font-family: Poppins, sans-serif; margin-bottom: 0.5rem;'>Benchmark Results</h2>";
+      html += "<p style='color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1.25rem;'>";
+      if (metadata.skill_name) html += "<strong>" + escapeHtml(metadata.skill_name) + "</strong> &mdash; ";
+      if (metadata.timestamp) html += metadata.timestamp + " &mdash; ";
+      if (metadata.evals_run) html += "Evals: " + metadata.evals_run.join(", ") + " &mdash; ";
+      html += (metadata.runs_per_configuration || "?") + " runs per configuration";
+      html += "</p>";
+
+      // Summary table
+      html += '<table class="benchmark-table">';
+
+      function fmtStat(stat, pct) {
+        if (!stat) return "—";
+        const suffix = pct ? "%" : "";
+        const m = pct ? (stat.mean * 100).toFixed(0) : stat.mean.toFixed(1);
+        const s = pct ? (stat.stddev * 100).toFixed(0) : stat.stddev.toFixed(1);
+        return m + suffix + " ± " + s + suffix;
+      }
+
+      function deltaClass(val) {
+        if (!val) return "";
+        const n = parseFloat(val);
+        if (n > 0) return "benchmark-delta-positive";
+        if (n < 0) return "benchmark-delta-negative";
+        return "";
+      }
+
+      // Discover config names dynamically (everything except "delta")
+      const configs = Object.keys(summary).filter(k => k !== "delta");
+      const configA = configs[0] || "config_a";
+      const configB = configs[1] || "config_b";
+      const labelA = configA.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+      const labelB = configB.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+      const a = summary[configA] || {};
+      const b = summary[configB] || {};
+      const delta = summary.delta || {};
+
+      html += "<thead><tr><th>Metric</th><th>" + escapeHtml(labelA) + "</th><th>" + escapeHtml(labelB) + "</th><th>Delta</th></tr></thead>";
+      html += "<tbody>";
+
+      html += "<tr><td><strong>Pass Rate</strong></td>";
+      html += "<td>" + fmtStat(a.pass_rate, true) + "</td>";
+      html += "<td>" + fmtStat(b.pass_rate, true) + "</td>";
+      html += '<td class="' + deltaClass(delta.pass_rate) + '">' + (delta.pass_rate || "—") + "</td></tr>";
+
+      // Time (only show row if data exists)
+      if (a.time_seconds || b.time_seconds) {
+        html += "<tr><td><strong>Time (s)</strong></td>";
+        html += "<td>" + fmtStat(a.time_seconds, false) + "</td>";
+        html += "<td>" + fmtStat(b.time_seconds, false) + "</td>";
+        html += '<td class="' + deltaClass(delta.time_seconds) + '">' + (delta.time_seconds ? delta.time_seconds + "s" : "—") + "</td></tr>";
+      }
+
+      // Tokens (only show row if data exists)
+      if (a.tokens || b.tokens) {
+        html += "<tr><td><strong>Tokens</strong></td>";
+        html += "<td>" + fmtStat(a.tokens, false) + "</td>";
+        html += "<td>" + fmtStat(b.tokens, false) + "</td>";
+        html += '<td class="' + deltaClass(delta.tokens) + '">' + (delta.tokens || "—") + "</td></tr>";
+      }
+
+      html += "</tbody></table>";
+
+      // Per-eval breakdown (if runs data available)
+      const runs = data.runs || [];
+      if (runs.length > 0) {
+        const evalIds = [...new Set(runs.map(r => r.eval_id))].sort((a, b) => a - b);
+
+        html += "<h3 style='font-family: Poppins, sans-serif; margin-bottom: 0.75rem;'>Per-Eval Breakdown</h3>";
+
+        const hasTime = runs.some(r => r.result && r.result.time_seconds != null);
+        const hasErrors = runs.some(r => r.result && r.result.errors > 0);
+
+        for (const evalId of evalIds) {
+          const evalRuns = runs.filter(r => r.eval_id === evalId);
+          const evalName = evalRuns[0] && evalRuns[0].eval_name ? evalRuns[0].eval_name : "Eval " + evalId;
+
+          html += "<h4 style='font-family: Poppins, sans-serif; margin: 1rem 0 0.5rem; color: var(--text);'>" + escapeHtml(evalName) + "</h4>";
+          html += '<table class="benchmark-table">';
+          html += "<thead><tr><th>Config</th><th>Run</th><th>Pass Rate</th>";
+          if (hasTime) html += "<th>Time (s)</th>";
+          if (hasErrors) html += "<th>Crashes During Execution</th>";
+          html += "</tr></thead>";
+          html += "<tbody>";
+
+          // Group by config and render with average rows
+          const configGroups = [...new Set(evalRuns.map(r => r.configuration))];
+          for (let ci = 0; ci < configGroups.length; ci++) {
+            const config = configGroups[ci];
+            const configRuns = evalRuns.filter(r => r.configuration === config);
+            if (configRuns.length === 0) continue;
+
+            const rowClass = ci === 0 ? "benchmark-row-with" : "benchmark-row-without";
+            const configLabel = config.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+
+            for (const run of configRuns) {
+              const r = run.result || {};
+              const prClass = r.pass_rate >= 0.8 ? "benchmark-delta-positive" : r.pass_rate < 0.5 ? "benchmark-delta-negative" : "";
+              html += '<tr class="' + rowClass + '">';
+              html += "<td>" + configLabel + "</td>";
+              html += "<td>" + run.run_number + "</td>";
+              html += '<td class="' + prClass + '">' + ((r.pass_rate || 0) * 100).toFixed(0) + "% (" + (r.passed || 0) + "/" + (r.total || 0) + ")</td>";
+              if (hasTime) html += "<td>" + (r.time_seconds != null ? r.time_seconds.toFixed(1) : "—") + "</td>";
+              if (hasErrors) html += "<td>" + (r.errors || 0) + "</td>";
+              html += "</tr>";
+            }
+
+            // Average row
+            const rates = configRuns.map(r => (r.result || {}).pass_rate || 0);
+            const avgRate = rates.reduce((a, b) => a + b, 0) / rates.length;
+            const avgPrClass = avgRate >= 0.8 ? "benchmark-delta-positive" : avgRate < 0.5 ? "benchmark-delta-negative" : "";
+            html += '<tr class="benchmark-row-avg ' + rowClass + '">';
+            html += "<td>" + configLabel + "</td>";
+            html += "<td>Avg</td>";
+            html += '<td class="' + avgPrClass + '">' + (avgRate * 100).toFixed(0) + "%</td>";
+            if (hasTime) {
+              const times = configRuns.map(r => (r.result || {}).time_seconds).filter(t => t != null);
+              html += "<td>" + (times.length ? (times.reduce((a, b) => a + b, 0) / times.length).toFixed(1) : "—") + "</td>";
+            }
+            if (hasErrors) html += "<td></td>";
+            html += "</tr>";
+          }
+          html += "</tbody></table>";
+
+          // Per-assertion detail for this eval
+          const runsWithExpectations = {};
+          for (const config of configGroups) {
+            runsWithExpectations[config] = evalRuns.filter(r => r.configuration === config && r.expectations && r.expectations.length > 0);
+          }
+          const hasAnyExpectations = Object.values(runsWithExpectations).some(runs => runs.length > 0);
+          if (hasAnyExpectations) {
+            // Collect all unique assertion texts across all configs
+            const allAssertions = [];
+            const seen = new Set();
+            for (const config of configGroups) {
+              for (const run of runsWithExpectations[config]) {
+                for (const exp of (run.expectations || [])) {
+                  if (!seen.has(exp.text)) {
+                    seen.add(exp.text);
+                    allAssertions.push(exp.text);
+                  }
+                }
+              }
+            }
+
+            html += '<table class="benchmark-table" style="margin-top: 0.5rem;">';
+            html += "<thead><tr><th>Assertion</th>";
+            for (const config of configGroups) {
+              const label = config.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+              html += "<th>" + escapeHtml(label) + "</th>";
+            }
+            html += "</tr></thead><tbody>";
+
+            for (const assertionText of allAssertions) {
+              html += "<tr><td>" + escapeHtml(assertionText) + "</td>";
+
+              for (const config of configGroups) {
+                html += "<td>";
+                for (const run of runsWithExpectations[config]) {
+                  const exp = (run.expectations || []).find(e => e.text === assertionText);
+                  if (exp) {
+                    const cls = exp.passed ? "benchmark-delta-positive" : "benchmark-delta-negative";
+                    const icon = exp.passed ? "\u2713" : "\u2717";
+                    html += '<span class="' + cls + '" title="Run ' + run.run_number + ': ' + escapeHtml(exp.evidence || "") + '">' + icon + "</span> ";
+                  } else {
+                    html += "— ";
+                  }
+                }
+                html += "</td>";
+              }
+              html += "</tr>";
+            }
+            html += "</tbody></table>";
+          }
+        }
+      }
+
+      // Notes
+      if (notes.length > 0) {
+        html += '<div class="benchmark-notes">';
+        html += "<h3>Analysis Notes</h3>";
+        html += "<ul>";
+        for (const note of notes) {
+          html += "<li>" + escapeHtml(note) + "</li>";
+        }
+        html += "</ul></div>";
+      }
+
+      container.innerHTML = html;
+    }
+
+    // ---- Start ----
+    init();
+    renderBenchmark();
+  </script>
+</body>
+</html>

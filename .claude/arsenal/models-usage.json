@@ -1,0 +1,6 @@
+{
+  "_comment": "Hand-edited caps + non-Claude spend for the Arsenal gauges. Keyed by model id (see MODELS in app.js). serve.cjs /api/arsenal serves this live. Claude (opus/haiku) `spent` is OVERWRITTEN with REAL 5h-window output tokens parsed from ~/.claude/projects logs — only their `quota`/`unit` here are honored (set your real plan caps). For minimax, edit spent+quota by hand. Two-layer system: only opus, haiku, minimax-m3 remain.",
+  "opus":       { "quota": 2000, "unit": "k tok/5h" },
+  "haiku":      { "quota": 8000, "unit": "k tok/5h" },
+  "minimax-m3": { "spent": 0.2, "quota": 100, "unit": "M tok" }
+}

@@ -1,0 +1,27 @@
+{
+  "eval_id": 2,
+  "eval_name": "roles-and-exclusion-flag",
+  "prompt": "what roles can be on a file and how does the exclusion flag work?",
+  "assertions": [
+    {
+      "text": "Mentions all 5 role types: owner, admin, member assistants, external assistants, customer",
+      "passed": null,
+      "evidence": ""
+    },
+    {
+      "text": "Correctly states view_for_customer=false excludes BOTH customer AND external assistants together (one flag, not two)",
+      "passed": null,
+      "evidence": ""
+    },
+    {
+      "text": "States owner must be a partner (is_partner=true)",
+      "passed": null,
+      "evidence": ""
+    },
+    {
+      "text": "Mentions task holders as auto-derived (not a stored role)",
+      "passed": null,
+      "evidence": ""
+    }
+  ]
+}

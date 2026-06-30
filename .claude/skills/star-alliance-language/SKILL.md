@@ -1,0 +1,119 @@
+---
+name: star-alliance-language
+type: Skill
+description: The guild's shared reading protocol for OKF-tidied repos — how every member quickly, cheaply, and reliably takes in a repo the Quartermaster has kept conformant, on future runs. Read the concept map first (frontmatter + cross-links), open only the few concepts the task needs, never blind-read. Universal — rides every member, like weapon-utility. Use whenever a member starts work in a repo, needs to find where knowledge lives, or asks 'read the repo', 'what's in here', 'map this', 'orient me', 'where is X documented'.
+metadata:
+  version: 1.2.1
+---
+
+# Star Alliance Language — the OKF reading protocol
+
+The **consumer** half of the guild's knowledge standard. Where the **okf** skill
+(Quartermaster) *produces* a tidy, OKF-conformant repo, this skill is how **every
+member reads it back** — fast, cheap, and the same way every time. It is the
+shared "language" the guild speaks when consuming knowledge, the mirror image of
+OKF's producer/consumer split.
+
+**Universal.** Like `weapon-utility`, this skill rides *every* member. Any member
+beginning work in a repo orients through this protocol first.
+
+> **This is the read side of the Star Alliance Language ([[okf]]).** OKF is the format the
+> Quartermaster keeps; this is how every member speaks it back. Canonical, guild-wide.
+
+## Why this exists
+
+The guild's #1 repeated correction (mined across 46 sessions) is reading
+discipline: *don't blind-read large or unknown files.* OKF makes that easy to obey
+— because every governed `.md` is **guaranteed** (by the `okf-gate` hook) to open
+with a `type:` frontmatter, a member can learn the whole repo's shape from
+frontmatter alone, then open only the handful of files the task actually needs.
+This skill turns that guarantee into a routine.
+
+## The protocol (do this, in order)
+
+1. **Get the concept map first — one shot, not many reads.**
+   ```
+   python3 star-alliance-skills/star-alliance-language/scripts/okf_read.py
+   ```
+   Returns every governed concept as a single line — `path · [type] title —
+   description {tags} → N links` — grouped by directory, `index.md` surfaced first
+   (progressive disclosure). One command replaces dozens of speculative reads.
+2. **Narrow before you open.** Filter the map down to what the task needs:
+   - `--dir <subtree>` — scope to one area.
+   - `--type Skill|Member|Workflow|Document|…` — only concepts of one type.
+   - `--grep <term>` — title/description/tags/path match.
+   - `--json` — when a doer or another tool will consume the map.
+3. **Read frontmatter, not whole files.** The map already carries each concept's
+   `type`, `title`, `description`, `tags`. That is usually enough to decide *which*
+   concepts matter. Open the body only for those.
+4. **Follow cross-links, don't grep blindly.** To understand a concept's
+   neighbourhood:
+   ```
+   okf_read.py --links <path/to/concept.md>
+   ```
+   prints outbound and inbound links — the OKF graph. Walk the graph to related
+   concepts instead of full-text searching the repo.
+   > **No concept map yet, or a non-OKF input?** Reach for [[graphify]] first — it
+   > BUILDS a navigable knowledge graph from any input (code, docs, papers,
+   > images, video), then return to this cheap-read protocol once a map exists.
+5. **Open the few that matter — with discipline.** When you finally read a body,
+   honour the guild's reading rules: `offset`/`limit` or `grep` for large/unknown
+   files, never a blind full read; loop files one at a time in autonomous runs.
+6. **Trust the contract, but verify staleness.** The `type:` is guaranteed; the
+   *content* reflects when it was written. If a concept names a file/flag/function,
+   confirm it still exists before acting on it.
+
+## The repo layout — where each kind of file lives
+
+OKF keeps non-markdown files on a concept-path too (enforced by `okf_audit.py
+--layout`). Since the 2026-06 tidy, a member orienting in this repo can go straight
+to the right folder instead of scanning root:
+
+| you want… | look in |
+|---|---|
+| a build/registry/log **script** | `tools/` (build_guild_log, conformity_check, install, log_event, member_level) |
+| an **art generator** | `tools/generators/` (gen-*.cjs / gen-skill-art.py) |
+| a **data source** (hand-authored inputs) | `data/` (members-meta, skills-meta, domains, harness, hooks, guild-log).json |
+| a **strategist plan / audit** report | `docs/` (STRATEGIST-*, AUDIT-*) |
+| a **member / skill / workflow** concept | `star-alliance-members/`, `star-alliance-skills/<name>/SKILL.md`, `workflows.json` |
+
+**Root contract (stays at root, by design):** `README.md`, `CLAUDE.md`,
+`VERSIONS.md`, the dashboard runtime `index.html` / `app.js` / `app.css`, its
+generated data `guild-data.js` / `guild-data.json`, the repo-root anchor
+`workflows.json`, and the build engine `build.py`. These are entrypoints, generated
+artifacts, or the anchor every script walks up to — not clutter. Everything else
+loose at root is a tidy violation; `okf_audit.py --layout` will name it.
+
+## When to reach for it
+
+- **Session start in any repo** — orient via the concept map before touching code.
+- **"Where is X?"** — `--grep X` over the map beats spelunking.
+- **Handing context to a doer** — pipe `--json` map into a `summon.py` prompt so
+  the doer gets the repo's shape without you pasting files.
+- **After the Quartermaster tidies** — the map is the proof-of-tidy: it should read
+  cleanly, every line with a real `type` and title.
+
+## Relationship to the rest of the arsenal
+
+```
+  okf                    →  PRODUCE a conformant repo (Quartermaster writes)
+  okf-gate (hook)        →  GUARANTEE every governed .md carries `type:`
+  star-alliance-language →  CONSUME it efficiently (every member reads)  ← here
+  weapon-utility         →  which WEAPON does the reading/doing
+```
+
+This skill assumes OKF conformance; it does not enforce it (that's `okf` + the
+gate). If the map shows `[?]` types or missing titles, the repo isn't fully tidy —
+flag it to the Quartermaster rather than working around it.
+
+## Don't
+
+- Don't blind-read the repo when one `okf_read.py` call gives you the map.
+- Don't full-read a body the frontmatter already answered.
+- Don't enforce or fix conformance here — that's the producer skill's job.
+
+## Changelog
+- **1.2.0** — Added **The repo layout** map so every member reading the repo knows the post-tidy concept-paths (`tools/`, `tools/generators/`, `data/`, `docs/`) and the pinned root contract. Mirrors the okf 1.2.0 `--layout` placement standard ([[okf]]); rides every member, so all of them learn the new shape at once.
+- **1.1.0** — Declared canonical: the **reader half of the Star Alliance Language ([[okf]])** — rides every member, the way the guild consumes its one knowledge format.
+- **1.0.0** — Initial release. The consumer half of the guild knowledge standard: map-first reading via `okf_read.py`, never blind full-reads.
+

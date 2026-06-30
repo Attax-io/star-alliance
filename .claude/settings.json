@@ -38,7 +38,10 @@
       {
         "matcher": "Write|Edit|MultiEdit|Bash",
         "hooks": [
-          {"type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/unity-gate.py\""}
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/unity-gate.py\""
+          }
         ]
       }
     ],
@@ -117,6 +120,13 @@
           }
         ]
       }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(python3 .claude/arsenal/minimax.py:*)",
+      "Bash(python3 .claude/arsenal/ollama_cloud.py:*)",
+      "Bash(python3 .claude/arsenal/summon.py:*)"
     ]
   }
 }
