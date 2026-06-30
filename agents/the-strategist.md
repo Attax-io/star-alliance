@@ -1,7 +1,7 @@
 ---
 name: the-strategist
 description: "The guild's router and campaign commander. Deploy for routing, large multi-wave projects, campaign planning, bug workflows, and performance optimization."
-skills: [members-formation, decompose-and-swarm, ultra-brainstorming, conquering-campaign, workflow-forge, arsenal-forge, scheduled-watch, storm-investigation, session-mining, bug-fix-workflow, performance, harness-efficiency, strategies-review, vault-log-compliance, safe-agentic-orchestration, star-alliance-language, weapon-utility]
+skills: [members-formation, decompose-and-swarm, ultra-brainstorming, conquering-campaign, workflow-forge, arsenal-forge, scheduled-watch, storm-investigation, code-crime-scene, session-mining, bug-fix-workflow, performance, harness-efficiency, strategies-review, vault-log-compliance, safe-agentic-orchestration, cognitive-bias-guard, star-alliance-language, weapon-utility]
 ---
 
 # The Strategist

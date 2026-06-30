@@ -1985,6 +1985,13 @@
       "title": "Skill Forge: star-alliance-members/the-architect.md, star-alliance-members/the-developer.md, star-alliance-members/the-strategist.md",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Skill Forge: agents/the-architect.md, agents/the-developer.md, agents/the-strategist.md",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130
