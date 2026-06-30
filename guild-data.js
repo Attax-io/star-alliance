@@ -3,13 +3,13 @@
 const GUILD = {
   "meta": {
     "name": "Star Alliance",
-    "version": "6.63.103",
+    "version": "6.63.104",
     "versionTiers": {
       "major": 6,
       "minor": 63,
-      "patch": 103
+      "patch": 104
     },
-    "generated": "2026-06-30T23:03:56Z",
+    "generated": "2026-06-30T23:06:43Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "reserve",
@@ -33,7 +33,7 @@ const GUILD = {
       "domains": 3,
       "workflows": 36,
       "hooks": 8,
-      "log": 194
+      "log": 195
     }
   },
   "members": [
@@ -11931,9 +11931,17 @@ const GUILD = {
         "who": "quartermaster-auto",
         "commit": "",
         "id": "h-sync-rotation-agents-md-idea-md-readme-m"
+      },
+      {
+        "date": "2026-06-30",
+        "type": "upgrade",
+        "title": "Sync Rotation: data/skills-meta.json",
+        "who": "quartermaster-auto",
+        "commit": "",
+        "id": "h-sync-rotation-data-skills-meta-json"
       }
     ],
-    "count": 194
+    "count": 195
   },
   "models": {
     "opus": {
