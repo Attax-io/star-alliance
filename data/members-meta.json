@@ -98,19 +98,20 @@
       "exit_state": "PLAN_APPROVED",
       "handoff": "Plan ready: {goal} in {waves} waves. KPIs: {kpis}. Lead: {member}."
     },
-    "the-translator": {
-      "name": "The Translator",
-      "role": "Legal Codex · Law Translation",
+    "the-interpreter": {
+      "name": "The Interpreter",
+      "role": "Legal Codex · Document Reading · Law Translation",
       "level": "Advanced",
       "color": "#b89530",
-      "summary": "Legal codex specialist. Loads real-world laws, translates them across all locales, and creates published content.",
-      "deploy": "Legal codex loading, law translation, multi-locale content work",
-      "triggers": "load this law · translate this law · add translations",
+      "summary": "Language specialist and document reader. Loads real-world laws, translates them across all locales, creates published content, and reads/extracts from documents of every kind.",
+      "deploy": "Legal codex loading, law translation, multi-locale content work, document reading and extraction",
+      "triggers": "load this law · translate this law · add translations · read this document · extract from this PDF",
       "does": [
         "Loading laws into the legal codex",
         "Multi-locale translation (6 locales)",
         "Article creation and publishing",
-        "Obsidian-flavored markdown"
+        "Obsidian-flavored markdown",
+        "Document reading and structured extraction"
       ],
       "doesnt": [
         "Does not design systems",

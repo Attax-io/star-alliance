@@ -2027,6 +2027,13 @@
       "title": "Skill Forge: .claude/agents/the-translator.md, agents/the-translator.md, agents/the-interpreter.md",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Standard Mission: data/members-meta.json",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130

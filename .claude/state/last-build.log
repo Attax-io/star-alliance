@@ -23,9 +23,7 @@ BUILD WARNINGS (22):
   ⚠ domain 'lex-council-business' references member 'bd-research-agent' not in the guild (external)
   ⚠ domain 'lex-council-business' references member 'intake-agent' not in the guild (external)
 
-BUILD ERRORS (3):
-  ✗ agent 'the-interpreter.md' has no members-meta.json entry
-  ✗ members-meta.json key 'the-translator' has no agent .md
+BUILD ERRORS (1):
   ✗ workflow 'standard-mission' step 'Implement the Plan' (actor the-developer): thinker 'glm-5.2' is not in the-developer's loadout
 
 Build aborted — fix the errors above.
