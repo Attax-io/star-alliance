@@ -21,12 +21,12 @@ fi
 
 # Kill any existing serve.cjs (clean restart). Never touch :8000 (WhatsApp MCP).
 echo "↻ Restarting dev server on :$PORT…"
-pkill -f "$ROOT/.claude/serve.cjs" 2>/dev/null
-pkill -f ".claude/serve.cjs" 2>/dev/null
+pkill -f "$ROOT/serve.cjs" 2>/dev/null
+pkill -f "serve.cjs" 2>/dev/null
 sleep 1
 
 # Start detached so closing this window leaves the server running.
-nohup node "$ROOT/.claude/serve.cjs" >"$ROOT/.claude/serve.out" 2>&1 &
+nohup node "$ROOT/serve.cjs" >"$ROOT/serve.out" 2>&1 &
 SERVER_PID=$!
 
 # Wait for the port to answer (up to ~10s).
@@ -36,11 +36,11 @@ for i in $(seq 1 20); do
 done
 
 if curl -s -m1 "$URL/api/status" >/dev/null 2>&1; then
-  echo "✓ Server LIVE  (pid $SERVER_PID) — log: .claude/serve.out"
+  echo "✓ Server LIVE  (pid $SERVER_PID) — log: serve.out"
   echo "→ Opening $URL"
   open "$URL"
 else
-  echo "✗ Server did not come up. Check .claude/serve.out for the error."
+  echo "✗ Server did not come up. Check serve.out for the error."
   echo "  Press any key to close."; read -n 1 -s; exit 1
 fi
 

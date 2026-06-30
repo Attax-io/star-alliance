@@ -4,6 +4,7 @@
   "workflows": [
     {
       "id": "standard-mission",
+      "version": "1.0.0",
       "name": "Standard Mission",
       "icon": "🛰️",
       "accent": "cyan",
@@ -109,6 +110,7 @@
     },
     {
       "id": "quick-fix",
+      "version": "1.0.0",
       "name": "Quick Fix",
       "icon": "⚡",
       "accent": "green",
@@ -172,6 +174,7 @@
     },
     {
       "id": "design-sprint",
+      "version": "1.0.0",
       "name": "Design Sprint",
       "icon": "🎨",
       "accent": "rose",
@@ -258,6 +261,7 @@
     },
     {
       "id": "architecture-build",
+      "version": "1.0.0",
       "name": "Architecture Build",
       "icon": "🏛️",
       "accent": "blue",
@@ -368,6 +372,7 @@
     },
     {
       "id": "bug-cycle",
+      "version": "1.0.0",
       "name": "Bug Cycle",
       "icon": "🪲",
       "accent": "green",
@@ -444,6 +449,7 @@
     },
     {
       "id": "security-sweep",
+      "version": "1.0.0",
       "name": "Security Sweep",
       "icon": "🛡️",
       "accent": "blue",
@@ -528,6 +534,7 @@
     },
     {
       "id": "comms-triage",
+      "version": "1.0.0",
       "name": "Comms Triage",
       "icon": "📨",
       "accent": "cyan",
@@ -575,6 +582,7 @@
     },
     {
       "id": "inquiry-recon",
+      "version": "1.0.0",
       "name": "Inquiry / Recon",
       "icon": "🔎",
       "accent": "teal",
@@ -626,6 +634,7 @@
     },
     {
       "id": "conversation",
+      "version": "1.0.0",
       "name": "Conversation",
       "icon": "💬",
       "accent": "slate",

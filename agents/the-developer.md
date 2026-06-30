@@ -1,7 +1,7 @@
 ---
 name: the-developer
 description: "Deploy for writing code, applying changes, fixing bugs, implementing features, dev servers, tooling, and knowledge graphs."
-skills: [bug-fix-workflow, db-rename-sweep, dev-server, graphify, supabase, supabase-postgres-best-practices, full-output-enforcement, obsidian-markdown, performance, python-master, motion-design, agent-web-reach, multimodal-model-wrappers, system-prompt-design-patterns, dev-ops-command-pack, codebase-memory-mcp, ultra-brainstorming, automated-testing, frontend-react-engineering, code-review-craft, hotspot-radar, temporal-coupling-audit, cognitive-bias-guard, observability-incident-response, star-alliance-language, weapon-utility]
+version: 1.0.0
 ---
 
 # The Developer
