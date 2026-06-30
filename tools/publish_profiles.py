@@ -46,6 +46,8 @@ PROFILE_MAP = {
     "the-herald":        "herald",
     "the-merchant":      "merchant",
     "the-quartermaster": "quartermaster",
+    "the-steward":       "steward",
+    "the-strategist":    "strategist",
 }
 
 
