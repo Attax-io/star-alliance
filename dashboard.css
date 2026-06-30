@@ -340,6 +340,97 @@ ul, ol { list-style: none; }
 }
 
 /* ============================================================
+   MODEL CONTROL PANEL
+   ============================================================ */
+.model-control-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+.model-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--surface-1);
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  transition: border-color 0.2s ease;
+}
+.model-row:hover {
+  border-color: color-mix(in srgb, var(--gold) 30%, var(--border-soft));
+}
+.model-row__name {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--ff-serif);
+  font-size: var(--fs-card-name);
+  font-weight: 600;
+  color: var(--text-hi);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.model-row__select {
+  font: inherit;
+  font-size: var(--fs-tiny);
+  color: var(--text-body);
+  background: var(--surface-2);
+  border: 1px solid var(--border-soft);
+  border-radius: 6px;
+  padding: 5px 8px;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+.model-row__select:hover,
+.model-row__select:focus {
+  border-color: var(--gold-dim);
+  outline: none;
+}
+.model-row__save {
+  font: inherit;
+  font-size: var(--fs-tiny);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: color-mix(in srgb, var(--gold) 8%, transparent);
+  border: 1px solid var(--gold-dim);
+  border-radius: 6px;
+  padding: 5px 12px;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  flex-shrink: 0;
+}
+.model-row__save:hover {
+  background: color-mix(in srgb, var(--gold) 18%, transparent);
+  border-color: var(--gold);
+}
+.model-row__save:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.model-row__status {
+  flex-shrink: 0;
+  min-width: 48px;
+  text-align: right;
+  font-size: var(--fs-tiny);
+  letter-spacing: 0.02em;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.model-row__status.visible {
+  opacity: 1;
+}
+.model-row__status.saved { color: var(--status-ready); }
+.model-row__status.error { color: #ff6b8a; }
+
+@media (max-width: 899px) {
+  .model-control-grid { grid-template-columns: 1fr; }
+  .model-row { flex-wrap: wrap; }
+}
+
+/* ============================================================
    DOMAIN PANEL
    ============================================================ */
 .domain-grid {

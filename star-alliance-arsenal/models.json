@@ -2,7 +2,7 @@
   "_comment": "CANONICAL arsenal model registry - the ONE source of truth for per-weapon facts (semantic + routing + UI display). Consumers DERIVE from this; never hand-copy. Readers: summon.py (cloud_tag/role/known-ids), conformity_check.py (role), server/weapon-gate.py (known weapons), serve.cjs (weight), build.py (role + weaponStatus + emits the full registry into guild-data as GUILD.models for app.js), gen_model_docs.py (docs). role: doer|thinker|both|media (media normalized to doer for UI/ordering). status: live|reserve|deactivated. cloud_tag/pull null when N/A. weight = serve.cjs usage estimate. UI fields (label/color/tier/host/desc/ollama_desc/call/meter) drive the dashboard arsenal cards; glyph is derived from label in app.js.",
   "version": 1,
   "seats": {
-    "_comment": "Universal role SEATS — each is a DEFAULT model + FALLBACK chain, NOT a hardcoded model (the gpt-5.5 lesson). Brain = the thinking mind (wields tools — MUST be the thinker model (GLM-5.2); bench/doer models cannot hold tools); Doer = the hands (text only, no tools); Critic = the independent reviewer, deliberately a DIFFERENT backend family than the Brain (diverse blind spots); Bench = every non-seat model, pulled N-at-a-time for doer-swarm or thinker-swarm — Opus lives here, off-seat, reserved. An agent's `model:` overrides the brain default. When a seat's model is unreachable it walks its fallback chain, drawing the strongest available bench model. critique.py drives the Critic's COLD text mode; a grounded review agent drives its GROUNDED tool-using mode. Consumers DERIVE from here; conformity_check ST enforces seat ids exist + critic-family != brain-family.",
+    "_comment": "Universal role SEATS \u2014 each is a DEFAULT model + FALLBACK chain, NOT a hardcoded model (the gpt-5.5 lesson). Brain = the thinking mind (wields tools \u2014 MUST be the thinker model (GLM-5.2); bench/doer models cannot hold tools); Doer = the hands (text only, no tools); Critic = the independent reviewer, deliberately a DIFFERENT backend family than the Brain (diverse blind spots); Bench = every non-seat model, pulled N-at-a-time for doer-swarm or thinker-swarm \u2014 Opus lives here, off-seat, reserved. An agent's `model:` overrides the brain default. When a seat's model is unreachable it walks its fallback chain, drawing the strongest available bench model. critique.py drives the Critic's COLD text mode; a grounded review agent drives its GROUNDED tool-using mode. Consumers DERIVE from here; conformity_check ST enforces seat ids exist + critic-family != brain-family.",
     "brain": {
       "default": "minimax-m3",
       "fallback": [
@@ -22,20 +22,20 @@
         "glm-5.2",
         "deepseek-v4-pro"
       ],
-      "_note": "TEMPORARILY UNAVAILABLE — requires Ollama Cloud (429 rate-limited). Critic disabled until Ollama recovers."
+      "_note": "TEMPORARILY UNAVAILABLE \u2014 requires Ollama Cloud (429 rate-limited). Critic disabled until Ollama recovers."
     },
     "bench": {
       "default": null,
       "fallback": null,
       "role": "any",
-      "duty": "All non-seat models. Pulled N-at-a-time for model-swarm (one agent fires N bench models, as in ultra-brainstorming). NOT used for agent-instance swarms — those run each instance as the agent's Brain seat, not a bench weapon."
+      "duty": "All non-seat models. Pulled N-at-a-time for model-swarm (one agent fires N bench models, as in ultra-brainstorming). NOT used for agent-instance swarms \u2014 those run each instance as the agent's Brain seat, not a bench weapon."
     }
   },
   "swarm": {
     "max_instances": 5,
     "worker_model": "brain",
     "coordinator": "strategist-brain",
-    "comment": "Agent-instance swarm: each instance runs as the agent's brain seat (the thinker model — GLM-5.2). Worker is NEVER a doer-tier model (minimax-m3/Ollama cannot hold tools). Bench feeds MODEL-swarms (one agent fires N bench models, as in ultra-brainstorming), not agent-instance swarms. The session persona (GLM-5.2) decomposes, coordinates, and integrates inline; Critic (kimi-k2.7) reviews the aggregate diff."
+    "comment": "Agent-instance swarm: each instance runs as the agent's brain seat (the thinker model \u2014 GLM-5.2). Worker is NEVER a doer-tier model (minimax-m3/Ollama cannot hold tools). Bench feeds MODEL-swarms (one agent fires N bench models, as in ultra-brainstorming), not agent-instance swarms. The session persona (GLM-5.2) decomposes, coordinates, and integrates inline; Critic (kimi-k2.7) reviews the aggregate diff."
   },
   "models": {
     "opus": {
@@ -46,17 +46,17 @@
       "pull": null,
       "weight": null,
       "kind": "text",
-      "summary": "Deepest structural reasoning — the prime thinker for hard plans.",
+      "summary": "Deepest structural reasoning \u2014 the prime thinker for hard plans.",
       "label": "Opus",
       "color": "#e8c93a",
       "tier": "Master",
-      "host": "Anthropic · native",
-      "desc": "Claude Opus 4.8 — the master brain. Orchestrates the guild, reasons deepest, reviews everything. This IS the run.",
-      "ollama_desc": "Claude Opus 4.8 · Anthropic's most powerful model. Best for complex reasoning, deep analysis, agentic orchestration, and long-horizon planning. Top-tier on MMLU, HumanEval, MATH. Use for hard problems that need the best answer, not the fastest.",
-      "call": "Native — no script. You ARE Opus, the orchestrator. Delegate sub-work via the delegate_task with model override.\n(python3 star-alliance-arsenal/summon.py opus just echoes this reminder.)",
+      "host": "Anthropic \u00b7 native",
+      "desc": "Claude Opus 4.8 \u2014 the master brain. Orchestrates the guild, reasons deepest, reviews everything. This IS the run.",
+      "ollama_desc": "Claude Opus 4.8 \u00b7 Anthropic's most powerful model. Best for complex reasoning, deep analysis, agentic orchestration, and long-horizon planning. Top-tier on MMLU, HumanEval, MATH. Use for hard problems that need the best answer, not the fastest.",
+      "call": "Native \u2014 no script. You ARE Opus, the orchestrator. Delegate sub-work via the delegate_task with model override.\n(python3 star-alliance-arsenal/summon.py opus just echoes this reminder.)",
       "meter": {
         "kind": "sub",
-        "note": "Claude subscription · unmetered"
+        "note": "Claude subscription \u00b7 unmetered"
       }
     },
     "sonnet": {
@@ -67,17 +67,17 @@
       "pull": null,
       "weight": null,
       "kind": "text",
-      "summary": "Balanced thinker + Claude-capable fallback — last in every arsenal.",
+      "summary": "Balanced thinker + Claude-capable fallback \u2014 last in every arsenal.",
       "label": "Sonnet",
       "color": "#3df0ff",
       "tier": "Doer",
-      "host": "Anthropic · native",
-      "desc": "Claude Sonnet 4.6 — the reliable longsword. Fast, balanced daily dispatch.",
-      "ollama_desc": "Claude Sonnet 4.6 · Balanced speed and intelligence. Near-Opus quality at a fraction of the latency. Excels at coding, writing, analysis, and tool use. The go-to for reliable daily dispatch — fast enough for interactive use, smart enough for hard tasks.",
-      "call": "Native — no script. Reserve model — use delegate_task with model override if needed.",
+      "host": "Anthropic \u00b7 native",
+      "desc": "Claude Sonnet 4.6 \u2014 the reliable longsword. Fast, balanced daily dispatch.",
+      "ollama_desc": "Claude Sonnet 4.6 \u00b7 Balanced speed and intelligence. Near-Opus quality at a fraction of the latency. Excels at coding, writing, analysis, and tool use. The go-to for reliable daily dispatch \u2014 fast enough for interactive use, smart enough for hard tasks.",
+      "call": "Native \u2014 no script. Reserve model \u2014 use delegate_task with model override if needed.",
       "meter": {
         "kind": "sub",
-        "note": "Claude subscription · unmetered"
+        "note": "Claude subscription \u00b7 unmetered"
       }
     },
     "haiku": {
@@ -88,17 +88,17 @@
       "pull": null,
       "weight": null,
       "kind": "text",
-      "summary": "Fastest, cheapest Claude — quick mechanical reasoning.",
+      "summary": "Fastest, cheapest Claude \u2014 quick mechanical reasoning.",
       "label": "Haiku",
       "color": "#4ec985",
       "tier": "Light",
-      "host": "Anthropic · native",
-      "desc": "Claude Haiku 4.5 — the stiletto. Fastest and cheapest, for precise quick strikes.",
-      "ollama_desc": "Claude Haiku 4.5 · Fastest and cheapest Claude. Sub-second responses, ideal for bulk classification, routing, summarization, and mechanical transforms. Use when you need high volume at low cost — not when you need deep reasoning.",
-      "call": "Native — no script. Reserve model — use delegate_task with model override if needed.",
+      "host": "Anthropic \u00b7 native",
+      "desc": "Claude Haiku 4.5 \u2014 the stiletto. Fastest and cheapest, for precise quick strikes.",
+      "ollama_desc": "Claude Haiku 4.5 \u00b7 Fastest and cheapest Claude. Sub-second responses, ideal for bulk classification, routing, summarization, and mechanical transforms. Use when you need high volume at low cost \u2014 not when you need deep reasoning.",
+      "call": "Native \u2014 no script. Reserve model \u2014 use delegate_task with model override if needed.",
       "meter": {
         "kind": "sub",
-        "note": "Claude subscription · unmetered"
+        "note": "Claude subscription \u00b7 unmetered"
       }
     },
     "minimax-m3": {
@@ -107,23 +107,23 @@
       "cloud_tag": null,
       "status": "live",
       "pull": null,
-      "weight": 1.0,
+      "weight": 1,
       "kind": "text",
       "summary": "The prime doer. Direct MiniMax cloud sub for bulk generation/transform.",
       "label": "MiniMax M3",
       "color": "#4ec9a0",
       "tier": "Doer",
-      "host": "MiniMax · DIRECT",
-      "desc": "MiniMax M3 — the crossbow. Cheap, 1M context, fires bulk delegated work at range. Use the DIRECT cloud sub — the old Ollama minimax-m3 route is RETIRED.",
-      "ollama_desc": "MiniMax M3 · 1M context window, very cheap per token. Strong at long-document analysis, bulk text extraction, and summarization. The guild's primary sub-agent for delegated work. Use for anything where you need to process large inputs at low cost.",
-      "call": "DIRECT cloud sub — NOT Ollama.\nEasiest:  python3 star-alliance-arsenal/minimax.py \"<prompt>\"\n  flags: -s <system>  --json  -f <file>  (reads stdin if no arg)\nRaw:  POST https://api.minimax.io/v1/text/chatcompletion_v2\n  Authorization: Bearer $(cat ~/.config/minimax/m3.key)\n  body { model:'MiniMax-M3', messages:[…], max_tokens:16000 }",
+      "host": "MiniMax \u00b7 DIRECT",
+      "desc": "MiniMax M3 \u2014 the crossbow. Cheap, 1M context, fires bulk delegated work at range. Use the DIRECT cloud sub \u2014 the old Ollama minimax-m3 route is RETIRED.",
+      "ollama_desc": "MiniMax M3 \u00b7 1M context window, very cheap per token. Strong at long-document analysis, bulk text extraction, and summarization. The guild's primary sub-agent for delegated work. Use for anything where you need to process large inputs at low cost.",
+      "call": "DIRECT cloud sub \u2014 NOT Ollama.\nEasiest:  python3 star-alliance-arsenal/minimax.py \"<prompt>\"\n  flags: -s <system>  --json  -f <file>  (reads stdin if no arg)\nRaw:  POST https://api.minimax.io/v1/text/chatcompletion_v2\n  Authorization: Bearer $(cat ~/.config/minimax/m3.key)\n  body { model:'MiniMax-M3', messages:[\u2026], max_tokens:16000 }",
       "meter": {
         "kind": "used",
         "spent": 0,
         "quota": 100,
         "unit": "M tok",
         "est": true,
-        "note": "est · set your real plan cap"
+        "note": "est \u00b7 set your real plan cap"
       }
     },
     "deepseek-v4-pro": {
@@ -134,13 +134,13 @@
       "pull": "ollama pull deepseek-v4-pro:cloud",
       "weight": 0.5,
       "kind": "text",
-      "summary": "Frontier multi-step reasoning — long dependency chains.",
+      "summary": "Frontier multi-step reasoning \u2014 long dependency chains.",
       "label": "DeepSeek V4 Pro",
       "color": "#5b8cff",
       "tier": "Bench",
       "host": "Ollama Cloud",
-      "desc": "DeepSeek V4 Pro — the scythe. Wide-sweeping frontier MoE reasoning.",
-      "ollama_desc": "DeepSeek V4 Pro · Mixture-of-Experts frontier reasoning at low cost. Exceptional at STEM, mathematics, and logical inference. Near GPT-4 quality for a fraction of the price. Best for hard analytical problems, algorithm design, and scientific reasoning.",
+      "desc": "DeepSeek V4 Pro \u2014 the scythe. Wide-sweeping frontier MoE reasoning.",
+      "ollama_desc": "DeepSeek V4 Pro \u00b7 Mixture-of-Experts frontier reasoning at low cost. Exceptional at STEM, mathematics, and logical inference. Near GPT-4 quality for a fraction of the price. Best for hard analytical problems, algorithm design, and scientific reasoning.",
       "call": "Easiest:  python3 star-alliance-arsenal/summon.py deepseek-v4-pro \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py deepseek-v4-pro:cloud \"<prompt>\"\nPull first:  ollama pull deepseek-v4-pro:cloud",
       "meter": {
         "kind": "used",
@@ -149,9 +149,9 @@
         "unit": "req",
         "est": true,
         "pool": "Ollama Cloud",
-        "note": "est · shares Ollama Cloud pool"
+        "note": "est \u00b7 shares Ollama Cloud pool"
       },
-      "_note": "HTTP 429 from Ollama Cloud — concurrency cap reached. Will reactivate when Ollama plan upgrades."
+      "_note": "HTTP 429 from Ollama Cloud \u2014 concurrency cap reached. Will reactivate when Ollama plan upgrades."
     },
     "glm-5.2": {
       "role": "thinker",
@@ -161,14 +161,14 @@
       "pull": "ollama pull glm-5.2:cloud",
       "weight": 0.7,
       "kind": "text",
-      "summary": "A different analytical frame — where others over-fit.",
+      "summary": "A different analytical frame \u2014 where others over-fit.",
       "label": "GLM-5.2",
       "color": "#d4a05a",
       "tier": "Bench",
       "host": "Ollama Cloud",
-      "desc": "GLM-5.2 — the longbow. Coding-first, strong multilingual analysis. Long reach, pulled & ready.",
-      "ollama_desc": "GLM-5.2 · Zhipu AI's flagship. Coding-first with top LiveCodeBench performance. Strong multilingual capabilities — especially Chinese, Arabic, and European languages. Best for code review, multi-language tasks, and structured analytical work.",
-      "call": "Easiest:  python3 star-alliance-arsenal/summon.py glm-5.2 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py glm-5.2:cloud \"<prompt>\"  (-s, --json, -f, stdin)\nOllama Cloud sub · tag glm-5.2:cloud",
+      "desc": "GLM-5.2 \u2014 the longbow. Coding-first, strong multilingual analysis. Long reach, pulled & ready.",
+      "ollama_desc": "GLM-5.2 \u00b7 Zhipu AI's flagship. Coding-first with top LiveCodeBench performance. Strong multilingual capabilities \u2014 especially Chinese, Arabic, and European languages. Best for code review, multi-language tasks, and structured analytical work.",
+      "call": "Easiest:  python3 star-alliance-arsenal/summon.py glm-5.2 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py glm-5.2:cloud \"<prompt>\"  (-s, --json, -f, stdin)\nOllama Cloud sub \u00b7 tag glm-5.2:cloud",
       "meter": {
         "kind": "used",
         "spent": 0,
@@ -176,9 +176,9 @@
         "unit": "req",
         "est": true,
         "pool": "Ollama Cloud",
-        "note": "est · shares the Ollama Cloud pool"
+        "note": "est \u00b7 shares the Ollama Cloud pool"
       },
-      "_note": "HTTP 429 from Ollama Cloud — concurrency cap reached. Will reactivate when Ollama plan upgrades."
+      "_note": "HTTP 429 from Ollama Cloud \u2014 concurrency cap reached. Will reactivate when Ollama plan upgrades."
     },
     "kimi-k2.7": {
       "role": "thinker",
@@ -193,8 +193,8 @@
       "color": "#ff6b8a",
       "tier": "Bench",
       "host": "Ollama Cloud",
-      "desc": "Kimi K2.7 — the hammer. Long-horizon coding and agentic work, blunt force done right.",
-      "ollama_desc": "Kimi K2.7 · Moonshot AI's agentic powerhouse. Designed for long-horizon tool use, autonomous coding, and multi-step debugging. Strong at planning, self-correction, and sustained agentic loops. Best when a task requires many tool calls across a long session.",
+      "desc": "Kimi K2.7 \u2014 the hammer. Long-horizon coding and agentic work, blunt force done right.",
+      "ollama_desc": "Kimi K2.7 \u00b7 Moonshot AI's agentic powerhouse. Designed for long-horizon tool use, autonomous coding, and multi-step debugging. Strong at planning, self-correction, and sustained agentic loops. Best when a task requires many tool calls across a long session.",
       "call": "Easiest:  python3 star-alliance-arsenal/summon.py kimi-k2.7 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py kimi-k2.7-code:cloud \"<prompt>\"\nPull first:  ollama pull kimi-k2.7-code:cloud",
       "meter": {
         "kind": "used",
@@ -203,9 +203,9 @@
         "unit": "req",
         "est": true,
         "pool": "Ollama Cloud",
-        "note": "est · shares Ollama Cloud pool"
+        "note": "est \u00b7 shares Ollama Cloud pool"
       },
-      "_note": "HTTP 429 from Ollama Cloud — concurrency cap reached. Will reactivate when Ollama plan upgrades."
+      "_note": "HTTP 429 from Ollama Cloud \u2014 concurrency cap reached. Will reactivate when Ollama plan upgrades."
     },
     "nemotron-3-ultra": {
       "role": "thinker",
@@ -215,13 +215,13 @@
       "pull": "ollama pull nemotron-3-super:cloud",
       "weight": 0.4,
       "kind": "text",
-      "summary": "NVIDIA reasoning bench — alternate engine. Reserve: in no loadout.",
+      "summary": "NVIDIA reasoning bench \u2014 alternate engine. Reserve: in no loadout.",
       "label": "Nemotron-3 Ultra",
       "color": "#7fd4ff",
       "tier": "Bench",
       "host": "Ollama Cloud",
-      "desc": "Nemotron-3 Ultra — the lance. High-throughput reasoning, long agent runs.",
-      "ollama_desc": "Nemotron-3 Ultra · NVIDIA's high-throughput reasoning model. Strong at structured data extraction, long-form document analysis, and sustained multi-turn agentic work. Optimized for inference efficiency — best when you need frontier reasoning at scale.",
+      "desc": "Nemotron-3 Ultra \u2014 the lance. High-throughput reasoning, long agent runs.",
+      "ollama_desc": "Nemotron-3 Ultra \u00b7 NVIDIA's high-throughput reasoning model. Strong at structured data extraction, long-form document analysis, and sustained multi-turn agentic work. Optimized for inference efficiency \u2014 best when you need frontier reasoning at scale.",
       "call": "Easiest:  python3 star-alliance-arsenal/summon.py nemotron-3-ultra \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py nemotron-3-super:cloud \"<prompt>\"\nPull first:  ollama pull nemotron-3-super:cloud",
       "meter": {
         "kind": "used",
@@ -230,9 +230,9 @@
         "unit": "req",
         "est": true,
         "pool": "Ollama Cloud",
-        "note": "est · shares Ollama Cloud pool"
+        "note": "est \u00b7 shares Ollama Cloud pool"
       },
-      "_note": "HTTP 429 from Ollama Cloud — concurrency cap reached. Will reactivate when Ollama plan upgrades."
+      "_note": "HTTP 429 from Ollama Cloud \u2014 concurrency cap reached. Will reactivate when Ollama plan upgrades."
     },
     "qwen3.5": {
       "role": "thinker",
@@ -247,8 +247,8 @@
       "color": "#c47fff",
       "tier": "Bench",
       "host": "Ollama Cloud",
-      "desc": "Qwen 3.5 — the shortsword. Versatile general-purpose workhorse.",
-      "ollama_desc": "Qwen 3.5 · Alibaba's versatile coder. Supports 29 languages, strong structured output, function calling, and API integration. Well-rounded across coding, writing, and analysis. Best for multilingual tasks and general-purpose work where flexibility matters.",
+      "desc": "Qwen 3.5 \u2014 the shortsword. Versatile general-purpose workhorse.",
+      "ollama_desc": "Qwen 3.5 \u00b7 Alibaba's versatile coder. Supports 29 languages, strong structured output, function calling, and API integration. Well-rounded across coding, writing, and analysis. Best for multilingual tasks and general-purpose work where flexibility matters.",
       "call": "Easiest:  python3 star-alliance-arsenal/summon.py qwen3.5 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py qwen3.5:cloud \"<prompt>\"\nPull first:  ollama pull qwen3.5:cloud",
       "meter": {
         "kind": "used",
@@ -257,9 +257,9 @@
         "unit": "req",
         "est": true,
         "pool": "Ollama Cloud",
-        "note": "est · shares Ollama Cloud pool"
+        "note": "est \u00b7 shares Ollama Cloud pool"
       },
-      "_note": "HTTP 429 from Ollama Cloud — concurrency cap reached. Will reactivate when Ollama plan upgrades."
+      "_note": "HTTP 429 from Ollama Cloud \u2014 concurrency cap reached. Will reactivate when Ollama plan upgrades."
     },
     "gemma4": {
       "role": "thinker",
@@ -269,13 +269,13 @@
       "pull": "ollama pull gemma4:cloud",
       "weight": 0.3,
       "kind": "text",
-      "summary": "Light, fast thinker — cheap second mind, esp. content/marketing (the-herald).",
+      "summary": "Light, fast thinker \u2014 cheap second mind, esp. content/marketing (the-herald).",
       "label": "Gemma 4",
       "color": "#ffb04e",
       "tier": "Bench",
       "host": "Ollama Cloud",
-      "desc": "Gemma 4 — the ninja star. Small, fast, deadly accurate for quick cheap passes.",
-      "ollama_desc": "Gemma 4 · Google's lightweight open model. Fast, compact, deployable anywhere. Strong instruction following, basic reasoning, and summarization at minimal cost. Best for high-volume quick passes, preprocessing, and tasks where speed and cost trump depth.",
+      "desc": "Gemma 4 \u2014 the ninja star. Small, fast, deadly accurate for quick cheap passes.",
+      "ollama_desc": "Gemma 4 \u00b7 Google's lightweight open model. Fast, compact, deployable anywhere. Strong instruction following, basic reasoning, and summarization at minimal cost. Best for high-volume quick passes, preprocessing, and tasks where speed and cost trump depth.",
       "call": "Easiest:  python3 star-alliance-arsenal/summon.py gemma4 \"<prompt>\"\nDirect:  python3 star-alliance-arsenal/ollama_cloud.py gemma4:cloud \"<prompt>\"\nPull first:  ollama pull gemma4:cloud",
       "meter": {
         "kind": "used",
@@ -284,9 +284,9 @@
         "unit": "req",
         "est": true,
         "pool": "Ollama Cloud",
-        "note": "est · shares Ollama Cloud pool"
+        "note": "est \u00b7 shares Ollama Cloud pool"
       },
-      "_note": "HTTP 429 from Ollama Cloud — concurrency cap reached. Will reactivate when Ollama plan upgrades."
+      "_note": "HTTP 429 from Ollama Cloud \u2014 concurrency cap reached. Will reactivate when Ollama plan upgrades."
     },
     "image-01": {
       "role": "media",
@@ -296,21 +296,21 @@
       "pull": null,
       "weight": null,
       "kind": "media",
-      "summary": "Text→image forge. Forged every skill-art/*.png tile.",
+      "summary": "Text\u2192image forge. Forged every skill-art/*.png tile.",
       "label": "MiniMax Image",
       "color": "#45c98f",
       "tier": "Forge",
-      "host": "MiniMax · DIRECT",
-      "desc": "MiniMax image-01 — the enchanter's brush. Paints 1024² skill-sigils and battle-standards from a spell-phrase. Forged every art tile in the armory.",
-      "ollama_desc": "MiniMax image-01 · Text-to-image diffusion. 1024×1024, prompt-driven, strong on stylized/illustrative art. The guild's art forge — skill-art, weapon cards, agent portraits. Use for any raster icon or illustration; M3 (text) cannot make pixels.",
-      "call": "DIRECT cloud · Bearer $(cat ~/.config/minimax/m3.key).\nEasiest:  node gen-skill-art.cjs            (renders skill-art/<id>.png; skips existing, --regen <id> to force)\nRaw:  POST https://api.minimax.io/v1/image_generation\n  body { model:'image-01', prompt:'…', aspect_ratio:'1:1', response_format:'url', n:1 }",
+      "host": "MiniMax \u00b7 DIRECT",
+      "desc": "MiniMax image-01 \u2014 the enchanter's brush. Paints 1024\u00b2 skill-sigils and battle-standards from a spell-phrase. Forged every art tile in the armory.",
+      "ollama_desc": "MiniMax image-01 \u00b7 Text-to-image diffusion. 1024\u00d71024, prompt-driven, strong on stylized/illustrative art. The guild's art forge \u2014 skill-art, weapon cards, agent portraits. Use for any raster icon or illustration; M3 (text) cannot make pixels.",
+      "call": "DIRECT cloud \u00b7 Bearer $(cat ~/.config/minimax/m3.key).\nEasiest:  node gen-skill-art.cjs            (renders skill-art/<id>.png; skips existing, --regen <id> to force)\nRaw:  POST https://api.minimax.io/v1/image_generation\n  body { model:'image-01', prompt:'\u2026', aspect_ratio:'1:1', response_format:'url', n:1 }",
       "meter": {
         "kind": "used",
         "spent": 0,
         "quota": 1000,
         "unit": "img",
         "est": true,
-        "note": "est · set your real plan cap"
+        "note": "est \u00b7 set your real plan cap"
       }
     },
     "minimax-video": {
@@ -321,21 +321,21 @@
       "pull": null,
       "weight": null,
       "kind": "media",
-      "summary": "Text→video (async). No helper yet.",
+      "summary": "Text\u2192video (async). No helper yet.",
       "label": "MiniMax Hailuo",
       "color": "#38c9c0",
       "tier": "Forge",
-      "host": "MiniMax · DIRECT",
-      "desc": "MiniMax Hailuo — the scrying-loom. Weaves short moving visions (text/image → video) for banners and intro stings.",
-      "ollama_desc": "MiniMax Hailuo video (MiniMax-Hailuo-02 / video-01) · Text-to-video and image-to-video, ~6s 720p clips. Async API: submit → poll task → retrieve file. Use for short motion — animated banners, weapon GIFs, intros.",
-      "call": "DIRECT cloud · Bearer $(cat ~/.config/minimax/m3.key).  No helper script yet.\nRaw (async):  POST https://api.minimax.io/v1/video_generation  body { model:'MiniMax-Hailuo-02', prompt:'…' } → task_id\n  Poll:  GET /v1/query/video_generation?task_id=…  → file_id\n  Fetch:  GET /v1/files/retrieve?file_id=…   (verify current model tag)",
+      "host": "MiniMax \u00b7 DIRECT",
+      "desc": "MiniMax Hailuo \u2014 the scrying-loom. Weaves short moving visions (text/image \u2192 video) for banners and intro stings.",
+      "ollama_desc": "MiniMax Hailuo video (MiniMax-Hailuo-02 / video-01) \u00b7 Text-to-video and image-to-video, ~6s 720p clips. Async API: submit \u2192 poll task \u2192 retrieve file. Use for short motion \u2014 animated banners, weapon GIFs, intros.",
+      "call": "DIRECT cloud \u00b7 Bearer $(cat ~/.config/minimax/m3.key).  No helper script yet.\nRaw (async):  POST https://api.minimax.io/v1/video_generation  body { model:'MiniMax-Hailuo-02', prompt:'\u2026' } \u2192 task_id\n  Poll:  GET /v1/query/video_generation?task_id=\u2026  \u2192 file_id\n  Fetch:  GET /v1/files/retrieve?file_id=\u2026   (verify current model tag)",
       "meter": {
         "kind": "used",
         "spent": 0,
         "quota": 100,
         "unit": "clip",
         "est": true,
-        "note": "est · async video gen · set real cap"
+        "note": "est \u00b7 async video gen \u00b7 set real cap"
       }
     },
     "minimax-speech": {
@@ -346,21 +346,21 @@
       "pull": null,
       "weight": null,
       "kind": "media",
-      "summary": "Text→speech (TTS). No helper yet.",
+      "summary": "Text\u2192speech (TTS). No helper yet.",
       "label": "MiniMax Speech",
       "color": "#6cc98a",
       "tier": "Forge",
-      "host": "MiniMax · DIRECT",
-      "desc": "MiniMax Speech — the herald's horn. Gives any text a spoken voice (TTS), in many tongues and timbres.",
-      "ollama_desc": "MiniMax Speech (speech-02-hd / -turbo, T2A v2) · Text-to-speech. Multilingual, many voices, adjustable speed/pitch/emotion. Use for narration, voiced briefings, audio versions of reports.",
-      "call": "DIRECT cloud · Bearer $(cat ~/.config/minimax/m3.key).  No helper script yet.\nRaw:  POST https://api.minimax.io/v1/t2a_v2  body { model:'speech-02-hd', text:'…', voice_setting:{ voice_id:'…', speed:1 } } → audio\n  (verify current voice ids + model tag)",
+      "host": "MiniMax \u00b7 DIRECT",
+      "desc": "MiniMax Speech \u2014 the herald's horn. Gives any text a spoken voice (TTS), in many tongues and timbres.",
+      "ollama_desc": "MiniMax Speech (speech-02-hd / -turbo, T2A v2) \u00b7 Text-to-speech. Multilingual, many voices, adjustable speed/pitch/emotion. Use for narration, voiced briefings, audio versions of reports.",
+      "call": "DIRECT cloud \u00b7 Bearer $(cat ~/.config/minimax/m3.key).  No helper script yet.\nRaw:  POST https://api.minimax.io/v1/t2a_v2  body { model:'speech-02-hd', text:'\u2026', voice_setting:{ voice_id:'\u2026', speed:1 } } \u2192 audio\n  (verify current voice ids + model tag)",
       "meter": {
         "kind": "used",
         "spent": 0,
         "quota": 1000,
         "unit": "k char",
         "est": true,
-        "note": "est · T2A billed per char · set real cap"
+        "note": "est \u00b7 T2A billed per char \u00b7 set real cap"
       }
     },
     "minimax-music": {
@@ -371,22 +371,23 @@
       "pull": null,
       "weight": null,
       "kind": "media",
-      "summary": "Text→music. No helper yet.",
+      "summary": "Text\u2192music. No helper yet.",
       "label": "MiniMax Music",
       "color": "#8fc94e",
       "tier": "Forge",
-      "host": "MiniMax · DIRECT",
-      "desc": "MiniMax Music — the bard's lute. Composes scored music from a brief: a mood, a verse, a length.",
-      "ollama_desc": "MiniMax Music (music-1.5) · Generates instrumental or vocal music from a text brief + optional lyrics. Use for theme music, ambient loops, short scores.",
-      "call": "DIRECT cloud · Bearer $(cat ~/.config/minimax/m3.key).  No helper script yet.\nRaw:  POST https://api.minimax.io/v1/music_generation  body { model:'music-1.5', prompt:'…', lyrics:'…' }\n  (verify current model tag)",
+      "host": "MiniMax \u00b7 DIRECT",
+      "desc": "MiniMax Music \u2014 the bard's lute. Composes scored music from a brief: a mood, a verse, a length.",
+      "ollama_desc": "MiniMax Music (music-1.5) \u00b7 Generates instrumental or vocal music from a text brief + optional lyrics. Use for theme music, ambient loops, short scores.",
+      "call": "DIRECT cloud \u00b7 Bearer $(cat ~/.config/minimax/m3.key).  No helper script yet.\nRaw:  POST https://api.minimax.io/v1/music_generation  body { model:'music-1.5', prompt:'\u2026', lyrics:'\u2026' }\n  (verify current model tag)",
       "meter": {
         "kind": "used",
         "spent": 0,
         "quota": 100,
         "unit": "track",
         "est": true,
-        "note": "est · set real cap"
+        "note": "est \u00b7 set real cap"
       }
     }
-  }
+  },
+  "memberOverrides": {}
 }

@@ -10,6 +10,7 @@ async function boot() {
     renderHeader(GUILD)
     renderStats(GUILD)
     renderRoster(GUILD)
+    renderModelControl()
     renderLog(GUILD)
     renderWorkflows(GUILD)
     renderDomains(GUILD)
@@ -66,6 +67,119 @@ function renderRoster(g) {
   if (!grid) return
   grid.innerHTML = ''
   ;(g.members || []).forEach(m => grid.appendChild(memberCard(m)))
+}
+
+const BRAIN_OPTIONS = [
+  { value: 'opus',   label: 'Opus' },
+  { value: 'sonnet', label: 'Sonnet' },
+  { value: 'haiku',  label: 'Haiku' }
+]
+const DOER_OPTIONS = [
+  { value: 'kimi-k2.7',    label: 'kimi-k2.7' },
+  { value: 'glm-5.2',      label: 'glm-5.2' },
+  { value: 'minimax-payg', label: 'minimax-payg' },
+  { value: 'minimax-sub',  label: 'minimax-sub' }
+]
+
+function makeSelect(opts, current) {
+  const sel = document.createElement('select')
+  sel.className = 'model-row__select'
+  const blank = document.createElement('option')
+  blank.value = ''
+  blank.textContent = '—'
+  sel.appendChild(blank)
+  opts.forEach(o => {
+    const op = document.createElement('option')
+    op.value = o.value
+    op.textContent = o.label
+    sel.appendChild(op)
+  })
+  sel.value = current || ''
+  return sel
+}
+
+function showRowStatus(span, text, kind) {
+  span.textContent = text
+  span.className = 'model-row__status visible ' + (kind || '')
+  clearTimeout(span._t)
+  span._t = setTimeout(() => { span.className = 'model-row__status' }, 2000)
+}
+
+async function saveOverride(memberId, brainSel, doerSel, statusSpan, btn) {
+  const brain = brainSel.value
+  const doer = doerSel.value
+  if (!brain || !doer) {
+    showRowStatus(statusSpan, 'Select both', 'error')
+    return
+  }
+  btn.disabled = true
+  try {
+    const resp = await fetch('/api/model-override', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ memberId, brain, doer })
+    })
+    if (!resp.ok) {
+      let msg = 'Save failed'
+      try { const j = await resp.json(); if (j.error) msg = j.error } catch {}
+      showRowStatus(statusSpan, msg, 'error')
+    } else {
+      showRowStatus(statusSpan, '✓ Saved', 'saved')
+    }
+  } catch (err) {
+    showRowStatus(statusSpan, 'Network error', 'error')
+  } finally {
+    btn.disabled = false
+  }
+}
+
+function renderModelControl() {
+  const grid = document.getElementById('model-control-grid')
+  if (!grid) return
+  grid.innerHTML = ''
+
+  const members = window._GUILD_MEMBERS || []
+  if (!members.length) return
+
+  let overrides = {}
+  fetch('/api/model-override').then(r => r.json()).then(data => {
+    overrides = data || {}
+    members.forEach(m => {
+      const row = grid.querySelector(`[data-mid="${CSS.escape(m.id)}"]`)
+      if (!row) return
+      const ov = overrides[m.id]
+      if (ov) {
+        row._brainSel.value = ov.brain || ''
+        row._doerSel.value = ov.doer || ''
+      }
+    })
+  }).catch(() => {})
+
+  members.forEach(m => {
+    const row = document.createElement('div')
+    row.className = 'model-row'
+    row.dataset.mid = m.id
+
+    const name = document.createElement('span')
+    name.className = 'model-row__name'
+    name.textContent = m.name || m.id
+
+    const brainSel = makeSelect(BRAIN_OPTIONS, '')
+    const doerSel = makeSelect(DOER_OPTIONS, '')
+
+    const statusSpan = document.createElement('span')
+    statusSpan.className = 'model-row__status'
+
+    const btn = document.createElement('button')
+    btn.className = 'model-row__save'
+    btn.textContent = 'Save'
+    btn.addEventListener('click', () => saveOverride(m.id, brainSel, doerSel, statusSpan, btn))
+
+    row._brainSel = brainSel
+    row._doerSel = doerSel
+    row.append(name, brainSel, doerSel, btn, statusSpan)
+    grid.appendChild(row)
+  })
 }
 
 function memberCard(m) {
