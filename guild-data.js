@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 58,
       "patch": 80
     },
-    "generated": "2026-06-30T00:15:55Z",
+    "generated": "2026-06-30T00:23:09Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "reserve",
@@ -6421,7 +6421,7 @@ const GUILD = {
     {
       "id": "weapon-utility",
       "name": "weapon-utility",
-      "version": "3.1.1",
+      "version": "3.2.0",
       "icon": "🗡️",
       "art": "",
       "artPng": true,
@@ -6443,6 +6443,7 @@ const GUILD = {
         "One thinker, one-or-many doers — and the ultra-brainstorming exception",
         "Swarm dispatch — weighted fan-out, mid-flight reroute, stable coordinator",
         "Availability — when a weapon counts as drawable",
+        "Each seat loads through its own backend (Hermes dispatch — HARD RULE)",
         "Where it sits",
         "Versioning",
         "Cost-per-tier baseline (1.6.0)",
@@ -6454,8 +6455,8 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 324,
-        "words": 4494
+        "lines": 350,
+        "words": 4859
       },
       "global": true,
       "members": [

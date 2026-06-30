@@ -2,7 +2,7 @@
 name: weapon-utility
 description: "Every member's rule for which weapon (model) to draw and how thinker and doer weapons work together. Thinker weapons read, plan, and prompt the doers; doer weapons do the job and return it; the thinker then reviews the result against the plan and re-prompts the doer until it conforms. A member draws the highest-priority AVAILABLE weapon of the kind the job needs — scanning its arsenal left to right. One thinker plans and reviews and may dispatch several doers in parallel (many of one model or a mix); only ultra-brainstorming runs several thinkers at once. Use whenever a member must pick a model, decide thinker-vs-doer, or run the plan → do → review loop. Triggers: 'which weapon', 'which model should X use', 'pick the weapon', 'thinker or doer', 'draw a weapon', 'run the weapon loop', 'how does the member choose its model'. Every member consults this before acting — it is the atomic layer beneath members-formation (which member works) and ultra-brainstorming (fuse several members across models)."
 metadata:
-  version: 3.1.1
+  version: 3.2.0
 type: Skill
 
 ---
@@ -256,6 +256,31 @@ A weapon is **available** only if all hold:
 An unavailable weapon is passed over silently — the scan simply continues to the next weapon of
 the same kind.
 
+## Each seat loads through its own backend (Hermes dispatch — HARD RULE)
+
+When a member's doer-grade work runs **inside its Hermes profile** (the `tools/dispatch.py`
+path — the cross-system bridge that ferries a Hermes agent's prompts to the arsenal), the three
+seats do **NOT** share one provider. Each seat loads through **its own backend** as named in
+`star-alliance-arsenal/models.json` → `models.<id>.backend` (+ `cloud_tag` where applicable).
+Routing one seat onto another seat's provider is a category error that stalls dispatch (the
+recurring failure mode this rule prevents).
+
+- **minimax-m3** — the **Doer seat** — loads through its **direct MiniMax backend**
+  (`backend: "minimax-direct"`, `cloud_tag: null`). This is the DIRECT cloud subscription at
+  `api.minimax.io` — it is NOT the cloud-pull route. `minimax.py` is its helper.
+- **glm-5.2** — the **Brain / escalation seat** (and the **Critic fallback**) — loads through
+  the **Ollama Cloud backend** with `cloud_tag: "glm-5.2:cloud"`
+  (`ollama pull glm-5.2:cloud`, summoned via `summon.py` / `ollama_cloud.py`).
+- **kimi-k2.7** — the **Critic seat** — loads through the **Ollama Cloud backend** with
+  `cloud_tag: "kimi-k2.7-code:cloud"` (`ollama pull kimi-k2.7-code:cloud`, summoned via
+  `summon.py` / `ollama_cloud.py`).
+
+**The plain rule.** A Hermes agent draws each seat **directly from its own named provider** —
+`minimax-direct` for the doer, `ollama-cloud` (per-tag) for the brain and the critic. Cross-
+routing a seat onto another seat's provider is the dispatch stall this rule prevents. A seat
+unreachable on **its own** backend counts unavailable per the §Availability section above —
+fall through the loop, never silently retry it on the wrong provider.
+
 ## Where it sits
 
 ```
@@ -291,6 +316,7 @@ python3 tools/efficiency_report.py   # shows median in/out tokens split by lite 
 **The safety check always wins:** before adjusting any `size_small_signals`, verify zero high-stakes turns in the LITE column (a migration, git push, deploy in a LITE-tagged turn is the hard failure). Stakes keyword list in `data/harness.json` is immutable until safety is confirmed.
 
 ## Changelog
+- **3.2.0** — **Per-seat Hermes backend rule (HARD RULE).** New §Each seat loads through its own backend: when a member's doer-grade work runs inside its Hermes profile (`tools/dispatch.py`), the three seats do NOT share one provider — each loads through its own backend as named in `models.json`. **minimax-m3** (Doer) → `backend: "minimax-direct"`, direct API (NOT the cloud-pull route). **glm-5.2** (Brain / escalation, also Critic fallback) → `backend: "ollama-cloud"`, `cloud_tag: "glm-5.2:cloud"`. **kimi-k2.7** (Critic) → `backend: "ollama-cloud"`, `cloud_tag: "kimi-k2.7-code:cloud"`. Cross-routing a seat onto another seat's provider was the recurring Hermes dispatch stall; the rule names the canonical `models.json` backends so an unavailable seat falls through to the loop's next-of-kind instead of silently retrying on the wrong provider. New availability/selection rule → MINOR.
 - **3.1.1** — **Critic-seat re-sync.** The 3.0.0 universalization moved the arsenal into `models.json` seats but the prose still named the OLD critic (`glm-5.2`) and the OLD example (Opus-brain + GLM-critic). Registry truth is now Critic default `kimi-k2.7` (glm-5.2 → deepseek-v4-pro fallback) over GLM-5.2 brains — a GLM critic would now share the brain's family and violate the ST rule, which is precisely why the seat moved. Updated the Critic bullet, the Critic-seat default, and the family example to match. Refs/wording → PATCH.
 - **3.1.0** — **Member-instance swarm clause (second exception).** Adds the Butler's
   [[decompose-and-swarm]] path as a second exception to the one-thinker-per-member rule. Each
