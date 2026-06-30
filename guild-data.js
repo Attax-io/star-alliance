@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 58,
       "patch": 80
     },
-    "generated": "2026-06-30T00:12:18Z",
+    "generated": "2026-06-30T00:15:55Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "reserve",
@@ -6421,7 +6421,7 @@ const GUILD = {
     {
       "id": "weapon-utility",
       "name": "weapon-utility",
-      "version": "3.1.0",
+      "version": "3.1.1",
       "icon": "🗡️",
       "art": "",
       "artPng": true,
@@ -6454,8 +6454,8 @@ const GUILD = {
       "refs": [],
       "scripts": [],
       "stats": {
-        "lines": 323,
-        "words": 4392
+        "lines": 324,
+        "words": 4494
       },
       "global": true,
       "members": [

@@ -2,7 +2,7 @@
 name: weapon-utility
 description: "Every member's rule for which weapon (model) to draw and how thinker and doer weapons work together. Thinker weapons read, plan, and prompt the doers; doer weapons do the job and return it; the thinker then reviews the result against the plan and re-prompts the doer until it conforms. A member draws the highest-priority AVAILABLE weapon of the kind the job needs — scanning its arsenal left to right. One thinker plans and reviews and may dispatch several doers in parallel (many of one model or a mix); only ultra-brainstorming runs several thinkers at once. Use whenever a member must pick a model, decide thinker-vs-doer, or run the plan → do → review loop. Triggers: 'which weapon', 'which model should X use', 'pick the weapon', 'thinker or doer', 'draw a weapon', 'run the weapon loop', 'how does the member choose its model'. Every member consults this before acting — it is the atomic layer beneath members-formation (which member works) and ultra-brainstorming (fuse several members across models)."
 metadata:
-  version: 3.1.0
+  version: 3.1.1
 type: Skill
 
 ---
@@ -31,7 +31,7 @@ The arsenal is no longer a per-member loadout; it is **one universal set**, orga
 - **Brain** — the model the member RUNS AS (`model:` in its `.md`); plans, reviews, wields the
   tools. The **only per-member seat** (an override of `seats.brain`, default `opus`).
 - **Doer** — `minimax-m3`; the hands (bulk execution, returns text, no tools).
-- **Critic** — `glm-5.2`; the independent reviewer, a *different family* than the Brain (see
+- **Critic** — `kimi-k2.7`; the independent reviewer, a *different family* than the Brain (see
   §The Critic seat).
 - **Bench** — every other model; the **swarm pool**. Pull N with
   `python3 star-alliance-arsenal/bench_pull.py doer|thinker <N>` → doer-swarm (parallel slices,
@@ -109,10 +109,10 @@ you are picking the only weapon that *can* hold the tool. The run continues with
 ## The Critic seat — independent review (the third seat)
 
 Brain plans, Doer executes — and the **Critic refutes** before work ships. The Critic is
-the third standing seat (default `glm-5.2`, in `models.json` → `seats.critic`), and it is
+the third standing seat (default `kimi-k2.7`, in `models.json` → `seats.critic`), and it is
 deliberately a **different model family than the Brain**: a critic that shares the author's
-lineage shares its blind spots. Opus-brain + GLM-critic = diverse failure modes — that
-diversity *is* the point, not a coincidence. `conformity_check` (ST) enforces critic-family
+lineage shares its blind spots. GLM-brain + Kimi-critic = diverse failure modes — that
+diversity *is* the point, not a coincidence (a GLM critic over a GLM brain would share blind spots — exactly why the Critic seat moved off GLM). `conformity_check` (ST) enforces critic-family
 ≠ brain-family.
 
 The Critic has **two modes, and the difference is load-bearing**:
@@ -291,6 +291,7 @@ python3 tools/efficiency_report.py   # shows median in/out tokens split by lite 
 **The safety check always wins:** before adjusting any `size_small_signals`, verify zero high-stakes turns in the LITE column (a migration, git push, deploy in a LITE-tagged turn is the hard failure). Stakes keyword list in `data/harness.json` is immutable until safety is confirmed.
 
 ## Changelog
+- **3.1.1** — **Critic-seat re-sync.** The 3.0.0 universalization moved the arsenal into `models.json` seats but the prose still named the OLD critic (`glm-5.2`) and the OLD example (Opus-brain + GLM-critic). Registry truth is now Critic default `kimi-k2.7` (glm-5.2 → deepseek-v4-pro fallback) over GLM-5.2 brains — a GLM critic would now share the brain's family and violate the ST rule, which is precisely why the seat moved. Updated the Critic bullet, the Critic-seat default, and the family example to match. Refs/wording → PATCH.
 - **3.1.0** — **Member-instance swarm clause (second exception).** Adds the Butler's
   [[decompose-and-swarm]] path as a second exception to the one-thinker-per-member rule. Each
   instance runs as the member's Brain (tool-capable Claude model, e.g. Sonnet) — NEVER a
