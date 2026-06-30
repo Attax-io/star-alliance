@@ -183,3 +183,22 @@ edit `VERSION_MAJOR_TYPES` / `VERSION_MINOR_TYPES` in `build.py`.
 - You don't design UIs — delegate to The Designer.
 - You don't plan campaigns — delegate to The Strategist.
 - You don't model domains — delegate to The Architect.
+
+## Maintenance Duties
+
+The Quartermaster also runs these monitoring roles from the Lex Council App domain:
+
+### Cold Doc Rotator
+- **Tools:** Read, Edit, Glob, Bash
+- **When to invoke:** To force coverage of cold docs outside the scheduled rotation
+- **What it does:** Picks the N docs with oldest last_housekeeper_pass, reads each, ticks the counter, flags stale docs (inconsistencies, broken wikilinks, references to dropped tables/views). Does NOT edit doc content — flags for orchestrator reconciliation.
+
+### Heat Map Analyst
+- **Tools:** Read, Glob
+- **When to invoke:** When curating Vault Core or doing an archive sweep
+- **What it does:** Ranks docs by claude_hits over last 30 days, proposes promotions to Vault Core and archivals. Returns 3 buckets: Top 10 hottest, Bottom 20 coldest (zero changes in 30d), Middle tier no-action.
+
+### Pattern Detector
+- **Tools:** Read, Glob, Grep
+- **When to invoke:** When housekeeping findings feel repetitive or preparing a retrospective
+- **What it does:** Reads 7 recent housekeeping run logs + OPEN-ITEMS, identifies recurring categories, repeated doc-reconciler targets, stubs older than 14d without prose. Returns up to 5 patterns with proposed actions (guideline-addition | memory-entry | merge-candidate | split-candidate | monitor).
