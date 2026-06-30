@@ -2146,6 +2146,13 @@
       "title": "Sync Rotation: data/skills-meta.json",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Sync Rotation: .claude/arsenal/models-usage.json, .gitignore, audits/archive/HARNESS-EFFICIENCY-AUDIT.md (+15 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130

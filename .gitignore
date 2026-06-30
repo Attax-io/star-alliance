@@ -11,6 +11,12 @@ __pycache__/
 # Runtime delegation-ledger data (real token spend per doer call)
 star-alliance-arsenal/usage-log.jsonl
 
+# Dashboard runtime artifacts — regenerated live by serve.cjs, never source
+guild-data.js
+guild-data.json
+skill-md.js
+workflow-md.js
+
 # Workflow-runner runtime output (artifacts, signoffs, summaries)
 runs/
 
