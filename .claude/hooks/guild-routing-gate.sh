@@ -151,15 +151,15 @@ Guild Master says go. The Butler frames; the Guild Master approves — the produ
 the brief never self-approves it.
 
 STEP 1 · THE STRATEGIST FORMS THE RIGHT MEMBER — he routes the task to ONE specialist:
-  • code · features · bug fixes · refactor code · dev server · tooling · knowledge graph → the-developer (glm-5.2)
-  • database · system design · domain model · structural refactor                        → the-architect (glm-5.2)
-  • UI · UX · brand kit · image-to-code · visual polish · design system                  → the-designer (glm-5.2)
-  • marketing · growth · SEO · content · email nurture · social/paid · go-to-market      → the-herald (glm-5.2)
-  • investment · trading · market research · portfolio · buy/sell/risk                    → the-merchant (glm-5.2)
-  • skills (sync/upgrade/create) · guild log · daily skill routine                        → the-quartermaster (glm-5.2)
+  • code · features · bug fixes · refactor code · dev server · tooling · knowledge graph → the-developer (sonnet)
+  • database · system design · domain model · structural refactor                        → the-architect (sonnet)
+  • UI · UX · brand kit · image-to-code · visual polish · design system                  → the-designer (sonnet)
+  • marketing · growth · SEO · content · email nurture · social/paid · go-to-market      → the-herald (sonnet)
+  • investment · trading · market research · portfolio · buy/sell/risk                    → the-merchant (sonnet)
+  • skills (sync/upgrade/create) · guild log · daily skill routine                        → the-quartermaster (haiku)
   • large multi-wave projects · campaigns · bug workflow · performance optimization       → the-strategist (opus)
   • routing · "who handles this" · break the work into waves · sequence members           → the-strategist (opus)
-  • load/translate law · legal drafting · multi-locale content                            → the-interpreter (glm-5.2)
+  • load/translate law · legal drafting · multi-locale content                            → the-interpreter (sonnet)
   • GAP-FILLER ONLY — the-connector is NEVER the first routing target for ordinary craft.
     The Strategist routes to the-connector in exactly two cases: (1) DIRECT — when the task itself
     needs a Claude connector (WhatsApp, Gmail, Calendar, web search/fetch, computer-use);
