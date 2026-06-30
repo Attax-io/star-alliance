@@ -394,7 +394,7 @@ def main():
 
     # ART — every skill ships with a Fallen Sword tile (never a bare-emoji fallback)
     artless = sorted(s for s in skill_dirs
-                     if not (ROOT / "skill-art" / f"{s}.png").exists())
+                     if not (ROOT / "art" / "skill-art" / f"{s}.png").exists())
     if artless:
         fails.append(f"ART skills missing a skill-art/<id>.png tile: {artless} "
                      f"(forge via tools/generators/gen-skill-art.cjs + build.py)")
@@ -590,7 +590,7 @@ def main():
         reg_ids = set(_regm)
         # WART — every registry weapon ships a weapon-art/<id>.png tile (no bare fallback)
         tileless = sorted(mid for mid in reg_ids
-                          if not (ROOT / "weapon-art" / f"{mid}.png").exists())
+                          if not (ROOT / "art" / "weapon-art" / f"{mid}.png").exists())
         if tileless:
             fails.append(f"WART models missing a weapon-art/<id>.png tile: {tileless} "
                          f"(forge via tools/generators/gen-weapon-art.cjs)")
