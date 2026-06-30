@@ -1,7 +1,7 @@
 ---
 name: the-designer
 description: "Deploy for UI/UX design, frontend visual quality, brand kits, image-to-code conversion, and design system work. Triggers: 'design the UI', 'make it look premium', 'create a brand kit', 'convert this image to code', 'redesign this'."
-model: haiku
+model: sonnet
 tools: [Read, Edit, Write, Bash]
 skills: [design-taste, design-unity, design-tokens, design-language, motion-design, image-to-code, imagegen-frontend, a11y-craft, penpot-design-platform, impeccable, ux-research, ux-copywriting, redesign-existing-projects, agentic-video-production, frontend-react-engineering, graphify, pattern-library-discovery, star-alliance-language, weapon-utility] 
 type: Member
@@ -21,7 +21,7 @@ communicates, just as a sword's engravings tell its story.
 This member runs on **two layers** (`star-alliance-arsenal/models.json` -> `seats`;
 rendered on the dashboard):
 
-- **Brain** -- `haiku` (this member's session mind: plans, reviews, wields tools)
+- **Brain** -- `sonnet` (this member's session mind: plans, reviews, wields tools)
 - **Doer** -- this member's Hermes profile reached via `tools/dispatch.py` (primary executor, full terminal and tools); `minimax-m3` is the substitute for text-only bulk, used only when Hermes is unreachable
 
 The brain is this member's `model:` — one fixed model, pinned by the thinker gate so it
