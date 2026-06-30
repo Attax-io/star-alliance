@@ -561,3 +561,5 @@
 {"ts":"2026-06-30T16:01:16Z","tier":"none","assistant_msgs":13,"in":19,"out":6758,"cache_read":1284197,"cache_create":8895,"wall_ms":68879}
 {"ts":"2026-06-30T16:30:04Z","tier":"full","assistant_msgs":5,"in":11,"out":1215,"cache_read":310088,"cache_create":291164,"wall_ms":48094}
 {"ts":"2026-06-30T16:35:42Z","tier":"full","assistant_msgs":19,"in":34,"out":11841,"cache_read":1388492,"cache_create":173098,"wall_ms":194023}
+{"ts":"2026-06-30T16:40:54Z","tier":"full","assistant_msgs":4,"in":10,"out":11981,"cache_read":317313,"cache_create":26841,"wall_ms":132439}
+{"ts":"2026-06-30T16:49:30Z","tier":"none","assistant_msgs":14,"in":24,"out":10740,"cache_read":1288989,"cache_create":25826,"wall_ms":214963}

@@ -1,11 +1,30 @@
 
-BUILD WARNINGS (8):
+BUILD WARNINGS (23):
+  ⚠ skill 'bug-fix-closer' has no skills-meta.json entry — using defaults
+  ⚠ skill 'daily-stock-analysis' has no skills-meta.json entry — using defaults
+  ⚠ skill 'new-member-onboarding' has no skills-meta.json entry — using defaults
+  ⚠ domain 'star-alliance' references skill 'full-output-enforcement' not in the guild pool
+  ⚠ domain 'star-alliance' references skill 'trading-strategy' not in the guild pool
+  ⚠ domain 'star-alliance' references skill 'portfolio-risk' not in the guild pool
+  ⚠ domain 'star-alliance' references skill 'design-taste-frontend' not in the guild pool
+  ⚠ domain 'star-alliance' references skill 'dual-model-review' not in the guild pool
+  ⚠ domain 'star-alliance' references skill 'gpt-taste' not in the guild pool
+  ⚠ domain 'star-alliance' references skill 'high-end-visual-design' not in the guild pool
+  ⚠ domain 'star-alliance' references skill 'industrial-brutalist-ui' not in the guild pool
+  ⚠ domain 'star-alliance' references skill 'minimalist-ui' not in the guild pool
+  ⚠ domain 'star-alliance' references skill 'stitch-design-taste' not in the guild pool
+  ⚠ domain 'lex-council-app' references skill 'full-output-enforcement' not in the guild pool
   ⚠ domain 'lex-council-app' references member 'backend-auditor' not in the guild (external)
   ⚠ domain 'lex-council-app' references member 'cold-doc-rotator' not in the guild (external)
   ⚠ domain 'lex-council-app' references member 'frontend-auditor' not in the guild (external)
   ⚠ domain 'lex-council-app' references member 'health-checker' not in the guild (external)
   ⚠ domain 'lex-council-app' references member 'heat-map-analyst' not in the guild (external)
   ⚠ domain 'lex-council-app' references member 'pattern-detector' not in the guild (external)
+  ⚠ domain 'lex-council-business' references skill 'full-output-enforcement' not in the guild pool
   ⚠ domain 'lex-council-business' references member 'bd-research-agent' not in the guild (external)
   ⚠ domain 'lex-council-business' references member 'intake-agent' not in the guild (external)
-Wrote guild-data.js (589,619 bytes) + guild-data.json + skill-md.js (985,992 bytes, 94 skills) + workflow-md.js (65,395 bytes, 34 workflows)
+
+BUILD ERRORS (1):
+  ✗ workflow 'standard-mission' step 'Implement the Plan' (actor the-developer): thinker 'glm-5.2' is not in the-developer's loadout
+
+Build aborted — fix the errors above.

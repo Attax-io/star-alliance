@@ -1943,6 +1943,13 @@
       ],
       "commit": "650b7781",
       "_derived": true
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/turn-start.py, .claude/settings.json, .claude/hooks/version-auto-bump.py",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130
