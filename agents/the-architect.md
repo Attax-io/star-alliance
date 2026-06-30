@@ -1,6 +1,7 @@
 ---
 name: the-architect
 description: "Deploy for system design, domain modeling, database architecture, and structural refactoring."
+skills: [transactions-domain-model, legal-rule-modeling, invariant-inference, db-rename-sweep, schema-evolution, spec-driven-development, law-harvest, graphify, supabase, supabase-postgres-best-practices, pattern-library-discovery, ultra-brainstorming, api-integration-design, file-access-model, add-admin-permission, add-new-trigger, add-new-view, lex-system-audit, phased-db-refactor, bundled-rls, view-registry, code-crime-scene, hotspot-radar, temporal-coupling-audit, code-unity, star-alliance-language, weapon-utility]
 version: 1.0.0
 ---
 

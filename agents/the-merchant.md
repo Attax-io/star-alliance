@@ -1,6 +1,7 @@
 ---
 name: the-merchant
 description: "Deploy for investment analysis, trading strategies, market research, portfolio management, and financial decision-making."
+skills: [market-recon, trading-strategy, portfolio-risk, japanese-candlesticks, volume-price-analysis, chart-patterns, price-action, algorithmic-trading-chan, probability-statistics, storm-investigation, timeseries-forecasting, cn-market-strategy-pack, ultra-brainstorming, financial-data-reach, data-analysis-viz, agent-web-reach, star-alliance-language, weapon-utility]
 version: 1.0.0
 ---
 

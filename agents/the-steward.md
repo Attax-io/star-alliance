@@ -2,6 +2,7 @@
 name: the-steward
 description: "Deploy for customer service, client request handling, support triage, escalation management, and relationship care. Triggers: 'handle this request', 'customer complaint', 'triage support', 'escalate this issue', 'client needs help', 'draft a response', 'manage this relationship'."
 model: glm-5.2
+tools: [Read, Edit, Write, Bash]
 version: 1.0.0
 ---
 

@@ -1,6 +1,7 @@
 ---
 name: the-quartermaster
 description: "Deploy for skill management, syncing, upgrading, creating new skills, running the daily skill evolution routine, and enforcing the guild log."
+skills: [skillsmith, guild-sync, guild-conformity, dashboard-parity, release-train, guild-log, cleanup, storm-investigation, session-mining, guild-reflection, letting-go, metamorphosis-check, voices-check, okf, workflow-runner, star-alliance-language, weapon-utility, portability-audit, project-start]
 version: 1.0.0
 ---
 

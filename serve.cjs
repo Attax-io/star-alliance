@@ -14,6 +14,11 @@ const MIME = {
 }
 
 http.createServer((req, res) => {
+  if (req.url === '/api/status') {
+    res.writeHead(200, { 'Content-Type': 'application/json' })
+    res.end(JSON.stringify({ ok: true }))
+    return
+  }
   const filePath = path.join(ROOT, req.url === '/' ? '/dashboard.html' : req.url)
   fs.readFile(filePath, (err, data) => {
     if (err) { res.writeHead(404); res.end('Not found'); return }
