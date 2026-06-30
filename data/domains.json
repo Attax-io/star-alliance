@@ -130,7 +130,7 @@
         "the-developer",
         "the-designer",
         "the-strategist",
-        "the-translator",
+        "the-interpreter",
         "the-herald",
         "the-merchant",
         "the-quartermaster",
@@ -162,14 +162,7 @@
         "vault-log-compliance",
         "cleanup"
       ],
-      "members": [
-        "backend-auditor",
-        "cold-doc-rotator",
-        "frontend-auditor",
-        "health-checker",
-        "heat-map-analyst",
-        "pattern-detector"
-      ],
+      "members": [],
       "notes": "The production app. Skills installed in skills-lock.json come from external GitHub repos (Leonxlnx/taste-skill, supabase/agent-skills, etc.) and are vendored into Lex Council App/skills/. Local agents defined in .claude/agents/ handle project-specific audits."
     },
     {

@@ -1,7 +1,7 @@
 ---
 type: Document
 title: Applying the method
-description: How the Architect and Translator transfer LoopInvGen's CEGIS skeleton to data-model invariants and legal rule boundaries.
+description: How the Architect and Interpreter transfer LoopInvGen's CEGIS skeleton to data-model invariants and legal rule boundaries.
 timestamp: 2026-06-27T00:00:00Z
 ---
 
@@ -39,7 +39,7 @@ The trigger is a problem that smells like *"infer a rule that must hold over an 
 - **Reverse-engineering an implicit spec** from a working system whose rules were never written down: treat current data as good states, known-bad inputs as bad states, synthesize the predicate that separates them.
 - **Migration safety**: an invariant that holds before *and* after a refactor is a regression oracle. Infer it on the old system, assert it on the new.
 
-### the-translator (shared owner) — bridge to [[legal-rule-modeling]]
+### the-interpreter (shared owner) — bridge to [[legal-rule-modeling]]
 `legal-rule-modeling` turns a statute into `inputs → computation → output`. This skill sharpens its hardest step: **pinning down a boundary the text leaves fuzzy.** Where a bracket edge, an exemption, or an eligibility test is ambiguous, you have worked examples (cases that qualify, cases that don't). Treat them as good/bad states:
 - Synthesize the predicate that separates qualifying from non-qualifying cases.
 - The "no fixed features" idea = do not assume the statute's cut is on a variable you already named; the separating feature might be a *combination* (income − deductions ≥ cap), and you mint it on demand.

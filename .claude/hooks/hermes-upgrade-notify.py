@@ -23,7 +23,7 @@ from pathlib import Path
 EXCLUDED = {"the-strategist", "the-butler"}
 ALL_MEMBERS = {
     "the-developer", "the-architect", "the-designer",
-    "the-herald", "the-merchant", "the-quartermaster", "the-translator",
+    "the-herald", "the-merchant", "the-quartermaster", "the-interpreter",
 }
 
 
