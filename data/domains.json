@@ -4,9 +4,9 @@
     {
       "id": "star-alliance",
       "name": "Star Alliance",
-      "tagline": "The guild framework itself \u2014 skill registry, agent definitions, dashboard",
+      "tagline": "The guild framework itself — skill registry, agent definitions, dashboard",
       "path": "/Users/attaselim/Documents/Claude/Projects/star-alliance",
-      "icon": "\u2b50",
+      "icon": "⭐",
       "color": "#b89530",
       "skills": [
         "conquering-campaign",
@@ -113,7 +113,14 @@
         "vault-log-writer",
         "bundled-rls",
         "daily-stock-analysis",
-        "view-registry"
+        "view-registry",
+        "bug-fix-closer",
+        "code-crime-scene",
+        "code-unity",
+        "cognitive-bias-guard",
+        "hotspot-radar",
+        "new-member-onboarding",
+        "temporal-coupling-audit"
       ],
       "members": [
         "the-architect",
@@ -131,9 +138,9 @@
     {
       "id": "lex-council-app",
       "name": "Lex Council App",
-      "tagline": "Multi-portal app \u2014 admin, members, clients (Next.js + Supabase)",
+      "tagline": "Multi-portal app — admin, members, clients (Next.js + Supabase)",
       "path": "/Users/attaselim/Documents/Claude/Projects/Lex Council App",
-      "icon": "\u2696\ufe0f",
+      "icon": "⚖️",
       "color": "#3b7dd8",
       "skills": [
         "supabase",
@@ -157,9 +164,9 @@
     {
       "id": "lex-council-business",
       "name": "Lex Council Business",
-      "tagline": "Business operations \u2014 marketing, BD, content drafting (Obsidian vault)",
+      "tagline": "Business operations — marketing, BD, content drafting (Obsidian vault)",
       "path": "/Users/attaselim/Documents/Claude/Projects/Lex Council Business",
-      "icon": "\ud83c\udfdb\ufe0f",
+      "icon": "🏛️",
       "color": "#7c5dc8",
       "skills": [
         "article-creator",

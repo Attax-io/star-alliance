@@ -22,6 +22,38 @@ const STYLE = "fantasy RPG skill icon, Fallen Sword MMORPG style, dark parchment
 
 const SKILLS = [
   {
+    id: "temporal-coupling-audit",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "", no text, no watermarks`,
+  },
+  {
+    id: "new-member-onboarding",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "The exact checklist to run whenever a new guild member is recruited.", no text, no watermarks`,
+  },
+  {
+    id: "hotspot-radar",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "", no text, no watermarks`,
+  },
+  {
+    id: "daily-stock-analysis",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "AI-powered daily stock analysis for A-share HK US JP KR markets generating a structured Decisio", no text, no watermarks`,
+  },
+  {
+    id: "cognitive-bias-guard",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "", no text, no watermarks`,
+  },
+  {
+    id: "code-unity",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "The Developer's and Architect's code-unity guardian — enforce ONE source of truth for every typ", no text, no watermarks`,
+  },
+  {
+    id: "code-crime-scene",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "", no text, no watermarks`,
+  },
+  {
+    id: "bug-fix-closer",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "Mark one or more Lex Council bug_reports rows as Fixed (br_status=4) in the DB.", no text, no watermarks`,
+  },
+  {
     id: "view-registry",
     prompt: `${STYLE}. A heavy leather-bound codex with a golden eye clasp, glowing typed registry page listing three view names, a magnifying glass hovering over a Supabase scroll, no text, no watermarks`,
   },

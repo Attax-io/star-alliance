@@ -103,6 +103,14 @@
     "triggers": "'write tests for this', 'add test coverage', 'set up Playwright', 'why is this test flaky', 'test this server action'",
     "modes": "test pyramid & strategy; deterministic tests; E2E Playwright"
   },
+  "bug-fix-closer": {
+    "icon": "🧩",
+    "blurb": "Mark one or more Lex Council bug_reports rows as Fixed (br_status=4) in the DB.",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "",
+    "modes": ""
+  },
   "bug-fix-workflow": {
     "icon": "🐛",
     "blurb": "End-to-end bug triage, reproduction, and root-cause fixing",
@@ -151,6 +159,14 @@
     "triggers": "'which strategy fits this stock', 'screen with chan theory', 'is this a dragon-head setup', 'apply a CN-market strategy'",
     "modes": "trend & momentum; reversal & volume; theme & event; chan & wave theory"
   },
+  "code-crime-scene": {
+    "icon": "🧩",
+    "blurb": "",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "",
+    "modes": ""
+  },
   "code-review-craft": {
     "icon": "🔍",
     "blurb": "Deliberate member-invoked review of a diff/PR/file — correctness, security, simplification, efficiency; severity-tagged, evidence-grounded",
@@ -158,6 +174,14 @@
     "tabler": "ti-eye-check",
     "triggers": "'review this diff', 'review my PR', 'audit this file', 'is this change safe', 'look over my changes'",
     "modes": "review dimensions; grounding findings; severity & scope"
+  },
+  "code-unity": {
+    "icon": "🧩",
+    "blurb": "The Developer's and Architect's code-unity guardian — enforce ONE source of truth for every typ",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "'one source of truth', 'stop duplicating', 'this type is defined twice', 'unify these constants', 'single import path', 'deduplicate types', 'code unity', 'audit duplication'",
+    "modes": ""
   },
   "codebase-memory-mcp": {
     "icon": "🕸️",
@@ -172,6 +196,14 @@
     "blurb": "Legal codex pipeline: load law, translate to five locales",
     "level": "Intermediate",
     "tabler": "ti-gavel",
+    "triggers": "",
+    "modes": ""
+  },
+  "cognitive-bias-guard": {
+    "icon": "🧩",
+    "blurb": "",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
     "triggers": "",
     "modes": ""
   },
@@ -198,6 +230,14 @@
     "tabler": "ti-file-search",
     "triggers": "'review this contract', 'triage this NDA', 'redline this agreement', \"what's the risk in this clause\", 'is this term standard'",
     "modes": "clause checklist; redline & risk scoring; reviewer report"
+  },
+  "daily-stock-analysis": {
+    "icon": "🧩",
+    "blurb": "AI-powered daily stock analysis for A-share HK US JP KR markets generating a structured Decisio",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "daily analysis, stock decision dashboard, multi-market stock report, automated stock analysis, push stock alerts. Differs from trading-strategy (systematic strategies, no automation infra), chart-patterns (reading formations, no pipeline), ",
+    "modes": ""
   },
   "dashboard-parity": {
     "icon": "🪞",
@@ -407,6 +447,14 @@
     "triggers": "",
     "modes": ""
   },
+  "hotspot-radar": {
+    "icon": "🧩",
+    "blurb": "",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "",
+    "modes": ""
+  },
   "image-to-code": {
     "icon": "🖼️",
     "blurb": "Elite pipeline that designs the image, then engineers matching code",
@@ -558,6 +606,14 @@
     "tabler": "ti-businessplan",
     "triggers": "'prep this negotiation', 'structure this deal', \"what's my BATNA\", 'pricing strategy for X', 'handle this objection', 'write a deal memo'",
     "modes": "preparation (BATNA/ZOPA); structuring & concessions; deal memo"
+  },
+  "new-member-onboarding": {
+    "icon": "🧩",
+    "blurb": "The exact checklist to run whenever a new guild member is recruited.",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "'onboard new member', 'recruit a member', 'add a new profile', 'new the-<slug>', 'create profiles/<slug>/'",
+    "modes": ""
   },
   "obedience": {
     "icon": "🧩",
@@ -798,6 +854,14 @@
     "tabler": "ti-prompt",
     "triggers": "'design a system prompt', 'review this system prompt', 'harden this agent prompt', 'how do production prompts handle X'",
     "modes": "structural patterns; tool-use & refusal; persona & anti-jailbreak; cross-vendor comparison"
+  },
+  "temporal-coupling-audit": {
+    "icon": "🧩",
+    "blurb": "",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "",
+    "modes": ""
   },
   "timeseries-forecasting": {
     "icon": "📈",

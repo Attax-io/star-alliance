@@ -2125,6 +2125,13 @@
       "title": "Sync Rotation: .claude/hooks/guild-routing-gate.sh, README.md, agents/the-steward 2.md",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Sync Rotation: data/skills-meta.json, tools/generators/gen-skill-art.cjs",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130
