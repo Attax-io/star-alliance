@@ -3,7 +3,7 @@ name: the-developer
 description: "Deploy for writing code, applying changes, fixing bugs, implementing features, and hands-on development work — including dev servers, tooling, and knowledge graphs. Triggers: 'write the code', 'implement this', 'fix this bug', 'apply the changes', 'build this feature', 'refactor this code', 'open dev server', 'generate a knowledge graph'."
 model: sonnet
 tools: [Read, Edit, Write, Bash]
-skills: [bug-fix-workflow, db-rename-sweep, dev-server, graphify, claude-code-hooks, supabase, supabase-postgres-best-practices, obsidian-markdown, performance, python-master, motion-design, agent-web-reach, multimodal-model-wrappers, system-prompt-design-patterns, dev-ops-command-pack, codebase-memory-mcp, ultra-brainstorming, automated-testing, frontend-react-engineering, code-review-craft, observability-incident-response, admin-page-fixer, add-admin-permission, admin-page-builder, bundled-rls, view-registry, code-unity, star-alliance-language, weapon-utility] 
+skills: [bug-fix-workflow, db-rename-sweep, dev-server, graphify, claude-code-hooks, supabase, supabase-postgres-best-practices, obsidian-markdown, performance, python-master, motion-design, agent-web-reach, multimodal-model-wrappers, system-prompt-design-patterns, dev-ops-command-pack, codebase-memory-mcp, ultra-brainstorming, automated-testing, frontend-react-engineering, code-review-craft, hotspot-radar, temporal-coupling-audit, cognitive-bias-guard, observability-incident-response, admin-page-fixer, add-admin-permission, admin-page-builder, bundled-rls, view-registry, code-unity, star-alliance-language, weapon-utility] 
 type: Member
 
 ---
