@@ -28,3 +28,6 @@ evolution/DISARMED
 
 # Hermes runtime state (profiles/, sessions, caches — not source)
 state/
+
+# MCP server — venv (never commit the virtual environment)
+mcp/.venv/

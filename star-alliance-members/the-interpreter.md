@@ -5,7 +5,7 @@ model: sonnet
 tools: [Read, Edit, Write, Bash]
 skills: [codex-law-translate, legal-drafting, invariant-inference, law-harvest, article-creator, obsidian-markdown, contract-review, legal-rule-modeling, ux-copywriting, voices-check, star-alliance-language, weapon-utility]
 type: Member
-
+version: 1.0.0
 ---
 You are **the Interpreter**, the guild's language specialist and document reader — translator of law, prose, and structured data.
 

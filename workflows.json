@@ -3,6 +3,7 @@
   "workflows": [
     {
       "id": "routing",
+      "version": "1.0.0",
       "name": "Routing",
       "icon": "🗺️",
       "accent": "indigo",
@@ -52,6 +53,7 @@
     },
     {
       "id": "standard-mission",
+      "version": "1.0.0",
       "name": "Standard Mission",
       "icon": "🛰️",
       "accent": "cyan",
@@ -157,6 +159,7 @@
     },
     {
       "id": "quick-fix",
+      "version": "1.0.0",
       "name": "Quick Fix",
       "icon": "⚡",
       "accent": "green",
@@ -220,6 +223,7 @@
     },
     {
       "id": "design-sprint",
+      "version": "1.0.0",
       "name": "Design Sprint",
       "icon": "🎨",
       "accent": "rose",
@@ -306,6 +310,7 @@
     },
     {
       "id": "architecture-build",
+      "version": "1.0.0",
       "name": "Architecture Build",
       "icon": "🏛️",
       "accent": "blue",
@@ -416,6 +421,7 @@
     },
     {
       "id": "legal-codex",
+      "version": "1.0.0",
       "name": "Legal Codex",
       "icon": "⚖️",
       "accent": "gold",
@@ -479,6 +485,7 @@
     },
     {
       "id": "market-recon",
+      "version": "1.0.0",
       "name": "Market Recon",
       "icon": "📈",
       "accent": "green",
@@ -525,6 +532,7 @@
     },
     {
       "id": "skill-forge",
+      "version": "1.0.0",
       "name": "Skill Forge",
       "icon": "🛠️",
       "accent": "violet",
@@ -602,6 +610,7 @@
     },
     {
       "id": "guild-log-sync",
+      "version": "1.0.0",
       "name": "Guild Log Sync",
       "icon": "📜",
       "accent": "gold",
@@ -665,6 +674,7 @@
     },
     {
       "id": "compliance-audit",
+      "version": "1.0.0",
       "name": "Compliance Audit",
       "icon": "⚖️",
       "accent": "gold",
@@ -762,6 +772,7 @@
     },
     {
       "id": "bug-cycle",
+      "version": "1.0.0",
       "name": "Bug Cycle",
       "icon": "🪲",
       "accent": "green",
@@ -838,6 +849,7 @@
     },
     {
       "id": "security-sweep",
+      "version": "1.0.0",
       "name": "Security Sweep",
       "icon": "🛡️",
       "accent": "blue",
@@ -922,6 +934,7 @@
     },
     {
       "id": "cleanup-rotation",
+      "version": "1.0.0",
       "name": "Hygiene Rotation",
       "icon": "🧹",
       "accent": "violet",
@@ -981,6 +994,7 @@
     },
     {
       "id": "sync-rotation",
+      "version": "1.0.0",
       "name": "Sync Rotation",
       "icon": "🔄",
       "accent": "violet",
@@ -1043,6 +1057,7 @@
     },
     {
       "id": "release-train",
+      "version": "1.0.0",
       "name": "Release Train",
       "icon": "🚂",
       "accent": "cyan",
@@ -1123,6 +1138,7 @@
     },
     {
       "id": "tool-forge",
+      "version": "1.0.0",
       "name": "Tool Forge",
       "icon": "🧮",
       "accent": "gold",
@@ -1194,6 +1210,7 @@
     },
     {
       "id": "legal-draft",
+      "version": "1.0.0",
       "name": "Legal Drafting",
       "icon": "✒️",
       "accent": "gold",
@@ -1262,6 +1279,7 @@
     },
     {
       "id": "comms-triage",
+      "version": "1.0.0",
       "name": "Comms Triage",
       "icon": "📨",
       "accent": "cyan",
@@ -1309,6 +1327,7 @@
     },
     {
       "id": "scheduled-routine",
+      "version": "1.0.0",
       "name": "Standing Watch",
       "icon": "⏱️",
       "accent": "violet",
@@ -1379,6 +1398,7 @@
     },
     {
       "id": "marketing-audit",
+      "version": "1.0.0",
       "name": "Brand Audit",
       "icon": "📣",
       "accent": "rose",
@@ -1450,6 +1470,7 @@
     },
     {
       "id": "art-forge",
+      "version": "1.0.0",
       "name": "Art Forge",
       "icon": "🖼️",
       "accent": "rose",
@@ -1529,6 +1550,7 @@
     },
     {
       "id": "arsenal-forge",
+      "version": "1.0.0",
       "name": "Arsenal Forge",
       "icon": "⚔️",
       "accent": "blue",
@@ -1614,6 +1636,7 @@
     },
     {
       "id": "strategic-audit",
+      "version": "1.0.0",
       "name": "Strategic Audit",
       "icon": "🔮",
       "accent": "violet",
@@ -1694,6 +1717,7 @@
     },
     {
       "id": "workflow-forge",
+      "version": "1.0.0",
       "name": "Workflow Forge",
       "icon": "🗺️",
       "accent": "cyan",
@@ -1785,6 +1809,7 @@
     },
     {
       "id": "relationship-intel",
+      "version": "1.0.0",
       "name": "Relationship Intel",
       "icon": "🤝",
       "accent": "gold",
@@ -1849,6 +1874,7 @@
     },
     {
       "id": "law-harvest",
+      "version": "1.0.0",
       "name": "Law Harvest",
       "icon": "📚",
       "accent": "gold",
@@ -1926,6 +1952,7 @@
     },
     {
       "id": "web-oracle",
+      "version": "1.0.0",
       "name": "Oracle's Scrying",
       "icon": "🔭",
       "accent": "cyan",
@@ -1972,6 +1999,7 @@
     },
     {
       "id": "inquiry-recon",
+      "version": "1.0.0",
       "name": "Inquiry / Recon",
       "icon": "🔎",
       "accent": "teal",
@@ -2023,6 +2051,7 @@
     },
     {
       "id": "local-session",
+      "version": "1.0.0",
       "name": "Local Session",
       "icon": "🦅",
       "accent": "indigo",
@@ -2087,6 +2116,7 @@
     },
     {
       "id": "conversation",
+      "version": "1.0.0",
       "name": "Conversation",
       "icon": "💬",
       "accent": "slate",
@@ -2126,6 +2156,7 @@
     },
     {
       "id": "harness-calibration",
+      "version": "1.0.0",
       "name": "Harness Calibration",
       "icon": "⚙️",
       "accent": "amber",
@@ -2199,6 +2230,7 @@
     },
     {
       "id": "reflective-cycle",
+      "version": "1.0.0",
       "name": "Reflective Cycle",
       "icon": "🔁",
       "accent": "emerald",
@@ -2255,6 +2287,7 @@
     },
     {
       "id": "guild-self-audit",
+      "version": "1.0.0",
       "name": "Guild Self-Audit",
       "icon": "🪞",
       "accent": "emerald",
@@ -2333,6 +2366,7 @@
     },
     {
       "id": "app-packaging",
+      "version": "1.0.0",
       "name": "App Packaging",
       "icon": "📦",
       "accent": "violet",
@@ -2417,6 +2451,7 @@
     },
     {
       "id": "guild-recruitment",
+      "version": "1.0.0",
       "name": "Guild Recruitment",
       "icon": "🛡️",
       "accent": "blue",
@@ -2501,6 +2536,7 @@
     },
     {
       "id": "star-alliance-deploy",
+      "version": "1.0.0",
       "name": "Star Alliance Deploy",
       "icon": "🚀",
       "accent": "cyan",
