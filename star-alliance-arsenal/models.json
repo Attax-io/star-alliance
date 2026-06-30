@@ -81,7 +81,7 @@
       }
     },
     "haiku": {
-      "role": "doer",
+      "role": "both",
       "backend": "claude",
       "cloud_tag": null,
       "status": "reserve",
