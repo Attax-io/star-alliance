@@ -1964,6 +1964,20 @@
       "title": "Skill Forge: .claude/hooks/approval-detect.py",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Skill Forge: .claude/hooks/approval-gate.py",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Skill Forge: .claude/hooks/conformance-gate.py",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130
