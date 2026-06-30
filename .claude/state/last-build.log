@@ -22,8 +22,4 @@ BUILD WARNINGS (22):
   ⚠ domain 'lex-council-business' references skill 'full-output-enforcement' not in the guild pool
   ⚠ domain 'lex-council-business' references member 'bd-research-agent' not in the guild (external)
   ⚠ domain 'lex-council-business' references member 'intake-agent' not in the guild (external)
-
-BUILD ERRORS (1):
-  ✗ workflow 'standard-mission' step 'Implement the Plan' (actor the-developer): thinker 'glm-5.2' is not in the-developer's loadout
-
-Build aborted — fix the errors above.
+Wrote guild-data.js (657,467 bytes) + guild-data.json + skill-md.js (1,211,702 bytes, 112 skills) + workflow-md.js (69,151 bytes, 36 workflows)

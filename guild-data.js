@@ -3,13 +3,13 @@
 const GUILD = {
   "meta": {
     "name": "Star Alliance",
-    "version": "6.61.101",
+    "version": "6.62.101",
     "versionTiers": {
       "major": 6,
-      "minor": 61,
+      "minor": 62,
       "patch": 101
     },
-    "generated": "2026-06-30T22:50:59Z",
+    "generated": "2026-06-30T22:53:01Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "reserve",
@@ -33,7 +33,7 @@ const GUILD = {
       "domains": 3,
       "workflows": 36,
       "hooks": 8,
-      "log": 190
+      "log": 191
     }
   },
   "members": [
@@ -11904,9 +11904,17 @@ const GUILD = {
         "who": "quartermaster-auto",
         "commit": "",
         "id": "h-standard-mission-dashboard-css-dashboard"
+      },
+      {
+        "date": "2026-06-30",
+        "type": "workflow",
+        "title": "Sync Rotation: star-alliance-arsenal/workflows-lite.json, workflows.json",
+        "who": "quartermaster-auto",
+        "commit": "",
+        "id": "h-sync-rotation-star-alliance-arsenal-work"
       }
     ],
-    "count": 190
+    "count": 191
   },
   "models": {
     "opus": {
