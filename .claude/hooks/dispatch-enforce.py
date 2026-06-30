@@ -28,9 +28,11 @@
 #
 # BYPASSES
 # ────────
-# Same kill switch as executor-enforce.py:
-#   • evolution/DISARMED            (engine-wide)
-#   • .claude/state/executor-enforce-disarmed  (shared with executor-enforce)
+# Kill switches (independent from executor-enforce.py):
+#   • evolution/DISARMED                      (engine-wide — disarms everything)
+#   • .claude/state/dispatch-enforce-disarmed (this hook only — disarms agents,
+#                                              leaves the Butler's hook armed)
+#   • .claude/state/executor-enforce-disarmed (legacy shared switch — disarms both)
 #
 # FAIL POSTURE
 # ────────────
@@ -197,6 +199,8 @@ def _state_dir():
 
 def _is_kill_switch():
     if os.path.exists(os.path.join(_project_dir(), "evolution", "DISARMED")):
+        return True
+    if os.path.exists(os.path.join(_state_dir(), "dispatch-enforce-disarmed")):
         return True
     if os.path.exists(os.path.join(_state_dir(), "executor-enforce-disarmed")):
         return True
