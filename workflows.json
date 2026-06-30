@@ -439,9 +439,9 @@
         },
         {
           "kind": "member",
-          "actor": "the-translator",
+          "actor": "the-interpreter",
           "title": "Load and Translate",
-          "act": "The Translator ingests the real law and translates it faithfully across each required locale.",
+          "act": "The Interpreter ingests the real law and translates it faithfully across each required locale.",
           "produces": "translated codex",
           "exec": "spawn"
         },
@@ -1217,9 +1217,9 @@
         },
         {
           "kind": "member",
-          "actor": "the-translator",
+          "actor": "the-interpreter",
           "title": "Draft the Document",
-          "act": "The Translator drafts the correspondence or legal instrument — bilingual where needed — in the firm's register.",
+          "act": "The Interpreter drafts the correspondence or legal instrument — bilingual where needed — in the firm's register.",
           "produces": "draft document",
           "exec": "spawn"
         },
@@ -1230,9 +1230,9 @@
         },
         {
           "kind": "member",
-          "actor": "the-translator",
+          "actor": "the-interpreter",
           "title": "Finalize & Format",
-          "act": "The Translator finalizes the document and formats it client-facing, with the bilingual layout in place.",
+          "act": "The Interpreter finalizes the document and formats it client-facing, with the bilingual layout in place.",
           "produces": "final document",
           "exec": "spawn"
         },
@@ -1881,9 +1881,9 @@
         },
         {
           "kind": "member",
-          "actor": "the-translator",
+          "actor": "the-interpreter",
           "title": "Extract Verbatim",
-          "act": "The Translator extracts the queued law verbatim — Arabic canonical, page-ranges intact — into Source Laws.",
+          "act": "The Interpreter extracts the queued law verbatim — Arabic canonical, page-ranges intact — into Source Laws.",
           "produces": "extracted law",
           "exec": "spawn"
         },
@@ -1894,9 +1894,9 @@
         },
         {
           "kind": "member",
-          "actor": "the-translator",
+          "actor": "the-interpreter",
           "title": "Index the Harvest",
-          "act": "The Translator updates the Source Laws index and writes the dated harvest digest.",
+          "act": "The Interpreter updates the Source Laws index and writes the dated harvest digest.",
           "produces": "indexed harvest",
           "exec": "spawn"
         },
@@ -2029,7 +2029,7 @@
       "category": "Research & Intel",
       "class": "mutating",
       "tagline": "Spawn an isolated Claude subagent to scout or work, then verify what it brings back.",
-      "when": "Use this when the task should run in a fresh, isolated local session — 'start a new local session to investigate X', 'spawn a subagent', 'delegate this to a local Claude'. The routed member scopes the brief, spawns a CLAUDE session-doer via the Agent tool (a spawned session must be Claude — MiniMax doers run via summon.py and have NO tool access, so they cannot BE a session), gives it a disjoint scoped task, then verifies its findings against source before reporting. Pick the cheapest Claude doer the member carries: haiku where held (the-developer, the-translator, the-quartermaster), else sonnet.",
+      "when": "Use this when the task should run in a fresh, isolated local session — 'start a new local session to investigate X', 'spawn a subagent', 'delegate this to a local Claude'. The routed member scopes the brief, spawns a CLAUDE session-doer via the Agent tool (a spawned session must be Claude — MiniMax doers run via summon.py and have NO tool access, so they cannot BE a session), gives it a disjoint scoped task, then verifies its findings against source before reporting. Pick the cheapest Claude doer the member carries: haiku where held (the-developer, the-interpreter, the-quartermaster), else sonnet.",
       "steps": [
         {
           "kind": "member",

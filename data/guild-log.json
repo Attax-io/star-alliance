@@ -2006,6 +2006,20 @@
       "title": "Skill Forge: star-alliance-members/the-interpreter.md",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Skill Forge: .claude/agents/backend-auditor.md, .claude/agents/cold-doc-rotator.md, .claude/agents/frontend-auditor.md (+9 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "workflow",
+      "title": "Skill Forge: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, workflows.json",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130

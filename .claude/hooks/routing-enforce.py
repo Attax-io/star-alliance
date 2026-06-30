@@ -49,7 +49,7 @@ import json
 # The Strategist is excluded (he is the router, not a specialist).
 SPECIALISTS = {
     "the-architect", "the-developer", "the-designer", "the-herald",
-    "the-merchant", "the-quartermaster", "the-translator", "the-steward",
+    "the-merchant", "the-quartermaster", "the-interpreter", "the-steward",
     "the-connector",
 }
 ROUTER = "the-strategist"

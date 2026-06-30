@@ -1,5 +1,5 @@
 
-BUILD WARNINGS (28):
+BUILD WARNINGS (22):
   ⚠ skill 'bug-fix-closer' has no skills-meta.json entry — using defaults
   ⚠ skill 'code-crime-scene' has no skills-meta.json entry — using defaults
   ⚠ skill 'code-unity' has no skills-meta.json entry — using defaults
@@ -19,18 +19,13 @@ BUILD WARNINGS (28):
   ⚠ domain 'star-alliance' references skill 'minimalist-ui' not in the guild pool
   ⚠ domain 'star-alliance' references skill 'stitch-design-taste' not in the guild pool
   ⚠ domain 'lex-council-app' references skill 'full-output-enforcement' not in the guild pool
-  ⚠ domain 'lex-council-app' references member 'backend-auditor' not in the guild (external)
-  ⚠ domain 'lex-council-app' references member 'cold-doc-rotator' not in the guild (external)
-  ⚠ domain 'lex-council-app' references member 'frontend-auditor' not in the guild (external)
-  ⚠ domain 'lex-council-app' references member 'health-checker' not in the guild (external)
-  ⚠ domain 'lex-council-app' references member 'heat-map-analyst' not in the guild (external)
-  ⚠ domain 'lex-council-app' references member 'pattern-detector' not in the guild (external)
   ⚠ domain 'lex-council-business' references skill 'full-output-enforcement' not in the guild pool
   ⚠ domain 'lex-council-business' references member 'bd-research-agent' not in the guild (external)
   ⚠ domain 'lex-council-business' references member 'intake-agent' not in the guild (external)
 
-BUILD ERRORS (2):
+BUILD ERRORS (3):
   ✗ agent 'the-interpreter.md' has no members-meta.json entry
+  ✗ members-meta.json key 'the-translator' has no agent .md
   ✗ workflow 'standard-mission' step 'Implement the Plan' (actor the-developer): thinker 'glm-5.2' is not in the-developer's loadout
 
 Build aborted — fix the errors above.
