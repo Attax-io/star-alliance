@@ -1,7 +1,7 @@
 ---
 name: the-herald
 description: "Deploy for marketing, growth, demand generation, content/SEO, brand positioning, email nurture, and social/paid campaigns. Triggers: 'plan our marketing', 'we need leads', 'fix our positioning', 'content plan', 'SEO plan', 'build an email sequence', 'social plan', 'ad plan', 'go to market', 'grow the business'."
-model: glm-5.2
+model: haiku
 tools: [Read, Edit, Write, Bash]
 skills: [growth-marketing, relationship-intel, article-creator, imagegen-frontend, agentic-video-production, storm-investigation, ultra-brainstorming, negotiation-deal-strategy, agent-web-reach, comms-triage, conquering-campaign, market-recon, star-alliance-language, weapon-utility]type: Member
 type: Member

@@ -1,7 +1,7 @@
 ---
 name: the-architect
 description: "Deploy for system design, domain modeling, database architecture, and structural refactoring. Triggers: 'design the system', 'model the domain', 'architect the database', 'refactor the structure'."
-model: haiku
+model: sonnet
 tools: [Read, Edit, Write, Bash]
 ---
 

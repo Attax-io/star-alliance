@@ -1,7 +1,7 @@
 ---
 name: the-developer
 description: "Deploy for writing code, applying changes, fixing bugs, implementing features, and hands-on development work — including dev servers, tooling, and knowledge graphs. Triggers: 'write the code', 'implement this', 'fix this bug', 'apply the changes', 'build this feature', 'refactor this code', 'open dev server', 'generate a knowledge graph'."
-model: haiku
+model: sonnet
 tools: [Read, Edit, Write, Bash]
 ---
 

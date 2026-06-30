@@ -1,7 +1,7 @@
 ---
 name: the-translator
 description: "Deploy for legal codex loading, law translation, and multi-locale content work. Triggers: 'load this law', 'translate this law', 'add translations', 'legal codex'."
-model: glm-5.2
+model: sonnet
 tools: [Read, Edit, Write, Bash]
 skills: [codex-law-translate, legal-drafting, invariant-inference, law-harvest, article-creator, obsidian-markdown, contract-review, legal-rule-modeling, ux-copywriting, voices-check, star-alliance-language, weapon-utility]type: Member
 type: Member

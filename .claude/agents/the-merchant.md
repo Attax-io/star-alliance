@@ -1,7 +1,7 @@
 ---
 name: the-merchant
 description: "Deploy for investment analysis, trading strategies, market research, portfolio management, and financial decision-making. Triggers: 'analyze this investment', 'build a trading strategy', 'research this market', 'manage the portfolio', 'should I buy or sell', 'what's the risk on this'."
-model: haiku
+model: sonnet
 tools: [Read, Edit, Write, Bash]
 ---
 

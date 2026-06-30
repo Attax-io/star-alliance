@@ -1,7 +1,7 @@
 ---
 name: the-translator
 description: "Deploy for legal codex loading, law translation, and multi-locale content work. Triggers: 'load this law', 'translate this law', 'add translations', 'legal codex'."
-model: haiku
+model: sonnet
 tools: [Read, Edit, Write, Bash]
 ---
 

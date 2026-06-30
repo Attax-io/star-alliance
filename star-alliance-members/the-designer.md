@@ -1,7 +1,7 @@
 ---
 name: the-designer
 description: "Deploy for UI/UX design, frontend visual quality, brand kits, image-to-code conversion, and design system work. Triggers: 'design the UI', 'make it look premium', 'create a brand kit', 'convert this image to code', 'redesign this'."
-model: glm-5.2
+model: haiku
 tools: [Read, Edit, Write, Bash]
 skills: [design-taste, design-unity, design-tokens, design-language, motion-design, image-to-code, imagegen-frontend, a11y-craft, penpot-design-platform, impeccable, ux-research, ux-copywriting, redesign-existing-projects, agentic-video-production, frontend-react-engineering, graphify, pattern-library-discovery, star-alliance-language, weapon-utility] 
 type: Member
