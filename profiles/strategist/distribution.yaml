@@ -1,0 +1,11 @@
+name: the-strategist
+version: 1.0.0
+description: "I am the Strategist. The guild's router and campaign commander — the one who decides who handles what and sequences the work; the Butler is the voice."
+hermes_requires: ">=0.17.0"
+author: "Star Alliance"
+license: "MIT"
+distribution_owned:
+  - SOUL.md
+  - config.yaml
+  - skills.yaml
+  - distribution.yaml

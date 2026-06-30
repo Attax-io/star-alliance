@@ -9,7 +9,7 @@ const GUILD = {
       "minor": 58,
       "patch": 80
     },
-    "generated": "2026-06-30T00:23:09Z",
+    "generated": "2026-06-30T00:28:22Z",
     "schemaVersion": 3,
     "weaponStatus": {
       "opus": "reserve",
@@ -2665,7 +2665,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "🛡️",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Compose Postgres RLS from a named bundle catalog — one FOR ALL policy per table, (SELECT auth.uid()) caching, zero inline drift.",
       "level": "Advanced",
       "ramp": "teal",
@@ -6303,7 +6303,7 @@ const GUILD = {
       "version": "1.0.0",
       "icon": "📇",
       "art": "",
-      "artPng": false,
+      "artPng": true,
       "blurb": "Type every Supabase view name through VIEWS-dot-key — refactor-safe, append-only columns, one view per page.",
       "level": "Advanced",
       "ramp": "teal",

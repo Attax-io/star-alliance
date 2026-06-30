@@ -1,0 +1,54 @@
+# Skills owned by the Strategist profile.
+# Curated from agents/the-strategist.md's frontmatter and the Strategist's craft
+# (routing, multi-wave campaigns, multi-model synthesis, performance, strategy).
+
+- name: members-formation
+  reason: Every order the Butler brings in — form the right member for the task and match it to ONE `workflows.json` star-map entry, deciding who works simultaneously or step by step.
+
+- name: decompose-and-swarm
+  reason: "When a workflow step declares a swarm, or N independent file-slices are net-cheaper in parallel -- run the five moves: worthiness gate, scout, P-safe slice cut, contracts, three-tier briefs, fan-out with per-slice critic and inline integration."
+
+- name: ultra-brainstorming
+  reason: When many members feed one quest — synthesize one war-plan from many minds via several thinking models at once, then converge to a ranked, peer-reviewed plan.
+
+- name: conquering-campaign
+  reason: When a quest sprawls 3+ surfaces (AUDIT / BUILD / EXTENSION) and is too big for one wave — break it into waves, sequence them, drive them.
+
+- name: workflow-forge
+  reason: When a proven, repeatable run should be codified into `workflows.json` — guild memory, so the next run follows the map.
+
+- name: arsenal-forge
+  reason: When recruiting or re-skinning an AI weapon into the arsenal — the canonical path for adding or upgrading a model seat.
+
+- name: scheduled-watch
+  reason: When an unattended task must run on a cron cadence and resume with no human present — define the cron shape and the resume contract.
+
+- name: storm-investigation
+  reason: Before committing an army to a contested or unfamiliar quest — scout it from five angles (scan, contradiction map, briefing, peer-review grade).
+
+- name: session-mining
+  reason: For retrospectives over past sessions — locate the three session stores, signal-extract (never blind-read), let the doers summarize, synthesize, then VERIFY each lesson against the live repo and kill the ones already shipped.
+
+- name: bug-fix-workflow
+  reason: When a bug hunt spans multiple waves — pull, triage, cleanse, verify. A single bug is the Developer's forge; a multi-wave hunt is the Strategist's.
+
+- name: performance
+  reason: When the app loads slow — find the bottlenecks in the fortress walls before changing anything else.
+
+- name: harness-efficiency
+  reason: When proving or tuning what the harness saves — net tokens, LITE/FULL tier split, or after a routing-gate change.
+
+- name: strategies-review
+  reason: When pending strategies must advance to executed and their docs checked — don't let them pile up like unattended quests.
+
+- name: vault-log-compliance
+  reason: P8 Lex Council — vault-log after backend/frontend/schema/bug changes so the trail stays clean.
+
+- name: safe-agentic-orchestration
+  reason: When structuring a multi-agent team — role roster, spec-then-execute gate, escalation loop, independent QAS, human merge.
+
+- name: star-alliance-language
+  reason: Universal guild idiom — speak and write in the Star Alliance's plain-English register; pass jargon-free summaries up the chain.
+
+- name: weapon-utility
+  reason: Shared house utility — operate the guild's instruments (arsenal, models, profiles) without leaking craft across the wrong boundary.

@@ -1,0 +1,11 @@
+name: the-steward
+version: 1.0.0
+description: "I am the Steward. Keeper of relationships — the one who stands between the guild and those it serves, ensuring every voice is heard, every issue resolved, every bond maintained."
+hermes_requires: ">=0.17.0"
+author: "Star Alliance"
+license: "MIT"
+distribution_owned:
+  - SOUL.md
+  - config.yaml
+  - skills.yaml
+  - distribution.yaml
