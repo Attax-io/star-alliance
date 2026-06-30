@@ -1,22 +1,17 @@
 model:
-  default: "glm-5.2:cloud"
-  provider: "ollama-launch"
-  api_key: "ollama"
-  base_url: "http://127.0.0.1:11434/v1"
-
+  default: MiniMax-M3
+  provider: custom:minimax
+  base_url: https://api.minimax.io/v1
 providers:
-  ollama-launch:
-    api: http://127.0.0.1:11434/v1
-    default_model: glm-5.2:cloud
+  custom:minimax:
+    api: https://api.minimax.io/v1
+    default_model: MiniMax-M3
     models:
-      - glm-5.2:cloud
-      - kimi-k2.7-code:cloud
-      - minimax-m3:cloud
-      - deepseek-v4-pro:cloud
-    name: Ollama
-
+      - MiniMax-M3
+    name: MiniMax Direct
+agent:
+  reasoning_effort: xhigh
 terminal:
   backend: local
   timeout: 180
-
 _config_version: 31
