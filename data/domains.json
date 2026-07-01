@@ -145,9 +145,10 @@
         "the-herald",
         "the-merchant",
         "the-quartermaster",
-        "the-steward"
+        "the-steward",
+        "the-butler"
       ],
-      "notes": "The home domain. All 9 guild members + skills live here. Every other domain borrows from this skill pool."
+      "notes": "The home domain. All 10 guild members + skills live here. Every other domain borrows from this skill pool."
     },
     {
       "id": "lex-council-app",

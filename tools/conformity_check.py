@@ -447,20 +447,26 @@ def main():
     # K — skill dirs == skills-meta keys == generated skill ids (no orphan/uncounted skills)
     skill_dirs = {d.name for d in (ROOT / "star-alliance-skills").iterdir()
                   if d.is_dir() and (d / "SKILL.md").exists()}
+    # Leading-underscore dirs are the guild's "not a guild skill" convention marker
+    # (e.g. _impeccable-upstream-source — a vendored external mirror, never wired,
+    # never tiled, never counted). K and ART must skip them.
+    k_skill_dirs = {s for s in skill_dirs if not s.startswith("_")}
     meta_keys = set(skills_meta.keys())
     data_ids = {s["id"] for s in g["skills"]}
-    if skill_dirs != meta_keys:
-        new_dirs = sorted(skill_dirs - meta_keys)
+    k_data_ids = {s for s in data_ids if not s.startswith("_")}
+    if k_skill_dirs != meta_keys:
+        new_dirs = sorted(k_skill_dirs - meta_keys)
         hint = "  → auto-wire: python3 tools/wire_skill.py --all" if new_dirs else ""
         fails.append(f"K  skill dirs vs skills-meta differ: only-dir={new_dirs} "
-                     f"only-meta={sorted(meta_keys - skill_dirs)}{hint}")
-    if skill_dirs != data_ids:
-        fails.append(f"K  skill dirs vs guild-data differ: only-dir={sorted(skill_dirs - data_ids)} "
-                     f"only-data={sorted(data_ids - skill_dirs)}")
+                     f"only-meta={sorted(meta_keys - k_skill_dirs)}{hint}")
+    if k_skill_dirs != k_data_ids:
+        fails.append(f"K  skill dirs vs guild-data differ: only-dir={sorted(k_skill_dirs - k_data_ids)} "
+                     f"only-data={sorted(k_data_ids - k_skill_dirs)}")
 
     # ART — every skill ships with a Fallen Sword tile (never a bare-emoji fallback)
     artless = sorted(s for s in skill_dirs
-                     if not (ROOT / "art" / "skill-art" / f"{s}.png").exists())
+                     if not s.startswith("_")
+                     and not (ROOT / "art" / "skill-art" / f"{s}.png").exists())
     if artless:
         fails.append(f"ART skills missing a skill-art/<id>.png tile: {artless} "
                      f"(forge via tools/generators/gen-skill-art.cjs + build.py)")
