@@ -2341,6 +2341,13 @@
       "title": "Architecture Build: art/skill-art-thumb/head-of-department.png",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Arsenal Forge: dashboard.html, star-alliance-members/the-architect.md",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130
