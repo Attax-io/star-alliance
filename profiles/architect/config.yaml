@@ -1,5 +1,5 @@
 model:
-  default: glm-5.1
+  default: glm-5.2
   provider: ollama-cloud
   primary: custom:minimax-sub
   fallback: custom:minimax-payg

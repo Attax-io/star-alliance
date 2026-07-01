@@ -74,8 +74,7 @@ DOER_KEYWORDS = re.compile(
     r"refactor\s+(the\s+)?entire|rewrite\s+(the\s+)?module|"
     r"bulk\s+edit|migrate\s+all|generate\s+(a\s+)?(complete|full)|"
     r"transform\s+every|summarize\s+all|"
-    r"doer[- ]grade|delegat(e|ed|ing)\s+to|"
-    r"minimax[- ](sub|payg|m3)|offload\s+(this|the|bulk)|"
+    r"doer[- ]grade|offload\s+(this|the|bulk)|"
     r"swarm\s+of\s+\d+|fire\s+\d+\s+(doers?|models?)"
     r")\b"
 )
