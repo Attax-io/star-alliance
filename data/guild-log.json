@@ -2599,6 +2599,13 @@
       "title": "Architecture Build: guild/run.py, tools/conformity_check.py, guild/swarm.py",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: tools/conformity_check.py",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130

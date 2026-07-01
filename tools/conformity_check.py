@@ -18,6 +18,8 @@ Checks (each maps to a source-of-truth invariant or a logged decision):
   ST seats         models.json `seats` valid (Brain/Doer/Critic/Bench) + critic family != brain family
   R  refs          workflow actors ∈ agents∪{you}; gates valid; agent skills exist
   SD skill-drills  every agent-carried skill has a `## Skill Drills` table row
+  SDC swarm-consumed swarm-declaring step also sets exec:"spawn", AND guild/run.py's
+                   source contains the swarm-detection branch (plan-then-degrade, never fake)
   N  counts        guild-data meta.counts == real lengths
   WART weapon-art  every registry weapon has a weapon-art/<id>.png tile
   MU usage-sidecar models-usage.json keys ⊆ registry ids
@@ -347,6 +349,20 @@ def main():
         if wf_class == "read-only" and agent_steps and agent_steps[-1].get("actor") == "the-quartermaster":
             fails.append(f"C  {wid}: read-only workflow closes with a Quartermaster step "
                          f"(a no-op conformance close — remove it; the Butler report is the deliverable)")
+
+    # SDC (part 2) — the guild/run.py source must actually contain the
+    # swarm-detection branch, or every swarm-declaring step above would be
+    # silently ignored by the headless runner regardless of exec:"spawn".
+    # Fail-soft: never crash the sweep on a read error.
+    try:
+        _run_py_src = (ROOT / "guild" / "run.py").read_text(encoding="utf-8")
+        if 'step.get("exec") == "spawn"' not in _run_py_src or 'step.get("swarm")' not in _run_py_src:
+            fails.append("SDC guild/run.py: source is missing the swarm-detection "
+                         "branch (step.get(\"exec\") == \"spawn\" or step.get(\"swarm\")) "
+                         "— declared swarm steps would go unconsumed")
+    except Exception as _sdc_run_exc:
+        notes.append(f"SDC guild/run.py: could not read source to verify the "
+                     f"swarm-detection branch (skipped, fail-soft): {_sdc_run_exc}")
 
     # per-agent checks. Phase 2 (4-seat arsenal): per-agent loadouts are GONE —
     # the arsenal is universal (models.json "seats"), so the old per-loadout checks
