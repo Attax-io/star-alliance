@@ -7,7 +7,9 @@
 # Tiers:
 #   1  Skills only (default) — syncs this member's skills to target .claude/skills/
 #   2  Tier 1 + member agent file + STAR_ALLIANCE_ROOT in target settings.json
-#   3  Tier 2 + hooks + hook wiring + workflows-lite.json
+#   3  Tier 2 + hooks + hook wiring + workflows-lite.json + the dispatch
+#      substrate the gates route to (tools/dispatch.py + arsenal + evolution)
+#      + an idempotent Hermes worker bootstrap with a dispatch-path preflight
 #
 # Example:
 #   ./star-alliance-arsenal/install.sh the-developer /path/to/my-project --tier 2
@@ -156,6 +158,120 @@ write_managed_block() {
   rm -f "${target}.sa_tmp"
 }
 
+# Copy a directory tree into the target, then strip dead weight so a Tier-3 target
+# stays lean and never inherits transient state: caches (__pycache__/*.pyc), backups
+# (*.bak/*.orig/*~), test scaffolding (_test_*/test_*), OS cruft (.DS_Store), archived
+# history (archive/), and heavy append-only logs (ledger.jsonl, usage-log.jsonl,
+# models-usage.json) that must start EMPTY on a fresh target.
+copy_pruned() {
+  local src="$1" dst="$2"
+  ensure_dir "$(dirname "$dst")"
+  rm -rf "$dst"
+  cp -r "$src" "$dst"
+  find "$dst" \( \
+      -name '__pycache__' -o -name '*.pyc' -o -name '*.bak' -o -name '*.orig' \
+      -o -name '*~' -o -name '_test_*' -o -name 'test_*' -o -name '.DS_Store' \
+      -o -name 'archive' \
+    \) -exec rm -rf {} + 2>/dev/null || true
+  find "$dst" \( -name 'ledger.jsonl' -o -name 'usage-log.jsonl' \
+      -o -name 'models-usage.json' \) -delete 2>/dev/null || true
+}
+
+# Provision each installed Hermes profile's .env with the doer keys (idempotent).
+# Upserts the KEY=VALUE lines from the machine key files without clobbering any
+# other keys already present in the profile .env.
+provision_profile_envs() {
+  local pdir="$HOME/.hermes/profiles"
+  [[ -d "$pdir" ]] || { echo "    - no installed profiles yet (skip .env provisioning)"; return 0; }
+  local sub="" payg=""
+  [[ -f "$HOME/.config/minimax/m3-sub.key"  ]] && sub="$(tr -d '[:space:]'  < "$HOME/.config/minimax/m3-sub.key")"
+  [[ -f "$HOME/.config/minimax/m3-payg.key" ]] && payg="$(tr -d '[:space:]' < "$HOME/.config/minimax/m3-payg.key")"
+  if [[ -z "$sub" ]]; then echo "    - doer key absent; cannot provision .env (skip)"; return 0; fi
+  local count=0 prof env
+  for prof in "$pdir"/*/; do
+    [[ -d "$prof" ]] || continue
+    env="${prof}.env"
+    python3 - "$env" "$sub" "$payg" <<'PYENV'
+import sys, pathlib
+env, sub, payg = sys.argv[1], sys.argv[2], sys.argv[3]
+p = pathlib.Path(env)
+lines = p.read_text().splitlines() if p.exists() else []
+def upsert(lines, key, val):
+    if not val:
+        return lines
+    out, seen = [], False
+    for ln in lines:
+        if ln.strip().startswith(key + "="):
+            out.append(key + "=" + val); seen = True
+        else:
+            out.append(ln)
+    if not seen:
+        out.append(key + "=" + val)
+    return out
+lines = upsert(lines, "MINIMAX_SUB_KEY", sub)
+lines = upsert(lines, "MINIMAX_PAYG_KEY", payg)
+p.write_text("\n".join(lines) + "\n")
+PYENV
+    count=$((count + 1))
+  done
+  echo "    OK provisioned doer keys into $count profile .env file(s)"
+}
+
+# Preflight: is the full dispatch path live? Prints one line per check and returns
+# the number of problems (0 = dispatch path live, safe to arm gates).
+hermes_preflight() {
+  local problems=0
+  if command -v hermes >/dev/null 2>&1; then
+    echo "    OK hermes on PATH: $(command -v hermes)"
+    if [[ -d "$HOME/.hermes/profiles" && -n "$(ls -A "$HOME/.hermes/profiles" 2>/dev/null)" ]]; then
+      echo "    OK hermes profiles published"
+    else
+      echo "    XX hermes profiles not published - run: python3 \"$SA_ROOT/tools/publish_profiles.py\""
+      problems=$((problems + 1))
+    fi
+  else
+    echo "    XX hermes not found on PATH - install Hermes, then re-run this installer"
+    problems=$((problems + 1))
+  fi
+  if [[ -f "$HOME/.config/minimax/m3-sub.key" ]]; then
+    echo "    OK doer key present (~/.config/minimax/m3-sub.key)"
+  else
+    echo "    XX doer key missing - place the MiniMax sub key at ~/.config/minimax/m3-sub.key"
+    problems=$((problems + 1))
+  fi
+  return "$problems"
+}
+
+# Idempotent Hermes worker bootstrap. Verifies/publishes profiles, provisions the
+# per-profile .env, then runs the preflight. NEVER requires the network: every
+# sub-step degrades to a printed instruction when a tool or key is absent. Leaves
+# evolution/DISARMED in place (gates stay OFF) and prints the exact arm command -
+# it never silently arms enforcement on someone's project.
+bootstrap_hermes() {
+  echo ""
+  echo "-- Tier 3: Hermes worker bootstrap"
+  if command -v hermes >/dev/null 2>&1 && [[ -f "$SA_ROOT/tools/publish_profiles.py" ]]; then
+    echo "  - publishing Hermes profiles (idempotent; --update preserves auth/memories)"
+    if python3 "$SA_ROOT/tools/publish_profiles.py" --update >/dev/null 2>&1; then
+      echo "    OK profiles published/updated"
+    else
+      echo "    WARN publish_profiles.py returned nonzero (network or hermes issue) - re-run manually"
+    fi
+  else
+    echo "  - skipping profile publish (hermes not on PATH or publisher missing)"
+  fi
+  echo "  - provisioning per-profile .env (doer keys)"
+  provision_profile_envs
+  echo "  - preflight: dispatch path"
+  if hermes_preflight; then
+    echo "  OK dispatch path LIVE - to arm enforcement on the target:"
+    echo "      rm \"$TARGET/evolution/DISARMED\""
+  else
+    echo "  WARN dispatch path incomplete - evolution/DISARMED stays in place (gates OFF, no brick)."
+    echo "     Fix the XX items above, then re-run this installer or: rm \"$TARGET/evolution/DISARMED\""
+  fi
+}
+
 # ── extract member's skill list ──────────────────────────────────────────────
 
 MEMBER_SKILLS=$(python3 - "$MEMBER_FILE" <<'PYEOF'
@@ -242,23 +358,41 @@ ensure_dir "$TARGET_HOOKS"
 for hook in "$HOOKS_DIR"/*.py "$HOOKS_DIR"/*.sh; do
   [[ -f "$hook" ]] || continue
   hook_name=$(basename "$hook")
+  # Skip dead weight: the blind *.py/*.sh glob would otherwise ship backups,
+  # disabled hooks, test scaffolding (_test_*, test_*, *.bak), and Finder-copy
+  # duplicates ("name 2.py") into a target.
+  case "$hook_name" in
+    *.bak|*.orig|*~|*.disabled|_test_*|test_*|*\ [0-9].py|*\ [0-9].sh) continue ;;
+  esac
   cp "$hook" "$TARGET_HOOKS/$hook_name"
   echo "  + hook: $hook_name"
 done
 
-# Pre-seed the evolution kill-switch so a fresh Tier-3 target cannot lock
-# its main session with no unlock path. The Tier-3 wiring copies the gate
-# hooks but not the dispatch substrate they route around (dispatch.py,
-# the arsenal, the evolution engine itself). Until that substrate lands,
-# `evolution/DISARMED` keeps the gates off. Once dispatch.py + arsenal +
-# evolution are present and working, the operator removes the file to
-# arm enforcement. Mirror the printf style used to seed DEPLOY_LEDGER.
+# -- ship the dispatch substrate the gates route to --------------------------
+# The Tier-3 gate hooks (executor-enforce, delegation-gate, verify-gate, ...)
+# route every write through tools/dispatch.py -> the arsenal -> the evolution
+# ledger. Shipping the hooks WITHOUT that substrate is the self-brick: the gates
+# fire but have nothing to route to. Ship the minimum WORKING dispatch path.
+echo "  - dispatch substrate"
+ensure_dir "$TARGET/tools"
+cp "$SA_ROOT/tools/dispatch.py" "$TARGET/tools/dispatch.py"
+echo "    OK tools/dispatch.py"
+copy_pruned "$SA_ROOT/star-alliance-arsenal" "$TARGET/star-alliance-arsenal"
+echo "    OK star-alliance-arsenal/ (models.json + runners, pruned)"
+copy_pruned "$SA_ROOT/evolution" "$TARGET/evolution"
+echo "    OK evolution/ (engine + ledger organs, pruned)"
+
+# Pre-seed the evolution kill-switch so a fresh Tier-3 target cannot lock its
+# main session with no unlock path. The dispatch substrate now ships (above),
+# but the gates also need a reachable Hermes worker + doer key. Until the
+# Hermes bootstrap preflight passes, evolution/DISARMED keeps the gates off.
+# Mirror the printf style used to seed DEPLOY_LEDGER.
 ensure_dir "$TARGET/evolution"
 if [[ ! -f "$TARGET/evolution/DISARMED" ]]; then
   printf '%s\n' \
     '# DISARMED — evolution engine gates are OFF on this target.' \
-    'A fresh Tier-3 install copies the enforcement hooks without the dispatch substrate they route around (dispatch.py, arsenal, evolution engine). Until that substrate is in place, gates would lock the main session with no unlock path.' \
-    'Remove this file ONLY once dispatch.py + arsenal + evolution are present and working.' \
+    'The dispatch substrate (dispatch.py + arsenal + evolution) now ships with Tier-3, but the gates also need a reachable Hermes worker and the doer key. Until the Hermes preflight passes, the gates stay OFF so the main session cannot be locked with no unlock path.' \
+    'Remove this file ONLY once the Hermes preflight passes (hermes reachable + profiles published + doer key present) - the installer prints the exact command.' \
     > "$TARGET/evolution/DISARMED"
 fi
 echo "  ✓ pre-seeded evolution/DISARMED (safety kill-switch)"
@@ -301,6 +435,8 @@ if [[ -f "$SA_AGENTS_MD" ]]; then
 else
   echo "  ⚠  $SA_AGENTS_MD not found — copy AGENTS.md into $TARGET manually"
 fi
+
+bootstrap_hermes
 
 echo ""
 echo "✅ Tier 3 complete."
