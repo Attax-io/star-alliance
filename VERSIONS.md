@@ -47,6 +47,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`bug-fix-closer`](star-alliance-skills/bug-fix-closer/SKILL.md) | 1.0.0 | own | 70 / 385 | 384 / 69 | ✓ lean | Mark one or more Lex Council bug_reports rows as Fixed (br_status=4) in the DB |
 | [`bug-fix-workflow`](star-alliance-skills/bug-fix-workflow/SKILL.md) | 1.2.0 | own | 151 / 934 | 2388 / 255 | ✓ lean | The Lex Council end-to-end bug workflow — pull reports from the bug_reports table, triage … |
 | [`bundled-rls`](star-alliance-skills/bundled-rls/SKILL.md) | 1.0.0 | own | 92 / 696 | 1151 / 148 | ✓ lean | Write Postgres Row-Level Security as composable named bundles, not ad-hoc inline policies |
+| [`butler-onboarding`](star-alliance-skills/butler-onboarding/SKILL.md) | 1.0.0 | own | 144 / 892 | 975 / 99 | ✓ lean | Turns a vague or first-contact request into a short discovery, an honest presentation of w… |
 | [`butler-voice`](star-alliance-skills/butler-voice/SKILL.md) | 1.1.0 | own | 68 / 409 | 990 / 128 | ✓ lean | How the Butler speaks to the Guild Master: the WHOLE reply is plain English — a plain-Engl… |
 | [`chart-patterns`](star-alliance-skills/chart-patterns/SKILL.md) | 1.0.0 | own | 130 / 1012 | 1106 / 66 | ✓ lean | The Merchant's read-only craft for identifying and interpreting chart patterns, distilled … |
 | [`claude-code-hooks`](star-alliance-skills/claude-code-hooks/SKILL.md) | 1.1.0 | own | 146 / 962 | 1920 / 134 | ✓ lean | The Developer's craft for authoring Claude Code hooks — the shell scripts the harness fire… |
@@ -156,4 +157,4 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`workflow-forge`](star-alliance-skills/workflow-forge/SKILL.md) | 1.4.0 | own | 153 / 997 | 2235 / 175 | ✓ lean | The Strategist's craft for distilling a finished run into a reusable star-map workflow in … |
 | [`workflow-runner`](star-alliance-skills/workflow-runner/SKILL.md) | 1.0.0 | own | 123 / 875 | 1100 / 90 | ✓ lean | The Quartermaster's craft for operating the guild's own machinery — RUN a star-map workflo… |
 
-_126 skills — 118 lean · 5 large (installable, over the 500-line ideal) · 0 near the word ceiling · 3 hard violations._
+_127 skills — 119 lean · 5 large (installable, over the 500-line ideal) · 0 near the word ceiling · 3 hard violations._
