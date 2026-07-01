@@ -40,5 +40,5 @@
       "in plain english"
     ]
   },
-  "swarm_caps": { "max_swarm": 5, "max_total_workers": 12 }
+  "swarm_caps": { "max_swarm": 7, "max_total_workers": 12 }
 }

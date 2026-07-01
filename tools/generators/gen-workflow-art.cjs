@@ -119,6 +119,10 @@ const WORKFLOWS = [
     prompt: `${STYLE}. A VIOLET scrying orb ringed by five glowing council-flames converging into a single graded verdict-scroll, a multi-mind panel weighed and ranked into one judgement`,
   },
   {
+    id: "swarm-panel",
+    prompt: `${STYLE}. A swirling AMBER swarm of seven worker figures fanning out in radial spokes from a central glowing panel / round-table at the heart of the scene, each worker bearing a small task-scroll and a distinct subtle color sigil marking their own disjoint subtask, seam-contract ribbons of light binding the slices back to the central table, a coordinating Developer's hand at the hub guiding the fan-out, parallel motion and ordered convergence, no combat`,
+  },
+  {
     id: "harness-calibration",
     prompt: `${STYLE}. An AMBER guild instrument-bench with hook-levers, dial gauges, and a glowing measurement scroll, a technician's hand tuning a precision gear while efficiency-runes light up green one by one`,
   },

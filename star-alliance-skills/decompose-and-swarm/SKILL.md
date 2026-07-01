@@ -167,4 +167,4 @@ The **disjoint-partition invariant**, **integration-always-follows-swarm**, and 
 
 ## Changelog
 
-- **1.0.0** — Initial release: the five moves (worthiness gate, codebase-memory scout, [P]-safe slice cut, contracts-first seams, 3-tier brief, per-slice critic, inline integration), the capable-bookends economic engine, the MODEL RULE, MAX_SWARM=5, disjoint-partition invariant, failure handling, deployment brief format, and SW-series invariants. Wave 0 (doctrine) of the Staged Swarm Methodology.
+- **1.0.0** — Initial release: the five moves (worthiness gate, codebase-memory scout, [P]-safe slice cut, contracts-first seams, 3-tier brief, per-slice critic, inline integration), the capable-bookends economic engine, the MODEL RULE, an initial MAX_SWARM cap of 5, disjoint-partition invariant, failure handling, deployment brief format, and SW-series invariants. Wave 0 (doctrine) of the Staged Swarm Methodology.

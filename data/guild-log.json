@@ -2774,6 +2774,13 @@
       "title": "Architecture Build: .claude/hooks/sa-pretool 2.py",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "workflow",
+      "title": "Architecture Build: data/harness.json, star-alliance-skills/decompose-and-swarm/SKILL.md, tools/generators/gen-workflow-art.cjs (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130

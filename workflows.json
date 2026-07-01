@@ -1781,16 +1781,16 @@
             "member": "the-developer",
             "min_instances": 2,
             "max_instances": 7,
-            "partition": "by-slice",
+            "partition": "by-subtask",
             "isolation": "shared-tree",
             "integration_step": true
           }
         },
         {
           "kind": "member",
-          "actor": "the-strategist",
+          "actor": "the-developer",
           "title": "Critic Each Slice & Integrate",
-          "act": "As each worker returns, its slice diff is reviewed by the critic (verdict.run_cold / glm-5.2) before it merges — no slice integrates unreviewed. The Strategist then assembles the blessed slices on the main thread, reconciles the seams against the contract, and runs ultra-brainstorming synthesis under head-of-department caps to produce the unified result.",
+          "act": "As each worker returns, its slice diff is reviewed by the critic (verdict.run_cold / glm-5.2) before it merges — no slice integrates unreviewed. The Developer then assembles the blessed slices on the main thread and reconciles the seams against the contract to produce the unified result.",
           "produces": "integrated result",
           "exec": "inline",
           "stage": "swarm"
