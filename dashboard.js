@@ -40,6 +40,7 @@ async function boot() {
     renderLog(GUILD)
     renderWorkflows(GUILD)
     renderDomains(GUILD)
+    renderScheduler()
     const fv = document.getElementById('footer-version')
     if (fv) fv.textContent = 'v' + (GUILD.meta.version || '4')
   } catch (err) {
@@ -489,4 +490,294 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', boot)
 } else {
   boot()
+}
+
+// ============================================================
+// SCHEDULER PANEL — Claude Routines / System Timers / Hermes Jobs
+// GET /api/schedules -> {jobs:[{id,kind,name,description,enabled,
+//   schedule:{display,cron,calendar},lastRun:{status,at,summary},
+//   controllable:{toggle,retime,runNow},source}]}
+// Token: GET /api/status -> {ok,token}; attach as header X-SA-Token on
+// every control POST (toggle / retime / run). Read once per page load.
+// ============================================================
+
+let _saToken = null
+let _saTokenPromise = null
+
+function loadSaToken() {
+  if (_saTokenPromise) return _saTokenPromise
+  _saTokenPromise = fetch('/api/status')
+    .then(r => r.json())
+    .then(s => { _saToken = (s && s.token) || null; return _saToken })
+    .catch(err => { console.error('Failed to load /api/status token:', err); _saToken = null; return null })
+  return _saTokenPromise
+}
+
+function schedulerStatusDotClass(job) {
+  const status = job?.lastRun?.status
+  if (!status || status === 'never') return 'status-dot--idle'
+  if (status === 'ok' || status === 'success') return 'status-dot--ready'
+  if (status === 'warn' || status === 'warning') return 'status-dot--running'
+  if (status === 'error' || status === 'fail' || status === 'failed') return 'status-dot--running'
+  return 'status-dot--idle'
+}
+
+function schedulerStatusText(job) {
+  const lr = job?.lastRun
+  if (!lr || !lr.status || lr.status === 'never') return 'Never run'
+  const label = lr.status.charAt(0).toUpperCase() + lr.status.slice(1)
+  return lr.at ? `${label} · ${lr.at}` : label
+}
+
+async function schedulerPost(path, body, statusEl) {
+  await loadSaToken()
+  try {
+    const resp = await fetch(path, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-SA-Token': _saToken || ''
+      },
+      body: JSON.stringify(body)
+    })
+    let json = null
+    try { json = await resp.json() } catch {}
+    if (!resp.ok || !json || json.ok !== true) {
+      const msg = (json && json.error) || `Request failed (${resp.status})`
+      if (statusEl) {
+        statusEl.textContent = msg
+        statusEl.className = 'scheduler-card__status-msg visible error'
+        clearTimeout(statusEl._t)
+        statusEl._t = setTimeout(() => { statusEl.className = 'scheduler-card__status-msg' }, 4000)
+      } else {
+        console.error('Scheduler control call failed:', msg)
+      }
+      return null
+    }
+    if (statusEl) {
+      statusEl.textContent = '✓ Done'
+      statusEl.className = 'scheduler-card__status-msg visible saved'
+      clearTimeout(statusEl._t)
+      statusEl._t = setTimeout(() => { statusEl.className = 'scheduler-card__status-msg' }, 2500)
+    }
+    return json
+  } catch (err) {
+    console.error('Scheduler control call errored:', err)
+    if (statusEl) {
+      statusEl.textContent = 'Network error'
+      statusEl.className = 'scheduler-card__status-msg visible error'
+      clearTimeout(statusEl._t)
+      statusEl._t = setTimeout(() => { statusEl.className = 'scheduler-card__status-msg' }, 4000)
+    }
+    return null
+  }
+}
+
+function schedulerJobCard(job) {
+  const card = document.createElement('div')
+  const controllable = job.controllable || {}
+  const isForeign = !controllable.toggle && !controllable.retime && !controllable.runNow
+  card.className = 'scheduler-card' + (isForeign ? ' scheduler-card--foreign' : '')
+
+  const head = document.createElement('div')
+  head.className = 'scheduler-card__head'
+  const name = document.createElement('div')
+  name.className = 'scheduler-card__name'
+  name.textContent = job.name || job.id || ''
+  head.appendChild(name)
+  if (isForeign) {
+    const vo = document.createElement('span')
+    vo.className = 'scheduler-card__viewonly'
+    vo.textContent = 'system — view only'
+    head.appendChild(vo)
+  }
+  card.appendChild(head)
+
+  if (job.description) {
+    const desc = document.createElement('div')
+    desc.className = 'scheduler-card__desc'
+    desc.textContent = job.description
+    card.appendChild(desc)
+  }
+
+  const statusRow = document.createElement('div')
+  statusRow.className = 'scheduler-card__status'
+  statusRow.innerHTML = `<span class="status-dot ${schedulerStatusDotClass(job)}"></span><span>${schedulerStatusText(job)}</span>`
+  card.appendChild(statusRow)
+
+  if (job.schedule && job.schedule.display) {
+    const sched = document.createElement('div')
+    sched.className = 'scheduler-card__schedule'
+    sched.textContent = job.schedule.display
+    card.appendChild(sched)
+  }
+
+  if (job.lastRun && job.lastRun.status && (job.lastRun.status === 'error' || job.lastRun.status === 'fail' || job.lastRun.status === 'failed') && job.lastRun.summary) {
+    const err = document.createElement('div')
+    err.className = 'scheduler-card__error'
+    err.textContent = job.lastRun.summary
+    card.appendChild(err)
+  }
+
+  const controls = document.createElement('div')
+  controls.className = 'scheduler-card__controls'
+
+  const statusMsg = document.createElement('span')
+  statusMsg.className = 'scheduler-card__status-msg'
+
+  // Toggle on/off
+  const toggleBtn = document.createElement('button')
+  toggleBtn.type = 'button'
+  toggleBtn.className = 'scheduler-toggle ' + (job.enabled ? 'scheduler-toggle--on' : 'scheduler-toggle--off')
+  toggleBtn.textContent = job.enabled ? 'On' : 'Off'
+  if (!controllable.toggle) {
+    toggleBtn.disabled = true
+    toggleBtn.title = 'Not controllable'
+  } else {
+    toggleBtn.addEventListener('click', async () => {
+      toggleBtn.disabled = true
+      const nextEnabled = !job.enabled
+      const result = await schedulerPost('/api/schedule/toggle', { id: job.id, enabled: nextEnabled }, statusMsg)
+      toggleBtn.disabled = false
+      if (result && result.job) {
+        Object.assign(job, result.job)
+        toggleBtn.className = 'scheduler-toggle ' + (job.enabled ? 'scheduler-toggle--on' : 'scheduler-toggle--off')
+        toggleBtn.textContent = job.enabled ? 'On' : 'Off'
+        statusRow.innerHTML = `<span class="status-dot ${schedulerStatusDotClass(job)}"></span><span>${schedulerStatusText(job)}</span>`
+      }
+    })
+  }
+  controls.appendChild(toggleBtn)
+
+  // Retime (only when controllable.retime)
+  if (controllable.retime) {
+    const cal = (job.schedule && job.schedule.calendar) || {}
+    const retimeWrap = document.createElement('div')
+    retimeWrap.className = 'scheduler-retime'
+
+    const hourInput = document.createElement('input')
+    hourInput.type = 'number'
+    hourInput.min = '0'
+    hourInput.max = '23'
+    hourInput.value = (cal.Hour != null) ? cal.Hour : ''
+    hourInput.placeholder = 'HH'
+    hourInput.setAttribute('aria-label', 'Hour')
+
+    const sep = document.createElement('span')
+    sep.textContent = ':'
+    sep.style.color = 'var(--text-faint)'
+
+    const minInput = document.createElement('input')
+    minInput.type = 'number'
+    minInput.min = '0'
+    minInput.max = '59'
+    minInput.value = (cal.Minute != null) ? cal.Minute : ''
+    minInput.placeholder = 'MM'
+    minInput.setAttribute('aria-label', 'Minute')
+
+    const setBtn = document.createElement('button')
+    setBtn.type = 'button'
+    setBtn.className = 'scheduler-retime-btn'
+    setBtn.textContent = 'Set time'
+    setBtn.addEventListener('click', async () => {
+      const hour = parseInt(hourInput.value, 10)
+      const minute = parseInt(minInput.value, 10)
+      if (Number.isNaN(hour) || Number.isNaN(minute)) {
+        statusMsg.textContent = 'Enter hour + minute'
+        statusMsg.className = 'scheduler-card__status-msg visible error'
+        clearTimeout(statusMsg._t)
+        statusMsg._t = setTimeout(() => { statusMsg.className = 'scheduler-card__status-msg' }, 3000)
+        return
+      }
+      setBtn.disabled = true
+      const result = await schedulerPost('/api/schedule/retime', { id: job.id, calendar: { Hour: hour, Minute: minute } }, statusMsg)
+      setBtn.disabled = false
+      if (result && result.job) {
+        Object.assign(job, result.job)
+        if (job.schedule && job.schedule.display) {
+          const schedEl = card.querySelector('.scheduler-card__schedule')
+          if (schedEl) schedEl.textContent = job.schedule.display
+        }
+      }
+    })
+
+    retimeWrap.append(hourInput, sep, minInput, setBtn)
+    controls.appendChild(retimeWrap)
+  }
+
+  // Run now
+  const runBtn = document.createElement('button')
+  runBtn.type = 'button'
+  runBtn.className = 'scheduler-run-btn'
+  runBtn.textContent = 'Run now'
+  if (!controllable.runNow) {
+    runBtn.disabled = true
+    runBtn.title = 'Not controllable'
+  } else {
+    runBtn.addEventListener('click', async () => {
+      runBtn.disabled = true
+      const result = await schedulerPost('/api/schedule/run', { id: job.id }, statusMsg)
+      runBtn.disabled = false
+      if (result && result.job) {
+        Object.assign(job, result.job)
+        statusRow.innerHTML = `<span class="status-dot ${schedulerStatusDotClass(job)}"></span><span>${schedulerStatusText(job)}</span>`
+      }
+    })
+  }
+  controls.appendChild(runBtn)
+
+  controls.appendChild(statusMsg)
+  card.appendChild(controls)
+
+  return card
+}
+
+function schedulerGroupBlock(title, jobs) {
+  const block = document.createElement('div')
+  block.className = 'scheduler-group'
+
+  const head = document.createElement('div')
+  head.className = 'scheduler-group__head'
+  head.innerHTML = `<span class="scheduler-group__title">${title}</span><span class="scheduler-group__count">${jobs.length}</span>`
+  block.appendChild(head)
+
+  if (jobs.length === 0) {
+    const empty = document.createElement('div')
+    empty.className = 'scheduler-empty'
+    empty.textContent = title === 'Hermes Jobs' ? 'No Hermes jobs yet' : 'No jobs'
+    block.appendChild(empty)
+  } else {
+    const grid = document.createElement('div')
+    grid.className = 'scheduler-grid'
+    jobs.forEach(job => grid.appendChild(schedulerJobCard(job)))
+    block.appendChild(grid)
+  }
+
+  return block
+}
+
+async function renderScheduler() {
+  const panel = document.getElementById('scheduler-panel')
+  if (!panel) return
+  panel.innerHTML = ''
+  try {
+    const data = await fetch('/api/schedules').then(r => r.json())
+    const jobs = (data && data.jobs) || []
+    const native = jobs.filter(j => j.kind === 'native')
+    const launchd = jobs.filter(j => j.kind === 'launchd')
+    const hermes = jobs.filter(j => j.kind === 'hermes')
+
+    const wrap = document.createElement('div')
+    wrap.className = 'scheduler-groups'
+    wrap.appendChild(schedulerGroupBlock('Claude Routines', native))
+    wrap.appendChild(schedulerGroupBlock('System Timers', launchd))
+    wrap.appendChild(schedulerGroupBlock('Hermes Jobs', hermes))
+    panel.appendChild(wrap)
+
+    // Pre-warm the control token so the first click isn't slowed by the fetch.
+    loadSaToken()
+  } catch (err) {
+    console.error('Failed to load /api/schedules:', err)
+    panel.innerHTML = '<p style="color:#c9a227;padding:1rem;font-family:monospace">⚠ Could not load /api/schedules</p>'
+  }
 }
