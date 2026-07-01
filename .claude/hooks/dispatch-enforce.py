@@ -44,6 +44,11 @@ import json
 import re
 import shlex
 
+_SQL_MUTATION_KEYWORDS = re.compile(
+    r'\b(insert|update|delete|drop|alter|truncate|create|grant|revoke|merge|call|do|vacuum|copy|reindex|refresh)\b',
+    re.IGNORECASE,
+)
+
 # Tools that specialists are NOT allowed to use directly — they must dispatch
 # through dispatch.py to their Hermes counterpart.
 BLOCKED_TOOLS = {"Write", "Edit", "MultiEdit", "NotebookEdit"}
@@ -220,6 +225,21 @@ def _split_commands(command):
     return [p.strip() for p in parts if p.strip()]
 
 
+def _is_readonly_select(query):
+    """True only for a single standalone SELECT/WITH statement with no mutation keywords and no statement chaining."""
+    if not isinstance(query, str) or not query.strip():
+        return False
+    q = query.strip()
+    body = q[:-1] if q.endswith(';') else q
+    if ';' in body:
+        return False
+    if not re.match(r'^\s*(select|with)\b', body, re.IGNORECASE):
+        return False
+    if _SQL_MUTATION_KEYWORDS.search(body):
+        return False
+    return True
+
+
 def _check_mcp(tool, data):
     """Check if an MCP tool call is a write operation. Returns block dict or None."""
     # Extract the tool part of `mcp__<server>__<tool>`.
@@ -230,6 +250,11 @@ def _check_mcp(tool, data):
     # Explicit read-verb allowlist wins.
     if any(tool_lower.startswith(v) for v in MCP_READ_VERBS):
         return None
+
+    if tool_lower == 'execute_sql':
+        query = (data.get('tool_input') or {}).get('query', '')
+        if _is_readonly_select(query):
+            return None
 
     if any(tool_lower.startswith(v) for v in MCP_WRITE_VERBS):
         ti = data.get("tool_input") or {}

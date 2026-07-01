@@ -2620,6 +2620,13 @@
       "title": "Architecture Build: art/member-art-thumb/the-butler-alt.png, art/member-art-thumb/the-butler.png, art/member-art/the-butler-alt.png (+1 more)",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/dispatch-enforce.py",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130
