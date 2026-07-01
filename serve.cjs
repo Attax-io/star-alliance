@@ -14,8 +14,6 @@ const MIME = {
 }
 
 const MODELS_FILE = path.join(ROOT, 'star-alliance-arsenal', 'models.json')
-const VALID_BRAINS = ['opus', 'sonnet', 'haiku']
-const VALID_DOERS = ['kimi-k2.7', 'glm-5.2', 'minimax-payg', 'minimax-sub']
 
 function readModels() {
   const raw = fs.readFileSync(MODELS_FILE, 'utf8')
@@ -24,6 +22,24 @@ function readModels() {
     obj.memberOverrides = {}
   }
   return obj
+}
+
+// Derive brains/doers from the registry — single source of truth.
+//   brains = every model id whose backend === 'claude'
+//   doers  = every model id whose role   === 'doer'
+// role: 'media' models are intentionally excluded (neither brain nor doer).
+// Re-reads models.json on each call so the lists stay in lockstep with the registry.
+function deriveModelLists() {
+  const obj = readModels()
+  const models = obj.models || {}
+  const brains = []
+  const doers = []
+  for (const [id, m] of Object.entries(models)) {
+    if (!m || typeof m !== 'object') continue
+    if (m.backend === 'claude') brains.push(id)
+    if (m.role === 'doer') doers.push(id)
+  }
+  return { brains, doers }
 }
 
 function writeModels(obj) {
@@ -48,6 +64,18 @@ http.createServer(async (req, res) => {
     return
   }
 
+  if (url === '/api/model-lists') {
+    try {
+      const lists = deriveModelLists()
+      res.writeHead(200, { 'Content-Type': 'application/json' })
+      res.end(JSON.stringify(lists))
+    } catch (err) {
+      res.writeHead(500, { 'Content-Type': 'application/json' })
+      res.end(JSON.stringify({ ok: false, error: String(err) }))
+    }
+    return
+  }
+
   if (url === '/api/model-override' && req.method === 'GET') {
     try {
       const obj = readModels()
@@ -69,11 +97,12 @@ http.createServer(async (req, res) => {
       if (!memberId || typeof memberId !== 'string') {
         res.writeHead(400, { 'Content-Type': 'application/json' }); res.end(JSON.stringify({ ok: false, error: 'memberId required' })); return
       }
-      if (!VALID_BRAINS.includes(brain)) {
-        res.writeHead(400, { 'Content-Type': 'application/json' }); res.end(JSON.stringify({ ok: false, error: 'brain must be one of: ' + VALID_BRAINS.join(', ') })); return
+      const { brains: validBrains, doers: validDoers } = deriveModelLists()
+      if (!validBrains.includes(brain)) {
+        res.writeHead(400, { 'Content-Type': 'application/json' }); res.end(JSON.stringify({ ok: false, error: 'brain must be one of: ' + validBrains.join(', ') })); return
       }
-      if (!VALID_DOERS.includes(doer)) {
-        res.writeHead(400, { 'Content-Type': 'application/json' }); res.end(JSON.stringify({ ok: false, error: 'doer must be one of: ' + VALID_DOERS.join(', ') })); return
+      if (!validDoers.includes(doer)) {
+        res.writeHead(400, { 'Content-Type': 'application/json' }); res.end(JSON.stringify({ ok: false, error: 'doer must be one of: ' + validDoers.join(', ') })); return
       }
       const obj = readModels()
       obj.memberOverrides[memberId] = { brain, doer }
