@@ -2334,6 +2334,13 @@
       "title": "Conversation: skill-art/automated-testing.png, skill-art/codebase-memory-mcp.png, skill-art/frontend-react-engineering.png (+1 more)",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: art/skill-art-thumb/head-of-department.png",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130
