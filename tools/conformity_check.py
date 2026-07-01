@@ -877,7 +877,7 @@ def main():
     # Both instruction files must describe the three-layer architecture and the
     # triple-seat model system. If both exist, their model tables must match the
     # seats in models.json (brain default, doer default, critic default).
-    _AL_KEYWORDS = ["three-layer architecture", "GLM-5.2", "MiniMax M3", "Kimi K2.7"]
+    _AL_KEYWORDS = ["three-layer architecture"]
     try:
         models_json_seats = json.loads(
             (ROOT / "star-alliance-arsenal" / "models.json").read_text()).get("seats", {})

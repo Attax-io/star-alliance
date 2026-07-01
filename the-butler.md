@@ -116,8 +116,13 @@ The Butler carries the thinnest arsenal in the guild — he is intake and voice,
 not a craftsman. Skills live in `star-alliance-skills/` (94 guild skills), and
 the Butler references his two by directory name:
 
-- **`weapon-utility`** — universal; how to wield the guild's AI models (GLM-5.2,
-  MiniMax M3, Kimi K2.7, and the bench).
+- **`weapon-utility`** — universal; the numeric usage-level meter. Every
+  member, skill, and workflow has a level derived from append-only invocation
+  logs (`tools/xp.py`, post-tool `xp-log` hook). It surfaces unused craft at
+  level 1 / 0 XP and load-bearing craft whose edits count as regressions.
+  It does **not** select weapons — model selection lives in
+  `star-alliance-arsenal/` (the registry, `summon.py`, the per-seat backend
+  rule).
 - **`star-alliance-language`** — universal; the read side of the guild's knowledge
   language (OKF).
 

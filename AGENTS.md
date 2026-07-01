@@ -44,13 +44,12 @@ Three role seats, each with a default model and fallback chain (defined in
 
 | Seat | Default | Fallback | Duty |
 |---|---|---|---|
-| **Thinker (Brain)** | GLM-5.2 | kimi-k2.7 → deepseek-v4-pro | Plans, reviews, owns the standard, wields the tools |
-| **Doer** | MiniMax M3 | minimax-m3 | Executes the plan, returns work as text. No tools |
-| **Critic** | Kimi K2.7 | glm-5.2 → deepseek-v4-pro | Refutes the brain's work before it ships — a different family than the brain |
+| **Brain** | the member's model (Opus / Sonnet / Haiku) | the Claude brain family | Plans, reviews, owns the standard, wields the tools |
+| **Doer** | minimax-sub | minimax-payg → glm-5.2 → kimi-k2.7 | Executes the plan, returns work as text. No tools |
 
-Claude models (opus, sonnet, haiku) remain in the registry as **reserve** —
-available for bench-swarm and ultra-brainstorming, but never a default seat.
-A guild agent's `model:` frontmatter overrides the brain default.
+Non-Claude models (minimax-sub, minimax-payg, glm-5.2, kimi-k2.7) are available
+as fallbacks for the Doer seat. A guild agent's `model:` frontmatter overrides
+the brain default.
 
 ## Arsenal
 
@@ -59,8 +58,8 @@ guild's armory. Agents draw weapons via `summon.py` (the single entry point for
 routing prompts to model backends):
 
 ```
-python3 star-alliance-arsenal/summon.py minimax-m3 "Explain quicksort."
-python3 star-alliance-arsenal/summon.py glm-5.2 "Solve: 17 * 23" --json
+python3 star-alliance-arsenal/summon.py minimax-sub "Explain quicksort."
+python3 star-alliance-arsenal/summon.py opus "Solve: 17 * 23" --json
 ```
 
 The registry (`models.json`) is the one source of truth for per-weapon facts —
@@ -85,7 +84,7 @@ Layer 1: Claude Butler (runs as Claude model — Opus/Sonnet)
     ↓ delegates to
 Layer 2: Claude subagents (Strategist + specialists, also Claude models)
     ↓ hooks force dispatch through tools/dispatch.py →
-Layer 3: Hermes profiles (run the triple-seat: GLM-5.2 / MiniMax-M3 / Kimi K2.7)
+Layer 3: Hermes profiles (Brain = Claude; Doer = minimax-sub)
 ```
 
 Claude is the orchestrator. Hermes profiles do the specialist work. The two sides
@@ -94,18 +93,16 @@ directory (the Hermes profile distributions).
 
 ### Model seats — Hermes side only
 
-The triple-seat system lives **inside** the Hermes profiles. Claude does not
-manage these — they are defined in `star-alliance-arsenal/models.json` and
-configured per-profile in `profiles/<agent>/config.yaml`:
+The Brain / Doer seats are defined per-profile in `profiles/<agent>/config.yaml`,
+with defaults drawn from `star-alliance-arsenal/models.json`:
 
 | Seat | Default Model | Fallback | Role |
 |---|---|---|---|
-| **Thinker (Brain)** | GLM-5.2 | kimi-k2.7 → deepseek-v4-pro | Plans, reviews, wields tools |
-| **Doer** | MiniMax M3 | — | Executes bulk work, returns text |
-| **Critic** | Kimi K2.7 | glm-5.2 → deepseek-v4-pro | Refutes the brain before shipping |
+| **Brain** | the member's model (Opus / Sonnet / Haiku) | the Claude brain family | Plans, reviews, wields tools |
+| **Doer** | minimax-sub | minimax-payg → glm-5.2 → kimi-k2.7 | Executes bulk work, returns text |
 
-Claude models (Opus, Sonnet, Haiku) are **reserves only** — available for
-bench-swarm and ultra-brainstorming, but never a default seat.
+Non-Claude models (minimax-sub, minimax-payg, glm-5.2, kimi-k2.7) are available
+as fallbacks for the Doer seat only.
 
 ### Profile distributions
 
@@ -139,7 +136,7 @@ are explicit calls, not automatic hooks. Key tools:
 | Tool | Purpose |
 |---|---|
 | `sa_route_request` | Route a prompt to the right agent |
-| `sa_verify` | Run the Critic (Kimi K2.7) on a diff → pass/concerns/block |
+| `sa_verify` | Run the Critic (Claude brain) on a diff → pass/concerns/block |
 | `sa_delegation_check` | Block turns that did bulk work inline without a doer |
 | `sa_destructive_check` | Check a shell command for destructive patterns |
 | `sa_turn_start` | Mark turn start |
@@ -244,10 +241,11 @@ blind action.
 
 ## Two layers: thinker plans & reviews · doer executes bulk
 
-- **Thinker** (GLM-5.2) — the profile's session model. It owns the loop: plan →
-  prompt the doer → review the return → re-prompt until it conforms. All
-  tool-access orchestration stays with the thinker.
-- **Doer** (MiniMax M3) — bulk work (large edits, extraction, generation,
+- **Thinker** (the member's model — Opus / Sonnet / Haiku) — the profile's
+  session model. It owns the loop: plan → prompt the doer → review the return
+  → re-prompt until it conforms. All tool-access orchestration stays with the
+  thinker.
+- **Doer** (minimax-sub) — bulk work (large edits, extraction, generation,
   mechanical transforms) goes to the doer via `delegate_task` with a model
   override.
 

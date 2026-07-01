@@ -81,6 +81,37 @@ def _sense_emit(signal, *, once=None, **kw):
         pass
 
 
+def _xp_log_workflow(name: str) -> None:
+    """Append ONE {"type":"workflow","name":...,"ts":...} line to the shared
+    xp-log.jsonl the instant a valid workflow banner is recognized — this turn's
+    workflow-XP contribution (see tools/xp.py). Deduped to once-per-turn via the
+    SAME once_per_turn sentinel mechanism already used for the workflow-fire
+    capability signal above (this gate re-runs on every work tool in a turn;
+    without the dedupe a single banner would be double/triple-counted).
+    Fail-soft: any error here must never block the gate."""
+    try:
+        sys.path.insert(0, os.path.join(project_dir(), "evolution"))
+        import signals  # noqa: E402
+        if not signals.once_per_turn(f"xp-workflow-{name}"):
+            return
+    except Exception:
+        pass  # if the dedupe machinery itself fails, still try to log once below
+    try:
+        import json as _json
+        from datetime import datetime, timezone
+        entry = {
+            "type": "workflow",
+            "name": name,
+            "ts": datetime.now(timezone.utc).isoformat(),
+        }
+        state_dir = os.path.join(project_dir(), ".claude", "state")
+        os.makedirs(state_dir, exist_ok=True)
+        with open(os.path.join(state_dir, "xp-log.jsonl"), "a") as fh:
+            fh.write(_json.dumps(entry) + "\n")
+    except Exception:
+        pass
+
+
 def load_workflow_names():
     path = os.path.join(project_dir(), "workflows.json")
     with open(path) as f:
@@ -180,6 +211,9 @@ def check(data):
             # Capability telemetry: which workflows actually run (once per turn).
             _sense_emit("workflow-fire", once="wf-ledgered", surface="workflows",
                         detail=f"workflow ran: {declared}", meta={"workflow": declared})
+            # XP telemetry: this workflow's usage-based level (once per turn — see
+            # tools/xp.py, which counts these lines as the workflow's XP).
+            _xp_log_workflow(declared)
             return {"exit": 0}  # valid workflow declared — allow
         # An unregistered name was declared — a candidate new-workflow signal.
         _sense_emit("workflow-unknown", surface="workflows",

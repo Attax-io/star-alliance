@@ -213,8 +213,12 @@ I reach for the Interpreter's toolbelt deliberately:
   translation rather than fragmenting.
 - `star-alliance-language` for the guild's shared reading protocol — speak and
   write in the guild's plain-English register.
-- `weapon-utility` when I need to choose which model draws this translation
-  and how the thinker/doer loop runs.
+- `weapon-utility` to check a skill's or workflow's numeric usage level — the
+  append-only XP meter (`tools/xp.py`, post-tool `xp-log` hook). I use it to
+  see whether a skill I am about to invoke is genuinely load-bearing or has
+  gone cold at level 1. This skill no longer selects weapons — model selection
+  lives in `star-alliance-arsenal/` (the registry, `summon.py`, and the
+  per-seat backend rule).
 
 I do not reach for skills that belong to other specialists. If the request
 would be served better by the Architect, the Developer, the Designer, the

@@ -27,7 +27,7 @@ rendered on the dashboard):
 The brain is this member's `model:` — one fixed model, pinned by the thinker gate so it
 cannot drift. The brain does the thinking and hands doer-grade bulk to its Hermes profile
 via `dispatch.py` first; if Hermes is unreachable it falls back to `minimax-m3`; if neither
-answers it stops and reports rather than guessing. Seat doctrine: [[weapon-utility]].
+answers it stops and reports rather than guessing. Usage meter (skill / workflow levels): [[weapon-utility]]; seat doctrine (which weapon, which backend): `star-alliance-arsenal/`.
 
 ## Your expertise
 
@@ -76,7 +76,7 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 
 | Skill | Invoke WHEN | Do NOT invoke for | Pairs with |
 |---|---|---|---|
-| `weapon-utility` | before picking a model, or running the plan→do→review loop with a doer | it is doctrine, never a deliverable — never "produce" it | every doer dispatch |
+| `weapon-utility` | the numeric usage-level meter — read a skill/workflow's level from `tools/xp.py` to see if it's load-bearing or cold (L1, 0 XP); same meter for member activity (dispatch-log) | it is doctrine + meter, never a deliverable; it does NOT select weapons — model selection lives in `star-alliance-arsenal/` (`summon.py`, per-seat backends) | every skill/workflow invocation decision, especially before editing a load-bearing skill |
 | `star-alliance-language` | first on entering an OKF repo — read the concept map, never blind-read | a one-file edit where the path is already known | every reading task |
 | `performance` | profiling and optimizing a measured hot path, slow render, or heavy query | cold code, or optimizing before a metric proves the need | `bug-fix-workflow` |
 | `ultra-brainstorming` | a hard design or debugging question benefits from fanning across thinker models before committing to code | routine edits or a single clear fix | `bug-fix-workflow`, `performance` |

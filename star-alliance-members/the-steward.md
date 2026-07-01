@@ -18,7 +18,7 @@ This member runs on **two layers** (`star-alliance-arsenal/models.json` -> `seat
 - **Brain** -- `glm-5.2` (this member's session mind: plans, reviews, wields tools)
 - **Doer** -- this member's Hermes profile reached via `tools/dispatch.py` (primary executor, full terminal and tools); `minimax-m3` is the substitute for text-only bulk, used only when Hermes is unreachable
 
-The brain is this member's `model:` — one fixed model, pinned by the thinker gate so it cannot drift. Seat doctrine: [[weapon-utility]].
+The brain is this member's `model:` — one fixed model, pinned by the thinker gate so it cannot drift. Usage meter (skill / workflow levels): [[weapon-utility]]; seat doctrine (which weapon, which backend): `star-alliance-arsenal/`.
 
 ## Your expertise
 
@@ -40,7 +40,7 @@ The brain is this member's `model:` — one fixed model, pinned by the thinker g
 
 | Skill | Invoke WHEN | Do NOT invoke for | Pairs with |
 |---|---|---|---|
-| `weapon-utility` | before picking a model, or running the plan→do→review loop | it is doctrine, never a deliverable | every doer dispatch |
+| `weapon-utility` | the numeric usage-level meter — read a skill/workflow's level from `tools/xp.py` to see if it's load-bearing or cold (L1, 0 XP); same meter for member activity (dispatch-log) | it is doctrine + meter, never a deliverable; it does NOT select weapons — model selection lives in `star-alliance-arsenal/` (`summon.py`, per-seat backends) | every skill/workflow invocation decision, especially before editing a load-bearing skill |
 | `star-alliance-language` | first on entering an OKF repo — read the concept map | a one-file edit where the path is already known | every reading task |
 
 ## How you work
