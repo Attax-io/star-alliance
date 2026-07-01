@@ -2425,6 +2425,13 @@
       "title": "Strategic Audit: tools/conformity_check.py",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Compliance Audit: agents/the-architect.md, agents/the-developer.md, agents/the-merchant.md (+10 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130

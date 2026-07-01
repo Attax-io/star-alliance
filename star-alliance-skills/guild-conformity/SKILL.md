@@ -2,7 +2,7 @@
 name: guild-conformity
 description: "The Quartermaster's craft for proving the whole guild repo agrees with itself and with every logged decision, then reconciling any contradiction at its source. Wraps the read-only conformity_check.py (which emits a contradiction map across members, members-meta, skills, skills-meta, domains, workflows, the guild log, and the generated guild-data) plus fixing each real contradiction at its source of truth and rebuilding with build.py until the check passes clean. It is the closing step of every guild workflow and the spine of the Compliance Audit. Use when a workflow is closing, after any structural change, or when you need proof nothing contradicts. Triggers: 'run the conformity check', 'confirm guild conformance', 'does the repo agree with itself', 'conformity sweep', 'reconcile the guild data', 'is everything consistent'. Differentiate from cleanup (app/i18n hygiene) and skillsmith (skill versioning)."
 metadata:
-  version: 1.6.0
+  version: 1.6.1
 type: Skill
 
 ---
@@ -182,8 +182,28 @@ python3 conformity_check.py
 
 **Invariant to watch:** after any member `.md` edit, confirm `build.py` ran this turn (check `.claude/state/last-build.log`, or that `build-mark.py` (PostToolUse) + `turn-finalize.sh` (Stop) are wired in `settings.json`). If they are missing, flag it as a harness gap before closing.
 
+## New mechanical checks (2026-07-01)
+
+Four new conformity_check.py guards ship in this revision. Each closes a class of drift that
+previously took a manual audit to spot. When any of them fires, the message names the record, the
+file, and what's wrong.
+
+- **HM (stale model id).** Flags any model id referenced in live code/config that is NOT a current
+  `star-alliance-arsenal/models.json` id. Catches deleted/renamed models lingering in hooks,
+  generators, guild scripts. Scans code/config + `CLAUDE.md` / `AGENTS.md` / `README.md`; skips
+  installed mirrors (`.claude/arsenal|skills|agents`), generated files, historical logs, archives.
+- **MN (member-name consistency).** Flags any `the-<name>` member token in member-bearing files
+  (`dispatch.py`, `workflows.json`, `guild-routing-gate.sh`, `agents/members-meta`, `profiles/` dir
+  names) that is NOT a canonical `star-alliance-members/*.md` name. Catches a member renamed
+  everywhere-but-a-few-places (e.g. `the-translator` vs `the-interpreter`).
+- **WR (control-surface wiring).** Flags a dashboard/config control that WRITES a field no
+  consumer READS. Catches a "fake control" — e.g. the Model Control wrote `memberOverrides` that
+  nothing read.
+- **GC (git size, advisory only).** Notes when `.git` exceeds ~800MB and a
+  `git gc --prune=now` is worth running. Zero data loss; this sweep reclaimed ~2GB.
+
 ## Changelog
-- **1.6.0** — New §The three skill surfaces: documents the three-layer sync model (repo → Claude store → Hermes profiles), the profile-slug bug fix (the-<member> not bare name), HS/PS triage rules, and the 7-step device deployment checklist. Also warns: not ready to deploy until conformity_check is green AND profile-content sync has 0 errors. Mined from the Lex-skill wiring audit (2026-06-29). New section → MINOR.
+- **1.6.1** — New §New mechanical checks (2026-07-01): documents the four new `conformity_check.py` guards — `HM` (stale model id vs `models.json`), `MN` (`the-<name>` member-token consistency), `WR` (write-without-read control surface), `GC` (advisory git size >800MB → `git gc --prune=now`). Each closes a class of drift that used to take a manual audit. Doc-only → PATCH.
 - **1.5.0** — Added §Swarm-close: the orchestrator (Butler) runs the conformity check ONCE after ALL swarm workers finish; workers never run it themselves (intermediate parallel states would fail). New section → MINOR.
 - **1.4.2** — Updated §Member-table consistency check to the current build chain (`build-mark.py` PostToolUse → `turn-finalize.sh` Stop); the old `member-table-sync.py` + `autocommit.sh` invariant was stale (those hooks are archived under `.claude/hooks/.deprecated/`). Refs → PATCH.
 - **1.4.1** — Reconciled the workflow rename: live references to the old "Conformity Sweep" workflow now read **Compliance Audit** (the merged Conformity Sweep + OKF Tidy workflow); historical/changelog mentions left intact. Wording/refs → PATCH.

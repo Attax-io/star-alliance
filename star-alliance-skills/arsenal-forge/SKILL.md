@@ -2,7 +2,7 @@
 name: arsenal-forge
 description: "The Strategist's craft for recruiting a new weapon (AI model) into the guild arsenal, or re-skinning / re-roleing an existing one. Set the weapon's identity (model id, element, colour, visual metaphor, Fallen-Sword name), assign its role under the thinker/doer/both schema and its priority slot under the arsenal-order rule (doers first, then thinkers and duals best-first, sonnet always last), commission the weapon art via the Designer (art-forge), then hand to the Quartermaster to wire it into summon.py routing, every member's loadout, and the weapon card with its role icon. The weapon must be routable — reachable by summon.py or Claude-native — or it is a phantom that will not fire. Use when a model joins or changes. Triggers: 'add a weapon', 'recruit a model', 'a new model joined', 're-skin this weapon', 'change a weapon role', 'arsenal forge'. Differentiate from art-forge (only the image) and members-formation (members, not weapons)."
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 type: Skill
 
 ---
@@ -57,8 +57,43 @@ Follow these steps in order. Do not skip. Do not parallelize art and routability
 - Sonnet is a thinker. Putting it in a doer slot burns context and breaks the gate.
 - You plan, the Designer paints, the Quartermaster wires, the gate reviews. Stop at the handoff. Doing another member's job is how slots drift and phantoms slip through.
 
+## Renaming or removing a model id (2026-07-01)
+
+A model rename/removal is NEVER a manual multi-file hunt. Use the tool — it does every surface
+in one pass and writes nothing half-written:
+
+```sh
+python3 tools/arsenal_rename.py OLD_ID NEW_ID        # dry-run, prints the diff
+python3 tools/arsenal_rename.py OLD_ID NEW_ID --apply # commit-ready rewrite
+```
+
+`arsenal_rename.py` rewrites, in one command:
+
+- registry keys + seats in `star-alliance-arsenal/models.json`
+- all live code/config (hooks, generators, guild scripts, workflows, fallback dicts)
+- the cost sidecar (`models-usage.json` — rekeyed)
+- the art tile (`art/weapon-art/<id>.png` via `git mv`)
+- doctrine prose (`CLAUDE.md` / `AGENTS.md` / `README.md`)
+
+It **parse-validates each file before writing** — a bad edit never lands on disk, so no
+half-written file. Skips historical, generated, and installed-mirror files (same exclusion set
+the `HM` check uses). Prints the follow-up regen commands at the end.
+
+After the rename (or after removing a model id entirely), run the regen chain:
+
+```sh
+python3 star-alliance-arsenal/gen_model_docs.py
+python3 build.py
+python3 tools/conformity_check.py
+```
+
+**Safety net:** `HM` (stale model id) in `conformity_check.py` catches any surface the tool or
+a human missed. If `HM` fires after a rename, treat it as a bug in the tool — not as something
+to silently hand-fix.
+
 ## Versioning
 Own skill. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new mode/section · MAJOR: method contract change). Regenerate `VERSIONS.md` with `python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.
 
 ## Changelog
+- **1.1.0** — New §Renaming or removing a model id (2026-07-01): documents `tools/arsenal_rename.py` as the canonical surface-wide renamer (registry, code/config, sidecar, art tile `git mv`, doctrine), states "a rename is never a manual multi-file hunt", lists the regen follow-up chain (`gen_model_docs.py` → `build.py` → `conformity_check.py`), and names `HM` as the safety net for surfaces the tool missed. New section → MINOR.
 - **1.0.0** — Initial release. The Strategist's craft for recruiting/re-roleing a weapon — identity, thinker/doer role, wire to loadouts.

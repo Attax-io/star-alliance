@@ -30,6 +30,8 @@ Checks (each maps to a source-of-truth invariant or a logged decision):
   MP member-parity star-alliance-members/ and agents/ reference the same agent IDs (if both exist)
   MN member-names  member-bearing files reference only canonical member names (no stale renames)
   HM stale-model-id no code/config references a model id deleted from the registry
+  WR control-wiring  if serve.cjs writes memberOverrides, dispatch.py must read it (no dead-end control)
+  GC git-size (advisory)  note if .git exceeds 800 MB (advisory only, never a hard fail)
 """
 import json, re, sys, pathlib
 
@@ -133,6 +135,7 @@ HERMES_VENDOR_SKILLS = {
     "dogfood", "email", "github", "media", "mlops", "note-taking", "productivity",
     "research", "smart-home", "social-media", "software-development", "yuanbao",
     "hermes-project-anchoring",
+    "hermes-profile-model-routing",
 }
 
 
@@ -1042,7 +1045,7 @@ def main():
     if _regm:
         _hm_current_ids = set(_regm.keys())
         _hm_model_id_re = re.compile(
-            r'\b(?:minimax-(?:sub|payg|video|speech|music)|glm-[0-9.]+|kimi-[a-z0-9.]+'
+            r'\b(?:minimax-[a-z0-9.-]+|glm-[0-9.]+|kimi-[a-z0-9.]+'
             r'|deepseek-[a-z0-9-]+|nemotron-[a-z0-9-]+'
             r'|qwen[0-9.]+|gemma[0-9]+|image-[0-9]+)\b'
         )
@@ -1059,18 +1062,32 @@ def main():
         _hm_skip_suffixes = (".bak", ".bak2", ".bak3")
         _hm_skip_fragments = (
             "/.git/", "/archive/", "/node_modules/", "/__pycache__/", "/.deprecated/",
-            "/.claude/", "claude/",
         )
         _hm_scan_suffixes = {".py", ".json", ".sh", ".cjs", ".md"}
         _hm_md_allowlist = {"CLAUDE.md", "AGENTS.md", "README.md"}
+        # Mirror/generated/runtime subdirs under .claude/ — these are installed
+        # copies (arsenal mirrors star-alliance-arsenal/, skills mirrors
+        # star-alliance-skills/, agents is generated from members, state is
+        # per-turn runtime).  .claude/hooks/ is REAL SOURCE and MUST be scanned.
+        _hm_skip_claude_prefixes = (
+            ".claude/arsenal/",
+            ".claude/skills/",
+            ".claude/agents/",
+            ".claude/state/",
+        )
         def _hm_is_skip(rel_path: str) -> bool:
             if rel_path in _hm_skip_literals:
                 return True
+            # Skip the four mirror/generated/runtime subdirs under .claude/,
+            # but NOT .claude/hooks/ (real source where stale model ids hide).
+            for prefix in _hm_skip_claude_prefixes:
+                if rel_path.startswith(prefix):
+                    return True
             rel_n = rel_path.lstrip("./")
             for frag in _hm_skip_fragments:
-                if frag in ("/" + rel_n) or frag in rel_n:
+                if frag in (rel_path + "/") or frag in ("/" + rel_n) or frag in rel_n:
                     return True
-            if rel_n.endswith(_hm_skip_suffixes):
+            if rel_n.endswith(_hm_skip_suffixes) or rel_path.endswith(_hm_skip_suffixes):
                 return True
             parts = rel_n.split("/")
             if (len(parts) >= 3 and parts[0] == "star-alliance-arsenal"
@@ -1121,6 +1138,39 @@ def main():
                     f"HM {_hm_rel}: references model id '{_hm_tok}' not in the registry "
                     f"(deleted/renamed? run tools/arsenal_rename.py, or purge the stale ref)"
                 )
+
+    # === WR — control-surface wiring: if serve.cjs writes memberOverrides,
+    #     dispatch.py must read it (the dashboard Model Control must be a real
+    #     control, not a dead-end write that changes nothing).
+    _wr_serve = ROOT / "serve.cjs"
+    _wr_dispatch = ROOT / "tools" / "dispatch.py"
+    if _wr_serve.exists() and _wr_dispatch.exists():
+        _wr_serve_text = _wr_serve.read_text(encoding="utf-8")
+        if "memberOverrides" in _wr_serve_text:
+            _wr_dispatch_text = _wr_dispatch.read_text(encoding="utf-8")
+            if "memberOverrides" not in _wr_dispatch_text:
+                fails.append(
+                    "WR dashboard model-override is written by serve.cjs but never "
+                    "read by dispatch.py — the control is a dead-end "
+                    "(wire the consumer or remove the control)"
+                )
+
+    # === GC — git repo-size advisory (NOTE only, never a hard fail) ===
+    _git_dir = ROOT / ".git"
+    if _git_dir.exists():
+        try:
+            _gc_du = _sp.run(
+                ["du", "-sk", str(_git_dir)], capture_output=True, text=True, timeout=30
+            )
+            _gc_kb = int(_gc_du.stdout.split()[0])
+            _gc_mb = _gc_kb // 1024
+            if _gc_mb > 800:
+                notes.append(
+                    f"GC git .git is {_gc_mb} MB — consider `git gc --prune=now` "
+                    f"(this session reclaimed ~2 GB with no data loss)"
+                )
+        except Exception:
+            pass  # advisory only — never fail
 
     # report
     print("═" * 64)

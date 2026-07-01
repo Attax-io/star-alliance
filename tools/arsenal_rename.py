@@ -98,6 +98,10 @@ SKIP_FRAGMENTS = (
     "/node_modules/",
     "/__pycache__/",
     "/.deprecated/",
+    "/.claude/arsenal/",
+    "/.claude/skills/",
+    "/.claude/agents/",
+    "/.claude/state/",
 )
 
 
