@@ -2,7 +2,7 @@
 
 Importable API:
     delegate(model, prompt, system=None, file=None, timeout=300) -> str
-    delegate_many(prompts, model="minimax-m3", timeout=600) -> list[str | None]
+    delegate_many(prompts, model="minimax-sub", timeout=600) -> list[str | None]
 
 CLI:
     python3 guild/delegate.py <model> "<prompt>" [-s SYSTEM] [-f FILE]
@@ -50,11 +50,11 @@ def delegate(model: str, prompt: str, system: str | None = None,
     return (proc.stdout or "").strip()
 
 
-def delegate_many(prompts, model: str = "minimax-m3",
+def delegate_many(prompts, model: str = "minimax-sub",
                   system: str | None = None, timeout: int = 600) -> list:
     """Run N prompts through ONE process when the backend supports batching.
 
-    For minimax-m3 this uses ``minimax.py --batch`` — one subprocess spawn and one
+    For minimax-sub this uses ``minimax.py --batch`` — one subprocess spawn and one
     keep-alive HTTPS connection for the whole fan-out, instead of N spawns and N
     fresh handshakes. Results are returned IN ORDER as a list of strings; a prompt
     that failed comes back as ``None`` (the caller filters/decides). Falls back to
@@ -70,7 +70,7 @@ def delegate_many(prompts, model: str = "minimax-m3",
         except RuntimeError:
             return [None]
 
-    if model != "minimax-m3" or not MINIMAX.exists():
+    if model != "minimax-sub" or not MINIMAX.exists():
         # No batch backend → sequential, but keep the ordered-with-None contract.
         out = []
         for p in prompts:
@@ -89,7 +89,7 @@ def delegate_many(prompts, model: str = "minimax-m3",
                 spec["system"] = system
             tmp.write(json.dumps(spec, ensure_ascii=False) + "\n")
         tmp.close()
-        env = dict(os.environ, SA_MODEL_ID="minimax-m3")
+        env = dict(os.environ, SA_MODEL_ID="minimax-sub")
         try:
             proc = subprocess.run(
                 ["python3", str(MINIMAX), "--batch", tmp.name],
@@ -119,7 +119,7 @@ def delegate_many(prompts, model: str = "minimax-m3",
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Call a model via summon.py")
-    ap.add_argument("model", help="Model id (e.g. minimax-m3)")
+    ap.add_argument("model", help="Model id (e.g. minimax-sub)")
     ap.add_argument("prompt", help="Prompt text")
     ap.add_argument("-s", "--system", default=None, help="System prompt")
     ap.add_argument("-f", "--file", default=None, help="File to feed as context")

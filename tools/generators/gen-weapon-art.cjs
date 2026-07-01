@@ -27,8 +27,12 @@ const WEAPONS = [
     prompt: "VIBRANT GLOWING fantasy weapon art. A slender stiletto blade, impossibly thin and needle-sharp, BLAZING NEON GREEN, vivid emerald energy crackling along the edge like static electricity, ornate finger-ring guard, INTENSE saturated green radiance on black, pure black background, ultra sharp ultra detailed",
   },
   {
-    id: "minimax-m3",
+    id: "minimax-sub",
     prompt: "VIBRANT GLOWING fantasy weapon art. A heavy siege crossbow, wide powerful limbs made of dark metal and bone, a glowing TEAL-GREEN bolt loaded on the track, intricate circuit rune engravings across the stock, mechanical cocking mechanism visible, VIVID neon teal string and bolt tip radiating energy, INTENSE saturated teal glow, pure black background, ultra sharp ultra detailed",
+  },
+  {
+    id: "minimax-payg",
+    prompt: "VIBRANT GLOWING fantasy weapon art. A long curved crimson scimitar with a polished STEEL blade, glowing CRIMSON-RUBY energy running along the fuller, VIVID ruby edge so sharp it sparks hot crimson embers sweeping along the arc, dark wrapped grip, a single ruby pommel gem radiating red aura, INTENSE deep crimson radiance blooming outward, pure black background, ultra sharp ultra detailed",
   },
   {
     id: "image-01",
@@ -53,22 +57,6 @@ const WEAPONS = [
   {
     id: "kimi-k2.7",
     prompt: "VIBRANT GLOWING fantasy weapon art. A massive square-headed hammer, enormous flat striking face covered in BLAZING HOT MAGENTA-PINK runes, thick reinforced handle, VIVID electric-pink plasma erupting from the hammerhead like an explosion, raw blunt force energy, INTENSE magenta radiance, no red tones, pure black background, ultra sharp ultra detailed",
-  },
-  {
-    id: "deepseek-v4-pro",
-    prompt: "VIBRANT GLOWING fantasy weapon art. A death scythe with a long curved blade, BRILLIANT SAPPHIRE BLUE glowing blade edge, long dark staff, VIVID electric-blue energy crackling along the full arc of the blade, sweeping powerful silhouette, INTENSE cobalt-blue radiance blooming outward, pure black background, ultra sharp ultra detailed",
-  },
-  {
-    id: "nemotron-3-ultra",
-    prompt: "VIBRANT GLOWING fantasy weapon art. A long jousting lance, GLOWING ICY SILVER-WHITE, crystalline tip radiating frozen starlight, VIVID ice-blue and white aura, ice shards exploding from the tip, BRILLIANT celestial radiance, pure black background, ultra sharp ultra detailed",
-  },
-  {
-    id: "qwen3.5",
-    prompt: "VIBRANT GLOWING fantasy weapon art. A curved katana, blade made of PURE VIOLET ARCANE ENERGY, BLAZING lavender-purple glow, magical particles and petals dissolving off the edge, INTENSE saturated violet radiance, pure black background, ultra sharp ultra detailed",
-  },
-  {
-    id: "gemma4",
-    prompt: "VIBRANT GLOWING fantasy weapon art. A ninja shuriken throwing star, eight razor-sharp points perfectly symmetrical, BLAZING AMBER-ORANGE like a spinning miniature sun, spinning motion blur, VIVID orange-gold fire trails from each point, INTENSE warm radiance exploding outward, pure black background, ultra sharp ultra detailed",
   },
 ];
 

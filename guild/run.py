@@ -31,7 +31,7 @@ HUMAN_TITLES = {
     "ask the question",
 }
 
-DEFAULT_WEAPON = "minimax-m3"
+DEFAULT_WEAPON = "minimax-sub"
 
 
 def slugify(s: str) -> str:

@@ -34,7 +34,7 @@ CAP = 3  # max consecutive banner-less assistant turns before we relent (anti-br
 #           Deploying 2 agents:
 #             • The Developer — Sonnet (planning) · MiniMax M3 (execution)
 #   LEGACY: 🗺 Starmap Workflow Started: Architecture Build!
-#           ⚔ Member reports for duty: the-developer using sonnet and minimax-m3!
+#           ⚔ Member reports for duty: the-developer using sonnet and minimax-sub!
 BANNER_RES = [
     re.compile(r"Starmap Workflow Started:\s*(.+?)\s*!"),            # legacy
     re.compile(r"▸\s*Workflow\s*[—–\-]\s*([^\n·|]+)"),               # new
@@ -144,7 +144,7 @@ def assistant_blocks_since(lines, start):
 
 # ── Model-line invariant: REMOVED 2026-06-28 (transparency over enforced uniformity) ──
 # This enforcer used to BLOCK any turn whose brief didn't literally read
-# "minimax-m3 (execution) · glm-5.2 (critic)" (and, briefly, "sonnet (planning)").
+# "minimax-sub (execution) · glm-5.2 (critic)" (and, briefly, "sonnet (planning)").
 # The Guild Master removed it: forcing the text to claim fixed model names guaranteed
 # the brief said those models whether or not they were actually called — which masks a
 # hallucinated/mismatched model claim instead of revealing it. The deployment brief must
@@ -235,7 +235,7 @@ def main():
             "the reply appear twice):\n"
             "    ▸ Workflow — <Name>\n"
             "    Deploying <N> agents:\n"
-            "      • The <Member> — <planning model> (planning) · minimax-m3 (execution) · glm-5.2 (critic)\n"
+            "      • The <Member> — <planning model> (planning) · minimax-sub (execution) · glm-5.2 (critic)\n"
             "Pick the workflow from workflows.json — 'Conversation' for a greeting/ack/meta-"
             "question, 'Inquiry / Recon' for a read-only question; if none fits, run Workflow "
             "Forge.\n"
@@ -282,7 +282,7 @@ def main():
         f"reproduce or summarize the answer above:\n"
         f"    ▸ Workflow — {declared}\n"
         f"    Deploying <N> agents:\n"
-        f"      • The <Member> — <planning model> (planning) · minimax-m3 (execution) · glm-5.2 (critic)\n"
+        f"      • The <Member> — <planning model> (planning) · minimax-sub (execution) · glm-5.2 (critic)\n"
         f"This workflow's cast (steps[].actor): {roster_str} — list at least one (including the "
         f"closing the-quartermaster as it acts).\n"
     )

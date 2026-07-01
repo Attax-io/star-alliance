@@ -9,10 +9,10 @@ Best-effort by contract: a telemetry failure must NEVER break a model call, so
 every path here swallows its own errors.
 
 Record shape (one per line):
-    {"ts":"2026-06-27T10:15:00Z","model":"gemma4","backend":"ollama","in":20,"out":2,
+    {"ts":"2026-06-27T10:15:00Z","model":"kimi-k2.7","backend":"ollama","in":20,"out":2,
      "phase":"offload","wall_ms":812}
 
-``model`` is the guild model id (gemma4, kimi-k2.7, minimax-m3, …). Backends pass it
+``model`` is the guild model id (kimi-k2.7, glm-5.2, minimax-sub, …). Backends pass it
 explicitly (resolved from the SA_MODEL_ID env that summon.py sets); direct callers
 fall back to a best-effort derivation.
 

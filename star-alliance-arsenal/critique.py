@@ -16,7 +16,7 @@ the backstop on real source changes. See weapon-utility §The Critic seat.
 Usage:
     git diff HEAD | python3 star-alliance-arsenal/critique.py
     python3 star-alliance-arsenal/critique.py -f plan.md
-    python3 star-alliance-arsenal/critique.py -m deepseek-v4-pro "<text>"
+    python3 star-alliance-arsenal/critique.py -m kimi-k2.7 "<text>"
 
 The critic model + its fallback chain live in models.json -> seats.critic. This
 helper defaults to that seat's default; pass -m to draw a fallback.

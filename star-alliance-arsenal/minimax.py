@@ -111,7 +111,7 @@ def _log_call(usage, wall_ms):
         c_tok = usage.get('completion_tokens')
         if c_tok is None and total is not None:
             c_tok = total - (p_tok or 0)
-        model_id = os.environ.get('SA_MODEL_ID') or 'minimax-m3'
+        model_id = os.environ.get('SA_MODEL_ID') or 'minimax-sub'
         log_usage(model_id, 'minimax', p_tok or 0, c_tok or 0, wall_ms=wall_ms)
     except Exception:
         pass
@@ -283,7 +283,7 @@ def main():
         c_tok = usage.get('completion_tokens')
         if c_tok is None and total is not None:
             c_tok = total - (p_tok or 0)
-        model_id = os.environ.get('SA_MODEL_ID') or 'minimax-m3'
+        model_id = os.environ.get('SA_MODEL_ID') or 'minimax-sub'
         log_usage(model_id, 'minimax', p_tok or 0, c_tok or 0, wall_ms=wall_ms)
     except Exception:
         pass

@@ -22,7 +22,7 @@ Usage:
     python ultra_brainstorm.py "<brief>"                 # auto-detect panel
     python ultra_brainstorm.py -f brief.txt
     echo "<brief>" | python ultra_brainstorm.py
-    python ultra_brainstorm.py "<brief>" --models glm-5.2,kimi-k2.7,minimax-m3
+    python ultra_brainstorm.py "<brief>" --models glm-5.2,kimi-k2.7,minimax-sub
     python ultra_brainstorm.py "<brief>" --max-tokens 2000 --timeout 180
 
 Output (stdout): one JSON object —
@@ -49,16 +49,14 @@ except Exception:  # pragma: no cover - summon must be importable in practice
     CLOUD_TAG = {}
     CLAUDE = {"opus", "sonnet", "haiku"}
 
-# Default panel — the guild's THINKER set. minimax-m3 is direct-API (its own pool,
-# costs no Ollama slot); the rest are Ollama-cloud thinkers. nemotron-3-ultra and
-# qwen3.5 are reserve (not in any agent loadout) — pass them via --models if wanted.
+# Default panel — the guild's THINKER set. minimax-sub is direct-API (its own pool,
+# costs no Ollama slot); the rest are Ollama-cloud thinkers (glm-5.2 + kimi-k2.7).
+# Pass other cloud models via --models if wanted.
 _DEFAULT_ORDER = [
-    "minimax-m3",
-    "deepseek-v4-pro",
+    "minimax-sub",
     "glm-5.2",
     "kimi-k2.7",
-    "gemma4",
-]
+]  # surviving doer panel — minimax-sub direct + Ollama-cloud thinkers
 
 _PANEL_SYSTEM = (
     "You are ONE independent mind on a multi-model brainstorm panel. Other models "
@@ -95,7 +93,7 @@ def _available_panel(requested):
         if mid in CLAUDE:
             run_via_task.append(mid)
             continue
-        if mid == "minimax-m3":
+        if mid == "minimax-sub":
             run_now.append(mid)  # direct API; assume keyed (summon will error if not)
             continue
         tag = CLOUD_TAG.get(mid)

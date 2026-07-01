@@ -15,7 +15,7 @@
 #   kind      change | verdict | learning | metric | proposal | revert | block |
 #             thinker (which model thought / agent-model conformity) |
 #             delegation (executor gate: doer-grade bulk actually offloaded?)
-#   author    who acted — a model id (glm-5.2/minimax-m3/kimi-k2.7) or a routine name
+#   author    who acted — a model id (glm-5.2/minimax-sub/kimi-k2.7) or a routine name
 #   surface   what was touched — skills | memory | docs | hooks | doctrine |
 #             gates | arsenal | workflows | product  (tier A = first three)
 #   diff_hash verify_hash fingerprint of the source diff this event is about ("" if n/a)

@@ -8,7 +8,7 @@
 #
 # It fires only when a tool is actually SUMMONING a model:
 #   • Bash running summon.py <model>   (the arsenal dispatcher)
-#   • Bash running minimax.py          (the prime doer, minimax-m3)
+#   • Bash running minimax.py          (the prime doer, minimax-sub)
 #   • Task / Agent with a model:'…'    (a Claude sub-agent weapon)
 #
 # Two behaviours:
@@ -68,8 +68,8 @@ def _first_reminder_this_turn():
 def known_weapons():
     """Every valid weapon id: the canonical registry (star-alliance-arsenal/
     models.json) UNION every member's loadout (guild-data.json). The registry
-    covers RESERVE weapons that sit in no loadout (e.g. nemotron-3-ultra,
-    qwen3.5) so they stay summonable. Empty set on any error → check skipped
+    covers RESERVE weapons that sit in no loadout (e.g. minimax-payg) so they
+    stay summonable. Empty set on any error → check skipped
     (fail open)."""
     ids = set()
     root = project_dir()
@@ -111,7 +111,7 @@ def extract_models(tool, ti):
         cmd = ti.get("command", "") or ""
         models += SUMMON_RE.findall(cmd)
         if MINIMAX_RE.search(cmd):
-            models.append("minimax-m3")
+            models.append("minimax-sub")
         if RETIRED_RE.search(cmd):
             retired = True
     elif tool in ("Task", "Agent"):
@@ -137,7 +137,7 @@ def check(data):
         return {"exit": 2, "stderr": (
             "⛔ WEAPON GATE — that summons MiniMax via the RETIRED Ollama route. "
             "MiniMax M3 is drawn through its DIRECT sub now: `python3 minimax.py \"…\"` "
-            "or `summon.py minimax-m3`. Re-draw the prime doer directly.\n"
+            "or `summon.py minimax-sub`. Re-draw the prime doer directly.\n"
         )}
 
     valid = known_weapons()

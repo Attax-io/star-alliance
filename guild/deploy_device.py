@@ -4,7 +4,7 @@ deploy_device.py — Star Alliance DEPLOY DEVICE  (full fresh-device orchestrato
 
 Runs the complete setup sequence for bringing a new device up to working order:
 
-    1. Preflight (warn-only) — STAR_ALLIANCE_ROOT resolvable, minimax-m3 key,
+    1. Preflight (warn-only) — STAR_ALLIANCE_ROOT resolvable, minimax-sub key,
        hermes on PATH, node on PATH, pyyaml importable.
     2. Execute seven setup steps in order, streaming each step's stdout/stderr.
     3. Stop on the first hard error (returncode != 0).
@@ -126,10 +126,10 @@ def preflight() -> List[str]:
             f"(env unset and default {DEFAULT_REPO} missing)"
         )
 
-    # 2. minimax-m3 key on disk
+    # 2. minimax-sub key on disk
     key = Path.home() / ".config" / "minimax" / "m3.key"
     if not key.is_file():
-        warnings.append(f"minimax-m3 key missing: {key} (needed for minimax-m3 model)")
+        warnings.append(f"minimax-sub key missing: {key} (needed for minimax-sub model)")
 
     # 3. hermes on PATH
     if not _which("hermes"):

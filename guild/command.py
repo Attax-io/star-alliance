@@ -17,13 +17,13 @@ Right-sizing (axiom 7) is chosen by --target:
     human    — plain English, BLUF, options + a recommendation; minimal jargon
 
 Importable API:
-    compose_command(target, intent, weapon="minimax-m3") -> str
+    compose_command(target, intent, weapon="minimax-sub") -> str
 
 CLI:
     python3 guild/command.py --target doer|subagent|agent|human \
         --in <intent_file_or_text> --out <order.md> [--weapon <model>]
 
-Default weapon is minimax-m3 (cheap, unattended-friendly). Reuses guild/delegate.py's
+Default weapon is minimax-sub (cheap, unattended-friendly). Reuses guild/delegate.py's
 delegate(), so token spend auto-logs to the arsenal ledger. Exit 0 on success.
 """
 from __future__ import annotations
@@ -35,7 +35,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from delegate import delegate  # noqa: E402
 
-DEFAULT_WEAPON = "minimax-m3"
+DEFAULT_WEAPON = "minimax-sub"
 
 # Per-target right-sizing directive (axiom 7: match the order to who executes it).
 TARGETS: dict[str, str] = {

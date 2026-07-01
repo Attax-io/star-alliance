@@ -8,13 +8,13 @@ Collapses the near-identical prose framing steps that open most workflows
 and writes it to --out.
 
 Importable API:
-    frame_brief(style, request, weapon="minimax-m3") -> str
+    frame_brief(style, request, weapon="minimax-sub") -> str
 
 CLI:
     python3 guild/frame_brief.py --style restate|clarify|shape|classify|reframe \
         --in <request_file_or_text> --out <brief.md> [--weapon <model>]
 
-Default weapon is minimax-m3 (cheap, unattended-friendly). It reuses
+Default weapon is minimax-sub (cheap, unattended-friendly). It reuses
 guild/delegate.py's delegate(), so token spend auto-logs to the arsenal ledger.
 
 Exit 0 on success, non-zero on failure.
@@ -29,7 +29,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from delegate import delegate  # noqa: E402
 
-DEFAULT_WEAPON = "minimax-m3"
+DEFAULT_WEAPON = "minimax-sub"
 
 # Per-style framing instructions. Each emits the same structured brief shape
 # (summary / scope / acceptance) but with a style-appropriate emphasis.

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "_weaponStatusNote": "LIVE doer = minimax-m3 (~99% of all 549 ledger offload calls). The six bench weapons are RESERVE: pulled and reachable (verified ollama list 2026-06-27) but idle — kept in loadouts and drawable, just not advertised as the live doer. Reactivate a reserve weapon by drawing it; once it logs real ledger calls, promote it back. Statuses: live (default, omitted) · reserve.",
+  "_weaponStatusNote": "LIVE doer = minimax-sub (~99% of all 549 ledger offload calls). The six bench weapons are RESERVE: pulled and reachable (verified ollama list 2026-06-27) but idle — kept in loadouts and drawable, just not advertised as the live doer. Reactivate a reserve weapon by drawing it; once it logs real ledger calls, promote it back. Statuses: live (default, omitted) · reserve.",
   "members": {
     "the-architect": {
       "name": "The Architect",

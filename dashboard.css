@@ -304,6 +304,18 @@ ul, ol { list-style: none; }
   color: var(--gold);
 }
 .tier-mark { color: var(--gold); }
+/* Never-invoked (level 1 / 0 XP) marker — usage-based XP system.
+   Distinct accent color + a ✦ mark (vs ◆ for already-leveled items) so a
+   never-fired member/skill/workflow is visually findable at a glance. */
+.tier-pill--new {
+  border-color: var(--status-idle, #6b7280);
+  color: var(--status-idle, #9ca3af);
+}
+.tier-pill--new .tier-mark { color: var(--status-idle, #9ca3af); }
+.skill-thumb--new,
+.workflow-thumb--new {
+  box-shadow: 0 0 0 1px var(--status-idle, #6b7280);
+}
 .member-card__meta-row {
   display: flex;
   flex-wrap: wrap;

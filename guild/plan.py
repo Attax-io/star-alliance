@@ -6,13 +6,13 @@ system prompt, producing a plan: waves/roles/checkpoints (campaign), tickets
 panel seating (panel).
 
 Importable API:
-    plan(template, brief, weapon="minimax-m3") -> str
+    plan(template, brief, weapon="minimax-sub") -> str
 
 CLI:
     python3 guild/plan.py --template campaign|sprint|scope|spec|lens|panel \
         --in <brief> --out <plan.md> [--weapon <model>]
 
-Default weapon is minimax-m3 (cheap, unattended-friendly). It reuses
+Default weapon is minimax-sub (cheap, unattended-friendly). It reuses
 guild/delegate.py's delegate(), so token spend auto-logs to the arsenal ledger.
 
 Exit 0 on success, non-zero on failure.
@@ -27,7 +27,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from delegate import delegate  # noqa: E402
 
-DEFAULT_WEAPON = "minimax-m3"
+DEFAULT_WEAPON = "minimax-sub"
 
 # Per-template planning directives. Each shapes the same brief into a
 # different deliverable the downstream agents can act on.

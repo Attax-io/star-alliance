@@ -2223,6 +2223,13 @@
       "title": "Architecture Build: .claude/hooks/workflow-gate.py, .claude/settings.json, AGENTS.md (+19 more)",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/_test_executor_enforce.sh, .claude/hooks/delegation-gate.py, .claude/hooks/guild-routing-gate.sh (+23 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130

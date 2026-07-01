@@ -50,7 +50,7 @@ FINGERPRINTS_PATH: Path = STATE_DIR / "skill-fingerprints.json"
 # ── Model constants ───────────────────────────────────────────────────────────
 THINKER_MODEL: str = "glm-5.2"
 CRITIC_MODEL: str = "kimi-k2.7"   # used by sa_verify
-DOER_MODEL: str = "minimax-m3"    # used by sa_delegation_check
+DOER_MODEL: str = "minimax-sub"    # used by sa_delegation_check
 
 # ── Tool parameter constants ──────────────────────────────────────────────────
 DELEGATION_BYTE_THRESHOLD: int = 6000
@@ -273,7 +273,7 @@ def _sa_verify(diff: str | None = None) -> dict[str, Any]:
 
 
 # ── Tool 4: sa_delegation_check ──────────────────────────────────────────────
-# Doer = DOER_MODEL ("minimax-m3"). Gates bulk file writes without doer delegation.
+# Doer = DOER_MODEL ("minimax-sub"). Gates bulk file writes without doer delegation.
 def _sa_delegation_check(bulk_bytes: int, doer_calls: int) -> dict[str, Any]:
     """Check if bulk work was done without doer (MiniMax M3) delegation."""
     if bulk_bytes >= DELEGATION_BYTE_THRESHOLD and doer_calls == 0:

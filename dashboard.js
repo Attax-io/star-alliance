@@ -27,6 +27,28 @@ async function boot() {
 function skillMemberCount(sid) {
   return (window._GUILD_MEMBERS || []).filter(m => (m.skills || []).includes(sid)).length
 }
+// Usage-based numeric level + version, one shared formatter for every card
+// type (member / skill / workflow / domain). `item` carries {level, version,
+// neverInvoked} as stamped by build.py's stamp_xp(). Never-invoked items
+// (level 1, 0 XP) get a distinct "new" marker so they're visually findable.
+function levelVersionLabel(item) {
+  const lvl = item?.level
+  const ver = item?.version
+  const parts = []
+  if (lvl != null) parts.push(`Level ${lvl}`)
+  if (ver) parts.push(`v${ver}`)
+  return parts.join(' · ')
+}
+
+function levelPillHTML(item, extraClass) {
+  const label = levelVersionLabel(item)
+  if (!label) return ''
+  const neverCls = item?.neverInvoked ? ' tier-pill--new' : ''
+  const cls = `tier-pill${extraClass ? ' ' + extraClass : ''}${neverCls}`
+  const mark = item?.neverInvoked ? '✦' : '◆'
+  return `<span class="${cls}"><span class="tier-mark">${mark}</span> ${label}</span>`
+}
+
 
 function skillDomainAccent(sid) {
   // returns {color, domainName} if the skill is specific to a project domain, else null
@@ -240,7 +262,7 @@ function memberCard(m) {
   const statusDiv = document.createElement('div')
   statusDiv.className = 'member-card__status'
   const s = m.status || 'ready'
-  statusDiv.innerHTML = `<span class="status-dot status-dot--${s}"></span><span class="status-text">${s.charAt(0).toUpperCase()+s.slice(1)}</span><span class="tier-pill"><span class="tier-mark">◆</span> ${m.conferred || ''}</span>`
+  statusDiv.innerHTML = `<span class="status-dot status-dot--${s}"></span><span class="status-text">${s.charAt(0).toUpperCase()+s.slice(1)}</span>${levelPillHTML(m)}`
 
   const metaRow = document.createElement('div')
   metaRow.className = 'member-card__meta-row'
@@ -257,7 +279,8 @@ function memberCard(m) {
 
   const tooltip = document.createElement('div')
   tooltip.className = 'card-tooltip'
-  tooltip.textContent = m.summary || m.description || ''
+  const memberLevelLine = levelVersionLabel(m)
+  tooltip.innerHTML = `${(m.summary || m.description || '')}${memberLevelLine ? '<br><span style="color:var(--gold);font-size:0.66rem">' + memberLevelLine + (m.neverInvoked ? ' · never invoked' : '') + '</span>' : ''}`
   portraitWrap.appendChild(tooltip)
 
   const strip = document.createElement('div')
@@ -273,9 +296,9 @@ function memberCard(m) {
   sortedSkillIds.forEach(sid => {
     const skillObj = (window._GUILD_SKILLS || []).find(s => s.id === sid)
     const thumb = document.createElement('div')
-    thumb.className = 'skill-thumb'
+    thumb.className = 'skill-thumb' + (skillObj?.neverInvoked ? ' skill-thumb--new' : '')
     const count = skillMemberCount(sid)
-    const lvl = skillObj?.level || ''
+    const levelVerLine = levelVersionLabel(skillObj)
     const accent = skillDomainAccent(sid)
     if (accent) thumb.style.setProperty('--thumb-accent', accent.color)
     const img = document.createElement('img')
@@ -294,7 +317,7 @@ function memberCard(m) {
     const tip = document.createElement('div')
     tip.className = 'card-tooltip'
     const hl = accent ? accent.color : 'var(--gold)'
-    tip.innerHTML = `<strong style="color:${hl}">${skillObj?.name || sid}</strong><br>${(skillObj?.blurb || '').slice(0, 120)}<br><span style="color:${hl};font-size:0.66rem">${count} member${count===1?'':'s'} · ${lvl}${accent ? ' · ' + accent.domainName : ''}</span>`
+    tip.innerHTML = `<strong style="color:${hl}">${skillObj?.name || sid}</strong><br>${(skillObj?.blurb || '').slice(0, 120)}<br><span style="color:${hl};font-size:0.66rem">${count} member${count===1?'':'s'}${levelVerLine ? ' · ' + levelVerLine : ''}${skillObj?.neverInvoked ? ' · never invoked' : ''}${accent ? ' · ' + accent.domainName : ''}</span>`
     thumb.appendChild(tip)
     strip.appendChild(thumb)
   })
@@ -323,7 +346,7 @@ function renderWorkflows(g) {
   grid.className = 'workflow-icon-grid'
   ;(g.workflows || []).forEach(w => {
     const thumb = document.createElement('div')
-    thumb.className = 'workflow-thumb'
+    thumb.className = 'workflow-thumb' + (w.neverInvoked ? ' workflow-thumb--new' : '')
     const img = document.createElement('img')
     img.src = `art/workflow-art-thumb/${w.id}.png`
     img.alt = w.name || ''
@@ -342,7 +365,8 @@ function renderWorkflows(g) {
     const whenSnippet = w.when ? w.when.slice(0, 100) : ''
     const memberIds = [...new Set((w.steps||[]).map(s => s.actor).filter(a => a && a.startsWith('the-')))]
     const memberNames = memberIds.map(id => ((window._GUILD_MEMBERS||[]).find(m => m.id === id)?.name) || id).join(', ')
-    tip.innerHTML = `<strong>${w.name || ''}</strong><br><em style='color:var(--gold);font-size:0.68rem'>${w.category||''}</em><br>${w.tagline || ''}${whenSnippet ? '<br><span style=opacity:.7>' + whenSnippet + '</span>' : ''}${memberNames ? '<br><span style="color:var(--gold);font-size:0.66rem">Members: ' + memberNames + '</span>' : ''}`
+    const wfLevelLine = levelVersionLabel(w)
+    tip.innerHTML = `<strong>${w.name || ''}</strong><br><em style='color:var(--gold);font-size:0.68rem'>${w.category||''}</em><br>${w.tagline || ''}${whenSnippet ? '<br><span style=opacity:.7>' + whenSnippet + '</span>' : ''}${memberNames ? '<br><span style="color:var(--gold);font-size:0.66rem">Members: ' + memberNames + '</span>' : ''}${wfLevelLine ? '<br><span style="color:var(--gold);font-size:0.66rem">' + wfLevelLine + (w.neverInvoked ? ' · never invoked' : '') + '</span>' : ''}`
     thumb.appendChild(tip)
     grid.appendChild(thumb)
   })

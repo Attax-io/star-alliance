@@ -40,8 +40,8 @@ run_case () {
 # ─── BUTLER (main session) — executor lock fully enforced ────────────────
 
 echo "== BUTLER: Bash summons =="
-run_case "" "summon.py minimax-m3 (happy path)" \
-    '{"tool_name":"Bash","tool_input":{"command":"python3 arsenal/summon.py minimax-m3 \"refactor X\""}}' \
+run_case "" "summon.py minimax-sub (happy path)" \
+    '{"tool_name":"Bash","tool_input":{"command":"python3 arsenal/summon.py minimax-sub \"refactor X\""}}' \
     0 no
 run_case "" "minimax.py direct (happy path)" \
     '{"tool_name":"Bash","tool_input":{"command":"python3 arsenal/minimax.py \"summarize Y\""}}' \
@@ -103,8 +103,8 @@ run_case "" "dd (block)" \
 
 echo ""
 echo "== BUTLER: Task/Agent spawns =="
-run_case "" "Task: model=minimax-m3 (happy)" \
-    '{"tool_name":"Task","tool_input":{"model":"minimax-m3","prompt":"refactor X"}}' \
+run_case "" "Task: model=minimax-sub (happy)" \
+    '{"tool_name":"Task","tool_input":{"model":"minimax-sub","prompt":"refactor X"}}' \
     0 no
 run_case "" "Task: model=sonnet (brain-tier, allow)" \
     '{"tool_name":"Task","tool_input":{"model":"sonnet","prompt":"plan the work"}}' \
@@ -244,8 +244,8 @@ echo "== SUBAGENT: spawn-time rules still apply =="
 run_case "1" "Task: model=haiku (still block wrong executor)" \
     '{"tool_name":"Task","tool_input":{"model":"haiku","prompt":"refactor X"}}' \
     2 yes
-run_case "1" "Task: model=minimax-m3 (happy)" \
-    '{"tool_name":"Task","tool_input":{"model":"minimax-m3","prompt":"refactor"}}' \
+run_case "1" "Task: model=minimax-sub (happy)" \
+    '{"tool_name":"Task","tool_input":{"model":"minimax-sub","prompt":"refactor"}}' \
     0 no
 run_case "1" "Bash: summon.py haiku (still block)" \
     '{"tool_name":"Bash","tool_input":{"command":"summon.py haiku \"bulk\""}}' \

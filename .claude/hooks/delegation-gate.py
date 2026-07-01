@@ -265,7 +265,7 @@ def main():
         "⛔ DELEGATION GATE — this turn produced "
         f"{bulk:,} bytes of doer-grade inline output (Write/Edit) but logged NO doer "
         "call. Doer-grade bulk goes to MiniMax first (weapon-utility):\n"
-        "     python3 star-alliance-arsenal/summon.py minimax-m3 \"<prompt>\"\n"
+        "     python3 star-alliance-arsenal/summon.py minimax-sub \"<prompt>\"\n"
         "   Delegate the bulk and re-end the turn — the gate clears once a doer call is\n"
         "   on record. Nothing is committed while this blocks (forward-fix only).\n"
         "   If this work is genuinely non-offloadable (tool-orchestration, deep\n"

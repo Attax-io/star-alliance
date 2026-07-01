@@ -119,7 +119,7 @@ This looks like a quick, easily-reversible change. Proportional path:
     "Deploying agents" block and write: "Handled directly by the Butler — <model>.
     No agents deployed.")
   • Hand any doer-grade bulk/transform work to a cheap doer
-    (python3 star-alliance-arsenal/summon.py minimax-m3 "<prompt>").
+    (python3 star-alliance-arsenal/summon.py minimax-sub "<prompt>").
   • ESCALATE TO FULL + HALT the instant the task actually touches anything
     high-stakes — migrations, git push/force, prod/deploy, RLS/secrets, renames,
     deletes, or mass/multi-file edits. When unsure, treat as high-stakes: restate

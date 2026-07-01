@@ -43,8 +43,8 @@ FINDINGS = (
     "- **Default `--max-tokens` = 16000.** Reasoning models return empty if the budget "
     "is too small (eaten by `<think>`). Verified 2026-06-27: a 60-token call returns "
     "empty; 800+ returns content.\n"
-    "- **`minimax-m3` (direct API) is the prime DOER**; the Ollama bench (incl. "
-    "`gemma4` since weapon-utility 1.7.0) is read as **thinkers**. Separate pools — "
+    "- **`minimax-sub` (direct API) is the prime DOER**; the Ollama bench (incl. "
+    "`kimi-k2.7` since weapon-utility 1.7.0) is read as **thinkers**. Separate pools — "
     "Claude (Task) + MiniMax-direct overlap the Ollama panel freely.\n"
     "- **glm-5.2 confirmed alive** 2026-06-27 (returned `GLM_ALIVE`). A 'glm missing' "
     "scare was a truncated `ollama list | head` — it is pulled.\n"
@@ -143,14 +143,14 @@ def render(mid, d):
     return "\n".join(p)
 
 
-# stable display order
-ORDER = ["opus", "sonnet", "haiku", "minimax-m3", "deepseek-v4-pro", "glm-5.2",
-         "kimi-k2.7", "nemotron-3-ultra", "qwen3.5", "gemma4",
+# stable display order (11 surviving models)
+ORDER = ["opus", "sonnet", "haiku", "minimax-sub", "minimax-payg",
+         "glm-5.2", "kimi-k2.7",
          "image-01", "minimax-video", "minimax-speech", "minimax-music"]
 
 
 def main():
-    models = json.load(open(REG, encoding="utf-8"))["models"]
+    models = json.load(open(REG, encoding="utf-8"))["models"]  # from models.json registry
     os.makedirs(OUT, exist_ok=True)
     ids = [m for m in ORDER if m in models] + [m for m in models if m not in ORDER]
     for mid in ids:

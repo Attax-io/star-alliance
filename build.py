@@ -447,7 +447,7 @@ def load_workflows(repo: Path) -> list[dict]:
 
 def _wf_token(x) -> str:
     """A list item in a workflow step may be a plain string or a dict like
-    {"model": "minimax-m3", "count": 3}. Render either as readable text."""
+    {"model": "minimax-sub", "count": 3}. Render either as readable text."""
     if isinstance(x, dict):
         name = x.get("model") or x.get("name") or x.get("actor") or "?"
         cnt = x.get("count")

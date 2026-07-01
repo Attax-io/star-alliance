@@ -273,7 +273,7 @@ def _cli():
     # Reads from the ledger (same source of truth as the rest of the scoreboard).
     # Catches the failure mode the executor-enforce hook was built to prevent:
     # the agent bypassing the lock and running bulk work on the thinker model
-    # (thinker) instead of the executor seat (minimax-m3).
+    # (thinker) instead of the executor seat (minimax-sub).
     ed = _executor_discipline(since=s.get("since"))
     print("\n── Executor Discipline ──")
     if ed["override_count"] == 0 and ed["direct_write_blocks"] == 0:
@@ -287,16 +287,16 @@ def _cli():
     print(f"  direct-write blocks: {ed['direct_write_blocks']}  "
           f"(Butler tried Edit/Write directly)")
     print(f"  doer summons       : {ed['doer_summons']} total, "
-          f"{ed['minimax_m3_share']} minimax-m3, "
+          f"{ed['minimax_m3_share']} minimax-sub, "
           f"{ed['thinker_share']} thinker")
     if ed["verdict"] == "STRAYING":
         print(f"  → STRAYING — thinker-as-doer share is {ed['thinker_share']}; "
               f"the brain is doing the executor's job")
     elif ed["verdict"] == "MIXED":
-        print(f"  → MIXED — minimax-m3 share is {ed['minimax_m3_share']}; "
+        print(f"  → MIXED — minimax-sub share is {ed['minimax_m3_share']}; "
               f"target is >80% for bulk-doer work")
     else:
-        print("  → ALIGNED — minimax-m3 is the dominant doer")
+        print("  → ALIGNED — minimax-sub is the dominant doer")
 
 
 def _executor_discipline(since: str | None = None) -> dict:
@@ -320,7 +320,7 @@ def _executor_discipline(since: str | None = None) -> dict:
         models = (e.get("meta") or {}).get("models", []) or []
         for m in models:
             ml = m.lower()
-            if ml == "minimax-m3":
+            if ml == "minimax-sub":
                 minimax += 1
             elif ml in ("glm-5.2", "kimi-k2.7", "opus", "sonnet", "haiku"):
                 thinker += 1
@@ -335,7 +335,7 @@ def _executor_discipline(since: str | None = None) -> dict:
         son_pct = thinker / total_doer * 100
         mm_share = f"{mm_pct:.0f}%"
         son_share = f"{son_pct:.0f}%"
-        # Verdict thresholds tuned for project shape: minimax-m3 is the doer
+        # Verdict thresholds tuned for project shape: minimax-sub is the doer
         # default per models.json seats.doer.default, so it should dominate.
         if son_pct > 50:
             verdict = "STRAYING"

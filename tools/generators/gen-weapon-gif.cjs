@@ -19,13 +19,10 @@ const WEAPONS = [
   { id: "opus",             color: "#e8c93a", aura: "golden solar divine light pulsing, gold energy waves rippling outward" },
   { id: "sonnet",           color: "#3df0ff", aura: "cyan electric lightning arcs crackling, ice-blue energy pulses along the blade" },
   { id: "haiku",            color: "#4ec985", aura: "neon green spirit fireflies swirling, emerald energy shimmering" },
-  { id: "minimax-m3",       color: "#4ec9a0", aura: "teal circuit energy sparking, mechanical crossbow limbs vibrating with teal pulses" },
+  { id: "minimax-sub",       color: "#4ec9a0", aura: "teal circuit energy sparking, mechanical crossbow limbs vibrating with teal pulses" },
+  { id: "minimax-payg",     color: "#dc143c", aura: "crimson ruby energy racing along the scimitar fuller, hot steel sparks sweeping the arc, ruby embers blooming off the edge" },
   { id: "glm-5.2",          color: "#d4a05a", aura: "amber-gold fire and embers drifting upward, warm orange bow glow pulsing" },
   { id: "kimi-k2.7",        color: "#ff6b8a", aura: "hot magenta plasma erupting from the hammerhead, pink energy shockwaves radiating" },
-  { id: "deepseek-v4-pro",  color: "#5b8cff", aura: "sapphire blue energy arcs sweeping along the scythe blade, cobalt waves pulsing" },
-  { id: "nemotron-3-ultra", color: "#7fd4ff", aura: "icy silver-white crystalline shards drifting, celestial blue-white light pulsing" },
-  { id: "qwen3.5",          color: "#c47fff", aura: "violet arcane energy flowing, lavender petals dissolving into magical particles" },
-  { id: "gemma4",           color: "#ffb04e", aura: "amber-orange comet fire trails spinning, blazing star radiance pulsing outward" },
 ];
 
 const TARGET = process.argv[2];
