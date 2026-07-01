@@ -483,7 +483,7 @@ def main():
     # (e.g. _impeccable-upstream-source — a vendored external mirror, never wired,
     # never tiled, never counted). K and ART must skip them.
     k_skill_dirs = {s for s in skill_dirs if not s.startswith("_")}
-    meta_keys = set(skills_meta.keys())
+    meta_keys = {s for s in skills_meta.keys() if not s.startswith("_")}
     data_ids = {s["id"] for s in g["skills"]}
     k_data_ids = {s for s in data_ids if not s.startswith("_")}
     if k_skill_dirs != meta_keys:
