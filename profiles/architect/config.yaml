@@ -1,6 +1,6 @@
 model:
-  default: glm-5.2
-  provider: ollama-cloud
+  default: MiniMax-M3
+  provider: custom:minimax-payg
   primary: custom:minimax-sub
   fallback: custom:minimax-payg
   base_url: ''
@@ -22,7 +22,7 @@ providers:
       - glm-5.2
     name: MiniMax PayG
 agent:
-  reasoning_effort: xhigh
+  reasoning_effort: medium
 terminal:
   backend: local
   timeout: 180

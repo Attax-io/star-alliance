@@ -53,7 +53,7 @@ def plan_swarm(step: dict) -> dict:
         return {
             "fan": False,
             "instances": 1,
-            "member": None,
+            "member": step.get("actor"),
             "partition": None,
             "reason": "no swarm object on this step",
         }
