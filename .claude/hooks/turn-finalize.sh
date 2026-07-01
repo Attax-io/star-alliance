@@ -76,6 +76,15 @@ if [ ! -f "$repo/evolution/DISARMED" ] && [ ! -f "$state/conformance-gate-disarm
   exit 0
 fi
 
+# 0d. Honor the conformity pre-commit gate. Same sibling-Stop pattern: on BLOCK it drops
+#     .claude/state/conformity-precommit-block. If that sentinel exists, skip the commit.
+#     The gate clears it on pass / SA_SKIP_CONFORMITY override.
+if [ ! -f "$repo/evolution/DISARMED" ] && [ ! -f "$state/conformity-precommit-disarmed" ] \
+   && [ "${SA_SKIP_CONFORMITY:-}" != "1" ] && [ -f "$state/conformity-precommit-block" ]; then
+  echo "[turn-finalize] conformity-precommit-gate blocked this turn (repo out of conformity) — commit skipped" >&2
+  exit 0
+fi
+
 # 1. Single rebuild if any build-source changed this turn (flag set by build-mark.py).
 #    Build output is kept in a state log (not /dev/null) so a regression is
 #    diagnosable from the next session — an independent-review finding.

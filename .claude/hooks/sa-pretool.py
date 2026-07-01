@@ -37,6 +37,7 @@ GATES = [
     ("thinker-gate.py",     {"Task", "Agent"}),
     ("connector-gate.py",   {"Task", "Agent"}),
     ("okf-gate.py",         {"Write", "Edit", "MultiEdit"}),
+    ("member-skill-lint-gate.py", {"Write", "Edit", "MultiEdit"}),
     ("stop-line-gate.py",   {"Write", "Edit", "MultiEdit"}),
     ("weapon-gate.py",      {"Bash", "Task", "Agent"}),
     ("destructive-gate.py", {"Bash"}),
