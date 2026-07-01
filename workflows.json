@@ -1672,7 +1672,16 @@
             "audit brief"
           ],
           "exec": "spawn",
-          "parallel": true
+          "parallel": true,
+          "stage": "panel",
+          "swarm": {
+            "member": "the-strategist",
+            "min_instances": 2,
+            "max_instances": 5,
+            "partition": "by-subtask",
+            "isolation": "shared-tree",
+            "integration_step": true
+          }
         },
         {
           "kind": "member",
@@ -1680,7 +1689,8 @@
           "title": "Converge & Grade",
           "act": "The Strategist fires the panel, converges the takes, resolves contradictions, grades the result, and writes the ranked MD audit.",
           "produces": "graded audit",
-          "exec": "spawn"
+          "exec": "inline",
+          "stage": "panel"
         },
         {
           "kind": "member",
@@ -1712,7 +1722,11 @@
         "note down lessons",
         "audit the repo",
         "audit the roster",
-        "upgrade skills workflows members"
+        "upgrade skills workflows members",
+        "swarm the audit",
+        "fan out the panel",
+        "run the panel in parallel",
+        "parallel audit"
       ]
     },
     {
