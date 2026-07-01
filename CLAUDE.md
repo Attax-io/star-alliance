@@ -180,6 +180,19 @@ entry — Routing is the valid intake key while the Strategist is still
 deciding). Mirrored as doctrine in `.claude/hooks/guild-routing-gate.sh` and
 in the `high-alert` skill's "Who chooses the workflow" section.
 
+**One carve-out — the Butler owns swarm orchestration.** There is a single
+exception to "Butler voices, Strategist routes": running a **multi-agent swarm**
+is the Butler's job, not the Strategist's. When a quest is big enough to need
+several helpers working at once, the Butler judges whether it is swarm-worthy,
+scouts the ground, cuts the work into non-overlapping slices, writes the seam
+contracts, fans out the N workers in one message, runs a per-slice review, then
+integrates and commits once. The reason is mechanical: only the live top session
+(which runs as the Butler) can spawn parallel sibling helpers — a spawned
+subagent cannot. So the Butler dispatches the Strategist first (worthiness and
+workflow), then does the fan-out himself. The Strategist still routes every
+single-target task, picks the workflow, and plans the campaign waves — the
+carve-out is swarm orchestration alone.
+
 ## Reading discipline (every member)
 
 _Mined from full session history — 46 sessions hit this; it was the single most-repeated correction._
