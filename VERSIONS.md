@@ -114,7 +114,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`python-master`](star-alliance-skills/python-master/SKILL.md) | 1.1.0 | own | 134 / 1020 | 515 / 65 | ✓ lean | The Developer's craft for building production-grade Python libraries and web apps end to e… |
 | [`redesign-existing-projects`](star-alliance-skills/redesign-existing-projects/SKILL.md) | 1.0.0 | own | 31 / 225 | 2174 / 176 | ✓ lean | Upgrades existing websites and apps to premium quality |
 | [`relationship-intel`](star-alliance-skills/relationship-intel/SKILL.md) | 1.0.0 | own | 136 / 961 | 1072 / 55 | ✓ lean | The Herald's craft for turning email traffic into living relationship intelligence so the … |
-| [`release-train`](star-alliance-skills/release-train/SKILL.md) | 1.0.1 | own | 135 / 902 | 1146 / 62 | ✓ lean | The Quartermaster's craft for closing out a body of work — merge every outstanding branch … |
+| [`release-train`](star-alliance-skills/release-train/SKILL.md) | 1.1.0 | own | 135 / 894 | 1713 / 80 | ✓ lean | The Quartermaster's craft for closing out a body of work — merge every outstanding branch … |
 | [`safe-agentic-orchestration`](star-alliance-skills/safe-agentic-orchestration/SKILL.md) | 1.1.0 | own | 133 / 1017 | 1202 / 58 | ✓ lean | Orchestrate a coordinated multi-agent AI team using the SAFe-agentic doctrine distilled fr… |
 | [`scheduled-watch`](star-alliance-skills/scheduled-watch/SKILL.md) | 1.0.0 | own | 134 / 909 | 1030 / 48 | ✓ lean | The Strategist's craft for defining an unattended task that runs on a cron cadence and res… |
 | [`schema-evolution`](star-alliance-skills/schema-evolution/SKILL.md) | 1.2.0 | own | 152 / 1013 | 2264 / 173 | ✓ lean | The Architect's craft for evolving a structured data model without breaking what already r… |
