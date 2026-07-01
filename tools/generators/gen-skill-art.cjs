@@ -22,6 +22,30 @@ const STYLE = "fantasy RPG skill icon, Fallen Sword MMORPG style, dark parchment
 
 const SKILLS = [
   {
+    id: "pattern-detector",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "Reads the seven most recent Lex Council housekeeping run logs plus the current OPEN-ITEMS.md an", no text, no watermarks`,
+  },
+  {
+    id: "heat-map-analyst",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "Ranks Lex Council docs under lex_council/docs/ by claude_hits delta over the last 30 days a", no text, no watermarks`,
+  },
+  {
+    id: "health-checker",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "Runs three read-only Supabase health queries (missing FK indexes, public tables without RLS, hi", no text, no watermarks`,
+  },
+  {
+    id: "frontend-auditor",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "Diffs the Lex Council Next.js codebase (pages, mutations, hooks, stores) against FRONTEND-INVEN", no text, no watermarks`,
+  },
+  {
+    id: "cold-doc-rotator",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "Picks the N Lex Council docs with the oldest last_housekeeper_pass frontmatter field (treatin", no text, no watermarks`,
+  },
+  {
+    id: "backend-auditor",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "Audits the Lex Council Supabase schema (tables, views, triggers, RPC functions, cron jobs, RLS", no text, no watermarks`,
+  },
+  {
     id: "head-of-department",
     prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "The thin authority-and-limits layer that sits between a worker and a sub-tree.", no text, no watermarks`,
   },

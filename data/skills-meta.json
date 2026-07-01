@@ -103,6 +103,14 @@
     "triggers": "'write tests for this', 'add test coverage', 'set up Playwright', 'why is this test flaky', 'test this server action'",
     "modes": "test pyramid & strategy; deterministic tests; E2E Playwright"
   },
+  "backend-auditor": {
+    "icon": "🧩",
+    "blurb": "Audits the Lex Council Supabase schema (tables, views, triggers, RPC functions, cron jobs, RLS",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "'audit the backend', 'is BACKEND.md current', 'schema drift', 'compare DB to BACKEND.md', 'RLS sensitivity gate'",
+    "modes": ""
+  },
   "bug-fix-closer": {
     "icon": "🧩",
     "blurb": "Mark one or more Lex Council bug_reports rows as Fixed (br_status=4) in the DB.",
@@ -205,6 +213,14 @@
     "level": "Advanced",
     "tabler": "ti-puzzle",
     "triggers": "",
+    "modes": ""
+  },
+  "cold-doc-rotator": {
+    "icon": "🧩",
+    "blurb": "Picks the N Lex Council docs with the oldest `last_housekeeper_pass` frontmatter field (treatin",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "'rotate cold docs', 'housekeeper pass on cold docs', 'tick doc counters', 'force coverage'",
     "modes": ""
   },
   "comms-triage": {
@@ -335,6 +351,14 @@
     "triggers": "'pull the fundamentals for X', 'get the price history', 'fetch the latest filing', 'find macro data on Y', 'get earnings estimates'",
     "modes": "source landscape; point-in-time correctness; normalization & caching"
   },
+  "frontend-auditor": {
+    "icon": "🧩",
+    "blurb": "Diffs the Lex Council Next.js codebase (pages, mutations, hooks, stores) against FRONTEND-INVEN",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "'audit the frontend', 'is FRONTEND.md current', 'frontend drift', 'pages/mutations/hooks drift'",
+    "modes": ""
+  },
   "frontend-react-engineering": {
     "icon": "⚛️",
     "blurb": "Production React / Next.js engineering — RSC, hooks, state placement, data fetching, Suspense, perf, TS contracts",
@@ -405,6 +429,22 @@
     "level": "Advanced",
     "tabler": "ti-puzzle",
     "triggers": "'I', ', ', ', ', ', ', ', '",
+    "modes": ""
+  },
+  "health-checker": {
+    "icon": "🧩",
+    "blurb": "Runs three read-only Supabase health queries (missing FK indexes, public tables without RLS, hi",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "'db health check', 'check for missing FK indexes', 'tables without RLS', 'dead tuples'",
+    "modes": ""
+  },
+  "heat-map-analyst": {
+    "icon": "🧩",
+    "blurb": "Ranks Lex Council docs under `lex_council/docs/` by `claude_hits` delta over the last 30 days a",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "'heat map', 'rank docs by hits', 'curate vault core', 'archive sweep', 'what', 's cold'",
     "modes": ""
   },
   "high-alert": {
@@ -598,6 +638,14 @@
     "tabler": "ti-file-stack",
     "triggers": "'tidy the repo', 'OKF', 'make it OKF-conformant', 'run the OKF audit', 'fix frontmatter', 'keep it clean', after any campaign that left files behind. The producer half of the guild's knowledge standard; pairs with star-alliance-language (reader). Enforced mechanically by the okf-gate PreToolUse hook.",
     "modes": "audit (default) — report non-conformant governed .md; --fix — migrate-first baseline (inject type: + timestamp:, idempotent); enrich — add title/description/tags/cross-links; sweep — place non-md by concept-path & prune orphans"
+  },
+  "pattern-detector": {
+    "icon": "🧩",
+    "blurb": "Reads the seven most recent Lex Council housekeeping run logs plus the current OPEN-ITEMS.md an",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "'detect patterns', 'housekeeping retrospective', 'recurring open items', 'stale stubs'",
+    "modes": ""
   },
   "pattern-library-discovery": {
     "icon": "🗂️",

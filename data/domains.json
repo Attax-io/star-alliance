@@ -121,7 +121,13 @@
         "hotspot-radar",
         "new-member-onboarding",
         "temporal-coupling-audit",
-        "head-of-department"
+        "head-of-department",
+        "backend-auditor",
+        "cold-doc-rotator",
+        "frontend-auditor",
+        "health-checker",
+        "heat-map-analyst",
+        "pattern-detector"
       ],
       "members": [
         "the-architect",

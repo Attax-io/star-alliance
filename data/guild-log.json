@@ -2,6 +2,14 @@
   "version": 1,
   "entries": [
     {
+      "id": 108,
+      "date": "2026-07-01",
+      "type": "skill-create",
+      "title": "Absorbed 6 Lex housekeeping subagents as Quartermaster skills",
+      "who": "the-quartermaster",
+      "detail": "backend-auditor, frontend-auditor, health-checker (Claude-native only — invoke the Lex Supabase MCP connector), heat-map-analyst, cold-doc-rotator, pattern-detector moved from Lex .claude/agents/ into star-alliance-skills/ and registered on the-quartermaster (skills[] + Skill Drills). Lex .claude/agents/ retired so the single SA roster is the source of truth. Decision: the-translator was NOT migrated — SA the-interpreter already supersets it; no member downgrade."
+    },
+    {
       "id": 107,
       "date": "2026-07-01",
       "type": "decision",

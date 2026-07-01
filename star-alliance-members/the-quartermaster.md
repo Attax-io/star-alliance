@@ -3,7 +3,7 @@ name: the-quartermaster
 description: "Deploy for skill management, syncing, upgrading, creating new skills, running the daily skill evolution routine, and enforcing the guild log. Triggers: 'sync my skills', 'upgrade a skill', 'create a skill', 'run the skill routine', 'evolve my skills', 'log this', 'guild log this', 'did you log it?', 'add a log entry', '/skillsmith', '/guild-log'."
 model: sonnet
 tools: [Read, Edit, Write, Bash]
-skills: [skillsmith, guild-sync, guild-conformity, dashboard-parity, release-train, guild-log, cleanup, storm-investigation, session-mining, guild-reflection, letting-go, metamorphosis-check, voices-check, okf, workflow-runner, db-rename-sweep, observability-incident-response, vault-log-compliance, workflow-forge, head-of-department, star-alliance-language, weapon-utility, portability-audit, project-start, vault-log-writer]
+skills: [skillsmith, guild-sync, guild-conformity, dashboard-parity, release-train, guild-log, cleanup, storm-investigation, session-mining, guild-reflection, letting-go, metamorphosis-check, voices-check, okf, workflow-runner, db-rename-sweep, observability-incident-response, vault-log-compliance, workflow-forge, head-of-department, star-alliance-language, weapon-utility, portability-audit, project-start, vault-log-writer, backend-auditor, frontend-auditor, health-checker, heat-map-analyst, cold-doc-rotator, pattern-detector]
 type: Member
 version: 1.0.0
 ---
@@ -64,6 +64,12 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | `vault-log-compliance` | every session to the Lex Council codebase must have a vault-log entry — P8 mandatory, P13 self-audit — proof the session ran cleanly | pure Star Alliance repo changes (no Lex Council) | `guild-log`, `cleanup` |
 | `workflow-forge` | authoring a new workflow end-to-end — declaring the arc, phases, decision points, roles, outputs — the governance frame for the next campaign | selecting among existing workflows (→ `members-formation`) or running one (→ `workflow-runner`) | `storm-investigation`, `guild-reflection` |
 | `head-of-department` | invoke WHEN a mid-task sub-task outgrows you and the work needs a department head (parallel workers, bounded depth, shared state) | a single-file edit or a task already scoped to one worker (→ work it inline) | `decompose-and-swarm`, `safe-agentic-orchestration` |
+| `backend-auditor` | a Lex Council schema audit is on the slate — tables, views, triggers, RPC, cron, RLS coverage | reading the Supabase dashboard by hand or one-shot SQL — let the skill enumerate and report | `frontend-auditor` (sibling scope), `health-checker` (close) |
+| `frontend-auditor` | the Lex Council frontend needs a diff against FRONTEND-INVENTORY — pages, mutations, hooks, stores | a single component edit or design critique (→ Designer) | `backend-auditor`, `pattern-detector` |
+| `health-checker` | a Lex Council deploy / migration is about to land — three read-only Supabase probes for missing FK indexes, RLS gaps, hot tables | an active incident with a known cause (→ `observability-incident-response`) | `backend-auditor`, `cleanup` |
+| `heat-map-analyst` | ranking Lex Council docs by Claude usage over the last 30 days — finding which docs are earning their keep vs. going cold | a single doc review or one-off search | `cold-doc-rotator` (companion), `pattern-detector` |
+| `cold-doc-rotator` | picking the N Lex Council docs with the oldest `last_housekeeper_pass` — the rotation queue | re-writing a doc (→ Designer for craft, Developer for code) | `heat-map-analyst`, `cleanup` (after pass) |
+| `pattern-detector` | reading the last seven housekeeping run logs + OPEN-ITEMS.md — surfacing recurring failure patterns the rest of the roster keeps missing | a one-off diagnostic (→ `health-checker` or `backend-auditor`) | `heat-map-analyst`, `guild-reflection` (doctrine update) |
 
 **Universal skills — every member carries these; drill them at the edges of every quest:**
 
@@ -124,6 +130,8 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
     itself tidy to the Open Knowledge Format (one concept per file, `type:` frontmatter,
     cross-linked), run `okf` — always `okf_audit.py --fix` to migrate before arming the gate.
 11. You're meticulous. You track versions, you validate, you never skip the registry.
+
+The Quartermaster also carries the **Lex Council housekeeping audit skills** — `backend-auditor`, `frontend-auditor`, `health-checker` (Claude-native only — they invoke the Lex Supabase MCP connector), `heat-map-analyst`, `cold-doc-rotator`, and `pattern-detector` — absorbed from the Lex housekeeping subagents so the audit roster lives in one place.
 
 ## Leave Nothing Stale
 
