@@ -660,7 +660,10 @@ def main():
                 *sorted((ROOT / ".claude" / "hooks").glob("*.sh")),
             ]
             # KNOWN ids — find every registry id that appears in the file (informational,
-            # never flagged).
+            # never flagged). Case-sensitive matching is critical here: `Opus` is NOT the
+            # same identifier as `opus` in models.json, and reporting case-mismatches is
+            # a major reason this guard exists. Routing code that does string-equality
+            # lookup against the registry would silently fail on Title-Cased prose.
             _md_known_re = re.compile(
                 r'(?<![\w.\-])(?:' + '|'.join(re.escape(m) for m in sorted(reg_ids)) + r')(?![\w.\-])'
             )
@@ -702,9 +705,46 @@ def main():
             # IS a word char under `[\w.\-]` boundaries.
             _bare_alts = [re.escape(m) for m in reg_ids if "-" not in m]
             _shape_alts.extend(_bare_alts)
+            # Case-INSENSITIVE on purpose — we WANT to flag `Opus` and `GLM-5.2` (case
+            # mismatches for the lowercase registered ids `opus` / `glm-5.2`), not
+            # silently let them match. The post-filter then distinguishes:
+            #   - exact-case in reg_ids → known id, never flagged
+            #   - case-folded in reg_ids → case-mismatch drift
+            #   - shape match, not in reg_ids at all → unknown-shape drift
             _md_shape_re = re.compile(
                 r'(?<![\w.\-])(?:' + '|'.join(_shape_alts) + r')(?![\w.\-])',
                 re.IGNORECASE,
+            )
+            # Second shape family — KNOWN model-vendor prefixes that are not in the
+            # Star Alliance registry but ARE widely used in source-tree prose (Anthropic
+            # external product names, internal-version aliases). Catching these is
+            # exactly the kind of drift the guard is here for: someone copy-pasted a
+            # third-party model name into a Star Alliance hook, and routing lookup
+            # against the registry would silently fall through. Each alts here is
+            # bounded by the vendor's own name so a token like "claude-the-great"
+            # does NOT match — only the actual registered-shape versions do.
+            #
+            # - `<vendor>-<major>(.<minor>)?[-<family>]`  → Anthropic external
+            #     (catches `claude-3.5-sonnet`, `claude-opus-4-8`).
+            # - `<vendor>-(M|d)\d+[a-z]?` → Anthropic mini/date-style
+            #     (catches `claude-3-5-haiku`).
+            # - `<vendor>-<M><digit>+`        → internal version alias
+            #     (catches `minimax-M2`, `minimax-M3`).
+            # - `<vendor>-<digit>+`           → generic numbered alias (e.g. old `image-02`)
+            #     We tighten this by requiring the vendor first be one of the explicit
+            #     known external vendors, so we don't false-fire on hyphenated English.
+            _EXT_VENDORS = ("claude", "anthropic", "minimax")
+            _ext_alts = []
+            for _v in _EXT_VENDORS:
+                _v = re.escape(_v)
+                # X.Y (major.minor) optionally with a -family tail
+                _ext_alts.append(_v + r"\-\d+\.\d+(?:[\-][a-z0-9]+)?")
+                # X (major) optionally with a -family tail  (also covers anthropic-1-mini)
+                _ext_alts.append(_v + r"\-\d+[\-][a-z0-9]+")
+                # X-M<n>[a-z]? internal-version alias
+                _ext_alts.append(_v + r"\-[Mm]\d+[a-z]?")
+            _md_ext_re = re.compile(
+                r'(?<![\w.\-])(?:' + '|'.join(_ext_alts) + r')(?![\w.\-])'
             )
             for _md_path in _md_files:
                 if not _md_path.is_file():
@@ -717,20 +757,33 @@ def main():
                 # Find every distinct token the file contains that matches a registry
                 # SHAPE. We dedupe by token per file so the failure list per file is
                 # finite regardless of how many times the same drift token appears in
-                # the file (e.g. `glm-5.2` hardcoded on 6 lines of one file = 1 fail).
+                # the file (e.g. `Opus` appearing on 6 lines of one file = 1 fail).
                 rel = str(_md_path.relative_to(ROOT))
                 _emitted_for_file = set()
                 for _tok in sorted(set(_md_shape_re.findall(_md_txt))):
-                    if _tok.lower() in reg_ids:
-                        continue  # known id, never a fail
+                    # CASE-SENSITIVE registry membership: `Opus` ≠ `opus`, and the goal
+                    # of this guard is to surface the case-mismatch as drift (string-equality
+                    # routing lookup against `opus` would silently fail on `Opus`).
+                    if _tok in reg_ids:
+                        continue  # known id, exact-case, never a fail
                     if _tok in _emitted_for_file:
                         continue
                     _emitted_for_file.add(_tok)
+                    # Distinguish two drift flavors in the report: case-mismatch vs
+                    # wholly-unknown — they have different remediation paths.
+                    if _tok.lower() in reg_ids:
+                        _drift_kind = (
+                            f"case-mismatch for registered id '{_tok.lower()}' "
+                            f"(the registry is lowercase by convention)"
+                        )
+                    else:
+                        _drift_kind = (
+                            f"matches a models.json id SHAPE but is not registered "
+                            f"(add it to models.json or fix the typo)"
+                        )
                     fails.append(
-                        f"MD {rel}: unknown model id '{_tok}' "
-                        f"(matches a models.json id SHAPE but is not registered — "
-                        f"add it to models.json or fix the typo; "
-                        f"{len(_md_known_hits)} known ids referenced in this file)"
+                        f"MD {rel}: unknown model id '{_tok}' — {_drift_kind}; "
+                        f"{len(_md_known_hits)} known ids referenced in this file"
                     )
         except Exception as _md_exc:
             notes.append(f"MD  model-drift check raised an exception "
