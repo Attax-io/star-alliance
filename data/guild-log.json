@@ -2,6 +2,55 @@
   "version": 1,
   "entries": [
     {
+      "id": 117,
+      "date": "2026-07-01",
+      "type": "member-upgrade",
+      "title": "the-butler: stress voice-not-member framing",
+      "who": "the-quartermaster",
+      "detail": "Stressed voice-not-member framing across member file and card; clarified he is in the roster only to track his evolution.",
+      "ref": [
+        "the-butler"
+      ]
+    },
+    {
+      "id": 116,
+      "date": "2026-07-01",
+      "type": "member-upgrade",
+      "title": "the-butler: drop weapon-utility, retire butler-lockout, add helpless",
+      "who": "the-quartermaster",
+      "detail": "Butler loadout reshaped to three skills: butler-voice (voice contract), helpless (refusal — replaces butler-lockout), star-alliance-language (house idiom). Dropped weapon-utility: the Butler is the voice, not a craft practitioner; carrying a numeric usage meter served no role. PreToolUse hook butler-skill-gate.py still enforces the boundary; refusal text now cites helpless.",
+      "ref": [
+        "the-butler",
+        "helpless",
+        "butler-lockout",
+        "weapon-utility"
+      ],
+      "from": "1.0.0",
+      "to": "1.0.1"
+    },
+    {
+      "id": 115,
+      "date": "2026-07-01",
+      "type": "skill-remove",
+      "title": "Retire butler-lockout skill",
+      "who": "the-quartermaster",
+      "detail": "Superseded by helpless — the doctrine moved into one skill with a clearer name and self-identifying refrain. The mechanical gate (butler-skill-gate.py) now cites helpless instead of butler-lockout.",
+      "ref": [
+        "butler-lockout"
+      ]
+    },
+    {
+      "id": 114,
+      "date": "2026-07-01",
+      "type": "skill-create",
+      "title": "Add helpless skill (replaces butler-lockout)",
+      "who": "the-quartermaster",
+      "detail": "Refusal doctrine: invoked by scripts and hooks (not the Butler) to hand craft to the Strategist. Single refusal skill, named to make the gate's refrain explicit. Replaces butler-lockout (retired).",
+      "ref": [
+        "helpless"
+      ]
+    },
+    {
       "id": 113,
       "date": "2026-07-01",
       "type": "decision",

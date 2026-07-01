@@ -47,8 +47,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`bug-fix-closer`](star-alliance-skills/bug-fix-closer/SKILL.md) | 1.0.0 | own | 70 / 385 | 384 / 69 | ✓ lean | Mark one or more Lex Council bug_reports rows as Fixed (br_status=4) in the DB |
 | [`bug-fix-workflow`](star-alliance-skills/bug-fix-workflow/SKILL.md) | 1.2.0 | own | 151 / 934 | 2388 / 255 | ✓ lean | The Lex Council end-to-end bug workflow — pull reports from the bug_reports table, triage … |
 | [`bundled-rls`](star-alliance-skills/bundled-rls/SKILL.md) | 1.0.0 | own | 92 / 696 | 1151 / 148 | ✓ lean | Write Postgres Row-Level Security as composable named bundles, not ad-hoc inline policies |
-| [`butler-lockout`](star-alliance-skills/butler-lockout/SKILL.md) | 1.0.0 | own | 30 / 171 | 608 / 93 | ✓ lean | Locks the Butler to a tiny allowlist of skills; any craft skill must be refused and handed… |
-| [`butler-voice`](star-alliance-skills/butler-voice/SKILL.md) | 1.0.0 | own | 47 / 295 | 748 / 108 | ✓ lean | How the Butler speaks to the Guild Master: lead every reply with a plain-English status bl… |
+| [`butler-voice`](star-alliance-skills/butler-voice/SKILL.md) | 1.0.0 | own | 47 / 295 | 741 / 107 | ✓ lean | How the Butler speaks to the Guild Master: lead every reply with a plain-English status bl… |
 | [`chart-patterns`](star-alliance-skills/chart-patterns/SKILL.md) | 1.0.0 | own | 130 / 1012 | 1106 / 66 | ✓ lean | The Merchant's read-only craft for identifying and interpreting chart patterns, distilled … |
 | [`claude-code-hooks`](star-alliance-skills/claude-code-hooks/SKILL.md) | 1.1.0 | own | 146 / 962 | 1920 / 134 | ✓ lean | The Developer's craft for authoring Claude Code hooks — the shell scripts the harness fire… |
 | [`cleanup`](star-alliance-skills/cleanup/SKILL.md) | 1.21.0 | own | 135 / 991 | 5948 / 346 | ○ large | Multi-mode hygiene skill for Lex Council |
@@ -90,6 +89,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`head-of-department`](star-alliance-skills/head-of-department/SKILL.md) | 1.0.0 | own | 79 / 523 | 609 / 52 | ✓ lean | The thin authority-and-limits layer that sits between a worker and a sub-tree |
 | [`health-checker`](star-alliance-skills/health-checker/SKILL.md) | 1.0.0 | own | 66 / 441 | 241 / 54 | ✓ lean | Runs three read-only Supabase health queries (missing FK indexes, public tables without RL… |
 | [`heat-map-analyst`](star-alliance-skills/heat-map-analyst/SKILL.md) | 1.0.0 | own | 54 / 345 | 170 / 24 | ✓ lean | Ranks Lex Council docs under `lex_council/docs/` by `claude_hits` delta over the last 30 d… |
+| [`helpless`](star-alliance-skills/helpless/SKILL.md) | 1.0.0 | own | 64 / 358 | 739 / 112 | ✓ lean | Invoked by scripts and hooks, never by the Butler himself |
 | [`high-alert`](star-alliance-skills/high-alert/SKILL.md) | 2.4.0 | own | 132 / 859 | 923 / 58 | ✓ lean | The guild's deployment brief |
 | [`hotspot-radar`](star-alliance-skills/hotspot-radar/SKILL.md) | 1.0.0 | own | 84 / 554 | 804 / 149 | ✓ lean | Mine a git repository's change history to produce a ranked hotspot list — files ranked by … |
 | [`image-to-code`](star-alliance-skills/image-to-code/SKILL.md) | 1.0.0 | own | 80 / 555 | 5735 / 1225 | ○ large | Elite website image-to-code skill for Codex |
@@ -148,7 +148,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`ux-copywriting`](star-alliance-skills/ux-copywriting/SKILL.md) | 1.0.0 | own | 121 / 852 | 1223 / 128 | ✓ lean | Write functional in-product copy — the words a user reads while operating an interface |
 | [`ux-research`](star-alliance-skills/ux-research/SKILL.md) | 1.0.0 | own | 119 / 857 | 915 / 87 | ✓ lean | The Designer's UX research craft — learn from real users instead of guessing |
 | [`vault-log-compliance`](star-alliance-skills/vault-log-compliance/SKILL.md) | 1.2.0 | own | 138 / 893 | 1651 / 136 | ✓ lean | Enforces vault-logging compliance for the active target project (resolved via tools/resolv… |
-| [`vault-log-writer`](star-alliance-skills/vault-log-writer/SKILL.md) | 1.1.0 | own | 124 / 739 | 1007 / 177 | ✓ lean | Write and file a correct Lex Council vault log entry per the P8 mandatory change logging r… |
+| [`vault-log-writer`](star-alliance-skills/vault-log-writer/SKILL.md) | 1.1.1 | own | 136 / 838 | 1028 / 178 | ✓ lean | Write and file a correct vault log entry for the active target project (resolved via tools… |
 | [`view-registry`](star-alliance-skills/view-registry/SKILL.md) | 1.0.0 | own | 112 / 683 | 1128 / 178 | ✓ lean | Gate every Supabase view query in the frontend through a typed registry (VIEWS dot key) so… |
 | [`voices-check`](star-alliance-skills/voices-check/SKILL.md) | 1.0.1 | own | 145 / 1013 | 392 / 50 | ✓ lean | Integrate an agent's competing internal sub-voices into one coherent response instead of l… |
 | [`volume-price-analysis`](star-alliance-skills/volume-price-analysis/SKILL.md) | 1.0.0 | own | 137 / 1020 | 1067 / 55 | ✓ lean | The Merchant's read-only craft for Volume Price Analysis, distilled from Anna Coulling's A… |

@@ -104,7 +104,6 @@ A Butler reply is well-formed when:
 - [[helpless]] — keeps the Butler off craft skills. This skill governs
   the voice; that one governs the body.
 - `star-alliance-language` — the guild's shared reading protocol.
-- `weapon-utility` — the numeric usage-level meter.
 
 ## Changelog
 

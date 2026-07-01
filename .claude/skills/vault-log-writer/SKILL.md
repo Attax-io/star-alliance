@@ -1,8 +1,8 @@
 ---
 name: vault-log-writer
-description: Write and file a correct Lex Council vault log entry per the P8 mandatory change logging rule. Use whenever any code or backend change has been made in a session — every migration, trigger, view, RLS policy, component, page, edge function, bug fix, or doc update. Also use when the session called any Supabase MCP tool (execute_sql, apply_migration, get_advisors, etc.) to produce the required P13 self-audit section. Trigger on phrases like "write the vault log", "log this change", "P8 log", "session log", "what do I need to log", "vault log entry", or any time a session is about to end and no vault log has been written. This skill exists because P8 is non-negotiable and the P13 self-audit section is frequently omitted or malformed.
+description: Write and file a correct vault log entry for the active target project (resolved via tools/resolve_vault.py; Lex Council is one registered vault) per the mandatory P8-style change logging rule. Use whenever any code or backend change has been made in a session — every migration, trigger, view, RLS policy, component, page, edge function, bug fix, or doc update. Also use when the session called any Supabase MCP tool (execute_sql, apply_migration, get_advisors, etc.) to produce the required P13 self-audit section. Trigger on phrases like "write the vault log", "log this change", "P8 log", "session log", "what do I need to log", "vault log entry", or any time a session is about to end and no vault log has been written. This skill exists because P8 is non-negotiable and the P13 self-audit section is frequently omitted or malformed.
 metadata:
-  version: 1.1.0
+  version: 1.1.1
 ---
 
 # Writing a Vault Log Entry
@@ -178,4 +178,5 @@ Keep the index in reverse-chronological order (newest at top of the table body).
 
 | Version | Change |
 |---------|--------|
+| 1.1.1 | Generalized the frontmatter description from 'Lex Council' to the active target project (resolver-driven); body was already portable. |
 | 1.1.0 | Portability: added Step 0 resolving the active project's vault via `tools/resolve_vault.py`; file path and INDEX path are now the resolved `log_dir`/`index_path` instead of hardcoded `lex_council/docs/vault-logs`. Lex remains one registered vault. |

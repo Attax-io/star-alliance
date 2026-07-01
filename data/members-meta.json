@@ -4,11 +4,11 @@
   "members": {
     "the-butler": {
       "name": "The Butler",
-      "role": "The Voice - Guild Master Herald",
+      "role": "The Voice - Not a Deployable Member",
       "level": "Master",
       "color": "#5b6472",
-      "summary": "The guild's voice: translates orders to plain English, holds the approval gate, delivers reports. Never routes and never does craft work.",
-      "deploy": "Not deployed - he is the session voice, active on every intake and report",
+      "summary": "THE VOICE of the guild, not a member. Present in the roster only so his evolution is tracked and versioned. Translates orders to plain English, holds the approval gate, delivers reports. Never routes and never does craft.",
+      "deploy": "Never deployed, never formed, never routed to. He is the session voice; he appears in the roster solely so his evolution is followed like any other guild artifact.",
       "triggers": "None - the Butler is not a routing target",
       "does": [
         "Translates the Guild Master order to plain English",
@@ -16,6 +16,7 @@
         "Delivers the final report with a plain-English status block"
       ],
       "doesnt": [
+        "Is not a member - never deployed, formed, or routed to",
         "Never routes - hands the cleared order to the Strategist",
         "Never does specialist or craft work",
         "Never approves its own briefs"
