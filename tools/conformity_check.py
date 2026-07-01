@@ -22,7 +22,10 @@ Checks (each maps to a source-of-truth invariant or a logged decision):
   WART weapon-art  every registry weapon has a weapon-art/<id>.png tile
   MU usage-sidecar models-usage.json keys ⊆ registry ids
   FB fallback-sync fail-safe ROLE/CLOUD_TAG dicts == models.json (anti-drift)
+  MD model-drift   CLAUDE.md, AGENTS.md, .claude/hooks/*.{py,sh} reference only model ids in models.json
   RG routing-gate  guild-routing-gate agent→model prose == guild-data
+  MR roster-drift  star-alliance-members/*.md roster == literal rosters hardcoded in routing-enforce.py
+                   and hermes-upgrade-notify.py (the two hooks that list members as Python literals)
   PD profile-dist   repo profiles/<agent>/ SOUL.md+config.yaml == installed ~/.hermes/profiles/<slug>/
   AL arch-layers   CLAUDE.md and AGENTS.md both describe the three-layer architecture,
                    and the model table in each matches models.json seats

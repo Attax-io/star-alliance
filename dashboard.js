@@ -356,10 +356,15 @@ function memberCard(m) {
   const strip = document.createElement('div')
   strip.className = 'member-skills-strip'
   const memberSkillIds = m.skills || []
-  // sort skill ids alphabetically by display NAME (fallback to id)
+  // sort by skill LEVEL (highest first), then alphabetically by display NAME (fallback to id)
   const sortedSkillIds = [...memberSkillIds].sort((a, b) => {
-    const na = ((window._GUILD_SKILLS || []).find(s => s.id === a)?.name || a).toLowerCase()
-    const nb = ((window._GUILD_SKILLS || []).find(s => s.id === b)?.name || b).toLowerCase()
+    const sa = (window._GUILD_SKILLS || []).find(s => s.id === a)
+    const sb = (window._GUILD_SKILLS || []).find(s => s.id === b)
+    const la = sa?.level ?? 0
+    const lb = sb?.level ?? 0
+    if (lb !== la) return lb - la
+    const na = (sa?.name || a).toLowerCase()
+    const nb = (sb?.name || b).toLowerCase()
     return na.localeCompare(nb)
   })
   // build a lookup of skill id -> skill object
