@@ -148,7 +148,7 @@
         "the-steward",
         "the-butler"
       ],
-      "notes": "The home domain. All 10 guild members + skills live here. Every other domain borrows from this skill pool."
+      "notes": "The home domain. The full guild roster (10 entries, incl. the Butler as the voice) + skills live here. Every other domain borrows from this skill pool."
     },
     {
       "id": "lex-council-app",
