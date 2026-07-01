@@ -8,7 +8,7 @@ timestamp: 2026-06-27T00:00:00Z
 # kimi-k2.7
 
 **Status:** LIVE  
-**Role:** thinker · **Backend:** ollama-cloud · **Kind:** text
+**Role:** doer · **Backend:** ollama-cloud · **Kind:** text
 
 Long-context coherence across large inputs.
 

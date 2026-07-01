@@ -78,23 +78,30 @@ route, and frame work. When a specialist needs to *write* files or execute code,
 the dispatch-enforce hook forces them through `tools/dispatch.py` — they cannot
 write files directly. The dispatch script calls the matching Hermes profile.
 
-**Layer 3 — Hermes profiles (the triple-seat system).**
-Each Hermes profile (Architect, Developer, Designer, etc.) runs its own model
-internally. The model assignments live in `star-alliance-arsenal/models.json`
-and are managed by the Hermes side — **not by Claude**. The three seats are:
+**Layer 3 — Hermes profiles (the doer seat).**
+Each Hermes profile (Architect, Developer, Designer, etc.) is the **doer** — it
+runs a non-Claude model internally, executes bulk work, and returns text. The
+assignments live in `star-alliance-arsenal/models.json` (the `seats` block +
+`memberOverrides`). There are exactly TWO roles:
 
 | Seat | Default Model | Fallback | Role |
 |---|---|---|---|
-| **Thinker (Brain)** | GLM-5.2 | kimi-k2.7 → deepseek-v4-pro | Plans, reviews, wields tools |
-| **Doer** | MiniMax M3 | — | Executes bulk work, returns text |
-| **Critic** | Kimi K2.7 | glm-5.2 → deepseek-v4-pro | Refutes the brain before shipping |
+| **Brain (Thinker)** | Claude — the member's `model:` (Opus/Sonnet/Haiku) | — | Plans, reviews, wields tools |
+| **Doer** | minimax-sub | minimax-payg → glm-5.2 → kimi-k2.7 | Executes bulk work, returns text |
 
-Claude models (Opus, Sonnet, Haiku) are **reserves only** in the Hermes profiles
-— available for bench-swarm and ultra-brainstorming, but never a default seat.
+**The rule is absolute: Claude models are the BRAIN; non-Claude models are the
+DOER.** A non-Claude model never thinks or orchestrates; a Claude model is never a
+doer seat. There is no separate Critic seat — independent review is the
+`verify-gate` hook (see the Evolution Engine section). `conformity_check.py`
+mechanically enforces this: a brain seat with a non-Claude model, or a doer seat
+with a Claude model, is a hard build failure.
 
 **What this means for Claude:**
-- **Do not touch `models.json`** — it's the Hermes arsenal registry. The Hermes
-  side manages it. Claude's job is orchestration, not model assignment.
+- **`models.json` is the single source of truth for the model roster**, and the
+  dashboard's Model Control panel is its mission-control front-end — the Guild
+  Master sets per-member brain/doer defaults there (written to `memberOverrides`).
+  Edit `models.json` only when explicitly directed; consumers DERIVE from it
+  (never hand-copy model lists elsewhere).
 - **Do not change the dispatch flow** — `dispatch.py` → `hermes -p <profile>`
   → Hermes profile reads from `~/.hermes/profiles/<slug>/`. That installed profile
   is a distribution sourced from `profiles/<agent>/` in this repo.
@@ -117,8 +124,8 @@ governs only one of them. Don't read it as "route everything to Hermes."
   doers cannot run it. The thinker need NOT be Opus.
 - **DOER (the hands).** **Doer-grade work — bulk edits, extraction, generation,
   mechanical transforms, large reads/summaries — goes to the member Hermes profile
-  first** via `python3 tools/dispatch.py agent-name prompt`. `MiniMax M3` via
-  `minimax.py` is the substitute, used only when Hermes is unreachable. This is
+  first** via `python3 tools/dispatch.py agent-name prompt`. MiniMax via
+  `minimax.py` (subscription or pay-as-you-go key) is the substitute, used only when Hermes is unreachable. This is
   what "Hermes first" means: it is the **doer default**, not the thinker default.
 
 ```
@@ -221,7 +228,7 @@ Standalone harness aids adopted from the gstack/harness-books mining — see [[s
 - **Context checkpoint** — `python3 .claude/context/context_save.py "<summary>" [--decisions …] [--remaining …]` snapshots git state + decisions + remaining work; `context_restore.py [--list|<stamp>]` resumes a cold session. Transient handoff, distinct from durable memory files.
 - **Learnings journal** — `python3 .claude/context/learn.py add|search|list` — append-only "didn't we fix this before?" recall in `.claude/state/learnings.jsonl`. Promote a recurring learning into a real memory file when it earns its place.
 - **Skill fingerprints** — `python3 .claude/tools/skill_fingerprint.py [--check]` writes/diffs a content hash per skill so sync reinstalls only what actually changed (Codex doctrine; complements [[guild-sync]]).
-- **Executor lock (`.claude/hooks/executor-enforce.py`, PreToolUse·ALL, blocking)** — STRICT MODE, no agent-controlled bypass. The Butler is forbidden from Edit/Write/MultiEdit/NotebookEdit, from bash write commands (`sed -i`, `cat >`, `rm`, `cp`, `mv`, `tee`, `touch`, `chmod`, `dd`, `>`, `>>`), and from MCP write-verb tools (`create_/update_/delete_/insert_/drop_/truncate_/set_/put_/patch_/write_`). Task/Agent spawns must pin `model=minimax-m3` to delegate the executor seat; brain-tier Claude spawns (sonnet/opus) pass. Subagents (`CLAUDE_CODE_CHILD_SESSION=1`) are exempt because they ARE the executor seat. The scoreboard (`evolution/scoreboard.py`) shows an "Executor Discipline" section with override count, direct-write blocks, and minimax-m3 vs sonnet doer share. **No `SA_ALLOW_EXECUTOR` token, no env var, no in-prompt string grants bypass.** The ONLY ways out are the kill switches: `touch evolution/DISARMED` (engine-wide; affects verify-gate too) or `touch .claude/state/executor-enforce-disarmed` (this hook only). Re-enable with `rm <that-file>`. Use the kill switch only when MiniMax is genuinely unreachable — once disabled, the Butler can mutate freely.
+- **Executor lock (`.claude/hooks/executor-enforce.py`, PreToolUse·ALL, blocking)** — STRICT MODE, no agent-controlled bypass. The Butler is forbidden from Edit/Write/MultiEdit/NotebookEdit, from bash write commands (`sed -i`, `cat >`, `rm`, `cp`, `mv`, `tee`, `touch`, `chmod`, `dd`, `>`, `>>`), and from MCP write-verb tools (`create_/update_/delete_/insert_/drop_/truncate_/set_/put_/patch_/write_`). Task/Agent spawns must pin `model=minimax-sub` to delegate the executor seat; brain-tier Claude spawns (sonnet/opus) pass. Subagents (`CLAUDE_CODE_CHILD_SESSION=1`) are exempt because they ARE the executor seat. The scoreboard (`evolution/scoreboard.py`) shows an "Executor Discipline" section with override count, direct-write blocks, and minimax-sub vs sonnet doer share. **No `SA_ALLOW_EXECUTOR` token, no env var, no in-prompt string grants bypass.** The ONLY ways out are the kill switches: `touch evolution/DISARMED` (engine-wide; affects verify-gate too) or `touch .claude/state/executor-enforce-disarmed` (this hook only). Re-enable with `rm <that-file>`. Use the kill switch only when MiniMax is genuinely unreachable — once disabled, the Butler can mutate freely.
 - **Role enforcement gates (2026-06-30).** Three new gates mechanically enforce the Butler's role — they are hard blocks, not prose. All three fire **only on FULL-tier (high-stakes) turns**; LITE and NONE turns pass through. All three fail OPEN on infrastructure error and can be killed with `evolution/DISARMED` or their per-hook disarm files.
   - **Routing enforcement (`.claude/hooks/routing-enforce.py`, PreToolUse·Task|Agent, blocking)** — the Butler cannot spawn a specialist directly. He must dispatch the Strategist first; the `strategist-dispatched` state file lets subsequent specialist spawns through. Kill switch: `touch .claude/state/routing-enforce-disarmed`.
   - **Approval gate (`.claude/hooks/approval-gate.py`, PreToolUse·Task|Agent|Edit|Write|MultiEdit|NotebookEdit, blocking)** — on high-stakes turns, no work tool fires until the Guild Master says "go." `approval-detect.py` (UserPromptSubmit) manages the state machine: sets `approval-pending` when a high-stakes request arrives, clears it and sets `approval-granted` when the Guild Master's approval is detected. The Butler may always dispatch the Strategist (routing happens before approval). Kill switch: `touch .claude/state/approval-gate-disarmed`.

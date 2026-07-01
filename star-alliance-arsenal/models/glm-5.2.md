@@ -8,7 +8,7 @@ timestamp: 2026-06-27T00:00:00Z
 # glm-5.2
 
 **Status:** LIVE  
-**Role:** thinker · **Backend:** ollama-cloud · **Kind:** text
+**Role:** doer · **Backend:** ollama-cloud · **Kind:** text
 
 A different analytical frame — where others over-fit.
 

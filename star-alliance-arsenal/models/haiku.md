@@ -8,7 +8,7 @@ timestamp: 2026-06-27T00:00:00Z
 # haiku
 
 **Status:** LIVE (reserve) — pulled & reachable  
-**Role:** doer · **Backend:** claude · **Kind:** text
+**Role:** both · **Backend:** claude · **Kind:** text
 
 Fastest, cheapest Claude — quick mechanical reasoning.
 

@@ -1,16 +1,16 @@
 ---
 type: Reference
-title: minimax-m3
-description: How to pull and summon the minimax-m3 weapon (generated from models.json).
+title: minimax-payg
+description: How to pull and summon the minimax-payg weapon (generated from models.json).
 timestamp: 2026-06-27T00:00:00Z
 ---
 
-# minimax-m3
+# minimax-payg
 
 **Status:** LIVE  
 **Role:** doer · **Backend:** minimax-direct · **Kind:** text
 
-The prime doer. Direct MiniMax cloud sub for bulk generation/transform.
+Backup doer. Direct MiniMax cloud PAYG key for bulk generation/transform.
 
 ## Backend
 
@@ -23,7 +23,7 @@ _None._ Direct API. Needs a key at `~/.config/minimax/m3.key` (or `$MINIMAX_API_
 ## How to summon
 
 ```
-python3 star-alliance-arsenal/summon.py minimax-m3 "<prompt>"
+python3 star-alliance-arsenal/summon.py minimax-payg "<prompt>"
 ```
 Default `--max-tokens` 16000. `minimax.py --batch <file.jsonl>` for one-connection fan-out.
 
