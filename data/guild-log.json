@@ -2711,6 +2711,13 @@
       "title": "Routing: star-alliance-arsenal/install.sh, star-alliance-skills/skillsmith/references/deploy-ledger.md",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "skill-create",
+      "title": "Routing: .gitignore, AGENTS.md, IDEA.md (+9 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130

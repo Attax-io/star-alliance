@@ -789,12 +789,10 @@ def main():
 
     # === RG — routing-gate agent→model prose must match guild-data (lint, not
     #     generate: the lines are hand-edited doctrine per audit §7.1/C2, just kept honest) ===
-    # Check BOTH possible routing-gate locations:
-    #   Claude side: .claude/hooks/guild-routing-gate.sh
-    #   Hermes side: server/star_alliance_mcp.py
+    # Routing-gate location (Claude side):
+    #   .claude/hooks/guild-routing-gate.sh
     rg_paths = [
         ROOT / ".claude" / "hooks" / "guild-routing-gate.sh",
-        ROOT / "server" / "star_alliance_mcp.py",
     ]
     agent_model = {m["id"]: m.get("model") for m in agents_list}
     for rg_path in rg_paths:

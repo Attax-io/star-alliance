@@ -115,6 +115,31 @@ def vkey(v: str | None):
     return tuple(parts)
 
 
+import hashlib as _hashlib
+
+def fingerprint_dir(d):
+    """Content hash of a skill directory: sha256 over path+bytes of every non-dotfile,
+    non-.pyc file, sorted. Identical algorithm to .claude/tools/skill_fingerprint.py so
+    hashes match that manifest; kept as a local helper (not imported) to avoid a
+    cross-tree import dependency from skillsmith/scripts/ into .claude/tools/."""
+    if not d.exists():
+        return None
+    h = _hashlib.sha256()
+    for root, _dirs, files in __import__("os").walk(d):
+        for fn in sorted(files):
+            if fn.startswith(".") or fn.endswith((".pyc",)):
+                continue
+            fp = __import__("os").path.join(root, fn)
+            rel = __import__("os").path.relpath(fp, d)
+            h.update(b"\0" + rel.encode())
+            try:
+                with open(fp, "rb") as fh:
+                    h.update(fh.read())
+            except OSError:
+                pass
+    return h.hexdigest()[:16]
+
+
 def locations(repo: Path, glob: Path, proj: Path | None):
     locs = [("repo", repo), ("global", glob)]
     if proj and proj.exists():
@@ -145,8 +170,10 @@ def present(base: Path, n: str) -> bool:
     return (base / n / "SKILL.md").exists()
 
 
-def recommend(n, repo, glob, repo_p, glob_p):
-    """repo/glob = versions (may be None); repo_p/glob_p = directory present?"""
+def recommend(n, repo, glob, repo_p, glob_p, repo_dir=None, glob_dir=None):
+    """repo/glob = versions (may be None); repo_p/glob_p = directory present?;
+    repo_dir/glob_dir = Path to the skill directory on each side, used ONLY for the
+    equal-version content-hash check below (exceptions are never hash-checked)."""
     if n in EXCEPTIONS:
         return ("FORK", EXCEPTIONS[n])
     if repo_p and not glob_p:
@@ -163,6 +190,11 @@ def recommend(n, repo, glob, repo_p, glob_p):
         return ("INSTALL", f"repo {repo} > global {glob} → install repo→global")
     if gk > rk:
         return ("PUSH", f"global {glob} > repo {repo} → review + push global→repo (upgrade flow)")
+    # equal version — check content hash before declaring OK
+    if repo_dir is not None and glob_dir is not None:
+        rh, gh = fingerprint_dir(repo_dir), fingerprint_dir(glob_dir)
+        if rh is not None and gh is not None and rh != gh:
+            return ("DRIFT", f"same version {repo or 'unversioned'} but bytes differ (repo={rh} global={gh}) → content drift, review + resync")
     return ("OK", f"in sync at {repo or 'unversioned'}")
 
 
@@ -178,9 +210,11 @@ def cmd_plan(locs):
             ver_of(glob_base / n / "SKILL.md") if glob_base else None,
             present(repo_base, n) if repo_base else False,
             present(glob_base, n) if glob_base else False,
+            repo_dir=(repo_base / n) if repo_base else None,
+            glob_dir=(glob_base / n) if glob_base else None,
         )
         buckets.setdefault(tag, []).append((n, msg))
-    order = ["INSTALL", "STAMP", "PUSH", "ADD-TO-REPO", "FORK", "OK"]
+    order = ["INSTALL", "STAMP", "PUSH", "DRIFT", "ADD-TO-REPO", "FORK", "OK"]
     for tag in order:
         if tag not in buckets:
             continue

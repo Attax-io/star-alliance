@@ -41,7 +41,7 @@ ledger    engine       engine     verify-    scoreboard  │
 | **VERIFY** | `verdict.py` | *runs* the Critic (`critique.py`, kimi-k2.7 — a different model family) and returns a parsed `pass`/`concerns`/`block`/`error` |
 | **DIAGNOSE + CHANGE** | `engine.py` | reads the scoreboard → tier-tagged proposals → routes them (Tier-A reversible vs Tier-B human-gated) |
 | **REMEMBER** | `scoreboard.py` | turns the ledger into fitness numbers: regression escapes, block rate, concern density, repeated learnings, cost trend |
-| **The gate** | `server/star_alliance_mcp.py` (sa_verify) | the VERIFY organ wired as an MCP gate — armed by default, auto-runs the critic, auto-clears on pass, blocks on block |
+| **The gate** | `.claude/hooks/verify-gate.py` | the VERIFY organ wired as a Stop hook — armed by default, auto-runs the critic, auto-clears on pass, blocks on block |
 
 ## Reversibility tiers — the safety line
 

@@ -60,10 +60,12 @@ Forge crystallizes it.
 
 Each specialist is dispatched via `delegate_task` as a subagent: its own isolated
 conversation, terminal session, and tool context — but not a separate Hermes
-profile. The Butler tracks the work through its **gates**, enforced by explicit
-calls to the **MCP gate server** (`server/star_alliance_mcp.py`) — tools like
-`sa_verify` (run the Critic), `sa_destructive_check`, and `sa_delegation_check`
-that fire at the right points in the loop.
+profile. The Butler tracks the work through its **gates**, which run automatically as
+Claude Code hook scripts (`.claude/hooks/*.py`, on `PreToolUse` and `Stop`) — the
+verify-gate (runs the Critic on the diff), the destructive-command gate, and the
+delegation gate fire at the right points in the loop with no explicit call. The
+guild's one MCP server, `mcp/server.py`, exposes the roster (`list_skills`,
+`list_agents`, `invoke_skill`, `dispatch_agent`) — it is not a gate server.
 
 Agents draw weapons (models) from the **arsenal** (`star-alliance-arsenal/`) via
 `summon.py`, and wield skills from `star-alliance-skills/` (94 guild skills,

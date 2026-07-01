@@ -127,30 +127,25 @@ gates sit. The **Strategist** scans the star map, matches the request's shape to
 a workflow, and picks the best fit. If no workflow fits, the Strategist forms a
 candidate formation and the Quartermaster's Workflow Forge crystallizes it.
 
-## MCP gate server
+## Gates (Claude Code hooks)
 
-`server/star_alliance_mcp.py` is the MCP server that exposes guild gates as MCP
-tools. Agents call these explicitly at the right points in the loop — the gates
-are explicit calls, not automatic hooks. Key tools:
+The guild's gates are **not** an MCP server — they run automatically as Claude
+Code hook scripts under `.claude/hooks/` (registered on `PreToolUse` and `Stop`).
+They fire at the right points in the loop with no explicit call:
 
-| Tool | Purpose |
+| Hook | Purpose |
 |---|---|
-| `sa_route_request` | Route a prompt to the right agent |
-| `sa_verify` | Run the Critic (Claude brain) on a diff → pass/concerns/block |
-| `sa_delegation_check` | Block turns that did bulk work inline without a doer |
-| `sa_destructive_check` | Check a shell command for destructive patterns |
-| `sa_turn_start` | Mark turn start |
-| `sa_turn_finalize` | Gate turn-end on all checks passing |
-| `sa_checkpoint_save` | Snapshot context + decisions |
-| `sa_checkpoint_restore` | Restore a checkpoint |
-| `sa_snapshot` | Pre-compression snapshot |
-| `sa_plain_english_check` | Nudge if response too technical |
-| `sa_evolution_status` | Evolution engine status |
-| `sa_evolution_ledger` | Recent ledger entries |
-| `sa_evolution_scoreboard` | Evolution scoreboard |
-| `sa_skill_fingerprints_check` | Check skill drift |
-| `sa_workflow_match` | Match a prompt to the best workflow |
-| `sa_agent_dispatch` | Get a `delegate_task` briefing for an agent |
+| `workflow-gate.py` | Block every tool until the turn declares a real workflow |
+| `verify-gate.py` | Run the Critic on the diff at turn end → pass/concerns/block |
+| `delegation-gate.py` | Block turns that did bulk work inline without a doer |
+| `destructive-gate.py` | Block irreversible shell and SQL commands before they run |
+| `executor-enforce.py` | Forbid the Butler from writing files directly |
+| `conformance-gate.py` | Hold turn-end until the conformance pass is logged |
+
+## MCP server
+
+`mcp/server.py` is the guild's one MCP server. It exposes the roster, not gates —
+tools: `list_skills`, `list_agents`, `invoke_skill`, `dispatch_agent`.
 
 ## Skills
 

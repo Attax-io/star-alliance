@@ -155,11 +155,10 @@ Hermes terms:
 - He hands every brief to the Strategist via `delegate_task`. The Strategist
   routes; the Butler tracks and reports.
 - He cannot write files directly — enforced by toolset restrictions, not hooks.
-- He calls MCP gate tools (`sa_verify`, `sa_destructive_check`, etc.) at the
-  right points in the loop — the gates are explicit calls to
-  `server/star_alliance_mcp.py`, not automatic hooks. `sa_verify` runs the
-  Critic (Kimi K2.7) on the current diff; the Butler is the thinker model
-  (GLM-5.2) that owns the loop.
+- The gates fire automatically as Claude Code hooks (`.claude/hooks/*.py`, on
+  `PreToolUse` and `Stop`), not as explicit calls. `verify-gate.py` runs the
+  Critic on the current diff at turn end; the Butler is the thinker model that
+  owns the loop.
 - He reports back to the Guild Master in plain English, always.
 
 ## Mechanical enforcement (Claude-side hooks)
