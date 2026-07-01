@@ -333,6 +333,22 @@ def main():
         elif ROLE.get(brain) not in ("thinker", "both"):
             fails.append(f"BR {mid}: brain '{brain}' has role '{ROLE.get(brain)}' — "
                          f"a brain must be able to think (thinker|both)")
+        # NEW RULE: a member's declared brain model must have backend == 'claude' in
+        # the registry. The brain drives the thinker→executor→critic loop; only the
+        # Claude family is tool-capable and orchestrating-grade. A non-Claude brain is
+        # a silent downgrade and a hard failure.
+        if brain and brain in ROLE:
+            try:
+                _br_regm = json.loads(
+                    (ROOT / "star-alliance-arsenal" / "models.json").read_text()
+                ).get("models", {})
+            except Exception:
+                _br_regm = {}
+            _br_backend = (_br_regm.get(brain) or {}).get("backend")
+            if _br_backend and _br_backend != "claude":
+                fails.append(f"BR {mid}: brain '{brain}' has backend '{_br_backend}' — "
+                             f"a member's brain must have backend == 'claude' "
+                             f"(only Claude models can drive the loop)")
         # R — agent skills exist in skills-meta
         for sk in m.get("skills", []):
             if sk not in skill_ids:
@@ -622,14 +638,18 @@ def main():
             fails.append(f"FB summon _FALLBACK_CLOUD_TAG {cloud_map} != registry cloud_tags "
                          f"{reg_tags} (routing fallback drifted from models.json)")
         # ST — universal SEATS (models.json "seats"): every seat default + fallback must
-        #      name a real registry id, and the Critic must be a DIFFERENT backend family
-        #      than the Brain (diverse blind spots is the whole point of an adversary).
+        #      name a real registry id. The Critic seat was REMOVED from the registry
+        #      (decision: critic is no longer a separate seat — Claude models are BRAIN,
+        #      everything non-Claude is DOER). So `seats.critic` may legitimately be
+        #      absent and we must not fail on that. We DO still validate that BRAIN ids
+        #      have backend == 'claude' and DOER ids have backend != 'claude' — that is
+        #      the new hard rule, and the old critic-family-vs-brain-family check is gone.
         try:
             seats = json.loads((ROOT / "star-alliance-arsenal" / "models.json").read_text()).get("seats", {})
         except Exception:
             seats = {}
         if seats:
-            for seat in ("brain", "doer", "critic"):
+            for seat in ("brain", "doer"):
                 s = seats.get(seat) or {}
                 dflt = s.get("default")
                 if dflt and dflt not in reg_ids:
@@ -637,18 +657,29 @@ def main():
                 for fb in (s.get("fallback") or []):
                     if fb not in reg_ids:
                         fails.append(f"ST seat '{seat}' fallback '{fb}' is not a registry model")
+            # NEW RULE: every BRAIN id (default + fallback) MUST have backend == 'claude'.
+            # A non-Claude id in a brain seat is a hard failure — the brain is the
+            # tool-capable Claude family, and non-Claude models cannot drive the loop.
             bdef = (seats.get("brain") or {}).get("default")
-            cdef = (seats.get("critic") or {}).get("default")
-            # Compare model FAMILY (prefix before first -), not just backend.
-            # Multiple models can share the same Ollama Cloud backend endpoint
-            # but be from different vendors (GLM = Zhipu, Kimi = Moonshot).
-            bfam = (_regm.get(bdef) or {}).get("backend", "")
-            cfam = (_regm.get(cdef) or {}).get("backend", "")
-            bvendor = bdef.split("-")[0] if bdef else ""
-            cvendor = cdef.split("-")[0] if cdef else ""
-            if bdef and cdef and bvendor and cvendor and bvendor == cvendor:
-                fails.append(f"ST critic '{cdef}' shares the brain's vendor family '{bvendor}' "
-                             f"— critic must differ from brain for diverse review")
+            if bdef and ((_regm.get(bdef) or {}).get("backend") != "claude"):
+                fails.append(f"ST brain seat default '{bdef}' has backend "
+                             f"'{(_regm.get(bdef) or {}).get('backend')}' — a BRAIN id must "
+                             f"have backend == 'claude' (only Claude models can drive the loop)")
+            for fb in (seats.get("brain") or {}).get("fallback") or []:
+                if (_regm.get(fb) or {}).get("backend") != "claude":
+                    fails.append(f"ST brain seat fallback '{fb}' has backend "
+                                 f"'{(_regm.get(fb) or {}).get('backend')}' — a BRAIN id must "
+                                 f"have backend == 'claude'")
+            # NEW RULE: every DOER id (default + fallback) MUST be NON-Claude.
+            # DOER is the executor seat (cheap, fast, different family than the brain).
+            ddef = (seats.get("doer") or {}).get("default")
+            if ddef and ((_regm.get(ddef) or {}).get("backend") == "claude"):
+                fails.append(f"ST doer seat default '{ddef}' has backend 'claude' — "
+                             f"a DOER id must be NON-Claude (Claude belongs in the BRAIN seat)")
+            for fb in (seats.get("doer") or {}).get("fallback") or []:
+                if (_regm.get(fb) or {}).get("backend") == "claude":
+                    fails.append(f"ST doer seat fallback '{fb}' has backend 'claude' — "
+                                 f"a DOER id must be NON-Claude")
 
     # === RG — routing-gate agent→model prose must match guild-data (lint, not
     #     generate: the lines are hand-edited doctrine per audit §7.1/C2, just kept honest) ===

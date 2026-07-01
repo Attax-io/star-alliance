@@ -342,8 +342,24 @@ function renderDomains(g) {
     card.className = 'domain-card'
     card.style.setProperty('--domain-color', d.color || '#c9a227')
     const skillCount = d.skills?.length ?? 0
-    card.innerHTML = `<div class="domain-card__strip"></div><div class="domain-card__body"><h3 class="domain-card__name">${d.name||''}</h3><p class="domain-card__tagline">${d.tagline||''}</p><p class="domain-card__count">${skillCount} skills</p></div>`
+    const versionBadge = d.version
+      ? `<span class="tier-pill domain-card__version"><span class="tier-mark">◆</span> v${d.version}</span>`
+      : ''
+    card.innerHTML = `<div class="domain-card__strip"></div><div class="domain-card__body"><div class="domain-card__title-row"><h3 class="domain-card__name">${d.name||''}</h3>${versionBadge}</div><p class="domain-card__tagline">${d.tagline||''}</p><p class="domain-card__count">${skillCount} skills</p></div>`
     grid.appendChild(card)
+
+    if (d.version) {
+      const history = (d.versionHistory || []).slice(-10).reverse()
+      const tip = document.createElement('div')
+      tip.className = 'card-tooltip'
+      const rows = history.map(h => {
+        const label = h.version ? `v${h.version}` : (h.slug || '')
+        const detail = h.slug && h.version ? h.slug : (h.date || '')
+        return `<div>${label}${detail ? ' <span style="opacity:.6">' + detail + '</span>' : ''}</div>`
+      }).join('')
+      tip.innerHTML = `<strong style="color:var(--gold)">${d.name||''} — v${d.version}</strong><br><span style="font-size:0.66rem;opacity:.75">${d.versionSource||''}</span>${rows ? '<div style="margin-top:6px;font-size:0.66rem">' + rows + '</div>' : ''}`
+      card.appendChild(tip)
+    }
   })
 }
 

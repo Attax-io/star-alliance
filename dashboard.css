@@ -457,12 +457,22 @@ ul, ol { list-style: none; }
   flex-direction: column;
   gap: 6px;
 }
+.domain-card__title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
 .domain-card__name {
   font-family: var(--ff-serif);
   font-size: var(--fs-card-name);
   font-weight: 600;
   color: var(--text-hi);
   line-height: 1.15;
+}
+.domain-card__version {
+  flex: 0 0 auto;
+  white-space: nowrap;
 }
 .domain-card__count {
   font-size: var(--fs-meta);
@@ -648,6 +658,10 @@ ul, ol { list-style: none; }
 }
 .skill-card:hover .card-tooltip,
 .workflow-card:hover .card-tooltip {
+  opacity: 1;
+  transform: translateY(0);
+}
+.domain-card:hover .card-tooltip {
   opacity: 1;
   transform: translateY(0);
 }

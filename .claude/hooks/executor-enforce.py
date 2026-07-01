@@ -4,12 +4,12 @@
 #
 # PROBLEM THIS HOOK CLOSES
 # ─────────────────────────
-# models.json declares `doer.default = minimax-m3` and CLAUDE.md says
+# models.json declares `doer.default = minimax-sub` and CLAUDE.md says
 # "doer-grade bulk → MiniMax first." weapon-gate.py validates that a summoned
 # model EXISTS in the arsenal. delegation-gate.py blocks a turn that authored
 # ≥6KB inline without a doer call.
 #
-# What was MISSING: nothing forced the executor seat to be minimax-m3. If a
+# What was MISSING: nothing forced the executor seat to be minimax-sub. If a
 # subagent is spawned with `model: sonnet` or `model: haiku` or no model, the
 # brain (Claude) runs the work itself instead of delegating it to the doer —
 # hallucinating along the way because it's reasoning AND doing the bulk AND
@@ -19,19 +19,19 @@
 # ───────────────────
 # For every tool invocation that summons an AI weapon — Bash summon/minimax,
 # Task/Agent subagent — when the call is acting in the EXECUTOR seat (not the
-# brain seat), enforce that the resolved weapon is `minimax-m3`:
+# brain seat), enforce that the resolved weapon is `minimax-sub`:
 #
 #   1. Task/Agent with `model:` set to a doer-tier weapon other than
-#      minimax-m3 → BLOCK (exit 2) with the reason + the fixed call.
+#      minimax-sub → BLOCK (exit 2) with the reason + the fixed call.
 #   2. Task/Agent with NO `model:` AND a prompt that looks like doer-grade
 #      bulk (>=1.5k tokens of output hint) → BLOCK, force a re-spawn that
-#      pins model=minimax-m3.
+#      pins model=minimax-sub.
 #   3. Bash `summon.py <anything>` where <anything> is a doer seat and not
-#      minimax-m3 → BLOCK.
-#   4. Bash `minimax.py` — already minimax-m3, ALLOW (no rewrite needed).
+#      minimax-sub → BLOCK.
+#   4. Bash `minimax.py` — already minimax-sub, ALLOW (no rewrite needed).
 #   5. Task/Agent in BRAIN seat (Claude, tool-capable) — ALLOW (the brain
 #      should never be downgraded to a doer).
-#   6. Task/Agent with `model: minimax-m3` — ALLOW (the happy path).
+#   6. Task/Agent with `model: minimax-sub` — ALLOW (the happy path).
 #
 # BYPASSES — STRICT MODE
 # ──────────────────────
@@ -57,12 +57,12 @@ import re
 # The ONE executor seat default. Read models.json dynamically so the registry
 # stays the single source of truth; fall back to the literal only on parse
 # failure (registry drift is a separate problem).
-EXECUTOR_FALLBACK = "minimax-m3"
+EXECUTOR_FALLBACK = "minimax-sub"
 # Other doer-tier weapons in the arsenal — if Claude picks one of these for
-# the executor seat, BLOCK the call (we want minimax-m3, not the fallback
-# chain — the fallback chain is for when minimax-m3 is unreachable, not for
+# the executor seat, BLOCK the call (we want minimax-sub, not the fallback
+# chain — the fallback chain is for when minimax-sub is unreachable, not for
 # routine routing decisions).
-OTHER_DOERS = {"haiku", "glm-5.2", "deepseek-v4-pro", "kimi-k2.7"}
+OTHER_DOERS = {"minimax-payg", "glm-5.2", "kimi-k2.7"}
 # Brain-tier weapons — these are tool-capable Claude models, NEVER downgraded
 # to the executor seat. If a Task/Agent uses one of these, it IS the brain;
 # the executor rule does not apply.
@@ -75,7 +75,7 @@ DOER_KEYWORDS = re.compile(
     r"bulk\s+edit|migrate\s+all|generate\s+(a\s+)?(complete|full)|"
     r"transform\s+every|summarize\s+all|"
     r"doer[- ]grade|delegat(e|ed|ing)\s+to|"
-    r"minimax[- ]m3|offload\s+(this|the|bulk)|"
+    r"minimax[- ](sub|payg|m3)|offload\s+(this|the|bulk)|"
     r"swarm\s+of\s+\d+|fire\s+\d+\s+(doers?|models?)"
     r")\b"
 )
@@ -153,7 +153,7 @@ def _ledger(**kw):
 
 
 def _read_seat_defaults():
-    """Return {'doer': 'minimax-m3', 'brain': 'sonnet', ...} from models.json.
+    """Return {'doer': 'minimax-sub', 'brain': 'opus', ...} from models.json.
     Empty dict on any error — caller falls back to EXECUTOR_FALLBACK."""
     try:
         with open(
@@ -298,7 +298,7 @@ def _check_butler_direct_write(data, tool):
         f"⛔ EXECUTOR ENFORCE — Butler is forbidden from `{tool}` directly. "
         f"You are the planner; the executor does the writes. "
         f"Spawn an agent instead:\n"
-        f"     Task(model=\"minimax-m3\", prompt=\"<the actual write work on "
+        f"     Task(model=\"minimax-sub\", prompt=\"<the actual write work on "
         f"{file_path}>\")\n"
         f"   If this is genuinely a BRAIN-tier task that needs Claude "
         f"(planning, judgment), spawn a `{brain_default}`-model agent — not "
@@ -328,7 +328,7 @@ def _check_butler_bash_write(data):
         f"     {cmd[:200]}{'...' if len(cmd) > 200 else ''}\n"
         f"   Spawn an agent to do the write work — the Butler is not allowed "
         f"to bypass the executor seat by going through Bash:\n"
-        f"     Task(model=\"minimax-m3\", prompt=\"<the actual write work>\")\n"
+        f"     Task(model=\"minimax-sub\", prompt=\"<the actual write work>\")\n"
         f"   If this is a read-only command that just happens to match the "
         f"heuristic (false positive), there is no token to bypass. The user "
         f"can disable the hook from a shell:\n"
@@ -362,7 +362,7 @@ def _check_butler_mcp(data, tool):
             f"⛔ EXECUTOR ENFORCE — Butler tried to call MCP write tool "
             f"`{tool}` directly. MCP writes go through the executor seat too.\n"
             f"   Spawn an agent:\n"
-            f"     Task(model=\"minimax-m3\", prompt=\"<call {tool} with: "
+            f"     Task(model=\"minimax-sub\", prompt=\"<call {tool} with: "
             f"{preview}>\")\n"
             f"   If this is actually a read (false positive), there is no token to "
             f"bypass. Either add the verb to the read-allowlist in "

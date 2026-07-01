@@ -430,7 +430,28 @@ def load_domains(repo: Path) -> list[dict]:
     p = repo / "data/domains.json"
     if not p.exists():
         return []
-    return json.loads(p.read_text()).get("domains", [])
+    domains = json.loads(p.read_text()).get("domains", [])
+    # Merge in a real version + versionHistory per domain, from each domain's
+    # own true source of truth (tools/domain_version.py). data/domains.json
+    # itself stays the project list only — never hand-write versions there.
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(repo / "tools"))
+        import domain_version as _domain_version  # noqa: PLC0415
+
+        resolved = _domain_version.resolve_all(domains, repo)
+        for d in domains:
+            info = resolved.get(d.get("id", ""), {})
+            d["version"] = info.get("version")
+            d["versionSource"] = info.get("versionSource", "unavailable")
+            d["versionHistory"] = info.get("versionHistory", [])
+    except Exception as exc:  # noqa: BLE001 — version enrichment must never fail the build
+        print(f"[build] warning: domain version enrichment failed: {exc}")
+        for d in domains:
+            d.setdefault("version", None)
+            d.setdefault("versionSource", "unavailable")
+            d.setdefault("versionHistory", [])
+    return domains
 
 
 def load_workflows(repo: Path) -> list[dict]:
