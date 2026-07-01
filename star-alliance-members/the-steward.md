@@ -1,7 +1,7 @@
 ---
 name: the-steward
 description: "Deploy for customer service, client request handling, support triage, escalation management, and relationship care. Triggers: 'handle this request', 'customer complaint', 'triage support', 'escalate this issue', 'client needs help', 'draft a response', 'manage this relationship'."
-model: haiku
+model: sonnet
 tools: [Read, Edit, Write, Bash]
 skills: [relationship-intel, comms-triage, head-of-department, star-alliance-language, weapon-utility]
 type: Member
