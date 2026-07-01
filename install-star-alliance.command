@@ -93,6 +93,35 @@ os.replace(tmp_path, config_path)
 print(f"Registered star-alliance in {config_path}")
 PYEOF
 
+    # 4. Bootstrap the Hermes worker (idempotent; degrades gracefully with no network).
+    #    The doer seat runs on Hermes profiles. This verifies/publishes them and runs a
+    #    preflight so the operator knows whether the dispatch path is live. It never fails
+    #    the install: every sub-step degrades to a printed instruction when a tool/key is absent.
+    echo ""
+    echo "Hermes worker bootstrap ..."
+    if command -v hermes >/dev/null 2>&1; then
+        echo "  Found hermes: $(command -v hermes)"
+        if [ -f "$REPO_ROOT/tools/publish_profiles.py" ]; then
+            if python3 "$REPO_ROOT/tools/publish_profiles.py" --update >/dev/null 2>&1; then
+                echo "  ✓ Hermes profiles published/updated (auth + memories preserved)"
+            else
+                echo "  ⚠  publish_profiles.py returned nonzero — re-run manually when online"
+            fi
+        fi
+    else
+        echo "  ⚠  hermes not on PATH — install Hermes to enable the doer seat (gates stay off until then)"
+    fi
+    # Preflight: is the full dispatch path live? (hermes + at least one published profile + doer key)
+    HERMES_OK=1
+    command -v hermes >/dev/null 2>&1 || HERMES_OK=0
+    { [ -d "$HOME/.hermes/profiles" ] && [ -n "$(ls -A "$HOME/.hermes/profiles" 2>/dev/null)" ]; } || HERMES_OK=0
+    [ -f "$HOME/.config/minimax/m3-sub.key" ] || HERMES_OK=0
+    if [ "$HERMES_OK" = "1" ]; then
+        echo "  ✓ dispatch path preflight: LIVE (hermes + profiles + doer key)"
+    else
+        echo "  ⚠  dispatch path preflight: INCOMPLETE — doer seat not yet reachable (see notes above)"
+    fi
+
     echo ""
     echo "✅ Star Alliance MCP server installed for this Mac. Restart Claude Code to connect."
     echo ""
