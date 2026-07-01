@@ -271,7 +271,7 @@ function memberCard(m) {
     `<span class="member-model-ctl__label">Brain <span class="member-model-ctl__val">${effectiveBrain}</span></span>` +
     `<span class="member-model-ctl__sep">/</span>` +
     `<span class="member-model-ctl__label">Doer <span class="member-model-ctl__val">${effectiveDoer}</span></span>` +
-    `<button type="button" class="member-model-ctl__edit" title="Edit model assignment" aria-label="Edit model assignment">` +
+    `<button type="button" class="member-model-ctl__editbtn" title="Edit model assignment" aria-label="Edit model assignment">` +
       `<svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false">` +
         `<path fill="currentColor" d="M11.013 1.427a1.75 1.75 0 0 1 2.474 0l1.086 1.086a1.75 1.75 0 0 1 0 2.474l-8.61 8.61c-.21.21-.47.364-.756.445l-3.251.93a.75.75 0 0 1-.927-.928l.929-3.25c.081-.286.235-.547.445-.756l8.61-8.611Zm.176 4.764L9.75 7.63l1.439 1.44 1.44-1.44-1.44-1.439ZM9.75 8.57l-5.83 5.83 1.439 1.439 5.83-5.83L9.75 8.57Z"/>` +
       `</svg>` +
@@ -280,7 +280,7 @@ function memberCard(m) {
 
   // EDIT: hidden until pencil is clicked. Two selects + Save + Cancel.
   const editView = document.createElement('div')
-  editView.className = 'member-model-ctl__edit'
+  editView.className = 'member-model-ctl__editor'
   editView.hidden = true
 
   const brainSel = makeSelect(BRAIN_OPTIONS, effectiveBrain)
@@ -305,7 +305,7 @@ function memberCard(m) {
   modelCtl.appendChild(editView)
 
   // Pencil toggles read<->edit. Clicking the pencil is a no-op while saving.
-  const pencil = readView.querySelector('.member-model-ctl__edit')
+  const pencil = readView.querySelector('.member-model-ctl__editbtn')
   pencil.addEventListener('click', () => {
     // Re-sync selects in case the brain/doer options loaded after first paint.
     brainSel.value = effectiveBrain
