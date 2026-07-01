@@ -29,6 +29,7 @@ HOOKS_DIR = os.path.dirname(os.path.abspath(__file__))
 # gate file → tools it governs (None = all tools)
 GATES = [
     ("workflow-gate.py",    None),
+    ("butler-skill-gate.py", {"Skill"}),
     ("high-alert.py",       {"Skill", "Workflow", "Agent", "Task"}),
     ("unity-skill-gate.py", {"Task", "Agent", "Bash"}),
     ("approval-gate.py",    {"Task", "Agent", "Edit", "Write", "MultiEdit", "NotebookEdit"}),
