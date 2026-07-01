@@ -2292,6 +2292,13 @@
       "title": "Design Sprint: art/logo-installer.png, skill-art/algorithmic-trading-chan.png, skill-art/python-master.png (+2 more)",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Design Sprint: skill-art/article-creator.png, skill-art/bug-fix-workflow.png, skill-art/claude-code-hooks.png (+4 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130
