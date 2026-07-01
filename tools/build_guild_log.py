@@ -28,7 +28,7 @@ from pathlib import Path
 
 
 def default_repo() -> Path:
-    env = os.environ.get("STAR_ALLIANCE_REPO")
+    env = os.environ.get("STAR_ALLIANCE_ROOT") or os.environ.get("STAR_ALLIANCE_REPO")
     if env:
         return Path(env).expanduser()
     here = Path(__file__).resolve()
