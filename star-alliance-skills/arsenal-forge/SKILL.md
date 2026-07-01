@@ -2,7 +2,7 @@
 name: arsenal-forge
 description: "The Strategist's craft for recruiting a new weapon (AI model) into the guild arsenal, or re-skinning / re-roleing an existing one. Set the weapon's identity (model id, element, colour, visual metaphor, Fallen-Sword name), assign its role under the thinker/doer/both schema and its priority slot under the arsenal-order rule (doers first, then thinkers and duals best-first, sonnet always last), commission the weapon art via the Designer (art-forge), then hand to the Quartermaster to wire it into summon.py routing, every member's loadout, and the weapon card with its role icon. The weapon must be routable — reachable by summon.py or Claude-native — or it is a phantom that will not fire. Use when a model joins or changes. Triggers: 'add a weapon', 'recruit a model', 'a new model joined', 're-skin this weapon', 'change a weapon role', 'arsenal forge'. Differentiate from art-forge (only the image) and members-formation (members, not weapons)."
 metadata:
-  version: 1.1.0
+  version: 1.0.1
 type: Skill
 
 ---
@@ -95,5 +95,5 @@ to silently hand-fix.
 Own skill. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new mode/section · MAJOR: method contract change). Regenerate `VERSIONS.md` with `python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.
 
 ## Changelog
-- **1.1.0** — New §Renaming or removing a model id (2026-07-01): documents `tools/arsenal_rename.py` as the canonical surface-wide renamer (registry, code/config, sidecar, art tile `git mv`, doctrine), states "a rename is never a manual multi-file hunt", lists the regen follow-up chain (`gen_model_docs.py` → `build.py` → `conformity_check.py`), and names `HM` as the safety net for surfaces the tool missed. New section → MINOR.
+- **1.0.1** — New §Renaming or removing a model id (2026-07-01): documents `tools/arsenal_rename.py` as the canonical surface-wide renamer (registry, code/config, sidecar, art tile `git mv`, doctrine), states "a rename is never a manual multi-file hunt", lists the regen follow-up chain (`gen_model_docs.py` → `build.py` → `conformity_check.py`), and names `HM` as the safety net for surfaces the tool missed. Doc-only add → PATCH per user directive.
 - **1.0.0** — Initial release. The Strategist's craft for recruiting/re-roleing a weapon — identity, thinker/doer role, wire to loadouts.

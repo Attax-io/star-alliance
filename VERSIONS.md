@@ -39,7 +39,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`agentic-video-production`](star-alliance-skills/agentic-video-production/SKILL.md) | 1.1.0 | own | 113 / 895 | 942 / 112 | ✓ lean | Produce finished video agentically from a plain-language brief: the agent runs research, p… |
 | [`algorithmic-trading-chan`](star-alliance-skills/algorithmic-trading-chan/SKILL.md) | 1.0.0 | own | 116 / 960 | 1016 / 53 | ✓ lean | The Merchant's quant doctrine, distilled from Ernest Chan's Algorithmic Trading: Winning S… |
 | [`api-integration-design`](star-alliance-skills/api-integration-design/SKILL.md) | 1.0.0 | own | 114 / 895 | 1159 / 101 | ✓ lean | The Architect's craft for the API and integration boundary — designing the service contrac… |
-| [`arsenal-forge`](star-alliance-skills/arsenal-forge/SKILL.md) | 1.0.0 | own | 147 / 949 | 1106 / 58 | ✓ lean | The Strategist's craft for recruiting a new weapon (AI model) into the guild arsenal, or r… |
+| [`arsenal-forge`](star-alliance-skills/arsenal-forge/SKILL.md) | 1.0.1 | own | 147 / 949 | 1366 / 93 | ✓ lean | The Strategist's craft for recruiting a new weapon (AI model) into the guild arsenal, or r… |
 | [`article-creator`](star-alliance-skills/article-creator/SKILL.md) | 1.0.1 | own | 138 / 923 | 839 / 111 | ✓ lean | End-to-end procedure for creating a public Insights article and pushing it to the Lex Coun… |
 | [`automated-testing`](star-alliance-skills/automated-testing/SKILL.md) | 1.1.0 | own | 119 / 810 | 1868 / 206 | ✓ lean | Author automated tests for a modern web app — the JS/TS plus application layer, grounded i… |
 | [`bug-fix-closer`](star-alliance-skills/bug-fix-closer/SKILL.md) | 1.0.0 | own | 70 / 385 | 384 / 69 | ✓ lean | Mark one or more Lex Council bug_reports rows as Fixed (br_status=4) in the DB |
@@ -74,7 +74,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`frontend-react-engineering`](star-alliance-skills/frontend-react-engineering/SKILL.md) | 1.1.0 | own | 101 / 842 | 1584 / 152 | ✓ lean | Production React / Next.js engineering craft for the-developer: component architecture, ho… |
 | [`graphify`](star-alliance-skills/graphify/SKILL.md) | 1.0.1 | own | 35 / 225 | 6006 / 1029 | ○ large | any input (code, docs, papers, images, videos) to knowledge graph |
 | [`growth-marketing`](star-alliance-skills/growth-marketing/SKILL.md) | 1.0.0 | own | 110 / 851 | 2506 / 97 | ✓ lean | The Herald's marketing craft — turn a business's invisibility into a repeatable demand eng… |
-| [`guild-conformity`](star-alliance-skills/guild-conformity/SKILL.md) | 1.6.0 | own | 131 / 916 | 2792 / 188 | ✓ lean | The Quartermaster's craft for proving the whole guild repo agrees with itself and with eve… |
+| [`guild-conformity`](star-alliance-skills/guild-conformity/SKILL.md) | 1.6.1 | own | 131 / 916 | 2960 / 208 | ✓ lean | The Quartermaster's craft for proving the whole guild repo agrees with itself and with eve… |
 | [`guild-log`](star-alliance-skills/guild-log/SKILL.md) | 1.2.1 | own | 118 / 801 | 2454 / 231 | ✓ lean | Enforce logging of non-git-visible changes to the Star Alliance guild log |
 | [`guild-reflection`](star-alliance-skills/guild-reflection/SKILL.md) | 1.1.0 | own | 148 / 1020 | 1295 / 134 | ✓ lean | The Quartermaster's self-improvement engine — turn finished work into durable guild upgrad… |
 | [`guild-sync`](star-alliance-skills/guild-sync/SKILL.md) | 1.0.1 | own | 139 / 1014 | 742 / 83 | ✓ lean | The Quartermaster's device-parity craft — one sweep that proves every surface where the on… |
@@ -103,7 +103,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`obedience`](star-alliance-skills/obedience/SKILL.md) | 1.0.0 | own | 202 / 1288 | 1886 / 218 | ✗ desc>1024 | A turn-level discipline skill that constrains an agent to the literal scope of the user's … |
 | [`observability-incident-response`](star-alliance-skills/observability-incident-response/SKILL.md) | 1.1.0 | own | 118 / 856 | 1416 / 165 | ✓ lean | Keep a live service observable and respond when it breaks |
 | [`obsidian-markdown`](star-alliance-skills/obsidian-markdown/SKILL.md) | 1.1.0 | own | 61 / 448 | 915 / 228 | ✓ lean | Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, a… |
-| [`okf`](star-alliance-skills/okf/SKILL.md) | 1.2.1 | own | 76 / 512 | 1253 / 147 | ✓ lean | Keep the whole Star Alliance repo tidy and conformant to the Open Knowledge Format (OKF v0… |
+| [`okf`](star-alliance-skills/okf/SKILL.md) | 1.2.1 | own | 76 / 512 | 1252 / 147 | ✓ lean | Keep the whole Star Alliance repo tidy and conformant to the Open Knowledge Format (OKF v0… |
 | [`pattern-library-discovery`](star-alliance-skills/pattern-library-discovery/SKILL.md) | 1.0.0 | own | 114 / 896 | 944 / 111 | ✓ lean | Build and query a reusable code-pattern library so agents reuse a proven, security-validat… |
 | [`penpot-design-platform`](star-alliance-skills/penpot-design-platform/SKILL.md) | 1.0.0 | own | 112 / 885 | 711 / 95 | ✓ lean | Drive Penpot, the open-source design and prototyping platform (a self-hostable Figma alter… |
 | [`performance`](star-alliance-skills/performance/SKILL.md) | 1.0.3 | vendored | 32 / 219 | 1418 / 371 | ✓ lean | Optimize web performance for faster loading and better user experience |
