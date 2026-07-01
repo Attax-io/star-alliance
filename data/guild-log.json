@@ -2,6 +2,19 @@
   "version": 1,
   "entries": [
     {
+      "id": 107,
+      "date": "2026-07-01",
+      "type": "decision",
+      "title": "XP/leveling Architecture Build closed: device skill sync + conformance verified",
+      "who": "the-quartermaster",
+      "detail": "Sync housekeeping: weapon-utility v4.0.0 (Phase 2 universal arsenal) and release-train v1.1.0 (commit-scope rule) installed to device via skillsmith; fork exceptions (conquering-campaign, impeccable) left as-is; conformity re-verified GREEN on the two new syncs. The Architecture Build (decision #66) approved in prior sessions is now fully sealed with no drift.",
+      "ref": [
+        "weapon-utility",
+        "release-train",
+        "skillsmith"
+      ]
+    },
+    {
       "id": 106,
       "date": "2026-06-29",
       "type": "chore",
