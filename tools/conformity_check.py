@@ -35,6 +35,7 @@ Checks (each maps to a source-of-truth invariant or a logged decision):
   HM stale-model-id no code/config references a model id deleted from the registry
   WR control-wiring  if serve.cjs writes memberOverrides, dispatch.py must read it (no dead-end control)
   GC git-size (advisory)  note if .git exceeds 800 MB (advisory only, never a hard fail)
+  AB absorb-sink   evolution/absorb_apply.py can ONLY write into star-alliance-skills/ (never a global skill)
 """
 import json, re, sys, pathlib
 
@@ -1305,6 +1306,41 @@ def main():
     print(f" {agents_key}={real[agents_key]}  skills={real['skills']}  workflows={real['workflows']}  "
           f"version={g.get('meta',{}).get('version')}")
     print("─" * 64)
+    # AB — absorb applier writes ONLY into star-alliance-skills/ (never a global skill).
+    #   Guards the inward-learning loop's mandate MECHANICALLY: loads
+    #   evolution/absorb_apply.py and proves _sink_guard REFUSES any out-of-box path
+    #   (~/.claude, /tmp, repo-outside-box) and ALLOWS a legitimate box path.
+    ab_path = ROOT / "evolution" / "absorb_apply.py"
+    if ab_path.exists():
+        import importlib.util
+        _abtext = ab_path.read_text()
+        if "_sink_guard" not in _abtext or "star-alliance-skills" not in _abtext:
+            fails.append("AB absorb-sink: evolution/absorb_apply.py missing _sink_guard "
+                         "rooted at star-alliance-skills/ (box-only write guard)")
+        else:
+            try:
+                _spec = importlib.util.spec_from_file_location("absorb_apply_check", ab_path)
+                _abmod = importlib.util.module_from_spec(_spec)
+                _spec.loader.exec_module(_abmod)
+                _box = ROOT / "star-alliance-skills"
+                _hostile = [pathlib.Path.home() / ".claude" / "skills" / "x" / "SKILL.md",
+                            pathlib.Path("/tmp") / "sa-absorb-probe" / "SKILL.md",
+                            ROOT / "outside-box-probe" / "SKILL.md"]
+                for _h in _hostile:
+                    try:
+                        _abmod._sink_guard(_h)
+                        fails.append("AB absorb-sink: _sink_guard ALLOWED an out-of-box path "
+                                     + str(_h) + " — absorb could write a global skill")
+                    except SystemExit:
+                        pass
+                try:
+                    _abmod._sink_guard(_box / "sa-absorb-probe" / "SKILL.md")
+                except SystemExit:
+                    fails.append("AB absorb-sink: _sink_guard rejected a legitimate box path "
+                                 "— absorb applier guard is broken")
+            except Exception as _e:
+                fails.append("AB absorb-sink: could not load/exercise absorb_apply.py guard: " + str(_e))
+
     if notes:
         print(" NOTES (non-blocking):")
         for n in notes:

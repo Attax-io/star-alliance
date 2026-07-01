@@ -1,4 +1,12 @@
 {
+  "_impeccable-upstream-source": {
+    "icon": "🧩",
+    "blurb": "",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "",
+    "modes": ""
+  },
   "a11y-craft": {
     "icon": "🧩",
     "blurb": "The Designer's accessibility craft — make WCAG 2.2 AA a gate every surface clears before it shi",
@@ -134,6 +142,14 @@
     "tabler": "ti-shield-lock",
     "triggers": "'write a new RLS policy', 'standardize our policies', 'compose a bundle', 'replace inline EXISTS', 'audit RLS coverage', 'add FOR SELECT visibility'",
     "modes": "compose from bundle catalog; one FOR ALL policy per table; append-only coverage; initplan auth.uid caching"
+  },
+  "butler-onboarding": {
+    "icon": "🧩",
+    "blurb": "Turns a vague or first-contact request into a short discovery, an honest presentation of what t",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "'what can you do', 'help me with my business', 'help me get started', 'I', ', ', ', '",
+    "modes": ""
   },
   "butler-voice": {
     "icon": "🧩",
