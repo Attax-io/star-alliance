@@ -30,6 +30,7 @@ HOOKS_DIR = os.path.dirname(os.path.abspath(__file__))
 GATES = [
     ("workflow-gate.py",    None),
     ("high-alert.py",       {"Skill", "Workflow", "Agent", "Task"}),
+    ("unity-skill-gate.py", {"Task", "Agent", "Bash"}),
     ("approval-gate.py",    {"Task", "Agent", "Edit", "Write", "MultiEdit", "NotebookEdit"}),
     ("routing-enforce.py",  {"Task", "Agent"}),
     ("thinker-gate.py",     {"Task", "Agent"}),
