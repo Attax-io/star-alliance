@@ -26,10 +26,6 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 _FALLBACK_CLOUD_TAG = {
     'glm-5.2': 'glm-5.2:cloud',
     'kimi-k2.7': 'kimi-k2.7-code:cloud',
-    'deepseek-v4-pro': 'deepseek-v4-pro:cloud',
-    'nemotron-3-ultra': 'nemotron-3-super:cloud',
-    'qwen3.5': 'qwen3.5:cloud',
-    'gemma4': 'gemma4:cloud',
 }
 _FALLBACK_CLAUDE = {'opus', 'sonnet', 'haiku'}
 
@@ -45,7 +41,7 @@ except Exception:
     CLAUDE = _FALLBACK_CLAUDE
     _KNOWN = set()
 
-KNOWN_IDS = sorted(_KNOWN | {'minimax-m3'} | set(CLOUD_TAG) | CLAUDE)
+KNOWN_IDS = sorted(_KNOWN | {'minimax-sub', 'minimax-payg'} | set(CLOUD_TAG) | CLAUDE)
 
 
 def _passthrough(args, token_flag=None, prompt_first=False):
@@ -124,8 +120,8 @@ def main():
     # guild model id — pass it through so the dashboard sees canonical names.
     env = dict(os.environ, SA_MODEL_ID=args.model_id)
 
-    # 1. minimax-m3 -> local minimax.py (prompt is trailing positional).
-    if args.model_id == 'minimax-m3':
+    # 1. minimax-sub / minimax-payg -> local minimax.py (prompt is trailing positional).
+    if args.model_id in {'minimax-sub', 'minimax-payg'}:
         cmd = [sys.executable, os.path.join(HERE, 'minimax.py')]
         cmd += _passthrough(args, token_flag='--max-tokens')
         sys.exit(subprocess.run(cmd, env=env).returncode)

@@ -2,13 +2,4 @@
 BUILD WARNINGS (2):
   ⚠ domain 'lex-council-business' references member 'bd-research-agent' not in the guild (external)
   ⚠ domain 'lex-council-business' references member 'intake-agent' not in the guild (external)
-
-BUILD ERRORS (6):
-  ✗ workflow 'standard-mission' step 'Implement the Plan' (actor the-developer): doer 'minimax-m3' is not a doer-role weapon
-  ✗ workflow 'standard-mission' step 'Implement the Plan' (actor the-developer): doer 'minimax-m3' is not in the-developer's loadout
-  ✗ workflow 'standard-mission' step 'Clean Up and Verify' (actor the-quartermaster): doer 'minimax-m3' is not a doer-role weapon
-  ✗ workflow 'standard-mission' step 'Clean Up and Verify' (actor the-quartermaster): doer 'minimax-m3' is not in the-quartermaster's loadout
-  ✗ workflow 'guild-log-sync' step 'Log the Missing Entries' (actor the-quartermaster): doer 'minimax-m3' is not a doer-role weapon
-  ✗ workflow 'guild-log-sync' step 'Log the Missing Entries' (actor the-quartermaster): doer 'minimax-m3' is not in the-quartermaster's loadout
-
-Build aborted — fix the errors above.
+Wrote guild-data.js (659,968 bytes) + guild-data.json + skill-md.js (1,215,722 bytes, 112 skills) + workflow-md.js (69,155 bytes, 36 workflows)

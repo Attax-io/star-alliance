@@ -86,9 +86,6 @@ def _detect_agent_dirs():
 # role per model id — DERIVED from the canonical registry
 # (star-alliance-arsenal/models.json). The literal below is a FAIL-SAFE only.
 # Media weapons are normalized to "doer" for arsenal ordering; sonnet "both" forced last.
-# role per model id — DERIVED from the canonical registry
-# (star-alliance-arsenal/models.json). The literal below is a FAIL-SAFE only.
-# Media weapons are normalized to "doer" for arsenal ordering; sonnet "both" forced last.
 _FALLBACK_ROLE = {
     "opus": "thinker",
     "sonnet": "both",
