@@ -308,3 +308,5 @@
 {"timestamp": "2026-07-01T10:43:23.201033Z", "command": "sed -n '40,60p;190,215p' tools/dispatch.py", "agent": "unknown"}
 {"timestamp": "2026-07-01T10:43:30.731983Z", "command": "sed -n '60,200p' tools/dispatch.py", "agent": "unknown"}
 {"timestamp": "2026-07-01T10:45:02.546883Z", "command": "echo \"=== install.sh tiers ===\"; grep -n 'Tier\\|TIER\\|tier\\|executor-enforce\\|delegation-gate\\|verify-gate\\|DISARMED\\|evolution\\|dispatch.py\\|arsenal' star-alliance-arsenal/install.sh | head -50", "agent": "unknown"}
+{"timestamp": "2026-07-01T10:47:59.229527Z", "command": "echo \"=== dispatch.py 199-270 (env + subprocess run) ===\"; sed -n '199,275p' tools/dispatch.py", "agent": "199-270"}
+{"timestamp": "2026-07-01T10:48:35.148192Z", "command": "sed -n '275,400p' tools/dispatch.py | grep -n 'argparse\\|add_argument\\|stdin\\|--file\\|-f\\|args\\.\\|def main' ", "agent": "|"}
