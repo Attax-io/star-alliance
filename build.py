@@ -501,6 +501,15 @@ def workflow_to_md(wf: dict) -> str:
             if s.get("inputs"): bullets.append(f"**Inputs:** {', '.join(_wf_token(x) for x in s['inputs'])}")
             if s.get("script"): bullets.append(f"**Script:** `{s['script']}`")
             if s.get("doers"): bullets.append(f"**Doers:** {', '.join(_wf_token(x) for x in s['doers'])}")
+            if s.get("swarm"):
+                sw = s["swarm"]
+                sw_parts = []
+                if sw.get("member"): sw_parts.append(str(sw["member"]))
+                if sw.get("max_instances"): sw_parts.append(f"×{sw['max_instances']}")
+                if sw.get("partition"): sw_parts.append(str(sw["partition"]))
+                if sw.get("isolation"): sw_parts.append(str(sw["isolation"]))
+                bullets.append(f"**Swarm:** {' · '.join(sw_parts)}")
+            if s.get("parallel"): bullets.append("**Runs:** in parallel (fan-out)")
             if bullets:
                 out.append("")
                 for b in bullets:
