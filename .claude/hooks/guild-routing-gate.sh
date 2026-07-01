@@ -230,6 +230,8 @@ RULES:
     tools blocked). Name a real workflows.json entry.
   • List one bullet per agent the workflow deploys. Keep the "<N>" count accurate. The
     cast is the workflow's steps[].actor list (skip `you`/gates).
+  • A swarm bullet may read "The <Member> ×<N> — <model>" (member-instance fan-out) —
+    the ×N/xN suffix is accepted as-is, no special-casing needed.
   • MODEL SLOTS — TRANSPARENCY RULE: report only what actually ran this turn; never
     stamp a template. Three slots, but execution and critic are CONDITIONAL.
     — Brain (planning) — ALWAYS present. Voice-only turn: the session model that actually

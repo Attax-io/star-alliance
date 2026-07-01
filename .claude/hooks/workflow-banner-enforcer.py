@@ -236,6 +236,8 @@ def main():
             "    ▸ Workflow — <Name>\n"
             "    Deploying <N> agents:\n"
             "      • The <Member> — <planning model> (planning) · minimax-sub (execution) · glm-5.2 (critic)\n"
+            "A swarm bullet may read 'The <Member> ×<N> — <model>' (member-instance fan-out) — "
+            "the ×N/xN suffix is accepted as-is, no special-casing needed.\n"
             "Pick the workflow from workflows.json — 'Conversation' for a greeting/ack/meta-"
             "question, 'Inquiry / Recon' for a read-only question; if none fits, run Workflow "
             "Forge.\n"
