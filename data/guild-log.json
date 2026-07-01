@@ -2557,6 +2557,13 @@
       "title": "Strategic Audit: star-alliance-arsenal/install.sh, tools/conformity_check.py, tools/dispatch.py",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Strategic Audit: art/member-art-thumb/the-butler.png, art/member-art/the-butler.png",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130
