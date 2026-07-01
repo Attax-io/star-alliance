@@ -47,20 +47,25 @@ main() {
         fail "Expected venv python at $VENV_DIR/bin/python but it's missing."
     fi
 
-    # 3. Write/update ~/.claude/mcp.json without clobbering other entries
-    echo "Updating ~/.claude/mcp.json ..."
+    # 3. Register the guild MCP server where Claude Code actually reads it.
+    #    Claude Code reads mcpServers from a project-root .mcp.json (checked in)
+    #    and from the user-scope ~/.claude.json — it does NOT read ~/.claude/mcp.json.
+    #    The checked-in repo .mcp.json covers in-repo sessions portably; here we also
+    #    merge a machine-correct absolute entry into ~/.claude.json so the guild MCP
+    #    tools are reachable from any project on this Mac.
+    echo "Registering star-alliance in ~/.claude.json ..."
     PYBIN="$VENV_DIR/bin/python"
     if [ ! -x "$PYBIN" ]; then
         PYBIN="python3.13"
     fi
 
-    "$PYBIN" - "$REPO_ROOT" <<'PYEOF' || fail "Failed to update ~/.claude/mcp.json"
+    "$PYBIN" - "$REPO_ROOT" <<'PYEOF' || fail "Failed to update ~/.claude.json"
 import json
 import os
 import sys
 
 repo_root = sys.argv[1]
-config_path = os.path.expanduser("~/.claude/mcp.json")
+config_path = os.path.expanduser("~/.claude.json")
 
 config = {}
 if os.path.exists(config_path):
@@ -78,12 +83,14 @@ config["mcpServers"]["star-alliance"] = {
     "args": [f"{repo_root}/mcp/server.py"],
 }
 
-os.makedirs(os.path.dirname(config_path), exist_ok=True)
-with open(config_path, "w") as f:
+# Atomic write so a failed run never corrupts the main Claude Code config.
+tmp_path = config_path + ".tmp"
+with open(tmp_path, "w") as f:
     json.dump(config, f, indent=2)
     f.write("\n")
+os.replace(tmp_path, config_path)
 
-print(f"Wrote star-alliance entry to {config_path}")
+print(f"Registered star-alliance in {config_path}")
 PYEOF
 
     echo ""

@@ -2648,6 +2648,13 @@
       "title": "Hygiene Rotation: .claude/hooks/executor-enforce.py, profiles/architect/config.yaml, star-alliance-members/the-butler.md",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Conversation: data/mcp-telemetry.jsonl, install-star-alliance.command, tools/conformity_check.py (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130

@@ -25,6 +25,7 @@ Checks (each maps to a source-of-truth invariant or a logged decision):
   MU usage-sidecar models-usage.json keys ⊆ registry ids
   FB fallback-sync fail-safe ROLE/CLOUD_TAG dicts == models.json (anti-drift)
   RG routing-gate  guild-routing-gate agent→model prose == guild-data
+  MCP mcp-register guild MCP server registered in a Claude-Code read path (repo .mcp.json), never dead ~/.claude/mcp.json
   PD profile-dist   repo profiles/<agent>/ SOUL.md+config.yaml == installed ~/.hermes/profiles/<slug>/
   AL arch-layers   CLAUDE.md and AGENTS.md both describe the three-layer architecture,
                    and the model table in each matches models.json seats
@@ -202,6 +203,24 @@ def main():
         mo = re.search(r'\{.*\}', js, re.S)
         if not mo or json.loads(mo.group(0)) != g:
             fails.append("P  parity: guild-data.js does NOT match guild-data.json (rerun build.py)")
+
+    # MCP — the guild MCP server must be registered where Claude Code actually
+    # reads it. Claude Code reads mcpServers from a project-root .mcp.json and the
+    # user-scope ~/.claude.json; it does NOT read ~/.claude/mcp.json. The checked-in
+    # repo .mcp.json is the portable, travels-with-the-repo guarantee — assert it
+    # here so registration can never silently regress to the dead path.
+    repo_mcp = ROOT / ".mcp.json"
+    mcp_registered = False
+    if repo_mcp.exists():
+        try:
+            _mj = json.loads(repo_mcp.read_text())
+            mcp_registered = "star-alliance" in _mj.get("mcpServers", {})
+        except Exception:
+            mcp_registered = False
+    if not mcp_registered:
+        fails.append("MCP mcp-register: guild MCP server star-alliance not found in repo "
+                     ".mcp.json mcpServers — Claude Code does NOT read ~/.claude/mcp.json, "
+                     "so the front desk will not connect (run the installer or restore .mcp.json)")
 
     # Swarm guardrail constants (§5 SWARM-METHODOLOGY-PLAN.md).
     # Single-sourced from data/harness.json so doctrine and code cannot diverge.
