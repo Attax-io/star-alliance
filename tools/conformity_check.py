@@ -1053,11 +1053,13 @@ def main():
             "guild-data.js", "guild-data.json", "skill-md.js", "workflow-md.js",
             "star-alliance-arsenal/models.json", "star-alliance-arsenal/models-usage.json",
             "star-alliance-arsenal/gen_model_docs.py",
+            "star-alliance-arsenal/README.md",
             "tools/conformity_check.py",
         }
         _hm_skip_suffixes = (".bak", ".bak2", ".bak3")
         _hm_skip_fragments = (
             "/.git/", "/archive/", "/node_modules/", "/__pycache__/", "/.deprecated/",
+            "/.claude/", "claude/",
         )
         _hm_scan_suffixes = {".py", ".json", ".sh", ".cjs", ".md"}
         _hm_md_allowlist = {"CLAUDE.md", "AGENTS.md", "README.md"}
