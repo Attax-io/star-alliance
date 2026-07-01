@@ -2,7 +2,7 @@
 name: guild-log
 description: "Enforce logging of non-git-visible changes to the Star Alliance guild log. Use this skill whenever a session has changed dashboard markup, renamed UI strings, edited skills-meta.json or members-meta.json, modified guild-log.json directly, reorganized star-alliance-members/ or star-alliance-skills/ folder layout, or made any visual/structural change that won't show up in a git diff as a version bump. Also use when the user says 'log this', 'guild log this', 'did you log it?', 'add a log entry', or any time work ends and it's unclear whether the change was git-visible. Skill audits what was touched, decides auto-derived vs manual logging, runs build_guild_log.py for git-visible changes and log_event.py for the rest, then rebuilds the dashboard via build.py. Ask Atta to confirm before writing."
 metadata:
-  version: 1.2.1
+  version: 1.3.0
 type: Skill
 
 ---
@@ -16,6 +16,18 @@ The logging pipeline has two tiers:
 2. **`log_event.py`** — manual entries for everything git can't see: dashboard redesigns, UI renames, copy edits, structural reorganizations, folder moves, anything that isn't a version bump.
 
 This skill's job is to ensure **every session that touched the dashboard, the log files directly, or the folder layout leaves a covering entry** in `guild-log.json`.
+
+## Portability (binding)
+
+The guild log ALWAYS lives in the star-alliance repo (data/guild-log.json), no matter which project the guild is deployed into via the MCP server. Never run the bare 'python3 build_guild_log.py' form — it only works when the terminal is inside the star-alliance repo. Always invoke through the portable wrapper, which self-locates the repo from any current directory:
+
+```bash
+python3 $STAR_ALLIANCE_ROOT/tools/guild_log.py build
+python3 $STAR_ALLIANCE_ROOT/tools/guild_log.py event --type chore --title '...' --who the-quartermaster
+python3 $STAR_ALLIANCE_ROOT/tools/guild_log.py rebuild
+```
+
+The STAR_ALLIANCE_ROOT env var is set by each host project's .claude/settings.json. If it is unset, the wrapper still self-locates via its own file path and by walking up for VERSIONS.md plus .git.
 
 ## When this skill applies
 
@@ -43,8 +55,8 @@ Does **not** apply when:
 Scans commit history, synthesizes entries automatically. **Always run this first** — it picks up everything git-visible and is idempotent.
 
 ```bash
-python3 build_guild_log.py            # rebuild guild-log.json from git
-python3 build_guild_log.py --dry-run  # preview only
+python3 $STAR_ALLIANCE_ROOT/tools/guild_log.py build            # rebuild guild-log.json from git
+python3 $STAR_ALLIANCE_ROOT/tools/guild_log.py build --dry-run  # preview only
 ```
 
 Detects:
@@ -60,7 +72,7 @@ Skips commits that already have a matching hand-edited entry (matched by commit 
 For changes that **don't show up as a version bump or member file diff**: dashboard redesigns, UI renames, copy edits, structural reorganizations. **Run this AFTER Tier 1**, for the gaps Tier 1 left.
 
 ```bash
-python3 log_event.py \
+python3 $STAR_ALLIANCE_ROOT/tools/guild_log.py event \
   --type dashboard \
   --title "Renamed sidebar nav: Roster → Members" \
   --detail "Full internal sweep — function names, variable names, CSS class, data-view attribute, page-load invocation, and historical log entries all updated." \
@@ -90,7 +102,7 @@ approach, rejects an alternative, fixes a trade-off, sets a convention — recor
 guild's memory. Example:
 
 ```bash
-python3 log_event.py \
+python3 $STAR_ALLIANCE_ROOT/tools/guild_log.py event \
   --type decision \
   --who the-quartermaster \
   --title "Project version derives from the guild log, not a hand-edited field" \
@@ -132,7 +144,7 @@ For each item, ask: **"Is this git-visible to `build_guild_log.py`?"**
 ### Step 3 — Run Tier 1
 
 ```bash
-python3 build_guild_log.py
+python3 $STAR_ALLIANCE_ROOT/tools/guild_log.py build
 ```
 
 This catches every git-visible change. Skip if you already ran it earlier in the session and nothing new was committed since.
@@ -142,7 +154,7 @@ This catches every git-visible change. Skip if you already ran it earlier in the
 For each item from Step 2 that needs Tier 2:
 
 ```bash
-python3 log_event.py \
+python3 $STAR_ALLIANCE_ROOT/tools/guild_log.py event \
   --type <dashboard|structure|chore> \
   --title "<one-line headline>" \
   --detail "<longer description, optional>" \
@@ -169,7 +181,7 @@ Pick `--type` from the valid set. `--ref` is for cross-linking: which skill or m
 The dashboard loads one generated file, `guild-data.js` (`const GUILD = { meta, members, skills, domains, log }`), built from `guild-log.json` plus the skill/agent/meta sources by `build.py`. **Always run this after Step 3 and Step 4** so the dashboard's Guild Log view shows the new entries.
 
 ```bash
-python3 build.py
+python3 $STAR_ALLIANCE_ROOT/tools/guild_log.py rebuild
 ```
 
 The same command also refreshes the skills, members, and domains in `guild-data.js`. Safe to run any time; `build.py --check` reports whether content actually changed.
@@ -179,7 +191,7 @@ The same command also refreshes the skills, members, and domains in `guild-data.
 ### Step 6 — Verify
 
 1. Read the first 20 lines of `guild-log.json` — confirm your new entry is at the top with the expected `id`, `type`, `title`.
-2. Run `python3 build.py` and confirm the entry now appears in `guild-data.json` under `log.entries` (the JSON mirror of `guild-data.js`).
+2. Run `python3 $STAR_ALLIANCE_ROOT/tools/guild_log.py rebuild` and confirm the entry now appears in `guild-data.json` under `log.entries` (the JSON mirror of `guild-data.js`).
 3. (Optional) Open `index.html` in a browser, click **Guild Log** in the nav, confirm the entry renders.
 
 ## Common pitfalls
@@ -214,8 +226,8 @@ The same command also refreshes the skills, members, and domains in `guild-data.
 - [ ] Step 2 classified each change as Tier 1 or Tier 2
 - [ ] Step 3 ran `build_guild_log.py` (idempotent — safe to re-run)
 - [ ] Step 4 ran `log_event.py` for each Tier 2 change with `--type`, `--title`, optional `--detail`/`--ref`/`--who`
-- [ ] Step 5 ran `python3 build.py` to regenerate `guild-data.js` (+ its `guild-data.json` mirror)
-- [ ] Step 6 read back `guild-log.json` AND confirmed `guild-data.json`'s `log.entries` reflects the new entry after `build.py`
+- [ ] Step 5 ran `python3 $STAR_ALLIANCE_ROOT/tools/guild_log.py rebuild` to regenerate `guild-data.js` (+ its `guild-data.json` mirror)
+- [ ] Step 6 read back `guild-log.json` AND confirmed `guild-data.json`'s `log.entries` reflects the new entry after the rebuild
 - [ ] Each Tier 2 entry's title is ≤ 80 chars, active voice, past tense
 - [ ] Each Tier 2 entry's detail names the specific files/surfaces touched
 
@@ -232,6 +244,7 @@ The same command also refreshes the skills, members, and domains in `guild-data.
 
 | Version | Date | Summary |
 |---|---|---|
+| **1.3.0** | 2026-07-01 | Portability: every command block now invokes the new portable wrapper tools/guild_log.py (build / event / rebuild) via $STAR_ALLIANCE_ROOT so the skill works from ANY project cwd when the guild is deployed via the MCP server, not only inside the star-alliance repo. Added the Portability (binding) section. Scripts now also honor the STAR_ALLIANCE_ROOT env name. |
 | **1.2.1** | 2026-06-26 | Body-consistency fix (skillsmith routine STORM): the 1.2.0 bump shipped the `workflow` log type (in `log_event.py::VALID_TYPES` + `build.py::VERSION_MINOR_TYPES`) and the `decision` type but left the SKILL.md half-documented — added the missing `workflow` row to the valid-`--type` table, and backfilled the missing **1.2.0** changelog row below. |
 | **1.2.0** | 2026-06-26 | Added the `decision` log type (record a choice + **why**, version-neutral via `VERSION_IGNORE_TYPES`) and the "Log decisions, not only changes" guidance, plus the `workflow` log type for new star-map workflows (bumps MINOR like `dashboard`). Shipped alongside the project's decision-logging + Butler report-back standard. |
 | **1.1.0** | 2026-06-25 | Repointed the pipeline to the rebuilt dashboard: the four generated globals (`skills-data.js`/`members.js`/`domains.js`/`guild-log.js`) and `guild-dashboard.html` were consolidated into a single `guild-data.js` (`const GUILD`) built by `build.py` and loaded by `index.html`/`app.css`/`app.js`. Updated every reference (Step 5 rebuild, the "editing the generated file" pitfall, the verify steps, the checklist, Related), and the trigger list (`skills-meta.json`/`members-meta.json` replace `dashboard-meta.json`; `guild-log.js` no longer exists). |

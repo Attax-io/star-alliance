@@ -2,16 +2,28 @@
 name: vault-log-writer
 description: Write and file a correct Lex Council vault log entry per the P8 mandatory change logging rule. Use whenever any code or backend change has been made in a session — every migration, trigger, view, RLS policy, component, page, edge function, bug fix, or doc update. Also use when the session called any Supabase MCP tool (execute_sql, apply_migration, get_advisors, etc.) to produce the required P13 self-audit section. Trigger on phrases like "write the vault log", "log this change", "P8 log", "session log", "what do I need to log", "vault log entry", or any time a session is about to end and no vault log has been written. This skill exists because P8 is non-negotiable and the P13 self-audit section is frequently omitted or malformed.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 ---
 
 # Writing a Vault Log Entry
 
+## Step 0 — Resolve the active vault
+
+The vault log goes to the TARGET project the guild is working in, not a fixed project. First resolve the destination:
+
+```bash
+python3 $STAR_ALLIANCE_ROOT/tools/resolve_vault.py --json
+```
+
+Use the returned `log_dir`, `index_path`, and `filename_format` for every path below. If status is `not_found`, OFFER to scaffold (`python3 $STAR_ALLIANCE_ROOT/tools/resolve_vault.py --scaffold`) before writing. For the Lex vault this returns `lex_council/docs/vault-logs`.
+
 ## Where it lives
 
 ```
-lex_council/docs/vault-logs/YYYY-MM-DD_short-description.md
+<resolved log_dir>/<filename>.<ext>
 ```
+
+Where the filename is built from `<filename>` per the resolved `filename_format` (e.g. `YYYY-MM-DD_short-description`). The `<resolved log_dir>` comes from Step 0; for the Lex vault it is `lex_council/docs/vault-logs`.
 
 Use today's date in `YYYY-MM-DD` format. Slug: lowercase, hyphens, 3–6 words that describe the change (`adds-n-kinds-suspended-task`, `fix-fd-insert-returning`, `rewrite-attendance-daily-js`).
 
@@ -145,7 +157,7 @@ Link the planet hub, primary_instructions, and every object name mentioned in th
 
 ## Updating INDEX.md
 
-After writing the vault log file, add a row to `docs/vault-logs/INDEX.md`:
+After writing the vault log file, add a row to the resolved `index_path` (from Step 0):
 
 ```markdown
 | [[YYYY-MM-DD_slug]] | YYYY-MM-DD | Short one-line description |
@@ -161,3 +173,9 @@ Keep the index in reverse-chronological order (newest at top of the table body).
 - **Skipping P13 self-audit** — if any MCP tool was called, the audit is mandatory
 - **Writing the log after the session ends** — P8 requires the log before the session closes; if Atta asks to stop mid-work, log what was completed and what remains as a follow-up item
 - **Missing INDEX.md row** — every vault log needs an entry in the index
+
+## Changelog
+
+| Version | Change |
+|---------|--------|
+| 1.1.0 | Portability: added Step 0 resolving the active project's vault via `tools/resolve_vault.py`; file path and INDEX path are now the resolved `log_dir`/`index_path` instead of hardcoded `lex_council/docs/vault-logs`. Lex remains one registered vault. |

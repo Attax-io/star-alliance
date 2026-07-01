@@ -82,7 +82,7 @@ cd lex_council/apps/web && npx opennextjs-cloudflare build      # produces .open
 cd ../.. && python3 ~/.claude/skills/cleanup/scripts/bundle_cleanup.py measure   # --paid for the 10 MiB limit
 ```
 
-gzips `.open-next/worker.js` (wrangler `main`) and compares to the wall. If the
+gzips `.open-next/worker.js` (wrangler `main`) and compares to the wall. `measure` auto-selects the 10 MiB paid wall when `CF_WORKERS_PAID` is set or a `.cloudflare-paid` marker file exists at the web dir or a repo-root ancestor; the free 3 MiB wall stays the default otherwise. `--paid` forces paid. If the
 artifact is **absent or an implausibly small placeholder** (a stale/empty
 `worker.js`), it **degrades-with-receipts** (exit 3 — "not measured, run the
 build"), never a silent "OK" (§L28). The authoritative number is wrangler's

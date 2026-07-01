@@ -1,8 +1,8 @@
 ---
 name: vault-log-compliance
-description: Enforces P8 vault-logging compliance for Lex Council. Use this skill whenever a session has touched backend code (migrations, views, triggers, RPC functions, RLS policies, edge functions, cron jobs), frontend code (components, pages, hooks, mutations, stores), schema changes, or bug fixes — even if the user doesn't explicitly ask for a vault log. Also use when the user says phrases like "vault log this", "does this need a vault log?", "log what I did", "P8", "write a vault-log entry", or when finishing up work and unsure whether it qualifies. Skill audits what was touched, checks whether a covering vault-log entry already exists, drafts one in the project's established format if missing, and updates the INDEX.md and affected docs' Last Synced footers. Ask Atta to approve the draft before writing.
+description: Enforces vault-logging compliance for the active target project (resolved via tools/resolve_vault.py; Lex Council is one registered vault). Use this skill whenever a session has touched backend code (migrations, views, triggers, RPC functions, RLS policies, edge functions, cron jobs), frontend code (components, pages, hooks, mutations, stores), schema changes, or bug fixes — even if the user doesn't explicitly ask for a vault log. Also use when the user says phrases like "vault log this", "does this need a vault log?", "log what I did", "P8", "write a vault-log entry", or when finishing up work and unsure whether it qualifies. Skill audits what was touched, checks whether a covering vault-log entry already exists, drafts one in the project's established format if missing, and updates the INDEX.md and affected docs' Last Synced footers. Ask Atta to approve the draft before writing.
 metadata:
-  version: 1.1.0
+  version: 1.2.0
 type: Skill
 
 ---
@@ -30,6 +30,22 @@ Does **not** apply when:
 - The user is already mid-task and the work isn't finished — defer until the code/backend change is actually complete.
 - A matching vault-log entry already exists for today covering this work (check before drafting).
 
+## Step 0 — Resolve the active vault (binding)
+
+The vault log belongs to the TARGET project the guild is currently working in, not a fixed project. Before drafting, resolve where logs go for the current project:
+
+```bash
+python3 $STAR_ALLIANCE_ROOT/tools/resolve_vault.py --json
+```
+
+Use the returned log_dir, index_path, and filename_format. If status is 'not_found', OFFER to scaffold a vault for this project (creates .claude/vault.json plus the log directory), then proceed:
+
+```bash
+python3 $STAR_ALLIANCE_ROOT/tools/resolve_vault.py --scaffold
+```
+
+Never hardcode one project's path. For the Lex vault the resolver returns lex_council/docs/vault-logs (registered in Lex's .claude/vault.json); other projects return their own. Full P8 plus P13 plus housekeeper ceremony applies to EVERY vault.
+
 ## Workflow
 
 ### Step 1 — Enumerate what changed
@@ -45,13 +61,13 @@ Produce a short structured list: what was created, modified, or dropped, with fi
 
 ### Step 2 — Check if a vault log already covers this
 
-Before drafting, grep lex_council/docs/vault-logs/ for entries dated today that mention the affected entities. If a covering entry exists, extend it rather than creating a duplicate. The pattern — one log per coherent unit of work — is the norm.
+Before drafting, grep the resolved vault log_dir (from Step 0) for entries dated today that mention the affected entities. If a covering entry exists, extend it rather than creating a duplicate. The pattern — one log per coherent unit of work — is the norm.
 
 If partial coverage exists (e.g., an earlier log covers phase 1 of a multi-phase change), create a new entry for the new phase and reference the prior one via wikilink.
 
 ### Step 3 — Draft the vault-log entry
 
-Follow the project's established format. File path: lex_council/docs/vault-logs/YYYY-MM-DD_short-kebab-description.md where the description captures the essence in 3–6 words. Examples of good filenames from the project:
+Follow the project's established format. File path: the resolved vault log_dir (from Step 0) + YYYY-MM-DD_short-kebab-description.md where the description captures the essence in 3–6 words. Examples of good filenames from the project:
 
 - 2026-04-24_attendance-v2-phase-5-shrink-trigger.md
 - 2026-04-24_notification-event-delivery-migration-p0-to-p4.md
@@ -91,8 +107,8 @@ Wait for approval. If the user says "looks good" or similar, proceed. If they re
 
 Once approved:
 
-1. Write the .md file to lex_council/docs/vault-logs/.
-2. Append a row to lex_council/docs/vault-logs/INDEX.md. Format: `| DD Mon YYYY | [[wikilink]] | one-line summary |`. Insert after the most recent entry, preserving the table structure. Read the last 10 lines of INDEX.md to confirm the format before editing.
+1. Write the .md file to the resolved vault log_dir (from Step 0).
+2. Append a row to the resolved vault log_dir (from Step 0) + /INDEX.md. Format: `| DD Mon YYYY | [[wikilink]] | one-line summary |`. Insert after the most recent entry, preserving the table structure. Read the last 10 lines of INDEX.md to confirm the format before editing.
 3. For each domain doc the change affects (BACKEND.md, FRONTEND.md, MIGRATION-LOG.md, a specific planet hub leaf doc, etc.), append a "Last Synced" footer entry with today's date and a wikilink to the new vault log. If the doc already has a Last Synced section, prepend today's entry above the prior ones; if not, add a new section at the bottom.
 
 ### Step 6 — Handle the edge cases
@@ -111,15 +127,16 @@ The housekeeper runs autonomously on vault logs, and anything you write here bec
 
 ## Related
 
-- lex_council/docs/primary_instructions.md §4 — the mandatory P8 rule.
-- lex_council/docs/GENERAL-GUIDELINES.md §P8 — full rule text.
-- lex_council/docs/housekeeping/README.md — how the housekeeper consumes these logs.
-- lex_council/docs/vault-logs/INDEX.md — the chronological index this skill updates.
+- for the Lex vault: lex_council/docs/primary_instructions.md §4 — the mandatory P8 rule.
+- for the Lex vault: lex_council/docs/GENERAL-GUIDELINES.md §P8 — full rule text.
+- for the Lex vault: lex_council/docs/housekeeping/README.md — how the housekeeper consumes these logs.
+- The resolved vault log_dir (from Step 0) + /INDEX.md — the chronological index this skill updates.
 - Example logs to study for format: 2026-04-24_attendance-v2-phase-5-shrink-trigger.md, 2026-04-22_housekeeping-run1.md, 2026-04-24_housekeeping-v2-scheduled-and-live.md.
 
 ## Changelog
 
 | Version | Change |
 |---|---|
+| 1.2.0 | Portability: de-hardcoded from Lex. Added Step 0 that resolves the active project's vault via tools/resolve_vault.py (env, then .claude/vault.json, then docs/vault-logs convention, else offer --scaffold). Write target is now the resolved log_dir; Lex-specific rule docs kept as the Lex vault profile. Full ceremony still applies to every vault. |
 | 1.1.0 | Step 3: added the **mandatory `## Plain-English Summary` lead section** (binding 2026-05-29 per CLAUDE.md §P8 — every vault log must open with it). Step 4: clarified that *triggering* the log is automatic/unprompted (log immediately after the edit, never wait to be asked) while the approval gate is content-only. Fixed change-detection paths `lex_council/app|lib|components/` → `lex_council/apps/web/app|lib|components/`. |
 | 1.0.0 | Initial — P8 vault-log compliance enforcer. |

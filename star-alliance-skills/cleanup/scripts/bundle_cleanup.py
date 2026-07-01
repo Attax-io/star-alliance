@@ -89,6 +89,23 @@ WORKER_ENTRY = WEB / ".open-next" / "worker.js"  # wrangler.jsonc `main`
 FREE_LIMIT = 3 * 1024 * 1024
 PAID_LIMIT = 10 * 1024 * 1024
 
+
+def _paid_plan_signal():
+    """Project-scoped Workers-Paid signal so `measure` uses the 10 MiB wall without a
+    remembered flag. FREE stays the default for any project lacking the signal. Order:
+    env CF_WORKERS_PAID truthy, then a `.cloudflare-paid` marker at the web dir or any
+    ancestor up to 3 levels (repo root)."""
+    v = os.environ.get("CF_WORKERS_PAID", "").strip().lower()
+    if v in {"1", "true", "yes", "on"}:
+        return "env CF_WORKERS_PAID"
+    d = WEB
+    for _ in range(4):
+        if (d / ".cloudflare-paid").exists():
+            return str(d / ".cloudflare-paid")
+        d = d.parent
+    return None
+
+
 SKIP_DIRS = {"node_modules", ".next", ".open-next", ".turbo", "dist", "__tests__", "__pycache__"}
 SRC_EXT = (".tsx", ".ts")
 
@@ -266,9 +283,12 @@ def cmd_detect(args):
 
 
 def cmd_measure(args):
-    limit = PAID_LIMIT if args.paid else FREE_LIMIT
-    plan = "paid (10 MiB)" if args.paid else "free (3 MiB)"
-    result = {"worker_entry": str(WORKER_ENTRY), "plan": plan, "limit_bytes": limit}
+    paid_signal = None if args.paid else _paid_plan_signal()
+    paid = args.paid or bool(paid_signal)
+    limit = PAID_LIMIT if paid else FREE_LIMIT
+    plan = "paid (10 MiB)" if paid else "free (3 MiB)"
+    paid_source = ("--paid flag" if args.paid else paid_signal) if paid else None
+    result = {"worker_entry": str(WORKER_ENTRY), "plan": plan, "limit_bytes": limit, "paid_source": paid_source}
 
     # DEGRADE WITH RECEIPTS — never a silent "OK" (skill lesson L28). Both an
     # absent artifact AND an implausibly small one (a 0-byte / stale placeholder)
@@ -304,6 +324,8 @@ def cmd_measure(args):
     Path(args.out).write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
 
     print(f"── bundle measure — {WORKER_ENTRY.name} (built {mtime}) — {plan} plan")
+    if paid_source and not args.paid:
+        print(f"   (paid 10 MiB wall auto-selected via {paid_source})")
     print(f"   raw {raw_mib:.2f} MiB · gzip {gz_mib:.2f} MiB · limit {lim_mib:.0f} MiB")
     if over:
         print(f"✗ OVER the {lim_mib:.0f} MiB Worker wall by {gz_mib - lim_mib:.2f} MiB — deploy will FAIL validation.")
@@ -325,7 +347,7 @@ def main():
     d.set_defaults(fn=cmd_detect)
 
     m = sub.add_parser("measure", help="gzip the built worker entry vs the Cloudflare size wall (build-gated)")
-    m.add_argument("--paid", action="store_true", help="use the 10 MiB paid-plan limit (default 3 MiB free)")
+    m.add_argument("--paid", action="store_true", help="force the 10 MiB paid-plan limit (else: free 3 MiB, or auto-paid when CF_WORKERS_PAID / a .cloudflare-paid marker is present)")
     m.add_argument("--out", default="/tmp/bundle_size.json")
     m.set_defaults(fn=cmd_measure)
 

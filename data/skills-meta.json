@@ -335,6 +335,14 @@
     "triggers": "",
     "modes": ""
   },
+  "dual-model-review": {
+    "icon": "🧩",
+    "blurb": "The dual-review flow that backs the cross-system bridge.",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "'dual review', 'two reviewers', 'kimi and glm review', 'review in parallel', 'M3 does, reviewers check', 'three-way review'",
+    "modes": ""
+  },
   "file-access-model": {
     "icon": "🧩",
     "blurb": "",
@@ -366,6 +374,14 @@
     "tabler": "ti-brand-react",
     "triggers": "'build this React component', 'fix this re-render', 'server or client component', 'wire this Next.js page', 'where should this state live'",
     "modes": "component architecture; server vs client & data; React performance"
+  },
+  "full-output-enforcement": {
+    "icon": "🧩",
+    "blurb": "",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "",
+    "modes": ""
   },
   "graphify": {
     "icon": "🕸️",
@@ -687,6 +703,14 @@
     "triggers": "'audit portability', 'can I use this in another project', 'portability audit', 'what needs to move', 'install plan for project X', '/portability-audit'",
     "modes": "Six layers: skills → members → arsenal paths → env vars → hooks → workflows. Assigns tier gap per finding; outputs ranked gap list + install.sh command."
   },
+  "portfolio-risk": {
+    "icon": "🧩",
+    "blurb": "Read-only, book-level portfolio construction and risk measurement that ships a written, dated r",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "'review my portfolio', 'what is the risk on my book', 'compute VaR', 'check my exposures', 'should I rebalance', 'stress test this portfolio'",
+    "modes": ""
+  },
   "price-action": {
     "icon": "🌊",
     "blurb": "Read price action & market structure (Grimes) — trends, ranges, regime interfaces, the order-flow imbalance behind the bars",
@@ -854,6 +878,14 @@
     "tabler": "ti-chart-dots",
     "triggers": "'forecast this series', 'predict the next N periods', 'project this metric forward', 'forecast demand'",
     "modes": "foundation vs classical; API & usage; evaluation & pitfalls; quant application"
+  },
+  "trading-strategy": {
+    "icon": "🧩",
+    "blurb": "Read-only trading-strategy design that ships a written, dated strategy spec and never places a",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "'build a trading strategy', 'design an entry/exit plan', 'backtest this idea', 'how should I size this trade', 'turn this view into a strategy'",
+    "modes": ""
   },
   "transactions-domain-model": {
     "icon": "💳",

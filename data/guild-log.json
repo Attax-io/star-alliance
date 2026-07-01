@@ -2,6 +2,54 @@
   "version": 1,
   "entries": [
     {
+      "id": 113,
+      "date": "2026-07-01",
+      "type": "decision",
+      "title": "Vault log follows the target project; guild log stays repo-fixed",
+      "who": "the-quartermaster",
+      "detail": "Chose a resolver-driven per-vault model over one hardcoded project. Guild log always writes to the star-alliance repo (guild history); vault log resolves to whichever project the guild is deployed into (that projects change log). Unknown project auto-detects docs/vault-logs then offers to scaffold, never falling back to Lex. Full P8/P13 ceremony applies to every vault.",
+      "ref": [
+        "vault-log-compliance"
+      ]
+    },
+    {
+      "id": 112,
+      "date": "2026-07-01",
+      "type": "chore",
+      "title": "Portable guild-log and per-vault vault-log tooling",
+      "who": "the-quartermaster",
+      "detail": "New tools/resolve_vault.py resolves the active target project vault-log dir from any cwd (env VAULT_LOG_DIR, then .claude/vault.json, then docs/vault-logs convention, else offer --scaffold). New tools/guild_log.py portable wrapper self-locates the repo and runs build/event/rebuild. build_guild_log.py and log_event.py now honor STAR_ALLIANCE_ROOT as well as STAR_ALLIANCE_REPO. Two new Stop hooks guild-log-nudge.py and vault-log-nudge.py. Lex registered via its .claude/vault.json.",
+      "ref": [
+        "guild-log",
+        "vault-log-compliance",
+        "vault-log-writer"
+      ]
+    },
+    {
+      "id": 111,
+      "date": "2026-07-01",
+      "type": "skill-create",
+      "title": "Add butler-lockout skill",
+      "who": "Atta",
+      "detail": "Refusal rule: when a craft skill surfaces in the Butlers context, hand it to the Strategist. Enforced mechanically by the PreToolUse hook butler-skill-gate.py."
+    },
+    {
+      "id": 110,
+      "date": "2026-07-01",
+      "type": "skill-create",
+      "title": "Add butler-voice skill",
+      "who": "Atta",
+      "detail": "Voice contract for the Butler: lead with status, restate the brief, plain English, attribute the model honestly. Pairs with butler-lockout (the floor it guards)."
+    },
+    {
+      "id": 109,
+      "date": "2026-07-01",
+      "type": "member-create",
+      "title": "Add the-butler as Star Alliance voice",
+      "who": "Atta",
+      "detail": "Butler is the guilds voice: restates the Guild Master order in plain English, holds the approval gate, delivers the final report. Pinned to skills [butler-voice, butler-lockout, star-alliance-language, weapon-utility] with a PreToolUse hook (butler-skill-gate.py) enforcing the lockout so the Butler can never wield craft."
+    },
+    {
       "id": 108,
       "date": "2026-07-01",
       "type": "skill-create",

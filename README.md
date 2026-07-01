@@ -21,7 +21,7 @@ star-alliance/
 │   ├── the-quartermaster.md
 │   ├── the-strategist.md
 │   └── the-interpreter.md
-├── star-alliance-skills/  ← shared skill pool (119 skills, each a directory with SKILL.md)
+├── star-alliance-skills/  ← shared skill pool (123 skills, each a directory with SKILL.md)
 │   ├── algorithmic-trading-chan/
 │   ├── article-creator/
 │   ├── bug-fix-workflow/
@@ -201,4 +201,4 @@ The authoritative gate is **`skill-creator`'s `quick_validate.py` green** on eve
 ## Registry
 
 See [`VERSIONS.md`](VERSIONS.md) for the full skill → version table with word counts and Cowork
-status (119 skills).
+status (123 skills).

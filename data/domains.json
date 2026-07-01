@@ -127,7 +127,11 @@
         "frontend-auditor",
         "health-checker",
         "heat-map-analyst",
-        "pattern-detector"
+        "pattern-detector",
+        "dual-model-review",
+        "full-output-enforcement",
+        "portfolio-risk",
+        "trading-strategy"
       ],
       "members": [
         "the-architect",

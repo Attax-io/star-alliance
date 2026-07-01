@@ -10,7 +10,7 @@ type: Skill
 
 The Butler is the only member who speaks directly to the Guild Master. This
 skill is the **voice contract** — the rules every reply must follow, written as
-doctrine so the Butler carries them even when [[butler-lockout]] does not fire.
+doctrine so the Butler carries them even when [[helpless]] does not fire.
 
 ## The five rules
 
@@ -101,7 +101,7 @@ A Butler reply is well-formed when:
 
 ## Related
 
-- [[butler-lockout]] — keeps the Butler off craft skills. This skill governs
+- [[helpless]] — keeps the Butler off craft skills. This skill governs
   the voice; that one governs the body.
 - `star-alliance-language` — the guild's shared reading protocol.
 - `weapon-utility` — the numeric usage-level meter.

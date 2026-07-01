@@ -3,10 +3,11 @@
 # Star Alliance — BUTLER SKILL GATE  (PreToolUse, BLOCKING)
 #
 # THE HARD RULE: the Butler is the VOICE of the guild, not a craftsperson. He
-# must not invoke any skill outside his allowlist. The two Butler-owned skills
-# (`butler-voice`, `butler-lockout`) are pinned to the allowlist by union with
-# a hardcoded fallback so the Butler can never lock himself out of his own
-# craft — even if guild-data.json is missing or the-butler is absent from it.
+# must not invoke any skill outside his allowlist. The gate enforces the
+# helpless doctrine — the hardcoded fallback (`butler-voice`, `helpless`,
+# `star-alliance-language`) is unioned into the allowlist so the Butler
+# can never lock himself out of his own craft — even if guild-data.json
+# is missing or the-butler is absent from it.
 #
 # Resolution order:
 #   1. Non-Skill tools: allow.
@@ -26,11 +27,11 @@
 # ─────────────────────────────────────────────────────────────────────────────
 import sys, os, json, re
 
-# Hardcoded Butler lockout floor — ALWAYS unioned into the resolved allowlist
-# so the Butler can never lock himself out of his own two skills regardless of
-# whether guild-data.json is present, readable, or has a `the-butler` entry.
-FALLBACK_ALLOW = {"butler-voice", "butler-lockout",
-                  "star-alliance-language", "weapon-utility"}
+# Hardcoded Butler fallback floor (the helpless doctrine) — ALWAYS unioned
+# into the resolved allowlist so the Butler can never lock himself out of his
+# own craft regardless of whether guild-data.json is present, readable, or
+# has a `the-butler` entry.
+FALLBACK_ALLOW = {"butler-voice", "helpless", "star-alliance-language"}
 
 # A deployment bullet looks like:
 #   - The Developer ...
@@ -150,8 +151,9 @@ def check(data):
         # malformed and the rest of the gate stack will handle it.
         return {"exit": 0}
 
-    # Always-union the hardcoded fallback so the Butler can never lock himself
-    # out of his own two skills, even if guild-data.json is missing/broken.
+    # Always-union the hardcoded fallback (helpless doctrine) so the Butler
+    # can never lock himself out of his own craft, even if guild-data.json
+    # is missing/broken.
     allowlist = set(_load_butler_allowlist()) | FALLBACK_ALLOW
 
     if skill_name in allowlist:
@@ -184,11 +186,10 @@ def check(data):
 
     # Pure Butler turn invoking a craft skill outside his allowlist.
     return {"exit": 2, "stderr": (
-        f"⛔ BUTLER SKILL GATE — the Butler is the voice, not a craftsperson. "
-        f"The skill '{skill_name}' is not on his allowlist. Hand the cleared "
-        f"order to the Strategist, who routes the member that carries this "
-        f"skill. The Guild Master can override by explicitly assigning the "
-        f"skill this turn (deploy the member).\n"
+        f"⛔ BUTLER SKILL GATE — refused skill '{skill_name}'. "
+        f"That is not your job. Send it to the Strategist to route it accordingly. "
+        f"(Enforces the helpless doctrine: the Butler is the voice, not a craftsperson.) "
+        f"The Guild Master can override by explicitly assigning the skill this turn.\n"
     )}
 
 
