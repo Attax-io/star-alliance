@@ -141,6 +141,7 @@ entry from workflows.json (Quick Fix · Standard Mission · Architecture Build �
 Sprint · Legal Codex · Market Recon · Skill Forge · …), and the turn continues under that
 new banner. If no workflow fits, the Strategist opens Workflow Forge — not the Butler. The
 division of labor is fixed: Butler voices, Strategist picks, Guild Master approves.
+ONE CARVE-OUT: multi-agent SWARM orchestration is the Butler's, not the Strategist's — only the live top session can fan out parallel workers, so the Butler dispatches the Strategist first (worthiness/workflow) then cuts disjoint slices, fans out N workers in one message, runs a per-slice critic, and integrates + commits once.
 
 STEP 0 · HOLD THE APPROVAL GATE — before ANY build, file write, git op, or other
 hard-to-reverse action, the Butler RESTATES the request back as a one-line brief

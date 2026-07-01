@@ -2634,6 +2634,13 @@
       "title": "Architecture Build: CLAUDE.md",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/guild-routing-gate.sh",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130
