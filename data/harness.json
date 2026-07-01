@@ -8,7 +8,7 @@
     "arsenal": "star-alliance-arsenal/",
     "manifest": "domains.json"
   },
-  "_note": "Bump harness_version on any release-worthy change. install.py reads this + the git short-SHA and stamps <project>/.claude/.harness-version.json so a project knows which snapshot it runs.",
+  "_note": "Bump harness_version on any release-worthy change.",
   "policy": {
     "_note": "Drives the proportional routing gate (guild-routing-gate.sh). The gate governs on TWO axes: stakes (reversibility/blast-radius) and size/novelty. Stakes ALWAYS wins over size — a one-line edit to a migration is small but high-stakes and must take the FULL gate + approval halt. Only a turn that is clearly-small AND clearly-low-stakes gets the LITE gate. Unknown → FULL (fail-safe). Edit this list, not the shell.",
     "stakes_keywords": [

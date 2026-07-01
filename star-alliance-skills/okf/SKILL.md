@@ -82,7 +82,7 @@ three ways:
   |---|---|---|
   | `STRATEGIST-*.md`, `AUDIT-*.md` | `docs/` | safe |
   | `gen-*.cjs` / `gen-*.py` | `tools/generators/` | review |
-  | `build.py`, `conformity_check.py`, `install.py`, `log_event.py`, `member_level.py`, `build_guild_log.py` | `tools/` | review |
+  | `build.py`, `conformity_check.py`, `log_event.py`, `member_level.py`, `build_guild_log.py` | `tools/` | review |
   | `*.json` data, `guild-data.js` | `data/` | review |
 - **Unclassified** — no rule; left alone (advisory only).
 

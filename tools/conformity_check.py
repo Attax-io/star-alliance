@@ -741,10 +741,14 @@ def main():
                 _ext_alts.append(_v + r"\-\d+\.\d+(?:[\-][a-z0-9]+)?")
                 # X (major) optionally with a -family tail  (also covers anthropic-1-mini)
                 _ext_alts.append(_v + r"\-\d+[\-][a-z0-9]+")
-                # X-M<n>[a-z]? internal-version alias
+                # X-M<n>[a-z]? internal-version alias  (catches `minimax-M2`)
                 _ext_alts.append(_v + r"\-[Mm]\d+[a-z]?")
+                # <family>-<major>-<minor>  Anthropic date-style
+                # (catches `claude-opus-4-8`, `claude-sonnet-4-5`)
+                _ext_alts.append(_v + r"\-[a-z]+\-\d+[\-\.]?\d+")
             _md_ext_re = re.compile(
-                r'(?<![\w.\-])(?:' + '|'.join(_ext_alts) + r')(?![\w.\-])'
+                r'(?<![\w.\-])(?:' + '|'.join(_ext_alts) + r')(?![\w.\-])',
+                re.IGNORECASE,
             )
             for _md_path in _md_files:
                 if not _md_path.is_file():
@@ -754,13 +758,15 @@ def main():
                 except Exception:
                     continue
                 _md_known_hits = sorted(set(_md_known_re.findall(_md_txt)))
-                # Find every distinct token the file contains that matches a registry
-                # SHAPE. We dedupe by token per file so the failure list per file is
-                # finite regardless of how many times the same drift token appears in
-                # the file (e.g. `Opus` appearing on 6 lines of one file = 1 fail).
+                # Find every distinct token the file contains that matches either the
+                # registry-derived SHAPE or an external-vendor SHAPE. We dedupe by
+                # token (preserving original case) per file so the failure list per
+                # file is finite regardless of how many times the same drift token
+                # appears in the file (e.g. `Opus` appearing on 6 lines = 1 fail).
                 rel = str(_md_path.relative_to(ROOT))
                 _emitted_for_file = set()
-                for _tok in sorted(set(_md_shape_re.findall(_md_txt))):
+                _all_shape_tokens = set(_md_shape_re.findall(_md_txt)) | set(_md_ext_re.findall(_md_txt))
+                for _tok in sorted(_all_shape_tokens):
                     # CASE-SENSITIVE registry membership: `Opus` ≠ `opus`, and the goal
                     # of this guard is to surface the case-mismatch as drift (string-equality
                     # routing lookup against `opus` would silently fail on `Opus`).
@@ -769,20 +775,31 @@ def main():
                     if _tok in _emitted_for_file:
                         continue
                     _emitted_for_file.add(_tok)
-                    # Distinguish two drift flavors in the report: case-mismatch vs
-                    # wholly-unknown — they have different remediation paths.
-                    if _tok.lower() in reg_ids:
+                    # Distinguish three drift flavors in the report: case-mismatch vs
+                    # unknown-shape vs external-vendor — each has its own remediation.
+                    _low = _tok.lower()
+                    if _low in reg_ids:
                         _drift_kind = (
-                            f"case-mismatch for registered id '{_tok.lower()}' "
+                            f"case-mismatch for registered id '{_low}' "
                             f"(the registry is lowercase by convention)"
                         )
+                        _shape_kind = "registry-shape"
+                    elif _md_ext_re.fullmatch(_tok):
+                        _drift_kind = (
+                            f"external-vendor name not in the Star Alliance registry "
+                            f"(the registry is the routing source-of-truth: "
+                            f"replace with the Star Alliance id)"
+                        )
+                        _shape_kind = "external-vendor-shape"
                     else:
                         _drift_kind = (
                             f"matches a models.json id SHAPE but is not registered "
                             f"(add it to models.json or fix the typo)"
                         )
+                        _shape_kind = "registry-shape"
                     fails.append(
-                        f"MD {rel}: unknown model id '{_tok}' — {_drift_kind}; "
+                        f"MD {rel}: unknown model id '{_tok}' [{_shape_kind}] — "
+                        f"{_drift_kind}; "
                         f"{len(_md_known_hits)} known ids referenced in this file"
                     )
         except Exception as _md_exc:

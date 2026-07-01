@@ -157,7 +157,7 @@ are explicit calls, not automatic hooks. Key tools:
 `star-alliance-skills/` holds the guild's 94 skills — each a self-contained
 directory with a `SKILL.md`. Agents reference skills by directory name in their
 YAML frontmatter `skills:` list. Skills are installed to the active Hermes
-profile via `tools/install.py` or the `hermes skills` CLI. The Quartermaster
+profile via the `hermes skills` CLI. The Quartermaster
 manages the lifecycle: syncing, upgrading, and forging new skills.
 
 ## Evolution engine
