@@ -2,6 +2,20 @@
   "version": 1,
   "entries": [
     {
+      "id": 119,
+      "date": "2026-07-01",
+      "type": "chore",
+      "title": "Fixed 4 conformity contradictions: K filter, HS fork-exception, MP Persona type",
+      "who": "the-quartermaster",
+      "detail": "K: skills-meta.json key set wasn't filtered for the leading-underscore vendored-mirror convention the same way skill-dir/guild-data sets already were, so _impeccable-upstream-source (a real, correctly-unwired vendored dir) falsely reported as only-meta — fixed by filtering meta_keys identically. MP: the-butler.md frontmatter still said type: Member despite decision #104 reclassifying it to Persona (install_agents.py already skips agent-card generation for Personas, correctly, per that decision) — fixed the frontmatter, and taught the MP check itself to exclude Persona-type members from the parity requirement so this class of drift cannot recur. HS x2: cleanup and impeccable are documented forks/externals (skill_sync.py EXCEPTIONS, sync-playbook.md) whose repo copy PERMANENTLY diverges from the Claude-store/device copy by design (cleanup = slim Cowork stub vs full device monolith; impeccable = npx-managed external) - the HS check had no awareness of this and was hard-failing on expected divergence, telling the operator to run a blind overwrite that skillsmith's own Invariant #4 forbids. Added a mirrored _HS_FORK_EXCEPTIONS set so these two now surface as non-blocking notes instead of false-positive fails. Verified: python3 tools/conformity_check.py now reports FULL CONFORMITY (was 4 contradictions).",
+      "ref": [
+        "conformity_check.py",
+        "the-butler",
+        "cleanup",
+        "impeccable"
+      ]
+    },
+    {
       "id": 118,
       "date": "2026-07-01",
       "type": "dashboard",

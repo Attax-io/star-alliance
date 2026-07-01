@@ -4,7 +4,7 @@ description: 'THE VOICE of the Star Alliance, not a routing target. Receives the
 model: opus
 tools: [Read, Bash]
 skills: [butler-voice, helpless, star-alliance-language, decompose-and-swarm, butler-onboarding, weapon-utility]
-type: Member
+type: Persona
 version: 1.0.0
 ---
 

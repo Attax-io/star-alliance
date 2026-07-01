@@ -825,8 +825,6 @@ def main():
     except ImportError:
         _yaml = None
     _PROFILE_MAP = {
-        "the-architect":     "architect",
-        "the-developer":     "developer",
         "the-designer":      "designer",
         "the-interpreter": "interpreter",
         "the-herald":        "herald",
@@ -925,6 +923,15 @@ def main():
                 f"— remove from profile or add to member array"
             )
 
+    # Skills whose repo copy intentionally DIVERGES from the device/Claude-store copy —
+    # forks/externals per skillsmith's sync-playbook.md (mirrors skill_sync.py EXCEPTIONS).
+    # HS content drift on these is EXPECTED, not a contradiction — downgrade fail->note.
+    _HS_FORK_EXCEPTIONS = {
+        "cleanup": "repo is a slim Cowork stub; device is the full monolith — sync guts only",
+        "conquering-campaign": "repo is the Cowork-packaged edition (lean desc); device keeps the rich canonical",
+        "impeccable": "external — refresh via `npx impeccable`, never blind-overwrite",
+    }
+
     # === HS — Hermes/Claude content parity: skill content drift ===
     # For every declared skill in every member's `skills:`, the on-disk content
     # (fingerprinted as a directory hash) must match the repo's SSOT under
@@ -960,21 +967,27 @@ def main():
                     f"repo fp {repo_fp[:12]} != profile fp {hermes_fp[:12]} "
                     f"— run skill_sync --profile-content"
                 )
-            # Claude store fingerprint — fail-HARD if missing or drifted
+            # Claude store fingerprint — fail-HARD if missing or drifted,
+            # EXCEPT for documented forks/externals (_HS_FORK_EXCEPTIONS) where
+            # permanent divergence is expected — those go to notes, not fails.
             claude_skill = _claude_skills_dir / sid
             claude_fp = _skill_fingerprint(claude_skill)
+            _hs_fork_reason = _HS_FORK_EXCEPTIONS.get(sid)
             if not claude_fp:
-                fails.append(
-                    f"HS {sid}: Claude-store drift/absent "
-                    f"(~/.claude/skills/{sid}) "
-                    f"— run skill_sync --direction install"
-                )
+                msg = (f"HS {sid}: Claude-store drift/absent "
+                       f"(~/.claude/skills/{sid}) "
+                       f"— run skill_sync --direction install")
+                if _hs_fork_reason:
+                    notes.append(msg + f" (fork/external, expected: {_hs_fork_reason})")
+                else:
+                    fails.append(msg)
             elif claude_fp != repo_fp:
-                fails.append(
-                    f"HS {sid}: Claude-store content drift — "
-                    f"repo fp {repo_fp[:12]} != Claude fp {claude_fp[:12]} "
-                    f"— run skill_sync --direction install"
-                )
+                msg = (f"HS {sid}: Claude-store content drift — "
+                       f"repo fp {repo_fp[:12]} != Claude fp {claude_fp[:12]} ")
+                if _hs_fork_reason:
+                    notes.append(msg + f"(fork/external, expected divergence: {_hs_fork_reason} — sync guts manually per sync-playbook.md, never blind-overwrite)")
+                else:
+                    fails.append(msg + "— run skill_sync --direction install")
 
     # === AL — architecture-layer coherence (CLAUDE.md + AGENTS.md) ===
     # Both instruction files must describe the three-layer architecture and the
@@ -1095,7 +1108,14 @@ def main():
     _mp_members_dir = ROOT / "star-alliance-members"
     _mp_agents_dir = ROOT / "agents"
     if _mp_members_dir.is_dir() and _mp_agents_dir.is_dir():
-        _mp_member_ids = {f.stem for f in _mp_members_dir.glob("the-*.md")}
+        def _mp_is_persona(path):
+            try:
+                head = path.read_text()[:2000]
+            except Exception:
+                return False
+            m = re.search(r'^type:\s*(\S+)', head, re.MULTILINE)
+            return bool(m) and m.group(1).strip().lower() == 'persona'
+        _mp_member_ids = {f.stem for f in _mp_members_dir.glob("the-*.md") if not _mp_is_persona(f)}
         _mp_agent_ids = {f.stem for f in _mp_agents_dir.glob("the-*.md")}
         _mp_only_members = sorted(_mp_member_ids - _mp_agent_ids)
         _mp_only_agents = sorted(_mp_agent_ids - _mp_member_ids)
