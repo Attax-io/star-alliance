@@ -2,11 +2,11 @@
 name: skillsmith
 description: "Manage, sync, upgrade, create, and auto-evolve Star Alliance skills across the star-alliance repo and the on-device copies (~/.claude/skills global + per-project .claude/skills). Modes — sync: reconcile repo and device by metadata.version, honoring fork+external exceptions. upgrade: bump a skill's version, regenerate the VERSIONS.md registry, run the Cowork-compliance check, add a changelog entry. create: author a new skill via the official skill-creator, then make it upgradeable. routine: a daily, fully-autonomous self-improvement loop that mines your code, projects, and sessions with the Stanford STORM method (5 personas, contradiction map, synthesis, peer review) to find upgrade routes, new-skill ideas, and bugs, then applies the high-confidence ones (skillsmith itself included). Triggers: 'sync my skills', 'upgrade a skill', 'create a skill', 'install my skills', 'run the skill routine', 'evolve my skills', '/skillsmith'. Scripts in scripts/; procedures in references/."
 metadata:
-  version: 1.7.2
+  version: 1.8.0
 type: Skill
 
 ---
-# skillsmith — manage, sync, upgrade, create & auto-evolve Star Alliance skills (v1.7.2)
+# skillsmith — manage, sync, upgrade, create & auto-evolve Star Alliance skills (v1.8.0)
 
 The control panel for the `star-alliance` repo. It keeps every skill **versioned**,
 **Cowork-installable**, and **in sync** between the git repo and the on-device copies — and it
@@ -138,12 +138,13 @@ Read **`references/deploy-playbook.md`**. The "Star Alliance is usable elsewhere
 
 ## Versioning
 
-This skill is versioned (`metadata.version` in frontmatter, currently **1.7.2**) and self-registers in `VERSIONS.md`. Bump it on every change — PATCH for fixes/wording, MINOR for a new mode or capability, MAJOR for a breaking workflow change — and add a §Changelog row. (The `routine` mode upgrades skillsmith through exactly this contract — see §R6.)
+This skill is versioned (`metadata.version` in frontmatter, currently **1.8.0**) and self-registers in `VERSIONS.md`. Bump it on every change — PATCH for fixes/wording, MINOR for a new mode or capability, MAJOR for a breaking workflow change — and add a §Changelog row. (The `routine` mode upgrades skillsmith through exactly this contract — see §R6.)
 
 ## Changelog
 
 | Version | Date | Summary |
 |---|---|---|
+| **1.8.0** | 2026-07-01 | **`routine`-playbook reforge: live-verify gate, Evolution Engine wiring, owned deferrals, usage-based retirement + launchd timer/watchdog.** §R4-verify hard live-FS gate before Stage E (kills stale-snippet/checker-drift/dossier-cut false positives); Stage E emits Evolution-Engine ledger events (change/verdict/proposal, diff-hash deduped, routine EMITS only — no engine.py import); §R4 rule 8 forbids prose-only deferral (must emit Tier-B proposal); §R8 usage-based retirement (weekly, human-gated candidates only); Stage E writes data/routine-heartbeat.json; installed always-on launchd timer (06:00, budget-capped) + daily watchdog (08:00 missed-run ping). MINOR. |
 | **1.7.2** | 2026-06-29 | **Restored the Invariant #10 cold critic — it had been dead since the arsenal model-strip.** `critique.py` defaulted to `glm-5.2`, which was removed from the model registry (`seats.critic` no longer exists; known ids = haiku/minimax-m3/opus), so every `verdict.py` cold critique returned `decision=error` → in an unattended run that fail-closes, meaning #10's autonomous-commit gate (shipped 1.7.0) never actually ran. Repointed the `_critic_default()` fallback to **minimax-m3** (the surviving non-Claude family — keeps the Critic a different lineage than the opus Brain). Verified: critic now reaches a real VERDICT. Found+fixed by the 2026-06-29 routine while trying to self-gate. |
 | **1.7.1** | 2026-06-29 | **Dossier build guard — no hard-truncation of SKILL.md bodies for STORM.** Pass SKILL.md whole (most fit the 16000-token budget); if one overflows, summarize and disclose the summarization, or split across calls. A raw mid-sentence cut makes STORM flag a phantom "file truncated" top bug and wastes a slot. Observed on supabase, skillsmith, conquering-campaign (all >9000 chars). Doc-only fix → PATCH. |
 | **1.7.0** | 2026-06-28 | **New Invariant #10 — critic-gated autonomous commits (folds `routine` under the Evolution Engine's VERIFY organ).** Gap closed: `routine` commits each finding mid-run via its own `git commit`, which lands BEFORE the Stop-time verify-gate fires — so headless `run_routine.sh` commits were self-graded (the exact "implementer grades its own work" hole the Evolution Engine exists to close). Fix: every autonomous commit now runs `git diff HEAD \| python3 evolution/verdict.py --fail-closed` first — pass/concerns → commit; block or critic-unreachable → skip + ledger the verdict. Wired into `routine-playbook.md` Stage E (D→E). Interactive `/skillsmith` was already covered by the armed Stop gate; this closes the unattended path. New mandatory step → MINOR. |
