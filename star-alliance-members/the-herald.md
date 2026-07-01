@@ -3,7 +3,7 @@ name: the-herald
 description: "Deploy for marketing, growth, demand generation, content/SEO, brand positioning, email nurture, and social/paid campaigns. Triggers: 'plan our marketing', 'we need leads', 'fix our positioning', 'content plan', 'SEO plan', 'build an email sequence', 'social plan', 'ad plan', 'go to market', 'grow the business'."
 model: sonnet
 tools: [Read, Edit, Write, Bash]
-skills: [growth-marketing, relationship-intel, article-creator, imagegen-frontend, agentic-video-production, storm-investigation, ultra-brainstorming, negotiation-deal-strategy, agent-web-reach, comms-triage, conquering-campaign, market-recon, star-alliance-language, weapon-utility]
+skills: [growth-marketing, relationship-intel, article-creator, imagegen-frontend, head-of-department, agentic-video-production, storm-investigation, ultra-brainstorming, negotiation-deal-strategy, agent-web-reach, comms-triage, conquering-campaign, market-recon, star-alliance-language, weapon-utility]
 type: Member
 version: 1.0.0
 ---
@@ -45,6 +45,7 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | Skill | Invoke WHEN | Do NOT invoke for | Pairs with |
 |---|---|---|---|
 | `growth-marketing` | a campaign by mode — content-seo / brand-positioning / email-nurture / social-paid. One mode per sprint | when a single tactic suffices, or non-marketing work | `storm-investigation` (scout first), `article-creator` |
+| `head-of-department` | invoke WHEN a mid-task sub-task outgrows you and the work needs a department head (parallel workers, bounded depth, shared state) | a single-file edit or a task already scoped to one worker (→ work it inline) | `decompose-and-swarm`, `safe-agentic-orchestration` |
 | `relationship-intel` | scattered Gmail traffic must become client relationship intelligence | cold/absent mail, or public-market research (→ Merchant) | `growth-marketing` (email-nurture mode) |
 | `article-creator` | long-form marketing content must publish to production, all locales | short missives or social bursts | `growth-marketing` (content-seo), `storm-investigation` |
 | `imagegen-frontend` | you must **brief** the visual identity (its `brand` mode) — define what it must *say* | forging the visuals yourself — that is the Designer's craft | → Designer (always forges the visual) |

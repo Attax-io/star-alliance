@@ -399,6 +399,14 @@
     "triggers": "'efficiency report', 'harness efficiency', 'how much are we saving', 'is the gate working', 'tier split', 'check the offload', 'net tokens saved', 'tune the stakes list', or before/after a routing-gate hook change",
     "modes": "Report — join usage-log.jsonl + turn-cost.jsonl via efficiency_report.py (net-saved + per-tier breakdown); Watch — hunt the one hard failure (a high-stakes turn that took LITE); Tune — edit the data/harness.json stakes/size policy, then re-run the gate regression matrix"
   },
+  "head-of-department": {
+    "icon": "🧩",
+    "blurb": "The thin authority-and-limits layer that sits between a worker and a sub-tree.",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "'I', ', ', ', ', ', ', ', '",
+    "modes": ""
+  },
   "high-alert": {
     "icon": "🚨",
     "blurb": "Session klaxon: banners on workflow start, skill activation, member duty",

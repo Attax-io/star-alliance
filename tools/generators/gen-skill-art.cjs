@@ -22,6 +22,10 @@ const STYLE = "fantasy RPG skill icon, Fallen Sword MMORPG style, dark parchment
 
 const SKILLS = [
   {
+    id: "head-of-department",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "The thin authority-and-limits layer that sits between a worker and a sub-tree.", no text, no watermarks`,
+  },
+  {
     id: "temporal-coupling-audit",
     prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "", no text, no watermarks`,
   },

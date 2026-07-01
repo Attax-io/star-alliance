@@ -2257,6 +2257,13 @@
       "title": "Architecture Build: star-alliance-members/the-strategist.md, art/logo-transparent.png, star-alliance-skills/head-of-department/SKILL.md",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Design Sprint: README.md, data/skills-meta.json, star-alliance-members/the-architect.md (+9 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130

@@ -79,6 +79,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`guild-reflection`](star-alliance-skills/guild-reflection/SKILL.md) | 1.1.0 | own | 148 / 1020 | 1295 / 134 | ✓ lean | The Quartermaster's self-improvement engine — turn finished work into durable guild upgrad… |
 | [`guild-sync`](star-alliance-skills/guild-sync/SKILL.md) | 1.0.1 | own | 139 / 1014 | 742 / 83 | ✓ lean | The Quartermaster's device-parity craft — one sweep that proves every surface where the on… |
 | [`harness-efficiency`](star-alliance-skills/harness-efficiency/SKILL.md) | 1.3.0 | own | 150 / 1010 | 1505 / 161 | ✓ lean | The Strategist's craft for proving the Star Alliance harness actually saves tokens and tim… |
+| [`head-of-department`](star-alliance-skills/head-of-department/SKILL.md) | 1.0.0 | own | 79 / 523 | 609 / 52 | ✓ lean | The thin authority-and-limits layer that sits between a worker and a sub-tree |
 | [`high-alert`](star-alliance-skills/high-alert/SKILL.md) | 2.4.0 | own | 132 / 859 | 923 / 58 | ✓ lean | The guild's deployment brief |
 | [`hotspot-radar`](star-alliance-skills/hotspot-radar/SKILL.md) | 1.0.0 | own | 84 / 554 | 804 / 149 | ✓ lean | Mine a git repository's change history to produce a ranked hotspot list — files ranked by … |
 | [`image-to-code`](star-alliance-skills/image-to-code/SKILL.md) | 1.0.0 | own | 80 / 555 | 5735 / 1225 | ○ large | Elite website image-to-code skill for Codex |
@@ -142,4 +143,4 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`workflow-forge`](star-alliance-skills/workflow-forge/SKILL.md) | 1.4.0 | own | 153 / 997 | 2235 / 175 | ✓ lean | The Strategist's craft for distilling a finished run into a reusable star-map workflow in … |
 | [`workflow-runner`](star-alliance-skills/workflow-runner/SKILL.md) | 1.0.0 | own | 123 / 875 | 1100 / 90 | ✓ lean | The Quartermaster's craft for operating the guild's own machinery — RUN a star-map workflo… |
 
-_112 skills — 104 lean · 5 large (installable, over the 500-line ideal) · 0 near the word ceiling · 3 hard violations._
+_113 skills — 105 lean · 5 large (installable, over the 500-line ideal) · 0 near the word ceiling · 3 hard violations._

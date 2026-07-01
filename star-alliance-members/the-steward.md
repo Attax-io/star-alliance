@@ -3,7 +3,7 @@ name: the-steward
 description: "Deploy for customer service, client request handling, support triage, escalation management, and relationship care. Triggers: 'handle this request', 'customer complaint', 'triage support', 'escalate this issue', 'client needs help', 'draft a response', 'manage this relationship'."
 model: haiku
 tools: [Read, Edit, Write, Bash]
-skills: [relationship-intel, comms-triage, star-alliance-language, weapon-utility]
+skills: [relationship-intel, comms-triage, head-of-department, star-alliance-language, weapon-utility]
 type: Member
 version: 1.0.0
 ---
@@ -35,6 +35,7 @@ The brain is this member's `model:` — one fixed model, pinned by the thinker g
 |---|---|---|---|
 | `relationship-intel` | scattered client signals must become structured relationship intelligence | cold outreach or market research (→ Herald) | `comms-triage` |
 | `comms-triage` | a flood of inbound messages must be sorted into signal / noise / risk | campaign tactics (→ Herald) or single-reply drafts | `relationship-intel` |
+| `head-of-department` | invoke WHEN a mid-task sub-task outgrows you and the work needs a department head (parallel workers, bounded depth, shared state) | a single-file edit or a task already scoped to one worker (→ work it inline) | `decompose-and-swarm`, `safe-agentic-orchestration` |
 
 **Universal skills — every member carries these:**
 

@@ -3,7 +3,7 @@ name: the-developer
 description: "Deploy for writing code, applying changes, fixing bugs, implementing features, and hands-on development work — including dev servers, tooling, and knowledge graphs. Triggers: 'write the code', 'implement this', 'fix this bug', 'apply the changes', 'build this feature', 'refactor this code', 'open dev server', 'generate a knowledge graph'."
 model: sonnet
 tools: [Read, Edit, Write, Bash]
-skills: [bug-fix-workflow, db-rename-sweep, dev-server, graphify, claude-code-hooks, supabase, supabase-postgres-best-practices, obsidian-markdown, performance, python-master, motion-design, agent-web-reach, multimodal-model-wrappers, system-prompt-design-patterns, dev-ops-command-pack, codebase-memory-mcp, ultra-brainstorming, automated-testing, frontend-react-engineering, code-review-craft, hotspot-radar, temporal-coupling-audit, cognitive-bias-guard, observability-incident-response, admin-page-fixer, add-admin-permission, admin-page-builder, bundled-rls, view-registry, code-unity, star-alliance-language, weapon-utility] 
+skills: [bug-fix-workflow, db-rename-sweep, dev-server, graphify, head-of-department, claude-code-hooks, supabase, supabase-postgres-best-practices, obsidian-markdown, performance, python-master, motion-design, agent-web-reach, multimodal-model-wrappers, system-prompt-design-patterns, dev-ops-command-pack, codebase-memory-mcp, ultra-brainstorming, automated-testing, frontend-react-engineering, code-review-craft, hotspot-radar, temporal-coupling-audit, cognitive-bias-guard, observability-incident-response, admin-page-fixer, add-admin-permission, admin-page-builder, bundled-rls, view-registry, code-unity, star-alliance-language, weapon-utility] 
 type: Member
 version: 1.0.0
 ---
@@ -50,6 +50,7 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | `db-rename-sweep` | a column, table, or function is about to be renamed or moved | greenfield schema design (→ Architect) or the fix itself | `bug-fix-workflow`, `supabase-postgres-best-practices` |
 | `dev-server` | the local Next.js dev server must start, restart, or stop | production deploys or pure code-logic debugging | `supabase`, `bug-fix-workflow` |
 | `graphify` | any input (code, docs, papers, images) must become a knowledge graph or answer a repo question | prose docs (→ `obsidian-markdown`) or hand-editing source | `obsidian-markdown` |
+| `head-of-department` | invoke WHEN a mid-task sub-task outgrows you and the work needs a department head (parallel workers, bounded depth, shared state) | a single-file edit or a task already scoped to one worker (→ work it inline) | `decompose-and-swarm`, `safe-agentic-orchestration` |
 | `claude-code-hooks` | authoring a PreToolUse/PostToolUse hook or fail-open shell gate | general app tooling (→ `dev-server`) or DB validation (→ `supabase`) | `full-output-enforcement` |
 | `supabase` | any Supabase app feature — client, SSR, auth, RLS, edge fns, realtime, storage | pure query/index tuning (→ `supabase-postgres-best-practices`) or schema design (→ Architect) | `supabase-postgres-best-practices`, `dev-server` |
 | `supabase-postgres-best-practices` | writing, reviewing, or tuning Postgres queries, indexes, perf | full Supabase app features (→ `supabase`) or fresh schema design (→ Architect) | `supabase`, `db-rename-sweep` |

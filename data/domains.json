@@ -120,7 +120,8 @@
         "cognitive-bias-guard",
         "hotspot-radar",
         "new-member-onboarding",
-        "temporal-coupling-audit"
+        "temporal-coupling-audit",
+        "head-of-department"
       ],
       "members": [
         "the-architect",

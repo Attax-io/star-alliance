@@ -3,7 +3,7 @@ name: the-architect
 description: "Deploy for system design, domain modeling, database architecture, and structural refactoring. Triggers: 'design the system', 'model the domain', 'architect the database', 'refactor the structure'."
 model: sonnet
 tools: [Read, Edit, Write, Bash]
-skills: [transactions-domain-model, legal-rule-modeling, invariant-inference, db-rename-sweep, schema-evolution, spec-driven-development, law-harvest, graphify, supabase, supabase-postgres-best-practices, pattern-library-discovery, ultra-brainstorming, api-integration-design, file-access-model, add-admin-permission, add-new-trigger, add-new-view, lex-system-audit, phased-db-refactor, bundled-rls, view-registry, code-crime-scene, hotspot-radar, temporal-coupling-audit, code-unity, star-alliance-language, weapon-utility]
+skills: [transactions-domain-model, legal-rule-modeling, invariant-inference, db-rename-sweep, schema-evolution, spec-driven-development, law-harvest, graphify, head-of-department, supabase, supabase-postgres-best-practices, pattern-library-discovery, ultra-brainstorming, api-integration-design, file-access-model, add-admin-permission, add-new-trigger, add-new-view, lex-system-audit, phased-db-refactor, bundled-rls, view-registry, code-crime-scene, hotspot-radar, temporal-coupling-audit, code-unity, star-alliance-language, weapon-utility]
 type: Member
 version: 1.0.0
 ---
@@ -46,6 +46,7 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | `transactions-domain-model` | any transaction work begins — load the full Lex Council domain model first | non-transaction features or UI-only tweaks | `legal-rule-modeling`, `schema-evolution` |
 | `legal-rule-modeling` | shaping a statute into exact inputs/rules for a legal calculator | translating the law to plain tongue (→ Translator) or pure UI | `law-harvest`, `supabase-postgres-best-practices` |
 | `db-rename-sweep` | a rename or structural move looms — full call-site inventory first | greenfield schemas or cosmetic-only renames | `schema-evolution`, `supabase-postgres-best-practices` |
+| `head-of-department` | a mid-task sub-task outgrows you and the work needs a department head (parallel workers, bounded depth, shared state) | a single-file edit or a task already scoped to one worker (→ work it inline) | `decompose-and-swarm`, `safe-agentic-orchestration` |
 | `schema-evolution` | adding an optional, backward-compatible field threaded through every consumer | breaking changes, dropping columns, destructive migrations | `db-rename-sweep`, `supabase-postgres-best-practices` |
 | `spec-driven-development` | a non-trivial feature looms — write an executable spec→plan→tasks before any code; gate each phase | a one-line obvious fix, or pure execution of an already-approved plan (→ campaign) | `ultra-brainstorming`, `conquering-campaign`, `graphify` |
 | `invariant-inference` | you must infer an UNKNOWN rule over a domain you can sample/check but not enumerate — CHECK/RLS constraint from examples, regression oracle for a migration, state-machine invariant | modeling a KNOWN statute's arithmetic (→ `legal-rule-modeling`) or changing the schema (→ `schema-evolution`) | `schema-evolution`, `legal-rule-modeling`, `supabase-postgres-best-practices` |
