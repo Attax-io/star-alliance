@@ -30,6 +30,8 @@ Checks (each maps to a source-of-truth invariant or a logged decision):
   AL arch-layers   CLAUDE.md and AGENTS.md both describe the three-layer architecture,
                    and the model table in each matches models.json seats
   DX dispatch-xref tools/dispatch.py AGENTS dict → profiles/<folder>/ directory exists
+  TI tier3-dispatch a Tier-3 install ships a WORKING dispatch path (install.sh copies
+                   dispatch.py + arsenal + evolution and runs the Hermes preflight — anti self-brick)
   MP member-parity star-alliance-members/ and agents/ reference the same agent IDs (if both exist)
   MN member-names  member-bearing files reference only canonical member names (no stale renames)
   HM stale-model-id no code/config references a model id deleted from the registry
@@ -1076,6 +1078,31 @@ def main():
                     fails.append(f"DX dispatch.py lists '{_dx_agent}' but profiles/{_dx_folder}/"
                                  f"distribution.yaml is missing")
 
+    # === TI — a Tier-3 install ships a WORKING dispatch path (anti self-brick) ===
+    # The Tier-3 gate hooks (executor-enforce, delegation-gate, verify-gate, ...) route
+    # every write through tools/dispatch.py -> the arsenal -> the evolution ledger. If
+    # install.sh copies the hooks but NOT that substrate, a fresh Tier-3 target bricks its
+    # own main session (gates fire, nothing to route to). Assert the installer's Tier-3
+    # actually ships dispatch.py + arsenal + evolution AND runs the Hermes preflight.
+    _ti_install = ROOT / "star-alliance-arsenal" / "install.sh"
+    if _ti_install.exists():
+        _ti = _ti_install.read_text()
+        _ti_need = {
+            "tools/dispatch.py copy": 'cp "$SA_ROOT/tools/dispatch.py"',
+            "arsenal ship":           'copy_pruned "$SA_ROOT/star-alliance-arsenal"',
+            "evolution ship":         'copy_pruned "$SA_ROOT/evolution"',
+            "Hermes bootstrap call":  "bootstrap_hermes",
+            "dispatch-path preflight": "hermes_preflight",
+        }
+        _ti_missing = sorted(label for label, needle in _ti_need.items() if needle not in _ti)
+        if _ti_missing:
+            fails.append("TI install.sh Tier-3 is missing a working dispatch path: "
+                         f"{_ti_missing} — a fresh Tier-3 target would self-brick "
+                         "(gates ship without the substrate they route to)")
+    else:
+        fails.append("TI star-alliance-arsenal/install.sh not found — cannot verify "
+                     "the Tier-3 dispatch path")
+
     # === RQ — dispatch/publish roster equality (two-way, anti-drift) ===
     # dispatch.py AGENTS (who can be dispatched) and publish_profiles.py
     # PROFILE_MAP (who can be published) must name the SAME members, or a
@@ -1108,6 +1135,10 @@ def main():
     _mp_members_dir = ROOT / "star-alliance-members"
     _mp_agents_dir = ROOT / "agents"
     if _mp_members_dir.is_dir() and _mp_agents_dir.is_dir():
+        # Decision #104: the-butler is a Persona (the guild's VOICE), NOT a spawnable
+        # agent — it lives in star-alliance-members/ but must never get an agents/
+        # card. Any member whose frontmatter says `type: Persona` is excluded from
+        # the member↔agent parity set, so its members-only presence is not a fail.
         def _mp_is_persona(path):
             try:
                 head = path.read_text()[:2000]
