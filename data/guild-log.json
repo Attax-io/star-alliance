@@ -2362,6 +2362,13 @@
       "title": "Routing: tools/conformity_check.py",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Quick Fix: dashboard.js, star-alliance-arsenal/models.json, tools/conformity_check.py",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130

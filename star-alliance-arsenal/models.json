@@ -298,5 +298,10 @@
       }
     }
   },
-  "memberOverrides": {}
+  "memberOverrides": {
+    "the-developer": {
+      "brain": "sonnet",
+      "doer": "minimax-payg"
+    }
+  }
 }

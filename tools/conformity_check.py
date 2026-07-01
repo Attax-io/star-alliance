@@ -644,11 +644,14 @@ def main():
                          f"{reg_tags} (routing fallback drifted from models.json)")
         # === MD — model-id drift: only ids from models.json may appear as model tokens in
         # the doctrine files. Scans CLAUDE.md, AGENTS.md, and every .claude/hooks/*.{py,sh}
-        # for any token that LOOKS like a model id but is NOT in the registry. Fails the
-        # sweep (hard): the doctrine is the one place a model id must be exact, and a typo
-        # or a retired id here breaks routing silently downstream. Fail-soft per file (a
-        # parse error on one file never aborts the sweep). glm-5.2-on-paper is the
-        # exactly the case this guard catches.
+        # for any token that LOOKS like a model id (i.e. matches the SHAPE of an id we
+        # already register) but is NOT itself in the registry. Fails the sweep (hard):
+        # the doctrine is the one place a model id must be exact, and a typo or a retired
+        # id here breaks routing silently downstream. Fail-soft per file (a parse error
+        # on one file never aborts the sweep). Examples this guard catches: a typo like
+        # `Opus.` (capital O — not a registry id), a retired id like `minimax-M3`
+        # (the old release model that was replaced by minimax-sub/payg), or a near-name
+        # like `claude-haiku-4` (no such prefix in models.json).
         try:
             _md_files = [
                 ROOT / "CLAUDE.md",
@@ -656,48 +659,52 @@ def main():
                 *sorted((ROOT / ".claude" / "hooks").glob("*.py")),
                 *sorted((ROOT / ".claude" / "hooks").glob("*.sh")),
             ]
-            # Candidates = tokens that match the shape of a real model id and the
-            # surrounding context rules out the generic English noise. Stops at word
-            # boundaries (anchored, no letter/digit/_/- on either side) so substrings
-            # inside `minimax-m3.key` paths or email-style strings don't false-fire.
-            # We additionally require the token to contain at least one of: a dot, a
-            # digit, or a hyphen-cluster — same shape as every registry id (opus, sonnet,
-            # haiku are short plain words that only survive when they match exactly).
-            # Strategy: take every registry id as its own regex literal (each is short
-            # and distinct enough to disambiguate), then ALSO scan for unknown tokens
-            # that match the registry id shape so we can flag drift in both directions.
+            # KNOWN ids — find every registry id that appears in the file (informational,
+            # never flagged).
             _md_known_re = re.compile(
                 r'(?<![\w.\-])(?:' + '|'.join(re.escape(m) for m in sorted(reg_ids)) + r')(?![\w.\-])'
             )
-            # Candidate scanner for UNKNOWN ids: word chars + .-_  of len 2..32
-            _md_unknown_re = re.compile(r'(?<![\w.\-])([A-Za-z][\w.\-]{1,31})(?![\w.\-])')
-            # Tokens we will NEVER treat as model ids even if shape-shaped (English /
-            # project vocab that would otherwise false-fire).
-            _md_noise = {
-                # shebang / python / shell generic tokens
-                "bin", "env", "python", "python3", "bash", "sh", "usr", "tmp", "var",
-                "etc", "home", "root", "opt", "lib", "src", "www", "http", "https",
-                "key", "json", "yaml", "yml", "toml", "md", "txt", "csv", "log",
-                "api", "cli", "id", "ids", "url", "uri", "app", "doc", "docs",
-                "tool", "tools", "file", "files", "dir", "path", "name", "names",
-                "true", "false", "null", "none", "yes", "no", "ok", "err",
-                "default", "fallback", "models", "model", "agent", "agents",
-                "member", "members", "skill", "skills", "workflow", "workflows",
-                "guild", "alliance", "role", "roles", "status", "kind", "tag",
-                "the", "and", "for", "with", "via", "into", "from", "not",
-                "to", "of", "in", "on", "or", "is", "as", "be", "do", "if",
-                # repo filenames / paths the regex would catch:
-                "star", "claude", "hermes", "Read", "data", "code", "version",
-                "pass", "fail", "warn", "info", "debug", "trace",
-                # shell builtins and test commands seen in .sh hooks:
-                "echo", "exit", "cd", "test", "true", "false", "set", "unset",
-                "export", "if", "then", "else", "elif", "fi", "for", "while",
-                "case", "esac", "function", "return", "local", "read",
-            }
-            # Registry-shaped tokens (anything with a digit, a hyphenated cluster, or a
-            # dot) that we want to even consider scanning — keeps the candidate list short.
-            _md_candidate_re = re.compile(
-                r'(?<![\w.\-])([A-Za-z][\w.\-]{1,31})(?![\w.\-])'
+            # SHAPE patterns — derived from the registry, NOT free-form. Group every
+            # registered id by its first alphabetic segment; only those first-segment
+            # prefixes (the vendors) are allowed, and within each vendor the tail is
+            # narrowed to one of the actually registered tails. This is what stops
+            # plain English hyphenated phrases ("approval-pending", "conformance-block",
+            # "the-architect") from being treated as model ids — they don't have a
+            # registered vendor prefix. Bare ids (opus, sonnet, haiku) are matched as
+            # exact-anchored literals, not free-form `[a-z]+`.
+            _shape_groups = {}
+            for _mid in sorted(reg_ids):
+                _first = _mid.split("-", 1)[0]
+                _shape_groups.setdefault(_first, []).append(_mid)
+            _shape_alts = []
+            for _first, _members in sorted(_shape_groups.items()):
+                _tail_alts = []
+                for _mid in _members:
+                    if _mid == _first:
+                        continue  # bare id — handled as a literal below
+                    _rest = _mid[len(_first) + 1:]
+                    _seg_alts = []
+                    for _seg in _rest.split("-"):
+                        if _seg.isdigit():
+                            _seg_alts.append(r"\d+")
+                        elif re.fullmatch(r"\d+\.\d+", _seg):
+                            _seg_alts.append(r"\d+\.\d+")
+                        else:
+                            # letter tail (sub, payg, music, speech, video, k2.7 ...).
+                            # Use a literal so a near-name like "minimax-NEWS" doesn't
+                            # accidentally match. Case-insensitive at the top level.
+                            _seg_alts.append(re.escape(_seg))
+                    _tail_alts.append(r"\-" + r"\-".join(_seg_alts))
+                _shape_alts.append(_first + (r"(?:" + "|".join(_tail_alts) + r")" if _tail_alts else r"(?![\w\-])"))
+            # Bare ids: match ONLY as exact bare tokens, not as a prefix inside another
+            # word. Anchored, no word chars adjacent — `opus.` is therefore excluded
+            # because `.` is not a word char; `opus-the-great` is excluded because `-`
+            # IS a word char under `[\w.\-]` boundaries.
+            _bare_alts = [re.escape(m) for m in reg_ids if "-" not in m]
+            _shape_alts.extend(_bare_alts)
+            _md_shape_re = re.compile(
+                r'(?<![\w.\-])(?:' + '|'.join(_shape_alts) + r')(?![\w.\-])',
+                re.IGNORECASE,
             )
             for _md_path in _md_files:
                 if not _md_path.is_file():
@@ -706,32 +713,25 @@ def main():
                     _md_txt = _md_path.read_text(encoding="utf-8")
                 except Exception:
                     continue
-                # 1) Find known registry ids referenced in the file (just for the report —
-                #    we never fail on them). This is the FB-style inventory.
                 _md_known_hits = sorted(set(_md_known_re.findall(_md_txt)))
-                # 2) Find tokens that LOOK like model ids but are NOT in the registry,
-                #    and NOT noise. Anything not in reg_ids that's registry-shaped = drift.
-                for tok in sorted(set(_md_candidate_re.findall(_md_txt))):
-                    low = tok.lower()
-                    if low in _md_noise:
+                # Find every distinct token the file contains that matches a registry
+                # SHAPE. We dedupe by token per file so the failure list per file is
+                # finite regardless of how many times the same drift token appears in
+                # the file (e.g. `glm-5.2` hardcoded on 6 lines of one file = 1 fail).
+                rel = str(_md_path.relative_to(ROOT))
+                _emitted_for_file = set()
+                for _tok in sorted(set(_md_shape_re.findall(_md_txt))):
+                    if _tok.lower() in reg_ids:
+                        continue  # known id, never a fail
+                    if _tok in _emitted_for_file:
                         continue
-                    if low in reg_ids:
-                        continue
-                    # Registry-shape: must have a digit, or a dot, or a hyphen-cluster
-                    # (mirror the "id-like" heuristic that catches `glm-5.2`, `minimax-sub`,
-                    # `qwen-3.5`, etc). Pure plain English words like "agent" or "guild"
-                    # won't have any of those, so they're naturally excluded.
-                    shape_like = (
-                        any(c.isdigit() for c in tok)
-                        or "." in tok
-                        or ("-" in tok and len(tok) >= 4)
+                    _emitted_for_file.add(_tok)
+                    fails.append(
+                        f"MD {rel}: unknown model id '{_tok}' "
+                        f"(matches a models.json id SHAPE but is not registered — "
+                        f"add it to models.json or fix the typo; "
+                        f"{len(_md_known_hits)} known ids referenced in this file)"
                     )
-                    if not shape_like:
-                        continue
-                    rel = str(_md_path.relative_to(ROOT))
-                    fails.append(f"MD {rel}: unknown model id '{tok}' "
-                                 f"(not in models.json — {len(_md_known_hits)} known "
-                                 f"ids referenced: {', '.join(_md_known_hits)})")
         except Exception as _md_exc:
             notes.append(f"MD  model-drift check raised an exception "
                          f"(skipped, fail-soft): {_md_exc}")

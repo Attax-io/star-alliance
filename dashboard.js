@@ -419,7 +419,14 @@ function renderWorkflows(g) {
   list.innerHTML = ''
   const grid = document.createElement('div')
   grid.className = 'workflow-icon-grid'
-  ;(g.workflows || []).forEach(w => {
+  // sort by workflow LEVEL (highest first), then alphabetically by display NAME
+  const sortedWorkflows = [...(g.workflows || [])].sort((a, b) => {
+    const la = a?.level ?? 0
+    const lb = b?.level ?? 0
+    if (lb !== la) return lb - la
+    return (a?.name || '').toLowerCase().localeCompare((b?.name || '').toLowerCase())
+  })
+  sortedWorkflows.forEach(w => {
     const thumb = document.createElement('div')
     thumb.className = 'workflow-thumb' + (w.neverInvoked ? ' workflow-thumb--new' : '')
     const img = document.createElement('img')
