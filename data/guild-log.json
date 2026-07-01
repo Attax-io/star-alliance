@@ -2669,6 +2669,13 @@
       "title": "Hygiene Rotation: data/mcp-telemetry.jsonl, server/serve.py, server/star_alliance_mcp.py",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Standard Mission: star-alliance-skills/skillsmith/references/routine-playbook.md, star-alliance-skills/skillsmith/assets/com.attax.skillsmith-watchdog.plist, star-alliance-skills/skillsmith/scripts/routine_watchdog.py",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130

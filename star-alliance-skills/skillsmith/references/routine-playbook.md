@@ -195,7 +195,7 @@ recur without it:
 - Commit each applied change separately, message:
   `skillsmith routine YYYY-MM-DD: <verb> <skill> — <one-line> [conf N/10]`.
 - `git push origin main`.
-- **For every sub-8/10 finding that stays deferred in the ledger (see §R3 rule below), emit a `proposal` event** so it is queryable by the Evolution Engine, not just readable prose in the markdown notebook:
+- **For every sub-8/10 finding that stays deferred in the ledger (see §R4 rule 8 below), emit a `proposal` event** so it is queryable by the Evolution Engine, not just readable prose in the markdown notebook:
   `python3 evolution/ledger.py add proposal --author skillsmith-routine --surface skills --tier B --detail "<finding summary> — deferred, confidence <N>/10, why: <one-line reason>"`
 - Write a **Run Summary** at the top of the ledger entry: what was applied, what was deferred, total
   cost, and the single highest-value proposal for next time.
@@ -224,6 +224,21 @@ recur without it:
 6. **Self-upgrade is special** — see §R6.
 7. **Reversible.** Every change is its own commit on `main`. The routine never force-pushes, never
    rebases, never `git push origin <branch>:main`. A bad day is `git revert`.
+8. **Prose-only deferral is forbidden — every deferred finding becomes a durable, queryable
+   work-item, not just a paragraph in the day's ledger markdown.** When Stage D defers a finding
+   (confidence < 8/10, a big mess too large for one run, or a §R4-verify KILL that still names a
+   real-but-lower-priority gap), it MUST emit a `proposal` event via `evolution/ledger.py` in the
+   SAME step it writes the ledger prose — never one without the other:
+   `python3 evolution/ledger.py add proposal --author skillsmith-routine --surface <skills|hooks|doctrine|gates|arsenal|workflows|docs|memory> --tier B --detail "<surface>/<id> — <summary> — why deferred: <one-line reason>"`
+   Capture, at minimum, in the `--detail` string (or `--meta` as a JSON object, whichever is
+   convenient): `{surface, id, summary, why-deferred, timestamp}` — the ledger's own `ts` field
+   already supplies the timestamp, so it need not be repeated in `--detail`/`--meta` unless useful
+   for cross-reference. `--tier` should reflect the actual surface tier (`skills`/`memory`/`docs` →
+   Tier A even though the *work itself* is deferred; a deferred change to `hooks`/`doctrine`/
+   `gates`/`arsenal`/`workflows` → Tier B) — pass `--tier B` explicitly only when the surface itself
+   doesn't already auto-derive to B via `tier_for(surface)`. This makes every deferred item queryable
+   (`evolution/ledger.py tail --kind proposal`) by a future run or a human audit, instead of requiring
+   someone to grep old `routine-ledger/*.md` files by hand.
 
 ---
 
@@ -322,3 +337,40 @@ These guard the routine's own verdicts against false confidence:
   `supabase*` skills). Local edits get clobbered on the next sync — route the lesson to a guild-owned
   skill or a local overlay instead.
 - **NO-OP immediately when the target identity is undefined** — skip the redundant on-disk search.
+
+---
+
+## §R8 — Usage-based retirement (weekly cadence, human-gated)
+
+Skills accumulate; not all of them earn their keep. On a **weekly cadence** (or every Nth run —
+tune alongside §R5's other cadence knobs), the routine adds a retirement/consolidation pass on top
+of the daily upgrade/create/bug-fix loop:
+
+1. **Read the usage signal from `routine_scan.py`'s own output** — it already computes, per skill,
+   exactly the two numbers this stage needs: `mentions[name]` (`{files, sessions}` — how often the
+   skill is *retrieved/discussed* across the corpus) and `friction[name]` (the snippets showing the
+   skill was *actually invoked and hit trouble*). Cross the two signals rather than reading either
+   alone:
+   - **Retrieved-but-unused** — high `mentions` (the skill comes up in conversation/docs often) but
+     near-zero real invocation evidence (no session-transcript friction entries AND no matching
+     `dispatch-log.jsonl` / skill-seam fire count from `tools/xp.py`'s namespace — see
+     `weapon-utility`'s usage-level doctrine for where those logs live). This skill is talked about
+     but not actually drawn.
+   - **Used-without-benefit** — real invocation evidence exists, but the routine's own STORM
+     dossiers for this skill have converged to "no upgrade warranted" for several consecutive runs
+     (see the Stage B "re-aim the lens" rule) AND it shows recurring friction snippets that never
+     resolve into a fix (a skill that's fired often but keeps hurting, not helping).
+2. **Rank** all skills by this crossed signal and surface the bottom N (tune alongside §R5) as
+   **retirement/consolidation CANDIDATES** — never a verdict. A candidate names: the skill id, its
+   mention count, its invocation-evidence count (0 if retrieved-but-unused), the specific reason
+   bucket (retrieved-but-unused / used-without-benefit), and — if applicable — the sibling skill(s)
+   it might merge into.
+3. **Emit each candidate as a `proposal` event, Tier B, never an automatic delete:**
+   `python3 evolution/ledger.py add proposal --author skillsmith-routine --surface skills --tier B --detail "RETIREMENT-CANDIDATE: <skill-id> — mentions=<N> invocations=<N> reason=<retrieved-but-unused|used-without-benefit> — candidate merge target: <sibling-id-or-none>"`
+   Retirement is **always human-gated** — the routine never deletes, merges, or demotes a skill on
+   its own initiative. §R4's ≥8/10 auto-apply gate does not extend to retirement; this stage only
+   ever produces a queryable candidate list for a human (or a `guild-reflection` AUDIT pass) to act
+   on.
+4. **Also write the candidate list to the day's ledger markdown entry** under a `## Retirement
+   Candidates` heading, so it is visible to a human reading `routine-ledger/YYYY-MM-DD.md` without
+   needing to query the Evolution Engine ledger directly.
