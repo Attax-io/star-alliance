@@ -2571,6 +2571,13 @@
       "title": "Architecture Build: data/harness.json, star-alliance-members/the-butler.md, star-alliance-skills/butler-voice/SKILL.md (+2 more)",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: star-alliance-members/the-butler.md",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130
