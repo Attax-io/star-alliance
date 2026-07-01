@@ -642,6 +642,206 @@ def main():
         if cloud_map != reg_tags:
             fails.append(f"FB summon _FALLBACK_CLOUD_TAG {cloud_map} != registry cloud_tags "
                          f"{reg_tags} (routing fallback drifted from models.json)")
+        # === MD — model-id drift: only ids from models.json may appear as model tokens in
+        # the doctrine files. Scans CLAUDE.md, AGENTS.md, and every .claude/hooks/*.{py,sh}
+        # for any token that LOOKS like a model id but is NOT in the registry. Fails the
+        # sweep (hard): the doctrine is the one place a model id must be exact, and a typo
+        # or a retired id here breaks routing silently downstream. Fail-soft per file (a
+        # parse error on one file never aborts the sweep). glm-5.2-on-paper is the
+        # exactly the case this guard catches.
+        try:
+            _md_files = [
+                ROOT / "CLAUDE.md",
+                ROOT / "AGENTS.md",
+                *sorted((ROOT / ".claude" / "hooks").glob("*.py")),
+                *sorted((ROOT / ".claude" / "hooks").glob("*.sh")),
+            ]
+            # Candidates = tokens that match the shape of a real model id and the
+            # surrounding context rules out the generic English noise. Stops at word
+            # boundaries (anchored, no letter/digit/_/- on either side) so substrings
+            # inside `minimax-m3.key` paths or email-style strings don't false-fire.
+            # We additionally require the token to contain at least one of: a dot, a
+            # digit, or a hyphen-cluster — same shape as every registry id (opus, sonnet,
+            # haiku are short plain words that only survive when they match exactly).
+            # Strategy: take every registry id as its own regex literal (each is short
+            # and distinct enough to disambiguate), then ALSO scan for unknown tokens
+            # that match the registry id shape so we can flag drift in both directions.
+            _md_known_re = re.compile(
+                r'(?<![\w.\-])(?:' + '|'.join(re.escape(m) for m in sorted(reg_ids)) + r')(?![\w.\-])'
+            )
+            # Candidate scanner for UNKNOWN ids: word chars + .-_  of len 2..32
+            _md_unknown_re = re.compile(r'(?<![\w.\-])([A-Za-z][\w.\-]{1,31})(?![\w.\-])')
+            # Tokens we will NEVER treat as model ids even if shape-shaped (English /
+            # project vocab that would otherwise false-fire).
+            _md_noise = {
+                # shebang / python / shell generic tokens
+                "bin", "env", "python", "python3", "bash", "sh", "usr", "tmp", "var",
+                "etc", "home", "root", "opt", "lib", "src", "www", "http", "https",
+                "key", "json", "yaml", "yml", "toml", "md", "txt", "csv", "log",
+                "api", "cli", "id", "ids", "url", "uri", "app", "doc", "docs",
+                "tool", "tools", "file", "files", "dir", "path", "name", "names",
+                "true", "false", "null", "none", "yes", "no", "ok", "err",
+                "default", "fallback", "models", "model", "agent", "agents",
+                "member", "members", "skill", "skills", "workflow", "workflows",
+                "guild", "alliance", "role", "roles", "status", "kind", "tag",
+                "the", "and", "for", "with", "via", "into", "from", "not",
+                "to", "of", "in", "on", "or", "is", "as", "be", "do", "if",
+                # repo filenames / paths the regex would catch:
+                "star", "claude", "hermes", "Read", "data", "code", "version",
+                "pass", "fail", "warn", "info", "debug", "trace",
+                # shell builtins and test commands seen in .sh hooks:
+                "echo", "exit", "cd", "test", "true", "false", "set", "unset",
+                "export", "if", "then", "else", "elif", "fi", "for", "while",
+                "case", "esac", "function", "return", "local", "read",
+            }
+            # Registry-shaped tokens (anything with a digit, a hyphenated cluster, or a
+            # dot) that we want to even consider scanning — keeps the candidate list short.
+            _md_candidate_re = re.compile(
+                r'(?<![\w.\-])([A-Za-z][\w.\-]{1,31})(?![\w.\-])'
+            )
+            for _md_path in _md_files:
+                if not _md_path.is_file():
+                    continue
+                try:
+                    _md_txt = _md_path.read_text(encoding="utf-8")
+                except Exception:
+                    continue
+                # 1) Find known registry ids referenced in the file (just for the report —
+                #    we never fail on them). This is the FB-style inventory.
+                _md_known_hits = sorted(set(_md_known_re.findall(_md_txt)))
+                # 2) Find tokens that LOOK like model ids but are NOT in the registry,
+                #    and NOT noise. Anything not in reg_ids that's registry-shaped = drift.
+                for tok in sorted(set(_md_candidate_re.findall(_md_txt))):
+                    low = tok.lower()
+                    if low in _md_noise:
+                        continue
+                    if low in reg_ids:
+                        continue
+                    # Registry-shape: must have a digit, or a dot, or a hyphen-cluster
+                    # (mirror the "id-like" heuristic that catches `glm-5.2`, `minimax-sub`,
+                    # `qwen-3.5`, etc). Pure plain English words like "agent" or "guild"
+                    # won't have any of those, so they're naturally excluded.
+                    shape_like = (
+                        any(c.isdigit() for c in tok)
+                        or "." in tok
+                        or ("-" in tok and len(tok) >= 4)
+                    )
+                    if not shape_like:
+                        continue
+                    rel = str(_md_path.relative_to(ROOT))
+                    fails.append(f"MD {rel}: unknown model id '{tok}' "
+                                 f"(not in models.json — {len(_md_known_hits)} known "
+                                 f"ids referenced: {', '.join(_md_known_hits)})")
+        except Exception as _md_exc:
+            notes.append(f"MD  model-drift check raised an exception "
+                         f"(skipped, fail-soft): {_md_exc}")
+        # === MR — roster-drift: the literal Python rosters in routing-enforce.py and
+        # hermes-upgrade-notify.py must equal the TRUE roster (stems of
+        # star-alliance-members/*.md, README.md excluded). Reads each literal with
+        # ast.literal_eval so a syntax error on one file never aborts the sweep, and
+        # so an unsupported literal shape (string, dict, etc.) is caught and reported
+        # rather than crashing. Fails HARD on any mismatch — a hook that mutes a real
+        # member, or routes a non-existent one, is a silent routing hole.
+        try:
+            _mr_true_roster = {
+                f.stem for f in sorted((ROOT / "star-alliance-members").glob("*.md"))
+                if f.stem != "README"
+            }
+            if not _mr_true_roster:
+                notes.append("MR  star-alliance-members/*.md produced an empty roster "
+                             "(skipped, fail-soft)")
+            else:
+                _mr_hooks = [
+                    ("SPECIALISTS", ROOT / ".claude" / "hooks" / "routing-enforce.py"),
+                    ("ALL_MEMBERS",  ROOT / ".claude" / "hooks" / "hermes-upgrade-notify.py"),
+                ]
+                import ast as _ast
+                for _mr_varname, _mr_path in _mr_hooks:
+                    if not _mr_path.is_file():
+                        continue
+                    try:
+                        _mr_src = _mr_path.read_text(encoding="utf-8")
+                    except Exception:
+                        continue
+                    _mr_parsed = None
+                    _mr_fail_reason = None
+                    try:
+                        # Locate the `NAME = <literal>` line(s) for the variable.
+                        # Each hook may use a set {...} or list [...] literal — both are
+                        # valid ast literals. We scan line-by-line so we can pinpoint the
+                        # first line that breaks if it's multi-line.
+                        import re as _re_mr
+                        _mr_lines = _mr_src.splitlines()
+                        _mr_start = None
+                        _mr_end = None
+                        for _i, _ln in enumerate(_mr_lines):
+                            if _mr_start is None:
+                                if _re_mr.match(rf'^\s*{_mr_varname}\s*=\s*', _ln):
+                                    _mr_start = _i
+                            else:
+                                # extend through closing } or ]; tolerate continuation.
+                                if _ln.rstrip().endswith(("}", "]")):
+                                    _mr_end = _i + 1
+                                    break
+                        if _mr_start is None or _mr_end is None:
+                            _mr_fail_reason = (
+                                f"could not locate `{_mr_varname} = ...` literal"
+                            )
+                        else:
+                            _mr_chunk = "\n".join(_mr_lines[_mr_start:_mr_end])
+                            # The chunk may end with code after the literal (rare, but
+                            # safe). Extract the first balanced set/list literal.
+                            _mr_brace = _re_mr.search(
+                                r'=\s*(\{[^}]*\}|\[[^\]]*\])', _mr_chunk, _re_mr.S
+                            )
+                            if not _mr_brace:
+                                _mr_fail_reason = (
+                                    f"could not extract a set/list literal from "
+                                    f"`{_mr_varname}`"
+                                )
+                            else:
+                                _mr_parsed = _ast.literal_eval(_mr_brace.group(1))
+                    except Exception as _ex:
+                        _mr_fail_reason = f"literal_eval raised: {_ex}"
+                    if _mr_fail_reason is not None:
+                        fails.append(
+                            f"MR {_mr_path.name} ({_mr_varname}): could not parse "
+                            f"the hardcoded roster — {_mr_fail_reason} (parse the hook "
+                            f"manually and replace the literal with a roster loader)"
+                        )
+                        continue
+                    # Normalize the literal to a set[str]. Reject any non-string entries
+                    # (e.g. accidentally added a tuple) as a hard fail.
+                    if isinstance(_mr_parsed, set):
+                        _mr_literal_set = _mr_parsed
+                    elif isinstance(_mr_parsed, (list, tuple)):
+                        _mr_literal_set = set(_mr_parsed)
+                    else:
+                        fails.append(
+                            f"MR {_mr_path.name} ({_mr_varname}): expected a set or "
+                            f"list literal, got {type(_mr_parsed).__name__}"
+                        )
+                        continue
+                    if any(not isinstance(x, str) for x in _mr_literal_set):
+                        fails.append(
+                            f"MR {_mr_path.name} ({_mr_varname}): literal contains "
+                            f"non-string entries — must be a set/list of member ids"
+                        )
+                        continue
+                    if _mr_literal_set != _mr_true_roster:
+                        _mr_only_lit = sorted(_mr_literal_set - _mr_true_roster)
+                        _mr_only_real = sorted(_mr_true_roster - _mr_literal_set)
+                        fails.append(
+                            f"MR {_mr_path.name} ({_mr_varname}): roster drifted from "
+                            f"star-alliance-members/*.md — "
+                            f"only-in-hook={_mr_only_lit} "
+                            f"only-in-roster={_mr_only_real} "
+                            f"(update the literal to match the true roster)"
+                        )
+        except Exception as _mr_exc:
+            notes.append(f"MR  roster-drift check raised an exception "
+                         f"(skipped, fail-soft): {_mr_exc}")
+
         # ST — universal SEATS (models.json "seats"): every seat default + fallback must
         #      name a real registry id. The Critic seat was REMOVED from the registry
         #      (decision: critic is no longer a separate seat — Claude models are BRAIN,
@@ -988,6 +1188,12 @@ def main():
         print(f"   #{d['id']} {d['title']}")
     print(f" {agents_key}={real[agents_key]}  skills={real['skills']}  workflows={real['workflows']}  "
           f"version={g.get('meta',{}).get('version')}")
+    # per-check tallies for the two drift guards added in this build. Listed even when
+    # both pass so the operator can see at a glance that MD and MR ran (and that the
+    # hardcoded rosters / doctrine model ids were linted against the registry).
+    _md_count = sum(1 for f in fails if f.startswith("MD "))
+    _mr_count = sum(1 for f in fails if f.startswith("MR "))
+    print(f" model-drift: MD={_md_count}   roster-drift: MR={_mr_count}")
     print("─" * 64)
     if notes:
         print(" NOTES (non-blocking):")

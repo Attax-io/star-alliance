@@ -2355,6 +2355,13 @@
       "title": "Routing: .claude/agents/the-architect.md, .claude/agents/the-quartermaster.md, .claude/agents/the-steward.md (+4 more)",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Routing: tools/conformity_check.py",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130
