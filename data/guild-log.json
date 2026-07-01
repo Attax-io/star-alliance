@@ -2313,6 +2313,13 @@
       "title": "Conversation: dashboard.js, skill-art/arsenal-forge.png, skill-art/comms-triage.png (+16 more)",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Conversation: skill-art/portability-audit.png, skill-art/project-start.png",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130
