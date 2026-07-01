@@ -1677,7 +1677,7 @@
           "swarm": {
             "member": "the-strategist",
             "min_instances": 2,
-            "max_instances": 5,
+            "max_instances": 7,
             "partition": "by-subtask",
             "isolation": "shared-tree",
             "integration_step": true
@@ -1727,6 +1727,100 @@
         "fan out the panel",
         "run the panel in parallel",
         "parallel audit"
+      ]
+    },
+    {
+      "id": "swarm-panel",
+      "version": "1.0.0",
+      "name": "Swarm Panel",
+      "icon": "🐝",
+      "accent": "amber",
+      "category": "Guild Self",
+      "class": "mutating",
+      "tagline": "Cut the work into disjoint slices, fan out N workers in parallel, critic each slice, integrate once.",
+      "when": "Use this when a job is too big for one pass and splits into truly independent slices — an app-wide audit, a multi-file refactor, or a broad sweep. The Butler fans out several worker instances at once (one per slice), reviews each slice, and integrates on a single thread. This is the push-button form of the guild's three swarm skills (decompose-and-swarm + head-of-department + ultra-brainstorming) as one motion.",
+      "steps": [
+        {
+          "kind": "member",
+          "actor": "you",
+          "title": "Name the Target",
+          "act": "You name the work to swarm — the audit surface, refactor, or multi-file sweep too big for one pass.",
+          "produces": "target brief",
+          "exec": "inline"
+        },
+        {
+          "kind": "gate",
+          "gate": "approval",
+          "label": "You confirm the slices and the worker count before the swarm fans out."
+        },
+        {
+          "kind": "member",
+          "actor": "the-strategist",
+          "title": "Judge Worthiness & Cut Slices",
+          "act": "The Strategist runs the decompose-and-swarm worthiness gate, scouts the surface, cuts disjoint [P]-safe slices, and writes the seam contracts. If the work is not genuinely splittable it stops here and routes to a lighter workflow.",
+          "produces": "slice plan",
+          "inputs": [
+            "target brief"
+          ],
+          "exec": "inline",
+          "stage": "swarm"
+        },
+        {
+          "kind": "member",
+          "actor": "the-developer",
+          "title": "Fan Out the Workers",
+          "act": "The Butler fans out N worker instances in one message — one per disjoint slice, of the routed craft. Each worker runs as the member brain and edits only its own slice against the seam contract.",
+          "produces": "slice diffs",
+          "inputs": [
+            "slice plan"
+          ],
+          "exec": "spawn",
+          "parallel": true,
+          "stage": "swarm",
+          "swarm": {
+            "member": "the-developer",
+            "min_instances": 2,
+            "max_instances": 7,
+            "partition": "by-slice",
+            "isolation": "shared-tree",
+            "integration_step": true
+          }
+        },
+        {
+          "kind": "member",
+          "actor": "the-strategist",
+          "title": "Critic Each Slice & Integrate",
+          "act": "As each worker returns, its slice diff is reviewed by the critic (verdict.run_cold / glm-5.2) before it merges — no slice integrates unreviewed. The Strategist then assembles the blessed slices on the main thread, reconciles the seams against the contract, and runs ultra-brainstorming synthesis under head-of-department caps to produce the unified result.",
+          "produces": "integrated result",
+          "exec": "inline",
+          "stage": "swarm"
+        },
+        {
+          "kind": "member",
+          "actor": "the-quartermaster",
+          "title": "Confirm Guild Conformance",
+          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
+          "script": "guild/conformance.py",
+          "produces": "conformance sign-off",
+          "exec": "spawn"
+        },
+        {
+          "kind": "gate",
+          "gate": "report",
+          "label": "The Butler reports the slices cut, the per-slice verdicts, and the integrated result — in plain English — and commits once, one commit per slice for surgical rollback."
+        }
+      ],
+      "trigger_phrases": [
+        "deep-audit this",
+        "swarm this",
+        "convene the panel",
+        "fan out N agents",
+        "fan out the workers",
+        "swarm the work",
+        "split this across agents",
+        "run this as a swarm",
+        "parallel workers",
+        "deep panel audit"
       ]
     },
     {

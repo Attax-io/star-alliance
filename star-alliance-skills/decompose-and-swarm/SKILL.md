@@ -24,7 +24,7 @@ The underlying structure is a **capable-bookends engine**: a small capable gate 
 - A replacement for [[safe-agentic-orchestration]] (team structure and spec gates) or [[members-formation]] (workflow selection). Those run first; this runs when a selected workflow declares a swarm step.
 - A doer-tier routing rule. Workers are the member BRAIN (Sonnet, tool-capable), not MiniMax. See the MODEL RULE below.
 
-**MAX_SWARM = 5.** The Butler never fans out more than five workers in one message.
+**MAX_SWARM = 7.** The Butler never fans out more than seven workers in one message. _(Raised from 5 to 7 on 2026-07-01 to match the live 7-worker swarm demo; the per-slice critic reviews each slice independently, so a wider fan-out does not breach the 60KB aggregate threshold.)_
 
 ---
 
@@ -146,7 +146,7 @@ The existing banner-enforcer regex already matches `The Developer x3 —` — no
 ## Invariants enforced by conformity_check.py (SW-series)
 
 - **SW1** `swarm.member` equals the step's `actor`.
-- **SW2** `1 < max_instances <= 5` and `2 <= min_instances <= max_instances`.
+- **SW2** `1 < max_instances <= 7` and `2 <= min_instances <= max_instances`.
 - **SW3** `partition` and `isolation` enums are valid (`by-file | by-module | by-subtask`; `shared-tree | worktree`).
 - **SW4** A swarm step with `integration_step: true` is followed in-stage by an inline same-actor integration step.
 - **SW5** `swarm.member` names a real member; `decompose-and-swarm` is carried by the-butler.

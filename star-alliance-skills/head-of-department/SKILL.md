@@ -33,7 +33,7 @@ Promote to head only when mid-task work has outgrown one worker. The trigger is 
 `MAX_DEPTH = 2`. Head → sub-head → workers. No third level. A worker that needs another worker escalates to its head; a sub-head that needs another sub-head demotes back. Depth beyond 2 is a partition bug, not a structural need.
 
 ### 3. Blast-radius cap
-`MAX_SWARM = 5` per fan-out. `MAX_TOTAL_WORKERS = 12` per tree (one head + up to two sub-heads + their workers). Over either cap, the head re-partitions or escalates — it never widens. The caps exist so a head's fan-out stays auditable and the orchestrator's per-slice critic stays under the 60KB aggregate threshold.
+`MAX_SWARM = 7` per fan-out. `MAX_TOTAL_WORKERS = 12` per tree (one head + up to two sub-heads + their workers). Over either cap, the head re-partitions or escalates — it never widens. The caps exist so a head's fan-out stays auditable and the orchestrator's per-slice critic stays under the 60KB aggregate threshold. _(Raised from 5 to 7 on 2026-07-01 to match the live 7-worker swarm demo; the per-slice critic reviews each slice independently, so a wider fan-out does not breach the 60KB aggregate threshold.)_
 
 ### 4. Hand off mechanics
 The head delegates the swarm itself to [[decompose-and-swarm]] — runs the five MOVES (worthiness, scout, cut slices, brief, fan-out) on the sub-tree's behalf. Team structure, role boundaries, and gating come from [[safe-agentic-orchestration]]. The head invokes; it does not reimplement.
