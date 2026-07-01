@@ -2209,6 +2209,13 @@
       "title": "Architecture Build: star-alliance-arsenal/workflows-lite.json, tools/conformity_check.py, workflows.json",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: Star-Alliance.command, star-alliance-arsenal/summon.py, tools/conformity_check.py (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130

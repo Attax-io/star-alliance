@@ -116,7 +116,7 @@ def _load_role():
 
 ROLE = _load_role()
 
-HERMES_NATIVE = {"glm-5.2", "minimax-m3", "kimi-k2.7"}
+HERMES_NATIVE = {"glm-5.2", "minimax-sub", "minimax-payg", "kimi-k2.7"}
 CLAUDE_NATIVE = {"opus", "haiku", "sonnet"}
 MEDIA_WEAPONS = {"image-01", "minimax-video", "minimax-speech", "minimax-music"}
 
@@ -545,7 +545,7 @@ def main():
     if summon_path.exists():
         smt = summon_path.read_text()
         cloud_map = dict(re.findall(r"'([^']+)':\s*'([^']+:cloud)'", smt))
-    routable = set(HERMES_NATIVE) | set(CLAUDE_NATIVE) | set(cloud_map) | MEDIA_WEAPONS | {"minimax-m3"}
+    routable = set(HERMES_NATIVE) | set(CLAUDE_NATIVE) | set(cloud_map) | MEDIA_WEAPONS | {"minimax-sub", "minimax-payg"}
     all_weapons = {w for m in agents.values() for w in (x["model"] for x in m.get("weapons", []))}
     for w in sorted(all_weapons - routable):
         fails.append(f"L  weapon '{w}' in a loadout is not routable by summon.py or native")
@@ -561,7 +561,7 @@ def main():
         if tag in pulled:
             live.add(w)
     if (pathlib.Path.home() / ".config" / "minimax" / "m3.key").exists() or _os.environ.get("MINIMAX_API_KEY"):
-        live |= {"minimax-m3"} | MEDIA_WEAPONS
+        live |= {"minimax-sub", "minimax-payg"} | MEDIA_WEAPONS
     dead = sorted(all_weapons - live)
     if dead:
         notes.append(f"weapon liveness — NOT firing on this device: {', '.join(dead)}")

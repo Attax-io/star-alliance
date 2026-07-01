@@ -3,7 +3,7 @@
 Usage examples:
 
     # 1. Route to the local minimax backend.
-    python summon.py minimax-m3 "Explain quicksort in two sentences."
+    python summon.py minimax-sub "Explain quicksort in two sentences."
 
     # 2. Route to an Ollama cloud bench model (e.g. glm-5.2 -> glm-5.2:cloud).
     python summon.py glm-5.2 "Solve: 17 * 23" --json
