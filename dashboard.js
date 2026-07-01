@@ -258,8 +258,10 @@ function memberCard(m) {
   // window._MODEL_OVERRIDES cache and flips the card back to read-only.
   const ov = (window._MODEL_OVERRIDES || {})[m.id] || null
   const defaults = window._MODEL_DEFAULTS || { brain: null, doer: null }
-  const effectiveBrain = (ov && ov.brain) || m.model || defaults.brain || '—'
-  const effectiveDoer  = (ov && ov.doer)  || defaults.doer              || '—'
+  const brainsList = (window._MODEL_LISTS && window._MODEL_LISTS.brains) || []
+  const doersList  = (window._MODEL_LISTS && window._MODEL_LISTS.doers)  || []
+  const effectiveBrain = (ov && ov.brain) || m.model || defaults.brain || brainsList[0] || '—'
+  const effectiveDoer  = (ov && ov.doer)  || defaults.doer              || doersList[0]  || '—'
 
   const modelCtl = document.createElement('div')
   modelCtl.className = 'member-model-ctl'

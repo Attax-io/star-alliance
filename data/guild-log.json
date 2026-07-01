@@ -2299,6 +2299,20 @@
       "title": "Design Sprint: skill-art/article-creator.png, skill-art/bug-fix-workflow.png, skill-art/claude-code-hooks.png (+4 more)",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Quick Fix: dashboard.css, dashboard.js, skill-art/conquering-campaign.png (+23 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Conversation: dashboard.js, skill-art/arsenal-forge.png, skill-art/comms-triage.png (+16 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130
