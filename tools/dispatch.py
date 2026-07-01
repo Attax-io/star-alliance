@@ -57,6 +57,83 @@ AGENTS = {
 }
 
 
+# ── Doer resolution + key file mapping ─────────────────────────────────────
+# The dashboard lets the Guild Master pick which doer model fires for each
+# agent. That choice is persisted in models.json -> memberOverrides[<agent>].doer
+# (the dashboard SAVE writes it). We honor it here so the saved pick actually
+# changes what runs.
+#
+# The two minimax doer variants differ ONLY by API key (m3-sub.key vs
+# m3-payg.key) — same endpoint, same underlying model — and the minimax runner
+# (star-alliance-arsenal/minimax.py) reads MINIMAX_API_KEY FIRST, then falls
+# back to ~/.config/minimax/m3.key. So exporting MINIMAX_API_KEY in the
+# subprocess env selects which billing key actually fires.
+DEFAULT_DOER = "minimax-sub"
+MODELS_JSON = (
+    Path(__file__).resolve().parent.parent
+    / "star-alliance-arsenal"
+    / "models.json"
+)
+
+
+def resolve_doer(agent_name: str) -> str:
+    """
+    Return the effective doer id for `agent_name`.
+
+    Order:
+      1. memberOverrides[agent_name].doer  — the dashboard SAVE writes here
+      2. seats.doer.default                — fallback when no per-agent pick
+      3. 'minimax-sub'                     — final fallback on any error
+    """
+    try:
+        with open(MODELS_JSON, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except (OSError, json.JSONDecodeError):
+        return DEFAULT_DOER
+
+    # 1. per-agent override (dashboard SAVE writes here)
+    try:
+        override = (
+            data.get("memberOverrides", {})
+                .get(agent_name, {})
+                .get("doer")
+        )
+        if isinstance(override, str) and override.strip():
+            return override.strip()
+    except (AttributeError, TypeError):
+        pass
+
+    # 2. seat default
+    try:
+        seat_default = data.get("seats", {}).get("doer", {}).get("default")
+        if isinstance(seat_default, str) and seat_default.strip():
+            return seat_default.strip()
+    except (AttributeError, TypeError):
+        pass
+
+    # 3. final fallback
+    return DEFAULT_DOER
+
+
+def doer_key_path(doer_id: str):
+    """
+    Map a doer id to its MiniMax API key file (the path the runner reads).
+
+      minimax-sub   -> ~/.config/minimax/m3-sub.key
+      minimax-payg  -> ~/.config/minimax/m3-payg.key
+      anything else -> None (non-MiniMax doers use other auth mechanisms)
+
+    The minimax runner reads MINIMAX_API_KEY FIRST, then falls back to
+    ~/.config/minimax/m3.key — so exporting the env var with the chosen key
+    selects the billing variant that actually runs.
+    """
+    if doer_id == "minimax-sub":
+        return Path("~/.config/minimax/m3-sub.key").expanduser()
+    if doer_id == "minimax-payg":
+        return Path("~/.config/minimax/m3-payg.key").expanduser()
+    return None
+
+
 def list_agents():
     """Print all known agents and their roles."""
     print("Known guild agents:\n")
@@ -98,12 +175,58 @@ def dispatch(agent_name: str, prompt: str, timeout: int = 300) -> dict:
         "-Q",  # quiet — suppress banner/spinner/tool previews
     ]
 
+    # ── Honor the Guild Master's saved doer pick ─────────────────────────
+    # The dashboard SAVE writes memberOverrides[agent_name].doer. We resolve
+    # the effective doer here, then — if it maps to a minimax key file —
+    # export MINIMAX_API_KEY into the subprocess env so the runner actually
+    # uses that billing key. Missing key file → warn + proceed (don't crash).
+    env = None
+    doer = resolve_doer(agent_name)
+    key_path = doer_key_path(doer)
+    if key_path is not None:
+        if key_path.is_file():
+            try:
+                api_key = key_path.read_text(encoding="utf-8").strip()
+            except OSError as e:
+                print(
+                    f"[dispatch] WARN could not read {key_path}: {e} "
+                    f"(agent={agent_name}, doer={doer}); proceeding without override",
+                    file=sys.stderr,
+                )
+                api_key = None
+            if api_key:
+                env = os.environ.copy()
+                env["MINIMAX_API_KEY"] = api_key
+                print(
+                    f"[dispatch] agent={agent_name} doer={doer} key={key_path.name}",
+                    file=sys.stderr,
+                )
+            else:
+                print(
+                    f"[dispatch] WARN {key_path} is empty "
+                    f"(agent={agent_name}, doer={doer}); proceeding without override",
+                    file=sys.stderr,
+                )
+        else:
+            print(
+                f"[dispatch] WARN key file not found: {key_path} "
+                f"(agent={agent_name}, doer={doer}); proceeding without override",
+                file=sys.stderr,
+            )
+    else:
+        # Non-minimax doer — no env override needed; just audit the pick.
+        print(
+            f"[dispatch] agent={agent_name} doer={doer} (non-minimax; no key override)",
+            file=sys.stderr,
+        )
+
     try:
         result = subprocess.run(
             cmd,
             capture_output=True,
             text=True,
             timeout=timeout,
+            env=env,
         )
 
         response = result.stdout.strip()
