@@ -201,8 +201,17 @@ def main():
         if not mo or json.loads(mo.group(0)) != g:
             fails.append("P  parity: guild-data.js does NOT match guild-data.json (rerun build.py)")
 
-    # Swarm guardrail constants (§5 SWARM-METHODOLOGY-PLAN.md)
-    MAX_SWARM = 5
+    # Swarm guardrail constants (§5 SWARM-METHODOLOGY-PLAN.md).
+    # Single-sourced from data/harness.json so doctrine and code cannot diverge.
+    # Fail-soft: a missing file/key falls back to the same 5/12 defaults so the
+    # sweep never crashes (matches the SW fail-soft style below).
+    try:
+        _hcfg = json.loads((ROOT / "data" / "harness.json").read_text())
+        _caps = _hcfg.get("swarm_caps", {})
+    except Exception:
+        _caps = {}
+    MAX_SWARM = _caps.get("max_swarm", 5)
+    MAX_TOTAL_WORKERS = _caps.get("max_total_workers", 12)
     VALID_PARTITIONS = {"by-file", "by-module", "by-subtask"}
     VALID_ISOLATIONS = {"shared-tree", "worktree"}
 
@@ -490,6 +499,25 @@ def main():
         uncovered = {w["id"] for w in g["workflows"]} - gen_ids
         if uncovered:
             fails.append(f"G  tools/generators/gen-workflow-art.cjs missing art prompt for {sorted(uncovered)}")
+
+    # === SC — Swarm Caps: the CANONICAL decompose-and-swarm SKILL.md prose must state
+    # the same MAX_SWARM as the code (single-sourced from data/harness.json above). The
+    # prose names the cap twice: 'MAX_SWARM = 5' (~line 27) and 'max_instances <= 5'
+    # (~line 149). Both must equal the code MAX_SWARM or doctrine has drifted from code.
+    # Fail-soft: a missing skill file is skipped (never crashes the sweep).
+    try:
+        _sc_skill = ROOT / "star-alliance-skills" / "decompose-and-swarm" / "SKILL.md"
+        if _sc_skill.exists():
+            _sc_txt = _sc_skill.read_text()
+            _sc_hits = re.findall(r'MAX_SWARM\s*=\s*(\d+)', _sc_txt)
+            _sc_hits += re.findall(r'max_instances\s*<=\s*(\d+)', _sc_txt)
+            for _pv in _sc_hits:
+                if int(_pv) != MAX_SWARM:
+                    fails.append(f"SC decompose-and-swarm: prose MAX_SWARM={_pv} "
+                                 f"!= code MAX_SWARM={MAX_SWARM}")
+    except Exception as _sc_exc:
+        notes.append(f"SC decompose-and-swarm: swarm-caps check raised an exception "
+                     f"(skipped, fail-soft): {_sc_exc}")
 
     # N — counts
     counts = g.get("meta", {}).get("counts", {})

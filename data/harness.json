@@ -39,5 +39,6 @@
       "explain", "tell me", "show me", "describe", "recap", "summarize",
       "in plain english"
     ]
-  }
+  },
+  "swarm_caps": { "max_swarm": 5, "max_total_workers": 12 }
 }

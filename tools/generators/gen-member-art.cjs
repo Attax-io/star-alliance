@@ -18,7 +18,7 @@ const MEMBERS = [
   {
     id: "the-butler",
     color: "#b89530",
-    prompt: "Legendary divine portrait, a refined well-dressed servant man in a pristine dark tailored butler coat with white gloves, bowing slightly with a silver serving tray, humble deferential posture, soft warm candlelight, subtle divine glow, aristocratic manor backdrop, ultra detailed epic fantasy art, no religious symbols",
+    prompt: "Legendary divine portrait, a distinguished older butler with silver hair and a groomed mustache, immaculate black tailored tailcoat with crisp white bow tie and white gloves, holding aloft a glowing silver serving tray, radiant golden divine energy crackling around his hands and swirling behind him, dignified commanding gaze, dark dramatic epic background, ultra detailed epic fantasy art, no religious symbols",
   },
   {
     id: "the-architect",
