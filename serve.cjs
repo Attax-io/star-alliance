@@ -28,6 +28,8 @@ function readModels() {
 //   brains = every model id whose backend === 'claude'
 //   doers  = every model id whose role   === 'doer'
 // role: 'media' models are intentionally excluded (neither brain nor doer).
+// Also surface the seat defaults so the dashboard can show "effective doer" on
+// a card even when the member has no explicit override.
 // Re-reads models.json on each call so the lists stay in lockstep with the registry.
 function deriveModelLists() {
   const obj = readModels()
@@ -39,7 +41,12 @@ function deriveModelLists() {
     if (m.backend === 'claude') brains.push(id)
     if (m.role === 'doer') doers.push(id)
   }
-  return { brains, doers }
+  const seats = obj.seats || {}
+  const defaults = {
+    brain: seats.brain && seats.brain.default ? seats.brain.default : null,
+    doer:  seats.doer  && seats.doer.default  ? seats.doer.default  : null
+  }
+  return { brains, doers, defaults }
 }
 
 function writeModels(obj) {

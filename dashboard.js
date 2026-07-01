@@ -7,10 +7,36 @@ async function boot() {
     window._GUILD_SKILLS = GUILD.skills || []
     window._GUILD_MEMBERS = GUILD.members || []
     window._GUILD_DOMAINS = GUILD.domains || []
+
+    // Model wiring: load both lists + defaults AND the existing per-member
+    // overrides BEFORE the roster renders, so each card knows its effective
+    // brain/doer on first paint (no "anonymous dropdown" bottom section).
+    // If either fetch fails we still render the roster — overrides/defaults
+    // fall back to empty objects and the card shows sensible placeholders.
+    try {
+      const [lists, overrides] = await Promise.all([
+        fetch('/api/model-lists').then(r => r.json()),
+        fetch('/api/model-override').then(r => r.json())
+      ])
+      window._MODEL_LISTS     = { brains: lists.brains || [], doers: lists.doers || [] }
+      window._MODEL_DEFAULTS  = Object.assign({ brain: null, doer: null }, lists.defaults || {})
+      window._MODEL_OVERRIDES = (overrides && typeof overrides === 'object' && !Array.isArray(overrides))
+        ? overrides
+        : {}
+      // Keep the legacy globals for any external caller (defensive).
+      BRAIN_OPTIONS = window._MODEL_LISTS.brains.map(id => ({ value: id, label: id }))
+      DOER_OPTIONS  = window._MODEL_LISTS.doers.map(id => ({ value: id, label: id }))
+      _modelListsLoaded = true
+    } catch (err) {
+      console.error('Failed to load model wiring:', err)
+      window._MODEL_LISTS     = { brains: [], doers: [] }
+      window._MODEL_DEFAULTS  = { brain: null, doer: null }
+      window._MODEL_OVERRIDES = {}
+    }
+
     renderHeader(GUILD)
     renderStats(GUILD)
     renderRoster(GUILD)
-    renderModelControl()
     renderLog(GUILD)
     renderWorkflows(GUILD)
     renderDomains(GUILD)
@@ -145,7 +171,7 @@ async function saveOverride(memberId, brainSel, doerSel, statusSpan, btn) {
   const doer = doerSel.value
   if (!brain || !doer) {
     showRowStatus(statusSpan, 'Select both', 'error')
-    return
+    return false
   }
   btn.disabled = true
   try {
@@ -158,66 +184,24 @@ async function saveOverride(memberId, brainSel, doerSel, statusSpan, btn) {
       let msg = 'Save failed'
       try { const j = await resp.json(); if (j.error) msg = j.error } catch {}
       showRowStatus(statusSpan, msg, 'error')
-    } else {
-      showRowStatus(statusSpan, '✓ Saved', 'saved')
+      return false
     }
+    showRowStatus(statusSpan, '✓ Saved', 'saved')
+    return true
   } catch (err) {
     showRowStatus(statusSpan, 'Network error', 'error')
+    return false
   } finally {
     btn.disabled = false
   }
 }
 
+// The detached bottom Model Control section is gone — control now lives inside
+// each member card (memberCard() builds a per-card editor with a pencil toggle).
+// renderModelControl() is kept as a no-op so any legacy caller doesn't break.
 async function renderModelControl() {
-  const grid = document.getElementById('model-control-grid')
-  if (!grid) return
-  grid.innerHTML = ''
-
-  const members = window._GUILD_MEMBERS || []
-  if (!members.length) return
-
-  // Pull brains/doers from the registry-derived endpoint before rendering rows.
-  await loadModelLists()
-
-  let overrides = {}
-  fetch('/api/model-override').then(r => r.json()).then(data => {
-    overrides = data || {}
-    members.forEach(m => {
-      const row = grid.querySelector(`[data-mid="${CSS.escape(m.id)}"]`)
-      if (!row) return
-      const ov = overrides[m.id]
-      if (ov) {
-        row._brainSel.value = ov.brain || ''
-        row._doerSel.value = ov.doer || ''
-      }
-    })
-  }).catch(() => {})
-
-  members.forEach(m => {
-    const row = document.createElement('div')
-    row.className = 'model-row'
-    row.dataset.mid = m.id
-
-    const name = document.createElement('span')
-    name.className = 'model-row__name'
-    name.textContent = m.name || m.id
-
-    const brainSel = makeSelect(BRAIN_OPTIONS, '')
-    const doerSel = makeSelect(DOER_OPTIONS, '')
-
-    const statusSpan = document.createElement('span')
-    statusSpan.className = 'model-row__status'
-
-    const btn = document.createElement('button')
-    btn.className = 'model-row__save'
-    btn.textContent = 'Save'
-    btn.addEventListener('click', () => saveOverride(m.id, brainSel, doerSel, statusSpan, btn))
-
-    row._brainSel = brainSel
-    row._doerSel = doerSel
-    row.append(name, brainSel, doerSel, btn, statusSpan)
-    grid.appendChild(row)
-  })
+  /* no-op: in-card model control replaced the detached panel */
+  return
 }
 
 function memberCard(m) {
@@ -269,7 +253,91 @@ function memberCard(m) {
   const skillCount = m.skills?.length ?? 0
   metaRow.innerHTML = `<span class="meta-chip"><span class="chip-glyph">⬡</span> ${m.model || ''}</span><span class="meta-chip">${skillCount} skills</span>`
 
-  info.append(h3, role, statusDiv, metaRow)
+  // In-card model control. Reads as plain text by default; pencil opens an
+  // inline editor (brain + doer selects + Save/Cancel). Save updates the
+  // window._MODEL_OVERRIDES cache and flips the card back to read-only.
+  const ov = (window._MODEL_OVERRIDES || {})[m.id] || null
+  const defaults = window._MODEL_DEFAULTS || { brain: null, doer: null }
+  const effectiveBrain = (ov && ov.brain) || m.model || defaults.brain || '—'
+  const effectiveDoer  = (ov && ov.doer)  || defaults.doer              || '—'
+
+  const modelCtl = document.createElement('div')
+  modelCtl.className = 'member-model-ctl'
+
+  // READ-ONLY: compact line + pencil toggle.
+  const readView = document.createElement('div')
+  readView.className = 'member-model-ctl__read'
+  readView.innerHTML =
+    `<span class="member-model-ctl__label">Brain <span class="member-model-ctl__val">${effectiveBrain}</span></span>` +
+    `<span class="member-model-ctl__sep">/</span>` +
+    `<span class="member-model-ctl__label">Doer <span class="member-model-ctl__val">${effectiveDoer}</span></span>` +
+    `<button type="button" class="member-model-ctl__edit" title="Edit model assignment" aria-label="Edit model assignment">` +
+      `<svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" focusable="false">` +
+        `<path fill="currentColor" d="M11.013 1.427a1.75 1.75 0 0 1 2.474 0l1.086 1.086a1.75 1.75 0 0 1 0 2.474l-8.61 8.61c-.21.21-.47.364-.756.445l-3.251.93a.75.75 0 0 1-.927-.928l.929-3.25c.081-.286.235-.547.445-.756l8.61-8.611Zm.176 4.764L9.75 7.63l1.439 1.44 1.44-1.44-1.44-1.439ZM9.75 8.57l-5.83 5.83 1.439 1.439 5.83-5.83L9.75 8.57Z"/>` +
+      `</svg>` +
+    `</button>`
+  modelCtl.appendChild(readView)
+
+  // EDIT: hidden until pencil is clicked. Two selects + Save + Cancel.
+  const editView = document.createElement('div')
+  editView.className = 'member-model-ctl__edit'
+  editView.hidden = true
+
+  const brainSel = makeSelect(BRAIN_OPTIONS, effectiveBrain)
+  const doerSel  = makeSelect(DOER_OPTIONS,  effectiveDoer)
+  brainSel.dataset.role = 'brain'
+  doerSel.dataset.role  = 'doer'
+
+  const cancelBtn = document.createElement('button')
+  cancelBtn.type = 'button'
+  cancelBtn.className = 'member-model-ctl__cancel'
+  cancelBtn.textContent = 'Cancel'
+
+  const saveBtn = document.createElement('button')
+  saveBtn.type = 'button'
+  saveBtn.className = 'member-model-ctl__save'
+  saveBtn.textContent = 'Save'
+
+  const status = document.createElement('span')
+  status.className = 'model-row__status'
+
+  editView.append(brainSel, doerSel, saveBtn, cancelBtn, status)
+  modelCtl.appendChild(editView)
+
+  // Pencil toggles read<->edit. Clicking the pencil is a no-op while saving.
+  const pencil = readView.querySelector('.member-model-ctl__edit')
+  pencil.addEventListener('click', () => {
+    // Re-sync selects in case the brain/doer options loaded after first paint.
+    brainSel.value = effectiveBrain
+    doerSel.value  = effectiveDoer
+    status.className = 'model-row__status'
+    status.textContent = ''
+    readView.hidden = true
+    editView.hidden = false
+  })
+  cancelBtn.addEventListener('click', () => {
+    readView.hidden = false
+    editView.hidden = true
+  })
+  saveBtn.addEventListener('click', async () => {
+    saveBtn.disabled = true
+    const ok = await saveOverride(m.id, brainSel, doerSel, status, saveBtn)
+    saveBtn.disabled = false
+    if (!ok) return
+    // Update local cache + read-only text, close editor.
+    if (!window._MODEL_OVERRIDES) window._MODEL_OVERRIDES = {}
+    window._MODEL_OVERRIDES[m.id] = { brain: brainSel.value, doer: doerSel.value }
+    const newBrain = brainSel.value
+    const newDoer  = doerSel.value
+    const bLabel = readView.querySelectorAll('.member-model-ctl__val')[0]
+    const dLabel = readView.querySelectorAll('.member-model-ctl__val')[1]
+    if (bLabel) bLabel.textContent = newBrain
+    if (dLabel) dLabel.textContent = newDoer
+    readView.hidden = false
+    editView.hidden = true
+  })
+
+  info.append(h3, role, statusDiv, metaRow, modelCtl)
 
   const portraitWrap = document.createElement('div')
   portraitWrap.className = 'member-portrait-wrap'

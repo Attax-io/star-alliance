@@ -437,6 +437,114 @@ ul, ol { list-style: none; }
 .model-row__status.saved { color: var(--status-ready); }
 .model-row__status.error { color: #ff6b8a; }
 
+/* ============================================================
+   IN-CARD MODEL CONTROL  (member-model-ctl)
+   Lives inside each member card. Plain-text read view by default
+   with a small pencil toggle; clicking it reveals two selects +
+   Save/Cancel. Reuses surface-2 / gold tokens and the
+   .model-row__select shape.
+   ============================================================ */
+.member-model-ctl {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+/* READ view: one compact line "Brain X / Doer Y" + pencil */
+.member-model-ctl__read {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  font-size: var(--fs-tiny);
+  color: var(--text-dim);
+  letter-spacing: 0.02em;
+}
+.member-model-ctl__label { color: var(--text-dim); }
+.member-model-ctl__val {
+  color: var(--text-body);
+  font-weight: 500;
+}
+.member-model-ctl__sep { color: var(--text-faint); }
+
+.member-model-ctl__edit {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: transparent;
+  color: var(--text-dim);
+  border: 1px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+.member-model-ctl__edit:hover {
+  color: var(--member-color, var(--gold));
+  background: color-mix(in srgb, var(--member-color, var(--gold)) 10%, transparent);
+  border-color: color-mix(in srgb, var(--member-color, var(--gold)) 30%, var(--border-soft));
+}
+.member-model-ctl__edit:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--member-color, var(--gold)) 50%, transparent);
+  outline-offset: 1px;
+}
+.member-model-ctl__edit svg { display: block; }
+
+/* EDIT view: compact row of two selects + Save + Cancel + status */
+.member-model-ctl__edit {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.member-model-ctl__edit select {
+  font-size: var(--fs-tiny);
+  /* re-use the existing select styling via .model-row__select on each <select> */
+}
+.member-model-ctl__save {
+  font: inherit;
+  font-size: var(--fs-tiny);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: color-mix(in srgb, var(--gold) 8%, transparent);
+  border: 1px solid var(--gold-dim);
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.member-model-ctl__save:hover {
+  background: color-mix(in srgb, var(--gold) 18%, transparent);
+  border-color: var(--gold);
+}
+.member-model-ctl__save:disabled { opacity: 0.45; cursor: default; }
+
+.member-model-ctl__cancel {
+  font: inherit;
+  font-size: var(--fs-tiny);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  background: transparent;
+  border: 1px solid var(--border-soft);
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.member-model-ctl__cancel:hover {
+  color: var(--text-body);
+  border-color: var(--text-faint);
+}
+
 @media (max-width: 899px) {
   .model-control-grid { grid-template-columns: 1fr; }
   .model-row { flex-wrap: wrap; }
