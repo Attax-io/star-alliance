@@ -7,8 +7,8 @@
   native routine first so it doesn't double-run.
 
   PER-MACHINE: the two absolute paths below are templated for the install user. Before
-  copying, replace every `/Users/REPLACE_ME` with your own $HOME (run `echo $HOME`).
-  Install:  sed "s#/Users/REPLACE_ME#$HOME#g" \
+  copying, replace every `/Users/attaselim` with your own $HOME (run `echo $HOME`).
+  Install:  sed "s#/Users/attaselim#$HOME#g" \
               "$HOME/Documents/Claude/Projects/star-alliance/star-alliance-skills/skillsmith/assets/com.attax.skillsmith-routine.plist" \
               > ~/Library/LaunchAgents/com.attax.skillsmith-routine.plist
             launchctl load ~/Library/LaunchAgents/com.attax.skillsmith-routine.plist
@@ -26,11 +26,11 @@
     <key>ProgramArguments</key>
     <array>
         <string>/bin/bash</string>
-        <string>/Users/REPLACE_ME/Documents/Claude/Projects/star-alliance/star-alliance-skills/skillsmith/scripts/run_routine.sh</string>
+        <string>/Users/attaselim/Documents/Claude/Projects/star-alliance/star-alliance-skills/skillsmith/scripts/run_routine.sh</string>
     </array>
 
     <key>WorkingDirectory</key>
-    <string>/Users/REPLACE_ME/Documents/Claude/Projects/star-alliance</string>
+    <string>/Users/attaselim/Documents/Claude/Projects/star-alliance</string>
 
     <key>StartCalendarInterval</key>
     <dict>
@@ -48,13 +48,13 @@
         <key>PATH</key>
         <string>/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
         <key>HOME</key>
-        <string>/Users/REPLACE_ME</string>
+        <string>/Users/attaselim</string>
     </dict>
 
     <key>StandardOutPath</key>
-    <string>/Users/REPLACE_ME/Documents/Claude/Projects/star-alliance/star-alliance-skills/skillsmith/routine-logs/launchd.out</string>
+    <string>/Users/attaselim/Documents/Claude/Projects/star-alliance/star-alliance-skills/skillsmith/routine-logs/launchd.out</string>
     <key>StandardErrorPath</key>
-    <string>/Users/REPLACE_ME/Documents/Claude/Projects/star-alliance/star-alliance-skills/skillsmith/routine-logs/launchd.err</string>
+    <string>/Users/attaselim/Documents/Claude/Projects/star-alliance/star-alliance-skills/skillsmith/routine-logs/launchd.err</string>
 
     <key>ProcessType</key>
     <string>Background</string>

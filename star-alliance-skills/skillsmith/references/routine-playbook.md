@@ -141,18 +141,66 @@ that clears §R4:
 - **Fix a bug** in a skill → treat as a PATCH upgrade.
 
 Respect the per-run budget (§R5). Everything below 8/10 stays in the ledger as a proposal for a human
-or a future run.
+or a future run — see the emission rule in Stage E below (every deferred finding gets a queryable
+`evolution/ledger.py add proposal` event, not prose-only).
+
+#### §R4-verify — the live-filesystem re-check (BLOCKING, runs before Stage E)
+
+STORM's dossier is built from Stage A's harvested snapshot — code, session transcripts, and
+prior-day corpus state. By the time Stage D is ready to apply a finding, that snapshot can already
+be stale: a prior commit (this run's own earlier finding, a manual fix, another actor) may have
+already shipped exactly what the finding proposes. This is `session-mining`'s Phase-5 VERIFY
+(see that skill: "kill every lesson already shipped") bolted into the routine as a **hard gate**,
+not advisory prose — a finding that is already-true must never reach Stage E.
+
+**Before applying ANY finding (upgrade, create, or bug-fix), re-verify its central claim against
+the LIVE filesystem — not the Stage-A snapshot:**
+
+1. Identify the finding's central claim in one sentence ("skill X lacks guard Y", "skill X's
+   description exceeds 1024 chars", "no skill covers topic Z").
+2. Re-check that claim directly against the current repo state: `grep`/`Read` the actual skill
+   dir + its current `SKILL.md` (not the dossier excerpt), or re-run the exact check the finding
+   cites (e.g. `skill_registry.py check NAME` for a Cowork claim, a fresh grep for a "missing"
+   guard).
+3. **If the claimed defect is already-shipped or already-absent, KILL the finding right here.**
+   Do not pass it to Stage E. Log one line to today's ledger entry: `VERIFY-KILLED: <finding> —
+   already shipped in <commit/file>, dossier was stale.` Move to the next finding.
+4. Only a finding whose central claim is confirmed live proceeds to Stage E's execute step.
+
+This gate exists because three concrete false-positive modes have already occurred and would
+recur without it:
+
+- **Stale-snippet phantom.** The dossier quotes a code/doc snippet captured at harvest time; the
+  file has since changed (by this same run or another actor) and the quoted defect no longer
+  exists. Applying the finding "fixes" something already fixed, or worse, reverts a newer correct
+  state back to the flagged one.
+- **Checker-drift mass-positives.** A generic checker (a stale linter rule, an old registry
+  expectation) fires on every skill because the checker itself drifted from the current spec —
+  not because every skill actually regressed. Without a live re-check, the routine would "fix"
+  dozens of skills that were never broken.
+- **Self-inflicted dossier-cut.** STORM's own dossier-build truncated or summarized a SKILL.md body
+  (see the 1.7.1 dossier-build-guard entry above) and flagged a phantom defect that only exists in
+  the truncated excerpt, never in the real file.
+
+§R4-verify runs for every finding, self-upgrades (§R6) included — a self-edit gets no exemption.
 
 ### Stage E — Report
 
 - **Conformity-close first (Invariant #8) — the Quartermaster's final gate.** Before committing, rebuild the guild data and run the Compliance Audit: `python3 build.py && python3 tools/conformity_check.py`. It must report **FULL CONFORMITY** (exit 0) — guild-data↔json parity, `meta.counts`, workflow gates/actors, member arsenal order, decision-conformity, and the **K-invariant** (skill dirs == `skills-meta.json` == generated skill ids) all hold. If it FAILS, fix the contradiction **before** the commit — a created / removed skill not yet in `skills-meta.json` + `build.py` output, a stale count, a broken ref — never ship a contradiction. Stage the regenerated `guild-data.*` (+ `skills-meta.json`/`domains.json` on a create/remove) in the **same** commit as the skill change.
 - **Critic gate (Invariant #10) — independent verification before each commit.** After conformity-close, run the Evolution Engine's VERIFY organ on the staged diff and **fail closed**: `git diff HEAD | python3 evolution/verdict.py --fail-closed`. Exit 0 (pass/concerns) → proceed to commit. Non-zero (BLOCK, or the critic is unreachable on this unattended run) → **DO NOT commit this finding**; write the critic's verdict to today's ledger and move to the next finding. This is the gate that stops `routine` from self-grading its mid-run commits — the implementer never grades its own work (HARNESS-BOOKS 9.9).
+  - **Emit a `verdict` ledger event for this critic result, always** (pass, concerns, or block — not just failures): `python3 evolution/verdict.py --fail-closed` already writes its own `kind=verdict` event internally (see the script header) — do not double-log it; just confirm the call ran. If for any reason you invoke the critic through a path that does NOT auto-log (a manual re-check), emit it yourself: `python3 evolution/ledger.py add verdict --author kimi-k2.7 --surface skills --verdict pass --detail "<finding> — critic pass/concerns/block"`.
+- **Emit a `change` event for this finding, once the critic has passed and immediately before the commit.** This is what makes the routine's autonomous work visible to the Evolution Engine's SENSE organ instead of only living in git history:
+  `python3 evolution/ledger.py add change --author skillsmith-routine --surface skills --diff-hash "$(git diff --cached | shasum -a 256 | cut -d' ' -f1)" --tier A --detail "<verb> <skill> — <one-line> [conf N/10]"`
+  **Dedup key = the diff-hash.** Before emitting, check `python3 evolution/ledger.py tail -n 50 --kind change` for an event with the same `diff_hash` — if one already exists (e.g. the Stop-time verify-gate already logged this exact diff), skip the emit; never double-count the same change against two logging paths.
 - Commit each applied change separately, message:
   `skillsmith routine YYYY-MM-DD: <verb> <skill> — <one-line> [conf N/10]`.
 - `git push origin main`.
+- **For every sub-8/10 finding that stays deferred in the ledger (see §R3 rule below), emit a `proposal` event** so it is queryable by the Evolution Engine, not just readable prose in the markdown notebook:
+  `python3 evolution/ledger.py add proposal --author skillsmith-routine --surface skills --tier B --detail "<finding summary> — deferred, confidence <N>/10, why: <one-line reason>"`
 - Write a **Run Summary** at the top of the ledger entry: what was applied, what was deferred, total
   cost, and the single highest-value proposal for next time.
 - If a push notification channel is configured, emit the one-line summary.
+- **Write the SEAM-3 heartbeat at end of run** (documentation only — the sidecar file itself is owned by a separate harness worker, not by skillsmith): the routine's closing step writes `data/routine-heartbeat.json` with the schema `{last_run_start, last_run_end, last_run_status, last_run_summary, budget_spent, next_expected_by}`. This is a plain JSON status file (not a ledger event) that lets any external monitor answer "is the daily routine still alive?" without reading git history or the ledger. skillsmith's job is only to populate the fields accurately at the start and end of each run — the file's schema and any watchdog that reads it belong to a separate concern.
 
 ---
 
