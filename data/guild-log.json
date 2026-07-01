@@ -2181,6 +2181,13 @@
       "title": "Architecture Build: serve.cjs",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: dashboard.js",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130

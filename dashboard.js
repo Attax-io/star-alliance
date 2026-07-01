@@ -69,17 +69,30 @@ function renderRoster(g) {
   ;(g.members || []).forEach(m => grid.appendChild(memberCard(m)))
 }
 
-const BRAIN_OPTIONS = [
-  { value: 'opus',   label: 'Opus' },
-  { value: 'sonnet', label: 'Sonnet' },
-  { value: 'haiku',  label: 'Haiku' }
-]
-const DOER_OPTIONS = [
-  { value: 'kimi-k2.7',    label: 'kimi-k2.7' },
-  { value: 'glm-5.2',      label: 'glm-5.2' },
-  { value: 'minimax-payg', label: 'minimax-payg' },
-  { value: 'minimax-sub',  label: 'minimax-sub' }
-]
+let BRAIN_OPTIONS = []
+let DOER_OPTIONS = []
+let _modelListsLoaded = false
+let _modelListsPromise = null
+
+function loadModelLists() {
+  // /api/model-lists derives brains/doers from models.json — single source of truth.
+  // brains = models with backend === 'claude'; doers = models with role === 'doer'.
+  if (_modelListsPromise) return _modelListsPromise
+  _modelListsPromise = fetch('/api/model-lists')
+    .then(r => r.json())
+    .then(lists => {
+      BRAIN_OPTIONS = (lists.brains || []).map(id => ({ value: id, label: id }))
+      DOER_OPTIONS  = (lists.doers  || []).map(id => ({ value: id, label: id }))
+      _modelListsLoaded = true
+    })
+    .catch(err => {
+      console.error('Failed to load /api/model-lists:', err)
+      BRAIN_OPTIONS = []
+      DOER_OPTIONS  = []
+      _modelListsLoaded = true  // unblock render so the user sees an error in the UI rather than a blank control
+    })
+  return _modelListsPromise
+}
 
 function makeSelect(opts, current) {
   const sel = document.createElement('select')
@@ -133,13 +146,16 @@ async function saveOverride(memberId, brainSel, doerSel, statusSpan, btn) {
   }
 }
 
-function renderModelControl() {
+async function renderModelControl() {
   const grid = document.getElementById('model-control-grid')
   if (!grid) return
   grid.innerHTML = ''
 
   const members = window._GUILD_MEMBERS || []
   if (!members.length) return
+
+  // Pull brains/doers from the registry-derived endpoint before rendering rows.
+  await loadModelLists()
 
   let overrides = {}
   fetch('/api/model-override').then(r => r.json()).then(data => {
