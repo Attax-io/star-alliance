@@ -3,4 +3,4 @@ BUILD WARNINGS (3):
   ⚠ skill '_impeccable-upstream-source' has no skills-meta.json entry — using defaults
   ⚠ domain 'lex-council-business' references member 'bd-research-agent' not in the guild (external)
   ⚠ domain 'lex-council-business' references member 'intake-agent' not in the guild (external)
-Wrote guild-data.js (707,627 bytes) + guild-data.json + skill-md.js (1,285,314 bytes, 126 skills) + workflow-md.js (69,677 bytes, 36 workflows)
+Wrote guild-data.js (707,971 bytes) + guild-data.json + skill-md.js (1,286,011 bytes, 126 skills) + workflow-md.js (69,677 bytes, 36 workflows)
