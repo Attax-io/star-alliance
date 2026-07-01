@@ -232,7 +232,6 @@ def main():
     except Exception:
         _caps = {}
     MAX_SWARM = _caps.get("max_swarm", 5)
-    MAX_TOTAL_WORKERS = _caps.get("max_total_workers", 12)
     VALID_PARTITIONS = {"by-file", "by-module", "by-subtask"}
     VALID_ISOLATIONS = {"shared-tree", "worktree"}
 

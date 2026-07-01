@@ -227,12 +227,13 @@ def main() -> int:
         swarm_note = ""
         if step.get("exec") == "spawn" or step.get("swarm"):
             plan = plan_swarm(step)
-            swarm_note = (
-                f"SWARM POINT: fan {plan['instances']}x {plan['member']} by "
-                f"{plan['partition']} — live-session driver required; "
-                f"headless run degrades to single worker ({plan['reason']})"
-            )
-            print(f"  {swarm_note}")
+            if plan["fan"]:
+                swarm_note = (
+                    f"SWARM POINT: fan {plan['instances']}x {plan['member']} by "
+                    f"{plan['partition']} — live-session driver required; "
+                    f"headless run degrades to single worker ({plan['reason']})"
+                )
+                print(f"  {swarm_note}")
 
         resolution = resolve_step(step)
         print(f"[{i}/{total}] {title}  ->  ({resolution})")
