@@ -123,6 +123,19 @@ http.createServer(async (req, res) => {
     return
   }
 
+  if (url === '/api/schedules') {
+    try {
+      const { scanAll } = require(path.join(ROOT, 'tools', 'schedule_scan.js'))
+      const result = await scanAll()
+      res.writeHead(200, { 'Content-Type': 'application/json' })
+      res.end(JSON.stringify(result))
+    } catch (err) {
+      res.writeHead(500, { 'Content-Type': 'application/json' })
+      res.end(JSON.stringify({ ok: false, error: String(err) }))
+    }
+    return
+  }
+
   const filePath = path.join(ROOT, req.url === '/' ? '/dashboard.html' : req.url)
   fs.readFile(filePath, (err, data) => {
     if (err) { res.writeHead(404); res.end('Not found'); return }
