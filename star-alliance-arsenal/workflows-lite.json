@@ -66,7 +66,7 @@
           "thinker": "sonnet",
           "doers": [
             {
-              "model": "minimax-m3",
+              "model": "minimax-sub",
               "count": 3
             }
           ],
@@ -80,7 +80,7 @@
           "act": "The Quartermaster runs final cleanup checks and confirms the whole mission works end to end.",
           "produces": "verified build",
           "doers": [
-            "minimax-m3"
+            "minimax-sub"
           ],
           "exec": "spawn"
         },

@@ -86,12 +86,17 @@ def _detect_agent_dirs():
 # role per model id — DERIVED from the canonical registry
 # (star-alliance-arsenal/models.json). The literal below is a FAIL-SAFE only.
 # Media weapons are normalized to "doer" for arsenal ordering; sonnet "both" forced last.
+# role per model id — DERIVED from the canonical registry
+# (star-alliance-arsenal/models.json). The literal below is a FAIL-SAFE only.
+# Media weapons are normalized to "doer" for arsenal ordering; sonnet "both" forced last.
 _FALLBACK_ROLE = {
-    "opus": "thinker", "deepseek-v4-pro": "thinker",
-    "glm-5.2": "thinker", "kimi-k2.7": "thinker", "nemotron-3-ultra": "thinker",
-    "qwen3.5": "thinker", "qwen-3.5": "thinker", "gemma4": "thinker",
+    "opus": "thinker",
     "sonnet": "both",
-    "haiku": "doer", "minimax-m3": "doer",
+    "haiku": "both",
+    "minimax-sub": "doer",
+    "minimax-payg": "doer",
+    "glm-5.2": "doer",
+    "kimi-k2.7": "doer",
     "image-01": "doer", "minimax-video": "doer", "minimax-speech": "doer", "minimax-music": "doer",
 }
 

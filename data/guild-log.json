@@ -2202,6 +2202,13 @@
       "title": "Architecture Build: CLAUDE.md, star-alliance-arsenal/models/README.md, star-alliance-arsenal/models/deepseek-v4-pro.md (+9 more)",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "workflow",
+      "title": "Architecture Build: star-alliance-arsenal/workflows-lite.json, tools/conformity_check.py, workflows.json",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130

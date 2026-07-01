@@ -115,7 +115,7 @@
           "thinker": "sonnet",
           "doers": [
             {
-              "model": "minimax-m3",
+              "model": "minimax-sub",
               "count": 3
             }
           ],
@@ -129,7 +129,7 @@
           "act": "The Quartermaster runs final cleanup checks and confirms the whole mission works end to end.",
           "produces": "verified build",
           "doers": [
-            "minimax-m3"
+            "minimax-sub"
           ],
           "exec": "spawn"
         },
@@ -644,7 +644,7 @@
           "act": "The Quartermaster, drawing MiniMax M3, runs the two-tier pipeline — build_guild_log.py to backfill git-visible commits, log_event.py for the non-git events — then build.py to regenerate the dashboard data.",
           "produces": "synced guild log",
           "doers": [
-            "minimax-m3"
+            "minimax-sub"
           ],
           "exec": "spawn"
         },
