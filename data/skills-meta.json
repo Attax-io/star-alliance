@@ -135,6 +135,14 @@
     "triggers": "'write a new RLS policy', 'standardize our policies', 'compose a bundle', 'replace inline EXISTS', 'audit RLS coverage', 'add FOR SELECT visibility'",
     "modes": "compose from bundle catalog; one FOR ALL policy per table; append-only coverage; initplan auth.uid caching"
   },
+  "butler-voice": {
+    "icon": "🧩",
+    "blurb": "How the Butler speaks to the Guild Master: lead every reply with a plain-English status block",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "",
+    "modes": ""
+  },
   "chart-patterns": {
     "icon": "📐",
     "blurb": "Identify & read every chart pattern (Bulkowski) — H&S, double/triple tops, triangles, flags, gaps + event patterns, with the odds",
@@ -461,6 +469,14 @@
     "level": "Advanced",
     "tabler": "ti-puzzle",
     "triggers": "'heat map', 'rank docs by hits', 'curate vault core', 'archive sweep', 'what', 's cold'",
+    "modes": ""
+  },
+  "helpless": {
+    "icon": "🧩",
+    "blurb": "Invoked by scripts and hooks, never by the Butler himself.",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "",
     "modes": ""
   },
   "high-alert": {

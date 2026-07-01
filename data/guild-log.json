@@ -2,6 +2,19 @@
   "version": 1,
   "entries": [
     {
+      "id": 118,
+      "date": "2026-07-01",
+      "type": "dashboard",
+      "title": "Wired art tiles for butler-voice, helpless, the-butler",
+      "who": "Atta",
+      "detail": "wired art tiles for butler-voice, helpless, and the-butler member; reconciled stray butler.png",
+      "ref": [
+        "butler-voice",
+        "helpless",
+        "the-butler"
+      ]
+    },
+    {
       "id": 117,
       "date": "2026-07-01",
       "type": "member-upgrade",

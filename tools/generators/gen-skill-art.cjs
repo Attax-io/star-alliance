@@ -22,6 +22,14 @@ const STYLE = "fantasy RPG skill icon, Fallen Sword MMORPG style, dark parchment
 
 const SKILLS = [
   {
+    id: "helpless",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "Invoked by scripts and hooks, never by the Butler himself.", no text, no watermarks`,
+  },
+  {
+    id: "butler-voice",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "How the Butler speaks to the Guild Master: lead every reply with a plain-English status block", no text, no watermarks`,
+  },
+  {
     id: "trading-strategy",
     prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "Read-only trading-strategy design that ships a written, dated strategy spec and never places a", no text, no watermarks`,
   },
