@@ -37,3 +37,6 @@ state/
 
 # MCP server — venv (never commit the virtual environment)
 mcp/.venv/
+
+# wire_skill.py — one-off scratchpad venv for Pillow thumbnail generation
+.scratch-thumbs-venv/

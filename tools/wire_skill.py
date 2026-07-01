@@ -129,6 +129,50 @@ def wire_art_stub(name, blurb):
     return True
 
 
+
+def run_make_thumbs():
+    """Run make_thumbs.py in incremental mode so any newly-rendered skill art tile
+    immediately gets its dashboard thumbnail (art/skill-art-thumb/<id>.png).
+    Never hard-fails skill wiring — Pillow may be missing; if so, try the repo's
+    scratchpad-venv convention once, and if that also fails, print a clear warning
+    and return so wiring still completes."""
+    thumbs = ROOT / "tools" / "make_thumbs.py"
+    try:
+        r = subprocess.run([sys.executable, str(thumbs)], cwd=ROOT,
+                            capture_output=True, text=True, timeout=120)
+        if r.returncode == 0:
+            print("• thumbnails: ok (incremental \u2014 only missing/stale thumbs rendered)")
+            return
+        if "No module named 'PIL'" in (r.stderr or "") or "No module named 'PIL'" in (r.stdout or ""):
+            print("  \u26a0 Pillow not installed \u2014 building a one-off scratchpad venv to render thumbnails")
+            venv_dir = ROOT / ".scratch-thumbs-venv"
+            try:
+                subprocess.run([sys.executable, "-m", "venv", str(venv_dir)],
+                                check=True, capture_output=True, timeout=120)
+                pip = venv_dir / "bin" / "pip"
+                py = venv_dir / "bin" / "python3"
+                subprocess.run([str(pip), "install", "-q", "pillow"],
+                                check=True, capture_output=True, timeout=180)
+                r2 = subprocess.run([str(py), str(thumbs)], cwd=ROOT,
+                                     capture_output=True, text=True, timeout=120)
+                if r2.returncode == 0:
+                    print("• thumbnails: ok (via scratchpad venv \u2014 Pillow installed on the fly)")
+                else:
+                    print(f"  \u26a0 thumbnail generation still failed via scratchpad venv:\n{r2.stderr[-800:]}")
+                    print("  \u26a0 SKIPPING thumbnail generation \u2014 wiring will still complete.")
+                    print("  \u26a0 Fix manually: python3 -m venv .scratch-thumbs-venv && "
+                          ".scratch-thumbs-venv/bin/pip install pillow && "
+                          ".scratch-thumbs-venv/bin/python3 tools/make_thumbs.py")
+            except Exception as e:
+                print(f"  \u26a0 could not build scratchpad venv ({e}) \u2014 SKIPPING thumbnail generation.")
+                print("  \u26a0 Install Pillow manually and re-run: python3 tools/make_thumbs.py")
+        else:
+            print("  \u26a0 thumbnail generation failed (non-Pillow error) \u2014 SKIPPING, wiring still completes.")
+            print(f"  \u26a0 {(r.stderr or r.stdout)[-800:]}")
+    except Exception as e:
+        print(f"  \u26a0 could not run make_thumbs.py ({e}) \u2014 SKIPPING thumbnail generation, wiring still completes.")
+
+
 def main():
     args = sys.argv[1:]
     render = "--render" in args
@@ -162,6 +206,8 @@ def main():
     if render:
         print("• rendering missing art tiles…")
         subprocess.run(["node", str(ART)], cwd=ROOT)
+        print("• generating dashboard thumbnails for any newly-rendered tiles…")
+        run_make_thumbs()
 
     print("\nMANUAL (judgment) — not automated:")
     print("  1. Assign each skill to a member: add to `skills:` frontmatter in")

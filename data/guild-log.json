@@ -2397,6 +2397,13 @@
       "title": "Architecture Build: .claude/agents/the-architect.md, .claude/agents/the-quartermaster.md, .claude/agents/the-steward.md",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: .gitignore, tools/wire_skill.py, art/skill-art-thumb/__thumbtest__.png (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130
