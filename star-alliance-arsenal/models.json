@@ -302,6 +302,10 @@
     "the-developer": {
       "brain": "sonnet",
       "doer": "minimax-payg"
+    },
+    "the-architect": {
+      "brain": "opus",
+      "doer": "minimax-payg"
     }
   }
 }
