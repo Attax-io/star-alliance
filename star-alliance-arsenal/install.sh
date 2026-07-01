@@ -276,9 +276,31 @@ else
   echo "  ⚠  workflows-lite.json not yet created — copy $SA_ROOT/workflows.json manually"
 fi
 
+# ── ship the doctrine the gates enforce ──────────────────────────────────────
+# The Tier-3 hooks encode doctrine BY REFERENCE (banner-or-block, routing-or-block);
+# the rulebook they enforce must actually travel. Copy it merge-safe so a target's
+# own CLAUDE.md/AGENTS.md is never clobbered — only our managed block is updated.
+SA_CLAUDE_MD="$SA_ROOT/CLAUDE.md"
+SA_AGENTS_MD="$SA_ROOT/AGENTS.md"
+
+if [[ -f "$SA_CLAUDE_MD" ]]; then
+  write_managed_block "$TARGET/CLAUDE.md" "STAR-ALLIANCE DOCTRINE" "$SA_CLAUDE_MD"
+  echo "  ✓ doctrine → $TARGET/CLAUDE.md (managed block)"
+else
+  echo "  ⚠  $SA_CLAUDE_MD not found — copy guild doctrine into $TARGET/CLAUDE.md manually"
+fi
+
+if [[ -f "$SA_AGENTS_MD" ]]; then
+  if [[ -f "$TARGET/AGENTS.md" ]]; then
+    write_managed_block "$TARGET/AGENTS.md" "STAR-ALLIANCE AGENTS" "$SA_AGENTS_MD"
+    echo "  ✓ agents doctrine → $TARGET/AGENTS.md (managed block)"
+  else
+    cp "$SA_AGENTS_MD" "$TARGET/AGENTS.md"
+    echo "  ✓ agents doctrine → $TARGET/AGENTS.md (copied whole)"
+  fi
+else
+  echo "  ⚠  $SA_AGENTS_MD not found — copy AGENTS.md into $TARGET manually"
+fi
+
 echo ""
 echo "✅ Tier 3 complete."
-echo ""
-echo "   Remaining manual step:"
-echo "   Copy the relevant CLAUDE.md sections (reading discipline, guild conduct)"
-echo "   into $TARGET/CLAUDE.md"
