@@ -219,6 +219,23 @@ for hook in "$HOOKS_DIR"/*.py "$HOOKS_DIR"/*.sh; do
   echo "  + hook: $hook_name"
 done
 
+# Pre-seed the evolution kill-switch so a fresh Tier-3 target cannot lock
+# its main session with no unlock path. The Tier-3 wiring copies the gate
+# hooks but not the dispatch substrate they route around (dispatch.py,
+# the arsenal, the evolution engine itself). Until that substrate lands,
+# `evolution/DISARMED` keeps the gates off. Once dispatch.py + arsenal +
+# evolution are present and working, the operator removes the file to
+# arm enforcement. Mirror the printf style used to seed DEPLOY_LEDGER.
+ensure_dir "$TARGET/evolution"
+if [[ ! -f "$TARGET/evolution/DISARMED" ]]; then
+  printf '%s\n' \
+    '# DISARMED — evolution engine gates are OFF on this target.' \
+    'A fresh Tier-3 install copies the enforcement hooks without the dispatch substrate they route around (dispatch.py, arsenal, evolution engine). Until that substrate is in place, gates would lock the main session with no unlock path.' \
+    'Remove this file ONLY once dispatch.py + arsenal + evolution are present and working.' \
+    > "$TARGET/evolution/DISARMED"
+fi
+echo "  ✓ pre-seeded evolution/DISARMED (safety kill-switch)"
+
 # Merge hook wiring into target settings.json
 # Rewrite hook paths to use CLAUDE_PROJECT_DIR (they already do — just merge)
 merge_hooks_to_settings "$TARGET_SETTINGS"

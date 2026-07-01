@@ -965,6 +965,32 @@ def main():
                     fails.append(f"DX dispatch.py lists '{_dx_agent}' but profiles/{_dx_folder}/"
                                  f"distribution.yaml is missing")
 
+    # === RQ — dispatch/publish roster equality (two-way, anti-drift) ===
+    # dispatch.py AGENTS (who can be dispatched) and publish_profiles.py
+    # PROFILE_MAP (who can be published) must name the SAME members, or a
+    # member can be published but never dispatched (or the reverse) with no
+    # error. The Butler is the voice, not a target, so he is in NEITHER set.
+    _rq_disp = ROOT / "tools" / "dispatch.py"
+    _rq_pub = ROOT / "tools" / "publish_profiles.py"
+    if _rq_disp.exists() and _rq_pub.exists():
+        _rq_ds = _rq_disp.read_text(encoding="utf-8")
+        _rq_ps = _rq_pub.read_text(encoding="utf-8")
+        _rq_dm = re.search(r"AGENTS\s*=\s*\{(.*?)\}", _rq_ds, re.S)
+        _rq_pm = re.search(r"PROFILE_MAP\s*=\s*\{(.*?)\}", _rq_ps, re.S)
+        if not _rq_dm:
+            fails.append("RQ dispatch.py: cannot parse AGENTS dict")
+        elif not _rq_pm:
+            fails.append("RQ publish_profiles.py: cannot parse PROFILE_MAP dict")
+        else:
+            _rq_agents = set(re.findall(r"the-[a-z]+", _rq_dm.group(1)))
+            _rq_profiles = set(re.findall(r"the-[a-z]+", _rq_pm.group(1)))
+            _rq_only_disp = sorted(_rq_agents - _rq_profiles)
+            _rq_only_pub = sorted(_rq_profiles - _rq_agents)
+            if _rq_only_disp:
+                fails.append(f"RQ in dispatch.py AGENTS but missing from publish_profiles PROFILE_MAP: {_rq_only_disp}")
+            if _rq_only_pub:
+                fails.append(f"RQ in publish_profiles PROFILE_MAP but missing from dispatch.py AGENTS: {_rq_only_pub}")
+
     # === MP — member↔agent parity (only if both directories exist) ===
     # If both star-alliance-members/ and agents/ exist, verify they have the same
     # set of .md files (same agent IDs). If only one exists, skip the check.

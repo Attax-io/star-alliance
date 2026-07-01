@@ -41,11 +41,9 @@ import tempfile
 import os
 from pathlib import Path
 
-# ── Agent → Hermes profile mapping ──────────────────────────────────────────
-# Each guild agent maps to a Hermes profile of the same name.
-# The Strategist is the router — it decides which agent to dispatch to.
+# The Butler is the guild VOICE (session persona), never a dispatch target,
+# so he is intentionally absent. The Strategist is the router.
 AGENTS = {
-    "the-butler":       "Intake, voice, approval, report",
     "the-strategist":   "Router — decides who handles what",
     "the-architect":    "Systems design, domain modeling, database architecture",
     "the-developer":    "Writing code, fixing bugs, implementation",
@@ -54,6 +52,7 @@ AGENTS = {
     "the-herald":       "Marketing, growth, demand generation, content/SEO",
     "the-merchant":     "Investment analysis, trading strategies, market research",
     "the-quartermaster":"Skill management, syncing, upgrading, conformance",
+    "the-steward":      "Customer service, client requests, support triage",
 }
 
 
@@ -134,6 +133,27 @@ def doer_key_path(doer_id: str):
     return None
 
 
+def doer_hermes_args(doer_id):
+    """
+    Translate the resolved doer id into the hermes CLI flags that actually
+    change which model fires. Hermes picks the model from the profile
+    config.yaml (model.primary and model.fallback plus each provider
+    key_env), never from an injected env var, so honoring the saved doer
+    pick means passing --provider or -m.
+
+      minimax-sub   -> --provider custom:minimax-sub   (MiniMax-M3 on sub key)
+      minimax-payg  -> --provider custom:minimax-payg  (MiniMax-M3 on payg key)
+      glm-5.2       -> -m glm-5.2                       (listed in both providers)
+      anything else -> empty list (use the profile configured default)
+    """
+    mapping = {
+        "minimax-sub":  ["--provider", "custom:minimax-sub"],
+        "minimax-payg": ["--provider", "custom:minimax-payg"],
+        "glm-5.2":      ["-m", "glm-5.2"],
+    }
+    return mapping.get(doer_id, [])
+
+
 def list_agents():
     """Print all known agents and their roles."""
     print("Known guild agents:\n")
@@ -164,61 +184,30 @@ def dispatch(agent_name: str, prompt: str, timeout: int = 300) -> dict:
 
     profile = agent_name  # agent name == Hermes profile name
 
+    # Honor the Guild Master saved doer pick.
+    # Hermes selects the firing model from the profile config.yaml
+    # (model.primary and model.fallback plus each provider key_env), NOT
+    # from an injected env var. The old code exported MINIMAX_API_KEY, a
+    # name nothing in the Hermes chain reads, so the pick was a silent
+    # no-op. We pass the matching --provider or -m flags instead.
+    doer = resolve_doer(agent_name)
+    doer_args = doer_hermes_args(doer)
+    _flags_str = " ".join(doer_args) if doer_args else "profile-default"
+    print(
+        f"[dispatch] agent={agent_name} doer={doer} hermes_args={_flags_str}",
+        file=sys.stderr,
+    )
+
     cmd = [
         "hermes",
         "-p", profile,
-        "--yolo",  # skip command approval prompts — the Claude-side hooks
-                   # already enforce what the specialist can and can't do, so
-                   # Hermes shouldn't block it with a second approval layer
+        "--yolo",
         "chat",
         "-q", prompt,
-        "-Q",  # quiet — suppress banner/spinner/tool previews
+        "-Q",
+        *doer_args,
     ]
-
-    # ── Honor the Guild Master's saved doer pick ─────────────────────────
-    # The dashboard SAVE writes memberOverrides[agent_name].doer. We resolve
-    # the effective doer here, then — if it maps to a minimax key file —
-    # export MINIMAX_API_KEY into the subprocess env so the runner actually
-    # uses that billing key. Missing key file → warn + proceed (don't crash).
-    env = None
-    doer = resolve_doer(agent_name)
-    key_path = doer_key_path(doer)
-    if key_path is not None:
-        if key_path.is_file():
-            try:
-                api_key = key_path.read_text(encoding="utf-8").strip()
-            except OSError as e:
-                print(
-                    f"[dispatch] WARN could not read {key_path}: {e} "
-                    f"(agent={agent_name}, doer={doer}); proceeding without override",
-                    file=sys.stderr,
-                )
-                api_key = None
-            if api_key:
-                env = os.environ.copy()
-                env["MINIMAX_API_KEY"] = api_key
-                print(
-                    f"[dispatch] agent={agent_name} doer={doer} key={key_path.name}",
-                    file=sys.stderr,
-                )
-            else:
-                print(
-                    f"[dispatch] WARN {key_path} is empty "
-                    f"(agent={agent_name}, doer={doer}); proceeding without override",
-                    file=sys.stderr,
-                )
-        else:
-            print(
-                f"[dispatch] WARN key file not found: {key_path} "
-                f"(agent={agent_name}, doer={doer}); proceeding without override",
-                file=sys.stderr,
-            )
-    else:
-        # Non-minimax doer — no env override needed; just audit the pick.
-        print(
-            f"[dispatch] agent={agent_name} doer={doer} (non-minimax; no key override)",
-            file=sys.stderr,
-        )
+    env = None  # keys live in each profile .env (read via key_env); no override
 
     try:
         result = subprocess.run(
