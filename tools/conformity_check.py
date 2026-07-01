@@ -281,6 +281,24 @@ def main():
         except Exception as _sw_exc:
             notes.append(f"SW  {wid}: swarm guardrail check raised an exception "
                          f"(skipped, fail-soft): {_sw_exc}")
+        # SDC — swarm declared-consumed: any step declaring `swarm` (or
+        # exec:spawn) must be CONSUMED, not silently ignored by the headless
+        # runner. Two conditions: (1) guild/run.py's source actually contains
+        # the swarm-detection branch (checked once, outside the workflow loop,
+        # below), and (2) every swarm-declaring step also sets exec:"spawn" so
+        # run.py's `step.get("exec") == "spawn" or step.get("swarm")` gate is
+        # guaranteed to fire for it. Fail-soft: never crash the sweep.
+        try:
+            for s in steps:
+                if s.get("swarm") and s.get("exec") != "spawn":
+                    fails.append(
+                        f"SDC {wid} step '{s.get('title','?')}': declares "
+                        f"swarm but exec != 'spawn' — run.py's swarm-detection "
+                        f"branch will not fire for this step"
+                    )
+        except Exception as _sdc_exc:
+            notes.append(f"SDC {wid}: swarm declared-consumed check raised an "
+                         f"exception (skipped, fail-soft): {_sdc_exc}")
         # R — actors + gates resolve
         for s in steps:
             if s.get("kind") in AGENT_KINDS:

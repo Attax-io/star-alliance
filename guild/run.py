@@ -6,6 +6,12 @@ CLI:
 Loads workflows.json from REPO_ROOT, finds the workflow by name (case-insensitive),
 and resolves each step to a script, prose (delegate) call, or human handoff.
 Writes per-step outputs plus a run_summary.md into the state directory.
+
+run.py is delegate-not-spawn: it runs scripts, single delegate() calls, and
+human halts — it has no Task tool, so it can never truly fan out parallel
+members. Parallel member fan-out (exec:spawn / swarm) belongs to the live
+session; run.py only records the swarm plan (guild/swarm.py) and then degrades
+to the existing single-delegate() path.
 """
 from __future__ import annotations
 
@@ -19,6 +25,7 @@ from pathlib import Path
 # Allow `from delegate import delegate` when this file is run directly.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from delegate import delegate  # noqa: E402
+from swarm import plan_swarm  # noqa: E402
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 WORKFLOWS_JSON = REPO_ROOT / "workflows.json"
@@ -210,9 +217,28 @@ def main() -> int:
         # reads e.g. "Approval Gate" / "Certify Gate" instead of a bare "step N".
         gate_kind = step.get("gate") if (step.get("kind") == "gate" or step.get("gate")) else None
         title = step.get("title") or (f"{gate_kind.capitalize()} Gate" if isinstance(gate_kind, str) else f"step {i}")
+
+        # SWARM POINT: a step declaring exec:spawn or a swarm object is recorded
+        # here, not executed in parallel — run.py has no Task tool and can never
+        # truly fan out members. Record the plan as a standalone note (outside
+        # the summary table, so the table stays one row per step), then fall
+        # through into the existing single-delegate() path below unchanged (a
+        # step without swarm never enters this block).
+        swarm_note = ""
+        if step.get("exec") == "spawn" or step.get("swarm"):
+            plan = plan_swarm(step)
+            swarm_note = (
+                f"SWARM POINT: fan {plan['instances']}x {plan['member']} by "
+                f"{plan['partition']} — live-session driver required; "
+                f"headless run degrades to single worker ({plan['reason']})"
+            )
+            print(f"  {swarm_note}")
+
         resolution = resolve_step(step)
         print(f"[{i}/{total}] {title}  ->  ({resolution})")
         summary.append(f"| {i} | {title} | {resolution} |")
+        if swarm_note:
+            summary.append(f"  - {swarm_note}")
 
         if resolution == "human":
             # A gate is a hard human-approval checkpoint: the runner MUST halt and
