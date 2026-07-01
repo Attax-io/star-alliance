@@ -28,6 +28,8 @@ Checks (each maps to a source-of-truth invariant or a logged decision):
                    and the model table in each matches models.json seats
   DX dispatch-xref tools/dispatch.py AGENTS dict → profiles/<folder>/ directory exists
   MP member-parity star-alliance-members/ and agents/ reference the same agent IDs (if both exist)
+  MN member-names  member-bearing files reference only canonical member names (no stale renames)
+  HM stale-model-id no code/config references a model id deleted from the registry
 """
 import json, re, sys, pathlib
 
@@ -975,6 +977,148 @@ def main():
         if _mp_only_agents:
             fails.append(f"MP only in agents/ (not in star-alliance-members/): {_mp_only_agents}")
     # If only one exists, skip — no parity to check
+
+    # === MN — member-name consistency (no stale member renames) ===
+    # Canonical member names = basenames (without .md) of star-alliance-members/*.md,
+    # excluding README. A member-shaped token ('the-<word>') found in member-bearing
+    # files but NOT in the canonical set is a stale rename — a name that was changed
+    # in some places but not others.
+    _mn_members_dir = ROOT / "star-alliance-members"
+    _mn_canonical = set()
+    if _mn_members_dir.is_dir():
+        _mn_canonical = {f.stem for f in _mn_members_dir.glob("the-*.md")}
+    # Also add known roster members from agents/ if it exists (some may only be there)
+    _mn_agents_dir = ROOT / "agents"
+    if _mn_agents_dir.is_dir():
+        _mn_canonical |= {f.stem for f in _mn_agents_dir.glob("the-*.md")}
+    # Known non-member 'the-*' tokens that appear in member-bearing files legitimately
+    _mn_known_non_members = {"the-butler", "the-strategist", "the-connector", "the-steward"}
+    _mn_all_valid = _mn_canonical | _mn_known_non_members
+    _mn_member_pattern = re.compile(r'\bthe-[a-z]+(?:-[a-z]+)*\b')
+    # Member-bearing files to scan
+    _mn_scan_files = [
+        ROOT / "tools" / "dispatch.py",
+        ROOT / "workflows.json",
+        ROOT / ".claude" / "hooks" / "guild-routing-gate.sh",
+        ROOT / "data" / "agents-meta.json",
+        ROOT / "data" / "members-meta.json",
+    ]
+    for _mn_f in _mn_scan_files:
+        if not _mn_f.exists():
+            continue
+        try:
+            _mn_txt = _mn_f.read_text(encoding="utf-8")
+        except Exception:
+            continue
+        for _mn_tok in _mn_member_pattern.findall(_mn_txt):
+            if _mn_tok not in _mn_all_valid:
+                _mn_rel = str(_mn_f.relative_to(ROOT)) if _mn_f.is_relative_to(ROOT) else str(_mn_f)
+                fails.append(
+                    f"MN {_mn_rel}: references member name '{_mn_tok}' which is not a "
+                    f"current member (canonical members: {sorted(_mn_canonical)})"
+                )
+    # Also check profiles/ subdir names: each should map to a canonical member
+    # Profiles use short slugs (e.g. 'architect' not 'the-architect')
+    _mn_profiles_dir = ROOT / "profiles"
+    if _mn_profiles_dir.is_dir():
+        for _mn_sub in sorted(_mn_profiles_dir.iterdir()):
+            if not _mn_sub.is_dir():
+                continue
+            _mn_slug = _mn_sub.name
+            if _mn_slug.startswith("."):
+                continue  # skip .DS_Store etc.
+            _mn_full = f"the-{_mn_slug}"
+            if _mn_full not in _mn_all_valid and _mn_slug not in {"README.md"}:
+                fails.append(
+                    f"MN profiles/{_mn_slug}/: profile slug '{_mn_slug}' maps to "
+                    f"'{_mn_full}' which is not a current member "
+                    f"(canonical members: {sorted(_mn_canonical)})"
+                )
+
+    # === HM — stale/unknown model id in live code/config ===
+    # Catches model ids that were deleted/renamed from models.json but still referenced
+    # in code, config, or documentation. Uses a regex that matches registry-style ids
+    # (lowercase, hyphenated) to avoid false positives on mixed-case API display names.
+    if _regm:
+        _hm_current_ids = set(_regm.keys())
+        _hm_model_id_re = re.compile(
+            r'\b(?:minimax-(?:sub|payg|video|speech|music)|glm-[0-9.]+|kimi-[a-z0-9.]+'
+            r'|deepseek-[a-z0-9-]+|nemotron-[a-z0-9-]+'
+            r'|qwen[0-9.]+|gemma[0-9]+|image-[0-9]+)\b'
+        )
+        # Reuse arsenal_rename.py's SKIP logic if importable; otherwise inline it
+        _hm_skip_literals = {
+            "data/guild-log.json", "evolution/ledger.jsonl", "data/turn-cost.jsonl",
+            "evolution/schedule.json.bak", "VERSIONS.md",
+            "guild-data.js", "guild-data.json", "skill-md.js", "workflow-md.js",
+            "star-alliance-arsenal/models.json", "star-alliance-arsenal/models-usage.json",
+            "star-alliance-arsenal/gen_model_docs.py",
+            "tools/conformity_check.py",
+        }
+        _hm_skip_suffixes = (".bak", ".bak2", ".bak3")
+        _hm_skip_fragments = (
+            "/.git/", "/archive/", "/node_modules/", "/__pycache__/", "/.deprecated/",
+        )
+        _hm_scan_suffixes = {".py", ".json", ".sh", ".cjs", ".md"}
+        _hm_md_allowlist = {"CLAUDE.md", "AGENTS.md", "README.md"}
+        def _hm_is_skip(rel_path: str) -> bool:
+            if rel_path in _hm_skip_literals:
+                return True
+            rel_n = rel_path.lstrip("./")
+            for frag in _hm_skip_fragments:
+                if frag in ("/" + rel_n) or frag in rel_n:
+                    return True
+            if rel_n.endswith(_hm_skip_suffixes):
+                return True
+            parts = rel_n.split("/")
+            if (len(parts) >= 3 and parts[0] == "star-alliance-arsenal"
+                    and parts[1] == "models" and parts[2].endswith(".md")):
+                return True
+            return False
+        def _hm_should_scan(rel_path: str) -> bool:
+            if _hm_is_skip(rel_path):
+                return False
+            import os as _os2
+            _basename = _os2.path.basename(rel_path)
+            _ext = _os2.path.splitext(_basename)[1]
+            if _ext in _hm_scan_suffixes:
+                if _ext == ".md" and _basename not in _hm_md_allowlist:
+                    return False
+                return True
+            return False
+        # Walk tracked files via git ls-files for efficiency
+        try:
+            _hm_git = _sp.run(
+                ["git", "ls-files"],
+                cwd=ROOT, capture_output=True, text=True, timeout=30,
+            )
+            _hm_tracked = [ln.strip() for ln in _hm_git.stdout.splitlines() if ln.strip()]
+        except Exception:
+            _hm_tracked = []
+        _hm_seen = set()  # deduplicate per-token per-file
+        for _hm_rel in _hm_tracked:
+            if not _hm_should_scan(_hm_rel):
+                continue
+            _hm_path = ROOT / _hm_rel
+            if not _hm_path.is_file():
+                continue
+            try:
+                _hm_txt = _hm_path.read_text(encoding="utf-8")
+            except Exception:
+                continue
+            for _hm_m in _hm_model_id_re.finditer(_hm_txt):
+                _hm_tok = _hm_m.group(0)
+                if _hm_tok in _hm_current_ids:
+                    continue
+                # Deduplicate: only one fail per (file, token) pair
+                _hm_key = (_hm_rel, _hm_tok)
+                if _hm_key in _hm_seen:
+                    continue
+                _hm_seen.add(_hm_key)
+                fails.append(
+                    f"HM {_hm_rel}: references model id '{_hm_tok}' not in the registry "
+                    f"(deleted/renamed? run tools/arsenal_rename.py, or purge the stale ref)"
+                )
 
     # report
     print("═" * 64)

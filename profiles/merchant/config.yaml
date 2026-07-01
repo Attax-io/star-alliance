@@ -1,17 +1,36 @@
 model:
   default: MiniMax-M3
-  provider: custom:minimax
+  provider: custom:minimax-sub
+  primary: custom:minimax-sub
+  fallback: custom:minimax-payg
   base_url: https://api.minimax.io/v1
+
 providers:
-  custom:minimax:
+  custom:minimax-sub:
     api: https://api.minimax.io/v1
     default_model: MiniMax-M3
+    key_env: MINIMAX_SUB_KEY
     models:
       - MiniMax-M3
-    name: MiniMax Direct
+      - glm-5.2
+    name: MiniMax Sub
+  custom:minimax-payg:
+    api: https://api.minimax.io/v1
+    default_model: MiniMax-M3
+    key_env: MINIMAX_PAYG_KEY
+    models:
+      - MiniMax-M3
+      - glm-5.2
+    name: MiniMax PayG
+fallback_model:
+  provider: zai
+  model: glm-5.2
+
 agent:
   reasoning_effort: xhigh
+
 terminal:
   backend: local
   timeout: 180
+
 _config_version: 31
