@@ -2725,6 +2725,13 @@
       "title": "Routing: skill-art/backend-auditor.png, skill-art/cold-doc-rotator.png, skill-art/frontend-auditor.png (+2 more)",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Routing: skill-art/data-analysis-viz.png, skill-art/financial-data-reach.png, skill-art/leaders-command.png (+4 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130
