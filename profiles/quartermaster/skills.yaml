@@ -18,8 +18,6 @@
 - name: workflow-runner
   reason: When I need to drive a workflow end-to-end during a conformance pass, to see what the specialist actually saw, not what they said they saw.
 
-- name: guild-sync
-  reason: The canonical reconcile path between the repo's skill catalog and the active profile's installed skills — keeps the fleet in lockstep.
 
 - name: guild-conformity
   reason: The certify gate's own instrument — runs the formal conformance pass and emits the report the Butler carries to the Guild Master.

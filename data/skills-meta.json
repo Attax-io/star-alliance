@@ -1,6 +1,6 @@
 {
   "_impeccable-upstream-source": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -8,15 +8,15 @@
     "modes": ""
   },
   "a11y-craft": {
-    "icon": "🧩",
-    "blurb": "The Designer's accessibility craft — make WCAG 2.2 AA a gate every surface clears before it shi",
+    "icon": "\ud83e\udde9",
+    "blurb": "The Designer's accessibility craft \u2014 make WCAG 2.2 AA a gate every surface clears before it shi",
     "level": "Advanced",
     "tabler": "ti-puzzle",
     "triggers": "'is this accessible', 'a11y audit', 'check contrast', 'WCAG', 'fix focus states', 'keyboard navigation', 'make it accessible'",
     "modes": ""
   },
   "add-admin-permission": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -24,7 +24,7 @@
     "modes": ""
   },
   "add-new-trigger": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "End-to-end procedure for creating or modifying a database trigger and its backing function in t",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -32,7 +32,7 @@
     "modes": ""
   },
   "add-new-view": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "End-to-end procedure for creating or revising a view in the Lex Council Supabase backend.",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -40,7 +40,7 @@
     "modes": ""
   },
   "admin-page-builder": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -48,7 +48,7 @@
     "modes": ""
   },
   "admin-page-fixer": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -56,23 +56,23 @@
     "modes": ""
   },
   "agent-web-reach": {
-    "icon": "🌐",
-    "blurb": "Give an agent reliable web reach — YouTube/Bilibili transcripts, Twitter/Reddit/LinkedIn scraping, RSS, Exa search, cookies",
+    "icon": "\ud83c\udf10",
+    "blurb": "Give an agent reliable web reach \u2014 YouTube/Bilibili transcripts, Twitter/Reddit/LinkedIn scraping, RSS, Exa search, cookies",
     "level": "Advanced",
     "tabler": "ti-world-search",
     "triggers": "'get this youtube transcript', 'scrape this reddit thread', 'pull this tweet', 'read this blocked page', 'subscribe to this RSS'",
     "modes": "channels; auth & cookies; search & RSS; transcription; health probing"
   },
   "agentic-video-production": {
-    "icon": "🎬",
-    "blurb": "Produce finished video agentically from a brief — research→script→assets→edit→compose, native b-roll corpus, gated stages",
+    "icon": "\ud83c\udfac",
+    "blurb": "Produce finished video agentically from a brief \u2014 research\u2192script\u2192assets\u2192edit\u2192compose, native b-roll corpus, gated stages",
     "level": "Advanced",
     "tabler": "ti-movie",
     "triggers": "'make a video about X', 'produce this video', 'turn this script into a video', 'build a b-roll corpus'",
     "modes": "pipeline & stage-gates; corpus & footage; providers; prompt patterns"
   },
   "algorithmic-trading-chan": {
-    "icon": "📈",
+    "icon": "\ud83d\udcc8",
     "blurb": "Ernie Chan's quant doctrine: mean reversion, momentum, backtesting pitfalls, Kelly risk",
     "level": "Advanced",
     "tabler": "ti-chart-candle",
@@ -80,23 +80,23 @@
     "modes": "backtesting integrity; mean reversion; momentum; risk management"
   },
   "api-integration-design": {
-    "icon": "🔌",
-    "blurb": "Design service/API contracts + integrate third-party APIs — REST/GraphQL, versioning, idempotency, webhooks, resilience, contract testing",
+    "icon": "\ud83d\udd0c",
+    "blurb": "Design service/API contracts + integrate third-party APIs \u2014 REST/GraphQL, versioning, idempotency, webhooks, resilience, contract testing",
     "level": "Advanced",
     "tabler": "ti-plug-connected",
     "triggers": "'design the API for X', 'integrate this third-party API', 'design these webhooks', 'version this endpoint', 'handle rate limits'",
     "modes": "contract design; webhooks & events; integration resilience; contract testing"
   },
   "arsenal-forge": {
-    "icon": "⚔️",
-    "blurb": "Recruit or re-role a weapon — identity, role, wire to loadouts",
+    "icon": "\u2694\ufe0f",
+    "blurb": "Recruit or re-role a weapon \u2014 identity, role, wire to loadouts",
     "level": "Intermediate",
     "tabler": "ti-swords",
     "triggers": "'add a weapon', 'recruit a model', 're-skin this weapon', 'change a weapon role', 'arsenal forge'",
     "modes": ""
   },
   "article-creator": {
-    "icon": "📝",
+    "icon": "\ud83d\udcdd",
     "blurb": "End-to-end Insights article creation pushed to production DB",
     "level": "Foundational",
     "tabler": "ti-article",
@@ -104,15 +104,15 @@
     "modes": ""
   },
   "automated-testing": {
-    "icon": "🧪",
-    "blurb": "Author automated tests for a web app — unit/component/integration/E2E (Vitest, Testing Library, Playwright); pyramid, coverage, flake-free",
+    "icon": "\ud83e\uddea",
+    "blurb": "Author automated tests for a web app \u2014 unit/component/integration/E2E (Vitest, Testing Library, Playwright); pyramid, coverage, flake-free",
     "level": "Advanced",
     "tabler": "ti-test-pipe",
     "triggers": "'write tests for this', 'add test coverage', 'set up Playwright', 'why is this test flaky', 'test this server action'",
     "modes": "test pyramid & strategy; deterministic tests; E2E Playwright"
   },
   "backend-auditor": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "Audits the Lex Council Supabase schema (tables, views, triggers, RPC functions, cron jobs, RLS",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -120,7 +120,7 @@
     "modes": ""
   },
   "bug-fix-closer": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "Mark one or more Lex Council bug_reports rows as Fixed (br_status=4) in the DB.",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -128,7 +128,7 @@
     "modes": ""
   },
   "bug-fix-workflow": {
-    "icon": "🐛",
+    "icon": "\ud83d\udc1b",
     "blurb": "End-to-end bug triage, reproduction, and root-cause fixing",
     "level": "Intermediate",
     "tabler": "ti-bug",
@@ -136,15 +136,15 @@
     "modes": ""
   },
   "bundled-rls": {
-    "icon": "🛡️",
-    "blurb": "Compose Postgres RLS from a named bundle catalog — one FOR ALL policy per table, (SELECT auth.uid()) caching, zero inline drift.",
+    "icon": "\ud83d\udee1\ufe0f",
+    "blurb": "Compose Postgres RLS from a named bundle catalog \u2014 one FOR ALL policy per table, (SELECT auth.uid()) caching, zero inline drift.",
     "level": "Advanced",
     "tabler": "ti-shield-lock",
     "triggers": "'write a new RLS policy', 'standardize our policies', 'compose a bundle', 'replace inline EXISTS', 'audit RLS coverage', 'add FOR SELECT visibility'",
     "modes": "compose from bundle catalog; one FOR ALL policy per table; append-only coverage; initplan auth.uid caching"
   },
   "butler-onboarding": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "Turns a vague or first-contact request into a short discovery, an honest presentation of what t",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -152,7 +152,7 @@
     "modes": ""
   },
   "butler-voice": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "How the Butler speaks to the Guild Master: lead every reply with a plain-English status block",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -160,23 +160,23 @@
     "modes": ""
   },
   "chart-patterns": {
-    "icon": "📐",
-    "blurb": "Identify & read every chart pattern (Bulkowski) — H&S, double/triple tops, triangles, flags, gaps + event patterns, with the odds",
+    "icon": "\ud83d\udcd0",
+    "blurb": "Identify & read every chart pattern (Bulkowski) \u2014 H&S, double/triple tops, triangles, flags, gaps + event patterns, with the odds",
     "level": "Advanced",
     "tabler": "ti-chart-line",
     "triggers": "'what chart pattern is this', 'is this a head and shoulders', 'measure rule for a triangle', 'how reliable is a double bottom', 'read this chart pattern'",
     "modes": "classic reversal & continuation patterns; event patterns; measure-rule targets; performance odds & ranking; candlestick & volume confluence"
   },
   "claude-code-hooks": {
-    "icon": "🪝",
-    "blurb": "Author Claude Code hooks the right way — fail-open gates and banners",
+    "icon": "\ud83e\ude9d",
+    "blurb": "Author Claude Code hooks the right way \u2014 fail-open gates and banners",
     "level": "Advanced",
     "tabler": "ti-webhook",
     "triggers": "'write a hook', 'add a PreToolUse hook', 'gate this tool', 'block this command', 'fire a banner on', 'why is my hook blocking', 'fail-open hook', 'test my hook', 'claude code hooks'",
     "modes": ""
   },
   "cleanup": {
-    "icon": "🧹",
+    "icon": "\ud83e\uddf9",
     "blurb": "Multi-mode hygiene: i18n translations, dedup, hardcoded text",
     "level": "Intermediate",
     "tabler": "ti-eraser",
@@ -184,15 +184,15 @@
     "modes": "language (i18n translations); consolidate (i18n key dedup); hardcoded (extract raw UI text to next-intl keys); leaks (i18n keys used in code but missing from JSON); errors (dev log sweep); postgres (Supabase advisors + pg health); lint (ESLint --fix + tsc); consolidate-code (duplicate code detection"
   },
   "cn-market-strategy-pack": {
-    "icon": "🐉",
-    "blurb": "Read-only pack of 15 CN/HK/US market strategies — trend, reversal, theme/event, chan & wave; thesis/entry/exit/regime",
+    "icon": "\ud83d\udc09",
+    "blurb": "Read-only pack of 15 CN/HK/US market strategies \u2014 trend, reversal, theme/event, chan & wave; thesis/entry/exit/regime",
     "level": "Advanced",
     "tabler": "ti-trending-up",
     "triggers": "'which strategy fits this stock', 'screen with chan theory', 'is this a dragon-head setup', 'apply a CN-market strategy'",
     "modes": "trend & momentum; reversal & volume; theme & event; chan & wave theory"
   },
   "code-crime-scene": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -200,31 +200,31 @@
     "modes": ""
   },
   "code-review-craft": {
-    "icon": "🔍",
-    "blurb": "Deliberate member-invoked review of a diff/PR/file — correctness, security, simplification, efficiency; severity-tagged, evidence-grounded",
+    "icon": "\ud83d\udd0d",
+    "blurb": "Deliberate member-invoked review of a diff/PR/file \u2014 correctness, security, simplification, efficiency; severity-tagged, evidence-grounded",
     "level": "Advanced",
     "tabler": "ti-eye-check",
     "triggers": "'review this diff', 'review my PR', 'audit this file', 'is this change safe', 'look over my changes'",
     "modes": "review dimensions; grounding findings; severity & scope"
   },
   "code-unity": {
-    "icon": "🧩",
-    "blurb": "The Developer's and Architect's code-unity guardian — enforce ONE source of truth for every typ",
+    "icon": "\ud83e\udde9",
+    "blurb": "The Developer's and Architect's code-unity guardian \u2014 enforce ONE source of truth for every typ",
     "level": "Advanced",
     "tabler": "ti-puzzle",
     "triggers": "'one source of truth', 'stop duplicating', 'this type is defined twice', 'unify these constants', 'single import path', 'deduplicate types', 'code unity', 'audit duplication'",
     "modes": ""
   },
   "codebase-memory-mcp": {
-    "icon": "🕸️",
-    "blurb": "MCP code-intelligence engine — tree-sitter knowledge graph over a repo (158 langs, 14 tools); where/what-calls/impact/dead-code",
+    "icon": "\ud83d\udd78\ufe0f",
+    "blurb": "MCP code-intelligence engine \u2014 tree-sitter knowledge graph over a repo (158 langs, 14 tools); where/what-calls/impact/dead-code",
     "level": "Advanced",
     "tabler": "ti-binary-tree",
     "triggers": "'index this codebase', 'where is X defined', 'what calls Y', 'trace this call chain', 'impact of changing Z', 'find dead code', 'map this repo's architecture'",
     "modes": "indexing; structural search & trace; impact & architecture; Cypher queries; dead-code"
   },
   "codex-law-translate": {
-    "icon": "⚖️",
+    "icon": "\u2696\ufe0f",
     "blurb": "Legal codex pipeline: load law, translate to five locales",
     "level": "Intermediate",
     "tabler": "ti-gavel",
@@ -232,7 +232,7 @@
     "modes": ""
   },
   "cognitive-bias-guard": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -240,7 +240,7 @@
     "modes": ""
   },
   "cold-doc-rotator": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "Picks the N Lex Council docs with the oldest `last_housekeeper_pass` frontmatter field (treatin",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -248,7 +248,7 @@
     "modes": ""
   },
   "comms-triage": {
-    "icon": "📨",
+    "icon": "\ud83d\udce8",
     "blurb": "Sweep email, calendar, and WhatsApp into tasks, events, and replies",
     "level": "Intermediate",
     "tabler": "ti-inbox",
@@ -256,23 +256,23 @@
     "modes": ""
   },
   "conquering-campaign": {
-    "icon": "🚀",
+    "icon": "\ud83d\ude80",
     "blurb": "Multi-wave campaign orchestrator: audit, build, run mega-work",
     "level": "Master",
     "tabler": "ti-flag",
     "triggers": "ONLY above that bar: 'audit my app', 'build this feature', 'ship this refactor', 'phase this migration', 'proceed in application', 'extend [campaign] to X', 'roll out [pattern] to [surface]', 'apply [v1.X] to [Z]'. Planning asks every question upfront then exe",
-    "modes": "AUDIT (reconcile docs with code/DB), BUILD (multi-phase features/refactors/migrations touching 3+ surfaces), EXTENSION (extends a recent predecessor, reusing its prescan). Gate G0 runs FIRST: work that doesn't clear the bar (3+ INDEPENDENT logical changes — one vertical slice = ONE — OR genuinely mu"
+    "modes": "AUDIT (reconcile docs with code/DB), BUILD (multi-phase features/refactors/migrations touching 3+ surfaces), EXTENSION (extends a recent predecessor, reusing its prescan). Gate G0 runs FIRST: work that doesn't clear the bar (3+ INDEPENDENT logical changes \u2014 one vertical slice = ONE \u2014 OR genuinely mu"
   },
   "contract-review": {
-    "icon": "📋",
-    "blurb": "Review an inbound contract/NDA for risk — clause-by-clause redline, one-sided/missing-term flags, risk score, reviewer's report. Advisory, never signs",
+    "icon": "\ud83d\udccb",
+    "blurb": "Review an inbound contract/NDA for risk \u2014 clause-by-clause redline, one-sided/missing-term flags, risk score, reviewer's report. Advisory, never signs",
     "level": "Advanced",
     "tabler": "ti-file-search",
     "triggers": "'review this contract', 'triage this NDA', 'redline this agreement', \"what's the risk in this clause\", 'is this term standard'",
     "modes": "clause checklist; redline & risk scoring; reviewer report"
   },
   "daily-stock-analysis": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "AI-powered daily stock analysis for A-share HK US JP KR markets generating a structured Decisio",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -280,7 +280,7 @@
     "modes": ""
   },
   "dashboard-parity": {
-    "icon": "🪞",
+    "icon": "\ud83e\ude9e",
     "blurb": "Prove every change actually renders on the dashboard",
     "level": "Advanced",
     "tabler": "ti-device-desktop-check",
@@ -288,15 +288,15 @@
     "modes": ""
   },
   "data-analysis-viz": {
-    "icon": "📊",
-    "blurb": "Turn a dataset (CSV/query/table) into an analyzed, honestly-visualized report — EDA, cleaning, the right chart, axis integrity, a clear narrative",
+    "icon": "\ud83d\udcca",
+    "blurb": "Turn a dataset (CSV/query/table) into an analyzed, honestly-visualized report \u2014 EDA, cleaning, the right chart, axis integrity, a clear narrative",
     "level": "Advanced",
     "tabler": "ti-chart-histogram",
     "triggers": "'analyze this data', 'explore this CSV', 'what does this dataset show', 'chart this', 'build a dashboard from this'",
     "modes": "EDA workflow; choosing the chart; honest visualization"
   },
   "db-rename-sweep": {
-    "icon": "🏷️",
+    "icon": "\ud83c\udff7\ufe0f",
     "blurb": "Scans database schema for safe table and column renames",
     "level": "Foundational",
     "tabler": "ti-database",
@@ -304,23 +304,23 @@
     "modes": ""
   },
   "decompose-and-swarm": {
-    "icon": "🧩",
-    "blurb": "The Butler's swarm craft — judge whether a task is worth parallelising, scout the codebase surf",
+    "icon": "\ud83e\udde9",
+    "blurb": "The Butler's swarm craft \u2014 judge whether a task is worth parallelising, scout the codebase surf",
     "level": "Advanced",
     "tabler": "ti-puzzle",
     "triggers": "'swarm this', 'parallelise the work', 'run N agents', 'fan out', 'split the slices'",
     "modes": ""
   },
   "design-language": {
-    "icon": "🗣️",
-    "blurb": "The guild's multi-language voice engine — narrative vocabulary & tone, not visual",
+    "icon": "\ud83d\udde3\ufe0f",
+    "blurb": "The guild's multi-language voice engine \u2014 narrative vocabulary & tone, not visual",
     "level": "Master",
     "tabler": "ti-language",
     "triggers": "'use the X voice', 'make it sound like Fallen Sword', 'guild voice', 'Lex Council tone', 'reskin this copy', 'Erildath'",
     "modes": "fallen-sword; star-alliance; lex-council"
   },
   "design-taste": {
-    "icon": "🎨",
+    "icon": "\ud83c\udfa8",
     "blurb": "The Designer's seven-mode premium taste engine, anti-AI-slop",
     "level": "Master",
     "tabler": "ti-brush",
@@ -328,31 +328,31 @@
     "modes": "engineer; agency; minimal; brutalist; motion; encode; redesign"
   },
   "design-tokens": {
-    "icon": "🧩",
-    "blurb": "The Designer's token-architecture craft — structure a design-token system that scales, themes",
+    "icon": "\ud83e\udde9",
+    "blurb": "The Designer's token-architecture craft \u2014 structure a design-token system that scales, themes",
     "level": "Advanced",
     "tabler": "ti-puzzle",
     "triggers": "'design tokens', 'token architecture', 'set up theming', 'dark mode tokens', 'semantic tokens', 'OKLCH palette', 'W3C design tokens'",
     "modes": ""
   },
   "design-unity": {
-    "icon": "🧬",
-    "blurb": "UI conformity engine — one source of truth, every surface in one design language",
+    "icon": "\ud83e\uddec",
+    "blurb": "UI conformity engine \u2014 one source of truth, every surface in one design language",
     "level": "Advanced",
     "tabler": "ti-color-swatch",
     "triggers": "'make the UI consistent', 'one source of truth for the UI', 'enforce the design system', 'kill the design drift', 'unify the look', 'audit UI conformity', 'design tokens'",
     "modes": "establish; audit; reconcile"
   },
   "dev-ops-command-pack": {
-    "icon": "🛠️",
-    "blurb": "Disciplined dev-ops lifecycle as one gated loop — start-work→pre-pr→deploy→health→rollback→retro, dev/remote symmetry",
+    "icon": "\ud83d\udee0\ufe0f",
+    "blurb": "Disciplined dev-ops lifecycle as one gated loop \u2014 start-work\u2192pre-pr\u2192deploy\u2192health\u2192rollback\u2192retro, dev/remote symmetry",
     "level": "Advanced",
     "tabler": "ti-rocket",
     "triggers": "'start work on this', 'pre-pr check', 'deploy this', 'roll back the deploy', 'run a retro', 'health check the service'",
     "modes": "lifecycle loop; deploy & rollback; health & observability"
   },
   "dev-server": {
-    "icon": "🚀",
+    "icon": "\ud83d\ude80",
     "blurb": "Launches, restarts, and manages your local development server",
     "level": "Foundational",
     "tabler": "ti-server",
@@ -360,7 +360,7 @@
     "modes": ""
   },
   "dual-model-review": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "The dual-review flow that backs the cross-system bridge.",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -368,7 +368,7 @@
     "modes": ""
   },
   "file-access-model": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -376,15 +376,15 @@
     "modes": ""
   },
   "financial-data-reach": {
-    "icon": "💹",
-    "blurb": "Acquire + clean financial data — quotes/OHLCV, fundamentals, filings, earnings, macro, sentiment; source choice, point-in-time correctness. Never trades",
+    "icon": "\ud83d\udcb9",
+    "blurb": "Acquire + clean financial data \u2014 quotes/OHLCV, fundamentals, filings, earnings, macro, sentiment; source choice, point-in-time correctness. Never trades",
     "level": "Advanced",
     "tabler": "ti-database-dollar",
     "triggers": "'pull the fundamentals for X', 'get the price history', 'fetch the latest filing', 'find macro data on Y', 'get earnings estimates'",
     "modes": "source landscape; point-in-time correctness; normalization & caching"
   },
   "frontend-auditor": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "Diffs the Lex Council Next.js codebase (pages, mutations, hooks, stores) against FRONTEND-INVEN",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -392,15 +392,15 @@
     "modes": ""
   },
   "frontend-react-engineering": {
-    "icon": "⚛️",
-    "blurb": "Production React / Next.js engineering — RSC, hooks, state placement, data fetching, Suspense, perf, TS contracts",
+    "icon": "\u269b\ufe0f",
+    "blurb": "Production React / Next.js engineering \u2014 RSC, hooks, state placement, data fetching, Suspense, perf, TS contracts",
     "level": "Advanced",
     "tabler": "ti-brand-react",
     "triggers": "'build this React component', 'fix this re-render', 'server or client component', 'wire this Next.js page', 'where should this state live'",
     "modes": "component architecture; server vs client & data; React performance"
   },
   "full-output-enforcement": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -408,7 +408,7 @@
     "modes": ""
   },
   "graphify": {
-    "icon": "🕸️",
+    "icon": "\ud83d\udd78\ufe0f",
     "blurb": "Transforms any input into a navigable knowledge graph",
     "level": "Master",
     "tabler": "ti-binary-tree",
@@ -416,7 +416,7 @@
     "modes": ""
   },
   "growth-marketing": {
-    "icon": "📣",
+    "icon": "\ud83d\udce3",
     "blurb": "Four-mode marketing engine: content/SEO, brand, email, social/paid",
     "level": "Master",
     "tabler": "ti-speakerphone",
@@ -424,7 +424,7 @@
     "modes": "content-seo (ICP + pain keywords, topic clusters, local SEO, on-page, publish via article-creator); brand-positioning (positioning statement, ICP, value prop, voice, proof bank, imagegen-frontend brand-mode handoff); email-nurture (lead magnets, capture, 4-6 email sequence, re-engagement, bar-compliance); social-paid (channel mix, organic cadence, paid-ads starter, retargeting, tracking)"
   },
   "guild-conformity": {
-    "icon": "🔎",
+    "icon": "\ud83d\udd0e",
     "blurb": "Prove the guild repo agrees with itself, then reconcile",
     "level": "Advanced",
     "tabler": "ti-checkup-list",
@@ -432,7 +432,7 @@
     "modes": ""
   },
   "guild-log": {
-    "icon": "📓",
+    "icon": "\ud83d\udcd3",
     "blurb": "Logs non-git-visible guild changes via the two-tier pipeline",
     "level": "Foundational",
     "tabler": "ti-history",
@@ -440,31 +440,23 @@
     "modes": ""
   },
   "guild-reflection": {
-    "icon": "🔁",
+    "icon": "\ud83d\udd01",
     "tabler": "ti-refresh",
     "level": "Advanced",
     "modes": "CYCLE | AUDIT",
     "blurb": "The Quartermaster's self-improvement engine: reflect on a run, diagnose the seed, commit a doctrine diff.",
     "triggers": "'reflect on this', 'run the reflective cycle', 'guild self-audit', 'what did we learn', 'weed the skills', 'retire bad ideas', 'close the loop', 'self-improve the guild'"
   },
-  "guild-sync": {
-    "icon": "🔄",
-    "blurb": "Prove the device still matches the repo, then reconcile drift",
-    "level": "Advanced",
-    "tabler": "ti-refresh",
-    "triggers": "'sync the repo with claude', 'is the device up to date', 'what else needs syncing', 'device parity', 'sync rotation', 'check for drift'",
-    "modes": ""
-  },
   "harness-efficiency": {
-    "icon": "📊",
-    "blurb": "Prove & tune what the harness saves — net tokens, LITE/FULL tier split, offload health",
+    "icon": "\ud83d\udcca",
+    "blurb": "Prove & tune what the harness saves \u2014 net tokens, LITE/FULL tier split, offload health",
     "level": "Advanced",
     "tabler": "ti-gauge",
     "triggers": "'efficiency report', 'harness efficiency', 'how much are we saving', 'is the gate working', 'tier split', 'check the offload', 'net tokens saved', 'tune the stakes list', or before/after a routing-gate hook change",
-    "modes": "Report — join usage-log.jsonl + turn-cost.jsonl via efficiency_report.py (net-saved + per-tier breakdown); Watch — hunt the one hard failure (a high-stakes turn that took LITE); Tune — edit the data/harness.json stakes/size policy, then re-run the gate regression matrix"
+    "modes": "Report \u2014 join usage-log.jsonl + turn-cost.jsonl via efficiency_report.py (net-saved + per-tier breakdown); Watch \u2014 hunt the one hard failure (a high-stakes turn that took LITE); Tune \u2014 edit the data/harness.json stakes/size policy, then re-run the gate regression matrix"
   },
   "head-of-department": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "The thin authority-and-limits layer that sits between a worker and a sub-tree.",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -472,7 +464,7 @@
     "modes": ""
   },
   "health-checker": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "Runs three read-only Supabase health queries (missing FK indexes, public tables without RLS, hi",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -480,7 +472,7 @@
     "modes": ""
   },
   "heat-map-analyst": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "Ranks Lex Council docs under `lex_council/docs/` by `claude_hits` delta over the last 30 days a",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -488,7 +480,7 @@
     "modes": ""
   },
   "helpless": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "Invoked by scripts and hooks, never by the Butler himself.",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -496,15 +488,15 @@
     "modes": ""
   },
   "high-alert": {
-    "icon": "🚨",
+    "icon": "\ud83d\udea8",
     "blurb": "Session klaxon: banners on workflow start, skill activation, member duty",
     "level": "Foundational",
     "tabler": "ti-alert-triangle",
-    "triggers": "always on, no invocation — fires automatically on workflow start, Skill tool use (hook-enforced), and member formation at routing STEP 1",
+    "triggers": "always on, no invocation \u2014 fires automatically on workflow start, Skill tool use (hook-enforced), and member formation at routing STEP 1",
     "modes": ""
   },
   "hotspot-radar": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -512,7 +504,7 @@
     "modes": ""
   },
   "image-to-code": {
-    "icon": "🖼️",
+    "icon": "\ud83d\uddbc\ufe0f",
     "blurb": "Elite pipeline that designs the image, then engineers matching code",
     "level": "Advanced",
     "tabler": "ti-code",
@@ -520,15 +512,15 @@
     "modes": ""
   },
   "imagegen-frontend": {
-    "icon": "🖼️",
-    "blurb": "Premium image-generation engine — web sections, mobile app screens, and brand identity, images only",
+    "icon": "\ud83d\uddbc\ufe0f",
+    "blurb": "Premium image-generation engine \u2014 web sections, mobile app screens, and brand identity, images only",
     "level": "Master",
     "tabler": "ti-photo",
     "triggers": "'generate website design references', 'mock the landing page', 'design the app screens', 'create a brand kit', 'design the logo / identity', 'imagegen'",
     "modes": "web; mobile; brand"
   },
   "impeccable": {
-    "icon": "✨",
+    "icon": "\u2728",
     "blurb": "Polish, critique, distill, and harden any design with Swiss precision",
     "level": "Intermediate",
     "tabler": "ti-award",
@@ -536,7 +528,7 @@
     "modes": ""
   },
   "invariant-inference": {
-    "icon": "🧬",
+    "icon": "\ud83e\uddec",
     "blurb": "Infer & prove a latent rule from good/bad examples (CEGIS), distilled from LoopInvGen",
     "level": "Advanced",
     "tabler": "ti-binary-tree",
@@ -544,15 +536,15 @@
     "modes": ""
   },
   "japanese-candlesticks": {
-    "icon": "🕯️",
-    "blurb": "Read & interpret Japanese candlestick charts (Nison) — every reversal, continuation & doji pattern",
+    "icon": "\ud83d\udd6f\ufe0f",
+    "blurb": "Read & interpret Japanese candlestick charts (Nison) \u2014 every reversal, continuation & doji pattern",
     "level": "Advanced",
     "tabler": "ti-chart-candle-filled",
     "triggers": "'what candlestick pattern is this', 'is this a hammer or a doji', 'read this candlestick chart', 'explain bullish engulfing', 'morning star meaning', 'teach me Japanese candlesticks'",
     "modes": "single-line reversals; multi-line reversals; continuations; the doji family; Western-tool confluence"
   },
   "law-harvest": {
-    "icon": "📚",
+    "icon": "\ud83d\udcda",
     "blurb": "Ingest law PDFs verbatim into the verified Source-Law library",
     "level": "Intermediate",
     "tabler": "ti-files",
@@ -560,15 +552,15 @@
     "modes": ""
   },
   "leaders-command": {
-    "icon": "📯",
-    "blurb": "The Butler's down-command craft — turn the Guild Master's words into one concise, precise, complete order to a member/subagent/doer; COMPOSE + AUDIT + a runnable composer",
+    "icon": "\ud83d\udcef",
+    "blurb": "The Butler's down-command craft \u2014 turn the Guild Master's words into one concise, precise, complete order to a member/subagent/doer; COMPOSE + AUDIT + a runnable composer",
     "level": "Advanced",
     "tabler": "ti-speakerphone",
     "triggers": "'command the team', 'turn this into a clear order', 'write the prompt for the doer', 'brief the agent', 'make this instruction precise', 'audit this order'",
     "modes": "COMPOSE (write an order, right-sized to subordinate); AUDIT (critique + rewrite)"
   },
   "legal-drafting": {
-    "icon": "✒️",
+    "icon": "\u2712\ufe0f",
     "blurb": "Client correspondence and bilingual legal instruments in the firm's register",
     "level": "Advanced",
     "tabler": "ti-file-pencil",
@@ -576,7 +568,7 @@
     "modes": ""
   },
   "legal-rule-modeling": {
-    "icon": "🧮",
+    "icon": "\ud83e\uddee",
     "blurb": "Model a governing law into deterministic calculator rules",
     "level": "Advanced",
     "tabler": "ti-calculator",
@@ -584,7 +576,7 @@
     "modes": ""
   },
   "letting-go": {
-    "icon": "🍃",
+    "icon": "\ud83c\udf43",
     "tabler": "ti-feather",
     "level": "Intermediate",
     "modes": "",
@@ -592,7 +584,7 @@
     "triggers": "'I am stuck', 'stop retrying', 'ship the current best', 'we are looping', 'let it go', 'stop over-thinking this', 'good enough'"
   },
   "lex-system-audit": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -600,7 +592,7 @@
     "modes": ""
   },
   "market-recon": {
-    "icon": "📈",
+    "icon": "\ud83d\udcc8",
     "blurb": "Read-only market, investment, and risk analysis that ships a report",
     "level": "Advanced",
     "tabler": "ti-chart-candle",
@@ -608,15 +600,15 @@
     "modes": "asset/equity research; single trade-idea; portfolio review; macro/rates read"
   },
   "members-formation": {
-    "icon": "🧭",
+    "icon": "\ud83e\udded",
     "blurb": "The Butler's routing method: who works, in what arrangement, then crystallize",
     "level": "Advanced",
     "tabler": "ti-route",
-    "triggers": "'route this', 'who should handle this', 'form the team', 'distribute the work', 'can these run in parallel', 'coordinate the members', 'plan the dispatch', or any request touching more than one craft. The Butler's one dedicated craft — he is the router, not a specialist.",
+    "triggers": "'route this', 'who should handle this', 'form the team', 'distribute the work', 'can these run in parallel', 'coordinate the members', 'plan the dispatch', or any request touching more than one craft. The Butler's one dedicated craft \u2014 he is the router, not a specialist.",
     "modes": ""
   },
   "metamorphosis-check": {
-    "icon": "🦋",
+    "icon": "\ud83e\udd8b",
     "tabler": "ti-transform",
     "level": "Intermediate",
     "modes": "",
@@ -624,31 +616,31 @@
     "triggers": "'something changed', 'tool failed', 'unexpected output', 'recheck state', 'did the context drift', 'capability check', 'why is this failing now'"
   },
   "motion-design": {
-    "icon": "🌀",
-    "blurb": "The Designer's easing & timing specialist — exact curves, durations, transform-origins",
+    "icon": "\ud83c\udf00",
+    "blurb": "The Designer's easing & timing specialist \u2014 exact curves, durations, transform-origins",
     "level": "Advanced",
     "tabler": "ti-wave-sine",
     "triggers": "'animate this', 'add a transition', 'motion for X', 'clean up this animation', 'this feels too fast/slow', 'make it feel more alive', easing, timing, spring vs bezier, bounce",
     "modes": "evaluate; recommend"
   },
   "multimodal-model-wrappers": {
-    "icon": "🧬",
-    "blurb": "Build a unified multi-provider model abstraction — one call surface over LLM/VLM/TTS/TTV/image-gen/embeddings",
+    "icon": "\ud83e\uddec",
+    "blurb": "Build a unified multi-provider model abstraction \u2014 one call surface over LLM/VLM/TTS/TTV/image-gen/embeddings",
     "level": "Advanced",
     "tabler": "ti-stack-2",
     "triggers": "'wrap this model provider', 'unify these model APIs', 'add a provider to the abstraction', 'build a multimodal model layer'",
     "modes": "base contracts; adding a provider; modality normalization"
   },
   "negotiation-deal-strategy": {
-    "icon": "🤝",
-    "blurb": "Business negotiation + deal strategy — BATNA/ZOPA prep, structuring, pricing & concession ladder, objection handling, deal memo. Advisory, never signs",
+    "icon": "\ud83e\udd1d",
+    "blurb": "Business negotiation + deal strategy \u2014 BATNA/ZOPA prep, structuring, pricing & concession ladder, objection handling, deal memo. Advisory, never signs",
     "level": "Advanced",
     "tabler": "ti-businessplan",
     "triggers": "'prep this negotiation', 'structure this deal', \"what's my BATNA\", 'pricing strategy for X', 'handle this objection', 'write a deal memo'",
     "modes": "preparation (BATNA/ZOPA); structuring & concessions; deal memo"
   },
   "new-member-onboarding": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "The exact checklist to run whenever a new guild member is recruited.",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -656,7 +648,7 @@
     "modes": ""
   },
   "obedience": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -664,15 +656,15 @@
     "modes": ""
   },
   "observability-incident-response": {
-    "icon": "🚨",
-    "blurb": "Keep a live service observable and respond when it breaks — logs/metrics/traces, SLO alerting, detect→mitigate→post-mortem, runbooks",
+    "icon": "\ud83d\udea8",
+    "blurb": "Keep a live service observable and respond when it breaks \u2014 logs/metrics/traces, SLO alerting, detect\u2192mitigate\u2192post-mortem, runbooks",
     "level": "Advanced",
     "tabler": "ti-activity-heartbeat",
     "triggers": "'the app is down', 'triage this outage', 'set up alerting', 'write a runbook', 'post-mortem this incident'",
     "modes": "observability signals; SLOs & alerting; incident lifecycle; runbooks & post-mortem"
   },
   "obsidian-markdown": {
-    "icon": "📝",
+    "icon": "\ud83d\udcdd",
     "blurb": "Edit Obsidian-flavored markdown with wikilinks and callouts",
     "level": "Foundational",
     "tabler": "ti-markdown",
@@ -680,15 +672,15 @@
     "modes": ""
   },
   "okf": {
-    "icon": "🧹",
+    "icon": "\ud83e\uddf9",
     "blurb": "Keep the whole repo tidy & conformant to the Open Knowledge Format (OKF v0.1)",
     "level": "Advanced",
     "tabler": "ti-file-stack",
     "triggers": "'tidy the repo', 'OKF', 'make it OKF-conformant', 'run the OKF audit', 'fix frontmatter', 'keep it clean', after any campaign that left files behind. The producer half of the guild's knowledge standard; pairs with star-alliance-language (reader). Enforced mechanically by the okf-gate PreToolUse hook.",
-    "modes": "audit (default) — report non-conformant governed .md; --fix — migrate-first baseline (inject type: + timestamp:, idempotent); enrich — add title/description/tags/cross-links; sweep — place non-md by concept-path & prune orphans"
+    "modes": "audit (default) \u2014 report non-conformant governed .md; --fix \u2014 migrate-first baseline (inject type: + timestamp:, idempotent); enrich \u2014 add title/description/tags/cross-links; sweep \u2014 place non-md by concept-path & prune orphans"
   },
   "pattern-detector": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "Reads the seven most recent Lex Council housekeeping run logs plus the current OPEN-ITEMS.md an",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -696,23 +688,23 @@
     "modes": ""
   },
   "pattern-library-discovery": {
-    "icon": "🗂️",
-    "blurb": "Build & query a reusable code-pattern library — capture proven patterns, reuse-before-reinvent across 7 categories",
+    "icon": "\ud83d\uddc2\ufe0f",
+    "blurb": "Build & query a reusable code-pattern library \u2014 capture proven patterns, reuse-before-reinvent across 7 categories",
     "level": "Advanced",
     "tabler": "ti-folder-search",
     "triggers": "'find a pattern for X', 'is there a reusable pattern', 'capture this as a pattern', 'search the pattern library', 'reuse before reinvent'",
     "modes": "capturing patterns; category taxonomy; search & retrieval"
   },
   "penpot-design-platform": {
-    "icon": "🎨",
-    "blurb": "Drive Penpot — open-source design platform + its MCP & plugin API; boards/components/tokens, inspect-mode SVG/CSS, agent-driven design",
+    "icon": "\ud83c\udfa8",
+    "blurb": "Drive Penpot \u2014 open-source design platform + its MCP & plugin API; boards/components/tokens, inspect-mode SVG/CSS, agent-driven design",
     "level": "Advanced",
     "tabler": "ti-vector-bezier",
     "triggers": "'open this in penpot', 'pull the components from penpot', 'use the penpot MCP', 'design this in penpot', 'export penpot tokens', 'write a penpot plugin'",
     "modes": "platform model; MCP surface; plugin API"
   },
   "performance": {
-    "icon": "⚡",
+    "icon": "\u26a1",
     "blurb": "Speed up websites with performance optimization best practices",
     "level": "Intermediate",
     "tabler": "ti-gauge",
@@ -720,7 +712,7 @@
     "modes": ""
   },
   "phased-db-refactor": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -728,15 +720,15 @@
     "modes": ""
   },
   "portability-audit": {
-    "icon": "🗺️",
-    "blurb": "Audit how portable a Claude Code project is — maps 6 layers, assigns tier gaps, produces an install plan",
+    "icon": "\ud83d\uddfa\ufe0f",
+    "blurb": "Audit how portable a Claude Code project is \u2014 maps 6 layers, assigns tier gaps, produces an install plan",
     "level": "Intermediate",
     "tabler": "ti-map-check",
     "triggers": "'audit portability', 'can I use this in another project', 'portability audit', 'what needs to move', 'install plan for project X', '/portability-audit'",
-    "modes": "Six layers: skills → members → arsenal paths → env vars → hooks → workflows. Assigns tier gap per finding; outputs ranked gap list + install.sh command."
+    "modes": "Six layers: skills \u2192 members \u2192 arsenal paths \u2192 env vars \u2192 hooks \u2192 workflows. Assigns tier gap per finding; outputs ranked gap list + install.sh command."
   },
   "portfolio-risk": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "Read-only, book-level portfolio construction and risk measurement that ships a written, dated r",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -744,31 +736,31 @@
     "modes": ""
   },
   "price-action": {
-    "icon": "🌊",
-    "blurb": "Read price action & market structure (Grimes) — trends, ranges, regime interfaces, the order-flow imbalance behind the bars",
+    "icon": "\ud83c\udf0a",
+    "blurb": "Read price action & market structure (Grimes) \u2014 trends, ranges, regime interfaces, the order-flow imbalance behind the bars",
     "level": "Advanced",
     "tabler": "ti-chart-line",
     "triggers": "'read this price action', 'is this a pullback or a reversal', 'what is the market structure here', 'is this trend strong', 'teach me price action'",
     "modes": "the market cycle & four trades; trend structure; trading ranges; regime interfaces (breakout/reversal/failed reversal); confirmation tools; trade & risk management; trader psychology"
   },
   "probability-statistics": {
-    "icon": "🎲",
-    "blurb": "Read-only probability & statistics — distributions, inference, testing, Bayes",
+    "icon": "\ud83c\udfb2",
+    "blurb": "Read-only probability & statistics \u2014 distributions, inference, testing, Bayes",
     "level": "Advanced",
     "tabler": "ti-chart-histogram",
     "triggers": "'what distribution fits this', 'explain the central limit theorem', 'compute this probability', 'is this statistically significant', 'set up a hypothesis test', 'derive the MLE', 'Bayesian vs frequentist', 'teach me probability'",
     "modes": ""
   },
   "project-start": {
-    "icon": "🚀",
-    "blurb": "Session health check for SA-equipped projects — verifies STAR_ALLIANCE_ROOT, diffs skill versions, reports stale skills",
+    "icon": "\ud83d\ude80",
+    "blurb": "Session health check for SA-equipped projects \u2014 verifies STAR_ALLIANCE_ROOT, diffs skill versions, reports stale skills",
     "level": "Foundational",
     "tabler": "ti-rocket",
     "triggers": "'start session', 'session start', '/project-start', 'check my skills', 'are my skills up to date', 'health check'",
-    "modes": "Three checks: STAR_ALLIANCE_ROOT resolves → skill version diff → member file present. Reports gaps with one-line fix commands. Never auto-installs."
+    "modes": "Three checks: STAR_ALLIANCE_ROOT resolves \u2192 skill version diff \u2192 member file present. Reports gaps with one-line fix commands. Never auto-installs."
   },
   "prove-it": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -776,15 +768,15 @@
     "modes": ""
   },
   "python-master": {
-    "icon": "🐍",
-    "blurb": "Build production-grade Python libraries & web apps end to end — 14 merged crafts",
+    "icon": "\ud83d\udc0d",
+    "blurb": "Build production-grade Python libraries & web apps end to end \u2014 14 merged crafts",
     "level": "Advanced",
     "tabler": "ti-brand-python",
     "triggers": "'set up a python library', 'write pytest tests', 'package for pypi', 'audit python security', 'build a python cli', 'review this python library'",
     "modes": "project setup; packaging; code quality; testing; docs; api design; cli; performance; security; web-app; git hygiene; release; community; review"
   },
   "redesign-existing-projects": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -792,7 +784,7 @@
     "modes": ""
   },
   "relationship-intel": {
-    "icon": "🤝",
+    "icon": "\ud83e\udd1d",
     "blurb": "Turn email traffic into living client relationship intelligence",
     "level": "Advanced",
     "tabler": "ti-heart-handshake",
@@ -800,7 +792,7 @@
     "modes": "harvest; profile; strategise"
   },
   "release-train": {
-    "icon": "🚂",
+    "icon": "\ud83d\ude82",
     "blurb": "Merge every branch and PR, bump the version, stamp the docs, push",
     "level": "Intermediate",
     "tabler": "ti-git-merge",
@@ -808,15 +800,15 @@
     "modes": "Lex Council app release; guild self-release"
   },
   "safe-agentic-orchestration": {
-    "icon": "🎻",
-    "blurb": "Orchestrate a multi-agent AI team — role roster, spec-then-execute gate, escalation loop, independent QAS, human merge",
+    "icon": "\ud83c\udfbb",
+    "blurb": "Orchestrate a multi-agent AI team \u2014 role roster, spec-then-execute gate, escalation loop, independent QAS, human merge",
     "level": "Advanced",
     "tabler": "ti-sitemap",
     "triggers": "'orchestrate this team', 'coordinate these agents', 'design the agent roles', 'who should own this work', 'enforce a quality gate'",
-    "modes": "role architecture; coordination patterns; spec→execute→release gating"
+    "modes": "role architecture; coordination patterns; spec\u2192execute\u2192release gating"
   },
   "scheduled-watch": {
-    "icon": "⏱️",
+    "icon": "\u23f1\ufe0f",
     "blurb": "Define a safe-to-resume unattended task on a cron cadence",
     "level": "Intermediate",
     "tabler": "ti-clock-play",
@@ -824,7 +816,7 @@
     "modes": ""
   },
   "schema-evolution": {
-    "icon": "🧬",
+    "icon": "\ud83e\uddec",
     "blurb": "Add an optional field to a data model without breaking any reader",
     "level": "Advanced",
     "tabler": "ti-binary-tree-2",
@@ -832,15 +824,15 @@
     "modes": ""
   },
   "session-mining": {
-    "icon": "⛏️",
+    "icon": "\u26cf\ufe0f",
     "blurb": "Mine past sessions for lessons, verify against the live repo, ship a ranked upgrade plan",
     "level": "Advanced",
     "tabler": "ti-pick",
     "triggers": "'review the last N sessions', 'mine my sessions', 'what did we learn from these sessions', 'what should we upgrade/merge/create from past work', 'audit the sessions for lessons', 'note down skills we can extract', or any retrospective over prior runs. Locates all three session stores, signal-extracts with offset/limit discipline (no blind read), doer-summarizes via MiniMax, STORM-synthesizes, then VERIFIES against the repo to kill every lesson already shipped. Propose-only.",
-    "modes": "Six phases: locate stores → map (session_map.py) → signal-extract (mine_sessions.py, never blind-read) → doer-summarize (MiniMax) → STORM synthesize → verify-against-repo → propose-only register. On-demand companion to skillsmith's daily routine."
+    "modes": "Six phases: locate stores \u2192 map (session_map.py) \u2192 signal-extract (mine_sessions.py, never blind-read) \u2192 doer-summarize (MiniMax) \u2192 STORM synthesize \u2192 verify-against-repo \u2192 propose-only register. On-demand companion to skillsmith's daily routine."
   },
   "skillsmith": {
-    "icon": "🛠️",
+    "icon": "\ud83d\udee0\ufe0f",
     "blurb": "Manage, sync, upgrade, and auto-evolve Star Alliance skills",
     "level": "Advanced",
     "tabler": "ti-tools",
@@ -848,31 +840,31 @@
     "modes": "sync: reconcile repo and device by metadata.version, honoring fork+external exceptions. upgrade: bump a skill's version, regenerate the VERSIONS.md registry, run the Cowork-compliance check, add a changelog entry. create: author a new skill via the official skill-creator, then make it upgradeable. r"
   },
   "spec-driven-development": {
-    "icon": "📜",
-    "blurb": "Build from an executable spec — spec→plan→tasks→implement, each phase gated",
+    "icon": "\ud83d\udcdc",
+    "blurb": "Build from an executable spec \u2014 spec\u2192plan\u2192tasks\u2192implement, each phase gated",
     "level": "Advanced",
     "tabler": "ti-list-check",
     "triggers": "'spec this out', 'spec-driven', 'write a spec first', 'plan before we build', 'turn this into a spec', 'specify the feature', 'break this into tasks', 'what's the MVP slice'",
     "modes": "specify; clarify; plan; tasks; analyze; implement"
   },
   "star-alliance-language": {
-    "icon": "🗣️",
-    "blurb": "The guild's shared reading protocol for OKF-tidied repos — read the concept map, not whole files",
+    "icon": "\ud83d\udde3\ufe0f",
+    "blurb": "The guild's shared reading protocol for OKF-tidied repos \u2014 read the concept map, not whole files",
     "level": "Foundational",
     "tabler": "ti-map-search",
-    "triggers": "automatic — every member orients through it when starting work in a repo. 'read the repo', 'what's in here', 'map this', 'orient me', 'where is X documented'. Universal — rides every member like weapon-utility. The consumer half of the OKF pair (okf produces, this reads).",
-    "modes": "map (default) — one-shot concept map via okf_read.py (frontmatter + cross-links, grouped, index.md first); --dir/--type/--grep narrow; --links walk one concept's graph; --json feed a doer"
+    "triggers": "automatic \u2014 every member orients through it when starting work in a repo. 'read the repo', 'what's in here', 'map this', 'orient me', 'where is X documented'. Universal \u2014 rides every member like weapon-utility. The consumer half of the OKF pair (okf produces, this reads).",
+    "modes": "map (default) \u2014 one-shot concept map via okf_read.py (frontmatter + cross-links, grouped, index.md first); --dir/--type/--grep narrow; --links walk one concept's graph; --json feed a doer"
   },
   "storm-investigation": {
-    "icon": "🌀",
+    "icon": "\ud83c\udf00",
     "blurb": "Multi-perspective STORM research: 5 personas, contradiction map, peer-reviewed briefing",
     "level": "Advanced",
     "tabler": "ti-cyclone",
-    "triggers": "on 'research this topic', 'run STORM', 'STORM this', 'investigate X deeply', 'deep dive on X', 'multi-perspective research', '5 expert perspectives', 'contradiction map', 'give me a research briefing', 'red-team this idea', or research before a decision — writing, investing, negotiating, interviewing, presenting, learning. The Stanford OVAL Lab method (NAACL 2024): one prompt returns the majority view; five contrasting personas catch the blind spots.",
-    "modes": "Inline (default) — run the four prompts in sequence, ~5 min, one briefing; Fan-out — one doer per persona in parallel (MiniMax M3 default, Claude sub-agents/Workflow when tools or structured output needed), then synthesize. Optional source-grounding via web/MCP."
+    "triggers": "on 'research this topic', 'run STORM', 'STORM this', 'investigate X deeply', 'deep dive on X', 'multi-perspective research', '5 expert perspectives', 'contradiction map', 'give me a research briefing', 'red-team this idea', or research before a decision \u2014 writing, investing, negotiating, interviewing, presenting, learning. The Stanford OVAL Lab method (NAACL 2024): one prompt returns the majority view; five contrasting personas catch the blind spots.",
+    "modes": "Inline (default) \u2014 run the four prompts in sequence, ~5 min, one briefing; Fan-out \u2014 one doer per persona in parallel (MiniMax M3 default, Claude sub-agents/Workflow when tools or structured output needed), then synthesize. Optional source-grounding via web/MCP."
   },
   "strategies-review": {
-    "icon": "📋",
+    "icon": "\ud83d\udccb",
     "blurb": "Reviews pending strategies then promotes to executed and verifies",
     "level": "Foundational",
     "tabler": "ti-checklist",
@@ -880,7 +872,7 @@
     "modes": ""
   },
   "supabase": {
-    "icon": "⚡",
+    "icon": "\u26a1",
     "blurb": "All-in-one Supabase toolkit spanning database auth storage vectors",
     "level": "Intermediate",
     "tabler": "ti-bolt",
@@ -888,7 +880,7 @@
     "modes": ""
   },
   "supabase-postgres-best-practices": {
-    "icon": "🐘",
+    "icon": "\ud83d\udc18",
     "blurb": "Postgres performance optimization and best practices from Supabase",
     "level": "Foundational",
     "tabler": "ti-database",
@@ -896,15 +888,15 @@
     "modes": ""
   },
   "system-prompt-design-patterns": {
-    "icon": "📜",
-    "blurb": "Design & harden production system prompts — identity, capabilities, tool-use, refusal, persona, anti-jailbreak (8 vendors)",
+    "icon": "\ud83d\udcdc",
+    "blurb": "Design & harden production system prompts \u2014 identity, capabilities, tool-use, refusal, persona, anti-jailbreak (8 vendors)",
     "level": "Advanced",
     "tabler": "ti-prompt",
     "triggers": "'design a system prompt', 'review this system prompt', 'harden this agent prompt', 'how do production prompts handle X'",
     "modes": "structural patterns; tool-use & refusal; persona & anti-jailbreak; cross-vendor comparison"
   },
   "temporal-coupling-audit": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -912,15 +904,15 @@
     "modes": ""
   },
   "timeseries-forecasting": {
-    "icon": "📈",
-    "blurb": "Forecast a numeric series with Google TimesFM — zero-shot point + quantile intervals, covariates, rolling backtests",
+    "icon": "\ud83d\udcc8",
+    "blurb": "Forecast a numeric series with Google TimesFM \u2014 zero-shot point + quantile intervals, covariates, rolling backtests",
     "level": "Advanced",
     "tabler": "ti-chart-dots",
     "triggers": "'forecast this series', 'predict the next N periods', 'project this metric forward', 'forecast demand'",
     "modes": "foundation vs classical; API & usage; evaluation & pitfalls; quant application"
   },
   "trading-strategy": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "Read-only trading-strategy design that ships a written, dated strategy spec and never places a",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -928,7 +920,7 @@
     "modes": ""
   },
   "transactions-domain-model": {
-    "icon": "💳",
+    "icon": "\ud83d\udcb3",
     "blurb": "Loads Lex Council transactions domain model before any work",
     "level": "Advanced",
     "tabler": "ti-credit-card",
@@ -936,7 +928,7 @@
     "modes": ""
   },
   "ultra-brainstorming": {
-    "icon": "🧠",
+    "icon": "\ud83e\udde0",
     "blurb": "The Strategist's super-planning: fuse members' outputs into one plan across many models",
     "level": "Master",
     "tabler": "ti-brain",
@@ -944,31 +936,31 @@
     "modes": ""
   },
   "ux-copywriting": {
-    "icon": "✍️",
-    "blurb": "Functional in-product copy — microcopy, error/empty/loading/success states, onboarding, confirmations; one voice, plain-language, accessible",
+    "icon": "\u270d\ufe0f",
+    "blurb": "Functional in-product copy \u2014 microcopy, error/empty/loading/success states, onboarding, confirmations; one voice, plain-language, accessible",
     "level": "Advanced",
     "tabler": "ti-text-caption",
     "triggers": "'write the error message', 'microcopy for this button', 'empty-state copy', 'onboarding copy', 'reword this confirmation'",
     "modes": "state-copy patterns; voice & concision; accessible copy"
   },
   "ux-research": {
-    "icon": "🔬",
-    "blurb": "UX research — pick a method (interviews/usability/surveys/card sort), write unbiased scripts, run studies, synthesize into personas/journeys/findings",
+    "icon": "\ud83d\udd2c",
+    "blurb": "UX research \u2014 pick a method (interviews/usability/surveys/card sort), write unbiased scripts, run studies, synthesize into personas/journeys/findings",
     "level": "Advanced",
     "tabler": "ti-users-group",
     "triggers": "'run user research', 'plan a usability test', 'write interview questions', 'map the user journey', 'synthesize this research', 'build a persona'",
     "modes": "choosing a method; running studies; synthesis & artifacts"
   },
   "vault-log-compliance": {
-    "icon": "🛡️",
+    "icon": "\ud83d\udee1\ufe0f",
     "blurb": "Enforces P8 vault-logging compliance across all backend code",
     "level": "Intermediate",
     "tabler": "ti-shield-check",
-    "triggers": ", RPC functions, RLS policies, edge functions, cron jobs), frontend code (components, pages, hooks, mutations, stores), schema changes, or bug fixes — even if the user doesn't explicitly ask for a vault log. Also use when the user says phrases like \"vault log ",
+    "triggers": ", RPC functions, RLS policies, edge functions, cron jobs), frontend code (components, pages, hooks, mutations, stores), schema changes, or bug fixes \u2014 even if the user doesn't explicitly ask for a vault log. Also use when the user says phrases like \"vault log ",
     "modes": ""
   },
   "vault-log-writer": {
-    "icon": "🧩",
+    "icon": "\ud83e\udde9",
     "blurb": "",
     "level": "Advanced",
     "tabler": "ti-puzzle",
@@ -976,15 +968,15 @@
     "modes": ""
   },
   "view-registry": {
-    "icon": "📇",
-    "blurb": "Type every Supabase view name through VIEWS-dot-key — refactor-safe, append-only columns, one view per page.",
+    "icon": "\ud83d\udcc7",
+    "blurb": "Type every Supabase view name through VIEWS-dot-key \u2014 refactor-safe, append-only columns, one view per page.",
     "level": "Advanced",
     "tabler": "ti-book-2",
     "triggers": "'add a new view', 'rename a view', 'find which page reads this view', 'avoid view drift', 'wire a page to a view', 'list our views'",
     "modes": "typed VIEWS constant; append-only columns; one view per page; registry + migration + consumer in one commit"
   },
   "voices-check": {
-    "icon": "🗣️",
+    "icon": "\ud83d\udde3\ufe0f",
     "tabler": "ti-messages",
     "level": "Intermediate",
     "modes": "",
@@ -992,7 +984,7 @@
     "triggers": "'name the voices', 'which voice is leading', 'I am torn between', 'this feels one-sided', 'integrate the perspectives', 'am I over-indexing'"
   },
   "volume-price-analysis": {
-    "icon": "📊",
+    "icon": "\ud83d\udcca",
     "blurb": "Anna Coulling's VPA: read volume confirming/contradicting price, the insider cycle, VAP",
     "level": "Advanced",
     "tabler": "ti-chart-histogram",
@@ -1000,15 +992,15 @@
     "modes": "effort vs result; insider cycle (accumulation/distribution/climax); VPA candle signals; volume at price"
   },
   "weapon-utility": {
-    "icon": "🗡️",
+    "icon": "\ud83d\udde1\ufe0f",
     "blurb": "Each member's rule for drawing a weapon: thinkers plan & review, doers execute",
     "level": "Foundational",
     "tabler": "ti-swords",
-    "triggers": "automatic — every member consults it before drawing a weapon. 'which weapon', 'which model should X use', 'pick the weapon', 'thinker or doer', 'draw a weapon', 'run the weapon loop', 'how does the member choose its model'. The atomic layer beneath members-formation (which member) and ultra-brainstorming (fuse across models).",
-    "modes": "solo (default) — one weapon at a time: the highest-priority available thinker plans and prompts, the highest-priority available doer executes and returns, the thinker reviews against the plan and re-prompts until it conforms; ultra — when ultra-brainstorming is active, all available thinker weapons fire at once and the top thinker consolidates them into one plan before the doer runs"
+    "triggers": "automatic \u2014 every member consults it before drawing a weapon. 'which weapon', 'which model should X use', 'pick the weapon', 'thinker or doer', 'draw a weapon', 'run the weapon loop', 'how does the member choose its model'. The atomic layer beneath members-formation (which member) and ultra-brainstorming (fuse across models).",
+    "modes": "solo (default) \u2014 one weapon at a time: the highest-priority available thinker plans and prompts, the highest-priority available doer executes and returns, the thinker reviews against the plan and re-prompts until it conforms; ultra \u2014 when ultra-brainstorming is active, all available thinker weapons fire at once and the top thinker consolidates them into one plan before the doer runs"
   },
   "workflow-forge": {
-    "icon": "🗺️",
+    "icon": "\ud83d\uddfa\ufe0f",
     "blurb": "Distil a finished run into a reusable star-map workflow",
     "level": "Advanced",
     "tabler": "ti-map-2",
@@ -1016,8 +1008,8 @@
     "modes": ""
   },
   "workflow-runner": {
-    "icon": "🎛️",
-    "blurb": "Operate the guild's own machinery — RUN a workflows.json workflow via guild/run.py; invoke the frame/plan/efficiency/leveling primitives",
+    "icon": "\ud83c\udf9b\ufe0f",
+    "blurb": "Operate the guild's own machinery \u2014 RUN a workflows.json workflow via guild/run.py; invoke the frame/plan/efficiency/leveling primitives",
     "level": "Advanced",
     "tabler": "ti-player-play",
     "triggers": "'run the X workflow', 'execute this workflow', 'dry-run the workflow', 'frame this brief', 'show the efficiency report', 'show the promotion queue'",

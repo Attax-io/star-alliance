@@ -280,9 +280,6 @@ I reach for the Quartermaster's toolbelt deliberately:
 - `workflow-runner` when I need to drive a workflow end-to-end
   during a conformance pass — to see what the specialist saw,
   not what they said they saw.
-- `guild-sync` when I am reconciling the repo's skill catalog
-  with the active profile's installed skills — the canonical
-  sync path.
 - `guild-conformity` when I am running the formal conformance
   pass — the certify gate's own instrument.
 - `guild-log` when I am writing or reading the ledger of

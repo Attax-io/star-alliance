@@ -993,69 +993,6 @@
       ]
     },
     {
-      "id": "sync-rotation",
-      "version": "1.0.0",
-      "name": "Sync Rotation",
-      "icon": "🔄",
-      "accent": "violet",
-      "category": "Hygiene & Release",
-      "class": "mutating",
-      "tagline": "The Quartermaster proves the device still matches the repo, then reconciles any drift.",
-      "when": "Use to answer 'is the device current / what else needs syncing' or after any skill/scheduled-task change. Sweeps every repo-to-device parity surface (skills, scheduled-tasks, members, config), reconciles repo-ahead skills via skillsmith, and closes with the conformity gate.",
-      "steps": [
-        {
-          "kind": "member",
-          "actor": "you",
-          "title": "Call the Sync",
-          "act": "You ask the guild whether the device still matches the repo — or to reconcile what has drifted.",
-          "produces": "sync request",
-          "exec": "inline"
-        },
-        {
-          "kind": "gate",
-          "gate": "approval",
-          "label": "You confirm the scope — check-only or reconcile — before anything touches the device."
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Sweep the Device",
-          "act": "Runs `guild/device_sync.py` — sweep every repo-to-device parity surface and report drift.",
-          "produces": "parity board",
-          "script": "guild/device_sync.py",
-          "args": {
-            "check": true
-          },
-          "inputs": [
-            "sync brief"
-          ],
-          "exec": "spawn"
-        },
-        {
-          "kind": "member",
-          "actor": "the-quartermaster",
-          "title": "Confirm Guild Conformance",
-          "act": "Runs `guild/conformance.py` — wraps conformity_check.py, writes a signoff markdown.",
-          "script": "guild/conformance.py",
-          "produces": "conformance sign-off",
-          "exec": "spawn"
-        },
-        {
-          "kind": "gate",
-          "gate": "report",
-          "label": "The Butler reports which surfaces matched, what was reconciled, and what drift remains — back to you in plain English."
-        }
-      ],
-      "trigger_phrases": [
-        "sync the repo with claude",
-        "is the device up to date",
-        "what else needs syncing",
-        "device parity sweep",
-        "sync rotation",
-        "check for drift"
-      ]
-    },
-    {
       "id": "release-train",
       "version": "1.0.0",
       "name": "Release Train",
