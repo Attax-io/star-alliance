@@ -2872,6 +2872,13 @@
       "title": "Skill Forge: guild/_briefs/scheduler-art/com.attax.skillsmith-routine.md, art/scheduler-art-thumb/com.attax.skillsmith-routine.png",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Skill Forge: .claude/hooks/dispatch-enforce.py, guild/_briefs/scheduler-art/com.attax.skillsmith-watchdog.md, art/scheduler-art-thumb/com.attax.skillsmith-watchdog.png (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130

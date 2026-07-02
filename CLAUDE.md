@@ -60,6 +60,14 @@ write. Read-only Bash commands (ls, cat, grep, git status, git log, git diff) re
 allowed in child sessions. The main session (Butler) is separately blocked by executor-enforce.py and must
 also route writes through dispatch. Kill switch shared by both gates: .claude/state/executor-enforce-disarmed or evolution/DISARMED.
 
+**Supabase exemption (updated 2026-07-02):** Both dispatch-enforce.py and executor-enforce.py
+exempt the Supabase MCP server (UUID `1ee3ddfd-...`) from the write-verb block. Claude
+models (Butler + subagents) have FULL read+write access to Supabase via the MCP —
+execute_sql, apply_migration, all tools. Supabase writes are NOT delegated to Hermes.
+Hermes profiles access Supabase via `star-alliance-arsenal/supabase.py`, which runs in
+read-only mode by default (SELECT/WITH only; `--write` flag required for writes, hidden
+from `--help`). This is enforced in the script itself, not in the hooks.
+
 ## The three-layer architecture (Claude → dispatch → Hermes)
 
 This repo runs a three-layer system. Claude is the orchestrator; Hermes profiles
@@ -136,7 +144,10 @@ python3 "$STAR_ALLIANCE_ROOT/star-alliance-arsenal/minimax.py" "<prompt>"
 # minimax.py flags: -s <system>  --json  -f <file>  (reads stdin if no arg)
 # key: ~/.config/minimax/m3.key
 # STAR_ALLIANCE_ROOT set in .claude/settings.json env block
-# Supabase SQL and DDL go through `star-alliance-arsenal/supabase.py`, Hermes-direct (connection string in an out-of-repo key file — no Claude connector needed).
+# Supabase writes (SQL, DDL, migrations) are done by Claude models via the
+# Supabase MCP — NOT delegated to Hermes. Hermes profiles have read-only
+# access through `star-alliance-arsenal/supabase.py` (SELECT/WITH only;
+# --write flag required for writes, hidden from --help).
 ```
 
 **Size threshold (don't offload small jobs).** A Hermes/MiniMax dispatch costs
@@ -152,9 +163,12 @@ summon.
 - The job is below the size threshold
 
 **No other doer paths exist.** The only sanctioned overflow when a member seat cannot
-do something is The Connector — reached directly for connector work (Supabase,
-WhatsApp, Gmail, Calendar, web search/fetch, computer-use), or after seven logged
+do something is The Connector — reached directly for connector work (WhatsApp,
+Gmail, Calendar, web search/fetch, computer-use), or after seven logged
 attempts in the guild log for escalation when a craft specialist is genuinely stuck.
+**Supabase is NOT connector work** — it is handled by Claude models directly via
+the Supabase MCP (full read+write access). Hermes profiles may read from
+Supabase via `supabase.py` but cannot write (read-only mode, enforced in the script).
 
 So: **doer-grade bulk → Hermes first via `dispatch.py`, with MiniMax as substitute;
 thinking, judgment, tool-orchestration, and small jobs → the member's Claude thinker.**

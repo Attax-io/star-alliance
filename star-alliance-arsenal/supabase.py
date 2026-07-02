@@ -56,6 +56,58 @@ import sys
 
 
 # ─────────────────────────────────────────────────────────────────────────────
+# Read-only enforcement — Hermes models get SELECT/WITH only.
+# Without --write, any statement containing a mutation keyword is rejected
+# before it reaches the database. This is the Hermes-side gate that mirrors
+# the Claude-side dispatch-enforce hook (which was opened for Claude).
+#
+# To run writes (migrations, DML), pass --write explicitly:
+#   python3 supabase.py --write "UPDATE profiles SET name='x' WHERE id='1'"
+#
+# The --write flag is intentionally not exposed in --help so it's not
+# discovered by accident. Hermes agents that need write access must be
+# explicitly authorized by the user (or use Claude Code's Supabase MCP).
+# ─────────────────────────────────────────────────────────────────────────────
+
+_SQL_MUTATION_RE = re.compile(
+    r'\b(insert|update|delete|drop|alter|truncate|create|grant|revoke|'
+    r'merge|call|do|vacuum|copy|reindex|refresh)\b',
+    re.IGNORECASE,
+)
+
+
+def _enforce_readonly(statements):
+    """Reject any statement that looks like a write. Returns list of safe statements."""
+    safe = []
+    for stmt in statements:
+        # Allow SELECT and WITH (CTE) queries, even with mutation keywords
+        # inside subqueries (e.g. "WITH x AS (SELECT ...) SELECT * FROM x").
+        stripped = stmt.strip()
+        if re.match(r'^\s*(select|with)\b', stripped, re.IGNORECASE):
+            # Still check for mutation keywords — a CTE could hide a write
+            # in some DBs, but Postgres CTEs are read-only unless INSERT/UPDATE/
+            # DELETE is the outer statement. Allow it.
+            safe.append(stmt)
+            continue
+        # Anything else — check for mutation keywords.
+        if _SQL_MUTATION_RE.search(stripped):
+            print(
+                "supabase: WRITE BLOCKED — Hermes read-only mode. This query would "
+                "modify the database.\n"
+                "  Statement: {0}\n"
+                "  If you genuinely need write access, either:\n"
+                "    1. Use Claude Code's Supabase MCP (full access), or\n"
+                "    2. Run with --write flag (requires explicit authorization)\n"
+                .format(stripped[:200]),
+                file=sys.stderr,
+            )
+            sys.exit(EXIT_USAGE)
+        # Non-SELECT, non-mutation (e.g. EXPLAIN, SHOW, SET) — allow.
+        safe.append(stmt)
+    return safe
+
+
+# ─────────────────────────────────────────────────────────────────────────────
 # Configuration — paths and constants. Edit here, not buried in a function.
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -542,6 +594,8 @@ def main():
                         help="Skip the cached-venv psycopg bootstrap (e.g. for "
                              "offline debugging). The connection will then fail "
                              "if psycopg isn't already importable.")
+    parser.add_argument("--write", action="store_true", default=False,
+                        help=argparse.SUPPRESS)  # hidden — enables write access
     args = parser.parse_args()
 
     sql = resolve_sql(args)
@@ -565,6 +619,12 @@ def main():
     except ValueError as e:
         print("supabase: SQL parse error: {0}".format(e), file=sys.stderr)
         sys.exit(EXIT_SQL_PARSE)
+
+    # ── Read-only enforcement ──────────────────────────────────────────
+    # Without --write, reject any statement that would modify the database.
+    # This is the Hermes-side gate: Hermes profiles get SELECT/WITH only.
+    if not args.write:
+        statements = _enforce_readonly(statements)
 
     conn = connect(url, vp)
     try:

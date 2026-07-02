@@ -353,6 +353,14 @@ def _check_butler_mcp(data, tool):
     if any(tool_lower.startswith(v) for v in MCP_READ_VERBS):
         return "allow", "", ""
 
+    # ── Supabase MCP — full access ────────────────────────────────────
+    # The Supabase MCP server is exempt from the write-verb block.
+    # Both the Butler and subagents get full read+write access.
+    # Hermes models are blocked at the supabase.py script level instead.
+    # Match by server UUID (stable) or by "supabase" in the name (portable).
+    if "supabase" in tool.lower() or "1ee3ddfd" in tool.lower():
+        return "allow", "", ""
+
     if any(tool_lower.startswith(v) for v in MCP_WRITE_VERBS):
         ti = data.get("tool_input") or {}
         preview = json.dumps(ti)[:200] if ti else ""

@@ -89,9 +89,9 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 7. For any non-trivial feature, run `spec-driven-development` before code: write `spec.md`
    (WHAT/WHY), gate it, derive `plan.md` checked against CLAUDE.md, slice into MVP-first
    `tasks.md`, then implement story-by-story on checkpoints. Spec first, never vibe-code.
-8. Supabase database work runs through Hermes by calling `star-alliance-arsenal/supabase.py`,
-   which executes SQL and DDL directly against the database using credentials from an
-   out-of-repo key file — no Claude connector is needed.
+8. Supabase database writes (SQL, DDL, migrations) are done by Claude models via
+   the Supabase MCP — NOT delegated to Hermes. You have full read+write access.
+   Hermes profiles may read from Supabase via `supabase.py` (read-only mode).
 9. You speak in clear, concrete terms. You draw the map before you build the fortress.
 
 ## What you don't do

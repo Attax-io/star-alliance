@@ -34,6 +34,15 @@
 #                                              leaves the Butler's hook armed)
 #   • .claude/state/executor-enforce-disarmed (legacy shared switch — disarms both)
 #
+# Supabase write exceptions (scoped, not a full bypass):
+#   • .claude/state/supabase-write-exceptions.json
+#     If present and valid, allows specific table + operation combinations
+#     through the gate (e.g. "UPDATE on profiles only, must have WHERE clause").
+#     Also supports apply_migration: an "allowed_ddl" list of DDL prefixes that
+#     are permitted (e.g. "CREATE OR REPLACE VIEW"). DROP/TRUNCATE/etc. are
+#     always rejected. Does NOT disarm the hook — only carves out narrow
+#     exceptions. Missing/malformed file = all writes blocked (fail safe).
+#
 # FAIL POSTURE
 # ────────────
 # Fail OPEN on any internal error — a broken hook must never brick the session.
@@ -240,6 +249,148 @@ def _is_readonly_select(query):
     return True
 
 
+# ── Supabase write exceptions ─────────────────────────────────────────────────
+# A JSON file at .claude/state/supabase-write-exceptions.json can allowlist
+# specific table + operation combinations so specialists (child sessions) can
+# make direct Supabase writes without dispatching to Hermes. If the file is
+# missing or malformed, ALL non-SELECT writes are blocked (existing behaviour).
+#
+# File format:
+#   {
+#     "tables": ["profiles", "user_settings"],
+#     "operations": ["UPDATE"],
+#     "require_where": true,
+#     "migrations": {
+#       "allowed_ddl": ["CREATE OR REPLACE VIEW", "CREATE TABLE", "ALTER TABLE ADD COLUMN"]
+#     }
+#   }
+#
+# Security posture: fail SAFE (block) when the file is missing, malformed, or
+# has empty tables/operations. You must explicitly list what you want to allow.
+# For execute_sql: multi-statement queries (containing ;) are always rejected.
+# For apply_migration: each statement is checked individually against allowed_ddl.
+
+_SQL_OP_TABLE_RE = re.compile(
+    r'^\s*(?:'
+    r'(?P<op>UPDATE)\s+(?P<table>\w+)|'
+    r'(?P<op2>DELETE)\s+FROM\s+(?P<table2>\w+)|'
+    r'(?P<op3>INSERT)\s+INTO\s+(?P<table3>\w+)'
+    r')',
+    re.IGNORECASE,
+)
+_SQL_WHERE_RE = re.compile(r'\bWHERE\b', re.IGNORECASE)
+
+# DDL patterns that are considered destructive — always rejected in migrations
+# even if the user's allowed_ddl seems to match. This is a hard floor.
+_DDL_FORBIDDEN = re.compile(
+    r'\b(DROP\s+(TABLE|VIEW|INDEX|FUNCTION|TRIGGER|SCHEMA)|'
+    r'TRUNCATE|'
+    r'ALTER\s+TABLE\s+\w+\s+DROP\s+COLUMN|'
+    r'ALTER\s+TABLE\s+\w+\s+RENAME|'
+    r'GRANT|REVOKE|'
+    r'CREATE\s+OR\s+REPLACE\s+FUNCTION|'
+    r'CREATE\s+OR\s+REPLACE\s+TRIGGER)\b',
+    re.IGNORECASE,
+)
+
+
+def _load_write_exceptions():
+    """Load the supabase write exceptions file. Returns dict or None."""
+    except_path = os.path.join(_state_dir(), "supabase-write-exceptions.json")
+    try:
+        with open(except_path, encoding="utf-8") as fh:
+            data = json.load(fh)
+        return data
+    except (FileNotFoundError, json.JSONDecodeError, OSError):
+        return None
+
+
+def _check_sql_exception(query):
+    """True if a SQL write matches the exceptions allowlist (→ allow through).
+    False if it doesn't match, exceptions are missing/malformed, or the query
+    can't be parsed (→ block, preserving existing behaviour)."""
+    if not isinstance(query, str) or not query.strip():
+        return False
+    # Reject multi-statement queries — same guard as _is_readonly_select.
+    body = query.strip().rstrip(';')
+    if ';' in body:
+        return False
+
+    exc = _load_write_exceptions()
+    if not exc:
+        return False
+    allowed_tables = {t.lower() for t in exc.get("tables", [])}
+    allowed_ops = {o.upper() for o in exc.get("operations", [])}
+    require_where = exc.get("require_where", True)
+    if not allowed_tables or not allowed_ops:
+        return False
+
+    m = _SQL_OP_TABLE_RE.match(query.strip())
+    if not m:
+        return False
+    op = (m.group("op") or m.group("op2") or m.group("op3") or "").upper()
+    table = (m.group("table") or m.group("table2") or m.group("table3") or "").lower()
+    if op not in allowed_ops:
+        return False
+    if table not in allowed_tables:
+        return False
+    if require_where and not _SQL_WHERE_RE.search(query):
+        return False
+    return True
+
+
+def _check_migration_exception(query):
+    """True if a migration's SQL matches the allowed_ddl list (→ allow through).
+    Migrations can contain multiple statements — each is checked individually.
+    ALL statements must match an allowed DDL pattern, and NONE may match the
+    forbidden floor (DROP, TRUNCATE, etc.)."""
+    if not isinstance(query, str) or not query.strip():
+        return False
+
+    exc = _load_write_exceptions()
+    if not exc:
+        return False
+    mig = exc.get("migrations")
+    if not isinstance(mig, dict):
+        return False
+    allowed_ddl = [p.strip() for p in mig.get("allowed_ddl", []) if p.strip()]
+    if not allowed_ddl:
+        return False
+    # Build a case-insensitive regex of allowed DDL prefixes.
+    # The first word must appear at the start of the statement; subsequent
+    # words must appear in order, but identifiers (table names, etc.) can
+    # appear between them (e.g. "ALTER TABLE users ADD COLUMN" matches the
+    # pattern "ALTER TABLE ADD COLUMN"). The hard floor (_DDL_FORBIDDEN)
+    # catches destructive variants regardless.
+    allowed_patterns = []
+    for raw in allowed_ddl:
+        parts = re.split(r'\s+', raw.strip())
+        pattern = r'^\s*' + re.escape(parts[0])
+        for p in parts[1:]:
+            pattern += r'.*?\b' + re.escape(p)
+        allowed_patterns.append(pattern)
+    allowed_re = re.compile(
+        r'(?:' + '|'.join(allowed_patterns) + r')',
+        re.IGNORECASE,
+    )
+
+    # Split on semicolons — each statement checked individually.
+    raw_statements = query.split(';')
+    statements = [s.strip() for s in raw_statements if s.strip()]
+    if not statements:
+        return False
+
+    for stmt in statements:
+        # Hard floor: no forbidden DDL ever.
+        if _DDL_FORBIDDEN.search(stmt):
+            return False
+        # Must match at least one allowed DDL prefix.
+        if not allowed_re.match(stmt):
+            return False
+
+    return True
+
+
 def _check_mcp(tool, data):
     """Check if an MCP tool call is a write operation. Returns block dict or None."""
     # Extract the tool part of `mcp__<server>__<tool>`.
@@ -251,9 +402,27 @@ def _check_mcp(tool, data):
     if any(tool_lower.startswith(v) for v in MCP_READ_VERBS):
         return None
 
+    # ── Supabase MCP — full access for Claude subagents ───────────────
+    # The Supabase MCP server (cloud, ID 1ee3ddfd-...) is exempt from the
+    # write-verb block. Claude subagents get full read+write access.
+    # Hermes models are blocked at the supabase.py script level instead
+    # (read-only mode), not through this hook.
+    # Match by server UUID (stable) or by "supabase" in the name (portable).
+    _tool_full = tool.lower()
+    if "supabase" in _tool_full or "1ee3ddfd" in _tool_full:
+        return None
+
     if tool_lower == 'execute_sql':
         query = (data.get('tool_input') or {}).get('query', '')
         if _is_readonly_select(query):
+            return None
+        # Check the supabase write exceptions allowlist.
+        if _check_sql_exception(query):
+            return None
+
+    if tool_lower == 'apply_migration':
+        query = (data.get('tool_input') or {}).get('query', '')
+        if _check_migration_exception(query):
             return None
 
     if any(tool_lower.startswith(v) for v in MCP_WRITE_VERBS):
