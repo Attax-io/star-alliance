@@ -248,6 +248,7 @@ def check(data):
         "non-conformant to the guild's real conventions (derived from existing files):\n"
         f"   file: {rel}\n"
         f"{reason_lines}\n"
+        f"   Mirror a known-conformant example: {'star-alliance-members/the-steward.md' if kind_label == 'MEMBER' else 'star-alliance-skills/frontend-auditor/SKILL.md'}\n"
         "   Fix the issue(s) above and retry.\n"
     )}
 

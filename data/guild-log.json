@@ -2858,6 +2858,13 @@
       "title": "Quick Fix: guild/_briefs/scheduler-art/ai.openclaw.gateway.md, guild/_briefs/scheduler-art/com.attax.skillsmith-routine.md, guild/_briefs/scheduler-art/com.attax.skillsmith-watchdog.md (+16 more)",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Compliance Audit: .claude/hooks/butler-skill-gate.py, .claude/hooks/delegation-gate.py, .claude/hooks/member-skill-lint-gate.py (+11 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130

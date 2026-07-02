@@ -187,7 +187,7 @@ def check(data):
     # Pure Butler turn invoking a craft skill outside his allowlist.
     return {"exit": 2, "stderr": (
         f"⛔ BUTLER SKILL GATE — refused skill '{skill_name}'. "
-        f"That is not your job. Send it to the Strategist to route it accordingly. "
+        f"That is not your job. Dispatch the Strategist now: Task(subagent_type=\"the-strategist\", prompt=\"route: <the skill/task the Guild Master asked for>\") so it assigns the member that actually carries this skill. "
         f"(Enforces the helpless doctrine: the Butler is the voice, not a craftsperson.) "
         f"The Guild Master can override by explicitly assigning the skill this turn.\n"
     )}

@@ -137,7 +137,7 @@ def main():
                         detail="auto-critic BLOCKED the diff at Stop")
                 sys.stderr.write(
                     "⛔ VERIFICATION GATE — independent critic (glm-5.2) returned BLOCK.\n"
-                    "   The diff has a blocker; nothing is committed. Fix forward, then re-end.\n"
+                    "   The diff has a blocker; nothing is committed. Fix the issue(s) above in the diff, then end the turn again — the gate re-runs the critic on the new diff automatically (no manual verify-pass write needed for this path).\n"
                     "   Critic findings:\n"
                     + "\n".join("     " + ln for ln in raw.strip().splitlines()[-20:]) + "\n"
                     "   (override only if you judge the critic wrong: SA_SKIP_VERIFY=1)\n")
