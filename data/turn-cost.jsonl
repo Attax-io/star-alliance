@@ -517,3 +517,4 @@
 {"ts":"2026-07-02T12:30:09Z","tier":"full","assistant_msgs":16,"in":2974,"out":4135,"cache_read":1772918,"cache_create":29400,"wall_ms":35000}
 {"ts":"2026-07-02T12:31:35Z","tier":"full","assistant_msgs":36,"in":585,"out":12038,"cache_read":4416720,"cache_create":40837,"wall_ms":42381}
 {"ts":"2026-07-02T12:39:33Z","tier":"none","assistant_msgs":12,"in":2298,"out":7268,"cache_read":1875665,"cache_create":10171,"wall_ms":13699}
+{"ts":"2026-07-02T12:41:44Z","tier":"full","assistant_msgs":12,"in":5850,"out":19998,"cache_read":2530307,"cache_create":20880,"wall_ms":93296}
