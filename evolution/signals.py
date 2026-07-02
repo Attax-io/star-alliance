@@ -65,8 +65,12 @@ def once_per_turn(name: str) -> bool:
     a sentinel file under state/ that the turn-start MCP gate clears each new turn —
     so a signal that would otherwise fire on every work-tool call (e.g. the workflow
     banner, re-checked per tool) is recorded once per turn instead of as noise."""
-    proj = os.environ.get("STAR_ALLIANCE_ROOT") or os.getcwd()
-    state = os.path.join(proj, "state")
+    # P5 (self-enclosed campaign): the per-turn sentinel MUST live in the same dir
+    # turn-start.py clears (.claude/state under CLAUDE_PROJECT_DIR). It previously
+    # wrote to <STAR_ALLIANCE_ROOT>/state -> a different dir that was never cleared,
+    # so once_per_turn() degraded to once-per-name-for-life and undercounted.
+    proj = os.environ.get("CLAUDE_PROJECT_DIR") or os.environ.get("STAR_ALLIANCE_ROOT") or os.getcwd()
+    state = os.path.join(proj, ".claude", "state")
     sent = os.path.join(state, name)
     if os.path.exists(sent):
         return False

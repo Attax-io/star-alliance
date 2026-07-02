@@ -133,7 +133,16 @@ BASH_WRITE_RE = re.compile("|".join(BASH_WRITE_PATTERNS))
 
 
 def _project_dir():
-    return os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
+    # P0 (self-enclosed campaign): prefer code-location root over a possibly-stale
+    # env var; fall back to the legacy default on any error so behaviour never regresses.
+    try:
+        import importlib.util as _ilu, os as _os
+        _sp = _ilu.spec_from_file_location("_saroot",
+            _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "_saroot.py"))
+        _sm = _ilu.module_from_spec(_sp); _sp.loader.exec_module(_sm)
+        return _sm.resolve_root()
+    except Exception:
+        return os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
 
 
 def _state_dir():
@@ -383,6 +392,31 @@ def _check_butler_mcp(data, tool):
     return "allow", "", ""
 
 
+def _p2_half_installed(tool):
+    """P2 (self-enclosed campaign) — fail CLOSED in a half-installed guild.
+    Returns a reason string if this repo IS a guild (markers present) but its core
+    config (star-alliance-arsenal/models.json) is missing AND the tool is
+    enforcement-relevant; else None. Never fires in a non-guild repo (no-op) or when
+    config is present (home happy-path). Recoverable via the kill switch."""
+    if tool not in WRITE_TOOLS and tool not in ("Task", "Agent", "Bash") \
+            and not tool.startswith("mcp__"):
+        return None
+    try:
+        import importlib.util as _ilu, os as _os
+        _sp = _ilu.spec_from_file_location("_saroot",
+            _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "_saroot.py"))
+        _sm = _ilu.module_from_spec(_sp); _sp.loader.exec_module(_sm)
+        root = _sm.resolve_root()
+        if not _sm.guild_managed(root):
+            return None
+        miss = _sm.missing_config(["star-alliance-arsenal/models.json"], root)
+        if not miss:
+            return None
+        return ", ".join(miss)
+    except Exception:
+        return None  # never brick on guard error
+
+
 def main():
     try:
         data = json.load(sys.stdin)
@@ -400,6 +434,18 @@ def main():
     is_child_session = os.environ.get("CLAUDE_CODE_CHILD_SESSION") == "1"
 
     tool = data.get("tool_name", "")
+
+    # P2 — a guild repo missing its core config must not run half-open.
+    if not is_child_session:
+        _p2 = _p2_half_installed(tool)
+        if _p2:
+            sys.stderr.write(
+                "\u26d4 EXECUTOR ENFORCE (P2 fail-closed) — this is a Star Alliance repo "
+                f"but core config is missing ({_p2}). A half-installed guild must not run "
+                "half-open. Finish the landing (run star-alliance-arsenal/install.sh / "
+                "guild/install_agents.py), or disable this hook:\n"
+                "     touch .claude/state/executor-enforce-disarmed\n")
+            sys.exit(2)
     try:
         if is_child_session:
             # Subagent — only enforce the spawn-time rules (Task/Agent/Bash

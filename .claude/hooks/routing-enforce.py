@@ -54,9 +54,37 @@ SPECIALISTS = {
 }
 ROUTER = "the-strategist"
 
+# Claude's own generic agents — legitimately used by the guild; never foreign.
+KNOWN_BUILTINS = {"explore", "general-purpose", "plan", "claude",
+                  "claude-code-guide", "statusline-setup", "fork"}
+
+
+def _guild_members(root):
+    """Roster ids from guild-data.json (best-effort). Empty set on any failure."""
+    import json as _json
+    try:
+        d = _json.load(open(_os_path_join(root, "guild-data.json"), encoding="utf-8"))
+        return {m.get("id") for m in (d.get("members") or []) if isinstance(m, dict)}
+    except Exception:
+        return set()
+
+
+def _os_path_join(*a):
+    import os as _os
+    return _os.path.join(*a)
+
 
 def _proj():
-    return os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
+    # P0 (self-enclosed campaign): prefer code-location root over a possibly-stale
+    # env var; fall back to the legacy default on any error so behaviour never regresses.
+    try:
+        import importlib.util as _ilu, os as _os
+        _sp = _ilu.spec_from_file_location("_saroot",
+            _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "_saroot.py"))
+        _sm = _ilu.module_from_spec(_sp); _sp.loader.exec_module(_sm)
+        return _sm.resolve_root()
+    except Exception:
+        return os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
 
 
 def _state_dir():
@@ -141,8 +169,24 @@ def check(data):
             ),
         }
 
-    # Non-guild subagent (Explore, general-purpose, …) — allow.
-    return {"exit": 0}
+    # Non-specialist subagent. Allow Claude's own built-in generics and any guild
+    # member; refuse an UNKNOWN / foreign agent under guild authority on a FULL-tier
+    # turn (P4, self-enclosed campaign). Overridable via the disarm file.
+    low = sub.lower()
+    if not sub or low in KNOWN_BUILTINS:
+        return {"exit": 0}
+    if sub in _guild_members(_proj()):
+        return {"exit": 0}
+    return {
+        "exit": 2,
+        "stderr": (
+            f"\u26d4 ROUTING ENFORCE — '{sub}' is not a guild member and not a known "
+            f"built-in agent. The guild does not run foreign agents under its authority "
+            f"on a high-stakes turn. Route the work through the Strategist to a guild "
+            f"member, or — if this foreign agent is genuinely intended — disable the hook:\n"
+            f"     touch .claude/state/routing-enforce-disarmed\n"
+        ),
+    }
 
 
 def main():

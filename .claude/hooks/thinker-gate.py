@@ -30,7 +30,16 @@ import json
 
 
 def _proj():
-    return os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
+    # P0 (self-enclosed campaign): prefer code-location root over a possibly-stale
+    # env var; fall back to the legacy default on any error so behaviour never regresses.
+    try:
+        import importlib.util as _ilu, os as _os
+        _sp = _ilu.spec_from_file_location("_saroot",
+            _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "_saroot.py"))
+        _sm = _ilu.module_from_spec(_sp); _sp.loader.exec_module(_sm)
+        return _sm.resolve_root()
+    except Exception:
+        return os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
 
 
 def _ledger(repo, **kw):
@@ -55,6 +64,24 @@ def _declared_model(repo, sub):
     return m.group(1).strip() if m else None
 
 
+def _is_known_member(repo, sub):
+    """True iff `sub` is a declared guild member (per star-alliance-members/ or
+    guild-data.json), independent of whether its generated agent file exists.
+    Only meaningful in a guild-managed repo; empty knowledge => False (fail open)."""
+    import os as _os, json as _json
+    mem_dir = _os.path.join(repo, "star-alliance-members")
+    try:
+        if _os.path.isfile(_os.path.join(mem_dir, f"{sub}.md")):
+            return True
+    except OSError:
+        pass
+    try:
+        d = _json.load(open(_os.path.join(repo, "guild-data.json"), encoding="utf-8"))
+        return sub in {m.get("id") for m in (d.get("members") or []) if isinstance(m, dict)}
+    except Exception:
+        return False
+
+
 def _norm(s):
     return (s or "").strip().lower()
 
@@ -76,7 +103,21 @@ def check(data):
     repo = _proj()
     declared = _declared_model(repo, sub)
     if declared is None:
-        return {"exit": 0}                              # not a guild member / no declaration
+        # P4 (self-enclosed campaign): distinguish "genuinely not a guild member"
+        # (allow — Explore/Plan/etc. have no declared thinker) from "a KNOWN guild
+        # member whose agent file is missing" (a half-installed guild, e.g. the Lex
+        # empty .claude/agents/ case). In the latter we cannot validate the override,
+        # so in a guild-managed repo we fail CLOSED and point at the installer.
+        if _is_known_member(repo, sub):
+            return {"exit": 2, "stderr": (
+                f"\u26d4 THINKER GATE — '{sub}' is a guild member but its agent file "
+                f"(.claude/agents/{sub}.md) is missing, so its declared thinker model "
+                f"cannot be verified. This repo is a half-installed guild. Run the "
+                f"installer to populate agents:\n"
+                f"     python3 guild/install_agents.py\n"
+                f"   (Override for a deliberate cross-model launch: SA_ALLOW_MODEL_OVERRIDE=1.)\n"
+            )}
+        return {"exit": 0}                              # genuinely not a guild member
 
     friendly = "The " + sub.replace("the-", "").replace("-", " ").title()
 

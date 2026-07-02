@@ -76,6 +76,15 @@
             "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/xp-log.py\""
           }
         ]
+      },
+      {
+        "matcher": "Task|Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/spawn-log.py\""
+          }
+        ]
       }
     ],
     "PreCompact": [

@@ -21,6 +21,22 @@ mcp = FastMCP("star-alliance")
 
 TELEMETRY_FILE = REPO_ROOT / "data" / "mcp-telemetry.jsonl"
 SKILLS_DIR = REPO_ROOT / "star-alliance-skills"
+XP_LOG = REPO_ROOT / ".claude" / "state" / "xp-log.jsonl"
+
+
+def _xp_skill(name: str) -> None:
+    """Record one skill-usage row so a skill pulled through the MCP earns XP too,
+    not only when invoked via the Skill tool (closes the skill-telemetry gap).
+    Same schema tools/xp.py counts. Never raises."""
+    try:
+        XP_LOG.parent.mkdir(parents=True, exist_ok=True)
+        with open(XP_LOG, "a", encoding="utf-8") as f:
+            f.write(json.dumps({
+                "type": "skill", "name": str(name).strip(),
+                "ts": datetime.now(timezone.utc).isoformat(), "via": "mcp",
+            }) + "\n")
+    except Exception:
+        pass
 
 
 def _log(tool: str, arguments: dict, success: bool, duration_ms: int, result_preview: str) -> None:
@@ -94,6 +110,7 @@ def invoke_skill(skill_name: str, args: str = "") -> str:
     arguments = {"skill_name": skill_name}
     if args:
         arguments["args"] = args
+    _xp_skill(skill_name)  # skill earns XP for a real MCP pull, not just Skill-tool calls
     _log("invoke_skill", arguments, True, int((time.monotonic() - t0) * 1000), text[:200])
     return text
 

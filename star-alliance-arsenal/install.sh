@@ -368,6 +368,19 @@ for hook in "$HOOKS_DIR"/*.py "$HOOKS_DIR"/*.sh; do
   echo "  + hook: $hook_name"
 done
 
+# -- ship the FULL agent roster (P1, self-enclosed campaign) -----------------
+# Tier 2 lands only the single named member. A Tier-3 target needs the WHOLE
+# roster in .claude/agents/ or routing-enforce can never be satisfied (the
+# Strategist + specialists are unspawnable) and high-stakes turns deadlock —
+# exactly the "Lex .claude/agents EMPTY" blocker. Copy every source agent file.
+echo "  - full agent roster"
+ensure_dir "$AGENTS_DIR"
+for af in "$SA_ROOT"/agents/*.md; do
+  [[ -f "$af" ]] || continue
+  cp "$af" "$AGENTS_DIR/$(basename "$af")"
+  echo "    + agent: $(basename "$af")"
+done
+
 # -- ship the dispatch substrate the gates route to --------------------------
 # The Tier-3 gate hooks (executor-enforce, delegation-gate, verify-gate, ...)
 # route every write through tools/dispatch.py -> the arsenal -> the evolution
@@ -381,6 +394,13 @@ copy_pruned "$SA_ROOT/star-alliance-arsenal" "$TARGET/star-alliance-arsenal"
 echo "    OK star-alliance-arsenal/ (models.json + runners, pruned)"
 copy_pruned "$SA_ROOT/evolution" "$TARGET/evolution"
 echo "    OK evolution/ (engine + ledger organs, pruned)"
+
+# Tier 3 is self-contained (arsenal + evolution + tools now live in TARGET), so
+# re-point STAR_ALLIANCE_ROOT at the target rather than the source repo. The gate
+# hooks already resolve their root from their own location (_saroot.resolve_root),
+# but non-hook tools/*.py still read this env hint. (P1, self-enclosed campaign.)
+merge_env_to_settings "$TARGET_SETTINGS" "STAR_ALLIANCE_ROOT" "$TARGET"
+echo "  ✓ STAR_ALLIANCE_ROOT re-pointed to target (self-contained Tier 3)"
 
 # Pre-seed the evolution kill-switch so a fresh Tier-3 target cannot lock its
 # main session with no unlock path. The dispatch substrate now ships (above),

@@ -38,7 +38,16 @@ FM_RE = re.compile(r"^---\s*\n(.*?)\n---\s*\n?", re.S)
 
 
 def project_dir():
-    return os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
+    # P0 (self-enclosed campaign): prefer code-location root over a possibly-stale
+    # env var; fall back to the legacy default on any error so behaviour never regresses.
+    try:
+        import importlib.util as _ilu, os as _os
+        _sp = _ilu.spec_from_file_location("_saroot",
+            _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "_saroot.py"))
+        _sm = _ilu.module_from_spec(_sp); _sp.loader.exec_module(_sm)
+        return _sm.resolve_root()
+    except Exception:
+        return os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
 
 
 def is_governed(path: str, root: str) -> bool:

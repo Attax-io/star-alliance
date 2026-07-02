@@ -162,6 +162,17 @@ def list_agents():
     print()
 
 
+_DOER_CONTRACT = (
+    "[DOER CONTRACT - read first]\n"
+    "Execute EXACTLY the task below and nothing more. You are the hands, not the mind:\n"
+    "do NOT investigate the codebase, explore, redesign, or widen scope on your own.\n"
+    "The task is meant to be complete and self-contained. If something you genuinely\n"
+    "need is missing, STOP and return precisely what is missing - do not go hunting\n"
+    "for it. Return only the result of the task.\n\n"
+    "TASK:\n"
+)
+
+
 def dispatch(agent_name: str, prompt: str, timeout: int = 300) -> dict:
     """
     Send a prompt to a Hermes profile matching the agent name.
@@ -181,6 +192,10 @@ def dispatch(agent_name: str, prompt: str, timeout: int = 300) -> dict:
             "response": f"Unknown agent '{agent_name}'. Known agents: {', '.join(AGENTS.keys())}",
             "exit_code": 1,
         }
+
+    # Every doer invocation carries the execute-only contract (the brain investigates;
+    # the doer executes exactly what it is handed and does not explore on its own).
+    prompt = _DOER_CONTRACT + prompt
 
     profile = agent_name  # agent name == Hermes profile name
 

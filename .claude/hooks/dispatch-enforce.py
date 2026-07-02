@@ -20,11 +20,16 @@
 #   3. Bash command containing `dispatch.py` → ALLOW *that sub-command only*
 #      (chained write commands after && or ; are still blocked)
 #   4. Bash write commands (sed -i, echo >, cat >, tee, cp, mv, rm, touch,
-#      chmod, chown, > redirect, >> append, python3 -c, perl -i, ruby -e,
-#      node -e, heredocs, git checkout/reset/stash/rebase, pip install,
+#      chmod, chown, > redirect, >> append, python3 -c that writes, perl -i,
+#      ruby -e, node -e, heredocs, git checkout/reset/stash/rebase, pip install,
 #      npm install, etc.) → BLOCK
 #   5. MCP write-verb tools (create_, update_, delete_, write_, etc.) → BLOCK
 #   6. Read-only tools and commands → ALLOW
+#
+# NOTE: python3 -c is now smart-checked — read-only one-liners (json.load,
+#       print, os.listdir, etc.) are ALLOWED. Only python3 -c code that
+#       actually writes files (open in w/a/x mode, shutil, subprocess, etc.)
+#       is blocked. See _python_one_liner_is_write().
 #
 # BYPASSES
 # ────────
@@ -122,6 +127,9 @@ def _strip_quoted(command):
 
 # ── Shell write patterns ────────────────────────────────────────────────────
 # Commands that mutate files via shell. Applied to each sub-command individually.
+# NOTE: python3 -c is NOT in this list — it is handled separately by
+# _python_one_liner_is_write() which inspects the actual code passed to -c
+# and only blocks if it contains real write operations.
 BASH_WRITE_PATTERNS = (
     # Direct file redirects
     r"(?<!\{)\bcat\s*>\s*\S",                # cat > file
@@ -145,8 +153,8 @@ BASH_WRITE_PATTERNS = (
     r"\bchmod\s+",                            # chmod
     r"\bchown\s+",                            # chown
     r"\bdd\s+",                               # dd of=...
-    # Interpreters that can write files
-    r"\bpython3?\s+-c\b",                     # python3 -c "..."
+    # Interpreters that can write files (python3 -c is handled separately
+    # by _python_one_liner_is_write — only blocks if the code actually writes)
     r"\bpython3?\s+--?b\b",                    # python3 -b (boundary issue, rare)
     r"\bperl\s+-i\b",                          # perl -i (in-place edit)
     r"\bperl\s+-e\b",                          # perl -e "..."
@@ -187,6 +195,88 @@ BASH_WRITE_PATTERNS = (
     r"\bemacs\b\s+\S",                         # emacs file
 )
 BASH_WRITE_RE = re.compile("|".join(BASH_WRITE_PATTERNS))
+
+# ── Python one-liner write detection ────────────────────────────────────────
+# `python3 -c "CODE"` is blocked only if CODE actually writes files or mutates
+# state. Read-only one-liners (json.load(open(...)), print(...), etc.) are
+# allowed through. This replaces the old blanket `python3 -c` pattern.
+
+_PY_INTERP_RE = re.compile(r'\bpython3?\s+-c\b')
+
+# Write-indicator patterns inside Python code passed to -c.
+# These are the actual file-mutation / system-mutation operations.
+_PY_WRITE_PATTERNS = (
+    # open() in write/append modes
+    re.compile(r'\bopen\s*\([^)]*[,\'"]\s*[wax][,+\s]', re.IGNORECASE),
+    re.compile(r'\bopen\s*\([^)]*[,\'"]\s*w[\+b]*', re.IGNORECASE),
+    re.compile(r'\bopen\s*\([^)]*[,\'"]\s*a[\+b]*', re.IGNORECASE),
+    re.compile(r'\bopen\s*\([^)]*[,\'"]\s*x[\+b]*', re.IGNORECASE),
+    # pathlib write methods
+    re.compile(r'\.(write_text|write_bytes|touch|unlink|mkdir|rmdir|rename|replace)\s*\(', re.IGNORECASE),
+    # shutil file mutations
+    re.compile(r'\bshutil\.(copy|copy2|copyfile|move|rmtree|rmdir|make_archive|unpack_archive)\s*\(', re.IGNORECASE),
+    # os file mutations
+    re.compile(r'\bos\.(remove|unlink|rename|removes|mkdir|makedirs|rmdir|chmod|chown|symlink|link)\s*\(', re.IGNORECASE),
+    # subprocess / os.system (can run arbitrary shell writes)
+    re.compile(r'\bos\.system\s*\(', re.IGNORECASE),
+    re.compile(r'\bsubprocess\.(run|call|Popen|check_call|check_output)\s*\(', re.IGNORECASE),
+    re.compile(r'\bos\.popen\s*\(', re.IGNORECASE),
+    # exec / eval of dynamic code
+    re.compile(r'\bexec\s*\(', re.IGNORECASE),
+    re.compile(r'\beval\s*\(', re.IGNORECASE),
+    # __import__ for subprocess/os (circumvention attempt)
+    re.compile(r'__import__\s*\(\s*[\'"](subprocess|os|shutil)', re.IGNORECASE),
+    # pickle dump to file
+    re.compile(r'\bpickle\.dump\s*\(', re.IGNORECASE),
+    # json.dump with file handle (write)
+    re.compile(r'\bjson\.dump\s*\([^)]*,\s*\w+\s*\)', re.IGNORECASE),
+    # csv.writer with file handle (write)
+    re.compile(r'\bcsv\.writer\s*\(', re.IGNORECASE),
+    # tempfile manipulation that writes
+    re.compile(r'\btempfile\.NamedTemporaryFile\s*\(', re.IGNORECASE),
+)
+
+# Extract the code passed to `python3 -c "..."` or `python3 -c '...'` or
+# `python3 -c CODE` (bare word). Returns the code string or None if no
+# python -c invocation is found.
+_PY_C_QUOTE_RE = re.compile(
+    r'\bpython3?\s+-c\s+'   # python3 -c
+    r'(?:"((?:[^"\\]|\\.)*)"|\'((?:[^\'\\]|\\.)*)\'|(\S+))',  # "..." | '...' | bare
+    re.IGNORECASE,
+)
+
+
+def _extract_python_c_code(command):
+    """Extract the code string from a `python3 -c "CODE"` invocation.
+
+    Returns the code string, or None if no `python3 -c` is present.
+    Works on the raw (unstripped) command so the code is intact.
+    """
+    m = _PY_C_QUOTE_RE.search(command)
+    if not m:
+        return None
+    # Group 1 = double-quoted, 2 = single-quoted, 3 = bare word
+    return next((g for g in m.groups() if g is not None), None)
+
+
+def _python_one_liner_is_write(command):
+    """True if a `python3 -c` invocation in `command` contains write operations.
+
+    If no `python3 -c` is present, returns False (not our problem).
+    If `python3 -c` is present but the code can't be extracted (unusual quoting),
+    returns True (fail safe — block it).
+    """
+    if not _PY_INTERP_RE.search(command):
+        return False
+    code = _extract_python_c_code(command)
+    if code is None:
+        # python3 -c is present but we can't extract the code → fail safe
+        return True
+    for pat in _PY_WRITE_PATTERNS:
+        if pat.search(code):
+            return True
+    return False
+
 
 # ── MCP write-verb detection ────────────────────────────────────────────────
 # MCP tools whose names start with a write verb are blocked for specialists.
@@ -565,7 +655,18 @@ def check(data):
                     }
 
             # Check for shell write commands.
-            if BASH_WRITE_RE.search(sub_cmd):
+            # Note: sub_cmd is the _strip_quoted version (quote contents blanked).
+            # That's correct for structure-level patterns (>, sed -i, etc.).
+            # But python3 -c code lives inside quotes, so we check the ORIGINAL
+            # command for python one-liner writes separately.
+            is_write = bool(BASH_WRITE_RE.search(sub_cmd))
+
+            # Smart python3 -c check: only block if the -c code actually writes.
+            if not is_write and _PY_INTERP_RE.search(sub_cmd):
+                if _python_one_liner_is_write(command):
+                    is_write = True
+
+            if is_write:
                 # Show the user the ORIGINAL (unstripped) command so the
                 # block message includes the prose they actually wrote,
                 # not blanks where the quoted content used to be.
@@ -577,8 +678,8 @@ def check(data):
                         f"\n"
                         f"WHY: You tried to modify files via a shell command. Whether it's a redirect\n"
                         f"(echo >, cat >), an in-place edit (sed -i), a copy/move (cp, mv), a git\n"
-                        f"mutation (checkout, reset, stash, rm), an interpreter one-liner\n"
-                        f"(python3 -c, perl -e, ruby -e, node -e), a package install (pip, npm),\n"
+                        f"mutation (checkout, reset, stash, rm), an interpreter one-liner that writes\n"
+                        f"(python3 -c with open()/write/subprocess), a package install (pip, npm),\n"
                         f"or an archive extraction (tar -x, unzip) — all file writes must go through\n"
                         f"your Hermes counterpart, not the shell. The dispatch enforcement hook blocks\n"
                         f"these so the work is done with the right model and the right audit trail.\n"
@@ -600,7 +701,9 @@ def check(data):
                         f"You frame the task; Hermes executes it.\n"
                         f"\n"
                         f"NOTE: Read-only shell commands (ls, cat, grep, git status, git log, git diff)\n"
-                        f"are still allowed — you can inspect the codebase directly. Only writes are\n"
+                        f"and read-only Python one-liners (python3 -c with only read/print/parse\n"
+                        f"operations — no open() in write mode, no subprocess, no os.system) are\n"
+                        f"still allowed — you can inspect the codebase directly. Only writes are\n"
                         f"dispatched.\n"
                     ),
                 }

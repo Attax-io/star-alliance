@@ -62,7 +62,16 @@ def find_banner(text):
 
 
 def project_dir():
-    return os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
+    # P0 (self-enclosed campaign): prefer code-location root over a possibly-stale
+    # env var; fall back to the legacy default on any error so behaviour never regresses.
+    try:
+        import importlib.util as _ilu, os as _os
+        _sp = _ilu.spec_from_file_location("_saroot",
+            _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "_saroot.py"))
+        _sm = _ilu.module_from_spec(_sp); _sp.loader.exec_module(_sm)
+        return _sm.resolve_root()
+    except Exception:
+        return os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
 
 
 def _resolve_skill_name(data):
@@ -139,6 +148,49 @@ def assistant_text_since(lines, start):
     return "\n".join(out)
 
 
+
+def _raw_skill_ref(data):
+    """Raw skill ref as typed (before namespace stripping) — needed to tell a
+    plugin-namespaced skill (has ':') from a bare guild skill."""
+    ti = data.get("tool_input") or {}
+    return str(ti.get("skill") or ti.get("name") or "").strip()
+
+
+def _is_foreign_bare_skill(name, raw):
+    """P3 (self-enclosed campaign) — provenance refusal. Returns a reason string
+    if `name` is foreign craft the guild must refuse, else None.
+
+    Refuse only the clear case: a BARE skill (no plugin namespace) that is NOT the
+    Butler's floor and does NOT exist under the repo's own star-alliance-skills/.
+    That is exactly a global ~/.claude/skills skill shadowing / substituting for
+    guild craft. EXEMPT: plugin-namespaced skills (explicitly installed
+    integrations), the fallback floor, and any case where we cannot positively
+    identify a guild repo (fail OPEN — never brick an unrelated session)."""
+    if ":" in raw:
+        return None  # plugin skill — explicitly installed, not shadow craft
+    if name in FALLBACK_ALLOW:
+        return None
+    try:
+        import importlib.util as _ilu, os as _os
+        _sp = _ilu.spec_from_file_location("_saroot",
+            _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "_saroot.py"))
+        _sm = _ilu.module_from_spec(_sp); _sp.loader.exec_module(_sm)
+        root = _sm.resolve_root()
+        if not _sm.guild_managed(root):
+            return None  # not a guild repo — do not enforce
+    except Exception:
+        return None  # cannot resolve — fail open
+    skills_dir = os.path.join(root, "star-alliance-skills")
+    if not os.path.isdir(skills_dir):
+        return None  # no SoT present — fail open
+    if os.path.isdir(os.path.join(skills_dir, name)):
+        return None  # it IS a repo skill — provenance OK
+    return (f"skill '{name}' is not part of this guild "
+            f"(no star-alliance-skills/{name}/). The guild runs its OWN craft, not "
+            f"global ~/.claude skills. Add it to the repo (absorb) or invoke the "
+            f"plugin-namespaced version if it is an installed integration.")
+
+
 def check(data):
     """Pure decision. Returns {"exit":0|2, "stderr":str}."""
     tool = data.get("tool_name", "")
@@ -150,6 +202,12 @@ def check(data):
         # No resolvable name — fail open; a Skill call without a name is itself
         # malformed and the rest of the gate stack will handle it.
         return {"exit": 0}
+
+    # P3 provenance refusal — reject foreign bare skills before any role logic.
+    _foreign = _is_foreign_bare_skill(skill_name, _raw_skill_ref(data))
+    if _foreign:
+        return {"exit": 2, "stderr": (
+            f"\u26d4 SKILL PROVENANCE GATE — refused: {_foreign}\n")}
 
     # Always-union the hardcoded fallback (helpless doctrine) so the Butler
     # can never lock himself out of his own craft, even if guild-data.json

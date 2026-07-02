@@ -195,6 +195,11 @@ STEP 2 · FOLLOW THE WORKFLOW (workflows.json) — MANDATORY, not optional:
     every tool call is blocked. It is the gate key.
 
 STEP 3 · THAT MEMBER WORKS IN TWO LAYERS (weapon-utility):
+  WRITE PATH (plan for this from the FIRST move — do not learn it by hitting the gate):
+  members have NO Write/Edit tools. EVERY file create/edit — large or small — is handed to
+  the doer via dispatch. Investigate with read-only Bash first, then hand ONE complete task:
+      python3 tools/dispatch.py <agent-name> "<exactly what to write, in full detail>"
+  Never attempt a direct Write/Edit or a shell file-write — it is blocked and burns the turn.
   Hand doer-grade work — bulk edits, extraction, generation, mechanical transforms, large reads/summaries —
   to the member Hermes profile first:  python3 tools/dispatch.py <agent-name> "<prompt>"
   The member's BRAIN (opus for the Strategist, glm-5.2 for the rest) stays the mind — plan → prompt the
@@ -206,8 +211,9 @@ STEP 3 · THAT MEMBER WORKS IN TWO LAYERS (weapon-utility):
   both unreachable, STOP and report rather than guessing on a weaker model.
 
 Acting as the Butler to do a specialist's job, OR a member doing doer-grade work in its thinker, is the
-EXCEPTION — and must be justified out loud. Tool-access orchestration (git, file writes, MCP) stays with the
-working member's thinker; doers cannot run it.
+EXCEPTION — and must be justified out loud. Read-only orchestration (git status/log/diff, MCP incl.
+Supabase read+write, investigation) stays with the working member's thinker — but every file create/edit
+is the doer's, handed over via dispatch.py; the thinker never writes files directly.
 
 DEPLOYMENT BRIEF (always on, every working turn) — open with a short, professional brief
 the Guild Master can read at a glance. Clean and plain — no insider jargon. Format:

@@ -2935,6 +2935,125 @@
       "title": "Quick Fix: .claude/hooks/dispatch-enforce.py",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Strategic Audit: .claude/hooks/dispatch-enforce.py, docs/audit-self-enclosed-guild-2026-07-02.md",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Strategic Audit: .claude/hooks/butler-skill-gate.py, .claude/hooks/dispatch-enforce.py, .claude/hooks/executor-enforce.py (+17 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Strategic Audit: .claude/hooks/butler-skill-gate.py, .claude/hooks/dispatch-enforce.py, .claude/hooks/executor-enforce.py (+18 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Strategic Audit: .claude/hooks/butler-skill-gate.py, .claude/hooks/dispatch-enforce.py, .claude/hooks/executor-enforce.py (+18 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/hooks/butler-skill-gate.py, .claude/hooks/dispatch-enforce.py, .claude/hooks/executor-enforce.py (+20 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Art Forge: .claude/hooks/butler-skill-gate.py, .claude/hooks/dispatch-enforce.py, .claude/hooks/executor-enforce.py (+20 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Art Forge: .claude/hooks/butler-skill-gate.py, .claude/hooks/dispatch-enforce.py, .claude/hooks/executor-enforce.py (+20 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Art Forge: .claude/agents/the-architect.md, .claude/agents/the-designer.md, .claude/agents/the-developer.md (+43 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Routing: .claude/agents/the-architect.md, .claude/agents/the-designer.md, .claude/agents/the-developer.md (+52 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/agents/the-architect.md, .claude/agents/the-designer.md, .claude/agents/the-developer.md (+54 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/agents/the-architect.md, .claude/agents/the-designer.md, .claude/agents/the-developer.md (+54 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/agents/the-architect.md, .claude/agents/the-designer.md, .claude/agents/the-developer.md (+54 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/agents/the-architect.md, .claude/agents/the-designer.md, .claude/agents/the-developer.md (+54 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/agents/the-architect.md, .claude/agents/the-designer.md, .claude/agents/the-developer.md (+54 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/agents/the-architect.md, .claude/agents/the-designer.md, .claude/agents/the-developer.md (+54 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/agents/the-architect.md, .claude/agents/the-designer.md, .claude/agents/the-developer.md (+54 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/agents/the-architect.md, .claude/agents/the-designer.md, .claude/agents/the-developer.md (+50 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130

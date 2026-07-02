@@ -19,11 +19,16 @@ main() {
     echo "Repo root: $REPO_ROOT"
     echo ""
 
-    # 1. Check for python3.13
-    if ! command -v python3.13 >/dev/null 2>&1; then
-        fail "python3.13 not found. Install it with: brew install python@3.13"
+    # 1. Pick a Python interpreter. Prefer python3.13; fall back to python3 so the
+    #    installer runs on a Mac that has a different (>=3.11) python. Device-agnostic.
+    if command -v python3.13 >/dev/null 2>&1; then
+        PYTHON="$(command -v python3.13)"
+    elif command -v python3 >/dev/null 2>&1; then
+        PYTHON="$(command -v python3)"
+    else
+        fail "No python3 found. Install it with: brew install python@3.13"
     fi
-    echo "Found python3.13: $(command -v python3.13)"
+    echo "Using python: $PYTHON ($("$PYTHON" --version 2>&1))"
 
     VENV_DIR="$REPO_ROOT/mcp/.venv"
     SERVER_PY="$REPO_ROOT/mcp/server.py"
@@ -32,12 +37,23 @@ main() {
         fail "Could not find mcp/server.py at $SERVER_PY"
     fi
 
-    # 2. Create venv if missing
-    if [ -d "$VENV_DIR" ]; then
-        echo "Virtual environment already exists at $VENV_DIR (skipping creation)."
+    # 2. Create venv if missing OR broken. A .venv synced/copied from another
+    #    device (or committed) carries symlinks + pyvenv.cfg pinned to the machine
+    #    that built it, so bin/python is dangling here — the classic two-device
+    #    breakage. Validate that it's a WORKING interpreter; rebuild if not.
+    venv_ok() {
+        [ -x "$VENV_DIR/bin/python" ] && "$VENV_DIR/bin/python" -c 'import sys' >/dev/null 2>&1
+    }
+    if venv_ok; then
+        echo "Virtual environment OK at $VENV_DIR (skipping creation)."
     else
-        echo "Creating virtual environment at $VENV_DIR ..."
-        python3.13 -m venv "$VENV_DIR" || fail "Failed to create virtual environment."
+        if [ -d "$VENV_DIR" ]; then
+            echo "Existing venv at $VENV_DIR is broken (no working bin/python) — rebuilding..."
+            rm -rf "$VENV_DIR" || fail "Could not remove the broken venv at $VENV_DIR. Delete it by hand and re-run."
+        else
+            echo "Creating virtual environment at $VENV_DIR ..."
+        fi
+        "$PYTHON" -m venv "$VENV_DIR" || fail "Failed to create virtual environment."
         echo "Installing mcp SDK..."
         "$VENV_DIR/bin/pip" install --quiet --upgrade pip || fail "Failed to upgrade pip in venv."
         "$VENV_DIR/bin/pip" install --quiet mcp || fail "Failed to install the mcp package."

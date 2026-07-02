@@ -31,6 +31,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 REPO = HERE.parent
 BOX_SKILLS = REPO / "star-alliance-skills"          # the guild's source-of-truth skills
+BOX_WORKFLOWS = REPO / "workflows.json"              # the guild's source-of-truth workflows
 SKILL_FILE = "SKILL.md"
 
 sys.path.insert(0, str(HERE))
@@ -121,6 +122,75 @@ def propose(target: str | Path, emit: bool = True) -> list[dict]:
     return cands
 
 
+def _load_workflows(path: Path) -> dict:
+    """Return {id: entry_dict} from a workflows.json, or {} on any failure."""
+    try:
+        d = json.loads(Path(path).read_text(encoding="utf-8"))
+        out = {}
+        for w in (d.get("workflows") or []):
+            if isinstance(w, dict) and w.get("id"):
+                out[str(w["id"])] = w
+        return out
+    except Exception:
+        return {}
+
+
+def scan_workflows(target: str | Path) -> list[dict]:
+    """Read-only diff of <target>/workflows.json against the box (P6, self-enclosed
+    campaign — the workflow twin of scan()). A candidate is a workflow the box LACKS
+    (kind=new) or whose content hash MATERIALLY differs (kind=improved). Copies
+    nothing; never touches the target."""
+    tpath = Path(target) / "workflows.json"
+    cands: list[dict] = []
+    tw = _load_workflows(tpath)
+    if not tw:
+        return cands
+    bw = _load_workflows(BOX_WORKFLOWS)
+    for wid, tentry in sorted(tw.items()):
+        thash = _hash(json.dumps(tentry, sort_keys=True, ensure_ascii=False))
+        tver = str(tentry.get("version", ""))
+        if wid not in bw:
+            cands.append({
+                "workflow_id": wid, "kind": "new", "source": str(tpath),
+                "target_hash": thash, "target_version": tver, "box_version": "",
+                "detail": f"workflow '{wid}' present in target, absent from the box",
+            })
+            continue
+        bentry = bw[wid]
+        if _hash(json.dumps(bentry, sort_keys=True, ensure_ascii=False)) == thash:
+            continue                                  # identical — nothing to absorb
+        bver = str(bentry.get("version", ""))
+        cands.append({
+            "workflow_id": wid, "kind": "improved", "source": str(tpath),
+            "target_hash": thash, "target_version": tver, "box_version": bver,
+            "detail": (f"workflow '{wid}' differs from the box "
+                       f"(target v{tver or '?'} vs box v{bver or '?'})"),
+        })
+    return cands
+
+
+def propose_workflows(target: str | Path, emit: bool = True) -> list[dict]:
+    """Scan + emit one `proposal` ledger event per workflow candidate (surface=
+    workflows). Copies nothing — proposal only, critic + human gated like skills."""
+    cands = scan_workflows(target)
+    for c in cands:
+        if not emit:
+            continue
+        ledger.append(
+            "proposal", author="evolution-absorb", surface="workflows", tier="B",
+            diff_hash=c["target_hash"], detail="absorb-workflow: " + c["detail"],
+            meta={
+                "absorb": True, "workflow_id": c["workflow_id"], "kind": c["kind"],
+                "source": c["source"], "target": str(target),
+                "target_version": c["target_version"], "box_version": c["box_version"],
+                "action": ("workflow adoption is Tier-B (human-gated): review the "
+                           f"target entry '{c['workflow_id']}' and merge it into "
+                           "workflows.json by hand, then rebuild (build.py)."),
+            },
+        )
+    return cands
+
+
 def _cli():
     import argparse
     ap = argparse.ArgumentParser(
@@ -130,8 +200,17 @@ def _cli():
     ap.add_argument("target", help="path to a deployed target project (scans <target>/.claude/skills)")
     ap.add_argument("--json", action="store_true", help="emit candidates as JSON")
     ap.add_argument("--no-emit", action="store_true", help="dry read — do NOT write ledger proposals")
+    ap.add_argument("--workflows", action="store_true",
+                    help="also scan <target>/workflows.json and propose novel/improved workflows")
+    ap.add_argument("--only-workflows", action="store_true",
+                    help="scan ONLY workflows (skip skills)")
     a = ap.parse_args()
-    cands = propose(a.target, emit=not a.no_emit)
+    cands = [] if a.only_workflows else propose(a.target, emit=not a.no_emit)
+    if a.workflows or a.only_workflows:
+        wcands = propose_workflows(a.target, emit=not a.no_emit)
+        for w in wcands:
+            w.setdefault("skill_id", w.get("workflow_id"))  # unify for the printer
+        cands = cands + wcands
     if a.json:
         print(json.dumps(cands, ensure_ascii=False, indent=2))
         return

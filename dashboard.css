@@ -762,7 +762,7 @@ ul, ol { list-style: none; }
   bottom: calc(100% + 8px);
   left: 0;
   right: 0;
-  background: rgba(13, 13, 16, 0.97);
+  background: rgba(13, 13, 16, 1);
   border: 1px solid var(--border-soft);
   border-top: 2px solid var(--gold-dim);
   border-radius: 8px;

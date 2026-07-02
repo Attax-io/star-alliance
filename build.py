@@ -584,7 +584,10 @@ def stamp_xp(members: list[dict], skills: list[dict], workflows: list[dict],
 
         member_ids = [m["id"] for m in members]
         skill_ids = [s["id"] for s in skills]
-        workflow_ids = [w.get("id", "") for w in workflows]
+        # Workflow XP is logged by DISPLAY NAME (workflow-gate.py writes
+        # {"type":"workflow","name":...}), so resolve workflows by name — not id —
+        # or every workflow falls back to level 1 (self-enclosed campaign fix).
+        workflow_ids = [w.get("name", "") for w in workflows]
         resolved = _xp.resolve_all(member_ids, skill_ids, workflow_ids, repo=repo)
     except Exception as exc:  # noqa: BLE001 — XP stamping must never fail the build
         print(f"[build] warning: XP resolution failed: {exc}")
@@ -605,7 +608,7 @@ def stamp_xp(members: list[dict], skills: list[dict], workflows: list[dict],
     for s in skills:
         _apply(s, "skill", "id")
     for w in workflows:
-        _apply(w, "workflow", "id")
+        _apply(w, "workflow", "name")  # match the name-keyed workflow XP log
 
 
 def mark_global_skills(skills: list[dict], warnings: list[str]) -> None:

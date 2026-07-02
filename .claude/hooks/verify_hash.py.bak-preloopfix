@@ -3,21 +3,9 @@
 # Star Alliance — VERIFY HASH  (shared helper for the independent-verification gate)
 #
 # Prints a stable 16-char fingerprint of the SOURCE changes currently in the
-# working tree (tracked-modified + untracked source files, content-hashed). Both
-# verify-gate.py (the Stop gate) and the "mark verified" command use THIS one
-# definition so they always agree.
-#
-# STABILITY CONTRACT (why HEAD is deliberately NOT hashed): the fingerprint
-# identifies "the source content about to be committed", NOT "the diff against a
-# specific base commit". This hash used to mix in `git rev-parse HEAD`, which
-# coupled it to commit identity -- so the instant turn-finalize (or a background
-# committer such as the vault-log daemon) landed a commit, HEAD advanced and
-# every still-uncommitted source file re-fingerprinted, silently invalidating the
-# verify-pass that had JUST been recorded. With a concurrent committer in the
-# loop the pass was always stale by the next Stop re-check, so the gate re-fired
-# forever (an oscillating fingerprint is the tell). Hashing source CONTENT only
-# makes a pass survive commits of unrelated files: identical working source ==
-# identical fingerprint, regardless of HEAD.
+# working tree vs HEAD (tracked-modified + untracked source files, content-hashed
+# and pinned to the current HEAD commit). Both verify-gate.py (the Stop gate) and
+# the "mark verified" command use THIS one definition so they always agree.
 #
 # Output:
 #   CLEAN   — no source files changed (gate stands aside)
@@ -78,10 +66,8 @@ def main():
         print("CLEAN")
         return
 
-    # NOTE: HEAD is intentionally excluded from the digest -- see the STABILITY
-    # CONTRACT in the header. Hash the changed-source paths + content only, so a
-    # recorded verify-pass is not invalidated by an unrelated background commit.
     h = hashlib.sha256()
+    h.update(run(["git", "rev-parse", "HEAD"]).strip().encode())
     for f in files:
         h.update(b"\0" + f.encode())
         try:
