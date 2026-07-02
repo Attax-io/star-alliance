@@ -592,7 +592,7 @@ function schedulerTile(job) {
   tile.setAttribute('aria-label', (job.name || job.id || 'Schedule') + ' — open details')
 
   const img = document.createElement('img')
-  img.src = `art/scheduler-art-thumb/${job.id}.png`
+  img.src = `art/scheduler-art-thumb/${job.name}.png`
   img.alt = job.name || job.id || ''
   img.loading = 'lazy'
   img.decoding = 'async'
@@ -687,7 +687,7 @@ function schedulerOpenModal(job, tile) {
   artWrap.className = 'sa-modal__art-wrap'
   const art = document.createElement('img')
   art.className = 'sa-modal__art'
-  art.src = `art/scheduler-art-thumb/${job.id}.png`
+  art.src = `art/scheduler-art-thumb/${job.name}.png`
   art.alt = job.name || job.id || ''
   art.onerror = function () {
     this.style.display = 'none'

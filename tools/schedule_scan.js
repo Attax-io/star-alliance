@@ -126,6 +126,7 @@ async function scanLaunchd() {
 
       const label = parsed.Label || path.basename(file, '.plist');
       const isAttax = label.startsWith('com.attax.');
+      if (!isAttax) continue; // skip system jobs — Mission Control shows guild jobs only
       const enabled = loadedLabels.has(label);
 
       const scheduleDisplay = calendarIntervalToDisplay(parsed.StartCalendarInterval);

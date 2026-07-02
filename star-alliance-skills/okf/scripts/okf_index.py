@@ -34,6 +34,7 @@ import os
 import re
 import json
 import argparse
+from typing import Optional
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from okf_audit import (  # noqa: E402
@@ -239,7 +240,7 @@ def is_contents_conformant(text: str) -> bool:
     return True
 
 
-def _ensure_index_frontmatter(fm: str | None, folder: str) -> str:
+def _ensure_index_frontmatter(fm: Optional[str], folder: str) -> str:
     """Return a frontmatter string with `type: Index`. If fm is None, synthesize
     a fresh block (type + title + description + timestamp). If fm is present,
     rewrite JUST the type line — leave every other key (title, description,

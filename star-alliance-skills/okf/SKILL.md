@@ -3,7 +3,7 @@ name: okf
 type: Skill
 description: Keep the whole Star Alliance repo tidy and conformant to the Open Knowledge Format (OKF v0.1) — one concept per markdown file, each carrying a `type:` frontmatter, cross-linked, with non-knowledge files swept and placed by concept-path. The Quartermaster's repo-hygiene standard. Use when the user says 'tidy the repo', 'OKF', 'keep it clean', 'make it OKF-conformant', 'run the OKF audit', 'fix frontmatter', or after any campaign that left new files behind. Pairs with star-alliance-language (the reader half).
 metadata:
-  version: 1.4.0
+  version: 1.5.0
 ---
 
 # OKF — Open Knowledge Format hygiene
@@ -44,8 +44,10 @@ directory of markdown files. Its companion is **star-alliance-language**, the
 4. **Cross-link with normal markdown links.** `[the customers table](/tables/customers.md)`
    turns the directory into a graph richer than the parent/child tree. Wikilinks
    (`[[name]]`) are honoured too (the guild already uses them in memory).
-5. **Optional `index.md` and `log.md`.** `index.md` gives progressive disclosure
-   as an agent walks a hierarchy; `log.md` carries chronological history.
+5. **Every folder carries an `index.md`.** Not optional anymore — every governed
+   folder must have an `index.md` that (a) describes the folder in prose and (b)
+   lists its direct contents in a machine-regenerable `## Contents` block.
+   `log.md` (chronological history) remains optional where relevant.
 
 > OKF is **minimally opinionated**: it defines the *interoperability surface*
 > (the `type:` contract), not the content model. The guild decides what types
@@ -67,6 +69,49 @@ directory of markdown files. Its companion is **star-alliance-language**, the
   guild log. The markdown is the knowledge surface; the rest of the repo is kept
   orderly around it. **This is no longer prose-only — `okf_audit.py --layout`
   enforces it** (see the layout taxonomy below).
+
+## Folder-index requirement — every folder documents itself
+
+The third OKF audit dimension. Where the frontmatter audit governs **markdown
+content** and `--layout` governs **file placement**, the folder-index audit
+governs **folder discoverability**: every governed folder must document itself
+in an `index.md` so an agent walking the hierarchy gets progressive disclosure
+at every step.
+
+- **Scope.** Every governed folder — same exclusion rules as the frontmatter
+  audit (`EXCLUDE_DIR_PARTS` / `EXCLUDE_PATH_SUBSTR` in `okf_audit.py`), widened
+  in this pass to cover vendored / scratch / runtime dirs the per-file walk
+  never surfaced: `.hermes`, `.retired`, `.scratch`, `.scratch-thumbs-venv`,
+  `site-packages`, `dist-info`, `state`, `runs`, `target`, `gen`. Folder-walking
+  is a broader exposure than file-walking, and a vendored Python venv
+  (`.scratch-thumbs-venv`) alone nested hundreds of subfolders before the fix.
+- **Two parts.** The `index.md` carries (a) a **description** — hand-written
+  prose, or best-effort inferred from a sibling `README.md`'s first prose
+  line, or a sibling `SKILL.md`'s frontmatter `description`, or a generic
+  templated fallback flagged `_Needs human review_`; and (b) a
+  **machine-regenerable `## Contents` block**, delimited by HTML comment
+  markers (`<!-- okf:generated-contents:start -->` /
+  `<!-- okf:generated-contents:end -->`), listing direct children (subdirs
+  then files, alphabetical, non-recursive).
+- **MERGE, never blind-overwrite.** A folder that already has an `index.md` is
+  never clobbered — the script preserves 100% of hand-written prose and only
+  injects / refreshes the `type: Index` frontmatter key and the delimited
+  Contents block. **Idempotent** — re-running never duplicates the Contents
+  section and never touches prose above it.
+- **The script** — `star-alliance-skills/okf/scripts/okf_index.py`:
+  - `python3 star-alliance-skills/okf/scripts/okf_index.py` — report mode, exit
+    `1` if any folder is missing an `index.md` or carrying a stale one.
+  - `--fix` — generate missing `index.md`s and merge stale ones; idempotent,
+    safe to re-run after any folder reorganisation.
+  - `--json` — machine report: `scanned` / `conformant` / `missing` / `stale` /
+    `created` / `merged`.
+  - `--path P` — scope to one subtree.
+
+  Mirrors `okf_audit.py`'s conventions and reuses its shared scope constants
+  (`EXCLUDE_DIR_PARTS`, `EXCLUDE_PATH_SUBSTR`) so governance scope never drifts
+  between the two audits.
+- **Repo-wide baseline (this pass).** 261 governed folders, all now conformant.
+  Verified idempotent — a second `--fix` run produces zero file changes.
 
 ## Layout taxonomy — where each kind of file belongs
 
@@ -232,9 +277,15 @@ pattern this file mirrors, not systems to migrate onto it:
    `git mv`); the **review** class is reported for a path-rewrite sweep (Architecture
    Build), never moved blind. Then prune orphaned/dead files (confirm first) and
    `guild-log` the moves.
-5. **Verify the gate.** The `okf-gate` hook blocks any future non-conformant write.
+5. **Index every folder.** Run `python3 star-alliance-skills/okf/scripts/okf_index.py`
+   to find folders missing an `index.md` or carrying a stale one (no `type: Index`,
+   or a missing/malformed Contents block). `--fix` generates the missing ones and
+   MERGES the stale ones — hand-written prose in an existing `index.md` is never
+   touched, only the frontmatter `type:` and the delimited `## Contents` block are
+   injected/refreshed. Idempotent; safe to re-run after any folder reorganisation.
+6. **Verify the gate.** The `okf-gate` hook blocks any future non-conformant write.
    Confirm it's registered in `.claude/settings.json` under `PreToolUse`.
-6. **Close out.** Run `dashboard-parity` if the change should show on the dashboard,
+7. **Close out.** Run `dashboard-parity` if the change should show on the dashboard,
    then `guild-log` the work (a `chore`/`skill-upgrade` entry).
 
 ## Conformance contract (what `type:` lets the reader assume)
@@ -251,8 +302,27 @@ guarantee real — producer and consumer share one contract, exactly as OKF inte
 - Don't put frontmatter in non-markdown files — tidy those by placement, not YAML.
 - Don't widen scope into `impeccable/` or `node_modules/` — they're vendored.
 - Don't hand-bump the project version; `guild-log` the work and `build.py` does it.
+- Don't hand-write the `## Contents` block inside the delimiter markers — it's
+  machine-regenerated by `okf_index.py` and a hand-edit there will be silently
+  overwritten on the next run. Hand-written prose ABOVE the Contents markers is
+  safe and preserved.
 
 ## Changelog
+- **1.5.0** — New third OKF audit dimension: every governed folder now requires
+  an `index.md` (description + machine-regenerable `## Contents` block delimited
+  by HTML comment markers). New `scripts/okf_index.py` (report / `--fix` /
+  `--json` / `--path P`) mirrors `okf_audit.py`'s conventions, reuses its
+  shared scope constants (`EXCLUDE_DIR_PARTS`, `EXCLUDE_PATH_SUBSTR`), and
+  MERGES rather than overwrites an existing `index.md` — hand-written prose is
+  preserved, only frontmatter `type:` and the delimited Contents section are
+  injected/refreshed, idempotently. Governance-scope gap found and closed in
+  the same pass: `EXCLUDE_*` widened to cover vendored / scratch / runtime
+  folders that per-file walks never surfaced (`.hermes`, `.retired`, `.scratch`,
+  `.scratch-thumbs-venv`, `site-packages`, `dist-info`, `state`, `runs`,
+  `target`, `gen`) — folder-walking is a broader exposure than file-walking,
+  and a vendored Python venv (`.scratch-thumbs-venv`) alone nested hundreds
+  of subfolders before the fix. Repo-wide baseline: 261 governed folders, all
+  conformant, verified idempotent. New capability, backward-compatible → MINOR.
 - **1.4.0** — New shared output-path convention extending the layout taxonomy —
   `tools/resolve_output.py`'s `resolve()` (env -> `.claude/output.json`
   config -> OKF `LAYOUT_RULES` convention -> scaffold fallback, mirroring

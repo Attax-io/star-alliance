@@ -53,6 +53,10 @@ EXCLUDE_DIR_PARTS = {
     "site-packages", "dist-info", ".dylibs",
     # Gitignored Hermes / workflow-runner runtime output dirs:
     "state", "runs",
+    # Vendored Rust / Tauri build output under desktop/src-tauri/ (gitignored;
+    # 'target' = cargo build, 'gen' = Tauri generated bindings). Matched
+    # anywhere in the tree via dirnames[:] prune.
+    "target", "gen",
 }
 # Any path containing one of these substrings is skipped wholesale.
 EXCLUDE_PATH_SUBSTR = (

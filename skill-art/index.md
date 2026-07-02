@@ -1,0 +1,145 @@
+---
+type: Index
+title: Skill Art
+description: Holds 128 files and 0 subfolders under ..
+timestamp: 2026-07-02T12:57:50Z
+---
+
+# Skill Art
+
+Holds 128 files and 0 subfolders under ..
+
+_Needs human review — could not infer a description from context._
+
+## Contents
+
+<!-- okf:generated-contents:start -->
+- `a11y-craft.png` — file
+- `add-admin-permission.png` — file
+- `add-new-trigger.png` — file
+- `add-new-view.png` — file
+- `admin-page-builder.png` — file
+- `admin-page-fixer.png` — file
+- `agent-web-reach.png` — file
+- `agentic-video-production.png` — file
+- `algorithmic-trading-chan.png` — file
+- `api-integration-design.png` — file
+- `arsenal-forge.png` — file
+- `article-creator.png` — file
+- `automated-testing.png` — file
+- `backend-auditor.png` — file
+- `bug-fix-closer.png` — file
+- `bug-fix-workflow.png` — file
+- `bundled-rls.png` — file
+- `butler-onboarding.png` — file
+- `chart-patterns.png` — file
+- `claude-code-hooks.png` — file
+- `cleanup.png` — file
+- `cn-market-strategy-pack.png` — file
+- `code-crime-scene.png` — file
+- `code-review-craft.png` — file
+- `code-unity.png` — file
+- `codebase-memory-mcp.png` — file
+- `codex-law-translate.png` — file
+- `cognitive-bias-guard.png` — file
+- `cold-doc-rotator.png` — file
+- `comms-triage.png` — file
+- `conquering-campaign.png` — file
+- `contract-review.png` — file
+- `daily-stock-analysis.png` — file
+- `data-analysis-viz.png` — file
+- `db-rename-sweep.png` — file
+- `decompose-and-swarm.png` — file
+- `design-language.png` — file
+- `design-taste-frontend.png` — file
+- `design-taste.png` — file
+- `design-tokens.png` — file
+- `design-unity.png` — file
+- `dev-ops-command-pack.png` — file
+- `dev-server.png` — file
+- `dual-model-review.png` — file
+- `file-access-model.png` — file
+- `financial-data-reach.png` — file
+- `frontend-auditor.png` — file
+- `frontend-react-engineering.png` — file
+- `full-output-enforcement.png` — file
+- `gpt-taste.png` — file
+- `graphify.png` — file
+- `guild-conformity.png` — file
+- `guild-log.png` — file
+- `guild-reflection.png` — file
+- `guild-sync.png` — file
+- `harness-efficiency.png` — file
+- `head-of-department.png` — file
+- `health-checker.png` — file
+- `heat-map-analyst.png` — file
+- `high-alert.png` — file
+- `high-end-visual-design.png` — file
+- `hotspot-radar.png` — file
+- `image-to-code.png` — file
+- `imagegen-frontend.png` — file
+- `impeccable.png` — file
+- `index.md` — file
+- `industrial-brutalist-ui.png` — file
+- `invariant-inference.png` — file
+- `japanese-candlesticks.png` — file
+- `law-harvest.png` — file
+- `leaders-command.png` — file
+- `legal-drafting.png` — file
+- `legal-rule-modeling.png` — file
+- `letting-go.png` — file
+- `lex-system-audit.png` — file
+- `market-recon.png` — file
+- `members-formation.png` — file
+- `metamorphosis-check.png` — file
+- `minimalist-ui.png` — file
+- `motion-design.png` — file
+- `multimodal-model-wrappers.png` — file
+- `negotiation-deal-strategy.png` — file
+- `new-member-onboarding.png` — file
+- `obedience.png` — file
+- `observability-incident-response.png` — file
+- `obsidian-markdown.png` — file
+- `okf.png` — file
+- `pattern-detector.png` — file
+- `pattern-library-discovery.png` — file
+- `penpot-design-platform.png` — file
+- `performance.png` — file
+- `phased-db-refactor.png` — file
+- `portability-audit.png` — file
+- `price-action.png` — file
+- `probability-statistics.png` — file
+- `project-start.png` — file
+- `prove-it.png` — file
+- `python-master.png` — file
+- `redesign-existing-projects.png` — file
+- `relationship-intel.png` — file
+- `release-train.png` — file
+- `safe-agentic-orchestration.png` — file
+- `scheduled-watch.png` — file
+- `schema-evolution.png` — file
+- `session-mining.png` — file
+- `skillsmith.png` — file
+- `spec-driven-development.png` — file
+- `star-alliance-language.png` — file
+- `stitch-design-taste.png` — file
+- `storm-investigation.png` — file
+- `strategies-review.png` — file
+- `supabase-postgres-best-practices.png` — file
+- `supabase.png` — file
+- `system-prompt-design-patterns.png` — file
+- `temporal-coupling-audit.png` — file
+- `timeseries-forecasting.png` — file
+- `transactions-domain-model.png` — file
+- `ultra-brainstorming.png` — file
+- `ux-copywriting.png` — file
+- `ux-research.png` — file
+- `vault-log-compliance.png` — file
+- `vault-log-writer.png` — file
+- `view-registry.png` — file
+- `voices-check.png` — file
+- `volume-price-analysis.png` — file
+- `weapon-utility.png` — file
+- `workflow-forge.png` — file
+- `workflow-runner.png` — file
+<!-- okf:generated-contents:end -->

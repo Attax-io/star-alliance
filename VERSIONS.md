@@ -113,7 +113,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`obedience`](star-alliance-skills/obedience/SKILL.md) | 1.0.1 | own | 163 / 1002 | 1886 / 218 | ✓ lean | A turn-level discipline skill that constrains an agent to the literal scope of the user's … |
 | [`observability-incident-response`](star-alliance-skills/observability-incident-response/SKILL.md) | 1.1.0 | own | 118 / 856 | 1416 / 165 | ✓ lean | Keep a live service observable and respond when it breaks |
 | [`obsidian-markdown`](star-alliance-skills/obsidian-markdown/SKILL.md) | 1.1.0 | own | 61 / 448 | 915 / 228 | ✓ lean | Create and edit Obsidian Flavored Markdown with wikilinks, embeds, callouts, properties, a… |
-| [`okf`](star-alliance-skills/okf/SKILL.md) | 1.4.0 | own | 76 / 512 | 2193 / 290 | ✓ lean | Keep the whole Star Alliance repo tidy and conformant to the Open Knowledge Format (OKF v0… |
+| [`okf`](star-alliance-skills/okf/SKILL.md) | 1.5.0 | own | 76 / 512 | 2803 / 360 | ✓ lean | Keep the whole Star Alliance repo tidy and conformant to the Open Knowledge Format (OKF v0… |
 | [`pattern-detector`](star-alliance-skills/pattern-detector/SKILL.md) | 1.0.0 | own | 57 / 442 | 177 / 25 | ✓ lean | Reads the seven most recent Lex Council housekeeping run logs plus the current OPEN-ITEMS.… |
 | [`pattern-library-discovery`](star-alliance-skills/pattern-library-discovery/SKILL.md) | 1.0.0 | own | 114 / 896 | 944 / 111 | ✓ lean | Build and query a reusable code-pattern library so agents reuse a proven, security-validat… |
 | [`penpot-design-platform`](star-alliance-skills/penpot-design-platform/SKILL.md) | 1.0.0 | own | 112 / 885 | 711 / 95 | ✓ lean | Drive Penpot, the open-source design and prototyping platform (a self-hostable Figma alter… |

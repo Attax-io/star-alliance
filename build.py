@@ -301,7 +301,7 @@ def iter_agents(repo: Path):
     if not d.is_dir():
         return
     for md in sorted(d.glob("*.md")):
-        if md.stem.lower() == "readme":
+        if md.stem.lower() in ("readme", "index", "log"):
             continue
         yield md
 
