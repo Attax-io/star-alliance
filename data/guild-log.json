@@ -3506,6 +3506,20 @@
       "title": "Quick Fix: dashboard.html",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Quick Fix: data/routine-heartbeat.json, evolution/schedule.json, audit-campaigns/2026-07-02_skills-frontmatter/_raw.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Strategic Audit: data/routine-heartbeat.json, evolution/schedule.json, audit-campaigns/2026-07-02_skills-frontmatter/00-campaign-plan.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130

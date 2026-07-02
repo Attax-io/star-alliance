@@ -1,0 +1,2238 @@
+{
+  "root": "/Users/attaselim/Documents/Claude/Projects/star-alliance",
+  "counts": {
+    "skill_dirs_total": 126,
+    "skills_indexed": 126,
+    "drift_total": 120,
+    "drift_by_category": {
+      "DESC>500": 107,
+      "MISSING_VERSION": 8,
+      "YAML_PARSE_BREAK": 4,
+      "MISSING_TYPE": 1
+    },
+    "drift_high": 4,
+    "drift_med": 115,
+    "drift_low": 1,
+    "skills_clean": 19,
+    "skills_with_drift": 107,
+    "ghosts": 23,
+    "wikilink_rot": 60,
+    "anchor_rot": 0,
+    "declared_triggers": 62,
+    "dead_triggers": 55,
+    "active_triggers": 7,
+    "hook_files": 45,
+    "hook_skill_consult": 18,
+    "hook_explicit_skill_refs": 13,
+    "ledger_size": 1028,
+    "skills_ever_observed_in_ledger": 4
+  },
+  "drift": [
+    {
+      "severity": "med",
+      "skill_dir": "a11y-craft",
+      "issue": "description length 981 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "add-admin-permission",
+      "issue": "description length 732 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "add-admin-permission",
+      "issue": "missing metadata.version",
+      "fix": "add metadata.version semver"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "add-new-trigger",
+      "issue": "description length 844 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "add-new-trigger",
+      "issue": "missing metadata.version",
+      "fix": "add metadata.version semver"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "add-new-view",
+      "issue": "description length 842 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "add-new-view",
+      "issue": "missing metadata.version",
+      "fix": "add metadata.version semver"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "admin-page-builder",
+      "issue": "description length 724 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "admin-page-fixer",
+      "issue": "description length 707 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "admin-page-fixer",
+      "issue": "missing metadata.version",
+      "fix": "add metadata.version semver"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "agent-web-reach",
+      "issue": "description length 813 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "agentic-video-production",
+      "issue": "description length 895 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "algorithmic-trading-chan",
+      "issue": "description length 960 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "api-integration-design",
+      "issue": "description length 895 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "arsenal-forge",
+      "issue": "description length 949 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "article-creator",
+      "issue": "description length 924 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "automated-testing",
+      "issue": "description length 810 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "high",
+      "skill_dir": "bug-fix-workflow",
+      "issue": "YAML frontmatter fails to parse (mapping values are not allowed here)",
+      "fix": "quote description field with double-quotes (it contains unescaped ':' or '\\n')"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "bug-fix-workflow",
+      "issue": "description length 934 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "bundled-rls",
+      "issue": "description length 696 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "butler-onboarding",
+      "issue": "description length 892 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "butler-voice",
+      "issue": "description length 786 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "chart-patterns",
+      "issue": "description length 1012 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "claude-code-hooks",
+      "issue": "description length 962 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "cleanup",
+      "issue": "description length 991 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "cn-market-strategy-pack",
+      "issue": "description length 898 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "code-crime-scene",
+      "issue": "description length 676 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "high",
+      "skill_dir": "code-review-craft",
+      "issue": "YAML frontmatter fails to parse (mapping values are not allowed here)",
+      "fix": "quote description field with double-quotes (it contains unescaped ':' or '\\n')"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "code-review-craft",
+      "issue": "description length 769 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "code-unity",
+      "issue": "description length 792 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "codebase-memory-mcp",
+      "issue": "description length 1014 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "codex-law-translate",
+      "issue": "description length 909 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "cognitive-bias-guard",
+      "issue": "description length 706 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "comms-triage",
+      "issue": "description length 945 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "conquering-campaign",
+      "issue": "description length 1015 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "contract-review",
+      "issue": "description length 896 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "daily-stock-analysis",
+      "issue": "description length 979 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "dashboard-parity",
+      "issue": "description length 1008 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "data-analysis-viz",
+      "issue": "description length 886 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "db-rename-sweep",
+      "issue": "description length 911 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "decompose-and-swarm",
+      "issue": "description length 630 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "design-language",
+      "issue": "description length 1011 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "design-taste",
+      "issue": "description length 1012 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "design-tokens",
+      "issue": "description length 1003 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "design-unity",
+      "issue": "description length 1016 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "dev-ops-command-pack",
+      "issue": "description length 768 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "dual-model-review",
+      "issue": "description length 826 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "file-access-model",
+      "issue": "description length 787 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "file-access-model",
+      "issue": "missing metadata.version",
+      "fix": "add metadata.version semver"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "financial-data-reach",
+      "issue": "description length 844 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "frontend-react-engineering",
+      "issue": "description length 842 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "growth-marketing",
+      "issue": "description length 851 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "guild-conformity",
+      "issue": "description length 916 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "guild-log",
+      "issue": "description length 801 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "guild-reflection",
+      "issue": "description length 1020 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "harness-efficiency",
+      "issue": "description length 1010 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "head-of-department",
+      "issue": "description length 523 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "high-alert",
+      "issue": "description length 859 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "hotspot-radar",
+      "issue": "description length 554 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "image-to-code",
+      "issue": "description length 555 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "imagegen-frontend",
+      "issue": "description length 985 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "impeccable",
+      "issue": "description length 895 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "impeccable",
+      "issue": "missing metadata.version",
+      "fix": "add metadata.version semver"
+    },
+    {
+      "severity": "low",
+      "skill_dir": "impeccable",
+      "issue": "missing type:",
+      "fix": "add type: Skill"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "invariant-inference",
+      "issue": "description length 1023 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "japanese-candlesticks",
+      "issue": "description length 1012 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "law-harvest",
+      "issue": "description length 979 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "leaders-command",
+      "issue": "description length 967 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "legal-drafting",
+      "issue": "description length 935 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "legal-rule-modeling",
+      "issue": "description length 931 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "letting-go",
+      "issue": "description length 1005 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "lex-system-audit",
+      "issue": "description length 1019 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "lex-system-audit",
+      "issue": "missing metadata.version",
+      "fix": "add metadata.version semver"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "market-recon",
+      "issue": "description length 914 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "members-formation",
+      "issue": "description length 883 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "metamorphosis-check",
+      "issue": "description length 1007 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "motion-design",
+      "issue": "description length 1018 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "multimodal-model-wrappers",
+      "issue": "description length 891 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "negotiation-deal-strategy",
+      "issue": "description length 861 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "high",
+      "skill_dir": "obedience",
+      "issue": "YAML frontmatter fails to parse (mapping values are not allowed here)",
+      "fix": "quote description field with double-quotes (it contains unescaped ':' or '\\n')"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "obedience",
+      "issue": "description length 1003 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "observability-incident-response",
+      "issue": "description length 856 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "okf",
+      "issue": "description length 512 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "pattern-library-discovery",
+      "issue": "description length 896 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "penpot-design-platform",
+      "issue": "description length 885 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "phased-db-refactor",
+      "issue": "description length 825 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "phased-db-refactor",
+      "issue": "missing metadata.version",
+      "fix": "add metadata.version semver"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "portfolio-risk",
+      "issue": "description length 1005 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "price-action",
+      "issue": "description length 1001 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "probability-statistics",
+      "issue": "description length 1000 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "high",
+      "skill_dir": "prove-it",
+      "issue": "YAML frontmatter fails to parse (mapping values are not allowed here)",
+      "fix": "quote description field with double-quotes (it contains unescaped ':' or '\\n')"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "prove-it",
+      "issue": "description length 884 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "python-master",
+      "issue": "description length 1020 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "relationship-intel",
+      "issue": "description length 961 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "release-train",
+      "issue": "description length 894 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "safe-agentic-orchestration",
+      "issue": "description length 1017 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "scheduled-watch",
+      "issue": "description length 909 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "schema-evolution",
+      "issue": "description length 1013 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "session-mining",
+      "issue": "description length 1012 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "skillsmith",
+      "issue": "description length 987 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "spec-driven-development",
+      "issue": "description length 1017 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "star-alliance-language",
+      "issue": "description length 522 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "storm-investigation",
+      "issue": "description length 866 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "strategies-review",
+      "issue": "description length 510 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "system-prompt-design-patterns",
+      "issue": "description length 1018 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "temporal-coupling-audit",
+      "issue": "description length 622 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "timeseries-forecasting",
+      "issue": "description length 1019 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "trading-strategy",
+      "issue": "description length 1009 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "transactions-domain-model",
+      "issue": "description length 952 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "ultra-brainstorming",
+      "issue": "description length 873 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "ux-copywriting",
+      "issue": "description length 852 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "ux-research",
+      "issue": "description length 857 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "vault-log-compliance",
+      "issue": "description length 893 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "vault-log-writer",
+      "issue": "description length 838 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "view-registry",
+      "issue": "description length 683 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "voices-check",
+      "issue": "description length 1013 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "volume-price-analysis",
+      "issue": "description length 1020 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "weapon-utility",
+      "issue": "description length 868 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "workflow-forge",
+      "issue": "description length 997 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    },
+    {
+      "severity": "med",
+      "skill_dir": "workflow-runner",
+      "issue": "description length 875 > 500 chars (loader truncation)",
+      "fix": "trim description under 500"
+    }
+  ],
+  "ghosts": [
+    {
+      "skill": "daily-stock-analysis",
+      "dir": "daily-stock-analysis",
+      "label": "ZhuLinsen/daily_stock_analysis",
+      "target": "https://github.com/ZhuLinsen/daily_stock_analysis"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "label": "PROPERTIES.md",
+      "target": "skills/obsidian-markdown/references/PROPERTIES.md"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "label": "EMBEDS.md",
+      "target": "skills/obsidian-markdown/references/EMBEDS.md"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "label": "CALLOUTS.md",
+      "target": "skills/obsidian-markdown/references/CALLOUTS.md"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "label": "text",
+      "target": "url"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "label": "EMBEDS.md",
+      "target": "skills/obsidian-markdown/references/EMBEDS.md"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "label": "CALLOUTS.md",
+      "target": "skills/obsidian-markdown/references/CALLOUTS.md"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "label": "PROPERTIES.md",
+      "target": "skills/obsidian-markdown/references/PROPERTIES.md"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "label": "adr-template.md",
+      "target": "skills/obsidian-markdown/references/adr-template.md"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "label": "Obsidian Flavored Markdown",
+      "target": "https://help.obsidian.md/obsidian-flavored-markdown"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "label": "Internal links",
+      "target": "https://help.obsidian.md/links"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "label": "Embed files",
+      "target": "https://help.obsidian.md/embeds"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "label": "Callouts",
+      "target": "https://help.obsidian.md/callouts"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "label": "Properties",
+      "target": "https://help.obsidian.md/properties"
+    },
+    {
+      "skill": "okf",
+      "dir": "okf",
+      "label": "the customers table",
+      "target": "/tables/customers.md"
+    },
+    {
+      "skill": "performance",
+      "dir": "performance",
+      "label": "web.dev \u2014 Core Web Vitals",
+      "target": "https://web.dev/articles/vitals"
+    },
+    {
+      "skill": "python-master",
+      "dir": "python-master",
+      "label": "`wdm0006/python-skills`",
+      "target": "https://github.com/wdm0006/python-skills"
+    },
+    {
+      "skill": "supabase",
+      "dir": "supabase",
+      "label": "Data API settings",
+      "target": "https://supabase.com/dashboard/project/<ref>/integrations/data_api/settings"
+    },
+    {
+      "skill": "supabase",
+      "dir": "supabase",
+      "label": "Exposing a Table to the Data API",
+      "target": "https://supabase.com/docs/guides/api/securing-your-api.md"
+    },
+    {
+      "skill": "supabase",
+      "dir": "supabase",
+      "label": "Exposing a Table to the Data API",
+      "target": "https://supabase.com/docs/guides/api/securing-your-api.md"
+    },
+    {
+      "skill": "supabase",
+      "dir": "supabase",
+      "label": "CLI documentation",
+      "target": "https://supabase.com/docs/reference/cli/introduction"
+    },
+    {
+      "skill": "supabase",
+      "dir": "supabase",
+      "label": "GitHub releases",
+      "target": "https://github.com/supabase/cli/releases"
+    },
+    {
+      "skill": "supabase",
+      "dir": "supabase",
+      "label": "MCP setup guide",
+      "target": "https://supabase.com/docs/guides/getting-started/mcp"
+    }
+  ],
+  "wikilink_rot": [
+    {
+      "skill": "cleanup",
+      "dir": "cleanup",
+      "wikilink": "2026-06-02_cleanup-skill-lessons-l25-l31",
+      "target": "2026-06-02_cleanup-skill-lessons-l25-l31"
+    },
+    {
+      "skill": "cleanup",
+      "dir": "cleanup",
+      "wikilink": "2026-05-22_db-wide-consolidation-audit",
+      "target": "2026-05-22_db-wide-consolidation-audit"
+    },
+    {
+      "skill": "cleanup",
+      "dir": "cleanup",
+      "wikilink": "2026-05-29_cleanup-skill-upgrade",
+      "target": "2026-05-29_cleanup-skill-upgrade"
+    },
+    {
+      "skill": "cleanup",
+      "dir": "cleanup",
+      "wikilink": "2026-05-28_translation-pass-non-en-locales",
+      "target": "2026-05-28_translation-pass-non-en-locales"
+    },
+    {
+      "skill": "codex-law-translate",
+      "dir": "codex-law-translate",
+      "wikilink": "wikilinks",
+      "target": "wikilinks"
+    },
+    {
+      "skill": "conquering-campaign",
+      "dir": "conquering-campaign",
+      "wikilink": "\u2026",
+      "target": "\u2026"
+    },
+    {
+      "skill": "conquering-campaign",
+      "dir": "conquering-campaign",
+      "wikilink": "core-swarm",
+      "target": "core-swarm"
+    },
+    {
+      "skill": "conquering-campaign",
+      "dir": "conquering-campaign",
+      "wikilink": "link",
+      "target": "link"
+    },
+    {
+      "skill": "conquering-campaign",
+      "dir": "conquering-campaign",
+      "wikilink": "core-swarm",
+      "target": "core-swarm"
+    },
+    {
+      "skill": "conquering-campaign",
+      "dir": "conquering-campaign",
+      "wikilink": "link",
+      "target": "link"
+    },
+    {
+      "skill": "conquering-campaign",
+      "dir": "conquering-campaign",
+      "wikilink": "core-swarm",
+      "target": "core-swarm"
+    },
+    {
+      "skill": "decompose-and-swarm",
+      "dir": "decompose-and-swarm",
+      "wikilink": "core-swarm",
+      "target": "core-swarm"
+    },
+    {
+      "skill": "financial-data-reach",
+      "dir": "financial-data-reach",
+      "wikilink": "source-landscape",
+      "target": "source-landscape"
+    },
+    {
+      "skill": "financial-data-reach",
+      "dir": "financial-data-reach",
+      "wikilink": "point-in-time-correctness",
+      "target": "point-in-time-correctness"
+    },
+    {
+      "skill": "financial-data-reach",
+      "dir": "financial-data-reach",
+      "wikilink": "normalization-and-caching",
+      "target": "normalization-and-caching"
+    },
+    {
+      "skill": "financial-data-reach",
+      "dir": "financial-data-reach",
+      "wikilink": "normalization-and-caching",
+      "target": "normalization-and-caching"
+    },
+    {
+      "skill": "financial-data-reach",
+      "dir": "financial-data-reach",
+      "wikilink": "source-landscape",
+      "target": "source-landscape"
+    },
+    {
+      "skill": "financial-data-reach",
+      "dir": "financial-data-reach",
+      "wikilink": "source-landscape",
+      "target": "source-landscape"
+    },
+    {
+      "skill": "financial-data-reach",
+      "dir": "financial-data-reach",
+      "wikilink": "point-in-time-correctness",
+      "target": "point-in-time-correctness"
+    },
+    {
+      "skill": "financial-data-reach",
+      "dir": "financial-data-reach",
+      "wikilink": "normalization-and-caching",
+      "target": "normalization-and-caching"
+    },
+    {
+      "skill": "head-of-department",
+      "dir": "head-of-department",
+      "wikilink": "core-swarm",
+      "target": "core-swarm"
+    },
+    {
+      "skill": "head-of-department",
+      "dir": "head-of-department",
+      "wikilink": "core-swarm",
+      "target": "core-swarm"
+    },
+    {
+      "skill": "helpless",
+      "dir": "helpless",
+      "wikilink": "butler-lockout",
+      "target": "butler-lockout"
+    },
+    {
+      "skill": "lex-system-audit",
+      "dir": "lex-system-audit",
+      "wikilink": "Vault Core",
+      "target": "Vault Core"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "wikilink": "Note",
+      "target": "Note"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "wikilink": "embed",
+      "target": "embed"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "wikilink": "wikilinks",
+      "target": "wikilinks"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "wikilink": "Note Name",
+      "target": "Note Name"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "wikilink": "Note Name|Display Text",
+      "target": "Note Name|Display Text"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "wikilink": "Note Name#Heading",
+      "target": "Note Name#Heading"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "wikilink": "Note Name#^block-id",
+      "target": "Note Name#^block-id"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "wikilink": "#Heading in same note",
+      "target": "#Heading in same note"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "wikilink": "Note Name",
+      "target": "Note Name"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "wikilink": "Note Name#Heading",
+      "target": "Note Name#Heading"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "wikilink": "image.png",
+      "target": "image.png"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "wikilink": "image.png|300",
+      "target": "image.png|300"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "wikilink": "document.pdf#page=3",
+      "target": "document.pdf#page=3"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "wikilink": "improve workflow",
+      "target": "improve workflow"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "wikilink": "Algorithm Notes#Sorting",
+      "target": "Algorithm Notes#Sorting"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "wikilink": "Architecture Diagram.png|600",
+      "target": "Architecture Diagram.png|600"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "wikilink": "Meeting Notes 2024-01-10#Decisions",
+      "target": "Meeting Notes 2024-01-10#Decisions"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "wikilink": "wikilinks",
+      "target": "wikilinks"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "wikilink": "ADR-YYY Related Decision",
+      "target": "ADR-YYY Related Decision"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "wikilink": "ADR-014",
+      "target": "ADR-014"
+    },
+    {
+      "skill": "obsidian-markdown",
+      "dir": "obsidian-markdown",
+      "wikilink": "ADR-YYY Title",
+      "target": "ADR-YYY Title"
+    },
+    {
+      "skill": "okf",
+      "dir": "okf",
+      "wikilink": "name",
+      "target": "name"
+    },
+    {
+      "skill": "portability-audit",
+      "dir": "portability-audit",
+      "wikilink": " \"$local_ver\" != \"$repo_ver\" ",
+      "target": " \"$local_ver\" != \"$repo_ver\" "
+    },
+    {
+      "skill": "schema-evolution",
+      "dir": "schema-evolution",
+      "wikilink": "verify-multiagent-audit",
+      "target": "verify-multiagent-audit"
+    },
+    {
+      "skill": "strategies-review",
+      "dir": "strategies-review",
+      "wikilink": "wikilinks",
+      "target": "wikilinks"
+    },
+    {
+      "skill": "vault-log-compliance",
+      "dir": "vault-log-compliance",
+      "wikilink": "wikilink",
+      "target": "wikilink"
+    },
+    {
+      "skill": "vault-log-writer",
+      "dir": "vault-log-writer",
+      "wikilink": "table_name",
+      "target": "table_name"
+    },
+    {
+      "skill": "vault-log-writer",
+      "dir": "vault-log-writer",
+      "wikilink": "view_name",
+      "target": "view_name"
+    },
+    {
+      "skill": "vault-log-writer",
+      "dir": "vault-log-writer",
+      "wikilink": "VIEWS-CATALOG",
+      "target": "VIEWS-CATALOG"
+    },
+    {
+      "skill": "vault-log-writer",
+      "dir": "vault-log-writer",
+      "wikilink": "new_view_js",
+      "target": "new_view_js"
+    },
+    {
+      "skill": "vault-log-writer",
+      "dir": "vault-log-writer",
+      "wikilink": "double-bracket",
+      "target": "double-bracket"
+    },
+    {
+      "skill": "vault-log-writer",
+      "dir": "vault-log-writer",
+      "wikilink": "BACKEND",
+      "target": "BACKEND"
+    },
+    {
+      "skill": "vault-log-writer",
+      "dir": "vault-log-writer",
+      "wikilink": "primary_instructions",
+      "target": "primary_instructions"
+    },
+    {
+      "skill": "vault-log-writer",
+      "dir": "vault-log-writer",
+      "wikilink": "affected_view",
+      "target": "affected_view"
+    },
+    {
+      "skill": "vault-log-writer",
+      "dir": "vault-log-writer",
+      "wikilink": "affected_table",
+      "target": "affected_table"
+    },
+    {
+      "skill": "vault-log-writer",
+      "dir": "vault-log-writer",
+      "wikilink": "YYYY-MM-DD_slug",
+      "target": "YYYY-MM-DD_slug"
+    }
+  ],
+  "anchor_rot": [],
+  "trigger_rows": [
+    {
+      "skill_dir": "a11y-craft",
+      "phrase": "is this accessible",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "agentic-video-production",
+      "phrase": "make a video about X",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "api-integration-design",
+      "phrase": "design the API for X",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "arsenal-forge",
+      "phrase": "add a weapon",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "backend-auditor",
+      "phrase": "audit the backend",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "butler-onboarding",
+      "phrase": "what can you do",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "claude-code-hooks",
+      "phrase": "write a hook",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "cleanup",
+      "phrase": "run cleanup",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "code-unity",
+      "phrase": "one source of truth",
+      "hook_files": [
+        ".claude/hooks/unity-gate.py"
+      ],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "active"
+    },
+    {
+      "skill_dir": "cold-doc-rotator",
+      "phrase": "rotate cold docs",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "comms-triage",
+      "phrase": "triage my inbox",
+      "hook_files": [],
+      "workflows": [
+        "Comms Triage"
+      ],
+      "ledger_fires": 0,
+      "verdict": "active"
+    },
+    {
+      "skill_dir": "contract-review",
+      "phrase": "review this contract",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "dashboard-parity",
+      "phrase": "is it on the dashboard",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "decompose-and-swarm",
+      "phrase": "swarm this",
+      "hook_files": [],
+      "workflows": [
+        "Swarm Panel"
+      ],
+      "ledger_fires": 0,
+      "verdict": "active"
+    },
+    {
+      "skill_dir": "design-language",
+      "phrase": "use the X voice",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "design-taste",
+      "phrase": "design the UI",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "design-tokens",
+      "phrase": "design tokens",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "design-unity",
+      "phrase": "make the UI consistent",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "dev-ops-command-pack",
+      "phrase": "start work on this",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "dual-model-review",
+      "phrase": "dual review",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "financial-data-reach",
+      "phrase": "pull the fundamentals for X",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "frontend-auditor",
+      "phrase": "audit the frontend",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "frontend-react-engineering",
+      "phrase": "build this React component",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "growth-marketing",
+      "phrase": "plan our marketing",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "guild-conformity",
+      "phrase": "run the conformity check",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "guild-reflection",
+      "phrase": "reflect on this",
+      "hook_files": [],
+      "workflows": [
+        "Reflective Cycle"
+      ],
+      "ledger_fires": 0,
+      "verdict": "active"
+    },
+    {
+      "skill_dir": "harness-efficiency",
+      "phrase": "efficiency report",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "health-checker",
+      "phrase": "db health check",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "heat-map-analyst",
+      "phrase": "heat map",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "imagegen-frontend",
+      "phrase": "generate website design references",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "invariant-inference",
+      "phrase": "infer the invariant",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "law-harvest",
+      "phrase": "harvest the laws",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "leaders-command",
+      "phrase": "command the team",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "legal-drafting",
+      "phrase": "draft a client email",
+      "hook_files": [],
+      "workflows": [
+        "Legal Drafting"
+      ],
+      "ledger_fires": 0,
+      "verdict": "active"
+    },
+    {
+      "skill_dir": "legal-rule-modeling",
+      "phrase": "model the law for this calculator",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "market-recon",
+      "phrase": "analyze this investment",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "members-formation",
+      "phrase": "route this",
+      "hook_files": [],
+      "workflows": [
+        "Routing"
+      ],
+      "ledger_fires": 0,
+      "verdict": "active"
+    },
+    {
+      "skill_dir": "metamorphosis-check",
+      "phrase": "something changed",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "motion-design",
+      "phrase": "animate this",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "negotiation-deal-strategy",
+      "phrase": "prep this negotiation",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "obedience",
+      "phrase": "don't over-do it",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "observability-incident-response",
+      "phrase": "the app is down",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "pattern-detector",
+      "phrase": "detect patterns",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "pattern-library-discovery",
+      "phrase": "find a pattern for X",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "portability-audit",
+      "phrase": "audit portability",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "portfolio-risk",
+      "phrase": "review my portfolio",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "project-start",
+      "phrase": "start session",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "python-master",
+      "phrase": "set up a python library",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "relationship-intel",
+      "phrase": "sweep my email for relationship intel",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "release-train",
+      "phrase": "cut a release",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "safe-agentic-orchestration",
+      "phrase": "orchestrate this team",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "scheduled-watch",
+      "phrase": "schedule this",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "schema-evolution",
+      "phrase": "add a field to",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "skillsmith",
+      "phrase": "sync my skills",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "spec-driven-development",
+      "phrase": "spec this out",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "trading-strategy",
+      "phrase": "build a trading strategy",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "ultra-brainstorming",
+      "phrase": "ultra-brainstorm this",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "ux-copywriting",
+      "phrase": "write the error message",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "voices-check",
+      "phrase": "name the voices",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "weapon-utility",
+      "phrase": "what",
+      "hook_files": [
+        ".claude/hooks/devserver-gate.py",
+        ".claude/hooks/guild-routing-gate.sh",
+        ".claude/hooks/connector-gate.py",
+        ".claude/hooks/delegation-gate.py",
+        ".claude/hooks/routing-enforce.py",
+        ".claude/hooks/safe-read-gate.py",
+        ".claude/hooks/verify-gate.py",
+        ".claude/hooks/approval-gate.py",
+        ".claude/hooks/stop-line-gate.py",
+        ".claude/hooks/weapon-gate.py",
+        ".claude/hooks/prove-it.py",
+        ".claude/hooks/turn-finalize.sh",
+        ".claude/hooks/workflow-banner-enforcer.py",
+        ".claude/hooks/executor-enforce.py",
+        ".claude/hooks/plain-english-nudge.py",
+        ".claude/hooks/destructive-gate.py",
+        ".claude/hooks/dispatch-enforce.py",
+        ".claude/hooks/conformance-gate.py"
+      ],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "active"
+    },
+    {
+      "skill_dir": "workflow-forge",
+      "phrase": "save this as a workflow",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    },
+    {
+      "skill_dir": "workflow-runner",
+      "phrase": "run the X workflow",
+      "hook_files": [],
+      "workflows": [],
+      "ledger_fires": 0,
+      "verdict": "dead-or-orphan"
+    }
+  ],
+  "hooks": [
+    {
+      "hook": "devserver-gate.py",
+      "size": 5950,
+      "mentions_skill_term": false,
+      "explicit_skill_refs": []
+    },
+    {
+      "hook": "unity-gate.py",
+      "size": 4279,
+      "mentions_skill_term": true,
+      "explicit_skill_refs": [
+        "cleanup",
+        "code-unity"
+      ]
+    },
+    {
+      "hook": "hermes-upgrade-notify.py",
+      "size": 4464,
+      "mentions_skill_term": true,
+      "explicit_skill_refs": []
+    },
+    {
+      "hook": "guild-routing-gate.sh",
+      "size": 18313,
+      "mentions_skill_term": true,
+      "explicit_skill_refs": [
+        "high-alert",
+        "image-to-code",
+        "members-formation",
+        "performance",
+        "supabase",
+        "weapon-utility"
+      ]
+    },
+    {
+      "hook": "guild-log-nudge.py",
+      "size": 2265,
+      "mentions_skill_term": false,
+      "explicit_skill_refs": []
+    },
+    {
+      "hook": "unity-skill-gate.py",
+      "size": 3504,
+      "mentions_skill_term": true,
+      "explicit_skill_refs": [
+        "code-unity",
+        "design-unity",
+        "high-alert"
+      ]
+    },
+    {
+      "hook": "connector-gate.py",
+      "size": 6735,
+      "mentions_skill_term": false,
+      "explicit_skill_refs": []
+    },
+    {
+      "hook": "test_dispatch_enforce.py",
+      "size": 5910,
+      "mentions_skill_term": true,
+      "explicit_skill_refs": [
+        "high-alert"
+      ]
+    },
+    {
+      "hook": "delegation-gate.py",
+      "size": 12169,
+      "mentions_skill_term": false,
+      "explicit_skill_refs": []
+    },
+    {
+      "hook": "routing-enforce.py",
+      "size": 8072,
+      "mentions_skill_term": false,
+      "explicit_skill_refs": []
+    },
+    {
+      "hook": "safe-read-gate.py",
+      "size": 3868,
+      "mentions_skill_term": false,
+      "explicit_skill_refs": []
+    },
+    {
+      "hook": "turn-start.py",
+      "size": 4167,
+      "mentions_skill_term": false,
+      "explicit_skill_refs": []
+    },
+    {
+      "hook": "verify-gate.py",
+      "size": 10615,
+      "mentions_skill_term": true,
+      "explicit_skill_refs": []
+    },
+    {
+      "hook": "vault-log-nudge.py",
+      "size": 2917,
+      "mentions_skill_term": false,
+      "explicit_skill_refs": []
+    },
+    {
+      "hook": "conformity-precommit-gate.py",
+      "size": 5870,
+      "mentions_skill_term": false,
+      "explicit_skill_refs": []
+    },
+    {
+      "hook": "workflow-gate.py",
+      "size": 11616,
+      "mentions_skill_term": true,
+      "explicit_skill_refs": [
+        "high-alert",
+        "skillsmith"
+      ]
+    },
+    {
+      "hook": "approval-gate.py",
+      "size": 5615,
+      "mentions_skill_term": false,
+      "explicit_skill_refs": []
+    },
+    {
+      "hook": "thinker-gate.py",
+      "size": 7830,
+      "mentions_skill_term": false,
+      "explicit_skill_refs": []
+    },
+    {
+      "hook": "build-mark.py",
+      "size": 2245,
+      "mentions_skill_term": true,
+      "explicit_skill_refs": [
+        "guild-log"
+      ]
+    },
+    {
+      "hook": "precompact-snapshot.py",
+      "size": 2481,
+      "mentions_skill_term": false,
+      "explicit_skill_refs": []
+    },
+    {
+      "hook": "_test_executor_enforce.sh",
+      "size": 12990,
+      "mentions_skill_term": false,
+      "explicit_skill_refs": []
+    },
+    {
+      "hook": "verify_hash.py",
+      "size": 4062,
+      "mentions_skill_term": true,
+      "explicit_skill_refs": []
+    },
+    {
+      "hook": "version-auto-bump.py",
+      "size": 4850,
+      "mentions_skill_term": true,
+      "explicit_skill_refs": [
+        "guild-log"
+      ]
+    },
+    {
+      "hook": "approval-detect.py",
+      "size": 7659,
+      "mentions_skill_term": false,
+      "explicit_skill_refs": []
+    },
+    {
+      "hook": "stop-line-gate.py",
+      "size": 4811,
+      "mentions_skill_term": false,
+      "explicit_skill_refs": []
+    },
+    {
+      "hook": "xp-log.py",
+      "size": 2034,
+      "mentions_skill_term": true,
+      "explicit_skill_refs": []
+    },
+    {
+      "hook": "_saroot.py",
+      "size": 2661,
+      "mentions_skill_term": false,
+      "explicit_skill_refs": []
+    },
+    {
+      "hook": "weapon-gate.py",
+      "size": 7268,
+      "mentions_skill_term": true,
+      "explicit_skill_refs": [
+        "ultra-brainstorming",
+        "weapon-utility"
+      ]
+    },
+    {
+      "hook": "spawn-log.py",
+      "size": 1641,
+      "mentions_skill_term": false,
+      "explicit_skill_refs": []
+    },
+    {
+      "hook": "prove-it.py",
+      "size": 13523,
+      "mentions_skill_term": false,
+      "explicit_skill_refs": []
+    },
+    {
+      "hook": "dispatch-log.py",
+      "size": 1698,
+      "mentions_skill_term": false,
+      "explicit_skill_refs": []
+    },
+    {
+      "hook": "member-skill-lint-gate.py",
+      "size": 10861,
+      "mentions_skill_term": true,
+      "explicit_skill_refs": [
+        "backend-auditor",
+        "db-rename-sweep",
+        "frontend-auditor",
+        "okf"
+      ]
+    },
+    {
+      "hook": "turn-finalize.sh",
+      "size": 6606,
+      "mentions_skill_term": false,
+      "explicit_skill_refs": []
+    },
+    {
+      "hook": "workflow-banner-enforcer.py",
+      "size": 14165,
+      "mentions_skill_term": false,
+      "explicit_skill_refs": []
+    },
+    {
+      "hook": "executor-enforce.py",
+      "size": 23323,
+      "mentions_skill_term": false,
+      "explicit_skill_refs": []
+    },
+    {
+      "hook": "plain-english-nudge.py",
+      "size": 5649,
+      "mentions_skill_term": false,
+      "explicit_skill_refs": []
+    },
+    {
+      "hook": "turn-cost.py",
+      "size": 6388,
+      "mentions_skill_term": true,
+      "explicit_skill_refs": []
+    },
+    {
+      "hook": "destructive-gate.py",
+      "size": 5480,
+      "mentions_skill_term": false,
+      "explicit_skill_refs": []
+    },
+    {
+      "hook": "sa-pretool.py",
+      "size": 4185,
+      "mentions_skill_term": true,
+      "explicit_skill_refs": [
+        "high-alert",
+        "okf"
+      ]
+    },
+    {
+      "hook": "butler-skill-gate.py",
+      "size": 10911,
+      "mentions_skill_term": true,
+      "explicit_skill_refs": [
+        "butler-voice",
+        "helpless",
+        "star-alliance-language"
+      ]
+    },
+    {
+      "hook": "thinker-attest.py",
+      "size": 4381,
+      "mentions_skill_term": false,
+      "explicit_skill_refs": []
+    },
+    {
+      "hook": "high-alert.py",
+      "size": 3612,
+      "mentions_skill_term": true,
+      "explicit_skill_refs": [
+        "high-alert"
+      ]
+    },
+    {
+      "hook": "dispatch-enforce.py",
+      "size": 33158,
+      "mentions_skill_term": false,
+      "explicit_skill_refs": []
+    },
+    {
+      "hook": "okf-gate.py",
+      "size": 5716,
+      "mentions_skill_term": true,
+      "explicit_skill_refs": [
+        "impeccable",
+        "okf",
+        "star-alliance-language"
+      ]
+    },
+    {
+      "hook": "conformance-gate.py",
+      "size": 6383,
+      "mentions_skill_term": false,
+      "explicit_skill_refs": []
+    }
+  ],
+  "skill_index_keys": [
+    "a11y-craft",
+    "add-admin-permission",
+    "add-new-trigger",
+    "add-new-view",
+    "admin-page-builder",
+    "admin-page-fixer",
+    "agent-web-reach",
+    "agentic-video-production",
+    "algorithmic-trading-chan",
+    "api-integration-design",
+    "arsenal-forge",
+    "article-creator",
+    "automated-testing",
+    "backend-auditor",
+    "bug-fix-closer",
+    "bug-fix-workflow",
+    "bundled-rls",
+    "butler-onboarding",
+    "butler-voice",
+    "chart-patterns",
+    "claude-code-hooks",
+    "cleanup",
+    "cn-market-strategy-pack",
+    "code-crime-scene",
+    "code-review-craft",
+    "code-unity",
+    "codebase-memory-mcp",
+    "codex-law-translate",
+    "cognitive-bias-guard",
+    "cold-doc-rotator",
+    "comms-triage",
+    "conquering-campaign",
+    "contract-review",
+    "daily-stock-analysis",
+    "dashboard-parity",
+    "data-analysis-viz",
+    "db-rename-sweep",
+    "decompose-and-swarm",
+    "design-language",
+    "design-taste",
+    "design-tokens",
+    "design-unity",
+    "dev-ops-command-pack",
+    "dev-server",
+    "dual-model-review",
+    "file-access-model",
+    "financial-data-reach",
+    "frontend-auditor",
+    "frontend-react-engineering",
+    "full-output-enforcement",
+    "graphify",
+    "growth-marketing",
+    "guild-conformity",
+    "guild-log",
+    "guild-reflection",
+    "harness-efficiency",
+    "head-of-department",
+    "health-checker",
+    "heat-map-analyst",
+    "helpless",
+    "high-alert",
+    "hotspot-radar",
+    "image-to-code",
+    "imagegen-frontend",
+    "impeccable",
+    "invariant-inference",
+    "japanese-candlesticks",
+    "law-harvest",
+    "leaders-command",
+    "legal-drafting",
+    "legal-rule-modeling",
+    "letting-go",
+    "lex-system-audit",
+    "market-recon",
+    "members-formation",
+    "metamorphosis-check",
+    "motion-design",
+    "multimodal-model-wrappers",
+    "negotiation-deal-strategy",
+    "new-member-onboarding",
+    "obedience",
+    "observability-incident-response",
+    "obsidian-markdown",
+    "okf",
+    "pattern-detector",
+    "pattern-library-discovery",
+    "penpot-design-platform",
+    "performance",
+    "phased-db-refactor",
+    "portability-audit",
+    "portfolio-risk",
+    "price-action",
+    "probability-statistics",
+    "project-start",
+    "prove-it",
+    "python-master",
+    "redesign-existing-projects",
+    "relationship-intel",
+    "release-train",
+    "safe-agentic-orchestration",
+    "scheduled-watch",
+    "schema-evolution",
+    "session-mining",
+    "skillsmith",
+    "spec-driven-development",
+    "star-alliance-language",
+    "storm-investigation",
+    "strategies-review",
+    "supabase",
+    "supabase-postgres-best-practices",
+    "system-prompt-design-patterns",
+    "temporal-coupling-audit",
+    "timeseries-forecasting",
+    "trading-strategy",
+    "transactions-domain-model",
+    "ultra-brainstorming",
+    "ux-copywriting",
+    "ux-research",
+    "vault-log-compliance",
+    "vault-log-writer",
+    "view-registry",
+    "voices-check",
+    "volume-price-analysis",
+    "weapon-utility",
+    "workflow-forge",
+    "workflow-runner"
+  ],
+  "skills_ever_observed_in_ledger": [
+    "guild-sync",
+    "portability-audit",
+    "skillsmith",
+    "weapon-utility"
+  ],
+  "parse_mode": {
+    "yaml_ok": 122,
+    "fallback": 4
+  }
+}
