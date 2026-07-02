@@ -3478,6 +3478,13 @@
       ],
       "commit": "78513bd5",
       "_derived": true
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Quick Fix: dashboard.js",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130

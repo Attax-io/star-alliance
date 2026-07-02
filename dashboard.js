@@ -579,6 +579,11 @@ async function schedulerPost(path, body, statusEl) {
   }
 }
 
+function schedulerArtSrc(job) {
+  const key = job.name || job.id || 'S'
+  return `art/scheduler-art-thumb/${encodeURIComponent(key)}.png`
+}
+
 // schedulerTile: a 48x48 tile mirroring the workflow-thumb structure. Hover
 // shows the existing .card-tooltip; click opens a center modal with full
 // detail + an Edit button that reveals the toggle/retime/run-now controls.
@@ -592,7 +597,7 @@ function schedulerTile(job) {
   tile.setAttribute('aria-label', (job.name || job.id || 'Schedule') + ' — open details')
 
   const img = document.createElement('img')
-  img.src = `art/scheduler-art-thumb/${job.name}.png`
+  img.src = schedulerArtSrc(job)
   img.alt = job.name || job.id || ''
   img.loading = 'lazy'
   img.decoding = 'async'
@@ -687,7 +692,7 @@ function schedulerOpenModal(job, tile) {
   artWrap.className = 'sa-modal__art-wrap'
   const art = document.createElement('img')
   art.className = 'sa-modal__art'
-  art.src = `art/scheduler-art-thumb/${job.name}.png`
+  art.src = schedulerArtSrc(job)
   art.alt = job.name || job.id || ''
   art.onerror = function () {
     this.style.display = 'none'
