@@ -31,6 +31,8 @@
   --status-ready:   #4ec985;
   --status-running: #e8c93a;
   --status-idle:    #5a5953;
+  --status-pending: #e8c93a;
+  --status-off:     #e8536b;
 
   /* Typography */
   --ff-serif: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
@@ -184,7 +186,7 @@ ul, ol { list-style: none; }
 /* ============================================================
    SECTION HEADERS
    ============================================================ */
-.section { margin-bottom: 44px; }
+.section { margin-bottom: 44px; overflow: visible; }
 .section-head {
   display: flex;
   align-items: center;
@@ -289,6 +291,8 @@ ul, ol { list-style: none; }
 .status-dot--ready   { background: var(--status-ready); box-shadow: 0 0 8px color-mix(in srgb, var(--status-ready) 60%, transparent); }
 .status-dot--running { background: var(--status-running); box-shadow: 0 0 8px color-mix(in srgb, var(--status-running) 60%, transparent); }
 .status-dot--idle    { background: var(--status-idle); }
+.status-dot--pending { background: var(--status-pending); box-shadow: 0 0 8px color-mix(in srgb, var(--status-pending) 60%, transparent); }
+.status-dot--off     { background: var(--status-off); box-shadow: 0 0 8px color-mix(in srgb, var(--status-off) 60%, transparent); }
 .status-text { color: var(--text-hi); font-weight: 500; }
 .tier-pill {
   display: inline-flex;
@@ -616,6 +620,7 @@ ul, ol { list-style: none; }
   border: 1px solid var(--border-soft);
   border-radius: 12px;
   padding: 22px 24px;
+  overflow: visible;
 }
 
 /* Guild log */
@@ -768,7 +773,7 @@ ul, ol { list-style: none; }
   color: var(--text-body);
   max-width: 300px;
   white-space: pre-line;
-  z-index: 100;
+  z-index: 300;
   pointer-events: none;
   opacity: 0;
   transform: translateY(4px);
@@ -1020,6 +1025,7 @@ ul, ol { list-style: none; }
   display: flex;
   flex-direction: column;
   gap: 28px;
+  overflow: visible;
 }
 .scheduler-group__head {
   display: flex;
@@ -1027,6 +1033,7 @@ ul, ol { list-style: none; }
   gap: 10px;
   margin-bottom: 12px;
 }
+.scheduler-group { overflow: visible; }
 .scheduler-group__title {
   font-family: var(--ff-serif);
   font-size: var(--fs-card-name, 1.05rem);
@@ -1042,101 +1049,97 @@ ul, ol { list-style: none; }
   border-radius: 999px;
   padding: 2px 10px;
 }
-.scheduler-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 16px;
-}
-.scheduler-card {
-  background: var(--surface-1);
-  border: 1px solid var(--border-soft);
-  border-radius: 12px;
-  padding: 14px 16px;
+.scheduler-icon-grid {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 10px;
-  min-width: 0;
-  transition: border-color 0.2s ease;
+  overflow: visible;
 }
-.scheduler-card--foreign {
-  opacity: 0.62;
-}
-.scheduler-card__head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 8px;
-}
-.scheduler-card__name {
-  font-size: var(--fs-body);
-  font-weight: 600;
-  color: var(--text-hi);
-  line-height: 1.25;
-}
-.scheduler-card__viewonly {
-  font-size: var(--fs-tiny);
-  color: var(--text-faint);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-/* Art tile + tooltip — replaces the old inline long-text desc block.
-   .scheduler-card__art-wrap is the relative-positioned host for the
-   child .card-tooltip (re-uses the global .card-tooltip class already
-   used by skill thumbs, workflow thumbs, member portraits, domain cards). */
-.scheduler-card__art-wrap {
+.scheduler-tile {
   position: relative;
-  display: inline-block;
-  flex-shrink: 0;
-  line-height: 0;
-}
-.scheduler-card__art {
-  width: 60px;
-  height: 60px;
+  width: 48px;
+  height: 48px;
   border-radius: 8px;
+  overflow: visible;
+  border: 1px solid var(--border-soft);
+  background: var(--surface-2);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.scheduler-tile img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   display: block;
-  flex-shrink: 0;
-  border: 1px solid var(--border-soft);
-  background: var(--surface-2);
-  box-shadow: 0 0 0 1px transparent;
-  transition: box-shadow 0.18s ease, transform 0.18s ease, border-color 0.18s ease;
+  border-radius: 8px;
 }
-.scheduler-card__art-wrap:hover .scheduler-card__art {
-  border-color: var(--gold-dim);
-  box-shadow: 0 0 0 1px var(--gold-dim), 0 4px 14px rgba(0,0,0,0.45);
-  transform: translateY(-1px);
+.scheduler-tile--foreign {
+  opacity: 0.62;
 }
-.scheduler-card__art-monogram {
-  width: 60px;
-  height: 60px;
+.scheduler-tile__monogram {
+  width: 100%;
+  height: 100%;
   border-radius: 8px;
   background: var(--surface-2);
-  border: 1px solid var(--gold-dim);
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--ff-serif);
-  font-size: 1.2rem;
+  font-size: 0.85rem;
   font-weight: 600;
   color: var(--gold);
-  letter-spacing: 0.04em;
-  flex-shrink: 0;
+  letter-spacing: 0.03em;
 }
-.scheduler-card__art-wrap > .card-tooltip {
-  left: 0;
+.scheduler-tile__dot {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  border: 2px solid var(--surface-1);
+  pointer-events: none;
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.35);
+}
+.scheduler-tile:hover,
+.scheduler-tile:focus-visible {
+  transform: scale(1.12);
+  box-shadow: 0 0 0 2px var(--gold-dim), 0 4px 16px rgba(0,0,0,0.5);
+  z-index: 50;
+  outline: none;
+}
+.scheduler-tile:focus-visible {
+  box-shadow: 0 0 0 2px var(--gold-bright), 0 4px 16px rgba(0,0,0,0.5);
+}
+.scheduler-tile .card-tooltip {
+  left: 50%;
   right: auto;
-  bottom: calc(100% + 8px);
-  min-width: 240px;
-  max-width: 320px;
-  font-size: 0.74rem;
+  transform: translateX(-50%) translateY(4px);
+  min-width: 200px;
+  max-width: 260px;
+  width: max-content;
+  bottom: calc(100% + 6px);
+  font-size: 0.7rem;
+  line-height: 1.4;
+  padding: 8px 12px;
   text-align: left;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
-.scheduler-card__art-wrap:hover > .card-tooltip {
+.scheduler-tile:hover .card-tooltip,
+.scheduler-tile:focus-visible .card-tooltip {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateX(-50%) translateY(0);
 }
+/* NOTE: .status-dot--ready / --pending / --off (and legacy --running / --idle,
+   still used elsewhere) are global, unscoped background rules (declared near
+   the top of this file). Because .scheduler-tile__dot uses those classes via
+   schedulerStatusDotClass() (e.g. "scheduler-tile__dot status-dot--ready"),
+   the dot picks up the background-color automatically — no extra CSS
+   required here. Mapping: green=ready (enabled + last run ok/success),
+   yellow=pending (enabled, not yet successfully run), red=off (disabled,
+   OR enabled but last run failed). */
 .scheduler-card__status {
   display: flex;
   align-items: center;
@@ -1276,5 +1279,180 @@ ul, ol { list-style: none; }
 }
 
 @media (max-width: 899px) {
-  .scheduler-grid { grid-template-columns: 1fr; }
+  /* .scheduler-grid retired with the card layout — the .scheduler-icon-grid
+     uses flex-wrap so it reflows naturally on narrow viewports without a
+     dedicated rule. */
+}
+
+/* ============================================================
+   MODAL — center popup overlay (scheduler tile detail + edit)
+   Reusable overlay/modal shell keyed off .sa-modal-overlay / .sa-modal
+   ============================================================ */
+.sa-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 8, 10, 0.72);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 24px;
+  animation: sa-modal-fade-in 0.18s ease;
+}
+@keyframes sa-modal-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.sa-modal {
+  position: relative;
+  background: var(--surface-1);
+  border: 1px solid var(--border-soft);
+  border-top: 2px solid var(--gold-dim);
+  border-radius: 12px;
+  padding: 24px 24px 20px;
+  max-width: 440px;
+  width: 100%;
+  max-height: min(80vh, 640px);
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.55);
+  animation: sa-modal-rise-in 0.2s ease;
+}
+@keyframes sa-modal-rise-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sa-modal-overlay,
+  .sa-modal { animation: none; }
+}
+.sa-modal__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 28px;
+  height: 28px;
+  min-width: 24px;
+  min-height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  border: 1px solid var(--border-soft);
+  background: var(--surface-2);
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.sa-modal__close:hover,
+.sa-modal__close:focus-visible {
+  color: var(--text-hi);
+  border-color: var(--gold-dim);
+  outline: none;
+}
+.sa-modal__head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-right: 30px;
+  margin-bottom: 16px;
+}
+.sa-modal__art-wrap {
+  flex-shrink: 0;
+  line-height: 0;
+}
+.sa-modal__art {
+  width: 64px;
+  height: 64px;
+  border-radius: 10px;
+  object-fit: cover;
+  display: block;
+  border: 1px solid var(--border-soft);
+  background: var(--surface-2);
+}
+.sa-modal__art-monogram {
+  width: 64px;
+  height: 64px;
+  border-radius: 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--gold-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--ff-serif);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--gold);
+}
+.sa-modal__head-text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.sa-modal__title {
+  font-family: var(--ff-serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-hi);
+  line-height: 1.3;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.sa-modal__body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.sa-modal__desc {
+  font-size: var(--fs-body, 0.9rem);
+  color: var(--text-body);
+  line-height: 1.5;
+  margin: 0;
+}
+.sa-modal__row {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: var(--fs-meta, 0.82rem);
+  color: var(--text-body);
+}
+.sa-modal__row-label {
+  font-size: var(--fs-tiny, 0.7rem);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+}
+.sa-modal__edit-btn {
+  font: inherit;
+  font-size: var(--fs-tiny, 0.7rem);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: color-mix(in srgb, var(--gold) 8%, transparent);
+  border: 1px solid var(--gold-dim);
+  border-radius: 6px;
+  padding: 7px 14px;
+  min-height: 28px;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.sa-modal__edit-btn:hover,
+.sa-modal__edit-btn:focus-visible {
+  background: color-mix(in srgb, var(--gold) 18%, transparent);
+  border-color: var(--gold);
+  outline: none;
+}
+.sa-modal__controls {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-soft);
+}
+@media (max-width: 480px) {
+  .sa-modal { padding: 20px 18px 16px; max-width: 100%; }
+  .sa-modal__head { gap: 10px; }
+  .sa-modal__art, .sa-modal__art-monogram { width: 52px; height: 52px; }
 }

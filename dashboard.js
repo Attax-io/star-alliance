@@ -520,12 +520,12 @@ function loadSaToken() {
 }
 
 function schedulerStatusDotClass(job) {
+  const enabled = !!job?.enabled
   const status = job?.lastRun?.status
-  if (!status || status === 'never') return 'status-dot--idle'
+  const failed = status === 'error' || status === 'fail' || status === 'failed'
+  if (!enabled || failed) return 'status-dot--off'
   if (status === 'ok' || status === 'success') return 'status-dot--ready'
-  if (status === 'warn' || status === 'warning') return 'status-dot--running'
-  if (status === 'error' || status === 'fail' || status === 'failed') return 'status-dot--running'
-  return 'status-dot--idle'
+  return 'status-dot--pending'
 }
 
 function schedulerStatusText(job) {
@@ -579,214 +579,299 @@ async function schedulerPost(path, body, statusEl) {
   }
 }
 
-function schedulerJobCard(job) {
-  const card = document.createElement('div')
+// schedulerTile: a 48x48 tile mirroring the workflow-thumb structure. Hover
+// shows the existing .card-tooltip; click opens a center modal with full
+// detail + an Edit button that reveals the toggle/retime/run-now controls.
+function schedulerTile(job) {
   const controllable = job.controllable || {}
   const isForeign = !controllable.toggle && !controllable.retime && !controllable.runNow
-  card.className = 'scheduler-card' + (isForeign ? ' scheduler-card--foreign' : '')
+  const tile = document.createElement('div')
+  tile.className = 'scheduler-tile' + (isForeign ? ' scheduler-tile--foreign' : '')
+  tile.tabIndex = 0
+  tile.setAttribute('role', 'button')
+  tile.setAttribute('aria-label', (job.name || job.id || 'Schedule') + ' — open details')
+
+  const img = document.createElement('img')
+  img.src = `art/scheduler-art-thumb/${job.id}.png`
+  img.alt = job.name || job.id || ''
+  img.loading = 'lazy'
+  img.decoding = 'async'
+  img.onerror = function () {
+    this.style.display = 'none'
+    const initials = (job.name || job.id || 'S').split(/\s+/).filter(w => w).map(w => w[0]).join('').slice(0, 3).toUpperCase()
+    const mono = document.createElement('div')
+    mono.className = 'scheduler-tile__monogram'
+    mono.textContent = initials || 'S'
+    tile.insertBefore(mono, tile.firstChild)
+  }
+  tile.appendChild(img)
+
+  const dot = document.createElement('span')
+  dot.className = 'scheduler-tile__dot ' + schedulerStatusDotClass(job)
+  tile.appendChild(dot)
+
+  const tip = document.createElement('div')
+  tip.className = 'card-tooltip'
+  const tipParts = []
+  tipParts.push(`<strong style="color:var(--gold)">${escapeHtml(job.name || job.id || '')}</strong>`)
+  if (job.description) {
+    tipParts.push('<span>' + escapeHtml(job.description) + '</span>')
+  }
+  if (job.schedule && job.schedule.display) {
+    tipParts.push(`<span style="color:var(--gold);font-size:0.66rem">${escapeHtml(job.schedule.display)}</span>`)
+  }
+  tipParts.push(`<span style="color:var(--text-body);font-size:0.7rem">${escapeHtml(schedulerStatusText(job))}</span>`)
+  if (isForeign) {
+    tipParts.push('<span style="color:var(--text-body);font-size:0.62rem">View only</span>')
+  } else {
+    const flags = []
+    if (controllable.toggle) flags.push('toggle')
+    if (controllable.retime) flags.push('retime')
+    if (controllable.runNow) flags.push('run now')
+    if (flags.length) tipParts.push(`<span style="color:var(--text-body);font-size:0.62rem">Controllable: ${flags.join(' · ')}</span>`)
+  }
+  tip.innerHTML = tipParts.join('<br>')
+  tile.appendChild(tip)
+
+  const openHandler = () => schedulerOpenModal(job, tile)
+  tile.addEventListener('click', openHandler)
+  tile.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openHandler() }
+  })
+
+  // Store a reference so an in-place status-dot refresh after a control action
+  // (toggle/retime/run) can update the tile without a full re-render.
+  tile._schedulerJob = job
+  tile._refreshDot = () => { dot.className = 'scheduler-tile__dot ' + schedulerStatusDotClass(job) }
+
+  return tile
+}
+
+function schedulerCloseModal() {
+  const existing = document.querySelector('.sa-modal-overlay')
+  if (existing) existing.remove()
+  document.removeEventListener('keydown', _schedulerModalKeyHandler)
+}
+let _schedulerModalKeyHandler = null
+
+// schedulerOpenModal: builds and opens the center detail modal on demand.
+// Appended to document.body so it overlays everything. The Edit button reveals
+// the control row, which re-uses the exact toggle/retime/run-now logic +
+// schedulerPost calls that previously lived inline on the old card.
+function schedulerOpenModal(job, tile) {
+  schedulerCloseModal()
+  const controllable = job.controllable || {}
+  const isForeign = !controllable.toggle && !controllable.retime && !controllable.runNow
+
+  const overlay = document.createElement('div')
+  overlay.className = 'sa-modal-overlay'
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) schedulerCloseModal() })
+
+  const modal = document.createElement('div')
+  modal.className = 'sa-modal'
+  modal.setAttribute('role', 'dialog')
+  modal.setAttribute('aria-modal', 'true')
+  modal.setAttribute('aria-labelledby', 'sa-modal-title')
+
+  const closeBtn = document.createElement('button')
+  closeBtn.type = 'button'
+  closeBtn.className = 'sa-modal__close'
+  closeBtn.setAttribute('aria-label', 'Close')
+  closeBtn.textContent = '✕'
+  closeBtn.addEventListener('click', schedulerCloseModal)
+  modal.appendChild(closeBtn)
 
   const head = document.createElement('div')
-  head.className = 'scheduler-card__head'
-  const name = document.createElement('div')
-  name.className = 'scheduler-card__name'
-  name.textContent = job.name || job.id || ''
-  head.appendChild(name)
-  if (isForeign) {
-    const vo = document.createElement('span')
-    vo.className = 'scheduler-card__viewonly'
-    vo.textContent = 'system — view only'
-    head.appendChild(vo)
-  }
-  card.appendChild(head)
-
-  // Art + tooltip replace the old inline long-text desc block.
-  // The image is the focal element; the .card-tooltip child shows the full
-  // description + schedule + last-run detail on hover (mirrors how skill
-  // thumbs and member portraits surface their detail via .card-tooltip).
-  // The onerror fallback hides the image and inserts a simple monogram div
-  // so missing art degrades gracefully (same pattern as memberCard()).
+  head.className = 'sa-modal__head'
   const artWrap = document.createElement('div')
-  artWrap.className = 'scheduler-card__art-wrap'
+  artWrap.className = 'sa-modal__art-wrap'
   const art = document.createElement('img')
-  art.className = 'scheduler-card__art'
+  art.className = 'sa-modal__art'
   art.src = `art/scheduler-art-thumb/${job.id}.png`
   art.alt = job.name || job.id || ''
-  art.loading = 'lazy'
-  art.decoding = 'async'
   art.onerror = function () {
     this.style.display = 'none'
     const initials = (job.name || job.id || 'S').split(/\s+/).filter(w => w).map(w => w[0]).join('').slice(0, 3).toUpperCase()
     const mono = document.createElement('div')
-    mono.className = 'scheduler-card__art-monogram'
+    mono.className = 'sa-modal__art-monogram'
     mono.textContent = initials || 'S'
-    this.parentNode.insertBefore(mono, this)
+    artWrap.insertBefore(mono, art)
   }
   artWrap.appendChild(art)
+  head.appendChild(artWrap)
 
-  const artTip = document.createElement('div')
-  artTip.className = 'card-tooltip'
-  // Tooltip body = description (the detail that used to live inline) +
-  // schedule.display + lastRun.summary/status. Render only the rows that
-  // exist so the tooltip stays quiet for sparse jobs.
-  const tipParts = []
-  if (job.description) tipParts.push(escapeHtml(job.description))
-  if (job.schedule && job.schedule.display) {
-    tipParts.push(`<span style="color:var(--gold);font-size:0.66rem">${escapeHtml(job.schedule.display)}</span>`)
-  }
-  if (job.lastRun && job.lastRun.status && job.lastRun.status !== 'never') {
-    const lrLabel = job.lastRun.status.charAt(0).toUpperCase() + job.lastRun.status.slice(1)
-    const lrAt = job.lastRun.at ? ` · ${escapeHtml(job.lastRun.at)}` : ''
-    const lrSum = job.lastRun.summary ? `<br>${escapeHtml(job.lastRun.summary)}` : ''
-    tipParts.push(`<span style="color:var(--gold);font-size:0.66rem">Last run: ${escapeHtml(lrLabel)}${lrAt}</span>${lrSum}`)
-  }
-  if (job.controllable) {
-    const flags = []
-    if (job.controllable.toggle) flags.push('toggle')
-    if (job.controllable.retime) flags.push('retime')
-    if (job.controllable.runNow) flags.push('run now')
-    if (flags.length) {
-      tipParts.push(`<span style="color:var(--text-dim);font-size:0.62rem">Controllable: ${flags.join(' · ')}</span>`)
-    } else {
-      tipParts.push(`<span style="color:var(--text-faint);font-size:0.62rem">System — view only</span>`)
-    }
-  }
-  artTip.innerHTML = tipParts.join('<br>')
-  artWrap.appendChild(artTip)
-
-  card.appendChild(artWrap)
-
+  const headText = document.createElement('div')
+  headText.className = 'sa-modal__head-text'
+  const title = document.createElement('h3')
+  title.id = 'sa-modal-title'
+  title.className = 'sa-modal__title'
+  title.textContent = job.name || job.id || ''
+  headText.appendChild(title)
   const statusRow = document.createElement('div')
   statusRow.className = 'scheduler-card__status'
-  statusRow.innerHTML = `<span class="status-dot ${schedulerStatusDotClass(job)}"></span><span>${schedulerStatusText(job)}</span>`
-  card.appendChild(statusRow)
+  statusRow.innerHTML = `<span class="status-dot ${schedulerStatusDotClass(job)}"></span><span>${escapeHtml(schedulerStatusText(job))}</span>`
+  headText.appendChild(statusRow)
+  head.appendChild(headText)
+  modal.appendChild(head)
 
+  const body = document.createElement('div')
+  body.className = 'sa-modal__body'
+  if (job.description) {
+    const desc = document.createElement('p')
+    desc.className = 'sa-modal__desc'
+    desc.textContent = job.description
+    body.appendChild(desc)
+  }
   if (job.schedule && job.schedule.display) {
     const sched = document.createElement('div')
-    sched.className = 'scheduler-card__schedule'
-    sched.textContent = job.schedule.display
-    card.appendChild(sched)
+    sched.className = 'sa-modal__row'
+    sched.innerHTML = `<span class="sa-modal__row-label">Schedule</span><span class="scheduler-card__schedule">${escapeHtml(job.schedule.display)}</span>`
+    body.appendChild(sched)
   }
-
-  if (job.lastRun && job.lastRun.status && (job.lastRun.status === 'error' || job.lastRun.status === 'fail' || job.lastRun.status === 'failed') && job.lastRun.summary) {
-    const err = document.createElement('div')
-    err.className = 'scheduler-card__error'
-    err.textContent = job.lastRun.summary
-    card.appendChild(err)
+  if (job.lastRun && job.lastRun.summary) {
+    const sum = document.createElement('div')
+    sum.className = 'sa-modal__row'
+    const isErr = job.lastRun.status === 'error' || job.lastRun.status === 'fail' || job.lastRun.status === 'failed'
+    sum.innerHTML = `<span class="sa-modal__row-label">Last run</span><span class="${isErr ? 'scheduler-card__error' : ''}">${escapeHtml(job.lastRun.summary)}</span>`
+    body.appendChild(sum)
   }
-
-  const controls = document.createElement('div')
-  controls.className = 'scheduler-card__controls'
-
-  const statusMsg = document.createElement('span')
-  statusMsg.className = 'scheduler-card__status-msg'
-
-  // Toggle on/off
-  const toggleBtn = document.createElement('button')
-  toggleBtn.type = 'button'
-  toggleBtn.className = 'scheduler-toggle ' + (job.enabled ? 'scheduler-toggle--on' : 'scheduler-toggle--off')
-  toggleBtn.textContent = job.enabled ? 'On' : 'Off'
-  if (!controllable.toggle) {
-    toggleBtn.disabled = true
-    toggleBtn.title = 'Not controllable'
+  const flagsRow = document.createElement('div')
+  flagsRow.className = 'sa-modal__row'
+  if (isForeign) {
+    flagsRow.innerHTML = '<span class="sa-modal__row-label">Access</span><span class="scheduler-card__viewonly">System — view only</span>'
   } else {
-    toggleBtn.addEventListener('click', async () => {
-      toggleBtn.disabled = true
-      const nextEnabled = !job.enabled
-      const result = await schedulerPost('/api/schedule/toggle', { id: job.id, enabled: nextEnabled }, statusMsg)
-      toggleBtn.disabled = false
-      if (result && result.job) {
-        Object.assign(job, result.job)
-        toggleBtn.className = 'scheduler-toggle ' + (job.enabled ? 'scheduler-toggle--on' : 'scheduler-toggle--off')
-        toggleBtn.textContent = job.enabled ? 'On' : 'Off'
-        statusRow.innerHTML = `<span class="status-dot ${schedulerStatusDotClass(job)}"></span><span>${schedulerStatusText(job)}</span>`
-      }
-    })
+    const flags = []
+    if (controllable.toggle) flags.push('toggle')
+    if (controllable.retime) flags.push('retime')
+    if (controllable.runNow) flags.push('run now')
+    flagsRow.innerHTML = `<span class="sa-modal__row-label">Controllable</span><span>${escapeHtml(flags.join(' · ') || '—')}</span>`
   }
-  controls.appendChild(toggleBtn)
+  body.appendChild(flagsRow)
+  modal.appendChild(body)
 
-  // Retime (only when controllable.retime)
-  if (controllable.retime) {
-    const cal = (job.schedule && job.schedule.calendar) || {}
-    const retimeWrap = document.createElement('div')
-    retimeWrap.className = 'scheduler-retime'
+  // Edit affordance: only for controllable jobs. Reveals the control row,
+  // reusing the exact toggle/retime/run-now logic + schedulerPost calls
+  // that previously lived inline on the card.
+  if (!isForeign) {
+    const editBtn = document.createElement('button')
+    editBtn.type = 'button'
+    editBtn.className = 'sa-modal__edit-btn'
+    editBtn.textContent = 'Edit'
+    modal.appendChild(editBtn)
 
-    const hourInput = document.createElement('input')
-    hourInput.type = 'number'
-    hourInput.min = '0'
-    hourInput.max = '23'
-    hourInput.value = (cal.Hour != null) ? cal.Hour : ''
-    hourInput.placeholder = 'HH'
-    hourInput.setAttribute('aria-label', 'Hour')
+    const controlsWrap = document.createElement('div')
+    controlsWrap.className = 'sa-modal__controls scheduler-card__controls'
+    controlsWrap.hidden = true
 
-    const sep = document.createElement('span')
-    sep.textContent = ':'
-    sep.style.color = 'var(--text-faint)'
+    const statusMsg = document.createElement('span')
+    statusMsg.className = 'scheduler-card__status-msg'
 
-    const minInput = document.createElement('input')
-    minInput.type = 'number'
-    minInput.min = '0'
-    minInput.max = '59'
-    minInput.value = (cal.Minute != null) ? cal.Minute : ''
-    minInput.placeholder = 'MM'
-    minInput.setAttribute('aria-label', 'Minute')
-
-    const setBtn = document.createElement('button')
-    setBtn.type = 'button'
-    setBtn.className = 'scheduler-retime-btn'
-    setBtn.textContent = 'Set time'
-    setBtn.addEventListener('click', async () => {
-      const hour = parseInt(hourInput.value, 10)
-      const minute = parseInt(minInput.value, 10)
-      if (Number.isNaN(hour) || Number.isNaN(minute)) {
-        statusMsg.textContent = 'Enter hour + minute'
-        statusMsg.className = 'scheduler-card__status-msg visible error'
-        clearTimeout(statusMsg._t)
-        statusMsg._t = setTimeout(() => { statusMsg.className = 'scheduler-card__status-msg' }, 3000)
-        return
-      }
-      setBtn.disabled = true
-      const result = await schedulerPost('/api/schedule/retime', { id: job.id, calendar: { Hour: hour, Minute: minute } }, statusMsg)
-      setBtn.disabled = false
-      if (result && result.job) {
-        Object.assign(job, result.job)
-        if (job.schedule && job.schedule.display) {
-          const schedEl = card.querySelector('.scheduler-card__schedule')
-          if (schedEl) schedEl.textContent = job.schedule.display
+    if (controllable.toggle) {
+      const toggleBtn = document.createElement('button')
+      toggleBtn.type = 'button'
+      toggleBtn.className = 'scheduler-toggle ' + (job.enabled ? 'scheduler-toggle--on' : 'scheduler-toggle--off')
+      toggleBtn.textContent = job.enabled ? 'On' : 'Off'
+      toggleBtn.addEventListener('click', async () => {
+        toggleBtn.disabled = true
+        const nextEnabled = !job.enabled
+        const result = await schedulerPost('/api/schedule/toggle', { id: job.id, enabled: nextEnabled }, statusMsg)
+        toggleBtn.disabled = false
+        if (result && result.job) {
+          Object.assign(job, result.job)
+          toggleBtn.className = 'scheduler-toggle ' + (job.enabled ? 'scheduler-toggle--on' : 'scheduler-toggle--off')
+          toggleBtn.textContent = job.enabled ? 'On' : 'Off'
+          statusRow.innerHTML = `<span class="status-dot ${schedulerStatusDotClass(job)}"></span><span>${escapeHtml(schedulerStatusText(job))}</span>`
+          if (tile && tile._refreshDot) tile._refreshDot()
         }
-      }
-    })
+      })
+      controlsWrap.appendChild(toggleBtn)
+    }
 
-    retimeWrap.append(hourInput, sep, minInput, setBtn)
-    controls.appendChild(retimeWrap)
+    if (controllable.retime) {
+      const cal = (job.schedule && job.schedule.calendar) || {}
+      const retimeWrap = document.createElement('div')
+      retimeWrap.className = 'scheduler-retime'
+      const hourInput = document.createElement('input')
+      hourInput.type = 'number'
+      hourInput.min = '0'
+      hourInput.max = '23'
+      hourInput.value = (cal.Hour != null) ? cal.Hour : ''
+      hourInput.placeholder = 'HH'
+      hourInput.setAttribute('aria-label', 'Hour')
+      const sep = document.createElement('span')
+      sep.textContent = ':'
+      sep.style.color = 'var(--text-faint)'
+      const minInput = document.createElement('input')
+      minInput.type = 'number'
+      minInput.min = '0'
+      minInput.max = '59'
+      minInput.value = (cal.Minute != null) ? cal.Minute : ''
+      minInput.placeholder = 'MM'
+      minInput.setAttribute('aria-label', 'Minute')
+      const setBtn = document.createElement('button')
+      setBtn.type = 'button'
+      setBtn.className = 'scheduler-retime-btn'
+      setBtn.textContent = 'Set time'
+      setBtn.addEventListener('click', async () => {
+        const hour = parseInt(hourInput.value, 10)
+        const minute = parseInt(minInput.value, 10)
+        if (Number.isNaN(hour) || Number.isNaN(minute)) {
+          statusMsg.textContent = 'Enter hour + minute'
+          statusMsg.className = 'scheduler-card__status-msg visible error'
+          clearTimeout(statusMsg._t)
+          statusMsg._t = setTimeout(() => { statusMsg.className = 'scheduler-card__status-msg' }, 3000)
+          return
+        }
+        setBtn.disabled = true
+        const result = await schedulerPost('/api/schedule/retime', { id: job.id, calendar: { Hour: hour, Minute: minute } }, statusMsg)
+        setBtn.disabled = false
+        if (result && result.job) {
+          Object.assign(job, result.job)
+          const schedEl = body.querySelector('.scheduler-card__schedule')
+          if (schedEl && job.schedule && job.schedule.display) schedEl.textContent = job.schedule.display
+        }
+      })
+      retimeWrap.append(hourInput, sep, minInput, setBtn)
+      controlsWrap.appendChild(retimeWrap)
+    }
+
+    if (controllable.runNow) {
+      const runBtn = document.createElement('button')
+      runBtn.type = 'button'
+      runBtn.className = 'scheduler-run-btn'
+      runBtn.textContent = 'Run now'
+      runBtn.addEventListener('click', async () => {
+        runBtn.disabled = true
+        const result = await schedulerPost('/api/schedule/run', { id: job.id }, statusMsg)
+        runBtn.disabled = false
+        if (result && result.job) {
+          Object.assign(job, result.job)
+          statusRow.innerHTML = `<span class="status-dot ${schedulerStatusDotClass(job)}"></span><span>${escapeHtml(schedulerStatusText(job))}</span>`
+          if (tile && tile._refreshDot) tile._refreshDot()
+        }
+      })
+      controlsWrap.appendChild(runBtn)
+    }
+
+    controlsWrap.appendChild(statusMsg)
+    modal.appendChild(controlsWrap)
+
+    editBtn.addEventListener('click', () => {
+      controlsWrap.hidden = !controlsWrap.hidden
+      editBtn.textContent = controlsWrap.hidden ? 'Edit' : 'Done'
+    })
   }
 
-  // Run now
-  const runBtn = document.createElement('button')
-  runBtn.type = 'button'
-  runBtn.className = 'scheduler-run-btn'
-  runBtn.textContent = 'Run now'
-  if (!controllable.runNow) {
-    runBtn.disabled = true
-    runBtn.title = 'Not controllable'
-  } else {
-    runBtn.addEventListener('click', async () => {
-      runBtn.disabled = true
-      const result = await schedulerPost('/api/schedule/run', { id: job.id }, statusMsg)
-      runBtn.disabled = false
-      if (result && result.job) {
-        Object.assign(job, result.job)
-        statusRow.innerHTML = `<span class="status-dot ${schedulerStatusDotClass(job)}"></span><span>${schedulerStatusText(job)}</span>`
-      }
-    })
-  }
-  controls.appendChild(runBtn)
+  overlay.appendChild(modal)
+  document.body.appendChild(overlay)
+  closeBtn.focus()
 
-  controls.appendChild(statusMsg)
-  card.appendChild(controls)
-
-  return card
+  _schedulerModalKeyHandler = (e) => { if (e.key === 'Escape') schedulerCloseModal() }
+  document.addEventListener('keydown', _schedulerModalKeyHandler)
 }
 
+// schedulerGroupBlock: group head + count + empty state stay identical to
+// before; only the grid wrapper class and the per-job renderer change.
 function schedulerGroupBlock(title, jobs) {
   const block = document.createElement('div')
   block.className = 'scheduler-group'
@@ -803,8 +888,8 @@ function schedulerGroupBlock(title, jobs) {
     block.appendChild(empty)
   } else {
     const grid = document.createElement('div')
-    grid.className = 'scheduler-grid'
-    jobs.forEach(job => grid.appendChild(schedulerJobCard(job)))
+    grid.className = 'scheduler-icon-grid'
+    jobs.forEach(job => grid.appendChild(schedulerTile(job)))
     block.appendChild(grid)
   }
 
