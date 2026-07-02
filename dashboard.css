@@ -1074,7 +1074,8 @@ ul, ol { list-style: none; }
   display: block;
   border-radius: 8px;
 }
-.scheduler-tile--foreign {
+.scheduler-tile--foreign img,
+.scheduler-tile--foreign .scheduler-tile__monogram {
   opacity: 0.62;
 }
 .scheduler-tile__monogram {
