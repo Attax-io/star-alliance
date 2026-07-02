@@ -1,8 +1,8 @@
 ---
 name: new-member-onboarding
-description: "The exact checklist to run whenever a new guild member is recruited. Profiles must be created, installed, art-forged, and committed — in that order. Use when: 'onboard new member', 'recruit a member', 'add a new profile', 'new the-<slug>', 'create profiles/<slug>/'. Pairs with skillsmith, workflow-forge, dual-model-review."
+description: "The exact checklist to run whenever a new guild member is recruited. Profiles must be created, installed, art-forged, and committed — in that order. Use when: 'onboard new member', 'recruit a member', 'add a new profile', 'new the-slug-style-name (such as the-architect)', 'create profiles for a new member'. Pairs with skillsmith, workflow-forge, dual-model-review."
 metadata:
-  version: 1.0.0
+  version: 1.0.1
 type: Skill
 ---
 

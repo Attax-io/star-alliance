@@ -68,7 +68,7 @@ Each member carries a **craft-depth level** — a meter of arsenal depth + speci
 from standing** (the Butler leads regardless of tier). It's *earned* by an objective checklist
 `build.py` computes from the repo and *conferred* by the Quartermaster, recorded in the guild log.
 The standard and the promotion procedure live in
-[`docs/STRATEGIST-MEMBER-LEVELING.md`](docs/STRATEGIST-MEMBER-LEVELING.md) and the Quartermaster's manual
+[`docs/archive/STRATEGIST-MEMBER-LEVELING.md`](docs/archive/STRATEGIST-MEMBER-LEVELING.md) and the Quartermaster's manual
 [`skillsmith/references/member-leveling.md`](star-alliance-skills/skillsmith/references/member-leveling.md);
 operate it with `python3 member_level.py report | promote`.
 

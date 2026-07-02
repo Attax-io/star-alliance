@@ -9,7 +9,7 @@ level → log an agent-upgrade entry → rebuild → conformity-close).
 
 The standard lives in build.py (MEMBER_TIER_THRESHOLDS) + the manual at
 star-alliance-skills/skillsmith/references/agent-leveling.md. Full rationale:
-docs/STRATEGIST-MEMBER-LEVELING.md.
+docs/archive/STRATEGIST-MEMBER-LEVELING.md.
 
 Usage:
   python3 agent_level.py report                  # promotion queue + laggard board

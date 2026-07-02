@@ -28,7 +28,7 @@ Body kept: core philosophy, the seven pre-flight gates, standing principles, the
 - **Per-slice critic** — `verdict.run_cold(slice_diff)` per worker before integration keeps the critic invariant intact when the aggregate diff exceeds the 60KB auto-critic threshold.
 - Cross-links added: [[decompose-and-swarm]] · [[core-swarm]] · [[weapon-utility]]. NEVER swarm DB/red writes or W4 synthesis.
 
-(Staged Swarm Methodology Wave 2 — `docs/SWARM-METHODOLOGY-PLAN.md` "conquering-campaign — UPGRADE".)
+(Staged Swarm Methodology Wave 2 — `docs/archive/SWARM-METHODOLOGY-PLAN.md` "conquering-campaign — UPGRADE".)
 
 ---
 

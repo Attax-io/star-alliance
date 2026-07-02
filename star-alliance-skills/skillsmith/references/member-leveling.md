@@ -6,7 +6,7 @@ timestamp: 2026-06-27T10:27:03Z
 # Member Leveling — the Quartermaster's operating manual
 
 > The standard the Quartermaster applies when conferring a member's level. The full rationale and the
-> campaign that built this lives in `docs/STRATEGIST-MEMBER-LEVELING.md` (repo root). This file is the
+> campaign that built this lives in `docs/archive/STRATEGIST-MEMBER-LEVELING.md` (repo root). This file is the
 > operating manual: the signals, the checklists, and the promotion procedure.
 
 ## What a level means

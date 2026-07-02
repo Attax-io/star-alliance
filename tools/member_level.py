@@ -9,7 +9,7 @@ level → log a member-upgrade entry → rebuild → conformity-close).
 
 The standard lives in build.py (MEMBER_TIER_THRESHOLDS) + the manual at
 star-alliance-skills/skillsmith/references/member-leveling.md. Full rationale:
-docs/STRATEGIST-MEMBER-LEVELING.md.
+docs/archive/STRATEGIST-MEMBER-LEVELING.md.
 
 Usage:
   python3 member_level.py report                  # promotion queue + laggard board

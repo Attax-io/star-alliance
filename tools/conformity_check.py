@@ -225,7 +225,7 @@ def main():
                      ".mcp.json mcpServers — Claude Code does NOT read ~/.claude/mcp.json, "
                      "so the front desk will not connect (run the installer or restore .mcp.json)")
 
-    # Swarm guardrail constants (§5 SWARM-METHODOLOGY-PLAN.md).
+    # Swarm guardrail constants (§5 docs/archive/SWARM-METHODOLOGY-PLAN.md).
     # Single-sourced from data/harness.json so doctrine and code cannot diverge.
     # Fail-soft: a missing file/key falls back to the same 5/12 defaults so the
     # sweep never crashes (matches the SW fail-soft style below).
@@ -678,7 +678,7 @@ def main():
 
     # agent leveling — promotion queue + regression review (NOTES, never blocking).
     # Leveling is Quartermaster-gated and human-in-the-loop, so drift belongs in the
-    # QM's queue, not the build gate. See docs/STRATEGIST-MEMBER-LEVELING.md §3.
+    # QM's queue, not the build gate. See docs/archive/STRATEGIST-MEMBER-LEVELING.md §3.
     due = [(mid, m) for mid, m in agents.items() if m.get("levelInfo", {}).get("dueForPromotion")]
     over = [(mid, m) for mid, m in agents.items() if m.get("levelInfo", {}).get("overConferred")]
     if due:

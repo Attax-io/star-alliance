@@ -1,8 +1,8 @@
 ---
 name: code-unity
-description: "The Developer's and Architect's code-unity guardian — enforce ONE source of truth for every type, constant, config value, utility function, API client, service, and data schema the codebase carries. Three phases: establish (locate or mint the canonical SoT module for each domain — one types file, one constants module, one config object, one API/service layer); audit (scan every surface for fragmentation — the same type defined in two files, a config value scattered across pages, a utility re-implemented per feature folder); unify (merge all duplicates into the canonical SoT and update every import — without breaking what already runs). Use to stop duplication before it multiplies, enforce a single import path for shared logic, or stand up clean module boundaries. Triggers: 'one source of truth', 'stop duplicating', 'this type is defined twice', 'unify these constants', 'single import path', 'deduplicate types', 'code unity', 'audit duplication'. Differentiate from design-unity (UI tokens / visual language) and guild-conformity (repo cross-references / generated guild files)."
+description: "The Developer's and Architect's code-unity guardian — enforce ONE source of truth for every type, constant, config value, utility function, API client, service, and data schema the codebase carries. Three phases: establish (mint or locate the canonical SoT module for each domain); audit (scan every surface for fragmentation — same type defined twice, config scattered, utility re-implemented per folder); unify (merge duplicates into the canonical SoT, update every import). Use to stop duplication before it multiplies, enforce a single import path for shared logic, or stand up clean module boundaries. Triggers: 'one source of truth', 'stop duplicating', 'this type is defined twice', 'unify these constants', 'single import path', 'deduplicate types', 'code unity', 'audit duplication'."
 metadata:
-  version: 1.0.0
+  version: 1.0.1
 type: Skill
 
 ---
