@@ -1055,6 +1055,7 @@ ul, ol { list-style: none; }
   display: flex;
   flex-direction: column;
   gap: 10px;
+  min-width: 0;
   transition: border-color 0.2s ease;
 }
 .scheduler-card--foreign {
@@ -1084,6 +1085,8 @@ ul, ol { list-style: none; }
   font-size: var(--fs-meta);
   color: var(--text-dim);
   line-height: 1.4;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 .scheduler-card__status {
   display: flex;
@@ -1097,11 +1100,15 @@ ul, ol { list-style: none; }
   font-size: var(--fs-tiny);
   color: var(--text-dim);
   font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 .scheduler-card__error {
   font-size: var(--fs-tiny);
   color: #ff6b8a;
   line-height: 1.4;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 .scheduler-card__controls {
   display: flex;

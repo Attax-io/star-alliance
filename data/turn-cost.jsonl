@@ -403,3 +403,6 @@
 {"ts":"2026-07-02T00:00:03Z","tier":"full","assistant_msgs":1,"in":3778,"out":182,"cache_read":89334,"cache_create":141,"wall_ms":6436}
 {"ts":"2026-07-02T00:00:58Z","tier":"none","assistant_msgs":4,"in":208,"out":6856,"cache_read":365830,"cache_create":14544,"wall_ms":48071}
 {"ts":"2026-07-02T00:01:40Z","tier":"full","assistant_msgs":2,"in":7556,"out":840,"cache_read":193494,"cache_create":2518,"wall_ms":9761}
+{"ts":"2026-07-02T00:03:07Z","tier":"full","assistant_msgs":2,"in":7812,"out":914,"cache_read":196012,"cache_create":8408,"wall_ms":18694}
+{"ts":"2026-07-02T00:04:21Z","tier":"none","assistant_msgs":4,"in":208,"out":3434,"cache_read":370855,"cache_create":86682,"wall_ms":33701}
+{"ts":"2026-07-02T00:06:29Z","tier":"full","assistant_msgs":2,"in":7812,"out":1278,"cache_read":262728,"cache_create":7064,"wall_ms":13373}
