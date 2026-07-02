@@ -597,6 +597,8 @@ function schedulerJobCard(job) {
     const desc = document.createElement('div')
     desc.className = 'scheduler-card__desc'
     desc.textContent = job.description
+    desc.title = job.description
+    desc.addEventListener('click', () => desc.classList.toggle('expanded'))
     card.appendChild(desc)
   }
 

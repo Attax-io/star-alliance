@@ -1087,6 +1087,15 @@ ul, ol { list-style: none; }
   line-height: 1.4;
   overflow-wrap: anywhere;
   word-break: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  cursor: pointer;
+}
+.scheduler-card__desc.expanded {
+  -webkit-line-clamp: unset;
+  overflow: visible;
 }
 .scheduler-card__status {
   display: flex;
