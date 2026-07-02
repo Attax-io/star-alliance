@@ -3520,6 +3520,13 @@
       "title": "Strategic Audit: data/routine-heartbeat.json, evolution/schedule.json, audit-campaigns/2026-07-02_skills-frontmatter/00-campaign-plan.md (+3 more)",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Strategic Audit: audit-campaigns/2026-07-02_skills-frontmatter/00-campaign-plan.md, audit-campaigns/2026-07-02_skills-frontmatter/01-frontmatter-drift.md, audit-campaigns/2026-07-02_skills-frontmatter/02-references-rot.md (+5 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130
