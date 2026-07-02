@@ -555,3 +555,4 @@
 {"ts":"2026-07-02T22:17:01Z","tier":"full","assistant_msgs":18,"in":3573,"out":4008,"cache_read":3372019,"cache_create":23304,"wall_ms":58511}
 {"ts":"2026-07-02T22:17:21Z","tier":"full","assistant_msgs":5,"in":8861,"out":1197,"cache_read":967681,"cache_create":5273,"wall_ms":19184}
 {"ts":"2026-07-02T22:19:26Z","tier":"full","assistant_msgs":1,"in":1013,"out":164,"cache_read":79619,"cache_create":1072,"wall_ms":6360}
+{"ts":"2026-07-02T22:20:34Z","tier":"none","assistant_msgs":19,"in":293,"out":7835,"cache_read":3829964,"cache_create":26979,"wall_ms":27176}
