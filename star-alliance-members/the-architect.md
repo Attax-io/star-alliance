@@ -90,7 +90,7 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 |---|---|---|---|
 | `weapon-utility` | the numeric usage-level meter — read a skill/workflow's level from `tools/xp.py` to see if it's load-bearing or cold (L1, 0 XP); same meter for member activity (dispatch-log) | it is doctrine + meter, never a deliverable; it does NOT select weapons — model selection lives in `star-alliance-arsenal/` (`summon.py`, per-seat backends) | every skill/workflow invocation decision, especially before editing a load-bearing skill |
 | `prove-it` | before any message declaring a task done, fixed, shipped, complete, or ready - cross-check the original request line by line against the actual diff/tool-call evidence | it does not replace running tests/builds, and it does not replace `verify-gate.py` (that one checks code quality, not fulfillment) | `verify-gate.py`, `requesting-code-review`, `dual-model-review` |
-|| `star-alliance-language`
+| `star-alliance-language` | first on entering an OKF repo — read the concept map, never blind-read | a one-file edit where the path is already known | every reading task |
 | `graphify` | turning a system, domain, or dependency web into a knowledge-graph or diagram view | prose specs or code that needs no visual model | `schema-evolution`, `transactions-domain-model` |
 | `ultra-brainstorming` | a schema or system-design choice is contested — fan options across thinker models, then synthesize one ranked design | a settled design or a mechanical migration | `schema-evolution`, `storm-investigation` |
 
