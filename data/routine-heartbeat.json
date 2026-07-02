@@ -1,1 +1,8 @@
-{"last_run_start":null,"last_run_end":null,"last_run_status":"never","last_run_summary":"","budget_spent":0,"next_expected_by":null}
+{
+  "last_run_start": "2026-07-02T12:28:00Z",
+  "last_run_end": "2026-07-02T12:55:00Z",
+  "last_run_status": "ok-with-conventions-violated",
+  "last_run_summary": "3 PATCH Cowork-cleanliness fixes applied (code-unity 1.0.0->1.0.1, new-member-onboarding 1.0.0->1.0.1, obedience 1.0.0->1.0.1). Shipped under Architecture Build commit fd88990 (concurrent cron interleaved; per-finding commit convention was not satisfiable this run). 0 NEW contradictions introduced. 2 deferrals emitted as proposal events. Critic (kimi-k2.7 cloud) unreachable; fail-closed per Invariant #10.",
+  "budget_spent": "$0",
+  "next_expected_by": "2026-07-03T06:00:00Z"
+}
