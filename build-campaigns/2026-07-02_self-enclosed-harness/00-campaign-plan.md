@@ -30,8 +30,9 @@ standing_instructions: >
   Lead every response to the Guild Master in plain English (CLAUDE.md).
   Full branded harness + Hermes carried on every landing (Guild Master decision, 2026-07-02).
   Claude models are the brain; Hermes/MiniMax the doer. Supabase writes stay with Claude via MCP.
----
+type: Document
 
+---
 # Campaign — Make Star Alliance Self-Enclosed & Portable
 
 ## Goal (plain English)

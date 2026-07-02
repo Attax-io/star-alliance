@@ -9,8 +9,9 @@ description: >
   or references an audit report and wants the findings resolved. This is the companion to admin-page-auditor —
   the auditor finds issues, this skill fixes them.
 version: 1.0.0
----
+type: Skill
 
+---
 # Admin Page Fixer
 
 Fix bugs, warnings, and compliance issues across Lex Council admin pages. This is the action companion to `admin-page-auditor` — it takes audit findings (from an HTML report or from conversation context) and applies the correct code fixes, verifies them, and optionally re-audits.

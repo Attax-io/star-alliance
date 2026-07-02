@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Horns, Island Reversals & Pipes
 
 ## Horn Bottoms

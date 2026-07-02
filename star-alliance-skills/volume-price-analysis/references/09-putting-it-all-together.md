@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Volume Price Analysis — Synthesis and the Next Generation
 
 This section consolidates the core VPA methodology into live-chart application — how congestion phases, pivots, candle signals and volume confirmation combine into a single read on a chart. It then layers in multiple time frame analysis for risk and bias, and finishes with the next-generation volume tools (equivolume, candle-volume, delta and cumulative delta).

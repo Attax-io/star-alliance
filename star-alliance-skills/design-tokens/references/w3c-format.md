@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # W3C Design Tokens format — portable, tool-agnostic source of truth
 
 The W3C Design Tokens Community Group format is a JSON document model for declaring design tokens. It is the lingua franca between Figma, Tokens Studio, Style Dictionary, Specify, and any custom consumer.

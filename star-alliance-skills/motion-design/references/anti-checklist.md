@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Anti-Checklist
 
 This file is the audit's quality gate. The categories below describe motion patterns to **flag** in audited code — AI-slop tells at the top (where most 2026 motion problems live), followed by perspective-specific anti-patterns from Emil, Jakub, and Jhey, then general motion mistakes and code-shaped red flags. When audited code matches a pattern here, the audit surfaces a finding and the agent generates a per-finding motion suggestion by reading the relevant philosophy reference (`emil-kowalski.md`, `jakub-krehel.md`, `jhey-tompkins.md`).

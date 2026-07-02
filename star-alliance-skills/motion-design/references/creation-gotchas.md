@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Creation Gotchas
 
 Where Claude typically fails when **writing** motion (as opposed to auditing it). Self-check generated code against every item before presenting.

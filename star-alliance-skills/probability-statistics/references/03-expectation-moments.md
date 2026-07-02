@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Expectation, Moments, and Related Quantities
 
 Expected value is the long-run average value of a random variable, defined separately for discrete and absolutely continuous cases, and serves as the foundation for variance, covariance, correlation, and generating-function analyses. This reference consolidates definitions, theorems, properties, common distributions, and operational identities for expectation, dispersion, dependence, conditional expectation, and moment-generating functions, in a form usable for derivations, computation, and modeling decisions.

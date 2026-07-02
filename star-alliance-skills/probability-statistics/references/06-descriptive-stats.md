@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Descriptive Statistics
 
 Descriptive statistics condense raw data into graphical displays and numerical summaries that expose the central tendency, spread, shape, and unusual features of an observed data set. These summaries serve both as end products in their own right and as the foundation for formal statistical inference, where the sample quantities are interpreted as estimates of corresponding population parameters. The topics below cover one-dimensional descriptive methods (display, center, spread, order statistics), their multivariate extensions, the empirical cumulative distribution function, and the probabilistic properties that link these sample statistics to the underlying population distribution.

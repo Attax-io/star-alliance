@@ -1,0 +1,12 @@
+{
+  "kinds": {
+    "report": "docs/",
+    "diagnostic": "docs/",
+    "generated-script": "tools/generators/",
+    "data": "data/",
+    "state": ".claude/state/",
+    "log": "data/"
+  },
+  "default_kind": "data",
+  "notes": "Explicit per-kind output folder overrides consumed by tools/resolve_output.py (detection order: env > config > convention > fallback). Values are kept in sync — by convention, not automatically — with the OUTPUT_KIND_MAP derived from star-alliance-skills/okf/scripts/okf_audit.py's LAYOUT_RULES (see tools/resolve_output.py for the resolver contract and resolve_output.py::OUTPUT_KIND_MAP for the authoritative convention values). If a LAYOUT_RULES target_dir changes, this file must be hand-mirrored to stay in parity."
+}

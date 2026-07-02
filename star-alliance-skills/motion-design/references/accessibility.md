@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Accessibility
 
 **This is not optional.** Motion can cause discomfort, nausea, or distraction for many users.

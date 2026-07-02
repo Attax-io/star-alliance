@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Statistical Inference: Distribution-Free Methods, Bayesian Inference, and Computational Approaches
 
 This reference covers nonparametric and large-sample inference procedures, the asymptotic theory of maximum likelihood estimation, and the Bayesian approach to statistical inference. It unifies rigorous likelihood-based foundations, applied/engineering perspectives on methods, and data-science-flavored computational viewpoints, emphasizing when and why each method applies and the conditions needed for validity.

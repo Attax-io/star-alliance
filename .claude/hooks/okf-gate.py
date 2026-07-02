@@ -12,7 +12,7 @@
 # blind full-reads.
 #
 # Scope mirrors okf_audit.py exactly: governed = .md, minus vendored mirrors
-# (impeccable/), node_modules, .git, generated/machine dirs.
+# (impeccable/, _impeccable-upstream-source/), node_modules, .git, generated/machine dirs.
 #
 # Mechanics: PreToolUse gets the tool call as JSON on stdin. For Write we inspect
 # `content`; for Edit/MultiEdit we inspect the on-disk file AFTER applying the
@@ -32,7 +32,7 @@ EXCLUDE_DIR_PARTS = {
     ".git", ".claude", "worktrees", "node_modules", "__pycache__", ".venv", "venv",
     "scratchpad", "routine-logs", "routine-ledger",
 }
-EXCLUDE_PATH_SUBSTR = ("/impeccable/",)
+EXCLUDE_PATH_SUBSTR = ("/impeccable/", "/_impeccable-upstream-source/")
 
 FM_RE = re.compile(r"^---\s*\n(.*?)\n---\s*\n?", re.S)
 

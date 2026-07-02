@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Star Alliance → Hermes Migration Plan
 
 > **For Hermes:** Use subagent-driven-development skill to implement this plan task-by-task.

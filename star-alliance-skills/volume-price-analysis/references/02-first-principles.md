@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Volume Price Analysis — First Principles
 
 This chapter establishes the foundational mindset and analytical framework for VPA trading, built on six guiding principles, Wyckoff's laws of effort vs result and cause and effect, and a three-step process of micro/macro/global analysis. The core logic is that volume (effort) must validate price (result) — when it does, the move is genuine; when it doesn't, an anomaly is signalling potential weakness, strength, or a trap by the insiders and market makers.

@@ -1,7 +1,8 @@
 ---
 description: Self-enclosed harness campaign — portability root resolver, fail-closed config guard, skill provenance refusal, agent allowlist + thinker fail-closed on missing member file, telemetry honesty (workflow sentinel dir + agent-spawn log), and Tier-3 landing kit (full roster + root re-point).
----
+type: Document
 
+---
 ## Plain-English Summary
 The guild can now travel. Seven fixes make it install cleanly into a new project and lock itself down once it lands. It no longer trusts a hard-coded folder path (which was already wrong on this machine) — every gate now finds the repo from its own location. A half-installed guild refuses to run half-open instead of quietly allowing everything. The guild now refuses to run a skill that isn't its own, and refuses to run an unknown helper agent on a high-stakes turn. Its usage logs stopped under-counting. And the installer now lands the whole team, not just one member, and points the new copy at itself. The one step left is running the installer against the Lex folder, which must be done where that folder lives.
 

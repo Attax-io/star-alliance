@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Chapter 4 — Mean Reversion of Stocks and ETFs
 
 The stock market is the most fertile ground for finding mean-reverting instruments, but stock pairs trading is plagued by fundamental-valuation instability, short-sale constraints, and tiny intraday quote sizes. ETF pairs cointegrate more robustly, and ETFs can also be paired with producer stocks or used as the "spread" leg against a basket of their own component stocks. Beyond traditional time-series mean reversion, intraday/seasonal patterns and cross-sectional relative-return reversals open additional, simpler, and historically more profitable strategies.

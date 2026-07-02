@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Scheduler Art Brief — com.whatsapp-mcp.server
 
 Job id: `com.whatsapp-mcp.server`

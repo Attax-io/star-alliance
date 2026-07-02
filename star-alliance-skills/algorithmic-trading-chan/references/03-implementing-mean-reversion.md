@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Chapter 3 — Implementing Mean Reversion Strategies
 
 This chapter moves from the stationarity/cointegration tests of Chapter 2 to practical, tradable mean reversion strategies. It covers signal construction via price spreads, log price spreads, and ratios; the Bollinger band strategy as a practical alternative to the linear mean reversion strategy; a theoretical critique of scaling-in; and the Kalman filter as a tool for dynamically estimating hedge ratios, mean prices, and variances. The chapter closes with a warning that data errors inflate mean reversion backtests and trigger losing live trades.

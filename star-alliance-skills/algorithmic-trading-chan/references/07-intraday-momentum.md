@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Chapter 7 — Intraday Momentum Strategies
 
 Intraday momentum strategies exploit the same behavioral and structural causes that drive longer-horizon momentum (slow news diffusion, underreaction, large-fund forced trading, stop-order cascades), but at horizons of minutes to a single session. This avoids the two main problems of interday momentum — low Sharpe from infrequent independent signals and post-crisis underperformance. The chapter catalogs concrete strategies spanning the opening-gap, news-driven, leveraged-ETF-rebalancing, and high-frequency (order-book, stop-hunting, order-flow) buckets.

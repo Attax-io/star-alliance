@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # How to Add File Access for an External Lawyer
 
 ## Overview

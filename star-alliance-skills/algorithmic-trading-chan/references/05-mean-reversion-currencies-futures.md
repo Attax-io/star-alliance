@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Chapter 5 — Mean Reversion of Currencies and Futures
 
 Most currencies and futures are momentum-dominated, and most cross-sectional currency/futures portfolios do not mean-revert. The exception is futures calendar spreads, where both legs track the same underlying and where the roll-return component creates a stationary signal. The chapter's second thread is mechanical: getting backtested currency returns right (quote-currency matching, rollover interest, settlement-day conventions) and understanding the spot-return + roll-return decomposition of futures total returns.

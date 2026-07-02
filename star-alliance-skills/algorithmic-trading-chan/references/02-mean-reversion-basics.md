@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Chapter 2 — The Basics of Mean Reversion
 
 This chapter lays the conceptual and statistical foundation for trading strategies that bet on prices reverting to a historical mean. It distinguishes mean reversion from trending behavior, introduces three formal tests (ADF, Hurst/Variance Ratio) for identifying stationary price series, extends those ideas to cointegrated portfolios via the CADF and Johansen tests, and presents a "parameterless" linear mean-reversion strategy as a benchmark.

@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Foundations — The Trader's Edge & the Market Cycle
 
 ## The Trading Edge: Why a Statistical Advantage Is Non-Negotiable

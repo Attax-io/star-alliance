@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Deploy Ledger
 
 Append-only record of every `install.sh` deploy. Consumed by member-leveling Wave 6 (the usage/reach axis). Do not hand-prune.

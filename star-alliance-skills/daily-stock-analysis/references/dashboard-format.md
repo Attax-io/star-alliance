@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Dashboard format — the six-field card contract
 
 The Decision Dashboard is the pipeline's only output the user sees (besides

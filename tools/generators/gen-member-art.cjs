@@ -40,11 +40,7 @@ const MEMBERS = [
     color: "#7c5dc8",
     prompt: "Legendary divine portrait, a regal older Asian man with silver hair, deep violet war-commander robes trimmed in dark gold, calculating cold gaze, glowing purple strategy maps floating around him, purple divine energy crackling at his fingertips, dark epic throne room background, ultra detailed epic fantasy art, no religious symbols",
   },
-  {
-    id: "the-translator",
-    color: "#b89530",
-    prompt: "Legendary divine portrait, an older Middle Eastern man with a long silver-streaked beard, golden scholar robes, surrounded by swirling ancient scripts and language runes of many civilizations, golden divine light, wise serene expression, ultra detailed epic fantasy art, no religious symbols",
-  },
+
   {
     id: "the-herald",
     color: "#e0883c",

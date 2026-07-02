@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Random Variables and Probability Distributions
 
 A random variable is a numerical quantity whose value is determined by the outcome of a random experiment; its distribution captures all probabilities associated with that value. Probability distributions come in two principal forms — discrete (governed by a probability mass function on a countable set) and absolutely continuous (governed by a probability density function) — and every distribution can be summarized by a cumulative distribution function (cdf) that uniquely determines it. This reference covers the formal foundations, the major named families, the cdf machinery, conditional and joint structures, and the simulation algorithms used to draw samples from these distributions.

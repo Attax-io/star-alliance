@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # File Roles and the Exclusion Flag
 
 ## What Roles Can Be On a File?

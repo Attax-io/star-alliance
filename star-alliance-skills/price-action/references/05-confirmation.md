@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Tools for Confirmation (Indicators & Moving Averages)
 
 ## Depth Over Breadth in Tool Selection

@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Statistical Inference: Estimation, Testing, and Optimal Theory
 
 Statistical inference is the discipline of drawing conclusions about unknown characteristics of a probability distribution from observed data. Given a statistical model $\mathcal{P} = \{P_\theta : \theta \in \Theta\}$ (the set of candidate distributions indexed by parameter $\theta$), three principal types of inference are studied: (i) **point estimation** — a single value $T(s)$ proposed for an unknown characteristic $\theta$; (ii) **interval (region) estimation** — a set $C(s)$ that should contain $\theta$ with high probability; and (iii) **hypothesis assessment** — quantifying how surprising the data are when a hypothesized value $\theta_0$ is true. The unifying mathematical tools are the likelihood function, the sampling distribution, and the score function; the unifying optimality tools are mean-squared error minimization, bias control, and likelihood ratios.

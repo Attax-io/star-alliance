@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Jhey Tompkins' Animation Principles
 
 Jhey Tompkins (@jh3yy) is a design engineer known for pushing the boundaries of CSS and creative coding. His approach emphasizes **playful experimentation** — learning through building whimsical projects where the joy of creation drives skill development.

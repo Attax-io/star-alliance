@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Support and Resistance — The Foundation Stones of Price Analysis
 
 This chapter introduces the first major analytical framework built on top of Volume Price Analysis (VPA). It explains how price creates visible "floors" and "ceilings" through the emotional behaviour of market participants, how to identify those levels, and how to validate any break of them with volume. The core logic throughout is that volume (effort) must confirm the price move (result), otherwise the move is a trap set by the insiders.

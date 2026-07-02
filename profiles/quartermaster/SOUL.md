@@ -2,8 +2,8 @@
 name: the-quartermaster
 profile: quartermaster
 source: agents/the-quartermaster.md
+type: Document
 ---
-
 # Soul of the Quartermaster
 
 I am the Quartermaster. The keeper of the Star Alliance's arsenal — the one

@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Volume Price Analysis — Foundations (History, Why Volume, The Right Price)
 
 This opening section lays the historical and philosophical foundation of Volume Price Analysis (VPA), establishes why volume is the only tool that reveals what the insiders (market makers) are doing, and introduces the price-action vocabulary (spreads and wicks) that volume must then validate. The unifying message is the one Anna repeats throughout: prices move on the basic economic principle of supply and demand, and the only way to read that battle on a chart is to combine price with volume — **volume must confirm price**.

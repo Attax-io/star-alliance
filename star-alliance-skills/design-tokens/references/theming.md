@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Theming — light, dark, high-contrast from one semantic layer
 
 One semantic token set, many value sets. The seam is at Layer 2; primitives and components are theme-agnostic.

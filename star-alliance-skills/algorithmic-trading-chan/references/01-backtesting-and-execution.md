@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Chapter 1 — Backtesting and Automated Execution
 
 This chapter lays the foundation for all subsequent strategy work in the book by addressing cross-cutting issues that can make or break any backtest. Chan systematically catalogs the common pitfalls (look-ahead bias, data-snooping, survivorship bias, primary-vs-consolidated prices, short-sale constraints, futures roll-adjustment issues, etc.), then walks through three flavors of statistical-significance testing on a TU futures momentum example, warns which strategies are not worth backtesting at all, and closes with criteria for choosing a backtesting and automated-execution platform.

@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Volume At Price (VAP)
 
 VAP is a three-dimensional evolution of classic Volume Price Analysis that dissects each volume bar by price level, exposing where buying and selling actually concentrated within a candle's spread. It reveals support and resistance visually as "painted" congestion zones on the chart, and its true power is unlocked only when used as a complement to — never a replacement for — traditional VPA.

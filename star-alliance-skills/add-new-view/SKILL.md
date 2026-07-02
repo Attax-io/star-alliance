@@ -2,8 +2,9 @@
 name: add-new-view
 description: "End-to-end procedure for creating or revising a view in the Lex Council Supabase backend. Use whenever the user asks to create a view, add a _js view, rewrite a view, fix a SECURITY DEFINER view lint error, update view columns, rename a view, or drop a view. Also trigger on mentions of security_invoker, CREATE OR REPLACE VIEW, get_advisors security, VIEW DEFINER, view consumer, or any task that involves the pg_views or VIEWS-CATALOG surface. This skill exists because two traps have each caused production regressions: (1) CREATE OR REPLACE VIEW silently drops security_invoker — every view rewrite must be followed by ALTER VIEW SET (security_invoker=true); (2) DROP VIEW ... CASCADE silently drops every downstream dependent — always enumerate dependents before dropping. Without this skill, Claude reliably hits one of these two traps."
 version: 1.1.1
----
+type: Skill
 
+---
 # Adding or Revising a View in Lex Council
 
 ## Step 1: Read VIEWS-CATALOG before touching anything

@@ -2,6 +2,17 @@
   "version": 1,
   "entries": [
     {
+      "id": 120,
+      "date": "2026-07-02",
+      "type": "skill-upgrade",
+      "title": "okf 1.3.0→1.4.0: shared output-path convention (resolve_output.py)",
+      "who": "the-quartermaster",
+      "detail": "New tools/resolve_output.py (env -> .claude/output.json config -> OKF LAYOUT_RULES convention, imported live from okf_audit.py -> scaffold fallback, mirroring resolve_vault.py's resolution strategy) + .claude/output.json (six kinds: report/diagnostic->docs/, generated-script->tools/generators/, data/log->data/, state->.claude/state/). Audited six candidate skill scripts for wiring (cleanup/errors_cleanup.py, cleanup/consolidate_code.py, skillsmith/routine_watchdog.py, skillsmith/routine_scan.py, session-mining's session_map.py+mine_sessions.py, law-harvest prose) — all found already conformant by their own existing convention (scratch to /tmp/, explicit --out flags, or already-correct fixed paths), so none were wired. guild-log and vault-log-writer left untouched as the reference patterns this convention mirrors. New §Output-path convention section documents the whole system in star-alliance-skills/okf/SKILL.md. MINOR bump — new capability, no breaking change.",
+      "ref": [
+        "okf"
+      ]
+    },
+    {
       "id": 119,
       "date": "2026-07-01",
       "type": "chore",
@@ -3059,6 +3070,349 @@
       "date": "2026-07-02",
       "type": "upgrade",
       "title": "Design Sprint: dashboard.css",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "workflow",
+      "title": "Design Sprint: .claude/agents/the-quartermaster.md, README.md, agents/the-quartermaster.md (+17 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "workflow",
+      "title": "Design Sprint: .claude/agents/the-quartermaster.md, README.md, agents/the-quartermaster.md (+17 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "workflow",
+      "title": "Design Sprint: .claude/agents/the-quartermaster.md, README.md, agents/the-quartermaster.md (+17 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "workflow",
+      "title": "Design Sprint: .claude/agents/the-quartermaster.md, README.md, agents/the-quartermaster.md (+17 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "workflow",
+      "title": "Design Sprint: .claude/agents/the-quartermaster.md, README.md, agents/the-quartermaster.md (+17 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "workflow",
+      "title": "Design Sprint: .claude/agents/the-quartermaster.md, README.md, agents/the-quartermaster.md (+17 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "workflow",
+      "title": "Design Sprint: .claude/agents/the-quartermaster.md, .claude/settings.local.json, .retired/README.md (+15 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/okf/SKILL.md, star-alliance-skills/okf/scripts/okf_enrich.py (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/okf/SKILL.md, star-alliance-skills/okf/scripts/okf_enrich.py (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/okf/SKILL.md, star-alliance-skills/okf/scripts/okf_enrich.py (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Market Recon: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Market Recon: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Market Recon: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Market Recon: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Market Recon: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Market Recon: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Market Recon: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Market Recon: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Market Recon: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Market Recon: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Market Recon: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Market Recon: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Market Recon: .claude/hooks/workflow-gate.py, .claude/settings.local.json, star-alliance-skills/butler-voice/SKILL.md (+6 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Compliance Audit: .claude/hooks/okf-gate.py, .claude/hooks/workflow-gate.py, .claude/settings.local.json (+159 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/okf-gate.py, .claude/hooks/workflow-gate.py, .claude/settings.local.json (+160 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Compliance Audit: .claude/hooks/okf-gate.py, .claude/hooks/workflow-gate.py, .claude/output.json (+161 more)",
       "who": "quartermaster-auto",
       "commit": ""
     }

@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Contrast-as-token — make AA structurally un-violatable
 
 Goal: bind an on-color to every surface token at build time so a designer can ship `--surface-purple-500` and an accessible foreground is auto-emitted with it. No human can produce an inaccessible pairing because the pairing is not a decision.

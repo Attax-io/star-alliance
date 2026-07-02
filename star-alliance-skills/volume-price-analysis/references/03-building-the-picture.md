@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Volume Price Analysis — Building The Picture: The Insider Cycle
 
 This chapter zooms out from single-candle and short-cluster analysis to the full chart picture, introducing the five core insider behaviours — accumulation, distribution, testing, selling climax and buying climax — that drive every market cycle on every timeframe. The unifying psychology is that "insiders" (specialists, market makers, large operators) buy at wholesale, sell at retail, and use media-driven fear and greed to shake sellers out at bottoms and lure buyers in at tops, with volume as the one activity they cannot hide.

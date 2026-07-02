@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Double Tops (Adam & Eve variants)
 
 ## Adam & Adam Double Top (AADT)

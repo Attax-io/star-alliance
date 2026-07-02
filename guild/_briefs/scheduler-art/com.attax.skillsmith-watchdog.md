@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Scheduler Art Brief — com.attax.skillsmith-watchdog
 
 Job id: `com.attax.skillsmith-watchdog`

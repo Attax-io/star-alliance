@@ -34,6 +34,7 @@ EXCLUDE_DIR_PARTS = {
 # Any path containing one of these substrings is skipped wholesale.
 EXCLUDE_PATH_SUBSTR = (
     "/impeccable/",   # vendored external skill (carries its own multi-agent mirrors)
+    "/_impeccable-upstream-source/",  # vendored upstream source mirror (same reason)
 )
 
 # ── Layout taxonomy (concept-path placement) ─────────────────────────────────

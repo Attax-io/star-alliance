@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Scheduler Art Brief — com.google.keystone.agent
 
 Job id: `com.google.keystone.agent`

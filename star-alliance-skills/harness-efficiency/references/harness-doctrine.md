@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Harness Engineering Doctrine — context, recovery, verification
 
 A model is unreliable, but the SYSTEM that surrounds it does not have to be. The Star Alliance guild orchestrates specialist members, offloads doer-grade work to a cheap model (MiniMax), and gates every turn through a routing classifier. Our only stable advantage is the harness: bounded context, recovery as a designed runtime path, independent verification, and partitioned agents that keep each context small. Token and time efficiency are not side effects — they are the design constraint, and the doctrine below is the engineering we use to honor it.

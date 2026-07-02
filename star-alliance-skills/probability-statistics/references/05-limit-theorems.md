@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Sampling Distributions, Convergence, and Random Processes
 
 A random process is a collection of random variables indexed by time, and the central questions of inferential probability concern how such processes behave in the limit and how summary statistics computed from samples are themselves distributed. This reference collects the machinery of sampling distributions, modes of convergence, the law of large numbers, the central limit theorem, normal-theory distributions, and Monte Carlo methodology, together with the foundational theory of iid sequences, Poisson processes, random walks, and discrete-time Markov chains.

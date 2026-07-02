@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Chapter 8 — Risk Management
 
 Risk management here is not about loss aversion per se; it is the prudent use of leverage to maximize long-term compounded growth, with optional constraints on maximum drawdown and proactive avoidance of high-risk regimes. The unifying theme is that leverage should be kept constant at all times, and the chapter surveys three ways to set that constant (Kelly, Monte Carlo, historical), then layers on drawdown-control techniques (CPPI, stop loss) and leading risk indicators.

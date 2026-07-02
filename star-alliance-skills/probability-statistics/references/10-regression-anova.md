@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Relationships Among Variables: Regression, Correlation, ANOVA, and Experimental Design
 
 This reference covers the statistical methods for studying relationships between variables, from the foundational concepts of causation and experimental design through simple and multiple linear regression, correlation analysis, the full family of analysis of variance techniques (one-way, randomized blocks, two-factor, multifactor, factorial designs), analysis of covariance, and logistic regression for binary responses. Both the classical (frequentist) and Bayesian perspectives are included, and the material integrates rigorous derivations, computational formulas, practical implementation notes, and diagnostic procedures for model checking.

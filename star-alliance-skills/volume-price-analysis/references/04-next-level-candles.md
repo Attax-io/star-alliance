@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Volume Price Analysis — The Next Level (Candle Methodology)
 
 This section advances VPA from bar-based analysis to candlestick analysis, establishing five governing principles for reading candles, then walking through the "premier candles" (shooting star, hammer, long-legged doji) and the supporting candle types (wide spread, narrow spread, hanging man, stopping volume, topping out volume) that signal insider behaviour at every phase of the market cycle. The central thesis is that price action alone reveals sentiment, but volume is what places that sentiment in context — quantifying whether the signal is a minor pause or the start of a true reversal.

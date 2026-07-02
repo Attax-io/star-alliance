@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # WCAG 2.2 AA — the designer's checklist
 
 Scope: criteria a designer owns, owns-cooperatively, or must sign off before dev ships. Not pure-engineering items (parsing, media captions, timeouts) are excluded. Numbers are WCAG 2.2 published values, no invented thresholds.

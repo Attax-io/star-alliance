@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Trading Ranges — Structure & Behavior
 
 ## Why Trading Ranges Are Harder Than Trends

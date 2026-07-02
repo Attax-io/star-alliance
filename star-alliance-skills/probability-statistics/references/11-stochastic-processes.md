@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Stochastic Processes: Markov Chains, Martingales, Brownian Motion, and Poisson Processes
 
 A stochastic process is a sequence of random variables indexed by time, written $X_0, X_1, X_2, \ldots$ (discrete-time) or $\{X_t : t \geq 0\}$ (continuous-time), where the value at time $n$ may depend on past values. This reference covers discrete-time processes (random walks, Markov chains, martingales), continuous-time processes (Brownian motion, Poisson processes), and computational techniques (Markov Chain Monte Carlo). Foundational concepts include the Markov property (future conditionally independent of past given present), stationarity, reversibility, and the fundamental limit theorems governing long-run behavior.

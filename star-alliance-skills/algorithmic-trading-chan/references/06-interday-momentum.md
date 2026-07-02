@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Chapter 6 — Interday Momentum Strategies
 
 This chapter lays out a taxonomy of interday momentum strategies in futures and stocks, grounded in four causal hypotheses: (1) persistence of the sign of roll returns in futures, (2) slow diffusion/analysis/acceptance of new information, (3) forced asset sales or purchases by funds, and (4) high-frequency-trader market manipulation (the last is treated in the next chapter). Chan distinguishes time-series momentum (a single asset's past returns predict its own future returns) from cross-sectional momentum (an asset's past returns relative to peers predict its future relative returns), and shows how to detect, trade, and stress-test each, with particular attention to the post-2008 "momentum crash" risk.

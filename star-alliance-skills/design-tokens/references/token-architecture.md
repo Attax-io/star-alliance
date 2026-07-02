@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Token architecture — primitive, semantic, component
 
 A three-tier model where each layer has exactly one job, references flow downward, and the layer you reference is decided by *who consumes the token*, not by taste.

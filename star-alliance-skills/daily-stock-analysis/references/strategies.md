@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Strategies — the fifteen built-in modes
 
 The pipeline ships fifteen named strategies. Fourteen are *analytical* (run as

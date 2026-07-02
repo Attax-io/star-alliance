@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Jakub Krehel's Animation Principles
 
 Jakub Krehel is a design engineer known for his work at jakub.kr. His approach emphasizes **subtle production polish** — animations that enhance the experience invisibly, designed for real client work where users interact repeatedly.

@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Motion Cookbook
 
 The single source of truth for motion **recipes** — implementation patterns and code. In Create mode this is your primary reference; in Audit mode load it when making implementation recommendations. Designer philosophy and decision frameworks live in the per-designer reference files; the code lives here.

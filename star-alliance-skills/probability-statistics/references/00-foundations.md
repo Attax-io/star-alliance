@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Probability Models, Random Variables, and Discrete Distributions
 
 A probability model pairs a sample space (the set of all possible outcomes) with a probability measure that assigns numbers in [0,1] to events. Random variables are functions from that sample space into the reals, allowing probability to describe numerical quantities of interest. Together these three primitives — sample space, measure, and random variable — form the foundation of every statistical and data‑science model studied later.

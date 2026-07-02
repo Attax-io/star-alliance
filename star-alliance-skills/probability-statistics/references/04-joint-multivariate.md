@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 (x) =
 c pY(x) / pX(x) accept with
 probability min(1, c pY(x) accept with probability

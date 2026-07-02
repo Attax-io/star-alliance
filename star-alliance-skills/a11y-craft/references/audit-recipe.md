@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # A11y audit recipe — how the designer runs the gate
 
 A single repeatable pre-ship pass. Run it on the staging build with the real component library and the real data shapes. Designer is the gate; dev cannot self-certify. Six stages, in order; each stage is concrete.

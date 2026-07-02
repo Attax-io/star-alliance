@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Star Alliance — Hermes
 
 A guild of AI agents. The Butler is the single Hermes profile the Guild Master

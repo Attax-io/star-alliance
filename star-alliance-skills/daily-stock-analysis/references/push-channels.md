@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Push channels — six targets, one contract
 
 Every push channel in this matrix is a *first-class output* of the pipeline.

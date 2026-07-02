@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Responsive + RTL tokens — fluid scales and logical properties
 
 Tokens that compose across viewport sizes and writing directions without per-breakpoint overrides.

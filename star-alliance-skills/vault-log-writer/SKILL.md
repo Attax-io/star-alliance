@@ -3,8 +3,9 @@ name: vault-log-writer
 description: Write and file a correct vault log entry for the active target project (resolved via tools/resolve_vault.py; Lex Council is one registered vault) per the mandatory P8-style change logging rule. Use whenever any code or backend change has been made in a session — every migration, trigger, view, RLS policy, component, page, edge function, bug fix, or doc update. Also use when the session called any Supabase MCP tool (execute_sql, apply_migration, get_advisors, etc.) to produce the required P13 self-audit section. Trigger on phrases like "write the vault log", "log this change", "P8 log", "session log", "what do I need to log", "vault log entry", or any time a session is about to end and no vault log has been written. This skill exists because P8 is non-negotiable and the P13 self-audit section is frequently omitted or malformed.
 metadata:
   version: 1.1.1
----
+type: Skill
 
+---
 # Writing a Vault Log Entry
 
 ## Step 0 — Resolve the active vault

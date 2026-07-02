@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Volume Price Analysis — Worked Examples Across Markets and Time Frames
 
 This section consolidates VPA principles through real chart examples spanning US equities, ETFs, spot forex, index futures, commodity futures, tick charts, and weekly long-term charts. The recurring message: volume reveals what price alone conceals — effort versus result, insider accumulation and distribution, and the patience required to act on, or wait for, true confirmation.

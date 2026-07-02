@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Bump-and-Run Reversals & Cup with Handle
 
 ## Bump-and-Run Reversal Bottom

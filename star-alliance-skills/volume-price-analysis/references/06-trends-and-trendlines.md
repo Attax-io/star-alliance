@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Volume Price Analysis — Dynamic Trends and Trend Lines
 
 This section replaces the static "wait for three points, then draw a line" approach with a VPA-driven method for identifying and riding trends from their birth in the congestion zone. The central message is that trends are created at support and resistance, validated by volume, and tracked dynamically through pivot highs and pivot lows as the move unfolds.

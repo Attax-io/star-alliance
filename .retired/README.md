@@ -1,3 +1,8 @@
+---
+type: Readme
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Retired artifacts
 
 guild-sync skill retired 2026-07-02 — the MCP now serves skills directly from the

@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Triple Tops/Bottoms & Three Peaks/Valleys
 
 ## Three Falling Peaks (3FP)

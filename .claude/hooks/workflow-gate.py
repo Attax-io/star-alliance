@@ -56,11 +56,24 @@ BANNER_RES = [
 
 
 def find_banner(text):
+    """Return the MOST RECENT banner in `text`, not the first.
+
+    `text` is every assistant message since the last real user turn,
+    concatenated — which can span many assistant turns in a long
+    orchestration (dispatch Strategist -> get result -> fan out N agents).
+    An early banner (e.g. the Butler's "Routing" intake banner, or a
+    mistyped/unregistered name from an earlier attempt this same turn)
+    would otherwise win forever: re.search() stops at the FIRST match, so
+    every later, correct re-declaration was invisible and the gate kept
+    quoting the stale one back. Scan every banner from both patterns and
+    keep the one that occurs latest in the text.
+    """
+    best = None  # (start_index, name)
     for rx in BANNER_RES:
-        m = rx.search(text)
-        if m:
-            return m.group(1).strip()
-    return None
+        for m in rx.finditer(text):
+            if best is None or m.start() > best[0]:
+                best = (m.start(), m.group(1).strip())
+    return best[1] if best else None
 
 
 def project_dir():

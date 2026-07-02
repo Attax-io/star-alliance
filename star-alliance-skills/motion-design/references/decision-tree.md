@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Animation Decision Tree
 
 A flowchart for choosing the right easing and approach for any UI animation.

@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T12:28:13Z
+---
+
 # Optimal Statistical Inference
 
 This reference covers the theory and practice of optimal point estimation, hypothesis testing, confidence interval construction, and decision making, integrating the rigorous measure-theoretic treatment of optimal unbiased estimation and Bayesian decision theory with the applied, computational perspective used in engineering and data-science practice. Topics progress from foundational definitions (bias, MSE, sufficiency, completeness) through UMVUE construction, MLE properties, Neyman–Pearson testing, the Cramér–Rao bound, Bayesian optimal rules, and tests/intervals for means, variances, and proportions under both classical and Bayesian paradigms.
