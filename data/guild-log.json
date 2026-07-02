@@ -2,6 +2,17 @@
   "version": 1,
   "entries": [
     {
+      "id": 122,
+      "date": "2026-07-02",
+      "type": "chore",
+      "title": "build.py: skip index.md/log.md when discovering member agents",
+      "who": "the-quartermaster",
+      "detail": "iter_agents() in build.py globbed star-alliance-members/*.md and treated every file there as a member agent except readme.md. The new OKF folder-index requirement (okf skill 1.5.0) put an index.md in every governed folder including star-alliance-members/ itself, which build.py then mis-read as a phantom agent named 'index.md' and aborted the build. Extended the existing readme.md skip to also skip index.md and log.md (the two OKF-reserved non-concept filenames a governed folder may carry). Verified: python3 build.py completes clean.",
+      "ref": [
+        "okf"
+      ]
+    },
+    {
       "id": 121,
       "date": "2026-07-02",
       "type": "skill-upgrade",
