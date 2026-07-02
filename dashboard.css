@@ -1106,7 +1106,7 @@ ul, ol { list-style: none; }
 .scheduler-tile:focus-visible {
   transform: scale(1.12);
   box-shadow: 0 0 0 2px var(--gold-dim), 0 4px 16px rgba(0,0,0,0.5);
-  z-index: 50;
+  z-index: 500;
   outline: none;
 }
 .scheduler-tile:focus-visible {
@@ -1120,6 +1120,7 @@ ul, ol { list-style: none; }
   max-width: 260px;
   width: max-content;
   bottom: calc(100% + 6px);
+  z-index: 500;
   font-size: 0.7rem;
   line-height: 1.4;
   padding: 8px 12px;
