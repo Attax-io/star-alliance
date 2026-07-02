@@ -3499,6 +3499,13 @@
       "title": "Quick Fix: dashboard.css, dashboard.html, dashboard.js",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Quick Fix: dashboard.html",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130
