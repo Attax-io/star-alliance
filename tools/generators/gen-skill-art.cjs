@@ -22,6 +22,10 @@ const STYLE = "fantasy RPG skill icon, Fallen Sword MMORPG style, dark parchment
 
 const SKILLS = [
   {
+    id: "watch-where-you-step",
+    prompt: `${STYLE}. A single armored boot hovering one inch above a cracked obsidian floor veined with glowing gold cascading cracks that radiate outward toward a distant precipice; the boot is mid-step, suspended, the cracks unfurling beneath like a frozen ripple, a faint parchment scroll with FK-relationship runes pinned at the boot's ankle, dramatic shaft of light from above illuminating the cracks but not the dark abyss ahead, tension between advance and warning, no text, no watermarks`,
+  },
+  {
     id: "prove-it",
     prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "", no text, no watermarks`,
   },

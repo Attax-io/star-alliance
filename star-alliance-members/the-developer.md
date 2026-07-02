@@ -3,7 +3,7 @@ name: the-developer
 description: "Deploy for writing code, applying changes, fixing bugs, implementing features, and hands-on development work — including dev servers, tooling, and knowledge graphs. Triggers: 'write the code', 'implement this', 'fix this bug', 'apply the changes', 'build this feature', 'refactor this code', 'open dev server', 'generate a knowledge graph'."
 model: sonnet
 tools: [Read, Bash]
-skills: [bug-fix-workflow, db-rename-sweep, dev-server, graphify, head-of-department, claude-code-hooks, supabase, supabase-postgres-best-practices, obsidian-markdown, performance, python-master, motion-design, agent-web-reach, multimodal-model-wrappers, system-prompt-design-patterns, dev-ops-command-pack, codebase-memory-mcp, ultra-brainstorming, automated-testing, frontend-react-engineering, code-review-craft, hotspot-radar, temporal-coupling-audit, cognitive-bias-guard, observability-incident-response, admin-page-fixer, add-admin-permission, admin-page-builder, bundled-rls, view-registry, code-unity, star-alliance-language, weapon-utility, prove-it] 
+skills: [bug-fix-workflow, db-rename-sweep, dev-server, graphify, head-of-department, claude-code-hooks, supabase, supabase-postgres-best-practices, obsidian-markdown, performance, python-master, motion-design, agent-web-reach, multimodal-model-wrappers, system-prompt-design-patterns, dev-ops-command-pack, codebase-memory-mcp, ultra-brainstorming, automated-testing, frontend-react-engineering, code-review-craft, hotspot-radar, temporal-coupling-audit, cognitive-bias-guard, observability-incident-response, admin-page-fixer, add-admin-permission, admin-page-builder, bundled-rls, view-registry, watch-where-you-step, code-unity, star-alliance-language, weapon-utility, prove-it]
 type: Member
 version: 1.0.0
 ---
@@ -92,13 +92,14 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | `hotspot-radar` | a refactoring sprint or backlog prioritization needs an objective ranked starting point — 'find the worst parts', 'prioritize the refactoring backlog', 'where should we focus' — based on git history, not opinion | open-ended system-health investigation with no module pinpointed yet (→ Architect `code-crime-scene`) or fixing a single known bug (→ `bug-fix-workflow`) | `temporal-coupling-audit`, `bug-fix-workflow` |
 | `temporal-coupling-audit` | module boundaries look wrong, a change 'shouldn't' have broken something else, or architectural decay needs measuring — surfaces hidden dependencies the import graph doesn't show | a known bug in one specific module (→ `bug-fix-workflow`) or column/table-level coupling (→ `db-rename-sweep`) | `hotspot-radar`, `bug-fix-workflow` |
 | `cognitive-bias-guard` | a group verdict, hotspot ranking, root-cause, code review, or post-mortem is closing — consensus arrived suspiciously fast, hindsight is rewriting history, or the senior voice anchored everyone | the technical analysis itself with no group decision yet, or pure single-author work with no verdict to bias | `code-review-craft`, `hotspot-radar` |
+| `watch-where-you-step` | about to run a direct UPDATE/DELETE/INSERT against a DB or Supabase backend — check FK cascade blast radius first | read-only SELECT queries, or work that never touches the DB directly | `supabase-postgres-best-practices`, `schema-evolution` |
 **Universal skills — every member carries these; drill them at the edges of every quest:**
 
 | Skill | Invoke WHEN | Do NOT invoke for | Pairs with |
 |---|---|---|---|
 | `weapon-utility` | the numeric usage-level meter — read a skill/workflow's level from `tools/xp.py` to see if it's load-bearing or cold (L1, 0 XP); same meter for member activity (dispatch-log) | it is doctrine + meter, never a deliverable; it does NOT select weapons — model selection lives in `star-alliance-arsenal/` (`summon.py`, per-seat backends) | every skill/workflow invocation decision, especially before editing a load-bearing skill |
 | `prove-it` | before any message declaring a task done, fixed, shipped, complete, or ready - cross-check the original request line by line against the actual diff/tool-call evidence | it does not replace running tests/builds, and it does not replace `verify-gate.py` (that one checks code quality, not fulfillment) | `verify-gate.py`, `requesting-code-review`, `dual-model-review` |
-| `star-alliance-language` | first on entering an OKF repo — read the concept map, never blind-read | a one-file edit where the path is already known | every reading task |
+|| `star-alliance-language`
 | `performance` | profiling and optimizing a measured hot path, slow render, or heavy query | cold code, or optimizing before a metric proves the need | `bug-fix-workflow` |
 | `ultra-brainstorming` | a hard design or debugging question benefits from fanning across thinker models before committing to code | routine edits or a single clear fix | `bug-fix-workflow`, `performance` |
 

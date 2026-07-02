@@ -153,8 +153,9 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`view-registry`](star-alliance-skills/view-registry/SKILL.md) | 1.0.0 | own | 112 / 683 | 1128 / 178 | ✓ lean | Gate every Supabase view query in the frontend through a typed registry (VIEWS dot key) so… |
 | [`voices-check`](star-alliance-skills/voices-check/SKILL.md) | 1.0.1 | own | 145 / 1013 | 392 / 50 | ✓ lean | Integrate an agent's competing internal sub-voices into one coherent response instead of l… |
 | [`volume-price-analysis`](star-alliance-skills/volume-price-analysis/SKILL.md) | 1.0.0 | own | 137 / 1020 | 1067 / 55 | ✓ lean | The Merchant's read-only craft for Volume Price Analysis, distilled from Anna Coulling's A… |
+| [`watch-where-you-step`](star-alliance-skills/watch-where-you-step/SKILL.md) | 1.0.0 | own | 74 / 492 | 2261 / 346 | ✓ lean | Use when about to run a direct write (UPDATE/DELETE/INSERT or DDL) against a database or v… |
 | [`weapon-utility`](star-alliance-skills/weapon-utility/SKILL.md) | 4.0.0 | own | 116 / 868 | 2664 / 150 | ✓ lean | The numeric usage-level doctrine: every member, skill, and workflow has a LEVEL derived so… |
 | [`workflow-forge`](star-alliance-skills/workflow-forge/SKILL.md) | 1.4.0 | own | 153 / 997 | 2235 / 175 | ✓ lean | The Strategist's craft for distilling a finished run into a reusable star-map workflow in … |
 | [`workflow-runner`](star-alliance-skills/workflow-runner/SKILL.md) | 1.0.0 | own | 123 / 875 | 1100 / 90 | ✓ lean | The Quartermaster's craft for operating the guild's own machinery — RUN a star-map workflo… |
 
-_127 skills — 122 lean · 5 large (installable, over the 500-line ideal) · 0 near the word ceiling · 0 hard violations._
+_128 skills — 123 lean · 5 large (installable, over the 500-line ideal) · 0 near the word ceiling · 0 hard violations._

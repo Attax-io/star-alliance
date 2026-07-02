@@ -196,6 +196,37 @@ def _venv_marker():
     return os.path.join(VENV_DIR, ".psycopg_ready")
 
 
+def _seed_python():
+    """Return a Python >=3.10 to seed the venv. psycopg3 needs typing.TypeAlias
+    (3.10+); the macOS system python3 is 3.9 and would build an unusable venv."""
+    import shutil
+    for name in ("python3.13", "python3.12", "python3.11", "python3.10"):
+        path = shutil.which(name)
+        if path:
+            return path
+    if sys.version_info >= (3, 10):
+        return sys.executable
+    print("supabase: no Python >=3.10 found to build the venv (this one is "
+          "{0}.{1}); install e.g. `brew install python@3.12`".format(*sys.version_info[:2]),
+          file=sys.stderr)
+    sys.exit(EXIT_DEPS)
+
+
+def _venv_is_modern():
+    """True if the cached venv's interpreter is Python >=3.10."""
+    vp = _venv_python()
+    if not os.path.isfile(vp):
+        return False
+    try:
+        out = subprocess.run(
+            [vp, "-c", "import sys; print(sys.version_info[0], sys.version_info[1])"],
+            check=True, capture_output=True, text=True,
+        ).stdout.split()
+        return (int(out[0]), int(out[1])) >= (3, 10)
+    except Exception:
+        return False
+
+
 def ensure_psycopg():
     """Create (once) and reuse a cached venv with psycopg installed.
 
@@ -203,12 +234,21 @@ def ensure_psycopg():
     we ``python3 -m venv`` then ``pip install psycopg[binary]``. Exits 6 if
     bootstrap fails, with the pip output on stderr so the user can fix it.
     """
-    if os.path.isfile(_venv_marker()):
+    if os.path.isfile(_venv_marker()) and _venv_is_modern():
         return _venv_python()
 
-    # We use the *outer* python3 (whatever is on PATH) to seed the venv.
-    # The venv then carries its own unambiguous interpreter — no PATH drift.
-    py = sys.executable
+    # Seed from a modern Python (>=3.10); psycopg3 cannot run on the macOS
+    # system python 3.9. The venv then carries its own unambiguous interpreter.
+    py = _seed_python()
+
+    # A venv previously built on an old Python (e.g. system 3.9) cannot import
+    # psycopg — tear it down and rebuild on the modern seed. rmtree of this
+    # rebuildable cache dir is safe.
+    if os.path.isdir(VENV_DIR) and not _venv_is_modern():
+        import shutil as _sh
+        print("supabase: existing venv is too old (<3.10) — rebuilding", file=sys.stderr)
+        _sh.rmtree(VENV_DIR, ignore_errors=True)
+
     if not os.path.isdir(VENV_DIR):
         os.makedirs(os.path.dirname(VENV_DIR), exist_ok=True)
         print("supabase: first run — creating cached venv at {0}".format(VENV_DIR),
@@ -580,6 +620,16 @@ def resolve_sql(args):
 
 
 def main():
+    # psycopg3 must be imported by Python >=3.10 (it uses typing.TypeAlias).
+    # Hermes may launch this via the macOS system python 3.9, and connect()
+    # injects the venv's site-packages onto THIS interpreter's sys.path — so a
+    # 3.9 caller cannot import psycopg regardless of how the venv was built.
+    # Re-exec the whole script once under a modern interpreter.
+    if sys.version_info < (3, 10) and os.environ.get("SUPABASE_REEXECED") != "1":
+        alt = _seed_python()
+        os.environ["SUPABASE_REEXECED"] = "1"
+        os.execv(alt, [alt, os.path.abspath(__file__)] + sys.argv[1:])
+
     parser = argparse.ArgumentParser(
         prog="supabase",
         description="Run SQL against the Lex Council Supabase Postgres database.",

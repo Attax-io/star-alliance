@@ -3,7 +3,7 @@ name: the-architect
 description: "Deploy for system design, domain modeling, database architecture, and structural refactoring. Triggers: 'design the system', 'model the domain', 'architect the database', 'refactor the structure'."
 model: opus
 tools: [Read, Bash]
-skills: [transactions-domain-model, legal-rule-modeling, invariant-inference, db-rename-sweep, schema-evolution, spec-driven-development, law-harvest, graphify, head-of-department, supabase, supabase-postgres-best-practices, pattern-library-discovery, ultra-brainstorming, api-integration-design, file-access-model, add-admin-permission, add-new-trigger, add-new-view, lex-system-audit, phased-db-refactor, bundled-rls, view-registry, code-crime-scene, hotspot-radar, temporal-coupling-audit, code-unity, star-alliance-language, weapon-utility, prove-it]
+skills: [transactions-domain-model, legal-rule-modeling, invariant-inference, db-rename-sweep, schema-evolution, spec-driven-development, law-harvest, graphify, head-of-department, supabase, supabase-postgres-best-practices, pattern-library-discovery, ultra-brainstorming, api-integration-design, file-access-model, add-admin-permission, add-new-trigger, add-new-view, lex-system-audit, phased-db-refactor, bundled-rls, view-registry, code-crime-scene, hotspot-radar, temporal-coupling-audit, watch-where-you-step, code-unity, star-alliance-language, weapon-utility, prove-it]
 type: Member
 version: 1.0.0
 ---
@@ -83,13 +83,14 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | `code-crime-scene` | an open-ended system investigation — 'where are the real problems', 'audit system health', 'find bottlenecks', 'why does this area keep breaking' — and you only know something is wrong, not what to fix | the module to fix is already known (→ `hotspot-radar` or `temporal-coupling-audit`) or a single-site known bug (→ Developer `bug-fix-workflow`) | `hotspot-radar`, `temporal-coupling-audit` |
 | `hotspot-radar` | a refactoring sprint or backlog prioritization needs an objective ranked starting point — 'find the worst parts', 'prioritize the refactoring backlog', 'where should we focus' — based on git history, not opinion | open-ended system-health investigation with no module pinpointed yet (→ `code-crime-scene`) or fixing a single known bug (→ Developer `bug-fix-workflow`) | `code-crime-scene`, `temporal-coupling-audit` |
 | `temporal-coupling-audit` | module boundaries look wrong, a change 'shouldn't' have broken something else, or architectural decay needs measuring — surfaces hidden dependencies the import graph doesn't show | a known bug in one specific module (→ Developer `bug-fix-workflow`) or column/table-level coupling (→ `db-rename-sweep`) | `hotspot-radar`, `code-crime-scene` |
+| `watch-where-you-step` | about to run a direct UPDATE/DELETE/INSERT against a DB or Supabase backend — check FK cascade blast radius first | read-only SELECT queries, or work that never touches the DB directly | `supabase-postgres-best-practices`, `schema-evolution` |
 **Universal skills — every member carries these; drill them at the edges of every quest:**
 
 | Skill | Invoke WHEN | Do NOT invoke for | Pairs with |
 |---|---|---|---|
 | `weapon-utility` | the numeric usage-level meter — read a skill/workflow's level from `tools/xp.py` to see if it's load-bearing or cold (L1, 0 XP); same meter for member activity (dispatch-log) | it is doctrine + meter, never a deliverable; it does NOT select weapons — model selection lives in `star-alliance-arsenal/` (`summon.py`, per-seat backends) | every skill/workflow invocation decision, especially before editing a load-bearing skill |
 | `prove-it` | before any message declaring a task done, fixed, shipped, complete, or ready - cross-check the original request line by line against the actual diff/tool-call evidence | it does not replace running tests/builds, and it does not replace `verify-gate.py` (that one checks code quality, not fulfillment) | `verify-gate.py`, `requesting-code-review`, `dual-model-review` |
-| `star-alliance-language` | first on entering an OKF repo — read the concept map, never blind-read | a one-file edit where the path is already known | every reading task |
+|| `star-alliance-language`
 | `graphify` | turning a system, domain, or dependency web into a knowledge-graph or diagram view | prose specs or code that needs no visual model | `schema-evolution`, `transactions-domain-model` |
 | `ultra-brainstorming` | a schema or system-design choice is contested — fan options across thinker models, then synthesize one ranked design | a settled design or a mechanical migration | `schema-evolution`, `storm-investigation` |
 
