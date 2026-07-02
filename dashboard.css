@@ -1081,21 +1081,61 @@ ul, ol { list-style: none; }
   white-space: nowrap;
   flex-shrink: 0;
 }
-.scheduler-card__desc {
-  font-size: var(--fs-meta);
-  color: var(--text-dim);
-  line-height: 1.4;
-  overflow-wrap: anywhere;
-  word-break: break-word;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  cursor: pointer;
+/* Art tile + tooltip — replaces the old inline long-text desc block.
+   .scheduler-card__art-wrap is the relative-positioned host for the
+   child .card-tooltip (re-uses the global .card-tooltip class already
+   used by skill thumbs, workflow thumbs, member portraits, domain cards). */
+.scheduler-card__art-wrap {
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+  line-height: 0;
 }
-.scheduler-card__desc.expanded {
-  -webkit-line-clamp: unset;
-  overflow: visible;
+.scheduler-card__art {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+  display: block;
+  flex-shrink: 0;
+  border: 1px solid var(--border-soft);
+  background: var(--surface-2);
+  box-shadow: 0 0 0 1px transparent;
+  transition: box-shadow 0.18s ease, transform 0.18s ease, border-color 0.18s ease;
+}
+.scheduler-card__art-wrap:hover .scheduler-card__art {
+  border-color: var(--gold-dim);
+  box-shadow: 0 0 0 1px var(--gold-dim), 0 4px 14px rgba(0,0,0,0.45);
+  transform: translateY(-1px);
+}
+.scheduler-card__art-monogram {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  background: var(--surface-2);
+  border: 1px solid var(--gold-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--ff-serif);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+.scheduler-card__art-wrap > .card-tooltip {
+  left: 0;
+  right: auto;
+  bottom: calc(100% + 8px);
+  min-width: 240px;
+  max-width: 320px;
+  font-size: 0.74rem;
+  text-align: left;
+}
+.scheduler-card__art-wrap:hover > .card-tooltip {
+  opacity: 1;
+  transform: translateY(0);
 }
 .scheduler-card__status {
   display: flex;

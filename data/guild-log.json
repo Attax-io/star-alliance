@@ -2886,6 +2886,20 @@
       "title": "Skill Forge: guild/_briefs/scheduler-art/com.whatsapp-mcp.server.md, guild/_briefs/scheduler-art/com.whatsapp-mcp.tunnel.md, guild/_briefs/scheduler-art/homebrew.mxcl.ollama.md (+7 more)",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Skill Forge: .claude/settings.json, art/scheduler-art-thumb/lex-daily-bug-triage.png, dashboard.css (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Skill Forge: .claude/settings.json, art/scheduler-art-thumb/lex-daily-bug-triage.png, dashboard.css (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130

@@ -593,14 +593,61 @@ function schedulerJobCard(job) {
   }
   card.appendChild(head)
 
-  if (job.description) {
-    const desc = document.createElement('div')
-    desc.className = 'scheduler-card__desc'
-    desc.textContent = job.description
-    desc.title = job.description
-    desc.addEventListener('click', () => desc.classList.toggle('expanded'))
-    card.appendChild(desc)
+  // Art + tooltip replace the old inline long-text desc block.
+  // The image is the focal element; the .card-tooltip child shows the full
+  // description + schedule + last-run detail on hover (mirrors how skill
+  // thumbs and member portraits surface their detail via .card-tooltip).
+  // The onerror fallback hides the image and inserts a simple monogram div
+  // so missing art degrades gracefully (same pattern as memberCard()).
+  const artWrap = document.createElement('div')
+  artWrap.className = 'scheduler-card__art-wrap'
+  const art = document.createElement('img')
+  art.className = 'scheduler-card__art'
+  art.src = `art/scheduler-art-thumb/${job.id}.png`
+  art.alt = job.name || job.id || ''
+  art.loading = 'lazy'
+  art.decoding = 'async'
+  art.onerror = function () {
+    this.style.display = 'none'
+    const initials = (job.name || job.id || 'S').split(/\s+/).filter(w => w).map(w => w[0]).join('').slice(0, 3).toUpperCase()
+    const mono = document.createElement('div')
+    mono.className = 'scheduler-card__art-monogram'
+    mono.textContent = initials || 'S'
+    this.parentNode.insertBefore(mono, this)
   }
+  artWrap.appendChild(art)
+
+  const artTip = document.createElement('div')
+  artTip.className = 'card-tooltip'
+  // Tooltip body = description (the detail that used to live inline) +
+  // schedule.display + lastRun.summary/status. Render only the rows that
+  // exist so the tooltip stays quiet for sparse jobs.
+  const tipParts = []
+  if (job.description) tipParts.push(job.description)
+  if (job.schedule && job.schedule.display) {
+    tipParts.push(`<span style="color:var(--gold);font-size:0.66rem">${job.schedule.display}</span>`)
+  }
+  if (job.lastRun && job.lastRun.status && job.lastRun.status !== 'never') {
+    const lrLabel = job.lastRun.status.charAt(0).toUpperCase() + job.lastRun.status.slice(1)
+    const lrAt = job.lastRun.at ? ` · ${job.lastRun.at}` : ''
+    const lrSum = job.lastRun.summary ? `<br>${job.lastRun.summary}` : ''
+    tipParts.push(`<span style="color:var(--gold);font-size:0.66rem">Last run: ${lrLabel}${lrAt}</span>${lrSum}`)
+  }
+  if (job.controllable) {
+    const flags = []
+    if (job.controllable.toggle) flags.push('toggle')
+    if (job.controllable.retime) flags.push('retime')
+    if (job.controllable.runNow) flags.push('run now')
+    if (flags.length) {
+      tipParts.push(`<span style="color:var(--text-dim);font-size:0.62rem">Controllable: ${flags.join(' · ')}</span>`)
+    } else {
+      tipParts.push(`<span style="color:var(--text-faint);font-size:0.62rem">System — view only</span>`)
+    }
+  }
+  artTip.innerHTML = tipParts.join('<br>')
+  artWrap.appendChild(artTip)
+
+  card.appendChild(artWrap)
 
   const statusRow = document.createElement('div')
   statusRow.className = 'scheduler-card__status'
