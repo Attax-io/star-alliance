@@ -1,6 +1,12 @@
 // Star Alliance Dashboard — data wiring
 // Launch: node serve.cjs → http://localhost:4178/dashboard.html
 
+function escapeHtml(str) {
+  return String(str ?? '').replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]))
+}
+
 async function boot() {
   try {
     const GUILD = await fetch('guild-data.json').then(r => r.json())
@@ -351,7 +357,7 @@ function memberCard(m) {
   const tooltip = document.createElement('div')
   tooltip.className = 'card-tooltip'
   const memberLevelLine = levelVersionLabel(m)
-  tooltip.innerHTML = `${(m.summary || m.description || '')}${memberLevelLine ? '<br><span style="color:var(--gold);font-size:0.66rem">' + memberLevelLine + (m.neverInvoked ? ' · never invoked' : '') + '</span>' : ''}`
+  tooltip.innerHTML = `${escapeHtml(m.summary || m.description || '')}${memberLevelLine ? '<br><span style="color:var(--gold);font-size:0.66rem">' + escapeHtml(memberLevelLine) + (m.neverInvoked ? ' · never invoked' : '') + '</span>' : ''}`
   portraitWrap.appendChild(tooltip)
 
   const strip = document.createElement('div')
@@ -393,7 +399,7 @@ function memberCard(m) {
     const tip = document.createElement('div')
     tip.className = 'card-tooltip'
     const hl = accent ? accent.color : 'var(--gold)'
-    tip.innerHTML = `<strong style="color:${hl}">${skillObj?.name || sid}</strong><br>${(skillObj?.blurb || '').slice(0, 120)}<br><span style="color:${hl};font-size:0.66rem">${count} member${count===1?'':'s'}${levelVerLine ? ' · ' + levelVerLine : ''}${skillObj?.neverInvoked ? ' · never invoked' : ''}${accent ? ' · ' + accent.domainName : ''}</span>`
+    tip.innerHTML = `<strong style="color:${hl}">${escapeHtml(skillObj?.name || sid)}</strong><br>${escapeHtml((skillObj?.blurb || '').slice(0, 120))}<br><span style="color:${hl};font-size:0.66rem">${count} member${count===1?'':'s'}${levelVerLine ? ' · ' + escapeHtml(levelVerLine) : ''}${skillObj?.neverInvoked ? ' · never invoked' : ''}${accent ? ' · ' + escapeHtml(accent.domainName) : ''}</span>`
     thumb.appendChild(tip)
     strip.appendChild(thumb)
   })
@@ -449,7 +455,7 @@ function renderWorkflows(g) {
     const memberIds = [...new Set((w.steps||[]).map(s => s.actor).filter(a => a && a.startsWith('the-')))]
     const memberNames = memberIds.map(id => ((window._GUILD_MEMBERS||[]).find(m => m.id === id)?.name) || id).join(', ')
     const wfLevelLine = levelVersionLabel(w)
-    tip.innerHTML = `<strong>${w.name || ''}</strong><br><em style='color:var(--gold);font-size:0.68rem'>${w.category||''}</em><br>${w.tagline || ''}${whenSnippet ? '<br><span style=opacity:.7>' + whenSnippet + '</span>' : ''}${memberNames ? '<br><span style="color:var(--gold);font-size:0.66rem">Members: ' + memberNames + '</span>' : ''}${wfLevelLine ? '<br><span style="color:var(--gold);font-size:0.66rem">' + wfLevelLine + (w.neverInvoked ? ' · never invoked' : '') + '</span>' : ''}`
+    tip.innerHTML = `<strong>${escapeHtml(w.name || '')}</strong><br><em style='color:var(--gold);font-size:0.68rem'>${escapeHtml(w.category||'')}</em><br>${escapeHtml(w.tagline || '')}${whenSnippet ? '<br><span style=opacity:.7>' + escapeHtml(whenSnippet) + '</span>' : ''}${memberNames ? '<br><span style="color:var(--gold);font-size:0.66rem">Members: ' + escapeHtml(memberNames) + '</span>' : ''}${wfLevelLine ? '<br><span style="color:var(--gold);font-size:0.66rem">' + escapeHtml(wfLevelLine) + (w.neverInvoked ? ' · never invoked' : '') + '</span>' : ''}`
     thumb.appendChild(tip)
     grid.appendChild(thumb)
   })
@@ -476,11 +482,11 @@ function renderDomains(g) {
       const tip = document.createElement('div')
       tip.className = 'card-tooltip'
       const rows = history.map(h => {
-        const label = h.version ? `v${h.version}` : (h.slug || '')
-        const detail = h.slug && h.version ? h.slug : (h.date || '')
+        const label = h.version ? `v${escapeHtml(h.version)}` : escapeHtml(h.slug || '')
+        const detail = h.slug && h.version ? escapeHtml(h.slug) : escapeHtml(h.date || '')
         return `<div>${label}${detail ? ' <span style="opacity:.6">' + detail + '</span>' : ''}</div>`
       }).join('')
-      tip.innerHTML = `<strong style="color:var(--gold)">${d.name||''} — v${d.version}</strong><br><span style="font-size:0.66rem;opacity:.75">${d.versionSource||''}</span>${rows ? '<div style="margin-top:6px;font-size:0.66rem">' + rows + '</div>' : ''}`
+      tip.innerHTML = `<strong style="color:var(--gold)">${escapeHtml(d.name||'')} — v${escapeHtml(d.version)}</strong><br><span style="font-size:0.66rem;opacity:.75">${escapeHtml(d.versionSource||'')}</span>${rows ? '<div style="margin-top:6px;font-size:0.66rem">' + rows + '</div>' : ''}`
       card.appendChild(tip)
     }
   })
@@ -623,15 +629,15 @@ function schedulerJobCard(job) {
   // schedule.display + lastRun.summary/status. Render only the rows that
   // exist so the tooltip stays quiet for sparse jobs.
   const tipParts = []
-  if (job.description) tipParts.push(job.description)
+  if (job.description) tipParts.push(escapeHtml(job.description))
   if (job.schedule && job.schedule.display) {
-    tipParts.push(`<span style="color:var(--gold);font-size:0.66rem">${job.schedule.display}</span>`)
+    tipParts.push(`<span style="color:var(--gold);font-size:0.66rem">${escapeHtml(job.schedule.display)}</span>`)
   }
   if (job.lastRun && job.lastRun.status && job.lastRun.status !== 'never') {
     const lrLabel = job.lastRun.status.charAt(0).toUpperCase() + job.lastRun.status.slice(1)
-    const lrAt = job.lastRun.at ? ` · ${job.lastRun.at}` : ''
-    const lrSum = job.lastRun.summary ? `<br>${job.lastRun.summary}` : ''
-    tipParts.push(`<span style="color:var(--gold);font-size:0.66rem">Last run: ${lrLabel}${lrAt}</span>${lrSum}`)
+    const lrAt = job.lastRun.at ? ` · ${escapeHtml(job.lastRun.at)}` : ''
+    const lrSum = job.lastRun.summary ? `<br>${escapeHtml(job.lastRun.summary)}` : ''
+    tipParts.push(`<span style="color:var(--gold);font-size:0.66rem">Last run: ${escapeHtml(lrLabel)}${lrAt}</span>${lrSum}`)
   }
   if (job.controllable) {
     const flags = []

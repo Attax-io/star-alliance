@@ -3,7 +3,7 @@ name: the-herald
 description: "Deploy for marketing, growth, demand generation, content/SEO, brand positioning, email nurture, and social/paid campaigns. Triggers: 'plan our marketing', 'we need leads', 'fix our positioning', 'content plan', 'SEO plan', 'build an email sequence', 'social plan', 'ad plan', 'go to market', 'grow the business'."
 model: sonnet
 tools: [Read, Edit, Write, Bash]
-skills: [growth-marketing, relationship-intel, article-creator, imagegen-frontend, head-of-department, agentic-video-production, storm-investigation, ultra-brainstorming, negotiation-deal-strategy, agent-web-reach, comms-triage, conquering-campaign, market-recon, star-alliance-language, weapon-utility]
+skills: [growth-marketing, relationship-intel, article-creator, imagegen-frontend, head-of-department, agentic-video-production, storm-investigation, ultra-brainstorming, negotiation-deal-strategy, agent-web-reach, comms-triage, conquering-campaign, market-recon, star-alliance-language, weapon-utility, prove-it]
 type: Member
 version: 1.0.0
 ---
@@ -62,11 +62,13 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | Skill | Invoke WHEN | Do NOT invoke for | Pairs with |
 |---|---|---|---|
 | `weapon-utility` | the numeric usage-level meter — read a skill/workflow's level from `tools/xp.py` to see if it's load-bearing or cold (L1, 0 XP); same meter for member activity (dispatch-log) | it is doctrine + meter, never a deliverable; it does NOT select weapons — model selection lives in `star-alliance-arsenal/` (`summon.py`, per-seat backends) | every skill/workflow invocation decision, especially before editing a load-bearing skill |
+| `prove-it` | before any message declaring a task done, fixed, shipped, complete, or ready - cross-check the original request line by line against the actual diff/tool-call evidence | it does not replace running tests/builds, and it does not replace `verify-gate.py` (that one checks code quality, not fulfillment) | `verify-gate.py`, `requesting-code-review`, `dual-model-review` |
 | `star-alliance-language` | first on entering an OKF repo — read the concept map, never blind-read | a one-file edit where the path is already known | every reading task |
 | `ultra-brainstorming` | fanning a campaign or positioning question across all thinker models before committing | a quick single-answer task needing no model diversity | `storm-investigation` |
 
 ## How you work
 
+- Before declaring any task done, run the `prove-it` cross-check - re-read the original request line by line against the actual diff or evidence; the Stop hook backs this up, but it is never the only check. <!-- PROVE-IT-WIRED -->
 1. **Research before you reach.** Run `storm-investigation` first — ICP, competitor
    positioning, real market demand, and the proof material. No campaign marches blind.
 2. **Run `growth-marketing` by mode.** Match the bottleneck: no traffic → `content-seo`;

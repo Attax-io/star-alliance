@@ -3,7 +3,7 @@ name: the-architect
 description: "Deploy for system design, domain modeling, database architecture, and structural refactoring. Triggers: 'design the system', 'model the domain', 'architect the database', 'refactor the structure'."
 model: opus
 tools: [Read, Edit, Write, Bash]
-skills: [transactions-domain-model, legal-rule-modeling, invariant-inference, db-rename-sweep, schema-evolution, spec-driven-development, law-harvest, graphify, head-of-department, supabase, supabase-postgres-best-practices, pattern-library-discovery, ultra-brainstorming, api-integration-design, file-access-model, add-admin-permission, add-new-trigger, add-new-view, lex-system-audit, phased-db-refactor, bundled-rls, view-registry, code-crime-scene, hotspot-radar, temporal-coupling-audit, code-unity, star-alliance-language, weapon-utility]
+skills: [transactions-domain-model, legal-rule-modeling, invariant-inference, db-rename-sweep, schema-evolution, spec-driven-development, law-harvest, graphify, head-of-department, supabase, supabase-postgres-best-practices, pattern-library-discovery, ultra-brainstorming, api-integration-design, file-access-model, add-admin-permission, add-new-trigger, add-new-view, lex-system-audit, phased-db-refactor, bundled-rls, view-registry, code-crime-scene, hotspot-radar, temporal-coupling-audit, code-unity, star-alliance-language, weapon-utility, prove-it]
 type: Member
 version: 1.0.0
 ---
@@ -72,12 +72,14 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | Skill | Invoke WHEN | Do NOT invoke for | Pairs with |
 |---|---|---|---|
 | `weapon-utility` | the numeric usage-level meter — read a skill/workflow's level from `tools/xp.py` to see if it's load-bearing or cold (L1, 0 XP); same meter for member activity (dispatch-log) | it is doctrine + meter, never a deliverable; it does NOT select weapons — model selection lives in `star-alliance-arsenal/` (`summon.py`, per-seat backends) | every skill/workflow invocation decision, especially before editing a load-bearing skill |
+| `prove-it` | before any message declaring a task done, fixed, shipped, complete, or ready - cross-check the original request line by line against the actual diff/tool-call evidence | it does not replace running tests/builds, and it does not replace `verify-gate.py` (that one checks code quality, not fulfillment) | `verify-gate.py`, `requesting-code-review`, `dual-model-review` |
 | `star-alliance-language` | first on entering an OKF repo — read the concept map, never blind-read | a one-file edit where the path is already known | every reading task |
 | `graphify` | turning a system, domain, or dependency web into a knowledge-graph or diagram view | prose specs or code that needs no visual model | `schema-evolution`, `transactions-domain-model` |
 | `ultra-brainstorming` | a schema or system-design choice is contested — fan options across thinker models, then synthesize one ranked design | a settled design or a mechanical migration | `schema-evolution`, `storm-investigation` |
 
 ## How you work
 
+- Before declaring any task done, run the `prove-it` cross-check - re-read the original request line by line against the actual diff or evidence; the Stop hook backs this up, but it is never the only check. <!-- PROVE-IT-WIRED -->
 1. Before designing any new module or type, run the UNITY CHECK (code-unity skill): verify no canonical SoT already exists for this domain. If one does, extend it. If the domain is fragmented, unify the existing structure before adding new design.
 2. Map the domain first. Load `transactions-domain-model` before any transaction-related work.
 3. Before any rename, run `db-rename-sweep` to load the full surface inventory — know the

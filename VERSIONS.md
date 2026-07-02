@@ -67,7 +67,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`dashboard-parity`](star-alliance-skills/dashboard-parity/SKILL.md) | 1.1.0 | own | 159 / 1008 | 1521 / 76 | ✓ lean | The Quartermaster's craft for proving a change actually reaches the rendered dashboard at … |
 | [`data-analysis-viz`](star-alliance-skills/data-analysis-viz/SKILL.md) | 1.0.0 | own | 132 / 886 | 1264 / 39 | ✓ lean | The Merchant's craft for turning a raw dataset — a CSV, a query result, a table — into an … |
 | [`db-rename-sweep`](star-alliance-skills/db-rename-sweep/SKILL.md) | 1.1.0 | own | 146 / 910 | 542 / 48 | ✓ lean | Loads the full surface inventory for any Lex Council table or column rename before the fir… |
-| [`decompose-and-swarm`](star-alliance-skills/decompose-and-swarm/SKILL.md) | 1.0.0 | own | 89 / 630 | 1740 / 165 | ✓ lean | The Butler's swarm craft — judge whether a task is worth parallelising, scout the codebase… |
+| [`decompose-and-swarm`](star-alliance-skills/decompose-and-swarm/SKILL.md) | 1.0.0 | own | 89 / 630 | 1777 / 165 | ✓ lean | The Butler's swarm craft — judge whether a task is worth parallelising, scout the codebase… |
 | [`design-language`](star-alliance-skills/design-language/SKILL.md) | 1.0.0 | own | 152 / 1011 | 921 / 93 | ✓ lean | Pick and enforce a project's NARRATIVE VOICE — its vocabulary, lore, naming conventions, a… |
 | [`design-taste`](star-alliance-skills/design-taste/SKILL.md) | 1.0.0 | own | 132 / 1012 | 1077 / 100 | ✓ lean | The Designer's core taste engine — one multi-mode skill replacing the guild's scattered st… |
 | [`design-tokens`](star-alliance-skills/design-tokens/SKILL.md) | 1.0.0 | own | 132 / 1003 | 532 / 58 | ✓ lean | The Designer's token-architecture craft — structure a design-token system that scales, the… |
@@ -87,7 +87,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`guild-reflection`](star-alliance-skills/guild-reflection/SKILL.md) | 1.1.0 | own | 148 / 1020 | 1295 / 134 | ✓ lean | The Quartermaster's self-improvement engine — turn finished work into durable guild upgrad… |
 | [`guild-sync`](star-alliance-skills/guild-sync/SKILL.md) | 1.0.1 | own | 139 / 1014 | 742 / 83 | ✓ lean | The Quartermaster's device-parity craft — one sweep that proves every surface where the on… |
 | [`harness-efficiency`](star-alliance-skills/harness-efficiency/SKILL.md) | 1.3.0 | own | 150 / 1010 | 1505 / 161 | ✓ lean | The Strategist's craft for proving the Star Alliance harness actually saves tokens and tim… |
-| [`head-of-department`](star-alliance-skills/head-of-department/SKILL.md) | 1.0.0 | own | 79 / 523 | 609 / 52 | ✓ lean | The thin authority-and-limits layer that sits between a worker and a sub-tree |
+| [`head-of-department`](star-alliance-skills/head-of-department/SKILL.md) | 1.0.0 | own | 79 / 523 | 641 / 52 | ✓ lean | The thin authority-and-limits layer that sits between a worker and a sub-tree |
 | [`health-checker`](star-alliance-skills/health-checker/SKILL.md) | 1.0.0 | own | 66 / 441 | 241 / 54 | ✓ lean | Runs three read-only Supabase health queries (missing FK indexes, public tables without RL… |
 | [`heat-map-analyst`](star-alliance-skills/heat-map-analyst/SKILL.md) | 1.0.0 | own | 54 / 345 | 170 / 24 | ✓ lean | Ranks Lex Council docs under `lex_council/docs/` by `claude_hits` delta over the last 30 d… |
 | [`helpless`](star-alliance-skills/helpless/SKILL.md) | 1.0.0 | own | 64 / 358 | 739 / 112 | ✓ lean | Invoked by scripts and hooks, never by the Butler himself |
@@ -125,6 +125,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`price-action`](star-alliance-skills/price-action/SKILL.md) | 1.0.0 | own | 141 / 1001 | 1084 / 63 | ✓ lean | The Merchant's read-only craft for reading price action and market structure, distilled fr… |
 | [`probability-statistics`](star-alliance-skills/probability-statistics/SKILL.md) | 1.1.0 | own | 117 / 1000 | 1318 / 69 | ✓ lean | The Merchant's read-only craft for probability and statistics, distilled from Evans & Rose… |
 | [`project-start`](star-alliance-skills/project-start/SKILL.md) | 1.0.0 | own | 55 / 375 | 262 / 56 | ✓ lean | Start-of-session health check for projects that have Star Alliance members deployed |
+| [`prove-it`](star-alliance-skills/prove-it/SKILL.md) | 1.0.0 | own | 126 / 884 | 773 / 85 | ✓ lean | Independent request-fulfillment check for the moment a task is declared done |
 | [`python-master`](star-alliance-skills/python-master/SKILL.md) | 1.1.0 | own | 134 / 1020 | 515 / 65 | ✓ lean | The Developer's craft for building production-grade Python libraries and web apps end to e… |
 | [`redesign-existing-projects`](star-alliance-skills/redesign-existing-projects/SKILL.md) | 1.0.0 | own | 31 / 225 | 2174 / 176 | ✓ lean | Upgrades existing websites and apps to premium quality |
 | [`relationship-intel`](star-alliance-skills/relationship-intel/SKILL.md) | 1.0.0 | own | 136 / 961 | 1072 / 55 | ✓ lean | The Herald's craft for turning email traffic into living relationship intelligence so the … |
@@ -157,4 +158,4 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`workflow-forge`](star-alliance-skills/workflow-forge/SKILL.md) | 1.4.0 | own | 153 / 997 | 2235 / 175 | ✓ lean | The Strategist's craft for distilling a finished run into a reusable star-map workflow in … |
 | [`workflow-runner`](star-alliance-skills/workflow-runner/SKILL.md) | 1.0.0 | own | 123 / 875 | 1100 / 90 | ✓ lean | The Quartermaster's craft for operating the guild's own machinery — RUN a star-map workflo… |
 
-_127 skills — 119 lean · 5 large (installable, over the 500-line ideal) · 0 near the word ceiling · 3 hard violations._
+_128 skills — 120 lean · 5 large (installable, over the 500-line ideal) · 0 near the word ceiling · 3 hard violations._

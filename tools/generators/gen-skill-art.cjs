@@ -22,6 +22,10 @@ const STYLE = "fantasy RPG skill icon, Fallen Sword MMORPG style, dark parchment
 
 const SKILLS = [
   {
+    id: "prove-it",
+    prompt: `${STYLE}. [REFINE — Designer handoff] A Fallen-Sword emblem for "", no text, no watermarks`,
+  },
+  {
     id: "butler-onboarding",
     prompt: `${STYLE}. A half-open ornate gate flanked by two warm lantern flames, three gilded parchment scroll-cards fanned on a velvet cushion at the threshold inviting a traveler in, soft golden light spilling through the gap, no text, no watermarks`,
   },

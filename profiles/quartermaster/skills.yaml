@@ -80,3 +80,6 @@
 
 - name: dual-model-review
   reason: The cross-system bridge's quality gate — MiniMax-M3 produces the conformance report, Kimi K2.7 + GLM-5.2 fire as parallel reviewer sub-agents through Hermes; both must PASS before the report goes back. The Quartermaster's reviewer prompts check skill-tree integrity and arsenal registry consistency — the gatekeeper must not be the only gatekeeper on its own work.
+
+- name: prove-it
+  reason: Universal request-fulfillment check - before declaring a task done, cross-check the original request against the actual diff/tool-call evidence; backed by the prove-it.py Stop hook critic gate.

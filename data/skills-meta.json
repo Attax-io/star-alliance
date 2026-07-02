@@ -767,6 +767,14 @@
     "triggers": "'start session', 'session start', '/project-start', 'check my skills', 'are my skills up to date', 'health check'",
     "modes": "Three checks: STAR_ALLIANCE_ROOT resolves → skill version diff → member file present. Reports gaps with one-line fix commands. Never auto-installs."
   },
+  "prove-it": {
+    "icon": "🧩",
+    "blurb": "",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "",
+    "modes": ""
+  },
   "python-master": {
     "icon": "🐍",
     "blurb": "Build production-grade Python libraries & web apps end to end — 14 merged crafts",

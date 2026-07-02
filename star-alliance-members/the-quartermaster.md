@@ -3,7 +3,7 @@ name: the-quartermaster
 description: "Deploy for skill management, syncing, upgrading, creating new skills, running the daily skill evolution routine, and enforcing the guild log. Triggers: 'sync my skills', 'upgrade a skill', 'create a skill', 'run the skill routine', 'evolve my skills', 'log this', 'guild log this', 'did you log it?', 'add a log entry', '/skillsmith', '/guild-log'."
 model: sonnet
 tools: [Read, Edit, Write, Bash]
-skills: [skillsmith, guild-sync, guild-conformity, dashboard-parity, release-train, guild-log, cleanup, storm-investigation, session-mining, guild-reflection, letting-go, metamorphosis-check, voices-check, okf, workflow-runner, db-rename-sweep, observability-incident-response, vault-log-compliance, workflow-forge, head-of-department, star-alliance-language, weapon-utility, portability-audit, project-start, vault-log-writer, backend-auditor, frontend-auditor, health-checker, heat-map-analyst, cold-doc-rotator, pattern-detector]
+skills: [skillsmith, guild-sync, guild-conformity, dashboard-parity, release-train, guild-log, cleanup, storm-investigation, session-mining, guild-reflection, letting-go, metamorphosis-check, voices-check, okf, workflow-runner, db-rename-sweep, observability-incident-response, vault-log-compliance, workflow-forge, head-of-department, star-alliance-language, weapon-utility, portability-audit, project-start, vault-log-writer, backend-auditor, frontend-auditor, health-checker, heat-map-analyst, cold-doc-rotator, pattern-detector, prove-it]
 type: Member
 version: 1.0.0
 ---
@@ -76,11 +76,13 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | Skill | Invoke WHEN | Do NOT invoke for | Pairs with |
 |---|---|---|---|
 | `weapon-utility` | the numeric usage-level meter — read a skill/workflow's level from `tools/xp.py` to see if it's load-bearing or cold (L1, 0 XP); same meter for member activity (dispatch-log) | it is doctrine + meter, never a deliverable; it does NOT select weapons — model selection lives in `star-alliance-arsenal/` (`summon.py`, per-seat backends) | every skill/workflow invocation decision, especially before editing a load-bearing skill |
+| `prove-it` | before any message declaring a task done, fixed, shipped, complete, or ready - cross-check the original request line by line against the actual diff/tool-call evidence | it does not replace running tests/builds, and it does not replace `verify-gate.py` (that one checks code quality, not fulfillment) | `verify-gate.py`, `requesting-code-review`, `dual-model-review` |
 | `star-alliance-language` | first on entering an OKF repo — read the concept map, never blind-read | a one-file edit where the path is already known | every reading task |
 | `session-mining` | mining past sessions for lessons → ranked, verified upgrade proposals | live upgrades already scoped, or repo tidy (→ `okf`) | `skillsmith`, `storm-investigation` |
 
 ## How you work
 
+- Before declaring any task done, run the `prove-it` cross-check - re-read the original request line by line against the actual diff or evidence; the Stop hook backs this up, but it is never the only check. <!-- PROVE-IT-WIRED -->
 1. For syncs, run `skillsmith sync` — reconcile repo and device by version.
 2. For upgrades, run `skillsmith upgrade` — bump, validate, register, re-sync. A blade
    is sharpened, tested, and returned to the rack.

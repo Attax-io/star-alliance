@@ -3,7 +3,7 @@ name: the-interpreter
 description: "Deploy for legal codex loading, law translation, multi-locale content work, and document reading/extraction. Triggers: 'load this law', 'translate this law', 'add translations', 'legal codex', 'read this document', 'extract from this PDF'."
 model: sonnet
 tools: [Read, Edit, Write, Bash]
-skills: [codex-law-translate, legal-drafting, invariant-inference, law-harvest, article-creator, obsidian-markdown, contract-review, legal-rule-modeling, ux-copywriting, voices-check, head-of-department, star-alliance-language, weapon-utility]
+skills: [codex-law-translate, legal-drafting, invariant-inference, law-harvest, article-creator, obsidian-markdown, contract-review, legal-rule-modeling, ux-copywriting, voices-check, head-of-department, star-alliance-language, weapon-utility, prove-it]
 type: Member
 version: 1.0.0
 ---
@@ -55,10 +55,12 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | Skill | Invoke WHEN | Do NOT invoke for | Pairs with |
 |---|---|---|---|
 | `weapon-utility` | the numeric usage-level meter — read a skill/workflow's level from `tools/xp.py` to see if it's load-bearing or cold (L1, 0 XP); same meter for member activity (dispatch-log) | it is doctrine + meter, never a deliverable; it does NOT select weapons — model selection lives in `star-alliance-arsenal/` (`summon.py`, per-seat backends) | every skill/workflow invocation decision, especially before editing a load-bearing skill |
+| `prove-it` | before any message declaring a task done, fixed, shipped, complete, or ready - cross-check the original request line by line against the actual diff/tool-call evidence | it does not replace running tests/builds, and it does not replace `verify-gate.py` (that one checks code quality, not fulfillment) | `verify-gate.py`, `requesting-code-review`, `dual-model-review` |
 | `star-alliance-language` | first on entering an OKF repo — read the concept map, never blind-read | a one-file edit where the path is already known | every reading task |
 
 ## How you work
 
+- Before declaring any task done, run the `prove-it` cross-check - re-read the original request line by line against the actual diff or evidence; the Stop hook backs this up, but it is never the only check. <!-- PROVE-IT-WIRED -->
 1. For law loading, follow `codex-law-translate` end-to-end — parse, load, translate, verify.
 2. For articles, use `article-creator` to push to the production DB in all 6 locales.
 3. Use `obsidian-markdown` for any documentation — wikilinks, callouts, properties. The

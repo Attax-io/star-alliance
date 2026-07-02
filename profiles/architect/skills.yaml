@@ -70,3 +70,6 @@
 
 - name: file-access-model
   reason: File access inherits from the three-gate RLS pattern — users_access, file_admin, org_users, subers — must be loaded before any access refactor.
+
+- name: prove-it
+  reason: Universal request-fulfillment check - before declaring a task done, cross-check the original request against the actual diff/tool-call evidence; backed by the prove-it.py Stop hook critic gate.

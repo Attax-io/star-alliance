@@ -52,3 +52,6 @@
 
 - name: weapon-utility
   reason: Shared house utility — operate the guild's instruments (arsenal, models, profiles) without leaking craft across the wrong boundary.
+
+- name: prove-it
+  reason: Universal request-fulfillment check - before declaring a task done, cross-check the original request against the actual diff/tool-call evidence; backed by the prove-it.py Stop hook critic gate.

@@ -75,3 +75,6 @@
 
 - name: dual-model-review
   reason: The cross-system bridge's quality gate — MiniMax-M3 writes the code, Kimi K2.7 + GLM-5.2 fire as parallel reviewer sub-agents through Hermes; both must PASS before the report goes back. The Developer tunes the reviewer prompts to check correctness and security dimensions (different families → diverse blind spots); re-dispatches the doer on any BLOCK.
+
+- name: prove-it
+  reason: Universal request-fulfillment check - before declaring a task done, cross-check the original request against the actual diff/tool-call evidence; backed by the prove-it.py Stop hook critic gate.

@@ -41,3 +41,6 @@
 
 - name: dual-model-review
   reason: The cross-system bridge's quality gate — MiniMax-M3 produces the translation draft, Kimi K2.7 + GLM-5.2 fire as parallel reviewer sub-agents through Hermes; both must PASS before the report goes back. The Interpreter tunes the reviewer prompts to check legal register (voices-check) and source-fidelity (codex-law-translate) — the doer cannot be the only interpreter's eye on a statute.
+
+- name: prove-it
+  reason: Universal request-fulfillment check - before declaring a task done, cross-check the original request against the actual diff/tool-call evidence; backed by the prove-it.py Stop hook critic gate.
