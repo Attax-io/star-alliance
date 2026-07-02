@@ -3,7 +3,7 @@ name: the-interpreter
 description: "Deploy for legal codex loading, law translation, multi-locale content work, and document reading/extraction. Triggers: 'load this law', 'translate this law', 'add translations', 'legal codex', 'read this document', 'extract from this PDF'."
 model: sonnet
 tools: [Read, Bash]
-skills: [codex-law-translate, legal-drafting, invariant-inference, law-harvest, article-creator, obsidian-markdown, contract-review, legal-rule-modeling, ux-copywriting, voices-check, head-of-department, star-alliance-language, weapon-utility, prove-it]
+skills: [codex-law-translate, legal-drafting, invariant-inference, law-harvest, article-creator, obsidian-markdown, contract-review, legal-rule-modeling, ux-copywriting, voices-check, head-of-department, dual-model-review, star-alliance-language, weapon-utility, prove-it] 
 type: Member
 version: 1.0.0
 ---
@@ -65,6 +65,8 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | `legal-rule-modeling` | extracting an exact computable rule from a fuzzy statute — CEGIS method inferring invariants from cases | translating settled statute text (→ `codex-law-translate`) or obvious arithmetic rules | `invariant-inference`, `contract-review` |
 | `ux-copywriting` | functional in-product copy — error/empty/loading states, microcopy, onboarding, confirmations in legal product | brand voice/lore (→ Design language) or long-form marketing (→ `article-creator`) | `legal-drafting`, `obsidian-markdown` |
 | `voices-check` | when torn between two legal interpretations / output feels one-dimensional, fan distinct angles before settling | trivial rulings or settled precedent (that's just lookup, not hard choice) | `storm-investigation`, `invariant-inference` |
+| `voices-check` | when torn between two legal interpretations / output feels one-dimensional, fan distinct angles before settling | trivial rulings or settled precedent (that's just lookup, not hard choice) | `storm-investigation`, `invariant-inference` |
+| `dual-model-review` | serving the cross-system bridge on a legal artifact that will be published or relied on — a statute load into the codex, a translated legal instrument, a client-facing correspondence; dispatch MiniMax-M3 to do the work, then fire Kimi K2.7 + GLM-5.2 in parallel as reviewer sub-agents (one reviews source-fidelity against the original statute, the other reviews legal register / cross-locale consistency — never the same axis twice); both must PASS independently | in-repo edits that aren't bridge deliverables (verify inline with `prove-it` instead) or a reviewer pair that would check the same dimension (duplicated signal, not diverse blind spots) | `codex-law-translate` (the source-fidelity reviewer reads against it), `voices-check` (the register reviewer cross-checks locales), `weapon-utility` (seat doctrine — M3 doer, cloud reviewers thinkers) |
 
 **Universal skills — every member carries these; drill them at the edges of every quest:**
 

@@ -3,7 +3,7 @@ name: the-herald
 description: "Deploy for marketing, growth, demand generation, content/SEO, brand positioning, email nurture, and social/paid campaigns. Triggers: 'plan our marketing', 'we need leads', 'fix our positioning', 'content plan', 'SEO plan', 'build an email sequence', 'social plan', 'ad plan', 'go to market', 'grow the business'."
 model: sonnet
 tools: [Read, Bash]
-skills: [growth-marketing, relationship-intel, article-creator, imagegen-frontend, head-of-department, agentic-video-production, storm-investigation, ultra-brainstorming, negotiation-deal-strategy, agent-web-reach, comms-triage, conquering-campaign, market-recon, star-alliance-language, weapon-utility, prove-it]
+skills: [growth-marketing, relationship-intel, article-creator, imagegen-frontend, head-of-department, agentic-video-production, storm-investigation, ultra-brainstorming, negotiation-deal-strategy, agent-web-reach, comms-triage, conquering-campaign, market-recon, dual-model-review, star-alliance-language, weapon-utility, prove-it] 
 type: Member
 version: 1.0.0
 ---
@@ -72,6 +72,7 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | `comms-triage` | sorting a torrent of campaign feedback/responses into signal (upgrade), noise (ignore), and risk (escalate) | campaign creation (→ `growth-marketing`) or one-off customer reply | `growth-marketing`, `relationship-intel` |
 | `conquering-campaign` | a multi-wave campaign from brief to close — demand gen, nurture, sales support — one arc, not scattered tactics | single-tactic runs (→ `growth-marketing` by mode) or prospect intel (→ `relationship-intel`) | `growth-marketing`, `storm-investigation` |
 | `market-recon` | scouting a market for demand, competition, positioning before a campaign launch — structured research | campaign tactics (→ `growth-marketing`) or internal intel (→ `relationship-intel`) | `storm-investigation`, `growth-marketing` |
+| `dual-model-review` | serving the cross-system bridge on a public-facing marketing artifact — a published article, a campaign brief, a positioning statement, anything that will reach the public; dispatch MiniMax-M3 to draft the artifact, then fire Kimi K2.7 + GLM-5.2 in parallel as reviewer sub-agents (one reviews message-craft and ICP resonance, the other reviews claim integrity / bar-rule compliance for regulated trades — never the same axis twice); both must PASS independently | in-repo drafts that aren't bridge deliverables (verify inline with `prove-it` instead), or a single-tactic edit where dual review is overkill | `growth-marketing` (the campaign context reviewers will read), `article-creator` (the published form), `weapon-utility` (seat doctrine — M3 doer, cloud reviewers thinkers) |
 
 **Universal skills — every member carries these; drill them at the edges of every quest:**
 

@@ -3,7 +3,7 @@ name: the-designer
 description: "Deploy for UI/UX design, frontend visual quality, brand kits, image-to-code conversion, and design system work. Triggers: 'design the UI', 'make it look premium', 'create a brand kit', 'convert this image to code', 'redesign this'."
 model: sonnet
 tools: [Read, Bash]
-skills: [design-taste, design-unity, design-tokens, design-language, motion-design, image-to-code, imagegen-frontend, a11y-craft, penpot-design-platform, impeccable, ux-research, ux-copywriting, redesign-existing-projects, agentic-video-production, frontend-react-engineering, graphify, head-of-department, pattern-library-discovery, star-alliance-language, weapon-utility, prove-it] 
+skills: [design-taste, design-unity, design-tokens, design-language, motion-design, image-to-code, imagegen-frontend, a11y-craft, penpot-design-platform, impeccable, ux-research, ux-copywriting, redesign-existing-projects, agentic-video-production, frontend-react-engineering, graphify, head-of-department, pattern-library-discovery, dual-model-review, star-alliance-language, weapon-utility, prove-it] 
 type: Member
 version: 1.0.0
 
@@ -82,6 +82,7 @@ between `image-to-code` (production code) and `imagegen-frontend` (reference ima
 | `graphify` | building interactive data visualizations — charts, graphs, maps with live data | static imagery (→ `imagegen-frontend`) or pure API work (→ Developer) | `image-to-code`, `design-unity` |
 | `pattern-library-discovery` | auditing and distilling a UI into reusable component patterns for a design system | one-off visual work (→ `design-taste`) or full system build (→ `design-unity`) | `design-tokens`, `design-unity` |
 | `redesign-existing-projects` | upgrading a live site/app to premium without breaking it — scan the stack, audit generic patterns, fix in place | greenfield builds (start from `design-taste`) or full rewrites (→ `design-unity`) | `design-taste` (the new language), `design-tokens` (the contract), `impeccable` (gate) |
+| `dual-model-review` | serving the cross-system bridge on a public design artifact — a shipped handoff spec, a token-system edit, or any visual craft that will be committed; dispatch MiniMax-M3 to do the work, then fire Kimi K2.7 + GLM-5.2 in parallel as reviewer sub-agents (one reviews visual-language fidelity against the tokens, the other reviews a11y / WCAG 2.2 AA conformance — never the same axis twice); both must PASS independently | in-repo edits that aren't bridge deliverables (verify inline with `prove-it` instead) or a reviewer pair that would check the same dimension (duplicated signal, not diverse blind spots) | `impeccable` (the local QA gate), `design-unity` (the source of truth reviewers will check against), `weapon-utility` (seat doctrine — M3 doer, cloud reviewers thinkers) |
 
 **Universal skills — every member carries these; drill them at the edges of every quest:**
 
