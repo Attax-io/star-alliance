@@ -2,4 +2,4 @@
 BUILD WARNINGS (2):
   ⚠ domain 'lex-council-business' references member 'bd-research-agent' not in the guild (external)
   ⚠ domain 'lex-council-business' references member 'intake-agent' not in the guild (external)
-Wrote guild-data.js (783,477 bytes) + guild-data.json + skill-md.js (1,337,101 bytes, 129 skills) + workflow-md.js (70,840 bytes, 36 workflows)
+Wrote guild-data.js (785,064 bytes) + guild-data.json + skill-md.js (1,337,101 bytes, 129 skills) + workflow-md.js (70,840 bytes, 36 workflows)

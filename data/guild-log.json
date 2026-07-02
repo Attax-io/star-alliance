@@ -3604,6 +3604,13 @@
       "title": "Routing: README.md, data/skills-meta.json, tools/generators/gen-skill-art.cjs (+3 more)",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Routing: star-alliance-members/the-developer.md, star-alliance-members/the-quartermaster.md",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130

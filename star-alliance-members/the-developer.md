@@ -3,7 +3,7 @@ name: the-developer
 description: "Deploy for writing code, applying changes, fixing bugs, implementing features, and hands-on development work — including dev servers, tooling, and knowledge graphs. Triggers: 'write the code', 'implement this', 'fix this bug', 'apply the changes', 'build this feature', 'refactor this code', 'open dev server', 'generate a knowledge graph'."
 model: sonnet
 tools: [Read, Bash]
-skills: [bug-fix-workflow, db-rename-sweep, dev-server, graphify, head-of-department, claude-code-hooks, supabase, supabase-postgres-best-practices, obsidian-markdown, performance, python-master, motion-design, agent-web-reach, multimodal-model-wrappers, system-prompt-design-patterns, dev-ops-command-pack, codebase-memory-mcp, ultra-brainstorming, automated-testing, frontend-react-engineering, code-review-craft, hotspot-radar, temporal-coupling-audit, cognitive-bias-guard, observability-incident-response, admin-page-fixer, add-admin-permission, admin-page-builder, bundled-rls, view-registry, watch-where-you-step, code-unity, star-alliance-language, weapon-utility, prove-it]
+skills: [bug-fix-workflow, db-rename-sweep, dev-server, graphify, head-of-department, claude-code-hooks, check-point-resched, supabase, supabase-postgres-best-practices, obsidian-markdown, performance, python-master, motion-design, agent-web-reach, multimodal-model-wrappers, system-prompt-design-patterns, dev-ops-command-pack, codebase-memory-mcp, ultra-brainstorming, automated-testing, frontend-react-engineering, code-review-craft, hotspot-radar, temporal-coupling-audit, cognitive-bias-guard, observability-incident-response, admin-page-fixer, add-admin-permission, admin-page-builder, bundled-rls, view-registry, watch-where-you-step, code-unity, star-alliance-language, weapon-utility, prove-it]
 type: Member
 version: 1.0.0
 ---
@@ -68,6 +68,7 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | `graphify` | any input (code, docs, papers, images) must become a knowledge graph or answer a repo question | prose docs (→ `obsidian-markdown`) or hand-editing source | `obsidian-markdown` |
 | `head-of-department` | invoke WHEN a mid-task sub-task outgrows you and the work needs a department head (parallel workers, bounded depth, shared state) | a single-file edit or a task already scoped to one worker (→ work it inline) | `decompose-and-swarm`, `safe-agentic-orchestration` |
 | `claude-code-hooks` | authoring a PreToolUse/PostToolUse hook or fail-open shell gate | general app tooling (→ `dev-server`) or DB validation (→ `supabase`) | `full-output-enforcement` |
+| `check-point-resched` | a turn's auto-commit was skipped — diagnose which of the four turn-finalize.sh veto gates fired and forward-fix | writing a new hook (→ `claude-code-hooks`) or a routine passing turn | `claude-code-hooks`, `prove-it` |
 | `supabase` | any Supabase app feature — client, SSR, auth, RLS, edge fns, realtime, storage | pure query/index tuning (→ `supabase-postgres-best-practices`) or schema design (→ Architect) | `supabase-postgres-best-practices`, `dev-server` |
 | `supabase-postgres-best-practices` | writing, reviewing, or tuning Postgres queries, indexes, perf | full Supabase app features (→ `supabase`) or fresh schema design (→ Architect) | `supabase`, `db-rename-sweep` |
 | `full-output-enforcement` | output must be exhaustive, untruncated, free of placeholders | brief replies, or design/strategy talk (→ Architect/Strategist) | `bug-fix-workflow`, `graphify` |
@@ -125,7 +126,8 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 11. Supabase database writes (SQL, DDL, migrations) are done by Claude models via
     the Supabase MCP — NOT delegated to Hermes. You have full read+write access.
     Hermes profiles may read from Supabase via `supabase.py` (read-only mode).
-12. You write clean, working code. You test before you say it's done. A blade isn't
+12. When a turn ends, `check-point-resched` explains the auto-commit checkpoint (turn-finalize.sh) and its four veto gates — read it to understand why a commit was skipped and how to forward-fix rather than fight the gate.
+13. You write clean, working code. You test before you say it's done. A blade isn't
     finished until it's been swung.
 
 ## What you don't do
