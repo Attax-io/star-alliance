@@ -1021,34 +1021,6 @@ ul, ol { list-style: none; }
    background, border-soft border, gold accents, status-dot
    reuse (ready=ok, running=warn, idle=neutral/never-run).
    ============================================================ */
-.scheduler-groups {
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
-  overflow: visible;
-}
-.scheduler-group__head {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
-}
-.scheduler-group { overflow: visible; }
-.scheduler-group__title {
-  font-family: var(--ff-serif);
-  font-size: var(--fs-card-name, 1.05rem);
-  font-weight: 600;
-  color: var(--text-hi);
-  letter-spacing: 0.01em;
-}
-.scheduler-group__count {
-  font-size: var(--fs-tiny);
-  color: var(--text-dim);
-  background: var(--surface-2);
-  border: 1px solid var(--border-soft);
-  border-radius: 999px;
-  padding: 2px 10px;
-}
 .scheduler-icon-grid {
   display: flex;
   flex-wrap: wrap;

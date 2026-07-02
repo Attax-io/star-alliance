@@ -619,6 +619,10 @@ function schedulerTile(job) {
   tip.className = 'card-tooltip'
   const tipParts = []
   tipParts.push(`<strong style="color:var(--gold)">${escapeHtml(job.name || job.id || '')}</strong>`)
+  const kindLabel = { native: 'Claude Routine', launchd: 'System Timer', hermes: 'Hermes Job' }[job.kind]
+  if (kindLabel) {
+    tipParts.push(`<span style="color:var(--text-dim);font-size:0.62rem;text-transform:uppercase;letter-spacing:0.06em">${escapeHtml(kindLabel)}</span>`)
+  }
   if (job.description) {
     tipParts.push('<span>' + escapeHtml(job.description) + '</span>')
   }
@@ -874,33 +878,6 @@ function schedulerOpenModal(job, tile) {
   _schedulerModalKeyHandler = (e) => { if (e.key === 'Escape') schedulerCloseModal() }
   document.addEventListener('keydown', _schedulerModalKeyHandler)
 }
-
-// schedulerGroupBlock: group head + count + empty state stay identical to
-// before; only the grid wrapper class and the per-job renderer change.
-function schedulerGroupBlock(title, jobs) {
-  const block = document.createElement('div')
-  block.className = 'scheduler-group'
-
-  const head = document.createElement('div')
-  head.className = 'scheduler-group__head'
-  head.innerHTML = `<span class="scheduler-group__title">${title}</span><span class="scheduler-group__count">${jobs.length}</span>`
-  block.appendChild(head)
-
-  if (jobs.length === 0) {
-    const empty = document.createElement('div')
-    empty.className = 'scheduler-empty'
-    empty.textContent = title === 'Hermes Jobs' ? 'No Hermes jobs yet' : 'No jobs'
-    block.appendChild(empty)
-  } else {
-    const grid = document.createElement('div')
-    grid.className = 'scheduler-icon-grid'
-    jobs.forEach(job => grid.appendChild(schedulerTile(job)))
-    block.appendChild(grid)
-  }
-
-  return block
-}
-
 async function renderScheduler() {
   const panel = document.getElementById('scheduler-panel')
   if (!panel) return
@@ -908,16 +885,18 @@ async function renderScheduler() {
   try {
     const data = await fetch('/api/schedules').then(r => r.json())
     const jobs = (data && data.jobs) || []
-    const native = jobs.filter(j => j.kind === 'native')
-    const launchd = jobs.filter(j => j.kind === 'launchd')
-    const hermes = jobs.filter(j => j.kind === 'hermes')
 
-    const wrap = document.createElement('div')
-    wrap.className = 'scheduler-groups'
-    wrap.appendChild(schedulerGroupBlock('Claude Routines', native))
-    wrap.appendChild(schedulerGroupBlock('System Timers', launchd))
-    wrap.appendChild(schedulerGroupBlock('Hermes Jobs', hermes))
-    panel.appendChild(wrap)
+    if (jobs.length === 0) {
+      const empty = document.createElement('div')
+      empty.className = 'scheduler-empty'
+      empty.textContent = 'No jobs'
+      panel.appendChild(empty)
+    } else {
+      const grid = document.createElement('div')
+      grid.className = 'scheduler-icon-grid'
+      jobs.forEach(job => grid.appendChild(schedulerTile(job)))
+      panel.appendChild(grid)
+    }
 
     // Pre-warm the control token so the first click isn't slowed by the fetch.
     loadSaToken()

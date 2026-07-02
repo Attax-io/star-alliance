@@ -3492,6 +3492,13 @@
       "title": "Quick Fix: guild/_briefs/cron/merged-routine-prompt.md",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Quick Fix: dashboard.css, dashboard.html, dashboard.js",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130
