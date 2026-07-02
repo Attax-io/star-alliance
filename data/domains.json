@@ -136,7 +136,8 @@
         "helpless",
         "butler-onboarding",
         "prove-it",
-        "watch-where-you-step"
+        "watch-where-you-step",
+        "check-point-resched"
       ],
       "members": [
         "the-architect",

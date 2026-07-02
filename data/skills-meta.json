@@ -167,6 +167,14 @@
     "triggers": "'what chart pattern is this', 'is this a head and shoulders', 'measure rule for a triangle', 'how reliable is a double bottom', 'read this chart pattern'",
     "modes": "classic reversal & continuation patterns; event patterns; measure-rule targets; performance odds & ranking; candlestick & volume confluence"
   },
+  "check-point-resched": {
+    "icon": "🧩",
+    "blurb": "",
+    "level": "Advanced",
+    "tabler": "ti-puzzle",
+    "triggers": "",
+    "modes": ""
+  },
   "claude-code-hooks": {
     "icon": "🪝",
     "blurb": "Author Claude Code hooks the right way — fail-open gates and banners",
