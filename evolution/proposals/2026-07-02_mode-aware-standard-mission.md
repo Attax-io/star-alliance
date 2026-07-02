@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T20:24:45Z
+---
+
 # Proposal: Mode-aware Standard Mission (closes the AUDIT-mode gap)
 
 **Status:** Tier-B · pending human GO

@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T20:24:45Z
+---
+
 # 2026-07-02 — Skills Frontmatter Audit (AUDIT-mode)
 
 **Mode:** AUDIT (read-only)

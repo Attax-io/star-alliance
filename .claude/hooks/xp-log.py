@@ -1,63 +1,66 @@
 #!/usr/bin/env python3
-# ─────────────────────────────────────────────────────────────────────────────
-# Star Alliance — XP LOG  (PostToolUse · Skill, non-blocking, fail-OPEN)
-#
-# Appends ONE line to .claude/state/xp-log.jsonl every time a Skill tool fires:
-#   {"type": "skill", "name": "<skill id>", "ts": "<iso8601>"}
-#
-# This is the single source of truth for skill XP (see tools/xp.py, which
-# counts these lines to derive a live level). Workflow XP is appended by
-# workflow-gate.py (once-per-turn, on a valid banner) — NOT here.
-#
-# Uses CLAUDE_PROJECT_DIR (not cwd) so CHILD / subagent sessions — which run
-# their own copy of this hook — still write to the SAME repo-root log file.
-# Append-only, fail-OPEN: any error here must never block or brick a turn.
-# ─────────────────────────────────────────────────────────────────────────────
+"""
+Star Alliance — XP LOG  (post_tool_call, non-blocking).
+
+Port of .claude/hooks/xp-log.py. Appends ONE line to .claude/state/xp-log.jsonl
+every time a Skill tool fires. This is the single source of truth for skill XP.
+
+Hermes-side: fires on skill_view, skills_list, skill_manage (plus the Claude
+Skill/skills/skill names for parity). Extracts the skill name from whichever
+input field the surface uses.
+"""
+from __future__ import annotations
+
 import json
 import os
 import sys
 from datetime import datetime, timezone
 
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from lib import load_payload, project_root  # noqa: E402
 
-def project_dir() -> str:
-    return os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
+# Tool names that count as a skill "fire" on either surface.
+_SKILL_TOOLS = frozenset({
+    # Claude Code
+    "Skill", "skills", "skill",
+    # Hermes Agent
+    "skill_view", "skills_list", "skill_manage",
+})
 
 
-def log_path() -> str:
-    return os.path.join(project_dir(), ".claude", "state", "xp-log.jsonl")
-
-
-def main() -> None:
+def main() -> int:
     try:
-        data = json.load(sys.stdin)
-    except Exception:
-        sys.exit(0)  # malformed payload — fail open, never block
+        payload = load_payload()
+        tool = payload.get("tool_name", "")
+        if tool not in _SKILL_TOOLS:
+            return 0
+        ti = payload.get("tool_input") or {}
 
-    try:
-        tool = data.get("tool_name", "")
-        if tool != "Skill":
-            sys.exit(0)
+        # Try every known input field for the skill name.
+        # Claude's Skill tool uses "skill" or "name".
+        # Hermes skill_view uses "name". skill_manage uses "name".
+        # skills_list has no single skill name — skip it (it's a listing, not a fire).
+        if tool == "skills_list":
+            return 0
 
-        ti = data.get("tool_input", {}) or {}
         name = ti.get("skill") or ti.get("name")
         if not name:
-            sys.exit(0)  # no resolvable skill name — nothing to log, still allow
+            return 0
 
         entry = {
             "type": "skill",
             "name": str(name).strip(),
             "ts": datetime.now(timezone.utc).isoformat(),
+            "surface": "hermes",  # tag the origin for future analysis
         }
-
-        path = log_path()
+        path = os.path.join(project_root(), ".claude", "state", "xp-log.jsonl")
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, "a") as fh:
             fh.write(json.dumps(entry) + "\n")
     except Exception:
-        pass  # logging must NEVER break the session — fail open
-
-    sys.exit(0)
+        pass
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

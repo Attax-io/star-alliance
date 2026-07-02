@@ -3555,6 +3555,13 @@
       "title": "Bug Cycle: dashboard.css, star-alliance-members/the-designer.md, star-alliance-members/the-herald.md (+3 more)",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Bug Cycle: .claude/hooks/xp-log.py, audit-campaigns/2026-07-02_skills-frontmatter/00-campaign-plan.md, evolution/proposals/2026-07-02_mode-aware-standard-mission.md (+9 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130

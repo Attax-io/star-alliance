@@ -37,6 +37,7 @@ Checks (each maps to a source-of-truth invariant or a logged decision):
   HM stale-model-id no code/config references a model id deleted from the registry
   WR control-wiring  if serve.cjs writes memberOverrides, dispatch.py must read it (no dead-end control)
   GC git-size (advisory)  note if .git exceeds 800 MB (advisory only, never a hard fail)
+  CU code-unity (advisory)  run tools/unity_scan.py, report name collisions as advisory
   AB absorb-sink   evolution/absorb_apply.py can ONLY write into star-alliance-skills/ (never a global skill)
 """
 import json, re, sys, pathlib
@@ -1329,6 +1330,39 @@ def main():
                     "read by dispatch.py — the control is a dead-end "
                     "(wire the consumer or remove the control)"
                 )
+
+    # === CU — Code Unity advisory (NOTE only, never a hard fail) ===
+    # Runs tools/unity_scan.py via subprocess and reports name collisions
+    # (same type/constant/utility/service defined in multiple files) as an
+    # advisory note. Code unity is advisory at the conformity gate — it does
+    # NOT cause a hard fail. The STORM pass in the evolution cron job handles
+    # the semantic judgment of whether each candidate is a real duplicate.
+    _cu_scan = ROOT / "tools" / "unity_scan.py"
+    if _cu_scan.exists():
+        try:
+            _cu_r = _sp.run(
+                ["python3", str(_cu_scan)],
+                capture_output=True, text=True, timeout=30,
+            )
+            if _cu_r.returncode == 0 and _cu_r.stdout.strip():
+                _cu_data = json.loads(_cu_r.stdout)
+                _cu_cands = _cu_data.get("candidates", [])
+                if _cu_cands:
+                    # Build a concise summary: top 5 candidates by blast radius
+                    _cu_top = _cu_cands[:5]
+                    _cu_summary = ", ".join(
+                        f"{c['name']} ×{c['blast_radius']}" for c in _cu_top
+                    )
+                    if len(_cu_cands) > 5:
+                        _cu_summary += f", +{len(_cu_cands) - 5} more"
+                    notes.append(
+                        f"CU  code-unity  {len(_cu_cands)} candidates "
+                        f"(top: {_cu_summary})"
+                    )
+                else:
+                    notes.append("CU  code-unity  0 candidates — clean")
+        except Exception:
+            pass  # advisory only — never fail
 
     # === GC — git repo-size advisory (NOTE only, never a hard fail) ===
     _git_dir = ROOT / ".git"

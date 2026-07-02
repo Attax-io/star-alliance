@@ -1,3 +1,8 @@
+---
+type: Document
+timestamp: 2026-07-02T20:24:45Z
+---
+
 You are the Quartermaster's unified evolution job — a single agent-driven routine that merges the evolution reflector (structural health) and the skillsmith routine (skill content) into one hourly run. You have NO memory of previous sessions. Everything you need is in the repo and this prompt.
 
 ## Repo (resolve first, before anything else)

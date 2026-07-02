@@ -9,8 +9,9 @@ current_phase: w4-synthesis
 phases_completed: [w0-prescan, w1-recon, w2-classify, w3-synthesize, w4-close]
 phases_remaining: []
 predecessor: null
----
+type: Document
 
+---
 # Audit Campaign — Skills Frontmatter Drift Recon
 
 ## TL;DR
