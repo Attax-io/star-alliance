@@ -3618,6 +3618,13 @@
       "title": "Quick Fix: art/skill-art-thumb/check-point-resched.png, art/skill-art-thumb/watch-where-you-step.png",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Quick Fix: star-alliance-members/the-quartermaster.md",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130
