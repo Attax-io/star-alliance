@@ -1,0 +1,45 @@
+{
+  "_comment": "Registry of removed or renamed concepts the evolution engine watches for. Each entry has: id (short key), pattern (regex to search for in repo files), replaced_by (what it's called now, or null if simply removed), removed_date (ISO date), surface (which file category: docs|doctrine|tooling|members|skills). The scanner reports hits as stale mentions; --apply removes them. Add entries here when you remove or rename a concept in the repo.",
+  "entries": [
+    {
+      "id": "triple-seat",
+      "pattern": "triple.?seat",
+      "replaced_by": "two-seat",
+      "removed_date": "2026-07-03",
+      "surface": "docs",
+      "note": "Critic seat was removed; only Brain and Doer remain"
+    },
+    {
+      "id": "three-role-seat",
+      "pattern": "three role seat|3 role seat",
+      "replaced_by": "two role seats",
+      "removed_date": "2026-07-03",
+      "surface": "docs",
+      "note": "Same as triple-seat — Critic was removed"
+    },
+    {
+      "id": "critic-seat",
+      "pattern": "Critic seat|critic seat",
+      "replaced_by": null,
+      "removed_date": "2026-07-03",
+      "surface": "docs",
+      "note": "Critic is no longer a separate seat — it is now the verify-gate hook, not a model seat"
+    },
+    {
+      "id": "brain-doer-critic-bench",
+      "pattern": "Brain/Doer/Critic/Bench|Brain.*Doer.*Critic.*Bench",
+      "replaced_by": "Brain/Doer/Bench",
+      "removed_date": "2026-07-03",
+      "surface": "tooling",
+      "note": "Critic removed from the seat list"
+    },
+    {
+      "id": "claude-orchestrator",
+      "pattern": "Claude is the orchestrator",
+      "replaced_by": "Claude is the Brain",
+      "removed_date": "2026-07-03",
+      "surface": "docs",
+      "note": "Replaced with explicit Claude=Brain / Hermes=Doer framing"
+    }
+  ]
+}

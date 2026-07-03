@@ -137,6 +137,35 @@ def diagnose(since: str | None = None) -> list[dict]:
             "action": "reinforce doer-first routing (weapon-utility); coach agents to offload bulk",
         })
 
+    # 9. STALE MENTIONS — references to removed/renamed concepts lingering in the
+    #    repo. The stale_scan.py module scans against stale_registry.json and
+    #    reports hits. Tier-A hits (docs, tooling, members) are auto-removable;
+    #    Tier-B hits (CLAUDE.md, AGENTS.md) need a human go.
+    try:
+        import stale_scan  # noqa: E402
+        stale_hits = stale_scan.scan()
+        if stale_hits:
+            tier_a_hits = [h for h in stale_hits if h["tier"] == "A"]
+            tier_b_hits = [h for h in stale_hits if h["tier"] == "B"]
+            if tier_a_hits:
+                sample = ", ".join(f"{h['file']}:{h['line_no']}" for h in tier_a_hits[:5])
+                proposals.append({
+                    "surface": "docs", "tier": "A",
+                    "detail": f"{len(tier_a_hits)} stale mention(s) found (e.g. {sample}) — "
+                              f"run `python3 evolution/stale_scan.py --apply` to remove",
+                    "action": "run stale_scan.py --apply to auto-remove Tier-A stale mentions",
+                })
+            if tier_b_hits:
+                sample = ", ".join(f"{h['file']}:{h['line_no']}" for h in tier_b_hits[:5])
+                proposals.append({
+                    "surface": "doctrine", "tier": "B",
+                    "detail": f"{len(tier_b_hits)} stale mention(s) in doctrine files "
+                              f"(e.g. {sample}) — review and remove manually",
+                    "action": "manually edit doctrine files to remove stale references",
+                })
+    except Exception:
+        pass  # fail-soft — stale scan is observability, not control flow
+
     if not proposals:
         proposals.append({
             "surface": "", "tier": "", "detail": "no actionable signal this cycle", "action": ""})

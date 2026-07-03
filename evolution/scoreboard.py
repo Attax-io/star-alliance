@@ -298,6 +298,29 @@ def _cli():
     else:
         print("  → ALIGNED — minimax-sub is the dominant doer")
 
+    # ── Stale Mentions ───────────────────────────────────────────────────────
+    # Scans the repo for references to removed/renamed concepts.
+    # Uses the same stale_scan module the engine's diagnose() calls.
+    print("\n── Stale Mentions ──")
+    try:
+        import stale_scan  # noqa: E402
+        stale = stale_scan.scan()
+        if not stale:
+            print("  ✓ no stale mentions found")
+        else:
+            tier_a = [h for h in stale if h["tier"] == "A"]
+            tier_b = [h for h in stale if h["tier"] == "B"]
+            print(f"  stale hits         : {len(stale)} total "
+                  f"({len(tier_a)} Tier-A auto-removable, {len(tier_b)} Tier-B doctrine)")
+            for h in stale[:8]:
+                tag = "⛔" if h["tier"] == "B" else "▸"
+                repl = h["replaced_by"] or "(removed)"
+                print(f"  {tag} {h['file']}:{h['line_no']}  '{h['matched_text']}' → {repl}")
+            if len(stale) > 8:
+                print(f"  ... and {len(stale) - 8} more")
+    except Exception:
+        print("  (scanner unavailable)")
+
 
 def _executor_discipline(since: str | None = None) -> dict:
     """Compute executor-seat discipline metrics from the ledger."""

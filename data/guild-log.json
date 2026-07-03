@@ -4262,6 +4262,13 @@
       "title": "Quick Fix: profiles/strategist/config.yaml",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Routing: .claude/hooks/executor-enforce.py, evolution/README.md, evolution/engine.py (+5 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130

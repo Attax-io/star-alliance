@@ -231,40 +231,6 @@ def _check_bash(data):
     return "allow", "", ""
 
 
-def _declared_model(repo, sub):
-    """The `model:` frontmatter of a generated agent file, or None if unreadable.
-    Deliberately mirrors thinker-gate.py's helper of the same name/logic — the
-    two hooks must agree on "what does this member declare as its thinker,"
-    since thinker-gate.py is the authority that enforces conformity to it.
-    (tools/conformity_check.py should flag it if this ever drifts vs. thinker-gate.py.)"""
-    path = os.path.join(repo, ".claude", "agents", f"{sub}.md")
-    try:
-        with open(path, encoding="utf-8") as fh:
-            head = fh.read(4000)
-    except OSError:
-        return None
-    m = re.search(r"(?mi)^\s*model:\s*([A-Za-z0-9._-]+)\s*$", head)
-    return m.group(1).strip() if m else None
-
-
-def _is_known_member(repo, sub):
-    """True iff `sub` is a declared guild member (star-alliance-members/ or
-    guild-data.json), independent of whether its generated agent file exists.
-    Mirrors thinker-gate.py's helper of the same name."""
-    mem_dir = os.path.join(repo, "star-alliance-members")
-    try:
-        if os.path.isfile(os.path.join(mem_dir, f"{sub}.md")):
-            return True
-    except OSError:
-        pass
-    try:
-        with open(os.path.join(repo, "guild-data.json"), encoding="utf-8") as fh:
-            d = json.load(fh)
-        return sub in {m.get("id") for m in (d.get("members") or []) if isinstance(m, dict)}
-    except Exception:
-        return False
-
-
 def _check_task(data):
     """Inspect a Task/Agent subagent spawn. Returns (decision, stderr, systemMessage)."""
     ti = data.get("tool_input") or {}
@@ -280,23 +246,6 @@ def _check_task(data):
     # Brain-tier model explicitly chosen → this is a THINKER spawn, not an
     # executor spawn. The executor rule does not apply.
     if model and model.lower() in {b.lower() for b in BRAIN_TIER}:
-        return "allow", "", ""
-
-    # A named guild member (the-strategist, the-architect, ...) already
-    # declares its own thinker model, and thinker-gate.py — not this hook —
-    # is the authority that enforces conformity to it. When the caller leaves
-    # `model:` unset, the member runs its declared model by construction, so
-    # this is NEVER a doer-grade bulk spawn no matter how the prompt reads.
-    # (Bug fixed 2026-07-03: a long, detail-heavy ROUTING prompt to
-    # the-strategist tripped the DOER_KEYWORDS heuristic below, which then
-    # told the caller to pin `model: minimax-sub`. Doing that — or guessing
-    # `model: sonnet` instead — collided with thinker-gate.py, which blocks
-    # any override that isn't the member's own declared model (the-strategist
-    # declares opus). Two gates gave contradictory advice and routing stalled
-    # for three spawn attempts. Known members are exempted from the bulk
-    # heuristic here; thinker-gate.py remains the sole authority on whether a
-    # member's model is correct.)
-    if not model and _is_known_member(_project_dir(), agent_type):
         return "allow", "", ""
 
     # Explicit doer-tier model that is NOT the configured default → block.

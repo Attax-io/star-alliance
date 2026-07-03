@@ -38,9 +38,10 @@ ledger    engine       engine     verify-    scoreboard  │
 | Organ | File | Role |
 |---|---|---|
 | **SENSE** | `ledger.py` → `ledger.jsonl` | one append-only, git-tracked event stream (`change`, `verdict`, `learning`, `metric`, `proposal`, `revert`, `block`) |
+| **SENSE (stale)** | `stale_scan.py` + `stale_registry.json` | scans the repo for mentions of removed/renamed concepts; reports or auto-removes (Tier-A) |
 | **VERIFY** | `verdict.py` | *runs* the Critic (`critique.py`, kimi-k2.7 — a different model family) and returns a parsed `pass`/`concerns`/`block`/`error` |
-| **DIAGNOSE + CHANGE** | `engine.py` | reads the scoreboard → tier-tagged proposals → routes them (Tier-A reversible vs Tier-B human-gated) |
-| **REMEMBER** | `scoreboard.py` | turns the ledger into fitness numbers: regression escapes, block rate, concern density, repeated learnings, cost trend |
+| **DIAGNOSE + CHANGE** | `engine.py` | reads the scoreboard + stale scanner → tier-tagged proposals → routes them (Tier-A reversible vs Tier-B human-gated) |
+| **REMEMBER** | `scoreboard.py` | turns the ledger into fitness numbers: regression escapes, block rate, concern density, repeated learnings, cost trend, stale mentions |
 | **The gate** | `.claude/hooks/verify-gate.py` | the VERIFY organ wired as a Stop hook — armed by default, auto-runs the critic, auto-clears on pass, blocks on block |
 
 ## Reversibility tiers — the safety line
@@ -68,7 +69,9 @@ SA_SKIP_VERIFY=1              # one-turn human bypass of the verify gate
 SA_AUTO_CRITIC=0             # verify gate falls back to manual review (no auto-critic)
 python3 evolution/engine.py            # shadow: propose only, commit nothing (default)
 python3 evolution/engine.py --apply    # leave shadow (still Tier-B-gated, still honors DISARMED)
-python3 evolution/scoreboard.py        # read the fitness scoreboard
+python3 evolution/scoreboard.py        # read the fitness scoreboard (includes stale-mention scan)
+python3 evolution/stale_scan.py         # scan repo for stale mentions (shadow — report only)
+python3 evolution/stale_scan.py --apply # remove Tier-A stale mentions (Tier-B still human-gated)
 python3 evolution/ledger.py tail -n 20 # inspect the event stream
 ```
 
