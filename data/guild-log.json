@@ -3625,6 +3625,622 @@
       "title": "Quick Fix: star-alliance-members/the-quartermaster.md",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Bug Cycle: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Bug Cycle: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Bug Cycle: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Bug Cycle: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Bug Cycle: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Bug Cycle: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Local Session: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Local Session: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Local Session: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Local Session: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Inquiry / Recon: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Strategic Audit: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Strategic Audit: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Strategic Audit: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Strategic Audit: .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py, .claude/settings.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Strategic Audit: .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py, .claude/settings.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Strategic Audit: .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py, .claude/settings.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py, .claude/settings.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py, .claude/settings.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py, .claude/settings.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py, .claude/settings.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py, .claude/settings.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py, .claude/settings.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py, .claude/settings.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py, .claude/settings.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py, .claude/settings.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py, .claude/settings.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py, .claude/settings.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py, .claude/settings.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Routing: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+4 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Routing: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+4 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Routing: .claude/hooks/guild-routing-gate.sh, .claude/hooks/okf-gate.py, .claude/hooks/routing-enforce.py (+5 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/guild-routing-gate.sh, .claude/hooks/okf-gate.py, .claude/hooks/routing-enforce.py (+6 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Routing: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+5 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Routing: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+8 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130

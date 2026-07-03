@@ -33,7 +33,11 @@ GATES = [
     ("high-alert.py",       {"Skill", "Workflow", "Agent", "Task"}),
     ("unity-skill-gate.py", {"Task", "Agent", "Bash"}),
     ("approval-gate.py",    {"Task", "Agent", "Edit", "Write", "MultiEdit", "NotebookEdit"}),
-    ("routing-enforce.py",  {"Task", "Agent"}),
+    # Widened 2026-07-03: routing-enforce now gates EVERY tool, not just
+    # Task/Agent — the Butler was investigating/fixing via Bash/Read/Supabase
+    # MCP directly, never touching Task at all, so a Task-only filter here
+    # never even called into the hook for the tools it was actually misusing.
+    ("routing-enforce.py",  None),
     ("thinker-gate.py",     {"Task", "Agent"}),
     ("connector-gate.py",   {"Task", "Agent"}),
     ("okf-gate.py",         {"Write", "Edit", "MultiEdit"}),

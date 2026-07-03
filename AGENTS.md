@@ -44,7 +44,7 @@ Guild Master  ←→  Butler (voice/intake/approval/report)
 
 ## Model assignment
 
-Three role seats, each with a default model and fallback chain (defined in
+Two role seats, each with a default model and fallback chain (defined in
 `star-alliance-arsenal/models.json`):
 
 | Seat | Default | Fallback | Duty |
@@ -80,16 +80,16 @@ two surfaces are separate but share the same repo:
 - **`CLAUDE.md`** — auto-loaded by Claude Code. Describes the Claude-side
   orchestration: the Butler, the Strategist, the hooks, the dispatch bridge.
 - **`AGENTS.md`** (this file) — auto-loaded by Hermes Agent. Describes the
-  Hermes-side guild: the profiles, the triple-seat model system, the gates.
+  Hermes-side guild: the profiles, the gates.
 
 ### How the layers connect
 
 ```
 Layer 1: Claude Butler (runs as Claude model — Opus/Sonnet)
     ↓ delegates to
-Layer 2: Claude subagents (Strategist + specialists, also Claude models)
+Layer 2: Claude subagents (Brain = Claude; Strategist + specialists, also Claude models)
     ↓ hooks force dispatch through tools/dispatch.py →
-Layer 3: Hermes profiles (Brain = Claude; Doer = minimax-sub)
+Layer 3: Hermes profiles (Doer = minimax-sub)
 ```
 
 Claude is the orchestrator. Hermes profiles do the specialist work. The two sides

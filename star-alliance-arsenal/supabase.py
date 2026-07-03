@@ -664,6 +664,21 @@ def main():
     else:
         vp = ensure_psycopg()
 
+    # Re-exec under the venv's OWN interpreter so psycopg's ABI-tagged .so
+    # files (e.g. _psycopg.cpython-312-darwin.so) load against the exact
+    # CPython minor version they were built for. Without this, a launcher
+    # whose minor version differs from the venv (e.g. system python3.14
+    # against a 3.12 venv) fails with "cannot import name 'pq' from
+    # 'psycopg_binary'" / "no pq wrapper available". Terminal condition is
+    # realpath equality — once running under the venv python, sys.executable
+    # resolves to it and we stop. SUPABASE_REEXECED is a belt-and-suspenders
+    # backstop; the realpath check alone prevents any loop.
+    vp_real = os.path.realpath(vp)
+    me_real = os.path.realpath(sys.executable)
+    if me_real != vp_real:
+        os.environ["SUPABASE_REEXECED"] = "1"
+        os.execv(vp, [vp, os.path.abspath(__file__)] + sys.argv[1:])
+
     try:
         statements = split_statements(sql)
     except ValueError as e:

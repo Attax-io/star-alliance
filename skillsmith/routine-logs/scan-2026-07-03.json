@@ -1,0 +1,2274 @@
+{
+  "generated_for_days": 14,
+  "inventory_source": "/Users/attaselim/Documents/Claude/Projects/star-alliance",
+  "roots": [
+    "/Users/attaselim/Documents/Claude/Projects/Lex Council App",
+    "/Users/attaselim/Documents/Claude/Projects/Lex Council Business",
+    "/Users/attaselim/Documents/Claude/Projects/odysseus",
+    "/Users/attaselim/.claude/projects"
+  ],
+  "skill_count": 129,
+  "skills": [
+    {
+      "name": "_impeccable-upstream-source",
+      "version": "3.0.7",
+      "status": "lean",
+      "desc_chars": 895,
+      "body_words": 1793,
+      "body_lines": 173,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 0,
+        "sessions": 3
+      },
+      "friction": [
+        {
+          "where": "/Users/attaselim/.claude/projects/-Users-attaselim-Documents-Claude-Projects-star-alliance/a142c12a-5071-4b9b-81c0-20672587aa1d.jsonl",
+          "snippet": "| **118** | `star-alliance-skills/_impeccable-upstream-source/` | A vendored external product mirror that should be **excluded** (like `impeccable/` already is) but the exclude rule doesn't match its folder name. | **NO** \u2014 fix the exclude rule, these vanish. |"
+        }
+      ],
+      "mention_total": 3
+    },
+    {
+      "name": "a11y-craft",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 981,
+      "body_words": 519,
+      "body_lines": 56,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 2
+      },
+      "friction": [],
+      "mention_total": 3
+    },
+    {
+      "name": "add-admin-permission",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 732,
+      "body_words": 1819,
+      "body_lines": 311,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 26,
+        "sessions": 3
+      },
+      "friction": [],
+      "mention_total": 29
+    },
+    {
+      "name": "add-new-trigger",
+      "version": "1.1.1",
+      "status": "lean",
+      "desc_chars": 844,
+      "body_words": 2094,
+      "body_lines": 379,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 4,
+        "sessions": 4
+      },
+      "friction": [],
+      "mention_total": 8
+    },
+    {
+      "name": "add-new-view",
+      "version": "1.1.1",
+      "status": "lean",
+      "desc_chars": 842,
+      "body_words": 1865,
+      "body_lines": 237,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 21,
+        "sessions": 4
+      },
+      "friction": [],
+      "mention_total": 25
+    },
+    {
+      "name": "admin-page-builder",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 724,
+      "body_words": 2112,
+      "body_lines": 424,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 3,
+        "sessions": 4
+      },
+      "friction": [],
+      "mention_total": 7
+    },
+    {
+      "name": "admin-page-fixer",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 706,
+      "body_words": 2206,
+      "body_lines": 330,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 2
+      },
+      "friction": [],
+      "mention_total": 3
+    },
+    {
+      "name": "agent-web-reach",
+      "version": "1.1.0",
+      "status": "lean",
+      "desc_chars": 813,
+      "body_words": 1138,
+      "body_lines": 136,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 2
+      },
+      "friction": [],
+      "mention_total": 3
+    },
+    {
+      "name": "agentic-video-production",
+      "version": "1.1.0",
+      "status": "lean",
+      "desc_chars": 895,
+      "body_words": 942,
+      "body_lines": 112,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 2
+      },
+      "friction": [],
+      "mention_total": 3
+    },
+    {
+      "name": "algorithmic-trading-chan",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 960,
+      "body_words": 1016,
+      "body_lines": 53,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 1
+      },
+      "friction": [],
+      "mention_total": 2
+    },
+    {
+      "name": "api-integration-design",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 895,
+      "body_words": 1159,
+      "body_lines": 101,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 2
+      },
+      "friction": [],
+      "mention_total": 3
+    },
+    {
+      "name": "arsenal-forge",
+      "version": "1.0.1",
+      "status": "lean",
+      "desc_chars": 949,
+      "body_words": 1366,
+      "body_lines": 93,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 2,
+        "sessions": 4
+      },
+      "friction": [],
+      "mention_total": 6
+    },
+    {
+      "name": "article-creator",
+      "version": "1.0.1",
+      "status": "lean",
+      "desc_chars": 923,
+      "body_words": 839,
+      "body_lines": 111,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 3,
+        "sessions": 6
+      },
+      "friction": [],
+      "mention_total": 9
+    },
+    {
+      "name": "automated-testing",
+      "version": "1.1.0",
+      "status": "lean",
+      "desc_chars": 810,
+      "body_words": 1868,
+      "body_lines": 206,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 2
+      },
+      "friction": [],
+      "mention_total": 3
+    },
+    {
+      "name": "backend-auditor",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 480,
+      "body_words": 297,
+      "body_lines": 25,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 64,
+        "sessions": 5
+      },
+      "friction": [],
+      "mention_total": 69
+    },
+    {
+      "name": "bug-fix-closer",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 385,
+      "body_words": 384,
+      "body_lines": 69,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 0,
+        "sessions": 0
+      },
+      "friction": [],
+      "mention_total": 0
+    },
+    {
+      "name": "bug-fix-workflow",
+      "version": "1.2.0",
+      "status": "lean",
+      "desc_chars": 934,
+      "body_words": 2388,
+      "body_lines": 255,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 13,
+        "sessions": 19
+      },
+      "friction": [
+        {
+          "where": "/Users/attaselim/.claude/projects/-Users-attaselim-Documents-Claude-Projects-star-alliance/12117681-42d1-461b-a533-5002e2e65771.jsonl",
+          "snippet": "skill  bug-fix-workflow: xp=0 level=1 neverInvoked=true version=1.2.0"
+        }
+      ],
+      "mention_total": 32
+    },
+    {
+      "name": "bundled-rls",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 696,
+      "body_words": 1151,
+      "body_lines": 148,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 2,
+        "sessions": 1
+      },
+      "friction": [],
+      "mention_total": 3
+    },
+    {
+      "name": "butler-onboarding",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 892,
+      "body_words": 975,
+      "body_lines": 99,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 0,
+        "sessions": 6
+      },
+      "friction": [
+        {
+          "where": "/Users/attaselim/.claude/projects/-Users-attaselim-Documents-Claude-Projects-star-alliance/6bf258ed-e3ff-4f1d-b6b5-5f28c6b65541.jsonl",
+          "snippet": "- A skill directory `star-alliance-skills/butler-onboarding/` existed in git but was never wired into the dashboard (missing from `skills-meta.json`/`domains.json`/`VERSIONS.md`/art). Wired it via `tools/wire_skill.py`, generated its art tile, rebuilt."
+        }
+      ],
+      "mention_total": 6
+    },
+    {
+      "name": "butler-voice",
+      "version": "2.0.0",
+      "status": "lean",
+      "desc_chars": 786,
+      "body_words": 2239,
+      "body_lines": 286,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 0,
+        "sessions": 3
+      },
+      "friction": [],
+      "mention_total": 3
+    },
+    {
+      "name": "chart-patterns",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 1012,
+      "body_words": 1106,
+      "body_lines": 66,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 1
+      },
+      "friction": [],
+      "mention_total": 2
+    },
+    {
+      "name": "check-point-resched",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 380,
+      "body_words": 1071,
+      "body_lines": 82,
+      "days_since_change": 0.4,
+      "mentions": {
+        "files": 0,
+        "sessions": 2
+      },
+      "friction": [],
+      "mention_total": 2
+    },
+    {
+      "name": "claude-code-hooks",
+      "version": "1.1.0",
+      "status": "lean",
+      "desc_chars": 962,
+      "body_words": 1920,
+      "body_lines": 134,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 3
+      },
+      "friction": [],
+      "mention_total": 4
+    },
+    {
+      "name": "cleanup",
+      "version": "1.21.0",
+      "status": "large",
+      "desc_chars": 991,
+      "body_words": 5948,
+      "body_lines": 346,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 923,
+        "sessions": 50
+      },
+      "friction": [
+        {
+          "where": "/Users/attaselim/.claude/projects/-Users-attaselim-Documents-Claude-Projects-star-alliance/e28c4ec0-068a-419b-85a7-f8278719d63b.jsonl",
+          "snippet": "Leave the .hermes/plans/ historical planning doc alone (archival). Route all writes through dispatch (executor-enforce blocks direct writes). Verify with tools/conformity_check.py (baseline pre-existing failures: impeccable+cleanup skill-store drift, the-butler member-parity \u2014 no"
+        },
+        {
+          "where": "/Users/attaselim/.claude/projects/-Users-attaselim-Documents-Claude-Projects-star-alliance/262b70eb-31e2-4d25-aff3-265668df6bb6.jsonl",
+          "snippet": "**Final conformity check: 13 \u2192 3 rows** (target was \u224813\u21921; came in at 3, not 1, because two of the \"8 real failures\" \u2014 the impeccable/cleanup Claude-store HS rows \u2014 turned out to be protected-fork rows the sync tooling itself refuses to auto-clear, not simple drift). Remaining 3:"
+        },
+        {
+          "where": "/Users/attaselim/.claude/projects/-Users-attaselim-Documents-Claude-Projects-star-alliance/2ca8b5e3-69c0-4c26-aafa-65b8748124e2.jsonl",
+          "snippet": "2. **`conformity_check.py`** \u2014 dropped from 5 to **4** contradictions after my work. The `ART skills missing a skill-art tile: ['butler-onboarding']` finding is gone (unrelated pre-existing drift, resolved independently by another process), and critically **no new contradiction w"
+        },
+        {
+          "where": "/Users/attaselim/.claude/projects/-Users-attaselim-Documents-Claude-Projects-Lex-Council-App-lex-council/ff7911f0-7f97-4c19-b5b7-5fa640738f99.jsonl",
+          "snippet": "- `/cleanup docs` \u2014 a new vault log (docs/vault-logs/2026-06-21_bug304-permission-catalog-db-source.md) and a new memory file (docs/memory/discovery_perm-enforcement-vs-display-counts.md) were added."
+        },
+        {
+          "where": "/Users/attaselim/.claude/projects/-Users-attaselim-Documents-Claude-Projects-Lex-Council-App-lex-council/9e9869e7-1b9d-41f4-87b9-5ad78ee1e48d.jsonl",
+          "snippet": "- `/cleanup docs` \u2014 a new vault log (docs/vault-logs/2026-06-21_bug304-permission-catalog-db-source.md) and a new memory file (docs/memory/discovery_perm-enforcement-vs-display-counts.md) were added."
+        }
+      ],
+      "mention_total": 973
+    },
+    {
+      "name": "cn-market-strategy-pack",
+      "version": "1.1.0",
+      "status": "lean",
+      "desc_chars": 898,
+      "body_words": 1094,
+      "body_lines": 123,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 1
+      },
+      "friction": [],
+      "mention_total": 2
+    },
+    {
+      "name": "code-crime-scene",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 676,
+      "body_words": 1161,
+      "body_lines": 166,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 0,
+        "sessions": 0
+      },
+      "friction": [],
+      "mention_total": 0
+    },
+    {
+      "name": "code-review-craft",
+      "version": "1.1.1",
+      "status": "lean",
+      "desc_chars": 769,
+      "body_words": 1281,
+      "body_lines": 141,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 2
+      },
+      "friction": [],
+      "mention_total": 3
+    },
+    {
+      "name": "code-unity",
+      "version": "1.0.1",
+      "status": "lean",
+      "desc_chars": 792,
+      "body_words": 962,
+      "body_lines": 103,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 2,
+        "sessions": 3
+      },
+      "friction": [],
+      "mention_total": 5
+    },
+    {
+      "name": "codebase-memory-mcp",
+      "version": "1.2.0",
+      "status": "lean",
+      "desc_chars": 1014,
+      "body_words": 1337,
+      "body_lines": 167,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 2
+      },
+      "friction": [],
+      "mention_total": 3
+    },
+    {
+      "name": "codex-law-translate",
+      "version": "1.1.0",
+      "status": "lean",
+      "desc_chars": 908,
+      "body_words": 2112,
+      "body_lines": 228,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 17,
+        "sessions": 7
+      },
+      "friction": [],
+      "mention_total": 24
+    },
+    {
+      "name": "cognitive-bias-guard",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 706,
+      "body_words": 1240,
+      "body_lines": 171,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 0,
+        "sessions": 0
+      },
+      "friction": [],
+      "mention_total": 0
+    },
+    {
+      "name": "cold-doc-rotator",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 449,
+      "body_words": 168,
+      "body_lines": 23,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 23,
+        "sessions": 3
+      },
+      "friction": [],
+      "mention_total": 26
+    },
+    {
+      "name": "comms-triage",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 945,
+      "body_words": 1052,
+      "body_lines": 60,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 2,
+        "sessions": 4
+      },
+      "friction": [],
+      "mention_total": 6
+    },
+    {
+      "name": "conquering-campaign",
+      "version": "3.9.0",
+      "status": "large",
+      "desc_chars": 1015,
+      "body_words": 7346,
+      "body_lines": 389,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 94,
+        "sessions": 30
+      },
+      "friction": [
+        {
+          "where": "/Users/attaselim/.claude/projects/-Users-attaselim-Documents-Claude-Projects-star-alliance/81f97c07-d751-462d-92eb-aed61285d7f1.jsonl",
+          "snippet": "3. Scope the fix: is this a small, well-contained feature (new RPC + a modal reusing an existing pattern) or does it touch many surfaces? Use the bug-fix-workflow / conquering-campaign skill judgment \u2014 if it's small (1 RPC + 1 modal + i18n keys), you may implement it directly fol"
+        },
+        {
+          "where": "/Users/attaselim/.claude/projects/-Users-attaselim-Documents-Claude-Projects-star-alliance/e32f0c09-79ba-4664-b3bc-82f1eed2b572.jsonl",
+          "snippet": "3. Scope the fix: is this a small, well-contained feature (new RPC + a modal reusing an existing pattern) or does it touch many surfaces? Use the bug-fix-workflow / conquering-campaign skill judgment \u2014 if it's small (1 RPC + 1 modal + i18n keys), you may implement it directly fol"
+        }
+      ],
+      "mention_total": 124
+    },
+    {
+      "name": "contract-review",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 896,
+      "body_words": 1103,
+      "body_lines": 113,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 1
+      },
+      "friction": [],
+      "mention_total": 2
+    },
+    {
+      "name": "daily-stock-analysis",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 979,
+      "body_words": 2699,
+      "body_lines": 330,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 0,
+        "sessions": 1
+      },
+      "friction": [],
+      "mention_total": 1
+    },
+    {
+      "name": "dashboard-parity",
+      "version": "1.1.0",
+      "status": "lean",
+      "desc_chars": 1008,
+      "body_words": 1521,
+      "body_lines": 76,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 3
+      },
+      "friction": [],
+      "mention_total": 4
+    },
+    {
+      "name": "data-analysis-viz",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 886,
+      "body_words": 1264,
+      "body_lines": 39,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 1
+      },
+      "friction": [],
+      "mention_total": 2
+    },
+    {
+      "name": "db-rename-sweep",
+      "version": "1.1.0",
+      "status": "lean",
+      "desc_chars": 910,
+      "body_words": 542,
+      "body_lines": 48,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 16,
+        "sessions": 5
+      },
+      "friction": [],
+      "mention_total": 21
+    },
+    {
+      "name": "decompose-and-swarm",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 630,
+      "body_words": 1777,
+      "body_lines": 165,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 8
+      },
+      "friction": [],
+      "mention_total": 9
+    },
+    {
+      "name": "design-language",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 1011,
+      "body_words": 921,
+      "body_lines": 93,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 2,
+        "sessions": 3
+      },
+      "friction": [],
+      "mention_total": 5
+    },
+    {
+      "name": "design-taste",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 1012,
+      "body_words": 1077,
+      "body_lines": 100,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 5
+      },
+      "friction": [],
+      "mention_total": 6
+    },
+    {
+      "name": "design-tokens",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 1003,
+      "body_words": 532,
+      "body_lines": 58,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 447,
+        "sessions": 3
+      },
+      "friction": [
+        {
+          "where": "/Users/attaselim/.claude/projects/-Users-attaselim-Documents-Claude-Projects-star-alliance/9f15d5a9-e813-408e-b77f-a19e0f051be8.jsonl",
+          "snippet": "- **Design tokens are a hard single-source-of-truth.** `lib/design-tokens.ts` exports `C`; ESLint (`no-restricted-properties` in `packages/eslint-config/next.js`) **fails CI** on re-introducing any of ~110 retired tokens or redefining `const C`. Auditors must flag raw hex / shado"
+        }
+      ],
+      "mention_total": 450
+    },
+    {
+      "name": "design-unity",
+      "version": "1.1.0",
+      "status": "lean",
+      "desc_chars": 1016,
+      "body_words": 1274,
+      "body_lines": 107,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 5,
+        "sessions": 4
+      },
+      "friction": [],
+      "mention_total": 9
+    },
+    {
+      "name": "dev-ops-command-pack",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 768,
+      "body_words": 816,
+      "body_lines": 90,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 2
+      },
+      "friction": [],
+      "mention_total": 3
+    },
+    {
+      "name": "dev-server",
+      "version": "1.1.0",
+      "status": "lean",
+      "desc_chars": 303,
+      "body_words": 645,
+      "body_lines": 73,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 150,
+        "sessions": 7
+      },
+      "friction": [],
+      "mention_total": 157
+    },
+    {
+      "name": "dual-model-review",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 826,
+      "body_words": 2431,
+      "body_lines": 370,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 0,
+        "sessions": 4
+      },
+      "friction": [],
+      "mention_total": 4
+    },
+    {
+      "name": "file-access-model",
+      "version": "1.1.0",
+      "status": "lean",
+      "desc_chars": 786,
+      "body_words": 889,
+      "body_lines": 67,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 57,
+        "sessions": 5
+      },
+      "friction": [],
+      "mention_total": 62
+    },
+    {
+      "name": "financial-data-reach",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 844,
+      "body_words": 1412,
+      "body_lines": 66,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 1
+      },
+      "friction": [],
+      "mention_total": 2
+    },
+    {
+      "name": "frontend-auditor",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 394,
+      "body_words": 162,
+      "body_lines": 18,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 22,
+        "sessions": 5
+      },
+      "friction": [],
+      "mention_total": 27
+    },
+    {
+      "name": "frontend-react-engineering",
+      "version": "1.1.0",
+      "status": "lean",
+      "desc_chars": 842,
+      "body_words": 1584,
+      "body_lines": 152,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 3
+      },
+      "friction": [],
+      "mention_total": 4
+    },
+    {
+      "name": "full-output-enforcement",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 203,
+      "body_words": 382,
+      "body_lines": 46,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 5
+      },
+      "friction": [],
+      "mention_total": 6
+    },
+    {
+      "name": "graphify",
+      "version": "1.0.1",
+      "status": "large",
+      "desc_chars": 225,
+      "body_words": 6006,
+      "body_lines": 1029,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 39,
+        "sessions": 5
+      },
+      "friction": [],
+      "mention_total": 44
+    },
+    {
+      "name": "growth-marketing",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 851,
+      "body_words": 2506,
+      "body_lines": 97,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 2
+      },
+      "friction": [],
+      "mention_total": 3
+    },
+    {
+      "name": "guild-conformity",
+      "version": "1.6.1",
+      "status": "lean",
+      "desc_chars": 916,
+      "body_words": 2960,
+      "body_lines": 208,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 5
+      },
+      "friction": [],
+      "mention_total": 6
+    },
+    {
+      "name": "guild-log",
+      "version": "1.3.0",
+      "status": "lean",
+      "desc_chars": 801,
+      "body_words": 2632,
+      "body_lines": 244,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 2,
+        "sessions": 13
+      },
+      "friction": [],
+      "mention_total": 15
+    },
+    {
+      "name": "guild-reflection",
+      "version": "1.1.0",
+      "status": "lean",
+      "desc_chars": 1020,
+      "body_words": 1295,
+      "body_lines": 134,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 2,
+        "sessions": 3
+      },
+      "friction": [],
+      "mention_total": 5
+    },
+    {
+      "name": "harness-efficiency",
+      "version": "1.3.0",
+      "status": "lean",
+      "desc_chars": 1010,
+      "body_words": 1505,
+      "body_lines": 161,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 3
+      },
+      "friction": [],
+      "mention_total": 4
+    },
+    {
+      "name": "head-of-department",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 523,
+      "body_words": 641,
+      "body_lines": 52,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 0,
+        "sessions": 5
+      },
+      "friction": [
+        {
+          "where": "/Users/attaselim/.claude/projects/-Users-attaselim-Documents-Claude-Projects-star-alliance/e8d3b28c-c915-46e6-a53a-1b1b1403d3f3.jsonl",
+          "snippet": "File touched: `/Users/attaselim/Documents/Claude/Projects/star-alliance/art/skill-art/head-of-department.png` (JPEG bytes, 1024x1024, saved as `.png` per house convention \u2014 this is intentional, not a bug).</result>"
+        },
+        {
+          "where": "/Users/attaselim/.claude/projects/-Users-attaselim-Documents-Claude-Projects-star-alliance/e8d3b28c-c915-46e6-a53a-1b1b1403d3f3.jsonl",
+          "snippet": "1. **Identified the gap:** The full art tile (`art/skill-art/head-of-department.png`, 620 KB) existed, but the dashboard thumbnail (`art/skill-art-thumb/head-of-department.png`) was missing."
+        }
+      ],
+      "mention_total": 5
+    },
+    {
+      "name": "health-checker",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 441,
+      "body_words": 241,
+      "body_lines": 54,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 25,
+        "sessions": 3
+      },
+      "friction": [],
+      "mention_total": 28
+    },
+    {
+      "name": "heat-map-analyst",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 345,
+      "body_words": 170,
+      "body_lines": 24,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 9,
+        "sessions": 3
+      },
+      "friction": [],
+      "mention_total": 12
+    },
+    {
+      "name": "helpless",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 358,
+      "body_words": 739,
+      "body_lines": 112,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 2,
+        "sessions": 2
+      },
+      "friction": [
+        {
+          "where": "/Users/attaselim/.claude/projects/-Users-attaselim-Documents-Claude-Projects-Lex-Council-App/764e3536-9cfe-4908-a921-83dbf93ec314.jsonl",
+          "snippet": "the helpless skill should have invoked now and forced the butler to send the order to the strategist for routing, but what happened?"
+        }
+      ],
+      "mention_total": 4
+    },
+    {
+      "name": "high-alert",
+      "version": "2.4.0",
+      "status": "lean",
+      "desc_chars": 859,
+      "body_words": 923,
+      "body_lines": 58,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 2,
+        "sessions": 8
+      },
+      "friction": [],
+      "mention_total": 10
+    },
+    {
+      "name": "hotspot-radar",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 554,
+      "body_words": 804,
+      "body_lines": 149,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 0,
+        "sessions": 0
+      },
+      "friction": [],
+      "mention_total": 0
+    },
+    {
+      "name": "image-to-code",
+      "version": "1.0.0",
+      "status": "large",
+      "desc_chars": 555,
+      "body_words": 5735,
+      "body_lines": 1225,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 4
+      },
+      "friction": [],
+      "mention_total": 5
+    },
+    {
+      "name": "imagegen-frontend",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 985,
+      "body_words": 819,
+      "body_lines": 77,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 5
+      },
+      "friction": [],
+      "mention_total": 6
+    },
+    {
+      "name": "impeccable",
+      "version": "3.8.0",
+      "status": "lean",
+      "desc_chars": 895,
+      "body_words": 2739,
+      "body_lines": 159,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 14,
+        "sessions": 22
+      },
+      "friction": [],
+      "mention_total": 36
+    },
+    {
+      "name": "invariant-inference",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 1023,
+      "body_words": 672,
+      "body_lines": 51,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 4
+      },
+      "friction": [],
+      "mention_total": 5
+    },
+    {
+      "name": "japanese-candlesticks",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 1012,
+      "body_words": 965,
+      "body_lines": 60,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 1
+      },
+      "friction": [],
+      "mention_total": 2
+    },
+    {
+      "name": "law-harvest",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 979,
+      "body_words": 1152,
+      "body_lines": 63,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 2,
+        "sessions": 4
+      },
+      "friction": [],
+      "mention_total": 6
+    },
+    {
+      "name": "leaders-command",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 967,
+      "body_words": 898,
+      "body_lines": 105,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 1
+      },
+      "friction": [],
+      "mention_total": 2
+    },
+    {
+      "name": "legal-drafting",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 935,
+      "body_words": 1156,
+      "body_lines": 54,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 3,
+        "sessions": 1
+      },
+      "friction": [],
+      "mention_total": 4
+    },
+    {
+      "name": "legal-rule-modeling",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 931,
+      "body_words": 1447,
+      "body_lines": 64,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 2
+      },
+      "friction": [],
+      "mention_total": 3
+    },
+    {
+      "name": "letting-go",
+      "version": "1.0.1",
+      "status": "lean",
+      "desc_chars": 1005,
+      "body_words": 444,
+      "body_lines": 52,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 5
+      },
+      "friction": [],
+      "mention_total": 6
+    },
+    {
+      "name": "lex-system-audit",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 1019,
+      "body_words": 1967,
+      "body_lines": 250,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 4,
+        "sessions": 2
+      },
+      "friction": [],
+      "mention_total": 6
+    },
+    {
+      "name": "market-recon",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 914,
+      "body_words": 1115,
+      "body_lines": 55,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 2,
+        "sessions": 5
+      },
+      "friction": [],
+      "mention_total": 7
+    },
+    {
+      "name": "members-formation",
+      "version": "1.4.0",
+      "status": "lean",
+      "desc_chars": 883,
+      "body_words": 2590,
+      "body_lines": 254,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 6
+      },
+      "friction": [],
+      "mention_total": 7
+    },
+    {
+      "name": "metamorphosis-check",
+      "version": "1.0.1",
+      "status": "lean",
+      "desc_chars": 1007,
+      "body_words": 408,
+      "body_lines": 52,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 4
+      },
+      "friction": [],
+      "mention_total": 5
+    },
+    {
+      "name": "motion-design",
+      "version": "2.0.0",
+      "status": "lean",
+      "desc_chars": 1018,
+      "body_words": 1307,
+      "body_lines": 180,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 2
+      },
+      "friction": [],
+      "mention_total": 3
+    },
+    {
+      "name": "multimodal-model-wrappers",
+      "version": "1.1.0",
+      "status": "lean",
+      "desc_chars": 891,
+      "body_words": 1470,
+      "body_lines": 154,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 2
+      },
+      "friction": [],
+      "mention_total": 3
+    },
+    {
+      "name": "negotiation-deal-strategy",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 861,
+      "body_words": 1150,
+      "body_lines": 56,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 1
+      },
+      "friction": [],
+      "mention_total": 2
+    },
+    {
+      "name": "new-member-onboarding",
+      "version": "1.0.1",
+      "status": "lean",
+      "desc_chars": 366,
+      "body_words": 819,
+      "body_lines": 170,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 0,
+        "sessions": 1
+      },
+      "friction": [],
+      "mention_total": 1
+    },
+    {
+      "name": "obedience",
+      "version": "1.0.1",
+      "status": "lean",
+      "desc_chars": 1002,
+      "body_words": 1886,
+      "body_lines": 218,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 4
+      },
+      "friction": [],
+      "mention_total": 5
+    },
+    {
+      "name": "observability-incident-response",
+      "version": "1.1.0",
+      "status": "lean",
+      "desc_chars": 856,
+      "body_words": 1416,
+      "body_lines": 165,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 2
+      },
+      "friction": [],
+      "mention_total": 3
+    },
+    {
+      "name": "obsidian-markdown",
+      "version": "1.1.0",
+      "status": "lean",
+      "desc_chars": 448,
+      "body_words": 915,
+      "body_lines": 228,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 3,
+        "sessions": 5
+      },
+      "friction": [],
+      "mention_total": 8
+    },
+    {
+      "name": "okf",
+      "version": "1.5.0",
+      "status": "lean",
+      "desc_chars": 512,
+      "body_words": 2803,
+      "body_lines": 360,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1916,
+        "sessions": 20
+      },
+      "friction": [
+        {
+          "where": "/Users/attaselim/.claude/projects/-Users-attaselim-Documents-Claude-Projects-star-alliance/2ca8b5e3-69c0-4c26-aafa-65b8748124e2.jsonl",
+          "snippet": "3. **`.claude/hooks/okf-gate.py` is the canonical gate template** \u2014 same `check(data)` shape, `is_governed()` path-scoping, fail-open-on-error."
+        }
+      ],
+      "mention_total": 1936
+    },
+    {
+      "name": "pattern-detector",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 442,
+      "body_words": 177,
+      "body_lines": 25,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 9,
+        "sessions": 4
+      },
+      "friction": [],
+      "mention_total": 13
+    },
+    {
+      "name": "pattern-library-discovery",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 896,
+      "body_words": 944,
+      "body_lines": 111,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 2
+      },
+      "friction": [],
+      "mention_total": 3
+    },
+    {
+      "name": "penpot-design-platform",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 885,
+      "body_words": 711,
+      "body_lines": 95,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 1
+      },
+      "friction": [],
+      "mention_total": 2
+    },
+    {
+      "name": "performance",
+      "version": "1.0.3",
+      "status": "lean",
+      "desc_chars": 219,
+      "body_words": 1418,
+      "body_lines": 371,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 401,
+        "sessions": 9
+      },
+      "friction": [],
+      "mention_total": 410
+    },
+    {
+      "name": "phased-db-refactor",
+      "version": "1.1.1",
+      "status": "lean",
+      "desc_chars": 825,
+      "body_words": 1954,
+      "body_lines": 206,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 7,
+        "sessions": 7
+      },
+      "friction": [],
+      "mention_total": 14
+    },
+    {
+      "name": "portability-audit",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 481,
+      "body_words": 578,
+      "body_lines": 104,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 3
+      },
+      "friction": [],
+      "mention_total": 4
+    },
+    {
+      "name": "portfolio-risk",
+      "version": "0.1.0",
+      "status": "lean",
+      "desc_chars": 1005,
+      "body_words": 834,
+      "body_lines": 55,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 3
+      },
+      "friction": [],
+      "mention_total": 4
+    },
+    {
+      "name": "price-action",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 1001,
+      "body_words": 1084,
+      "body_lines": 63,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 2
+      },
+      "friction": [],
+      "mention_total": 3
+    },
+    {
+      "name": "probability-statistics",
+      "version": "1.1.0",
+      "status": "lean",
+      "desc_chars": 1000,
+      "body_words": 1318,
+      "body_lines": 69,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 4
+      },
+      "friction": [
+        {
+          "where": "/Users/attaselim/.claude/projects/-Users-attaselim-Documents-Claude-Projects-star-alliance/2dbd004b-faa9-4652-831f-0be6476333f9.jsonl",
+          "snippet": "2. ART: missing `skill-art/probability-statistics.png` tile."
+        }
+      ],
+      "mention_total": 5
+    },
+    {
+      "name": "project-start",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 375,
+      "body_words": 262,
+      "body_lines": 56,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 2
+      },
+      "friction": [],
+      "mention_total": 3
+    },
+    {
+      "name": "prove-it",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 884,
+      "body_words": 773,
+      "body_lines": 85,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 0,
+        "sessions": 5
+      },
+      "friction": [],
+      "mention_total": 5
+    },
+    {
+      "name": "python-master",
+      "version": "1.1.0",
+      "status": "lean",
+      "desc_chars": 1020,
+      "body_words": 515,
+      "body_lines": 65,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 4
+      },
+      "friction": [],
+      "mention_total": 5
+    },
+    {
+      "name": "redesign-existing-projects",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 225,
+      "body_words": 2174,
+      "body_lines": 175,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 6
+      },
+      "friction": [],
+      "mention_total": 7
+    },
+    {
+      "name": "relationship-intel",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 961,
+      "body_words": 1072,
+      "body_lines": 55,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 17,
+        "sessions": 4
+      },
+      "friction": [],
+      "mention_total": 21
+    },
+    {
+      "name": "release-train",
+      "version": "1.1.0",
+      "status": "lean",
+      "desc_chars": 894,
+      "body_words": 1713,
+      "body_lines": 80,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 2,
+        "sessions": 4
+      },
+      "friction": [],
+      "mention_total": 6
+    },
+    {
+      "name": "safe-agentic-orchestration",
+      "version": "1.1.0",
+      "status": "lean",
+      "desc_chars": 1017,
+      "body_words": 1202,
+      "body_lines": 58,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 2
+      },
+      "friction": [],
+      "mention_total": 3
+    },
+    {
+      "name": "scheduled-watch",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 909,
+      "body_words": 1030,
+      "body_lines": 48,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 3
+      },
+      "friction": [],
+      "mention_total": 4
+    },
+    {
+      "name": "schema-evolution",
+      "version": "1.2.0",
+      "status": "lean",
+      "desc_chars": 1013,
+      "body_words": 2264,
+      "body_lines": 173,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 4,
+        "sessions": 5
+      },
+      "friction": [],
+      "mention_total": 9
+    },
+    {
+      "name": "session-mining",
+      "version": "1.3.0",
+      "status": "lean",
+      "desc_chars": 1012,
+      "body_words": 1439,
+      "body_lines": 169,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 2,
+        "sessions": 4
+      },
+      "friction": [],
+      "mention_total": 6
+    },
+    {
+      "name": "skillsmith",
+      "version": "1.8.0",
+      "status": "large",
+      "desc_chars": 987,
+      "body_words": 5755,
+      "body_lines": 170,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 3,
+        "sessions": 38
+      },
+      "friction": [
+        {
+          "where": "/Users/attaselim/.claude/projects/-Users-attaselim-Documents-Claude-Projects-star-alliance/d06a0f25-f2cf-4510-b159-c0ff337eefbf.jsonl",
+          "snippet": "1) Wire content-hashing into the sync: make star-alliance-skills/skillsmith/scripts/skill_sync.py resolve its up-to-date/stale decision by CONTENT HASH (via the existing skill_fingerprint.py \u2014 find its exact path first, likely .claude/tools/skill_fingerprint.py) instead of (or in"
+        },
+        {
+          "where": "/Users/attaselim/.claude/projects/-Users-attaselim-Documents-Claude-Projects-star-alliance/6bf258ed-e3ff-4f1d-b6b5-5f28c6b65541.jsonl",
+          "snippet": "**Single biggest risk of getting it wrong:** double-scoring / wrong tier tagging that pollutes the scoreboard. If the routine writes `change` events for skill upgrades AND the Stop-time verify-gate ALSO writes a change/verdict for the same diff_hash on the same commit, `scoreboar"
+        },
+        {
+          "where": "/Users/attaselim/.claude/projects/-Users-attaselim-Documents-Claude-Projects-star-alliance/6bf258ed-e3ff-4f1d-b6b5-5f28c6b65541.jsonl",
+          "snippet": "1. `star-alliance-skills/skillsmith/assets/com.attax.skillsmith-routine.plist` \u2014 every `/Users/REPLACE_ME` replaced with `/Users/attaselim` (7 occurrences: install-comment \u00d72, ProgramArguments, WorkingDirectory, HOME env, StandardOutPath, StandardErrorPath). `plutil`-linted clean"
+        },
+        {
+          "where": "/Users/attaselim/.claude/projects/-Users-attaselim-Documents-Claude-Projects-star-alliance/6bf258ed-e3ff-4f1d-b6b5-5f28c6b65541.jsonl",
+          "snippet": "4. `star-alliance-skills/skillsmith/scripts/routine_watchdog.py` (new) \u2014 stdlib-only (json/sys/datetime/pathlib), resolves repo root via `Path(__file__).resolve().parents[3]` (not cwd), reads the heartbeat read-only, alerts (stdout block + `routine-logs/watchdog.log` append + exi"
+        },
+        {
+          "where": "/Users/attaselim/.claude/projects/-Users-attaselim-Documents-Claude-Projects-star-alliance/404afaad-64a0-43d9-9283-5cb6555beb54.jsonl",
+          "snippet": "- Example error message: `HS the-quartermaster/skillsmith: profile content drift` (reporting from the real profile, not junk)"
+        }
+      ],
+      "mention_total": 41
+    },
+    {
+      "name": "spec-driven-development",
+      "version": "1.1.0",
+      "status": "lean",
+      "desc_chars": 1017,
+      "body_words": 1396,
+      "body_lines": 158,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 3
+      },
+      "friction": [],
+      "mention_total": 4
+    },
+    {
+      "name": "star-alliance-language",
+      "version": "1.2.1",
+      "status": "lean",
+      "desc_chars": 522,
+      "body_words": 952,
+      "body_lines": 114,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 12
+      },
+      "friction": [],
+      "mention_total": 13
+    },
+    {
+      "name": "storm-investigation",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 866,
+      "body_words": 919,
+      "body_lines": 94,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 4
+      },
+      "friction": [],
+      "mention_total": 5
+    },
+    {
+      "name": "strategies-review",
+      "version": "1.1.0",
+      "status": "lean",
+      "desc_chars": 510,
+      "body_words": 631,
+      "body_lines": 76,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 2,
+        "sessions": 4
+      },
+      "friction": [],
+      "mention_total": 6
+    },
+    {
+      "name": "supabase",
+      "version": "0.1.4",
+      "status": "lean",
+      "desc_chars": 475,
+      "body_words": 1511,
+      "body_lines": 141,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1873,
+        "sessions": 55
+      },
+      "friction": [
+        {
+          "where": "/Users/attaselim/.claude/projects/-Users-attaselim-Documents-Claude-Projects-star-alliance/e6028cf7-f889-4c59-aa73-ef4fb3cd43ba.jsonl",
+          "snippet": "- I dispatched the Architect for the live read-only probe. It **repaired the read tool's environment but hit a stale database password** (`FATAL: password authentication failed for user \"postgres\"`) \u2014 the known issue already in guild memory (stale key in `~/.config/supabase/lexco"
+        },
+        {
+          "where": "/Users/attaselim/.claude/projects/-Users-attaselim-Documents-Claude-Projects-star-alliance/e6028cf7-f889-4c59-aa73-ef4fb3cd43ba.jsonl",
+          "snippet": "- **File:** `/Users/attaselim/Documents/Claude/Projects/Lex Council App/lex_council/supabase/migrations/20260703140000_bug341_344_user_can_see_file_folder_vap_bypass.sql`"
+        },
+        {
+          "where": "/Users/attaselim/.claude/projects/-Users-attaselim-Documents-Claude-Projects-star-alliance/81f97c07-d751-462d-92eb-aed61285d7f1.jsonl",
+          "snippet": "| **DB RPC** | `lex_council/supabase/migrations/20260703150000_bug332_move_document_between_files.sql` \u2014 `public.move_document(p_doc_id, p_target_file_id)`, `REVOKE ... FROM public, anon; GRANT ... TO authenticated, service_role` | Present in repo |"
+        },
+        {
+          "where": "/Users/attaselim/.claude/projects/-Users-attaselim-Documents-Claude-Projects-star-alliance/81f97c07-d751-462d-92eb-aed61285d7f1.jsonl",
+          "snippet": "The task asked me to confirm the production database via the Supabase MCP, but the Supabase MCP is **not wired into this session** as an available tool for any of these projects. The only credential-based paths that exist \u2014 the Supabase command-line tool and the read-only reader "
+        },
+        {
+          "where": "/Users/attaselim/.claude/projects/-Users-attaselim-Documents-Claude-Projects-star-alliance/c60ccaa4-dd97-49ab-8030-09b77ff227bc.jsonl",
+          "snippet": "I could not reach the live DB (the pooler credential is stale \u2014 the known `~/.config/supabase/lexcouncil.key` open item \u2014 and hit an `ECIRCUITBREAKER`). I designed instead against the **committed migration `20260618000000_scheduled_publishing.sql`** (the exact `publish_due_articl"
+        },
+        {
+          "where": "/Users/attaselim/.claude/projects/-Users-attaselim-Documents-Claude-Projects-star-alliance/c60ccaa4-dd97-49ab-8030-09b77ff227bc.jsonl",
+          "snippet": "The **live DB (project `bqgrpnsvplvicnmzxwkm`) was unreachable** this session: the `postgres` password in `~/.config/supabase/lexcouncil.key` is rejected and the pooler's auth circuit-breaker has tripped (`ECIRCUITBREAKER`). The venv itself is now fixed. My findings are grounded "
+        }
+      ],
+      "mention_total": 1928
+    },
+    {
+      "name": "supabase-postgres-best-practices",
+      "version": "1.2.1",
+      "status": "lean",
+      "desc_chars": 183,
+      "body_words": 1448,
+      "body_lines": 212,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 4,
+        "sessions": 5
+      },
+      "friction": [],
+      "mention_total": 9
+    },
+    {
+      "name": "system-prompt-design-patterns",
+      "version": "1.2.0",
+      "status": "lean",
+      "desc_chars": 1018,
+      "body_words": 1741,
+      "body_lines": 194,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 2
+      },
+      "friction": [],
+      "mention_total": 3
+    },
+    {
+      "name": "temporal-coupling-audit",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 622,
+      "body_words": 847,
+      "body_lines": 149,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 0,
+        "sessions": 0
+      },
+      "friction": [],
+      "mention_total": 0
+    },
+    {
+      "name": "timeseries-forecasting",
+      "version": "1.1.0",
+      "status": "lean",
+      "desc_chars": 1019,
+      "body_words": 1579,
+      "body_lines": 182,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 1
+      },
+      "friction": [],
+      "mention_total": 2
+    },
+    {
+      "name": "trading-strategy",
+      "version": "0.2.0",
+      "status": "lean",
+      "desc_chars": 1009,
+      "body_words": 1120,
+      "body_lines": 64,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 3
+      },
+      "friction": [],
+      "mention_total": 4
+    },
+    {
+      "name": "transactions-domain-model",
+      "version": "1.3.1",
+      "status": "lean",
+      "desc_chars": 951,
+      "body_words": 3263,
+      "body_lines": 399,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 29,
+        "sessions": 9
+      },
+      "friction": [],
+      "mention_total": 38
+    },
+    {
+      "name": "ultra-brainstorming",
+      "version": "1.3.1",
+      "status": "lean",
+      "desc_chars": 873,
+      "body_words": 2029,
+      "body_lines": 191,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 10
+      },
+      "friction": [],
+      "mention_total": 11
+    },
+    {
+      "name": "ux-copywriting",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 852,
+      "body_words": 1223,
+      "body_lines": 128,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 2
+      },
+      "friction": [],
+      "mention_total": 3
+    },
+    {
+      "name": "ux-research",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 857,
+      "body_words": 915,
+      "body_lines": 87,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 1
+      },
+      "friction": [],
+      "mention_total": 2
+    },
+    {
+      "name": "vault-log-compliance",
+      "version": "1.2.0",
+      "status": "lean",
+      "desc_chars": 893,
+      "body_words": 1651,
+      "body_lines": 136,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 3,
+        "sessions": 9
+      },
+      "friction": [],
+      "mention_total": 12
+    },
+    {
+      "name": "vault-log-writer",
+      "version": "1.1.1",
+      "status": "lean",
+      "desc_chars": 838,
+      "body_words": 1028,
+      "body_lines": 177,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 0,
+        "sessions": 5
+      },
+      "friction": [],
+      "mention_total": 5
+    },
+    {
+      "name": "view-registry",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 683,
+      "body_words": 1128,
+      "body_lines": 178,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 279,
+        "sessions": 6
+      },
+      "friction": [
+        {
+          "where": "/Users/attaselim/.claude/projects/-Users-attaselim-Documents-Claude-Projects-star-alliance/9f15d5a9-e813-408e-b77f-a19e0f051be8.jsonl",
+          "snippet": "- `apps/web/hooks/use-paginated-query.ts:22` \u2014 **low** \u2014 `PaginatedQueryConfig.viewName` is typed as bare `string`, not the registry's `ViewName` union, so nothing stops a future caller from passing a raw string literal instead of `VIEWS.&lt;key&gt;` (currently no one does, but t"
+        }
+      ],
+      "mention_total": 285
+    },
+    {
+      "name": "voices-check",
+      "version": "1.0.1",
+      "status": "lean",
+      "desc_chars": 1013,
+      "body_words": 392,
+      "body_lines": 50,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 3
+      },
+      "friction": [],
+      "mention_total": 4
+    },
+    {
+      "name": "volume-price-analysis",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 1020,
+      "body_words": 1067,
+      "body_lines": 55,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 1
+      },
+      "friction": [],
+      "mention_total": 2
+    },
+    {
+      "name": "watch-where-you-step",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 492,
+      "body_words": 2261,
+      "body_lines": 346,
+      "days_since_change": 0.4,
+      "mentions": {
+        "files": 0,
+        "sessions": 1
+      },
+      "friction": [],
+      "mention_total": 1
+    },
+    {
+      "name": "weapon-utility",
+      "version": "4.0.0",
+      "status": "lean",
+      "desc_chars": 868,
+      "body_words": 2664,
+      "body_lines": 150,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 15
+      },
+      "friction": [],
+      "mention_total": 16
+    },
+    {
+      "name": "workflow-forge",
+      "version": "1.4.0",
+      "status": "lean",
+      "desc_chars": 997,
+      "body_words": 2235,
+      "body_lines": 175,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 2,
+        "sessions": 6
+      },
+      "friction": [],
+      "mention_total": 8
+    },
+    {
+      "name": "workflow-runner",
+      "version": "1.0.0",
+      "status": "lean",
+      "desc_chars": 875,
+      "body_words": 1100,
+      "body_lines": 90,
+      "days_since_change": 0.8,
+      "mentions": {
+        "files": 1,
+        "sessions": 4
+      },
+      "friction": [],
+      "mention_total": 5
+    }
+  ],
+  "gap_signals": [
+    {
+      "keyword": "summary",
+      "count": 192
+    },
+    {
+      "keyword": "what",
+      "count": 118
+    },
+    {
+      "keyword": "result",
+      "count": 99
+    },
+    {
+      "keyword": "have",
+      "count": 86
+    },
+    {
+      "keyword": "council",
+      "count": 84
+    },
+    {
+      "keyword": "before",
+      "count": 79
+    },
+    {
+      "keyword": "repo",
+      "count": 77
+    },
+    {
+      "keyword": "tools",
+      "count": 77
+    },
+    {
+      "keyword": "version",
+      "count": 72
+    },
+    {
+      "keyword": "task",
+      "count": 72
+    },
+    {
+      "keyword": "path",
+      "count": 71
+    },
+    {
+      "keyword": "read",
+      "count": 69
+    }
+  ],
+  "summary": {
+    "active_skills": [
+      "okf",
+      "supabase",
+      "cleanup",
+      "design-tokens",
+      "performance",
+      "view-registry",
+      "dev-server",
+      "conquering-campaign",
+      "backend-auditor",
+      "file-access-model",
+      "graphify",
+      "skillsmith",
+      "transactions-domain-model",
+      "impeccable",
+      "bug-fix-workflow",
+      "add-admin-permission",
+      "health-checker",
+      "frontend-auditor",
+      "cold-doc-rotator",
+      "add-new-view",
+      "codex-law-translate",
+      "db-rename-sweep",
+      "relationship-intel",
+      "weapon-utility",
+      "guild-log",
+      "phased-db-refactor",
+      "pattern-detector",
+      "star-alliance-language",
+      "heat-map-analyst",
+      "vault-log-compliance",
+      "ultra-brainstorming",
+      "high-alert",
+      "article-creator",
+      "decompose-and-swarm",
+      "design-unity",
+      "schema-evolution",
+      "supabase-postgres-best-practices",
+      "add-new-trigger",
+      "obsidian-markdown",
+      "workflow-forge",
+      "admin-page-builder",
+      "market-recon",
+      "members-formation",
+      "redesign-existing-projects",
+      "arsenal-forge",
+      "butler-onboarding",
+      "comms-triage",
+      "design-taste",
+      "full-output-enforcement",
+      "guild-conformity",
+      "imagegen-frontend",
+      "law-harvest",
+      "letting-go",
+      "lex-system-audit",
+      "release-train",
+      "session-mining",
+      "strategies-review",
+      "code-unity",
+      "design-language",
+      "guild-reflection",
+      "head-of-department",
+      "image-to-code",
+      "invariant-inference",
+      "metamorphosis-check",
+      "obedience",
+      "probability-statistics",
+      "prove-it",
+      "python-master",
+      "storm-investigation",
+      "vault-log-writer",
+      "workflow-runner",
+      "claude-code-hooks",
+      "dashboard-parity",
+      "dual-model-review",
+      "frontend-react-engineering",
+      "harness-efficiency",
+      "helpless",
+      "legal-drafting",
+      "portability-audit",
+      "portfolio-risk",
+      "scheduled-watch",
+      "spec-driven-development",
+      "trading-strategy",
+      "voices-check",
+      "_impeccable-upstream-source",
+      "a11y-craft",
+      "admin-page-fixer",
+      "agent-web-reach",
+      "agentic-video-production",
+      "api-integration-design",
+      "automated-testing",
+      "bundled-rls",
+      "butler-voice",
+      "code-review-craft",
+      "codebase-memory-mcp",
+      "dev-ops-command-pack",
+      "growth-marketing",
+      "legal-rule-modeling",
+      "motion-design",
+      "multimodal-model-wrappers",
+      "observability-incident-response",
+      "pattern-library-discovery",
+      "price-action",
+      "project-start",
+      "safe-agentic-orchestration",
+      "system-prompt-design-patterns",
+      "ux-copywriting",
+      "algorithmic-trading-chan",
+      "chart-patterns",
+      "check-point-resched",
+      "cn-market-strategy-pack",
+      "contract-review",
+      "data-analysis-viz",
+      "financial-data-reach",
+      "japanese-candlesticks",
+      "leaders-command",
+      "negotiation-deal-strategy",
+      "penpot-design-platform",
+      "timeseries-forecasting",
+      "ux-research",
+      "volume-price-analysis",
+      "daily-stock-analysis",
+      "new-member-onboarding",
+      "watch-where-you-step"
+    ],
+    "frictionful_skills": [
+      "_impeccable-upstream-source",
+      "bug-fix-workflow",
+      "butler-onboarding",
+      "cleanup",
+      "conquering-campaign",
+      "design-tokens",
+      "head-of-department",
+      "helpless",
+      "okf",
+      "probability-statistics",
+      "skillsmith",
+      "supabase",
+      "view-registry"
+    ],
+    "dormant_skills": [
+      "bug-fix-closer",
+      "code-crime-scene",
+      "cognitive-bias-guard",
+      "hotspot-radar",
+      "temporal-coupling-audit"
+    ],
+    "request_lines_seen": 1616
+  }
+}

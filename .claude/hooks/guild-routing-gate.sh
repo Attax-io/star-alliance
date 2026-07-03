@@ -118,13 +118,20 @@ This looks like a quick, easily-reversible change. Proportional path:
     (Voice-only turn the Butler answers directly? He is NOT an agent — drop the
     "Deploying agents" block and write: "Handled directly by the Butler — <model>.
     No agents deployed.")
+  • MECHANICAL REQUIREMENT (routing-enforce.py, applies on Quick Fix too): your FIRST
+    tool call of the turn — before Grep, Bash, Read, Supabase, anything — must be
+    Task(subagent_type="the-strategist", prompt="<the brief>"). This is true even for
+    a one-agent Quick Fix; the Strategist can hand it straight back, but the routing
+    decision must be a real dispatch, not just a "Deploying 1 agent" line in prose.
   • Hand any doer-grade bulk/transform work to a cheap doer
     (python3 star-alliance-arsenal/summon.py minimax-sub "<prompt>").
   • ESCALATE TO FULL + HALT the instant the task actually touches anything
     high-stakes — migrations, git push/force, prod/deploy, RLS/secrets, renames,
     deletes, or mass/multi-file edits. When unsure, treat as high-stakes: restate
     a one-line brief and wait for "go". Stakes beats size, always.
-The 🗺 banner is the gate key: no banner → every work tool is blocked.
+Two gate keys, IN ORDER: (1) the ▸ Workflow banner as your first line, (2)
+Task(the-strategist) as your first tool call. Skip either and every other tool
+(including a plain Grep/Bash) is blocked — see routing-enforce.py.
 EOF
 elif [ "$TIER" = "FULL" ]; then
 cat <<'EOF'
@@ -142,6 +149,8 @@ Sprint · Legal Codex · Market Recon · Skill Forge · …), and the turn conti
 new banner. If no workflow fits, the Strategist opens Workflow Forge — not the Butler. The
 division of labor is fixed: Butler voices, Strategist picks, Guild Master approves.
 ONE CARVE-OUT: multi-agent SWARM orchestration is the Butler's, not the Strategist's — only the live top session can fan out parallel workers, so the Butler dispatches the Strategist first (worthiness/workflow) then cuts disjoint slices, fans out N workers in one message, runs a per-slice critic, and integrates + commits once.
+
+MECHANICAL ORDER (routing-enforce.py) — before anything else: (1) your first LINE of text this turn is the ▸ Workflow banner, (2) your first TOOL CALL is Task(subagent_type="the-strategist", prompt="<the brief>"). Grep, Bash, Read, WebFetch, and every MCP tool (Supabase included) are blocked until both land — no exceptions, no investigating first "just to check."
 
 STEP 0 · HOLD THE APPROVAL GATE — before ANY build, file write, git op, or other
 hard-to-reverse action, the Butler RESTATES the request back as a one-line brief
