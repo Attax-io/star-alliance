@@ -28,7 +28,7 @@
 # COLD vs GROUNDED: cold critique reads TEXT only and misses *absence* bugs (a
 # stale id in a file the diff didn't include). For load-bearing source the gate
 # should escalate to a GROUNDED Hermes review agent. Cold is the always-available
-# floor; grounded is the backstop. See weapon-utility §The Critic seat.
+# floor; grounded is the backstop. See weapon-utility §The .
 # ─────────────────────────────────────────────────────────────────────────────
 from __future__ import annotations
 

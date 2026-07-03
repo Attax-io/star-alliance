@@ -9,7 +9,7 @@ timestamp: 2026-07-02T12:28:13Z
 
 **Goal:** Move the Star Alliance multi-agent guild from Claude Code's infrastructure (`.claude/` hooks, agents, CLAUDE.md) to Hermes Agent's native primitives (profiles, delegate_task, cron, skills, AGENTS.md, MCP).
 
-**Architecture:** Star Alliance is a multi-agent system with 9 member personas, 44 skills, a model arsenal (brain/doer/critic/bench seats), 30+ workflows, a hook-based gate system (20+ Python hooks), an evolution engine, and a Tauri dashboard. The migration maps each Claude Code mechanism to its Hermes equivalent — some are 1:1, some need rearchitecting, some are already done (skills are symlinked).
+**Architecture:** Star Alliance is a multi-agent system with 9 member personas, 44 skills, a model arsenal (Brain/Doer/Bench seats), 30+ workflows, a hook-based gate system (20+ Python hooks), an evolution engine, and a Tauri dashboard. The migration maps each Claude Code mechanism to its Hermes equivalent — some are 1:1, some need rearchitecting, some are already done (skills are symlinked).
 
 **Tech Stack:** Python 3.11, Hermes Agent, JSON/YAML config, shell scripts, Tauri (dashboard stays as-is)
 

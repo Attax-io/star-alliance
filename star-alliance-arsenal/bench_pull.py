@@ -2,7 +2,7 @@
 """bench_pull — select N available Bench models for a SWARM (doer or thinker).
 
 The Bench seat (models.json -> seats.bench, i.e. every model not holding the
-Brain/Doer/Critic seats) is the pool the Brain pulls from when one Doer or one
+Brain/Doer/s) is the pool the Brain pulls from when one Doer or one
 thinker isn't enough:
   * doer-swarm    — parallel independent slices (see guild/delegate.py delegate_many)
   * thinker-swarm — ultra-brainstorming's panel of distinct minds

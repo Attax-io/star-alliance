@@ -13,10 +13,8 @@
     "doer": {
       "default": "minimax-sub",
       "fallback": [
-        "minimax-payg",
-        "glm-5.2",
-        "kimi-k2.7"
-      ]
+      "minimax-payg"
+    ]
     },
     "bench": {
       "default": null,

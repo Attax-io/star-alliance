@@ -67,7 +67,7 @@ writes, hidden from `--help`) — enforced inside the script, not the hooks.
 
 ## The three-layer architecture (Claude → dispatch → Hermes)
 
-This repo runs a three-layer system. Claude is the orchestrator; Hermes profiles
+This repo runs a three-layer system. Claude is the Brain; Hermes profiles
 do the actual specialist work. The `models.json` in `star-alliance-arsenal/`
 describes the Hermes-side model seats — **do not edit it from the Claude side**
 unless you understand the two-seat system below.
@@ -92,7 +92,7 @@ assignments live in `star-alliance-arsenal/models.json` (the `seats` block +
 | Seat | Default Model | Fallback | Role |
 |---|---|---|---|
 | **Brain (Thinker)** | Claude — the member's `model:` (Opus/Sonnet/Haiku) | — | Plans, reviews, wields tools |
-| **Doer** | minimax-sub | minimax-payg
+| **Doer** | minimax-sub | minimax-payg | Executes bulk work, returns text |
 
 **The rule is absolute: Claude models are the BRAIN; non-Claude models are the
 DOER.** A non-Claude model never thinks or orchestrates; a Claude model is never a

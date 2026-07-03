@@ -50,7 +50,7 @@ SCAN_EXTENSIONS = {".md", ".py", ".js", ".json", ".yaml", ".yml", ".sh", ".cjs",
 
 # Directories to skip (noise, archives, generated data, git).
 SKIP_DIRS = {".git", "__pycache__", "node_modules", "evolution/archive", "evolution/proposals",
-             ".claude/state", "data"}
+             ".claude/state", "data", ".retired"}
 
 # Files to skip (the scanner and registry themselves contain the patterns by design).
 SKIP_FILES = {"stale_scan.py", "stale_registry.json"}

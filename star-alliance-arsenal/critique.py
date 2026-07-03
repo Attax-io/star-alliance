@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""critique.py — COLD critique: hand a diff/plan as TEXT to the Critic seat (default
+"""critique.py — COLD critique: hand a diff/plan as TEXT to the  (default
 kimi-k2.7) and get back a refutation-focused review.
 
 The Critic is deliberately a DIFFERENT model family than the Brain (glm-5.2) — a critic
@@ -11,7 +11,7 @@ TEXT-ONLY by nature: the Critic is a non-thinker weapon, so it CANNOT inspect th
 RUN something — grep for a regression, run the build, read a file the diff didn't
 include — use GROUNDED mode instead: delegate_task a grounded review agent. Cold critique alone
 misses *absence* bugs (a stale id left in a file nobody pasted), so grounded verify is
-the backstop on real source changes. See weapon-utility §The Critic seat.
+the backstop on real source changes. See weapon-utility §The .
 
 Usage:
     git diff HEAD | python3 star-alliance-arsenal/critique.py

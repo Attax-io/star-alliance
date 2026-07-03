@@ -31,7 +31,7 @@ JARGON = {
     "idempotent", "fingerprint", "ledger", "hook", "hooks", "gate", "gates",
     "rls", "schema", "migration", "cli", "mcp", "endpoint", "payload",
     "sentinel", "frontmatter", "yaml", "json", "stack trace", "compaction",
-    "doer", "thinker", "critic seat", "fan-out", "fanout", "main thread",
+    "doer", "thinker", "", "fan-out", "fanout", "main thread",
     "token", "tokens", "cache", "transcript", "branch", "merge", "rebase",
 }
 

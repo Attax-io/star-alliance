@@ -748,7 +748,7 @@ def main():
             fails.append(f"FB summon _FALLBACK_CLOUD_TAG {cloud_map} != registry cloud_tags "
                          f"{reg_tags} (routing fallback drifted from models.json)")
         # ST — universal SEATS (models.json "seats"): every seat default + fallback must
-        #      name a real registry id. The Critic seat was REMOVED from the registry
+        #      name a real registry id. The  was REMOVED from the registry
         #      (decision: critic is no longer a separate seat — Claude models are BRAIN,
         #      everything non-Claude is DOER). So `seats.critic` may legitimately be
         #      absent and we must not fail on that. We DO still validate that BRAIN ids
@@ -1258,6 +1258,9 @@ def main():
             for prefix in _hm_skip_claude_prefixes:
                 if rel_path.startswith(prefix):
                     return True
+            # Skip the .retired/ archive (old hooks/arsenal moved out of active use).
+            if rel_path.startswith(".retired/"):
+                return True
             rel_n = rel_path.lstrip("./")
             for frag in _hm_skip_fragments:
                 if frag in (rel_path + "/") or frag in ("/" + rel_n) or frag in rel_n:

@@ -352,7 +352,7 @@ A raw verdict dump is a hand-off failure.
 
 ## Cross-links
 
-- [[weapon-utility]] — the seat doctrine (Brain / Doer / Critic / Bench).
+- [[weapon-utility]] — the seat doctrine (Brain/Doer/Bench).
   Dual-review uses the Doer seat (M3) for generation and the Bench
   reviewers (Kimi + GLM as thinker sub-agents) for review. Never reverse.
 - [[decompose-and-swarm]] — when many slices each need dual review,

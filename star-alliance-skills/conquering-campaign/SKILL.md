@@ -389,7 +389,7 @@ The full catalog — the lookup table (symptom → status → cure pointer) AND 
 - references/env-hazards.md — runtime + tooling hazard index (#20/#28/#41/#48/#51/#63/#73/#87/#95/#99)
 - references/skill-maintenance.md — deploy/sync + self-health checks (#84) + the G0 sprawl metric
 
-External craft: **[[decompose-and-swarm]]** (the swarm method — five MOVES, worthiness gate, per-slice critic) · **[[core-swarm]]** (guild swarm memory core) · **[[weapon-utility]]** (Brain/Doer/Critic seat doctrine).
+External craft: **[[decompose-and-swarm]]** (the swarm method — five MOVES, worthiness gate, per-slice critic) · **[[core-swarm]]** (guild swarm memory core) · **[[weapon-utility]]** (Brain/Doer/ doctrine).
 
 ## Version history
 Full release history (newest first) → **references/version-history.md**. Current: **v3.9.0 — 2026-06-28** (MINOR) — swarm-era restructure: SKILL.md trimmed under the Cowork installer ceiling (failure-mode catalog · W3 execution-loop detail · swarm playbook · frontmatter catalog relocated to references); the W3 BUILD swarm is now the SANCTIONED, worthiness-gated, per-slice-critic'd DEFAULT for parallel writes via [[decompose-and-swarm]] (fan-out sweep = the same shared-tree pattern); added CONFORMITY-CLOSE-ONCE; swarm workers run as the member BRAIN (Sonnet), MiniMax the doer inside each. On each upgrade, bump `version:` + prepend to references/version-history.md.

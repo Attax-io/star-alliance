@@ -309,7 +309,7 @@ def iter_agents(repo: Path):
 def derive_member_arsenal(brain_model, seats: dict, models: dict, errors: list[str] | None = None):
     """Project the TWO-LAYER arsenal for one member from the seats SoT (models.json).
     Stripped to the bones: Brain = the member's session model (an override of
-    seats.brain), Doer = the one universal MiniMax seat. No Critic, no Bench.
+    seats.Brain/Doer/Bench.
     Returns (seats_obj, weapons[{model,desc}]) — weapons[] is the derived projection
     the dashboard renders (the Doer card and the Brain card)."""
     def dflt(seat):
