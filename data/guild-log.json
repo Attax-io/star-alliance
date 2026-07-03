@@ -4248,6 +4248,13 @@
       "title": "Routing: CLAUDE.md, build.py, star-alliance-members/the-strategist.md (+1 more)",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: AGENTS.md, star-alliance-members/the-steward.md",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130

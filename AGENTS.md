@@ -49,8 +49,12 @@ Two role seats, each with a default model and fallback chain (defined in
 
 | Seat | Default | Fallback | Duty |
 |---|---|---|---|
-| **Brain** | the member's model (Opus / Sonnet / Haiku) | the Claude brain family | Plans, reviews, owns the standard, wields the tools |
-| **Doer** | minimax-sub | minimax-payg → glm-5.2 → kimi-k2.7 | Executes the plan, returns work as text. No tools |
+| **Brain** | the member's model (Opus / Sonnet / Haiku) — **Claude** | the Claude brain family | Plans, reviews, owns the standard, wields tools |
+| **Doer** | minimax-sub — **Hermes profile** | minimax-payg → glm-5.2 → kimi-k2.7 | Executes the plan, returns work as text. No tools |
+
+**Claude is the Brain; Hermes is the Doer.** A non-Claude model never thinks
+or orchestrates; a Claude model is never a doer seat. This is enforced
+mechanically by `tools/conformity_check.py`.
 
 Non-Claude models (minimax-sub, minimax-payg, glm-5.2, kimi-k2.7) are available
 as fallbacks for the Doer seat. A guild agent's `model:` frontmatter overrides
@@ -92,8 +96,10 @@ Layer 2: Claude subagents (Brain = Claude; Strategist + specialists, also Claude
 Layer 3: Hermes profiles (Doer = minimax-sub)
 ```
 
-Claude is the orchestrator. Hermes profiles do the specialist work. The two sides
-share `tools/dispatch.py` (byte-identical in both repos) and the `profiles/`
+**Claude is the Brain; Hermes is the Doer.** Claude models plan, review, wield
+tools, and hold the gates. Hermes profiles execute bulk work — large edits,
+generation, mechanical transforms — and return text. The two sides share
+`tools/dispatch.py` (byte-identical in both repos) and the `profiles/`
 directory (the Hermes profile distributions).
 
 ### Model seats — Hermes side only
@@ -239,15 +245,15 @@ interpretation is high.
 A blocked agent declares the failure mode instead of silently retrying the same
 blind action.
 
-## Two layers: thinker plans & reviews · doer executes bulk
+## Two layers: Claude thinker plans & reviews · Hermes doer executes bulk
 
-- **Thinker** (the member's model — Opus / Sonnet / Haiku) — the profile's
-  session model. It owns the loop: plan → prompt the doer → review the return
-  → re-prompt until it conforms. All tool-access orchestration stays with the
-  thinker.
-- **Doer** (minimax-sub) — bulk work (large edits, extraction, generation,
-  mechanical transforms) goes to the doer via `delegate_task` with a model
-  override.
+- **Thinker** (the member's model — Opus / Sonnet / Haiku) — **Claude**. The
+  profile's session model. It owns the loop: plan → prompt the doer → review the
+  return → re-prompt until it conforms. All tool-access orchestration stays with
+  the thinker.
+- **Doer** (minimax-sub) — **Hermes profile**. Bulk work (large edits, extraction,
+  generation, mechanical transforms) goes to the doer via `delegate_task` with a
+  model override.
 
 Only offload doer-grade bulk (≈1.5k+ tokens of output, or many repetitive
 transforms). A small job — the thinker does inline.

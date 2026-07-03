@@ -34,7 +34,7 @@ This member runs on **two layers** (`star-alliance-arsenal/models.json` -> `seat
 - **Brain** -- `glm-5.2` (this member's session mind: plans, reviews, wields tools)
 - **Doer** -- this member's Hermes profile reached via `tools/dispatch.py` (primary executor, full terminal and tools); `minimax-m3` is the substitute for text-only bulk, used only when Hermes is unreachable
 
-The brain is this member's `model:` — one fixed model, pinned by the thinker gate so it cannot drift. Usage meter (skill / workflow levels): [[weapon-utility]]; seat doctrine (which weapon, which backend): `star-alliance-arsenal/`.
+The brain is this member's `model:` — one fixed model, pinned by the thinker gate so it cannot drift. The brain does the thinking and hands doer-grade bulk to its Hermes profile via `dispatch.py` first; if Hermes is unreachable it falls back to `minimax-m3`; if neither answers it stops and reports rather than guessing. Usage meter (skill / workflow levels): [[weapon-utility]]; seat doctrine (which weapon, which backend): `star-alliance-arsenal/`.
 
 ## Your expertise
 
