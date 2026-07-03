@@ -8,10 +8,11 @@ type: Skill
 ---
 # imagegen-frontend — the Designer's image-generation engine
 
-One craft for **generating premium design imagery** with the `image-01` doer. You pick the surface the
-work needs, run that mode's full playbook, and ship imagery a developer (or a coding model) can recreate
-faithfully — or a brand-identity board ready to present. One skill, three modes — pick one, generate the
-frames, hold the line against generic AI-image defaults.
+One craft for **generating premium design imagery** with whatever image-generation tool the session
+has to hand. You pick the surface the work needs, run that mode's full playbook, and ship imagery a
+developer (or a coding model) can recreate faithfully — or a brand-identity board ready to present.
+One skill, three modes — pick one, generate the frames, hold the line against generic AI-image
+defaults.
 
 ## What it is / is not
 
@@ -63,8 +64,9 @@ frames, hold the line against generic AI-image defaults.
    isn't set, run this skill's `brand` mode first; `web`/`mobile` then render inside that identity.
 2. **Pick the mode** — `web` for sites, `mobile` for app screens, `brand` for the identity system. Load that
    mode's `references/*.md` for the full playbook; this file is the index, the detail lives in the reference.
-3. **Dispatch the doer.** The thinker (sonnet) holds the art-direction brief; the `image-01` doer generates.
-   Generate sequentially when the runner is one-at-a-time, announcing each frame ("Section 3 of 8: Pricing").
+3. **Generate the frames.** The Designer (a Sonnet subagent) holds the art-direction brief and drives
+   whatever image-generation tool the session has available. Generate sequentially when the tool is
+   one-at-a-time, announcing each frame ("Section 3 of 8: Pricing").
 4. **Run the slop test** on every frame before handing off. Re-direct any frame that reads as generic.
 5. **Hand off to `image-to-code`** when the references are approved and production code must mirror them.
 

@@ -7,9 +7,9 @@
 # Tiers:
 #   1  Skills only (default) — syncs this member's skills to target .claude/skills/
 #   2  Tier 1 + member agent file + STAR_ALLIANCE_ROOT in target settings.json
-#   3  Tier 2 + hooks + hook wiring + workflows-lite.json + the dispatch
-#      substrate the gates route to (tools/dispatch.py + arsenal + evolution)
-#      + an idempotent Hermes worker bootstrap with a dispatch-path preflight
+#   3  Tier 2 + hooks + hook wiring + workflows-lite.json + the Claude-only
+#      arsenal (models.json + registry) + .mcp.json so the guild runs as an
+#      MCP server on the target
 #
 # Example:
 #   ./star-alliance-arsenal/install.sh the-developer /path/to/my-project --tier 2
@@ -177,101 +177,6 @@ copy_pruned() {
       -o -name 'models-usage.json' \) -delete 2>/dev/null || true
 }
 
-# Provision each installed Hermes profile's .env with the doer keys (idempotent).
-# Upserts the KEY=VALUE lines from the machine key files without clobbering any
-# other keys already present in the profile .env.
-provision_profile_envs() {
-  local pdir="$HOME/.hermes/profiles"
-  [[ -d "$pdir" ]] || { echo "    - no installed profiles yet (skip .env provisioning)"; return 0; }
-  local sub="" payg=""
-  [[ -f "$HOME/.config/minimax/m3-sub.key"  ]] && sub="$(tr -d '[:space:]'  < "$HOME/.config/minimax/m3-sub.key")"
-  [[ -f "$HOME/.config/minimax/m3-payg.key" ]] && payg="$(tr -d '[:space:]' < "$HOME/.config/minimax/m3-payg.key")"
-  if [[ -z "$sub" ]]; then echo "    - doer key absent; cannot provision .env (skip)"; return 0; fi
-  local count=0 prof env
-  for prof in "$pdir"/*/; do
-    [[ -d "$prof" ]] || continue
-    env="${prof}.env"
-    python3 - "$env" "$sub" "$payg" <<'PYENV'
-import sys, pathlib
-env, sub, payg = sys.argv[1], sys.argv[2], sys.argv[3]
-p = pathlib.Path(env)
-lines = p.read_text().splitlines() if p.exists() else []
-def upsert(lines, key, val):
-    if not val:
-        return lines
-    out, seen = [], False
-    for ln in lines:
-        if ln.strip().startswith(key + "="):
-            out.append(key + "=" + val); seen = True
-        else:
-            out.append(ln)
-    if not seen:
-        out.append(key + "=" + val)
-    return out
-lines = upsert(lines, "MINIMAX_SUB_KEY", sub)
-lines = upsert(lines, "MINIMAX_PAYG_KEY", payg)
-p.write_text("\n".join(lines) + "\n")
-PYENV
-    count=$((count + 1))
-  done
-  echo "    OK provisioned doer keys into $count profile .env file(s)"
-}
-
-# Preflight: is the full dispatch path live? Prints one line per check and returns
-# the number of problems (0 = dispatch path live, safe to arm gates).
-hermes_preflight() {
-  local problems=0
-  if command -v hermes >/dev/null 2>&1; then
-    echo "    OK hermes on PATH: $(command -v hermes)"
-    if [[ -d "$HOME/.hermes/profiles" && -n "$(ls -A "$HOME/.hermes/profiles" 2>/dev/null)" ]]; then
-      echo "    OK hermes profiles published"
-    else
-      echo "    XX hermes profiles not published - run: python3 \"$SA_ROOT/tools/publish_profiles.py\""
-      problems=$((problems + 1))
-    fi
-  else
-    echo "    XX hermes not found on PATH - install Hermes, then re-run this installer"
-    problems=$((problems + 1))
-  fi
-  if [[ -f "$HOME/.config/minimax/m3-sub.key" ]]; then
-    echo "    OK doer key present (~/.config/minimax/m3-sub.key)"
-  else
-    echo "    XX doer key missing - place the MiniMax sub key at ~/.config/minimax/m3-sub.key"
-    problems=$((problems + 1))
-  fi
-  return "$problems"
-}
-
-# Idempotent Hermes worker bootstrap. Verifies/publishes profiles, provisions the
-# per-profile .env, then runs the preflight. NEVER requires the network: every
-# sub-step degrades to a printed instruction when a tool or key is absent. Leaves
-# evolution/DISARMED in place (gates stay OFF) and prints the exact arm command -
-# it never silently arms enforcement on someone's project.
-bootstrap_hermes() {
-  echo ""
-  echo "-- Tier 3: Hermes worker bootstrap"
-  if command -v hermes >/dev/null 2>&1 && [[ -f "$SA_ROOT/tools/publish_profiles.py" ]]; then
-    echo "  - publishing Hermes profiles (idempotent; --update preserves auth/memories)"
-    if python3 "$SA_ROOT/tools/publish_profiles.py" --update >/dev/null 2>&1; then
-      echo "    OK profiles published/updated"
-    else
-      echo "    WARN publish_profiles.py returned nonzero (network or hermes issue) - re-run manually"
-    fi
-  else
-    echo "  - skipping profile publish (hermes not on PATH or publisher missing)"
-  fi
-  echo "  - provisioning per-profile .env (doer keys)"
-  provision_profile_envs
-  echo "  - preflight: dispatch path"
-  if hermes_preflight; then
-    echo "  OK dispatch path LIVE - to arm enforcement on the target:"
-    echo "      rm \"$TARGET/evolution/DISARMED\""
-  else
-    echo "  WARN dispatch path incomplete - evolution/DISARMED stays in place (gates OFF, no brick)."
-    echo "     Fix the XX items above, then re-run this installer or: rm \"$TARGET/evolution/DISARMED\""
-  fi
-}
-
 # ── extract member's skill list ──────────────────────────────────────────────
 
 MEMBER_SKILLS=$(python3 - "$MEMBER_FILE" <<'PYEOF'
@@ -370,9 +275,8 @@ done
 
 # -- ship the FULL agent roster (P1, self-enclosed campaign) -----------------
 # Tier 2 lands only the single named member. A Tier-3 target needs the WHOLE
-# roster in .claude/agents/ or routing-enforce can never be satisfied (the
-# Strategist + specialists are unspawnable) and high-stakes turns deadlock —
-# exactly the "Lex .claude/agents EMPTY" blocker. Copy every source agent file.
+# roster in .claude/agents/ so the Strategist + specialists can actually be
+# spawned as Claude subagents. Copy every source agent file.
 echo "  - full agent roster"
 ensure_dir "$AGENTS_DIR"
 for af in "$SA_ROOT"/agents/*.md; do
@@ -381,41 +285,27 @@ for af in "$SA_ROOT"/agents/*.md; do
   echo "    + agent: $(basename "$af")"
 done
 
-# -- ship the dispatch substrate the gates route to --------------------------
-# The Tier-3 gate hooks (executor-enforce, delegation-gate, verify-gate, ...)
-# route every write through tools/dispatch.py -> the arsenal -> the evolution
-# ledger. Shipping the hooks WITHOUT that substrate is the self-brick: the gates
-# fire but have nothing to route to. Ship the minimum WORKING dispatch path.
-echo "  - dispatch substrate"
-ensure_dir "$TARGET/tools"
-cp "$SA_ROOT/tools/dispatch.py" "$TARGET/tools/dispatch.py"
-echo "    OK tools/dispatch.py"
+# -- ship the Claude-only arsenal --------------------------------------------
+# The guild runs entirely on Claude (opus/sonnet/haiku); the arsenal is just the
+# canonical models.json registry + its Python loader. Ship it so target tools can
+# read the same single source of truth.
+echo "  - arsenal (Claude-only registry)"
 copy_pruned "$SA_ROOT/star-alliance-arsenal" "$TARGET/star-alliance-arsenal"
-echo "    OK star-alliance-arsenal/ (models.json + runners, pruned)"
-copy_pruned "$SA_ROOT/evolution" "$TARGET/evolution"
-echo "    OK evolution/ (engine + ledger organs, pruned)"
+echo "    OK star-alliance-arsenal/ (models.json + registry, pruned)"
 
-# Tier 3 is self-contained (arsenal + evolution + tools now live in TARGET), so
-# re-point STAR_ALLIANCE_ROOT at the target rather than the source repo. The gate
-# hooks already resolve their root from their own location (_saroot.resolve_root),
-# but non-hook tools/*.py still read this env hint. (P1, self-enclosed campaign.)
+# Ship the MCP config so the target can run the guild as an MCP server.
+if [[ -f "$SA_ROOT/.mcp.json" ]]; then
+  cp "$SA_ROOT/.mcp.json" "$TARGET/.mcp.json"
+  echo "    OK .mcp.json (guild MCP server)"
+else
+  echo "    - no .mcp.json at source (skip)"
+fi
+
+# Tier 3 is self-contained (arsenal now lives in TARGET), so re-point
+# STAR_ALLIANCE_ROOT at the target rather than the source repo. The hooks resolve
+# their root from their own location, but non-hook tools still read this env hint.
 merge_env_to_settings "$TARGET_SETTINGS" "STAR_ALLIANCE_ROOT" "$TARGET"
 echo "  ✓ STAR_ALLIANCE_ROOT re-pointed to target (self-contained Tier 3)"
-
-# Pre-seed the evolution kill-switch so a fresh Tier-3 target cannot lock its
-# main session with no unlock path. The dispatch substrate now ships (above),
-# but the gates also need a reachable Hermes worker + doer key. Until the
-# Hermes bootstrap preflight passes, evolution/DISARMED keeps the gates off.
-# Mirror the printf style used to seed DEPLOY_LEDGER.
-ensure_dir "$TARGET/evolution"
-if [[ ! -f "$TARGET/evolution/DISARMED" ]]; then
-  printf '%s\n' \
-    '# DISARMED — evolution engine gates are OFF on this target.' \
-    'The dispatch substrate (dispatch.py + arsenal + evolution) now ships with Tier-3, but the gates also need a reachable Hermes worker and the doer key. Until the Hermes preflight passes, the gates stay OFF so the main session cannot be locked with no unlock path.' \
-    'Remove this file ONLY once the Hermes preflight passes (hermes reachable + profiles published + doer key present) - the installer prints the exact command.' \
-    > "$TARGET/evolution/DISARMED"
-fi
-echo "  ✓ pre-seeded evolution/DISARMED (safety kill-switch)"
 
 # Merge hook wiring into target settings.json
 # Rewrite hook paths to use CLAUDE_PROJECT_DIR (they already do — just merge)
@@ -430,10 +320,10 @@ else
   echo "  ⚠  workflows-lite.json not yet created — copy $SA_ROOT/workflows.json manually"
 fi
 
-# ── ship the doctrine the gates enforce ──────────────────────────────────────
-# The Tier-3 hooks encode doctrine BY REFERENCE (banner-or-block, routing-or-block);
-# the rulebook they enforce must actually travel. Copy it merge-safe so a target's
-# own CLAUDE.md/AGENTS.md is never clobbered — only our managed block is updated.
+# ── ship the guild doctrine ──────────────────────────────────────────────────
+# The hooks and members reference the guild doctrine, so the rulebook must travel
+# with them. Copy it merge-safe so a target's own CLAUDE.md/AGENTS.md is never
+# clobbered — only our managed block is updated.
 SA_CLAUDE_MD="$SA_ROOT/CLAUDE.md"
 SA_AGENTS_MD="$SA_ROOT/AGENTS.md"
 
@@ -456,7 +346,5 @@ else
   echo "  ⚠  $SA_AGENTS_MD not found — copy AGENTS.md into $TARGET manually"
 fi
 
-bootstrap_hermes
-
 echo ""
-echo "✅ Tier 3 complete."
+echo "✅ Tier 3 complete — Claude-only harness + MCP server installed."

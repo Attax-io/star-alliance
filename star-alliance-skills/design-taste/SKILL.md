@@ -74,8 +74,8 @@ design look cheap. One skill, seven modes — pick one, ship the surface, prove 
 2. **Load that mode's `references/*.md`** for the full playbook — the dispatcher above is the index, the
    detail lives in the reference so this file stays lean.
 3. **Set the dials** (`engineer` mode) and pull tokens from `imagegen-frontend` (`brand` mode); never invent identity here.
-4. **Build, then run the slop test.** The thinker weapon (sonnet) plans and critiques; the doer weapons
-   (image-01, minimax-m3) generate. Nothing ships until it passes the slop test.
+4. **Build, then run the slop test.** The Designer (a Claude model) plans and critiques; spawn Claude
+   subagents via the Task tool to generate variants in parallel. Nothing ships until it passes the slop test.
 5. **Encode it** when more than one surface or member is involved — run `encode` to emit a `DESIGN.md`
    so the whole guild builds to one language.
 

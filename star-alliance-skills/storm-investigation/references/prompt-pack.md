@@ -99,13 +99,14 @@ Keep five, keep them contrasting. Swap the Prompt 1 roles to fit the domain:
 
 ## Fan-out execution (parallel personas)
 
-For high-stakes or sourced research, run one doer per persona instead of inline.
+For high-stakes or sourced research, spawn one Claude subagent per persona instead of running the
+personas inline.
 
-- **Default doer = MiniMax M3** (repo `CLAUDE.md`): each persona is one call —
-  `python3 minimax.py "<persona prompt for TOPIC>" -s "You are THE <PERSONA>. <lens>." --json`.
-  Collect the five JSON verdicts, then run Prompts 2–4 over them.
-- **Use Claude sub-agents / a Workflow** when personas must use tools (WebSearch, WebFetch, an MCP
-  data source, file reads) or must return schema-validated output. Natural shape: one sub-agent per
+- **Spawn one Claude subagent per persona** via the Task tool: each persona is one subagent, briefed
+  with "You are THE <PERSONA>. <lens>." Fan all five out in a single message so they run
+  concurrently, collect the five verdicts, then run Prompts 2–4 over them.
+- Reach for subagents (or a Workflow) especially when personas must use tools (WebSearch, WebFetch, an
+  MCP data source, file reads) or must return schema-validated output. Natural shape: one subagent per
   persona in phase 1 (parallel), then the parent runs contradiction-map → synthesis → peer-review
   sequentially. A `pipeline`/`parallel` Workflow fits when each persona should also fetch its own
   sources.

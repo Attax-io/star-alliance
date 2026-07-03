@@ -8,14 +8,17 @@ Collapses the near-identical prose framing steps that open most workflows
 and writes it to --out.
 
 Importable API:
-    frame_brief(style, request, weapon="minimax-sub") -> str
+    frame_brief(style, request, weapon="claude") -> str
 
 CLI:
     python3 guild/frame_brief.py --style restate|clarify|shape|classify|reframe \
         --in <request_file_or_text> --out <brief.md> [--weapon <model>]
 
-Default weapon is minimax-sub (cheap, unattended-friendly). It reuses
-guild/delegate.py's delegate(), so token spend auto-logs to the arsenal ledger.
+NOTE: Star Alliance is now a Claude-only harness. The external doer that this
+step used to call (via guild/delegate.py's delegate()) has been removed, so
+frame_brief() raises at run time — framing is done by the live session / a
+Claude subagent instead. This module is kept for its style directives and CLI
+surface.
 
 Exit 0 on success, non-zero on failure.
 """
@@ -29,7 +32,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from delegate import delegate  # noqa: E402
 
-DEFAULT_WEAPON = "minimax-sub"
+DEFAULT_WEAPON = "claude"
 
 # Per-style framing instructions. Each emits the same structured brief shape
 # (summary / scope / acceptance) but with a style-appropriate emphasis.

@@ -32,7 +32,7 @@ do the evolution.
 ## The method — the five moves, in order
 
 1. **Add the field as OPTIONAL with a safe default.** The reader must treat *absent* exactly as it
-   treats the default — `s.get("class", "mutating")`, `obj.get("doers") or []`. Never index a new key
+   treats the default — `s.get("class", "mutating")`, `obj.get("swarm") or {}`. Never index a new key
    directly; never let absence mean a crash or a wrong answer. This single decision is what keeps every
    record that predates the field valid.
 2. **Validate it where it's authored — fatal in the generator.** Where the field is *written* (the
@@ -63,11 +63,11 @@ of truth is an evolution, not a rename — with its own moves:
   authoritative. Verify the audit's absence-claims yourself first (see [[verify-multiagent-audit]]).
 - **Let the canonical side win — drift fixes itself.** When you merge a stale copy into the SoT, keep
   the SoT's value for any field they disagree on. Migrating `app.js`'s hand-keyed `MODELS` onto the
-  registry turned `sonnet: doer` → `both` *for free*, because the registry was right and the copy was
+  registry corrected a stale role value *for free*, because the registry was right and the copy was
   the bug.
-- **Extract with a real evaluator, never by hand or by doer.** To pull a JS object literal into JSON,
+- **Extract with a real evaluator, never by hand or by an LLM.** To pull a JS object literal into JSON,
   `node -e` eval it; to merge, do it in Python. Transcribing 15 records × 16 fields by eye (or handing
-  it to an LLM doer) drops a field. Machine-extract, machine-merge, diff the result.
+  it to a Claude subagent to retype) drops a field. Machine-extract, machine-merge, diff the result.
 - **Emit, then derive.** The build emits the SoT into the artifact every consumer already loads
   (`GUILD.models` in `guild-data.js`); each consumer then *derives* (`const MODELS = GUILD.models`)
   instead of holding a copy. Mind load-timing — the artifact's `<script>` must precede the consumer.
@@ -175,5 +175,5 @@ Own skill. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: 
 
 ## Changelog
 - **1.2.0** — New section **DB-Migration Mode — when the "field" is a Postgres table or column** (+ `references/db-migration-mode.md`): the case the additive-JSON moves don't cover, where additivity is necessary but not sufficient because a new tenant-scoped table can read green and still be a silent data leak. Contract: security ships in the same migration file as the structure — RLS (`ENABLE ROW LEVEL SECURITY` + policies) in the SAME file as `CREATE TABLE` (separate RLS file forbidden), a MANDATORY `user_id` index for RLS performance, the in-order checklist (RLS-in-file → user_id index → GRANTs → data-dictionary update), and policies-absent ⇒ stop-the-line as a security defect, not a backward-compat one. Grounded in the SAW `migration-patterns` skill, adapted to the guild's voice. New section + reference → MINOR.
-- **1.1.0** — New section **Consolidation — collapse duplicates onto one source**: the mirror move of additive evolution, for when a fact already lives in many drifted copies. Five moves — adopt-don't-create (grep for the existing SoT; verify an audit's "create X" claim first), let the canonical side win so drift auto-fixes, machine-extract/merge (never by hand or doer), emit-then-derive (with load-timing care), and seal with anti-drift conformity checks (fallback==source, sidecar⊆source, tile-per-id, prose==data). Mined from the model-armory consolidation that collapsed `app.js` MODELS + three role tables onto `star-alliance-arsenal/models.json`. New section → MINOR.
-- **1.0.0** — Initial release. The Architect's additive-migration method: add an optional field with a safe default, validate at the generator (fatal) and the conformance gate (when-present), render through every consumer, document it in the authoring skill, and prove records without the field still pass green. Mined from the weapon-fields (thinker/doers/ultra) and workflow `class` additions.
+- **1.1.0** — New section **Consolidation — collapse duplicates onto one source**: the mirror move of additive evolution, for when a fact already lives in many drifted copies. Five moves — adopt-don't-create (grep for the existing SoT; verify an audit's "create X" claim first), let the canonical side win so drift auto-fixes, machine-extract/merge (never by hand or by an LLM), emit-then-derive (with load-timing care), and seal with anti-drift conformity checks (fallback==source, sidecar⊆source, tile-per-id, prose==data). Mined from the model-armory consolidation that collapsed `app.js` MODELS + three role tables onto `star-alliance-arsenal/models.json`. New section → MINOR.
+- **1.0.0** — Initial release. The Architect's additive-migration method: add an optional field with a safe default, validate at the generator (fatal) and the conformance gate (when-present), render through every consumer, document it in the authoring skill, and prove records without the field still pass green. Mined from the member-step model fields (`model`/`swarm`) and workflow `class` additions.

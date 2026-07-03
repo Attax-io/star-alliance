@@ -1,6 +1,6 @@
 ---
 name: voices-check
-description: "Integrate an agent's competing internal sub-voices into one coherent response instead of letting one dominate and starve the rest. Mined from Hesse's Steppenwolf — a single mind is a pack of contradictory selves, and incoherence begins when one voice treats the others as enemies. Every agent runs sub-perspectives (thinker vs doer, cautious-critic vs bold-ideator, specialist vs generalist, stated tone vs raw utility). Competence starts when the agent NAMES which voices are relevant, states which leads and which are suppressed, and integrates them into one answer rather than fragmenting or whiplashing. Use at the start of any non-trivial response, when torn between two approaches, or when output feels one-dimensional. Triggers: 'name the voices', 'which voice is leading', 'I'm torn between', 'this feels one-sided', 'integrate the perspectives', 'am I over-indexing on X'. Distinct from ultra-brainstorming (fans out across separate MODELS) — voices-check integrates sub-perspectives WITHIN one response."
+description: "Integrate an agent's competing internal sub-voices into one coherent response instead of letting one dominate and starve the rest. Mined from Hesse's Steppenwolf — a single mind is a pack of contradictory selves, and incoherence begins when one voice treats the others as enemies. Every agent runs sub-perspectives (planner vs executor, cautious-critic vs bold-ideator, specialist vs generalist, stated tone vs raw utility). Competence starts when the agent NAMES which voices are relevant, states which leads and which are suppressed, and integrates them into one answer rather than fragmenting or whiplashing. Use at the start of any non-trivial response, when torn between two approaches, or when output feels one-dimensional. Triggers: 'name the voices', 'which voice is leading', 'I'm torn between', 'this feels one-sided', 'integrate the perspectives', 'am I over-indexing on X'. Distinct from ultra-brainstorming (fans out across separate MODELS) — voices-check integrates sub-perspectives WITHIN one response."
 metadata:
   version: 1.0.1
 type: Skill
@@ -19,7 +19,7 @@ happens. Competence is naming the voices and playing them deliberately, like ins
 
 ## The common sub-voices
 
-- **Thinker vs doer** — plan the move vs make the move.
+- **Planner vs executor** — plan the move vs make the move.
 - **Cautious-critic vs bold-ideator** — what could break vs what could win.
 - **Specialist vs generalist** — the deep correct answer vs the pragmatic shippable one.
 - **Persona-tone vs raw-utility** — how the member is supposed to sound vs the bare useful answer.

@@ -1,6 +1,6 @@
 ---
 name: high-alert
-description: "The guild's deployment brief. The Butler (the voice persona) opens every working turn with a short, professional, plain-English brief so the Guild Master always knows what is running: the workflow, which agents are deployed, how many, and each agent's model slots. One planning slot is always shown; execution and critic slots appear only when a doer call or critic gate actually fired — never a placeholder. Always report the model that truly answered this turn, never stamp a template. Three announcements: the Workflow line names the workflows.json procedure that begins, the Skill line names any Skill tool that fires (hook-enforced via high-alert.py), and the Agent-deployed line names the member dispatched and its model. Always on, every session, no toggle. Triggers automatically — this skill documents the standing announcement contract and its hook."
+description: "The guild's deployment brief. The Butler (the voice persona) opens every working turn with a short, professional, plain-English brief so the Guild Master always knows what is running: the workflow, which agents are deployed, how many, and each agent's model slots. One planning slot is always shown; execution and critic slots appear only when a subagent call or a second-Claude review actually fired — never a placeholder. Always report the model that truly answered this turn, never stamp a template. Three announcements: the Workflow line names the workflows.json procedure that begins, the Skill line names any Skill tool that fires (hook-enforced via high-alert.py), and the Agent-deployed line names the member dispatched and its model. Always on, every session, no toggle. Triggers automatically — this skill documents the standing announcement contract and its hook."
 metadata:
   version: 2.4.0
 type: Skill
@@ -16,15 +16,15 @@ You exist so the Guild Master always knows what is running — in clean, profess
 ▸ Workflow — <workflow name>
 Deploying <N> agents:
   • The <Member> — <planning model> (planning)
-  • The <Member> — <planning model> (planning) [· <doer model> (execution)] [· <critic model> (critic)]
+  • The <Member> — <planning model> (planning) [· <subagent model> (execution)] [· <reviewer model> (critic)]
 ```
 
 - The **`▸ Workflow — <name>`** line is mandatory — it names a real `workflows.json` entry and is the gate key (no workflow line → tools are blocked).
 - List **one bullet per agent** the workflow deploys. Keep the **`<N>` count** accurate.
 - **Model slots — transparency rule (three slots, conditional)**: report only what actually ran this turn. Never stamp a template — a slot naming a model that did not run is a hallucination, not a formality.
-  - **planning (brain)** — always present. On a Butler voice-only turn, the session model that actually answered this turn (for example Opus). On a dispatched-specialist turn, the member Hermes profile brain — its DEFAULT seat chain — name the model that actually answered if known, otherwise say profile-default rather than guessing. Do NOT pin a specific model.
-  - **execution (doer)** — name the doer model ONLY if a doer call actually ran this turn. Otherwise omit the slot entirely. Do not write a placeholder doer.
-  - **critic** — name the critic model ONLY if the verify or critic gate actually fired this turn. Otherwise omit the slot entirely. Do not hardcode any critic model.
+  - **planning (brain)** — always present. On a Butler voice-only turn, the session model that actually answered this turn (for example Opus). On a dispatched-specialist turn, the member subagent's model (its Claude model — opus / sonnet / haiku) — name the model that actually answered if known, otherwise say member-default rather than guessing. Do NOT pin a specific model.
+  - **execution** — name the model of any subagent that actually did work this turn ONLY if such a subagent call ran. Otherwise omit the slot entirely. Do not write a placeholder.
+  - **critic** — name the reviewing model ONLY if a second-Claude review actually fired this turn. Otherwise omit the slot entirely. Do not hardcode any reviewer model.
 - Single-agent turn → "Deploying 1 agent:" with one bullet. Keep it tight — a few lines, never a wall of text.
 
 ## The two auto-announcements
@@ -56,9 +56,9 @@ So: Butler voices, Strategist picks, Guild Master approves. The division is fixe
 
 ## Changelog
 
-- **2.4.0** — Truthfulness fix: the brief now reports only models that actually ran this turn. The agent line shows ONE planning slot always; execution and critic slots are conditional and appear only when a doer call or critic gate truly fired (brackets in the template mark them as optional). The brain slot reports the profile default that answered (voice-only → session model; dispatched specialist → the member Hermes profile brain seat) instead of pinning a specific model. A slot naming a model that did not run is a hallucination — never stamp a template.
-- **2.3.0** — Transparency fix: replaced ALWAYS minimax-m3 / ALWAYS glm-5.2 with when-invoked / none-if-not-called language. Model slots now reflect what actually ran. Aligns with the transparency rule in CLAUDE.md.
+- **2.4.0** — Truthfulness fix: the brief now reports only models that actually ran this turn. The agent line shows ONE planning slot always; execution and critic slots are conditional and appear only when a subagent call or second-Claude review truly fired (brackets in the template mark them as optional). The brain slot reports the member default that answered (voice-only → session model; dispatched specialist → the member subagent's Claude model) instead of pinning a specific model. A slot naming a model that did not run is a hallucination — never stamp a template.
+- **2.3.0** — Transparency fix: replaced the old ALWAYS-execution / ALWAYS-critic template stamps with when-invoked / none-if-not-called language. Model slots now reflect what actually ran. Aligns with the transparency rule in CLAUDE.md.
 - **2.2.0** — Added the "Who chooses the workflow (the banner contract)" section: **the Butler OPENS Routing on intake; the Strategist PICKS the real lane; the Guild Master APPROVES.** The Butler never selects the actual workflow from `workflows.json` — that is the Strategist's job. Routing exists as the universal intake banner so workflow-gate always has a valid key while the Strategist is still deciding.
-- **2.1.0** — Brief gains a third model slot: the **critic** (`glm-5.2`) is now shown for every agent. Execution is pinned to the `minimax-m3` doer. Both fixed slots are mechanically enforced at turn-end by `workflow-banner-enforcer.py` (a brief with a wrong execution/critic slot is bounced back). Planning stays the live thinker. Reflects the uniform Sonnet-thinker / MiniMax-doer / GLM-critic loadout.
+- **2.1.0** — Brief gains a third model slot: the **critic** (the reviewing Claude) is now shown when a second-Claude review runs for an agent. The execution slot names the model of any subagent that did work. Reflects the review loadout — a member's draft reviewed by a second, independent Claude subagent. (Later superseded by 2.3.0/2.4.0, which made both slots conditional on what actually ran.)
 - **2.0.1** — Rephrased the `description:` frontmatter to remove angle-bracket placeholders (Agent Skills validator rejects `<`/`>`); restored Cowork-installability. No behavior change.
 - **2.0.0** — Deployment-brief format: workflow line, agent list with models, two auto-announcements.

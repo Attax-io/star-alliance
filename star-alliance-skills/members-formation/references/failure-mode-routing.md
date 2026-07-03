@@ -21,7 +21,7 @@ routing signal. Read the failure, name the owner, hand off.
 | The repo has drifted / conformity fails | broken invariant | **the-quartermaster** — Compliance Audit |
 | The request is vague, first-contact, low-stakes | undiscovered intent | **the-butler** — `butler-onboarding` (discover, offer starter prompts) |
 | High-stakes ambiguity — destructive scope, wrong architecture, missing context | dangerous unknown | **HALT** — the Confusion Protocol: name it, present 2-3 options, ask |
-| A doer returned malformed / truncated / off-spec output | doer miss, not a dead end | the member's **thinker** — re-prompt the doer against the plan (`weapon-utility`); never hand-fix silently |
+| A spawned Claude subagent returned malformed / truncated / off-spec output | subagent miss, not a dead end | the **member that spawned it** — re-brief and re-spawn against the plan (`weapon-utility`); never hand-fix silently |
 | No workflow fits the work at all | uncharted path | **Workflow Forge** — forge the workflow first, then proceed |
 | A specialist needs a craft no member carries | capability gap | **Skill Forge** — forge the skill; if a whole role is missing → **Guild Recruitment** |
 
@@ -29,5 +29,5 @@ routing signal. Read the failure, name the owner, hand off.
 
 A blocked agent must DECLARE the failure mode, not silently retry or guess. The owner is
 derivable from the table — so "I'm stuck" becomes "this is a missing-spec stuck → the-architect."
-Retrying the same blind action (the read-the-same-file loop, the re-run-the-same-doer loop) is
+Retrying the same blind action (the read-the-same-file loop, the re-spawn-the-same-subagent loop) is
 the anti-pattern; re-routing by failure mode is the craft.

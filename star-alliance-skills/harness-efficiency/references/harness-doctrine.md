@@ -5,7 +5,7 @@ timestamp: 2026-07-02T12:28:13Z
 
 # Harness Engineering Doctrine — context, recovery, verification
 
-A model is unreliable, but the SYSTEM that surrounds it does not have to be. The Star Alliance guild orchestrates specialist members, offloads doer-grade work to a cheap model (MiniMax), and gates every turn through a routing classifier. Our only stable advantage is the harness: bounded context, recovery as a designed runtime path, independent verification, and partitioned agents that keep each context small. Token and time efficiency are not side effects — they are the design constraint, and the doctrine below is the engineering we use to honor it.
+A model is unreliable, but the SYSTEM that surrounds it does not have to be. The Star Alliance guild orchestrates specialist members (each a Claude model) and fans bulk or parallel work out to Claude subagents spawned via the Task tool, gating high-stakes turns through a routing classifier. Our only stable advantage is the harness: bounded context, recovery as a designed runtime path, independent verification, and partitioned agents that keep each context small. Token and time efficiency are not side effects — they are the design constraint, and the doctrine below is the engineering we use to honor it.
 
 ## Context is a budget, not a library
 
@@ -61,14 +61,14 @@ A model is unreliable, but the SYSTEM that surrounds it does not have to be. The
 ## Efficiency reading of the doctrine
 
 - Compaction caps premium-token growth. Pre-reserved summary output, section caps, entrypoint line and byte caps, and a hard ceiling on session memory stop context inflation before it forces expensive overflow handling on every premium turn.
-- Independent verification by a cheap doer is cheaper than a wrong premium turn. Catching a bad answer with a low-cost worker costs a small MiniMax turn; shipping a bad answer costs a premium turn, a rollback, and a redo. Offload the verify role by default.
+- Independent verification by a separate agent is cheaper than a wrong premium turn. Catching a bad answer with a cheaper Claude subagent (a Haiku or Sonnet worker) costs one small turn; shipping a bad answer costs a premium turn, a rollback, and a redo. Split the verify role onto its own subagent by default.
 - Partitioned agents keep each context small. Research, implement, verify, and synthesize each work in narrow windows, so total token spend across the guild stays bounded even when the union of their work is large.
 - Cache-safe fork params turn parallelism into an actual speedup. Children that share `CacheSafeParams` with the parent reuse the prompt cache; children that drift invalidate it. The routing classifier should treat cache-safe fork as the only default fork shape.
 - Index discipline is a re-load tax avoided. A `MEMORY.md` kept under the line and byte caps is cheap to read every turn; a bloated index makes every turn pay for history it cannot use.
 - Recovery layering saves the most expensive path. Drain staged collapse before reactive compact, and only surface after the cheap path fails. The guild's recovery policy must encode this order, not improvise it.
 - Anti-loop guards stop silent token burn. `hasAttemptedReactiveCompact`, stop-hook dead-loop guards, and the autocompact circuit breaker prevent the system from spending API calls replaying the same failure in different postures.
 - Continuation over recap on max-output-tokens. Skip the polite truncation summary that re-burns budget and grows semantic drift; append the meta continue message and move on.
-- Routing classifier + offload keeps premium tokens scarce. Gate every turn through the classifier, send doer-grade work to MiniMax, reserve the premium model for routing, coordination, and synthesis — the fewest possible high-cost turns.
+- Routing classifier + subagent fan-out keeps premium tokens scarce. Gate every turn through the classifier, hand bulk work to cheaper Claude subagents (Haiku/Sonnet), reserve the premium model (Opus) for routing, coordination, and synthesis — the fewest possible high-cost turns.
 - Narrative consistency is operations efficiency. Tracking `transition.reason`, recovery counts, and compact boundaries means an on-call engineer can explain what the guild did in minutes rather than re-inferring it from logs across hours.
 
 Bounded context, designed recovery, independent verification, and partitioned agents — the harness stays continuous, accountable, and cheap, even when the model inside it is not.

@@ -39,7 +39,6 @@
           "inputs": [
             "cleared brief"
           ],
-          "thinker": "opus",
           "ultra": true,
           "exec": "spawn",
           "parallel": true
@@ -63,13 +62,6 @@
           "title": "Implement the Plan",
           "act": "The Developer writes the code, fixes any bugs, and self-tests everything before handing it back.",
           "produces": "working implementation",
-          "thinker": "sonnet",
-          "doers": [
-            {
-              "model": "minimax-sub",
-              "count": 3
-            }
-          ],
           "exec": "spawn",
           "parallel": true
         },
@@ -79,9 +71,6 @@
           "title": "Clean Up and Verify",
           "act": "The Quartermaster runs final cleanup checks and confirms the whole mission works end to end.",
           "produces": "verified build",
-          "doers": [
-            "minimax-sub"
-          ],
           "exec": "spawn"
         },
         {
@@ -603,7 +592,7 @@
           "kind": "member",
           "actor": "the-developer",
           "title": "Scout & Answer",
-          "act": "The routed member scouts read-only — grep/glob/read across the repo (handing bulk reads/summaries to a doer weapon) — verifies every claim against source, and returns a concise answer cited to file:line. Writes nothing.",
+          "act": "The routed member scouts read-only — grep/glob/read across the repo (fanning bulk reads/summaries out to Claude subagents) — verifies every claim against source, and returns a concise answer cited to file:line. Writes nothing.",
           "produces": "cited answer",
           "inputs": [
             "inquiry"

@@ -4,7 +4,7 @@
 #
 # Joins the two measurement streams Phase 0 lays down:
 #   • star-alliance-arsenal/usage-log.jsonl — every offloaded model call (the
-#     cheap bench doing doer-grade work), now with phase + wall_ms.
+#     cheaper Claude subagent doing bulk work), now with phase + wall_ms.
 #   • data/turn-cost.jsonl — per-turn premium (Opus) tokens + routing tier,
 #     written by the turn-cost Stop hook.
 # and prints the ONE thing the harness could never show before: a real net-saved
@@ -144,7 +144,7 @@ def print_human(rep):
     print(f"━━ Star Alliance Efficiency Report  (window: {rep['window_days']} days) ━━\n")
 
     off = rep["offload"]
-    print(f"OFFLOAD (cheap bench doing doer-grade work)")
+    print(f"OFFLOAD (cheaper Claude subagent doing bulk work)")
     print(f"  total calls: {off['total_calls']:>8}    total out-tokens: {off['total_out']:>10}")
     print(f"  {'model':<18}{'calls':>7}{'in':>11}{'out':>11}{'med ms':>9}")
     for m, b in off["by_model"].items():

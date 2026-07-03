@@ -8,7 +8,7 @@ type: Skill
 
 # Backend Auditor
 
-**Runtime:** this skill invokes the Lex Council Supabase MCP connector, so it must be run by a Claude-native runtime that has that connector mounted — not a Hermes doer.
+**Runtime:** this skill invokes the Lex Council Supabase MCP connector, so it must be run by a Claude session (or a Claude subagent) that has that connector mounted.
 
 The backend-auditor skill reconciles the live Supabase schema for the Lex Council codebase against the canonical inventory in `lex_council/docs/BACKEND.md`. It runs seven read-only queries via the Supabase MCP (connector prefix `mcp__1ee3ddfd-27aa-4176-9539-d9a2081c163d__execute_sql` for SELECTs; `mcp__1ee3ddfd-27aa-4176-9539-d9a2081c163d__list_migrations` and `list_tables` where applicable), compares each result to its corresponding section in BACKEND.md, and returns a structured delta.
 

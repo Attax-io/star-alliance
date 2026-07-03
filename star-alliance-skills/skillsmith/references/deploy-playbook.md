@@ -27,7 +27,7 @@ an unknown member (prints the roster) or a missing target dir.
 | Tier | Lands in the target | Use when |
 |---|---|---|
 | **1 — skills only** (default) | rsyncs **this member's skills** into `<target>/.claude/skills/` | the target just needs the member's *craft* (the skills), driven by whatever agent is already there. |
-| **2 — + member + env** | Tier 1 **+** the member agent file → `<target>/.claude/agents/<member>.md` **+** `STAR_ALLIANCE_ROOT` merged into `<target>/.claude/settings.json` | the target should be able to *summon the member as an agent* and reach the arsenal CLIs (`summon.py`, `minimax.py`). |
+| **2 — + member + env** | Tier 1 **+** the member agent file → `<target>/.claude/agents/<member>.md` **+** `STAR_ALLIANCE_ROOT` merged into `<target>/.claude/settings.json` | the target should be able to *spawn the member as a Claude subagent* (via the Task tool) and reach the arsenal tools. |
 | **3 — + hooks + workflows** | Tier 2 **+** every `.claude/hooks/*.py|*.sh` copied **+** hook wiring merged into the target `settings.json` **+** `workflows-lite.json` → `<target>/workflows.json` | the target should run the **full guild conduct** — routing gate, workflow-gate, high-alert banners, the lite star-map. |
 
 **Which member's skills?** Tier 1/2 ships exactly the skills in that member's `skills:` frontmatter

@@ -4297,6 +4297,20 @@
       "title": "Routing: .claude/arsenal/minimax.py, .claude/arsenal/ollama_cloud.py, .claude/arsenal/summon.py (+31 more)",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "workflow",
+      "title": "Routing: .claude/agents/the-architect.md, .claude/agents/the-designer.md, .claude/agents/the-developer.md (+349 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "workflow",
+      "title": "Routing: .claude/agents/the-architect.md, .claude/agents/the-designer.md, .claude/agents/the-developer.md (+349 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130

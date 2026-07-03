@@ -61,7 +61,7 @@ This trade deepens by confronting the difference between reading a law and compu
 - **Negative or zero outputs.** A mawarith model can produce a zero residue; a wage-tax model on a low-income input can floor at zero. Specify whether the output is `0` or a structured `{ value: 0, notes: [...] }` so the front-end can explain the result rather than display a confusing zero.
 - **Double-counting exemptions.** The personal exemption (Art. 13) and the social-insurance deduction both subtract from gross. The bracket table assumes an order; reorder them and the result shifts. Lock the order in the spec; let the Developer only rearrange when the model is updated and re-reviewed.
 - **Locale-shaped numbers.** Arabic locale input may use Eastern Arabic digits (٠١٢٣). The model is unit-agnostic about digits but unit-strict about currency and precision. Note it in the Developer handoff so the Designer can pair the input mask correctly.
-- **The gate rule.** Your thinker weapon (opus/sonnet) reviews the model against the statute before the doer (minimax) drafts the calculator UI. Nothing ships unreviewed. A public calculator is a public claim; the claim is yours to underwrite.
+- **The gate rule.** The Architect (a Claude model, opus/sonnet) reviews the model against the statute before a Claude subagent (spawned via the Task tool) drafts the calculator UI. Nothing ships unreviewed. A public calculator is a public claim; the claim is yours to underwrite.
 
 ## Versioning
 Own skill. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new mode/section · MAJOR: method contract change). Regenerate `VERSIONS.md` with `python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.

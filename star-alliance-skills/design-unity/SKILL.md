@@ -60,8 +60,9 @@ Full detection recipe + ranking in `references/audit.md`.
 
 1. **Find or forge the SoT first.** Never audit against nothing. If there is no `DESIGN.md` + token file,
    run `establish` (bootstrapping from `design-taste encode`). One canonical file each — not per-feature copies.
-2. **Audit the surfaces.** The doer (minimax-m3) does the bulk scan/extraction; the thinker (sonnet) sets the
-   taste calls — which value is canonical, which duplicate is the keeper. Output a ranked divergence report.
+2. **Audit the surfaces.** Fan the bulk scan/extraction out to parallel Claude subagents (Task tool) when the
+   surface is large; the Designer (running as sonnet) sets the taste calls — which value is canonical, which
+   duplicate is the keeper. Output a ranked divergence report.
 3. **Reconcile by blast radius.** Fix the value used in 40 files before the one used twice. Replace raw values
    with tokens, collapse duplicates to the canonical component, align strays to the scale. Re-run `audit` to zero.
 4. **Keep doc and tokens in lockstep.** Every token change updates `DESIGN.md`; every `DESIGN.md` rule has a

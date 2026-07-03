@@ -1,8 +1,11 @@
 {
-  "last_run_start": "2026-07-03T12:42:00Z",
-  "last_run_end": "2026-07-03T12:42:30Z",
-  "last_run_status": "ok-deferred-dirty-worktree",
-  "last_run_summary": "Quartermaster unified routine run. Phase-1 (reflector): idle — only 71269s since last reflector run (need 86400s), no diagnostic output, no agent action. Phase-2 (skillsmith): SKIPPED — working tree carries 46 modified + 16 deleted files from an in-flight Routing refactor (unstaged changes to AGENTS.md, CLAUDE.md, the-butler.md, all profiles/*/{SOUL.md,skills.yaml}, agents/{strategist,developer}.md, data/{guild-log.json,turn-cost.jsonl,evolution/ledger.jsonl}, .claude/{hooks,settings.json,state} deletions to .retired/hooks-cleanup-2026-07-03/, plus a stash@{0} flagged REVIEW for stray dispatch-enforce.py change from audit session). Head was 9f45681 Routing at 2026-07-03T11:57Z; subsequent edits at 12:25-12:41Z are an interactive session mid-cleanup. Per hard rule (no commit of others WIP, no force-push), this routine defers rather than touch the dirty tree. Phase-3 (code unity): SKIPPED — same dirty-tree guard. Phase-4 (OKF): SKIPPED — --fix would write index.md/audit results against a moving target. Phase-5 (conformity): not run — no commits proposed. Action needed from Atta: (1) finish or revert the in-flight Routing refactor (commit, drop the stash, or pop the dispatch-enforce.py review item); (2) confirm whether the 4 Tier-B proposals emitted 2026-07-03T08:44 (workflows Verification and Conquering-AUDIT unregistered, 32 stale mentions, 3 stale doctrine mentions) should be addressed this week. Critic not invoked (no commit). Conformity not invoked (no commit). Heartbeat-only update.",
-  "budget_spent": "$0",
-  "next_expected_by": "2026-07-04T09:44:32Z"
+  "last_run_start": "2026-07-03T23:07:00Z",
+  "last_run_end": "2026-07-03T23:08:35Z",
+  "last_run_status": "ok",
+  "last_run_summary": "Run 11 — held-state holding pattern (hourly cron). Phase 1 reflector idle (cadence). Phase 2 SKIPPED — §R4 guards forbid committing skill work while 244-file held diff is unresolved + CRITIC-STRUCTURAL Tier-B (PATH-A/B) pending Atta decision. Declared-but-unused lens researched as notebook only (4 dormant skills share 'trigger not obvious' pattern). Phase 3/4/5 DEFERRED for same reason. Stale-scan unchanged (8 hits, chronicle-skip). OKF/CU/build numbers identical to Runs 5-10. 0 commits. Pending decision unchanged: PATH-A restore vs PATH-B adopt (CRITIC-STRUCTURAL from Run 6).",
+  "budget_spent": 0.0,
+  "next_expected_by": "2026-07-04T00:01:00Z",
+  "held_state": true,
+  "held_diff_files": 244,
+  "pending_decision": "PATH-A restore vs PATH-B adopt (CRITIC-STRUCTURAL escalation from Run 6)"
 }

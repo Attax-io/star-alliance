@@ -3,6 +3,7 @@
 
 import json
 import os
+import re
 import sys
 import time
 from datetime import datetime, timezone
@@ -12,7 +13,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 CALLER_CWD = os.getcwd()
 
-# Make repo importable so tools.dispatch is reachable
+# Make repo importable for local helpers.
 sys.path.insert(0, str(REPO_ROOT))
 
 from mcp.server.fastmcp import FastMCP
@@ -21,7 +22,51 @@ mcp = FastMCP("star-alliance")
 
 TELEMETRY_FILE = REPO_ROOT / "data" / "mcp-telemetry.jsonl"
 SKILLS_DIR = REPO_ROOT / "star-alliance-skills"
+AGENTS_DIR = REPO_ROOT / ".claude" / "agents"
 XP_LOG = REPO_ROOT / ".claude" / "state" / "xp-log.jsonl"
+
+_FM_RE = re.compile(r"^---\s*\n(.*?)\n---\s*\n", re.S)
+
+
+def _agent_frontmatter(path: Path) -> dict:
+    """Parse the YAML-ish frontmatter of a .claude/agents/*.md file into a dict.
+
+    Only the flat scalar fields we need (name, description) are read; no YAML
+    dependency. Never raises — returns {} on any problem.
+    """
+    try:
+        txt = path.read_text(encoding="utf-8")
+    except Exception:
+        return {}
+    m = _FM_RE.match(txt)
+    if not m:
+        return {}
+    fields: dict = {}
+    for line in m.group(1).splitlines():
+        mm = re.match(r"([A-Za-z_][\w-]*)\s*:\s*(.*)$", line)
+        if mm:
+            val = mm.group(2).strip()
+            if len(val) >= 2 and val[0] in "\"'" and val[-1] == val[0]:
+                val = val[1:-1]
+            fields[mm.group(1)] = val
+    return fields
+
+
+def _roster() -> dict:
+    """Map agent id (filename stem, e.g. 'the-architect') -> its frontmatter dict.
+
+    The Star Alliance agents are the Claude subagent definitions under
+    .claude/agents/. Each file's stem is the agent id / subagent_type. Never
+    raises — returns {} if the directory is missing.
+    """
+    roster: dict = {}
+    try:
+        for path in sorted(AGENTS_DIR.glob("*.md")):
+            fields = _agent_frontmatter(path)
+            roster[path.stem] = fields
+    except Exception:
+        pass
+    return roster
 
 
 def _xp_skill(name: str) -> None:
@@ -75,12 +120,20 @@ def list_skills() -> list:
 
 @mcp.tool()
 def list_agents() -> list:
-    """List all dispatchable Star Alliance agents."""
+    """List all Star Alliance agents (Claude subagents) with their descriptions.
+
+    Each agent is a Claude subagent defined under .claude/agents/. The returned
+    ``name`` is the id you pass as ``agent_name`` to dispatch_agent() (and as
+    ``subagent_type`` when spawning it via the Task/Agent tool).
+    """
     t0 = time.monotonic()
     try:
-        from tools.dispatch import AGENTS
-        agents = sorted(AGENTS.keys())
-        _log("list_agents", {}, True, int((time.monotonic() - t0) * 1000), str(agents))
+        agents = [
+            {"name": agent_id, "description": fields.get("description", "")}
+            for agent_id, fields in sorted(_roster().items())
+        ]
+        _log("list_agents", {}, True, int((time.monotonic() - t0) * 1000),
+             str([a["name"] for a in agents]))
         return agents
     except Exception as e:
         _log("list_agents", {}, False, int((time.monotonic() - t0) * 1000), str(e))
@@ -118,41 +171,44 @@ def invoke_skill(skill_name: str, args: str = "") -> str:
 @mcp.tool()
 def dispatch_agent(agent_name: str, prompt: str) -> str:
     """
-    Dispatch a task to a Star Alliance guild agent and return its response.
-    Use list_agents() to see available agents.
+    Resolve a Star Alliance guild agent so the calling session can spawn it.
+
+    Star Alliance is a Claude-only harness: its agents are Claude subagents, not
+    an external service this server can shell out to. This tool therefore does
+    NOT run the agent itself — there is no separate doer process to call. It
+    validates the agent name and returns clear instructions plus the echoed
+    prompt, so the CALLING Claude session can spawn the subagent with its own
+    Task/Agent tool (subagent_type=<agent_name>). Use list_agents() to see the
+    available agents.
     """
     t0 = time.monotonic()
-    try:
-        from tools.dispatch import dispatch, AGENTS
-    except ImportError as e:
-        msg = f"ERROR: could not import dispatch module: {e}"
+    roster = _roster()
+
+    if agent_name not in roster:
+        known = ", ".join(sorted(roster.keys())) or "(none found)"
+        msg = (f"ERROR: unknown agent '{agent_name}'. "
+               f"Known agents: {known}. Use list_agents() to see them.")
         _log("dispatch_agent", {"agent_name": agent_name, "prompt": prompt[:100]}, False,
              int((time.monotonic() - t0) * 1000), msg)
         return msg
 
-    if agent_name not in AGENTS:
-        msg = f"ERROR: unknown agent '{agent_name}'. Known agents: {', '.join(sorted(AGENTS.keys()))}"
-        _log("dispatch_agent", {"agent_name": agent_name, "prompt": prompt[:100]}, False,
-             int((time.monotonic() - t0) * 1000), msg)
-        return msg
-
-    try:
-        result = dispatch(agent_name, prompt)
-        success = result.get("success", False)
-        response = result.get("response", "")
-        _log("dispatch_agent", {"agent_name": agent_name, "prompt": prompt[:100]},
-             success, int((time.monotonic() - t0) * 1000), response[:200])
-        return response
-    except FileNotFoundError:
-        msg = f"ERROR: Hermes CLI not found. Is hermes installed and on PATH?"
-        _log("dispatch_agent", {"agent_name": agent_name, "prompt": prompt[:100]}, False,
-             int((time.monotonic() - t0) * 1000), msg)
-        return msg
-    except TimeoutError:
-        msg = f"ERROR: agent '{agent_name}' timed out"
-        _log("dispatch_agent", {"agent_name": agent_name, "prompt": prompt[:100]}, False,
-             int((time.monotonic() - t0) * 1000), msg)
-        return msg
+    description = roster[agent_name].get("description", "")
+    payload = {
+        "status": "spawn_required",
+        "agent": agent_name,
+        "description": description,
+        "prompt": prompt,
+        "instructions": (
+            "Star Alliance agents are Claude subagents, not an external service. "
+            "This MCP server cannot run the agent for you. Spawn it from your own "
+            f"Claude session with the Task/Agent tool, passing subagent_type='{agent_name}' "
+            "and the prompt below."
+        ),
+    }
+    result = json.dumps(payload, ensure_ascii=False, indent=2)
+    _log("dispatch_agent", {"agent_name": agent_name, "prompt": prompt[:100]},
+         True, int((time.monotonic() - t0) * 1000), result[:200])
+    return result
 
 
 if __name__ == "__main__":

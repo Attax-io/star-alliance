@@ -7,7 +7,7 @@ title: The four standalone primitives
 
 These run on their own — no workflow needed. The two framing/planning primitives are the same scripts a workflow's `args`-carrying steps wire; running them directly is how you frame or plan a one-off. The two reporting primitives answer the guild's two standing questions: is the offload paying off, and who is due to level up.
 
-Both `frame_brief.py` and `plan.py` reuse `guild/delegate.py`'s `delegate()`, so token spend auto-logs to the arsenal ledger; both default to weapon `minimax-m3`; both accept a **file path OR literal text** as `--in`; both exit 0 on success, non-zero on failure.
+Both `frame_brief.py` and `plan.py` reuse `guild/delegate.py`'s `delegate()`, so token spend auto-logs to the arsenal ledger; both default to Claude model `sonnet`; both accept a **file path OR literal text** as `--in`; both exit 0 on success, non-zero on failure.
 
 ## `guild/frame_brief.py` — frame a request into a structured brief
 
@@ -17,7 +17,7 @@ Collapses the near-identical framing steps that open most workflows into one tem
 python3 guild/frame_brief.py --style <style> --in <request_or_text> --out <brief.md> [--weapon <model>]
 ```
 
-`--style` (required), one of: `restate` (strip ceremony, capture true intent), `clarify` (resolve vagueness into testable requirements), `shape` (a crisp brief the guild can act on), `classify` (identify type + workflow + members/skills to route to), `reframe` (sharpen the underlying question). Importable: `frame_brief(style, request, weapon="minimax-m3") -> str`. Raises `ValueError` on an unknown style or an empty request.
+`--style` (required), one of: `restate` (strip ceremony, capture true intent), `clarify` (resolve vagueness into testable requirements), `shape` (a crisp brief the guild can act on), `classify` (identify type + workflow + members/skills to route to), `reframe` (sharpen the underlying question). Importable: `frame_brief(style, request, model="sonnet") -> str`. Raises `ValueError` on an unknown style or an empty request.
 
 ## `guild/plan.py` — turn a brief into a plan
 
@@ -27,7 +27,7 @@ Routes a framed brief to a thinker weapon with a per-template system prompt. Emi
 python3 guild/plan.py --template <template> --in <brief_or_text> --out <plan.md> [--weapon <model>]
 ```
 
-`--template` (required), one of: `campaign` (ordered waves: goal, roles, checkpoint, success condition), `sprint` (tickets: title, owner, acceptance, dependencies), `scope` (in/out of scope, surfaces, risks, assumptions), `spec` (behaviour, I/O, edge cases, verification), `lens` (an audit rubric — dimensions + what good looks like, NOT the audit itself), `panel` (expert perspectives + the question each owns + how verdicts converge). Importable: `plan(template, brief, weapon="minimax-m3") -> str`. Raises `ValueError` on an unknown template or an empty brief.
+`--template` (required), one of: `campaign` (ordered waves: goal, roles, checkpoint, success condition), `sprint` (tickets: title, owner, acceptance, dependencies), `scope` (in/out of scope, surfaces, risks, assumptions), `spec` (behaviour, I/O, edge cases, verification), `lens` (an audit rubric — dimensions + what good looks like, NOT the audit itself), `panel` (expert perspectives + the question each owns + how verdicts converge). Importable: `plan(template, brief, model="sonnet") -> str`. Raises `ValueError` on an unknown template or an empty brief.
 
 ## `tools/efficiency_report.py` — the offload-ROI report
 

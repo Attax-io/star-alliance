@@ -2,7 +2,7 @@
 // Read-only job scanner for the Mission Control Scheduler panel (Wave 1).
 // CommonJS module. Exports scanAll() -> { jobs: [...] }.
 //
-// Composes four scanners: launchd, native (~/.claude/scheduled-tasks), hermes cron,
+// Composes four scanners: launchd, native (~/.claude/scheduled-tasks),
 // and heartbeat join. Every external call goes through child_process.execFile with
 // an argv array — never shell string-concat. Each scanner fails soft (catches its
 // own errors, logs, and returns []) so one broken scanner never crashes the others.
@@ -252,45 +252,8 @@ async function scanNative(launchdJobs) {
 // ---------------------------------------------------------------------------
 
 async function scanHermes() {
-  const jobs = [];
-  try {
-    const { stdout } = await execFileP('hermes', ['cron', 'list', '--all']);
-    const trimmed = (stdout || '').trim();
-    if (!trimmed) return jobs;
-
-    let parsed = null;
-    try {
-      parsed = JSON.parse(trimmed);
-    } catch (parseErr) {
-      // Non-JSON output (e.g. "No scheduled jobs.") — treat as zero jobs, not an error.
-      return jobs;
-    }
-
-    const list = Array.isArray(parsed) ? parsed : (Array.isArray(parsed.jobs) ? parsed.jobs : []);
-    for (const item of list) {
-      if (!item || typeof item !== 'object') continue;
-      const id = item.id || item.name || `hermes-job-${jobs.length}`;
-      jobs.push({
-        id: `hermes:${id}`,
-        kind: 'hermes',
-        name: item.name || String(id),
-        description: item.description || item.prompt || null,
-        enabled: item.enabled !== false,
-        schedule: {
-          display: item.schedule_display || item.cron || 'unknown',
-          cron: item.cron || null,
-          calendar: null,
-        },
-        lastRun: { status: 'never', at: null, summary: null },
-        controllable: { toggle: true, retime: true, runNow: true },
-        source: { raw: item },
-      });
-    }
-  } catch (err) {
-    // hermes CLI missing, unreachable, or errored — fail soft, zero jobs.
-    logScanError('scanHermes', err);
-  }
-  return jobs;
+  // Hermes removed (Claude-only harness). No hermes cron source.
+  return [];
 }
 
 // ---------------------------------------------------------------------------

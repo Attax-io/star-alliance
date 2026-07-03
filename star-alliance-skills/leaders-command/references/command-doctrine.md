@@ -50,17 +50,18 @@ it collapses to the order shape this skill uses:
 
 Every ambiguity in an order is resolved by *someone* — and a subordinate resolving it guesses
 without the commander's context, so it guesses wrong as often as right. A wrong guess costs a
-redo; a clarification question costs a round-trip. In the guild both are dear: a doer summon
-runs ~80–100s, and a subagent spun up on an under-specified order burns its whole budget
-before discovering what it was missing. Precision paid up front (axiom 3) is always cheaper
-than correction paid later.
+redo; a clarification question costs a round-trip. In the guild both are dear: a subagent spun
+up on an under-specified order burns its whole budget before discovering what it was missing,
+and a one-shot text call comes back wrong with no chance to correct mid-task. Precision paid up
+front (axiom 3) is always cheaper than correction paid later.
 
 ## Right-sizing — the same intent, four registers
 
 A command is read by very different subordinates, and the *same* intent must be dressed
-differently for each (axiom 7): a **doer** is stateless and tool-less, so the spec lives
-entirely in the prompt; a **subagent** has tools but no memory of the conversation, so every
-fact must travel with the order; a **member** has craft, so command the intent and trust the
-method; the **Guild Master** is a non-programmer, so lead with plain English and offer a
-choice, not a lecture. Misjudging the register is its own failure mode (audit #6): hand-holding
+differently for each (axiom 7): a **one-shot worker** (a Claude subagent given a text-only task)
+carries no memory and returns text, so the spec lives entirely in the prompt; a **subagent**
+has tools but no memory of the conversation, so every fact must travel with the order; a
+**member** has craft, so command the intent and trust the method; the **Guild Master** is a
+non-programmer, so lead with plain English and offer a choice, not a lecture. Misjudging the
+register is its own failure mode (audit #6): hand-holding
 a peer wastes everyone's time; jargon at the Guild Master breaks the plain-English mandate.

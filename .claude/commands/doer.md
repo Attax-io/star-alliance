@@ -1,48 +1,41 @@
-# /doer — Route bulk work to the executor (minimax-m3)
+# /doer — Bulk & parallel work now runs as Claude subagents
 
-When you need to do bulk work (≥1.5k tokens of output, or many repetitive
-transforms) and you want the executor seat — minimax-m3 — to handle it instead
-of doing the work yourself, use this slash command.
+**This command is deprecated as a router to an external model.** The Star Alliance
+is now a **Claude-only** harness — there is no minimax/Hermes doer seat to route
+bulk work to. That external executor has been removed.
 
-Usage:
-  /doer <prompt>
-  /doer -s <system> <prompt>
-  /doer -f <file>          # read prompt from a file
+## What replaced it
 
-Examples:
-  /doer Refactor the auth module to use JWT tokens
-  /doer -s "You are a code formatter" -f messy.py
-  /doer Summarize the contents of the last 10 sessions
+Bulk or parallel work is now handled by **spawning Claude subagents** with the
+Task/Agent tool. A subagent is a separate Claude helper that runs on its own
+context and returns its result to you. For heavy work, pick the cheapest capable
+Claude model (usually **haiku** for mechanical bulk, **sonnet** for balanced work)
+and spawn it:
 
-What it does:
-  1. Takes your prompt and routes it through `star-alliance-arsenal/summon.py minimax-m3`
-  2. Returns the executor's output as text
-  3. Logs the doer-summon to the ledger (`doer-summon` signal)
+```
+Task(subagent_type="general-purpose", model="haiku",
+     prompt="Refactor the auth module to use JWT tokens")
+```
 
-Why use it:
-  - It's the ONE-COMMAND path to the executor seat. You don't need to remember
-    `Task(model="minimax-m3", prompt="...")` syntax.
-  - The executor-enforce hook sees this as a properly-routed doer call, so you
-    won't get blocked by the Butler lock.
-  - The executor (minimax-m3) is fast and cheap — ~80–100s wall-time for a
-    typical bulk job, vs the brain (Sonnet/Opus) which is slower and more
-    expensive.
+For a fan-out (the old "panel"), spawn several Task/Agent calls **in one message**
+so they run concurrently, then converge and synthesize their results yourself.
 
-When NOT to use it:
-  - Small edits (a few lines, single file): the brain does it inline, offloading
-    is net-negative.
-  - Tool orchestration (file edits via Edit/Write/Bash): minimax-m3 is text-only
-    and can't hold tools; the brain or a spawned agent must do this.
-  - High-stakes judgment (architecture decisions, schema design, security review):
-    the brain's reasoning quality matters here.
+## When to spawn a subagent vs. do it inline
 
-After receiving the output:
-  - Review it against your original request (this is the critic step — you are
-    the critic for the brain's planner role)
-  - Apply the result via Edit/Write or pass it to a downstream tool
-  - If the output doesn't match what you asked, run /doer again with a sharper
-    prompt — don't try to "fix" the output, get a fresh one from the doer.
+- **Spawn a subagent** — large or repetitive output (≈1.5k+ tokens, many
+  transforms), or several independent chunks that can run in parallel. Offloading
+  keeps the main session's context clean.
+- **Do it inline** — small edits (a few lines, one file); spawning is net-negative
+  overhead. Also do tool-heavy orchestration (Edit/Write/Bash/MCP) and high-stakes
+  judgment (architecture, schema, security review) in the main session or a
+  tool-capable subagent.
 
-Implementation: this command runs
-`python3 "$STAR_ALLIANCE_ROOT/star-alliance-arsenal/summon.py" minimax-m3 <args>`
-where `$STAR_ALLIANCE_ROOT` is set in `.claude/settings.json` env block.
+## After a subagent returns
+
+- Review its output against your original request.
+- Apply the result via Edit/Write or pass it downstream.
+- If it doesn't match, re-spawn with a sharper prompt — don't hand-patch a bad
+  return, get a fresh one.
+
+There is no external doer script to call and no dispatch routing to remember —
+everything is Claude, and the Task/Agent tool is the only fan-out you need.

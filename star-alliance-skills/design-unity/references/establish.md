@@ -19,7 +19,7 @@ Two artifacts, kept in lockstep. Nothing downstream is meaningful until this exi
 
 ## Step 2 — extract the de-facto values (existing UI)
 
-Hand the bulk scan to the doer (`minimax-m3`); the thinker makes the canonical calls.
+Fan the bulk scan out to parallel Claude subagents (spawned via the Task tool) when the codebase is large; the Designer makes the canonical calls.
 
 - **Colours** — every hex/rgb/hsl/oklch in the codebase, with frequency. Cluster near-duplicates (`#3b82f6`,
   `#3c83f7`, `rgb(59,130,246)` are one colour). The most-used member of a cluster is the canonical candidate.

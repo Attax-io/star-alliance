@@ -26,7 +26,7 @@ The aim is a pipeline where **planning precedes implementation, implementation p
 
 ## Core principles
 
-### 1. Separate the orchestrator from the doers — and keep the manager out of the work
+### 1. Separate the orchestrator from the executors — and keep the manager out of the work
 There is one primary orchestrator (the harness calls it ARCHitect-in-CLI) that owns routing, sequencing, and architectural judgment. Crucially, the *delivery manager* role (TDM) is **reactive, not an orchestrator**: it tracks progress, resolves blockers, and attaches evidence, but never assigns features or executes technical work. Mixing "who decides the plan" with "who tracks the plan" with "who does the work" is the first cause of an unsteerable team. Name these three jobs and keep them in different hands.
 
 ### 2. One role per kind of work — wrong-agent assignment is a stop-the-line error
@@ -52,7 +52,7 @@ Doctrine says an agent *should* not skip the QAS gate or declare done what isn't
 
 ## Reference index
 
-- `references/role-architecture.md` — the 11-role roster, each role's mandate and boundary, the orchestrator-vs-manager-vs-doer split, and which roles are collapsible vs independence gates.
+- `references/role-architecture.md` — the 11-role roster, each role's mandate and boundary, the orchestrator-vs-manager-vs-executor split, and which roles are collapsible vs independence gates.
 - `references/gating-and-release.md` — the spec → plan → execute → verify → release pipeline: the pre-implementation gate, the spec contract (acceptance criteria + pattern refs + validation command), the QAS independence gate, exit states, and HITL merge.
 - `references/coordination-patterns.md` — the agent loop, evidence-based delivery, structured escalation, team-vs-subagent-vs-background choice, team sizing, communication discipline, and quality-gate hooks.
 - `references/hook-enforcement.md` — the machine-enforced gate mechanism: the TeammateIdle / TaskCompleted hooks (exit code 2 to BLOCK idle/completion until acceptance criteria are met), the exit-code contract, `.claude/settings.json` wiring, what each check must actually verify, and the mapping back onto the doctrine gates and the verify-gate.

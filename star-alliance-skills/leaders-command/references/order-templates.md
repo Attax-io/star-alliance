@@ -9,23 +9,27 @@ timestamp: 2026-06-28T00:00:00Z
 The same skeleton (Order · Intent · Context · Constraints · Output contract), tuned to the
 subordinate (axiom 7). Pick the template, fill it, then run the seven axioms over the draft.
 
-## Doer (a model that returns text — no tools, no memory, one shot)
+## One-shot worker (a Claude subagent given a text-only task — no follow-up, no shared memory)
 
-Put the **entire** spec in the order; the doer cannot look anything up or ask back. Be
-maximally explicit about the output contract. In execution, Order/Intent/Constraints/
-Output-contract become the `-s` system prompt and the Context material becomes the `-f` file.
+Put the **entire** spec in the order; a one-shot worker cannot ask back mid-task. Be
+maximally explicit about the output contract. In execution this is a Claude subagent spawned via
+the Task tool with the whole spec in its prompt — cheaper model (Haiku/Sonnet) for bulk drafting.
 
 > **Order:** Extract every function signature from the attached file into a markdown table.
 > **Intent:** Build an API index; completeness matters more than prose.
-> **Context:** (the file is passed via -f)
+> **Context:** (the file's contents are pasted into the prompt)
 > **Constraints:** Table only, no prose. Skip private helpers (leading underscore). Do not
 > invent signatures not in the file.
 > **Output contract:** A markdown table with columns `name | params | returns | line`. One
 > row per public function. End with a count line `Total: N`.
 
-`python3 star-alliance-arsenal/summon.py minimax-m3 -f code.py -s "<the order above minus Context>"`
+Spawn it as a Claude subagent via the Task tool (`model=haiku` or `sonnet`), putting the whole
+order and the file contents in the prompt.
 
 ## Subagent (an isolated Claude agent — has tools, but NO shared memory of this chat)
+
+(The one-shot worker above is a subagent too — the difference is that this register hands it
+tools and expects it to act; the worker above only returns text.)
 
 Include every fact, path, and prior decision it needs; state exactly which files it may
 touch and the exact return shape. It is one-shot and stateless — anything you assume it

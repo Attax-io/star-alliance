@@ -16,7 +16,7 @@
       "desc_chars": 895,
       "body_words": 1793,
       "body_lines": 173,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 0,
         "sessions": 3
@@ -36,7 +36,7 @@
       "desc_chars": 981,
       "body_words": 519,
       "body_lines": 56,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 2
@@ -51,7 +51,7 @@
       "desc_chars": 732,
       "body_words": 1819,
       "body_lines": 311,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 26,
         "sessions": 3
@@ -66,7 +66,7 @@
       "desc_chars": 844,
       "body_words": 2094,
       "body_lines": 379,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 4,
         "sessions": 4
@@ -81,7 +81,7 @@
       "desc_chars": 842,
       "body_words": 1865,
       "body_lines": 237,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 21,
         "sessions": 4
@@ -96,7 +96,7 @@
       "desc_chars": 724,
       "body_words": 2112,
       "body_lines": 424,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 3,
         "sessions": 4
@@ -111,7 +111,7 @@
       "desc_chars": 706,
       "body_words": 2206,
       "body_lines": 330,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 2
@@ -126,7 +126,7 @@
       "desc_chars": 813,
       "body_words": 1138,
       "body_lines": 136,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 2
@@ -141,7 +141,7 @@
       "desc_chars": 895,
       "body_words": 942,
       "body_lines": 112,
-      "days_since_change": 0.8,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 1,
         "sessions": 2
@@ -156,7 +156,7 @@
       "desc_chars": 960,
       "body_words": 1016,
       "body_lines": 53,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 1
@@ -171,7 +171,7 @@
       "desc_chars": 895,
       "body_words": 1159,
       "body_lines": 101,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 2
@@ -183,10 +183,10 @@
       "name": "arsenal-forge",
       "version": "1.0.1",
       "status": "lean",
-      "desc_chars": 949,
-      "body_words": 1366,
-      "body_lines": 93,
-      "days_since_change": 0.8,
+      "desc_chars": 679,
+      "body_words": 1391,
+      "body_lines": 92,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 2,
         "sessions": 4
@@ -201,7 +201,7 @@
       "desc_chars": 923,
       "body_words": 839,
       "body_lines": 111,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 3,
         "sessions": 6
@@ -216,7 +216,7 @@
       "desc_chars": 810,
       "body_words": 1868,
       "body_lines": 206,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 2
@@ -229,9 +229,9 @@
       "version": "1.0.0",
       "status": "lean",
       "desc_chars": 480,
-      "body_words": 297,
+      "body_words": 296,
       "body_lines": 25,
-      "days_since_change": 0.8,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 64,
         "sessions": 5
@@ -246,7 +246,7 @@
       "desc_chars": 385,
       "body_words": 384,
       "body_lines": 69,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 0,
         "sessions": 0
@@ -261,10 +261,10 @@
       "desc_chars": 934,
       "body_words": 2388,
       "body_lines": 255,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
-        "files": 13,
-        "sessions": 19
+        "files": 12,
+        "sessions": 23
       },
       "friction": [
         {
@@ -272,7 +272,7 @@
           "snippet": "skill  bug-fix-workflow: xp=0 level=1 neverInvoked=true version=1.2.0"
         }
       ],
-      "mention_total": 32
+      "mention_total": 35
     },
     {
       "name": "bundled-rls",
@@ -281,7 +281,7 @@
       "desc_chars": 696,
       "body_words": 1151,
       "body_lines": 148,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 2,
         "sessions": 1
@@ -296,7 +296,7 @@
       "desc_chars": 892,
       "body_words": 975,
       "body_lines": 99,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 0,
         "sessions": 6
@@ -313,10 +313,10 @@
       "name": "butler-voice",
       "version": "2.0.0",
       "status": "lean",
-      "desc_chars": 786,
-      "body_words": 2239,
-      "body_lines": 286,
-      "days_since_change": 0.8,
+      "desc_chars": 754,
+      "body_words": 2225,
+      "body_lines": 285,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 0,
         "sessions": 3
@@ -331,7 +331,7 @@
       "desc_chars": 1012,
       "body_words": 1106,
       "body_lines": 66,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 1
@@ -344,9 +344,9 @@
       "version": "1.0.0",
       "status": "lean",
       "desc_chars": 380,
-      "body_words": 1071,
+      "body_words": 1074,
       "body_lines": 82,
-      "days_since_change": 0.4,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 0,
         "sessions": 2
@@ -361,7 +361,7 @@
       "desc_chars": 962,
       "body_words": 1920,
       "body_lines": 134,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 3
@@ -376,9 +376,9 @@
       "desc_chars": 991,
       "body_words": 5948,
       "body_lines": 346,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
-        "files": 923,
+        "files": 922,
         "sessions": 50
       },
       "friction": [
@@ -403,7 +403,7 @@
           "snippet": "- `/cleanup docs` \u2014 a new vault log (docs/vault-logs/2026-06-21_bug304-permission-catalog-db-source.md) and a new memory file (docs/memory/discovery_perm-enforcement-vs-display-counts.md) were added."
         }
       ],
-      "mention_total": 973
+      "mention_total": 972
     },
     {
       "name": "cn-market-strategy-pack",
@@ -412,7 +412,7 @@
       "desc_chars": 898,
       "body_words": 1094,
       "body_lines": 123,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 1
@@ -427,7 +427,7 @@
       "desc_chars": 676,
       "body_words": 1161,
       "body_lines": 166,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 0,
         "sessions": 0
@@ -442,7 +442,7 @@
       "desc_chars": 769,
       "body_words": 1281,
       "body_lines": 141,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 2
@@ -457,7 +457,7 @@
       "desc_chars": 792,
       "body_words": 962,
       "body_lines": 103,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 2,
         "sessions": 3
@@ -472,7 +472,7 @@
       "desc_chars": 1014,
       "body_words": 1337,
       "body_lines": 167,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 2
@@ -487,7 +487,7 @@
       "desc_chars": 908,
       "body_words": 2112,
       "body_lines": 228,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 17,
         "sessions": 7
@@ -502,7 +502,7 @@
       "desc_chars": 706,
       "body_words": 1240,
       "body_lines": 171,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 0,
         "sessions": 0
@@ -517,7 +517,7 @@
       "desc_chars": 449,
       "body_words": 168,
       "body_lines": 23,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 23,
         "sessions": 3
@@ -529,10 +529,10 @@
       "name": "comms-triage",
       "version": "1.0.0",
       "status": "lean",
-      "desc_chars": 945,
+      "desc_chars": 947,
       "body_words": 1052,
       "body_lines": 60,
-      "days_since_change": 0.8,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 2,
         "sessions": 4
@@ -545,16 +545,24 @@
       "version": "3.9.0",
       "status": "large",
       "desc_chars": 1015,
-      "body_words": 7346,
+      "body_words": 7369,
       "body_lines": 389,
-      "days_since_change": 0.8,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 94,
-        "sessions": 30
+        "sessions": 34
       },
       "friction": [
         {
+          "where": "/Users/attaselim/.claude/projects/-Users-attaselim-Documents-Claude-Projects-star-alliance/203698cb-66b4-4a3b-980a-79c6d011e774.jsonl",
+          "snippet": "3. Scope the fix: is this a small, well-contained feature (new RPC + a modal reusing an existing pattern) or does it touch many surfaces? Use the bug-fix-workflow / conquering-campaign skill judgment \u2014 if it's small (1 RPC + 1 modal + i18n keys), you may implement it directly fol"
+        },
+        {
           "where": "/Users/attaselim/.claude/projects/-Users-attaselim-Documents-Claude-Projects-star-alliance/81f97c07-d751-462d-92eb-aed61285d7f1.jsonl",
+          "snippet": "3. Scope the fix: is this a small, well-contained feature (new RPC + a modal reusing an existing pattern) or does it touch many surfaces? Use the bug-fix-workflow / conquering-campaign skill judgment \u2014 if it's small (1 RPC + 1 modal + i18n keys), you may implement it directly fol"
+        },
+        {
+          "where": "/Users/attaselim/.claude/projects/-Users-attaselim-Documents-Claude-Projects-star-alliance/43922370-0a03-47d0-a5d9-075cac33ddc8.jsonl",
           "snippet": "3. Scope the fix: is this a small, well-contained feature (new RPC + a modal reusing an existing pattern) or does it touch many surfaces? Use the bug-fix-workflow / conquering-campaign skill judgment \u2014 if it's small (1 RPC + 1 modal + i18n keys), you may implement it directly fol"
         },
         {
@@ -562,7 +570,7 @@
           "snippet": "3. Scope the fix: is this a small, well-contained feature (new RPC + a modal reusing an existing pattern) or does it touch many surfaces? Use the bug-fix-workflow / conquering-campaign skill judgment \u2014 if it's small (1 RPC + 1 modal + i18n keys), you may implement it directly fol"
         }
       ],
-      "mention_total": 124
+      "mention_total": 128
     },
     {
       "name": "contract-review",
@@ -571,7 +579,7 @@
       "desc_chars": 896,
       "body_words": 1103,
       "body_lines": 113,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 1
@@ -584,9 +592,9 @@
       "version": "1.0.0",
       "status": "lean",
       "desc_chars": 979,
-      "body_words": 2699,
-      "body_lines": 330,
-      "days_since_change": 0.8,
+      "body_words": 2689,
+      "body_lines": 329,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 0,
         "sessions": 1
@@ -601,7 +609,7 @@
       "desc_chars": 1008,
       "body_words": 1521,
       "body_lines": 76,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 3
@@ -616,7 +624,7 @@
       "desc_chars": 886,
       "body_words": 1264,
       "body_lines": 39,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 1
@@ -631,7 +639,7 @@
       "desc_chars": 910,
       "body_words": 542,
       "body_lines": 48,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 16,
         "sessions": 5
@@ -644,9 +652,9 @@
       "version": "1.0.0",
       "status": "lean",
       "desc_chars": 630,
-      "body_words": 1777,
+      "body_words": 1816,
       "body_lines": 165,
-      "days_since_change": 0.8,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 1,
         "sessions": 8
@@ -661,7 +669,7 @@
       "desc_chars": 1011,
       "body_words": 921,
       "body_lines": 93,
-      "days_since_change": 0.8,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 2,
         "sessions": 3
@@ -674,9 +682,9 @@
       "version": "1.0.0",
       "status": "lean",
       "desc_chars": 1012,
-      "body_words": 1077,
+      "body_words": 1084,
       "body_lines": 100,
-      "days_since_change": 0.8,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 1,
         "sessions": 5
@@ -691,9 +699,9 @@
       "desc_chars": 1003,
       "body_words": 532,
       "body_lines": 58,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
-        "files": 447,
+        "files": 443,
         "sessions": 3
       },
       "friction": [
@@ -702,16 +710,16 @@
           "snippet": "- **Design tokens are a hard single-source-of-truth.** `lib/design-tokens.ts` exports `C`; ESLint (`no-restricted-properties` in `packages/eslint-config/next.js`) **fails CI** on re-introducing any of ~110 retired tokens or redefining `const C`. Auditors must flag raw hex / shado"
         }
       ],
-      "mention_total": 450
+      "mention_total": 446
     },
     {
       "name": "design-unity",
       "version": "1.1.0",
       "status": "lean",
       "desc_chars": 1016,
-      "body_words": 1274,
-      "body_lines": 107,
-      "days_since_change": 0.8,
+      "body_words": 1285,
+      "body_lines": 108,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 5,
         "sessions": 4
@@ -726,7 +734,7 @@
       "desc_chars": 768,
       "body_words": 816,
       "body_lines": 90,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 2
@@ -741,7 +749,7 @@
       "desc_chars": 303,
       "body_words": 645,
       "body_lines": 73,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 150,
         "sessions": 7
@@ -753,10 +761,10 @@
       "name": "dual-model-review",
       "version": "1.0.0",
       "status": "lean",
-      "desc_chars": 826,
-      "body_words": 2431,
-      "body_lines": 370,
-      "days_since_change": 0.8,
+      "desc_chars": 963,
+      "body_words": 2003,
+      "body_lines": 298,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 0,
         "sessions": 4
@@ -771,7 +779,7 @@
       "desc_chars": 786,
       "body_words": 889,
       "body_lines": 67,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 57,
         "sessions": 5
@@ -786,7 +794,7 @@
       "desc_chars": 844,
       "body_words": 1412,
       "body_lines": 66,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 1
@@ -799,9 +807,9 @@
       "version": "1.0.0",
       "status": "lean",
       "desc_chars": 394,
-      "body_words": 162,
+      "body_words": 161,
       "body_lines": 18,
-      "days_since_change": 0.8,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 22,
         "sessions": 5
@@ -816,7 +824,7 @@
       "desc_chars": 842,
       "body_words": 1584,
       "body_lines": 152,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 3
@@ -831,7 +839,7 @@
       "desc_chars": 203,
       "body_words": 382,
       "body_lines": 46,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 5
@@ -846,7 +854,7 @@
       "desc_chars": 225,
       "body_words": 6006,
       "body_lines": 1029,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 39,
         "sessions": 5
@@ -861,7 +869,7 @@
       "desc_chars": 851,
       "body_words": 2506,
       "body_lines": 97,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 2
@@ -874,9 +882,9 @@
       "version": "1.6.1",
       "status": "lean",
       "desc_chars": 916,
-      "body_words": 2960,
-      "body_lines": 208,
-      "days_since_change": 0.8,
+      "body_words": 3128,
+      "body_lines": 221,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 1,
         "sessions": 5
@@ -891,7 +899,7 @@
       "desc_chars": 801,
       "body_words": 2632,
       "body_lines": 244,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 2,
         "sessions": 13
@@ -906,7 +914,7 @@
       "desc_chars": 1020,
       "body_words": 1295,
       "body_lines": 134,
-      "days_since_change": 0.8,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 2,
         "sessions": 3
@@ -919,9 +927,9 @@
       "version": "1.3.0",
       "status": "lean",
       "desc_chars": 1010,
-      "body_words": 1505,
-      "body_lines": 161,
-      "days_since_change": 0.8,
+      "body_words": 1522,
+      "body_lines": 162,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 1,
         "sessions": 3
@@ -936,7 +944,7 @@
       "desc_chars": 523,
       "body_words": 641,
       "body_lines": 52,
-      "days_since_change": 0.8,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 0,
         "sessions": 5
@@ -960,7 +968,7 @@
       "desc_chars": 441,
       "body_words": 241,
       "body_lines": 54,
-      "days_since_change": 0.8,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 25,
         "sessions": 3
@@ -975,7 +983,7 @@
       "desc_chars": 345,
       "body_words": 170,
       "body_lines": 24,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 9,
         "sessions": 3
@@ -990,7 +998,7 @@
       "desc_chars": 358,
       "body_words": 739,
       "body_lines": 112,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 2,
         "sessions": 2
@@ -1007,10 +1015,10 @@
       "name": "high-alert",
       "version": "2.4.0",
       "status": "lean",
-      "desc_chars": 859,
-      "body_words": 923,
+      "desc_chars": 874,
+      "body_words": 935,
       "body_lines": 58,
-      "days_since_change": 0.8,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 2,
         "sessions": 8
@@ -1025,7 +1033,7 @@
       "desc_chars": 554,
       "body_words": 804,
       "body_lines": 149,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 0,
         "sessions": 0
@@ -1040,7 +1048,7 @@
       "desc_chars": 555,
       "body_words": 5735,
       "body_lines": 1225,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 4
@@ -1053,9 +1061,9 @@
       "version": "1.0.0",
       "status": "lean",
       "desc_chars": 985,
-      "body_words": 819,
-      "body_lines": 77,
-      "days_since_change": 0.8,
+      "body_words": 831,
+      "body_lines": 79,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 1,
         "sessions": 5
@@ -1070,7 +1078,7 @@
       "desc_chars": 895,
       "body_words": 2739,
       "body_lines": 159,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 14,
         "sessions": 22
@@ -1085,7 +1093,7 @@
       "desc_chars": 1023,
       "body_words": 672,
       "body_lines": 51,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 4
@@ -1100,7 +1108,7 @@
       "desc_chars": 1012,
       "body_words": 965,
       "body_lines": 60,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 1
@@ -1115,7 +1123,7 @@
       "desc_chars": 979,
       "body_words": 1152,
       "body_lines": 63,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 2,
         "sessions": 4
@@ -1127,10 +1135,10 @@
       "name": "leaders-command",
       "version": "1.0.0",
       "status": "lean",
-      "desc_chars": 967,
-      "body_words": 898,
-      "body_lines": 105,
-      "days_since_change": 0.8,
+      "desc_chars": 971,
+      "body_words": 922,
+      "body_lines": 107,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 1,
         "sessions": 1
@@ -1145,7 +1153,7 @@
       "desc_chars": 935,
       "body_words": 1156,
       "body_lines": 54,
-      "days_since_change": 0.8,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 3,
         "sessions": 1
@@ -1158,9 +1166,9 @@
       "version": "1.0.0",
       "status": "lean",
       "desc_chars": 931,
-      "body_words": 1447,
+      "body_words": 1454,
       "body_lines": 64,
-      "days_since_change": 0.8,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 1,
         "sessions": 2
@@ -1175,7 +1183,7 @@
       "desc_chars": 1005,
       "body_words": 444,
       "body_lines": 52,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 5
@@ -1190,7 +1198,7 @@
       "desc_chars": 1019,
       "body_words": 1967,
       "body_lines": 250,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 4,
         "sessions": 2
@@ -1205,7 +1213,7 @@
       "desc_chars": 914,
       "body_words": 1115,
       "body_lines": 55,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 2,
         "sessions": 5
@@ -1220,7 +1228,7 @@
       "desc_chars": 883,
       "body_words": 2590,
       "body_lines": 254,
-      "days_since_change": 0.8,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 1,
         "sessions": 6
@@ -1235,7 +1243,7 @@
       "desc_chars": 1007,
       "body_words": 408,
       "body_lines": 52,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 4
@@ -1250,7 +1258,7 @@
       "desc_chars": 1018,
       "body_words": 1307,
       "body_lines": 180,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 2
@@ -1265,7 +1273,7 @@
       "desc_chars": 891,
       "body_words": 1470,
       "body_lines": 154,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 2
@@ -1280,7 +1288,7 @@
       "desc_chars": 861,
       "body_words": 1150,
       "body_lines": 56,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 1
@@ -1293,9 +1301,9 @@
       "version": "1.0.1",
       "status": "lean",
       "desc_chars": 366,
-      "body_words": 819,
-      "body_lines": 170,
-      "days_since_change": 0.8,
+      "body_words": 673,
+      "body_lines": 129,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 0,
         "sessions": 1
@@ -1308,9 +1316,9 @@
       "version": "1.0.1",
       "status": "lean",
       "desc_chars": 1002,
-      "body_words": 1886,
-      "body_lines": 218,
-      "days_since_change": 0.8,
+      "body_words": 1945,
+      "body_lines": 222,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 1,
         "sessions": 4
@@ -1325,7 +1333,7 @@
       "desc_chars": 856,
       "body_words": 1416,
       "body_lines": 165,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 2
@@ -1340,7 +1348,7 @@
       "desc_chars": 448,
       "body_words": 915,
       "body_lines": 228,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 3,
         "sessions": 5
@@ -1353,9 +1361,9 @@
       "version": "1.5.0",
       "status": "lean",
       "desc_chars": 512,
-      "body_words": 2803,
+      "body_words": 2818,
       "body_lines": 360,
-      "days_since_change": 0.8,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 1916,
         "sessions": 20
@@ -1375,7 +1383,7 @@
       "desc_chars": 442,
       "body_words": 177,
       "body_lines": 25,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 9,
         "sessions": 4
@@ -1390,7 +1398,7 @@
       "desc_chars": 896,
       "body_words": 944,
       "body_lines": 111,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 2
@@ -1405,7 +1413,7 @@
       "desc_chars": 885,
       "body_words": 711,
       "body_lines": 95,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 1
@@ -1420,13 +1428,13 @@
       "desc_chars": 219,
       "body_words": 1418,
       "body_lines": 371,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
-        "files": 401,
+        "files": 399,
         "sessions": 9
       },
       "friction": [],
-      "mention_total": 410
+      "mention_total": 408
     },
     {
       "name": "phased-db-refactor",
@@ -1435,7 +1443,7 @@
       "desc_chars": 825,
       "body_words": 1954,
       "body_lines": 206,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 7,
         "sessions": 7
@@ -1448,9 +1456,9 @@
       "version": "1.0.0",
       "status": "lean",
       "desc_chars": 481,
-      "body_words": 578,
+      "body_words": 580,
       "body_lines": 104,
-      "days_since_change": 0.8,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 1,
         "sessions": 3
@@ -1465,7 +1473,7 @@
       "desc_chars": 1005,
       "body_words": 834,
       "body_lines": 55,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 3
@@ -1480,7 +1488,7 @@
       "desc_chars": 1001,
       "body_words": 1084,
       "body_lines": 63,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 2
@@ -1495,7 +1503,7 @@
       "desc_chars": 1000,
       "body_words": 1318,
       "body_lines": 69,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 4
@@ -1515,7 +1523,7 @@
       "desc_chars": 375,
       "body_words": 262,
       "body_lines": 56,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 2
@@ -1530,7 +1538,7 @@
       "desc_chars": 884,
       "body_words": 773,
       "body_lines": 85,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 0,
         "sessions": 5
@@ -1545,7 +1553,7 @@
       "desc_chars": 1020,
       "body_words": 515,
       "body_lines": 65,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 4
@@ -1560,7 +1568,7 @@
       "desc_chars": 225,
       "body_words": 2174,
       "body_lines": 175,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 6
@@ -1573,9 +1581,9 @@
       "version": "1.0.0",
       "status": "lean",
       "desc_chars": 961,
-      "body_words": 1072,
+      "body_words": 1094,
       "body_lines": 55,
-      "days_since_change": 0.8,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 17,
         "sessions": 4
@@ -1588,9 +1596,9 @@
       "version": "1.1.0",
       "status": "lean",
       "desc_chars": 894,
-      "body_words": 1713,
+      "body_words": 1730,
       "body_lines": 80,
-      "days_since_change": 0.8,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 2,
         "sessions": 4
@@ -1605,7 +1613,7 @@
       "desc_chars": 1017,
       "body_words": 1202,
       "body_lines": 58,
-      "days_since_change": 0.8,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 1,
         "sessions": 2
@@ -1617,10 +1625,10 @@
       "name": "scheduled-watch",
       "version": "1.0.0",
       "status": "lean",
-      "desc_chars": 909,
-      "body_words": 1030,
+      "desc_chars": 923,
+      "body_words": 1042,
       "body_lines": 48,
-      "days_since_change": 0.8,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 1,
         "sessions": 3
@@ -1633,24 +1641,24 @@
       "version": "1.2.0",
       "status": "lean",
       "desc_chars": 1013,
-      "body_words": 2264,
+      "body_words": 2271,
       "body_lines": 173,
-      "days_since_change": 0.8,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 4,
-        "sessions": 5
+        "sessions": 6
       },
       "friction": [],
-      "mention_total": 9
+      "mention_total": 10
     },
     {
       "name": "session-mining",
       "version": "1.3.0",
       "status": "lean",
-      "desc_chars": 1012,
-      "body_words": 1439,
-      "body_lines": 169,
-      "days_since_change": 0.8,
+      "desc_chars": 1024,
+      "body_words": 1448,
+      "body_lines": 170,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 2,
         "sessions": 4
@@ -1663,9 +1671,9 @@
       "version": "1.8.0",
       "status": "large",
       "desc_chars": 987,
-      "body_words": 5755,
+      "body_words": 5762,
       "body_lines": 170,
-      "days_since_change": 0.8,
+      "days_since_change": 0.0,
       "mentions": {
         "files": 3,
         "sessions": 38
@@ -1699,9 +1707,9 @@
       "version": "1.1.0",
       "status": "lean",
       "desc_chars": 1017,
-      "body_words": 1396,
-      "body_lines": 158,
-      "days_since_change": 0.8,
+      "body_words": 1406,
+      "body_lines": 159,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 1,
         "sessions": 3
@@ -1714,9 +1722,9 @@
       "version": "1.2.1",
       "status": "lean",
       "desc_chars": 522,
-      "body_words": 952,
+      "body_words": 954,
       "body_lines": 114,
-      "days_since_change": 0.8,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 1,
         "sessions": 12
@@ -1729,9 +1737,9 @@
       "version": "1.0.0",
       "status": "lean",
       "desc_chars": 866,
-      "body_words": 919,
-      "body_lines": 94,
-      "days_since_change": 0.8,
+      "body_words": 932,
+      "body_lines": 95,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 1,
         "sessions": 4
@@ -1746,7 +1754,7 @@
       "desc_chars": 510,
       "body_words": 631,
       "body_lines": 76,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 2,
         "sessions": 4
@@ -1759,12 +1767,12 @@
       "version": "0.1.4",
       "status": "lean",
       "desc_chars": 475,
-      "body_words": 1511,
-      "body_lines": 141,
-      "days_since_change": 0.8,
+      "body_words": 1569,
+      "body_lines": 145,
+      "days_since_change": 0.1,
       "mentions": {
-        "files": 1873,
-        "sessions": 55
+        "files": 1868,
+        "sessions": 59
       },
       "friction": [
         {
@@ -1792,7 +1800,7 @@
           "snippet": "The **live DB (project `bqgrpnsvplvicnmzxwkm`) was unreachable** this session: the `postgres` password in `~/.config/supabase/lexcouncil.key` is rejected and the pooler's auth circuit-breaker has tripped (`ECIRCUITBREAKER`). The venv itself is now fixed. My findings are grounded "
         }
       ],
-      "mention_total": 1928
+      "mention_total": 1927
     },
     {
       "name": "supabase-postgres-best-practices",
@@ -1801,7 +1809,7 @@
       "desc_chars": 183,
       "body_words": 1448,
       "body_lines": 212,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 4,
         "sessions": 5
@@ -1816,7 +1824,7 @@
       "desc_chars": 1018,
       "body_words": 1741,
       "body_lines": 194,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 2
@@ -1831,7 +1839,7 @@
       "desc_chars": 622,
       "body_words": 847,
       "body_lines": 149,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 0,
         "sessions": 0
@@ -1846,7 +1854,7 @@
       "desc_chars": 1019,
       "body_words": 1579,
       "body_lines": 182,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 1
@@ -1861,7 +1869,7 @@
       "desc_chars": 1009,
       "body_words": 1120,
       "body_lines": 64,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 3
@@ -1876,22 +1884,22 @@
       "desc_chars": 951,
       "body_words": 3263,
       "body_lines": 399,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 29,
-        "sessions": 9
+        "sessions": 10
       },
       "friction": [],
-      "mention_total": 38
+      "mention_total": 39
     },
     {
       "name": "ultra-brainstorming",
       "version": "1.3.1",
       "status": "lean",
-      "desc_chars": 873,
-      "body_words": 2029,
-      "body_lines": 191,
-      "days_since_change": 0.8,
+      "desc_chars": 854,
+      "body_words": 2015,
+      "body_lines": 189,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 1,
         "sessions": 10
@@ -1906,7 +1914,7 @@
       "desc_chars": 852,
       "body_words": 1223,
       "body_lines": 128,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 2
@@ -1921,7 +1929,7 @@
       "desc_chars": 857,
       "body_words": 915,
       "body_lines": 87,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 1
@@ -1936,7 +1944,7 @@
       "desc_chars": 893,
       "body_words": 1651,
       "body_lines": 136,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 3,
         "sessions": 9
@@ -1951,7 +1959,7 @@
       "desc_chars": 838,
       "body_words": 1028,
       "body_lines": 177,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 0,
         "sessions": 5
@@ -1966,10 +1974,10 @@
       "desc_chars": 683,
       "body_words": 1128,
       "body_lines": 178,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 279,
-        "sessions": 6
+        "sessions": 7
       },
       "friction": [
         {
@@ -1977,16 +1985,16 @@
           "snippet": "- `apps/web/hooks/use-paginated-query.ts:22` \u2014 **low** \u2014 `PaginatedQueryConfig.viewName` is typed as bare `string`, not the registry's `ViewName` union, so nothing stops a future caller from passing a raw string literal instead of `VIEWS.&lt;key&gt;` (currently no one does, but t"
         }
       ],
-      "mention_total": 285
+      "mention_total": 286
     },
     {
       "name": "voices-check",
       "version": "1.0.1",
       "status": "lean",
-      "desc_chars": 1013,
+      "desc_chars": 1017,
       "body_words": 392,
       "body_lines": 50,
-      "days_since_change": 0.8,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 1,
         "sessions": 3
@@ -2001,7 +2009,7 @@
       "desc_chars": 1020,
       "body_words": 1067,
       "body_lines": 55,
-      "days_since_change": 0.8,
+      "days_since_change": 1.3,
       "mentions": {
         "files": 1,
         "sessions": 1
@@ -2016,7 +2024,7 @@
       "desc_chars": 492,
       "body_words": 2261,
       "body_lines": 346,
-      "days_since_change": 0.4,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 0,
         "sessions": 1
@@ -2029,9 +2037,9 @@
       "version": "4.0.0",
       "status": "lean",
       "desc_chars": 868,
-      "body_words": 2664,
-      "body_lines": 150,
-      "days_since_change": 0.8,
+      "body_words": 2154,
+      "body_lines": 141,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 1,
         "sessions": 15
@@ -2044,9 +2052,9 @@
       "version": "1.4.0",
       "status": "lean",
       "desc_chars": 997,
-      "body_words": 2235,
-      "body_lines": 175,
-      "days_since_change": 0.8,
+      "body_words": 2234,
+      "body_lines": 174,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 2,
         "sessions": 6
@@ -2059,9 +2067,9 @@
       "version": "1.0.0",
       "status": "lean",
       "desc_chars": 875,
-      "body_words": 1100,
+      "body_words": 1118,
       "body_lines": 90,
-      "days_since_change": 0.8,
+      "days_since_change": 0.1,
       "mentions": {
         "files": 1,
         "sessions": 4
@@ -2073,51 +2081,51 @@
   "gap_signals": [
     {
       "keyword": "summary",
-      "count": 192
+      "count": 198
     },
     {
       "keyword": "what",
-      "count": 118
+      "count": 133
     },
     {
       "keyword": "result",
-      "count": 99
+      "count": 109
     },
     {
       "keyword": "have",
-      "count": 86
-    },
-    {
-      "keyword": "council",
-      "count": 84
+      "count": 90
     },
     {
       "keyword": "before",
-      "count": 79
+      "count": 88
+    },
+    {
+      "keyword": "council",
+      "count": 85
     },
     {
       "keyword": "repo",
-      "count": 77
+      "count": 78
     },
     {
       "keyword": "tools",
-      "count": 77
+      "count": 78
+    },
+    {
+      "keyword": "task",
+      "count": 74
+    },
+    {
+      "keyword": "read",
+      "count": 74
     },
     {
       "keyword": "version",
       "count": 72
     },
     {
-      "keyword": "task",
-      "count": 72
-    },
-    {
       "keyword": "path",
-      "count": 71
-    },
-    {
-      "keyword": "read",
-      "count": 69
+      "count": 72
     }
   ],
   "summary": {
@@ -2154,10 +2162,10 @@
       "vault-log-compliance",
       "ultra-brainstorming",
       "high-alert",
+      "schema-evolution",
       "article-creator",
       "decompose-and-swarm",
       "design-unity",
-      "schema-evolution",
       "supabase-postgres-best-practices",
       "add-new-trigger",
       "obsidian-markdown",
@@ -2269,6 +2277,6 @@
       "hotspot-radar",
       "temporal-coupling-audit"
     ],
-    "request_lines_seen": 1616
+    "request_lines_seen": 1675
   }
 }

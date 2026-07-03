@@ -261,7 +261,7 @@ pattern this file mirrors, not systems to migrate onto it:
    `README.md`→Readme, else Document) and a `timestamp:` when it has to create a
    fresh block. **Idempotent** — safe to re-run. Always run this *before* arming
    the gate so it can never lock the guild out of its own docs.
-3. **Enrich (by hand or by doer).** Baseline conformance is just `type:`. Raise
+3. **Enrich (by hand or by subagent).** Baseline conformance is just `type:`. Raise
    value by adding `title`, `description`, `tags`, and **cross-links** between
    related concepts. **Find the backlog first** with
    `python3 star-alliance-skills/okf/scripts/okf_enrich.py` (or `--json` for
@@ -269,9 +269,9 @@ pattern this file mirrors, not systems to migrate onto it:
    it reports every governed `.md` that passes the baseline but is missing any
    of those three enrichment keys. Read-only by design and exits 0 always;
    never fails a build over missing metadata, only points at the work. Once
-   the backlog is in hand, hand bulk enrichment to a doer weapon
-   (`summon.py minimax-m3`) — drafting a one-line `description` for 50 files
-   is doer-grade.
+   the backlog is in hand, fan bulk enrichment out to a Claude subagent
+   (spawn a cheaper Sonnet/Haiku worker via the Task tool) — drafting a one-line
+   `description` for 50 files is exactly the kind of bulk work to delegate.
 4. **Sweep non-md tidy (placement).** Run `okf_audit.py --layout` to list root files
    off their concept-path. `--layout --fix` relocates the **safe** class (via
    `git mv`); the **review** class is reported for a path-rewrite sweep (Architecture

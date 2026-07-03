@@ -31,7 +31,7 @@ not invent a second way to bump/register/sync — it drives the existing ones, g
 
 ```
 A. HARVEST   gather the corpus           (scripts/routine_scan.py — read-only)
-B. RESEARCH  STORM per skill + gaps       (storm-method.md — model / Workflow fan-out)
+B. RESEARCH  STORM per skill + gaps       (storm-method.md — Claude-subagent fan-out)
 C. NOTEBOOK  write the dated ledger entry (references/routine-ledger/YYYY-MM-DD.md)
 D. EXECUTE   apply ≥8/10 findings         (upgrade-playbook + create-playbook, guarded)
 E. REPORT    commit, push, summarize      (one labeled commit per applied change)
@@ -94,7 +94,7 @@ pipeline(activeSkills,
 
 Budget the fan-out; don't STORM all 28 skills every day (see §R5).
 
-**Dossier build guard.** When assembling a per-skill dossier for the doer (SKILL.md body + scan signals), pass the SKILL.md body whole — most fit the 16000-token budget. Never hard-truncate mid-sentence to fit a cap; that makes STORM report a phantom "file truncated" top bug, wasting the slot and poisoning the dossier (observed 2026-06-29 on supabase, skillsmith, conquering-campaign, each SKILL.md > 9000 chars). If a body truly overflows, summarize it and tell STORM it was summarized, or split across calls — but never raw-cut.
+**Dossier build guard.** When assembling a per-skill dossier for a research subagent (SKILL.md body + scan signals), pass the SKILL.md body whole — most fit a comfortable context budget. Never hard-truncate mid-sentence to fit a cap; that makes STORM report a phantom "file truncated" top bug, wasting the slot and poisoning the dossier (observed 2026-06-29 on supabase, skillsmith, conquering-campaign, each SKILL.md > 9000 chars). If a body truly overflows, summarize it and tell STORM it was summarized, or split across calls — but never raw-cut.
 
 **Re-aim the lens — convergence on one question ≠ no work left (the Run-12 lesson, codified).** Runs
 1–11 graded only the *friction snippets* (is this mention noise?) and converged to a no-op for ten
@@ -188,7 +188,7 @@ recur without it:
 
 - **Conformity-close first (Invariant #8) — the Quartermaster's final gate.** Before committing, rebuild the guild data and run the Compliance Audit: `python3 build.py && python3 tools/conformity_check.py`. It must report **FULL CONFORMITY** (exit 0) — guild-data↔json parity, `meta.counts`, workflow gates/actors, member arsenal order, decision-conformity, and the **K-invariant** (skill dirs == `skills-meta.json` == generated skill ids) all hold. If it FAILS, fix the contradiction **before** the commit — a created / removed skill not yet in `skills-meta.json` + `build.py` output, a stale count, a broken ref — never ship a contradiction. Stage the regenerated `guild-data.*` (+ `skills-meta.json`/`domains.json` on a create/remove) in the **same** commit as the skill change.
 - **Critic gate (Invariant #10) — independent verification before each commit.** After conformity-close, run the Evolution Engine's VERIFY organ on the staged diff and **fail closed**: `git diff HEAD | python3 evolution/verdict.py --fail-closed`. Exit 0 (pass/concerns) → proceed to commit. Non-zero (BLOCK, or the critic is unreachable on this unattended run) → **DO NOT commit this finding**; write the critic's verdict to today's ledger and move to the next finding. This is the gate that stops `routine` from self-grading its mid-run commits — the implementer never grades its own work (HARNESS-BOOKS 9.9).
-  - **Emit a `verdict` ledger event for this critic result, always** (pass, concerns, or block — not just failures): `python3 evolution/verdict.py --fail-closed` already writes its own `kind=verdict` event internally (see the script header) — do not double-log it; just confirm the call ran. If for any reason you invoke the critic through a path that does NOT auto-log (a manual re-check), emit it yourself: `python3 evolution/ledger.py add verdict --author kimi-k2.7 --surface skills --verdict pass --detail "<finding> — critic pass/concerns/block"`.
+  - **Emit a `verdict` ledger event for this critic result, always** (pass, concerns, or block — not just failures): `python3 evolution/verdict.py --fail-closed` already writes its own `kind=verdict` event internally (see the script header) — do not double-log it; just confirm the call ran. If for any reason you invoke the critic through a path that does NOT auto-log (a manual re-check), emit it yourself: `python3 evolution/ledger.py add verdict --author reviewer-subagent --surface skills --verdict pass --detail "<finding> — critic pass/concerns/block"`.
 - **Emit a `change` event for this finding, once the critic has passed and immediately before the commit.** This is what makes the routine's autonomous work visible to the Evolution Engine's SENSE organ instead of only living in git history:
   `python3 evolution/ledger.py add change --author skillsmith-routine --surface skills --diff-hash "$(git diff --cached | shasum -a 256 | cut -d' ' -f1)" --tier A --detail "<verb> <skill> — <one-line> [conf N/10]"`
   **Dedup key = the diff-hash.** Before emitting, check `python3 evolution/ledger.py tail -n 50 --kind change` for an event with the same `diff_hash` — if one already exists (e.g. the Stop-time verify-gate already logged this exact diff), skip the emit; never double-count the same change against two logging paths.

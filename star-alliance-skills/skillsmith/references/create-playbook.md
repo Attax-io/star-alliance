@@ -100,7 +100,7 @@ the bare emoji — this is exactly the `storm-investigation` v1.0.0 miss), or no
    **`gen-skill-art.cjs`** using the shared `STYLE` prefix (dark parchment, gold runic border, fantasy
    RPG icon) + a subject that depicts the skill, ending with `no text, no watermarks`, and renders it.
    Running `create` outside the workflow? The Quartermaster does this step himself — it is never
-   optional, never deferred to "later". Then render — MiniMax's image API is the doer:
+   optional, never deferred to "later". Then render with whatever image-generation tool the session has:
 
    ```sh
    node "$SA/gen-skill-art.cjs"          # renders ONLY the missing PNG; existing art is skipped
@@ -135,8 +135,8 @@ git -C <repo> commit <scoped paths> && git -C <repo> push origin main
 ## Mode: create-from-source — distil a skill from a book / PDF / spec
 
 When the skill's body is a *source document* (a book, a PDF, a long spec) rather than authored-from-scratch
-craft, use this distillation loop. It is the doer/thinker shape: the doer (MiniMax) does ALL the reading and
-writing of content, the thinker only slices, reviews, and files. Proven on `japanese-candlesticks` (Nison,
+craft, use this distillation loop. It is a fan-out shape: a band of Claude subagents does the bulk reading and
+drafting of content, while the member only slices, reviews, and files. Proven on `japanese-candlesticks` (Nison,
 331pp → 11 reference files).
 
 1. **Extract the text first — don't trust the harness page hint.** There is no system `pdftotext` on this
@@ -154,24 +154,19 @@ writing of content, the thinker only slices, reviews, and files. Proven on `japa
 2. **Slice by chapter / section**, not by fixed page windows — one excerpt file per pattern-family / topic so
    each reference file has a coherent scope. Keep each excerpt under ~100k chars.
 
-3. **Doer-draft each chunk, ONE at a time.** Drive a loop that calls the doer per excerpt and writes the raw
-   Markdown to `references/<nn>-<slug>.md`, logging progress. Put the *instruction* in `-s` (system) and the
-   *excerpt* in `-f` (the file is the user prompt). Big chunks need a bigger budget than the default — size
-   them explicitly:
+3. **Draft each chunk with a subagent, ONE at a time.** Drive a loop that spawns a Claude subagent (via the
+   Task tool) per excerpt and writes the raw Markdown to `references/<nn>-<slug>.md`, logging progress. Pass
+   the *instruction* as the subagent's system framing and the *excerpt* as its prompt. Big chunks need a
+   focused subagent so the whole excerpt fits in its context — give it the excerpt whole and let it draft the
+   whole reference file in one turn. Give the subagent hard rules: start with an exact H1, one `##` per pattern
+   with fixed bold-labelled fields (Type / Structure / Recognition / Psychology / Signal & confirmation /
+   notes), use ONLY facts in the excerpt, invent no numbers, drop chart-image/exhibit references, Markdown
+   only.
 
-   ```sh
-   python3 "$STAR_ALLIANCE_ROOT/star-alliance-arsenal/summon.py" minimax-m3 -f "$SRC" -s "$SYS" --max-tokens 16000 --timeout 600 > "$DEST"
-   ```
-
-   (`summon.py` passes `--max-tokens`/`--timeout` through to the backend; drop to `minimax.py` direct only if
-   a backend chokes.) Give the doer hard rules: start with an exact H1, one `##` per pattern with fixed
-   bold-labelled fields (Type / Structure / Recognition / Psychology / Signal & confirmation / notes), use
-   ONLY facts in the excerpt, invent no numbers, drop chart-image/exhibit references, Markdown only.
-
-4. **Thinker reviews + files.** After each draft: check the H1 is right and the tail ends on a clean sentence
-   (a draft ending mid-word = it hit the token cap → re-run that chunk with a higher `--max-tokens` or split
-   it). Spot-check fidelity on 1–2 files. The references are the doer's; `SKILL.md` is the thinker's — a lean
-   body that frames the craft and indexes the `references/`.
+4. **The member reviews + files.** After each draft: check the H1 is right and the tail ends on a clean
+   sentence (a draft ending mid-word = the subagent ran long → re-run that chunk with a fresh subagent or split
+   it). Spot-check fidelity on 1–2 files. The references are the subagents' output; `SKILL.md` is the member's —
+   a lean body that frames the craft and indexes the `references/`.
 
 5. **Then the normal C2–C5 wiring** (version, registry, the four dashboard sources, art, build, conformity,
    sync). Write the **description LAST and keep it ≤ ~900 chars** — the 1024 hard cap bites on pattern-rich

@@ -41,7 +41,7 @@ know when to trust the dashboard and when to fall back to `market-recon`.
   data it needs, and the regime it fits.
 - A **data layer** that picks the best source per market (TickFlow, AkShare,
   Tushare, Pytdx, Baostock for CN; YFinance / Longbridge for global; Anspire,
-  SerpAPI, Tavily, Bocha, Brave, MiniMax, SearXNG for news) with a documented
+  SerpAPI, Tavily, Bocha, Brave, SearXNG for news) with a documented
   fallback chain and **degradation markers** for market-boundary gaps
   (JP/KR: `capital_flow`, `dragon_tiger`, `boards` degrade to
   `not_supported`).
@@ -225,7 +225,6 @@ Default chain per market:
 | **Tavily** | General news, English | global |
 | **Bocha** | CN search with AI summaries | CN |
 | **Brave** | Privacy-first, English | global |
-| **MiniMax** | Structured search results | mixed |
 | **SearXNG** | Self-hosted no-quota fallback | deployer-hosted |
 
 ### AI models

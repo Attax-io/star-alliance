@@ -188,36 +188,40 @@ break gate obedience in exactly the same shape.
 
 ### Recipes
 
-- **`dispatch-enforce` (BLOCK) → run the dispatcher literally.** When
-  the dispatch-enforce gate fires, the message is "you must call
-  `python3 tools/dispatch.py`." The action is to call exactly that:
-  `python3 tools/dispatch.py` from the repo root, with whatever args
-  the gate specified. Not a `delegate_task` to a doer. Not a
-  hand-written equivalent. Not a "I already dispatched via…". The
-  gate's name is the command. Run it.
-- **`verify` (BLOCK) → read the critic's findings, fix the root
-  cause, re-run.** The critic names the issue. Patch the issue
-  (not the symptom), re-run the gate, and only then report done.
-  A second BLOCK on the same diff means the fix was wrong, not that
-  the gate is wrong.
-- **`verify` (concerns / pass) → record the verdict and move on.**
-  The work is done from a verify standpoint. Do not chase a green
-  light the gate already gave you; do not re-run it for reassurance.
-- **`thinker-check` (BLOCK) → drop the override.** If you tried to
-  dispatch with an explicit `model:` that contradicts the profile's
-  declared thinker, the gate is correct. Remove the override, not
-  the gate.
-- **`executor` (BLOCK) on the Butler → route to the Developer.** The
-  Butler is forbidden from writing files. The redirect is
-  `delegate_task` to the Developer profile, not a bypass flag.
-- **Gate unavailability (infra error) → fail open, do not
-  fabricate.** When the MCP server is down, log the intent verbatim
-  and proceed without the gate — never invent a passing verdict you
+- **`destructive-gate` (BLOCK) → confirm, then re-run literally.** The
+  one hard wall that still blocks (`rm -rf`, force-push, `reset --hard`,
+  unscoped `DELETE`/`DROP`/`TRUNCATE`, etc.). When it fires, the message
+  is exact: after an explicit Guild-Master **proceed**, re-run the same
+  command with `# sa-confirm` appended (or `SA_CONFIRM=1`). Do not
+  paraphrase the block into "the command is unsafe," do not invent a
+  work-around, do not append `# sa-confirm` without the proceed. The gate
+  names the corrective action — take that action.
+- **Self-review before you report → fix the root cause, re-check.** When
+  your own verification finds an issue, patch the issue (not the symptom)
+  and re-check, then report done. A second failure on the same diff means
+  the fix was wrong, not that the check is wrong. Reporting "done" on
+  work you have not actually verified is a lie.
+- **Verification passes → record the verdict and move on.** The work is
+  done from a verify standpoint. Do not chase a green light you already
+  have; do not re-run for reassurance.
+- **Model discipline → keep each member on its declared Claude model.**
+  Every member's `model:` is one of the three Claude models
+  (`opus`/`sonnet`/`haiku`) in `models.json`. Do not override a member
+  onto a different model to force a shortcut; the declared model is the
+  spec.
+- **The Butler doesn't do file writes end-to-end.** The Butler is the
+  session's voice and swarm orchestrator; when bulk file work is needed
+  he spawns a Claude subagent (e.g. the Developer via the Task tool),
+  reviews the result, and integrates — he does not bypass into a
+  hand-written change he should have delegated.
+- **Gate/MCP unavailability (infra error) → fail open, do not
+  fabricate.** When a required MCP server is down, log the intent
+  verbatim and proceed without it — never invent a passing verdict you
   never received.
 
 ## Changelog
 
 | Version | Date | Summary |
 |---|---|---|
-| **1.0.0** | 2026-06-29 | Added Gate Obedience as the fourth check. Five rules (read errors literally · gates redirect not stop · verify block is real · follow what the gate says · never falsely claim blocked) plus a recipes subsection mapping common gate BLOCKs to the literal corrective action (e.g. dispatch-enforce → `python3 tools/dispatch.py`). Description expanded to advertise gate-obedience alongside scope discipline; new trigger phrases added. |
+| **1.0.0** | 2026-06-29 | Added Gate Obedience as the fourth check. Five rules (read errors literally · gates redirect not stop · verify block is real · follow what the gate says · never falsely claim blocked) plus a recipes subsection mapping common gate BLOCKs to the literal corrective action (e.g. destructive-gate → re-run with `# sa-confirm` after an explicit proceed). Description expanded to advertise gate-obedience alongside scope discipline; new trigger phrases added. |
 | **0.1.0** | 2026-06-29 | Initial draft. Three-check routine (literal request · doctrine as written · refuse-to-invent), anti-pattern table, composition notes with letting-go/guild-reflection/star-alliance-language/okf. |

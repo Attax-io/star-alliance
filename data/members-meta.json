@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "_weaponStatusNote": "LIVE doer = minimax-sub (~99% of all 549 ledger offload calls). The six bench weapons are RESERVE: pulled and reachable (verified ollama list 2026-06-27) but idle — kept in loadouts and drawable, just not advertised as the live doer. Reactivate a reserve weapon by drawing it; once it logs real ledger calls, promote it back. Statuses: live (default, omitted) · reserve.",
+  "_weaponStatusNote": "Claude-only harness (2026-07-03): every member runs as one Claude model (opus/sonnet/haiku) named in its frontmatter. No non-Claude doer/bench layer.",
   "members": {
     "the-butler": {
       "name": "The Butler",
@@ -86,7 +86,7 @@
         "Brand kit creation",
         "Design systems",
         "Redesigning existing projects",
-        "Generative assets — image, motion, and audio via the MiniMax doers"
+        "Parallel bulk work via spawned Claude subagents"
       ],
       "doesnt": [
         "Does not design database schemas",

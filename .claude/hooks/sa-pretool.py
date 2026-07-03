@@ -41,7 +41,7 @@ HOOKS_DIR = os.path.dirname(os.path.abspath(__file__))
 #   member-skill-lint-gate, stop-line-gate, weapon-gate, devserver-gate,
 #   dispatch-enforce.
 GATES = [
-    ("high-alert.py",       {"Skill", "Workflow", "Agent", "Task"}),
+    ("butler-boundary-gate.py", None),   # Butler routes, never investigates (blocks non-routing tools until the Strategist is dispatched)
     ("destructive-gate.py", {"Bash"}),
 ]
 

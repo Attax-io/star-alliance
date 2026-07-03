@@ -1,7 +1,7 @@
 ---
 type: Document
 title: Role Architecture
-description: The 11-role SAFe roster, the orchestrator-vs-manager-vs-doer split, the one-owner assignment matrix, and collapsible roles vs independence gates.
+description: The 11-role SAFe roster, the orchestrator-vs-manager-vs-executor split, the one-owner assignment matrix, and collapsible roles vs independence gates.
 timestamp: 2026-06-28T00:00:00Z
 ---
 
@@ -15,7 +15,7 @@ Before listing roles, separate three jobs that are easy to conflate and fatal to
 
 1. **Orchestrator** — one primary mind (the harness's *ARCHitect-in-CLI*) that owns routing, sequencing, and architectural judgment. It decides *what happens next and who does it*.
 2. **Delivery manager** — *reactive, not an orchestrator*. The TDM tracks delivery progress, updates the system of record, escalates blockers, attaches evidence. It does **not** assign features, run validation, or execute technical work. (The source flags this explicitly: "TDM is REACTIVE, not an orchestrator. ARCHitect-in-CLI is the primary orchestrator.")
-3. **Doers** — the specialists who execute exactly one kind of work.
+3. **Executors** — the specialists who execute exactly one kind of work.
 
 Keeping "decides the plan" / "tracks the plan" / "does the work" in different hands is the precondition for a steerable team.
 

@@ -8,8 +8,8 @@ description: >-
   'checkpoint this', 'resume where I left off' — saves/reads working context.
   Locates the three session stores (Claude Code project transcripts, Cowork wrappers, scheduled-task
   runs), extracts only signal-bearing turns (corrections + proposals, never tool noise) with
-  offset/limit discipline so a 68MB store never blind-reads, hands bulk summarizing to MiniMax doers,
-  synthesizes a deduped lesson register, then runs a VERIFY pass against the live repo that kills
+  offset/limit discipline so a 68MB store never blind-reads, hands bulk summarizing to parallel Claude
+  subagents, synthesizes a deduped lesson register, then runs a VERIFY pass against the live repo that kills
   every 'lesson' already shipped. Output is propose-only (apply-gate OFF). The on-demand companion to
   skillsmith's daily routine; uses storm-investigation to synthesize.
 metadata:
@@ -63,16 +63,17 @@ mostly-static window drop from seconds to ~tens of ms (measured 3.5s → 0.05s, 
 byte-identical). The cache is fingerprinted by `--user-kw`/`--asst-kw`/`--cap` — change any of them
 and it rebuilds itself, so a stale cache can never serve wrong-lens lines. Safe to delete anytime.
 
-### Phase 3 — Summarize (doer-grade → MiniMax)
-For a big window, shard the digest and fan **MiniMax M3** over the shards (per `weapon-utility` /
-CLAUDE.md) — each doer returns lesson candidates as JSON: `{lesson, evidence, target, confidence}`.
-For a small window (a handful of sessions) the thinker reads `digest.txt` directly and skips the
-fan-out. The proven funnel at scale: **8,695 windows → 1,806 raw lessons → 112 distinct.**
+### Phase 3 — Summarize (fan out Claude subagents)
+For a big window, shard the digest and fan **Claude subagents** (spawned via the Task tool, per
+`weapon-utility` / CLAUDE.md) over the shards — each subagent returns lesson candidates as JSON:
+`{lesson, evidence, target, confidence}`. For a small window (a handful of sessions) the member reads
+`digest.txt` directly and skips the fan-out. The proven funnel at scale: **8,695 windows → 1,806 raw
+lessons → 112 distinct.**
 
 ### Phase 4 — Synthesize (storm-investigation)
 Run `storm-investigation` over the candidates: dedup + cluster, build the **contradiction map**, and
-**normalize every free-text target against the real roster** (skills / workflows / members) — a doer
-guesses targets loosely; bind them to canonical ids or bucket as new-idea / cross-cutting.
+**normalize every free-text target against the real roster** (skills / workflows / members) — a summarizing
+subagent guesses targets loosely; bind them to canonical ids or bucket as new-idea / cross-cutting.
 
 ### Phase 5 — VERIFY against the live repo (the pass that earns its keep)
 For each surviving lesson, check the **current** repo: does the target file still exist? Is the rule
@@ -94,8 +95,8 @@ already built.
 ## Doctrine baked in (from the runs that forged this)
 - **Offset/limit on every big read; the harness page/size hint lies** — verify real length from the
   tool that reads the file.
-- **Doers read, thinker synthesizes** — MiniMax carries the bulk transcript summarizing; the thinker
-  owns Phases 4–6.
+- **Subagents read, the member synthesizes** — Claude subagents carry the bulk transcript summarizing;
+  the member owns Phases 4–6.
 - **Verify kills redundancy** — a lesson already in the repo is not a lesson.
 - **Propose-only** — this skill never auto-applies. That's `skillsmith routine`'s job, gated at 8/10.
 
@@ -152,7 +153,7 @@ mkdir -p .claude/state
   echo "- dirty (diff --stat):"; git diff --stat 2>/dev/null | sed 's/^/  /'
   echo "- staged:"; git diff --cached --stat 2>/dev/null | sed 's/^/  /'
 } > .claude/state/checkpoint.md
-# then APPEND the prose the git state can't carry — the thinker writes these by hand:
+# then APPEND the prose the git state can't carry — the member writes these by hand:
 #   ## Decisions made   (what was chosen and why)
 #   ## Remaining work    (the next concrete steps, in order)
 #   ## Gotchas / open    (anything that will bite the next session)
@@ -181,6 +182,6 @@ the commit history and re-checkpoint. Keep it one file, overwritten per save —
   context-save / context-restore pattern. Complements mining (past→lessons) with continuity
   (now→next-session). New section → MINOR.
 - **1.1.0** — New §Incremental mining: documents the `data/last-mine-ts.json` watermark pattern, add watermark-write command after a successful run, and filter command at run start. Prevents full-history rescan on every invocation. New section → MINOR.
-- **1.0.0** — Initial release. Six-phase pipeline (locate → map → signal-extract → doer-summarize →
+- **1.0.0** — Initial release. Six-phase pipeline (locate → map → signal-extract → subagent-summarize →
   STORM synthesize → verify → propose-only register). `session_map.py` (store join) + `mine_sessions.py`
   (signal-window extractor). Crystallized from the repeated by-hand session-mining retrospectives.

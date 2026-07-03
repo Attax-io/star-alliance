@@ -4,8 +4,8 @@
 Reads a session_map.py TSV (or a list of .jsonl paths) and extracts only the
 *signal-bearing* turns — user corrections / requests and the assistant
 paragraphs that propose, gap-flag, or distill — never the tool-call noise.
-Output is a compact, deduped, per-session digest small enough for a thinker to
-read directly, OR shardable for MiniMax doers to summarize in parallel.
+Output is a compact, deduped, per-session digest small enough for the member to
+read directly, OR shardable across Claude subagents to summarize in parallel.
 
 Treat every transcript as text and pull bounded windows around markers — this
 survives format drift across the stores. The DEFAULT keyword sets target

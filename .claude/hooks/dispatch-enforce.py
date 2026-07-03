@@ -481,6 +481,88 @@ def _check_migration_exception(query):
     return True
 
 
+# ── Python one-liner write detection ────────────────────────────────────────
+# `python3 -c "CODE"` is blocked only if CODE actually writes files or mutates
+# state. Read-only one-liners (json.load(open(...)), print(...), etc.) are
+# allowed through. This replaces the old blanket `python3 -c` pattern.
+
+_PY_INTERP_RE = re.compile(r'\bpython3?\s+-c\b')
+
+# Write-indicator patterns inside Python code passed to -c.
+# These are the actual file-mutation / system-mutation operations.
+_PY_WRITE_PATTERNS = (
+    # open() in write/append modes
+    re.compile(r'\bopen\s*\([^)]*[,\'"]\s*[wax][,+\s]', re.IGNORECASE),
+    re.compile(r'\bopen\s*\([^)]*[,\'"]\s*w[\+b]*', re.IGNORECASE),
+    re.compile(r'\bopen\s*\([^)]*[,\'"]\s*a[\+b]*', re.IGNORECASE),
+    re.compile(r'\bopen\s*\([^)]*[,\'"]\s*x[\+b]*', re.IGNORECASE),
+    # pathlib write methods
+    re.compile(r'\.(write_text|write_bytes|touch|unlink|mkdir|rmdir|rename|replace)\s*\(', re.IGNORECASE),
+    # shutil file mutations
+    re.compile(r'\bshutil\.(copy|copy2|copyfile|move|rmtree|rmdir|make_archive|unpack_archive)\s*\(', re.IGNORECASE),
+    # os file mutations
+    re.compile(r'\bos\.(remove|unlink|rename|removes|mkdir|makedirs|rmdir|chmod|chown|symlink|link)\s*\(', re.IGNORECASE),
+    # subprocess / os.system (can run arbitrary shell writes)
+    re.compile(r'\bos\.system\s*\(', re.IGNORECASE),
+    re.compile(r'\bsubprocess\.(run|call|Popen|check_call|check_output)\s*\(', re.IGNORECASE),
+    re.compile(r'\bos\.popen\s*\(', re.IGNORECASE),
+    # exec / eval of dynamic code
+    re.compile(r'\bexec\s*\(', re.IGNORECASE),
+    re.compile(r'\beval\s*\(', re.IGNORECASE),
+    # __import__ for subprocess/os (circumvention attempt)
+    re.compile(r'__import__\s*\(\s*[\'"](subprocess|os|shutil)', re.IGNORECASE),
+    # pickle dump to file
+    re.compile(r'\bpickle\.dump\s*\(', re.IGNORECASE),
+    # json.dump with file handle (write)
+    re.compile(r'\bjson\.dump\s*\([^)]*,\s*\w+\s*\)', re.IGNORECASE),
+    # csv.writer with file handle (write)
+    re.compile(r'\bcsv\.writer\s*\(', re.IGNORECASE),
+    # tempfile manipulation that writes
+    re.compile(r'\btempfile\.NamedTemporaryFile\s*\(', re.IGNORECASE),
+)
+
+# Extract the code passed to `python3 -c "..."` or `python3 -c '...'` or
+# `python3 -c CODE` (bare word). Returns the code string or None if no
+# python -c invocation is found.
+_PY_C_QUOTE_RE = re.compile(
+    r'\bpython3?\s+-c\s+'   # python3 -c
+    r'(?:"((?:[^"\\]|\\.)*)"|\'((?:[^\'\\]|\\.)*)\'|(\S+))',  # "..." | '...' | bare
+    re.IGNORECASE,
+)
+
+
+def _extract_python_c_code(command):
+    """Extract the code string from a `python3 -c "CODE"` invocation.
+
+    Returns the code string, or None if no `python3 -c` is present.
+    Works on the raw (unstripped) command so the code is intact.
+    """
+    m = _PY_C_QUOTE_RE.search(command)
+    if not m:
+        return None
+    # Group 1 = double-quoted, 2 = single-quoted, 3 = bare word
+    return next((g for g in m.groups() if g is not None), None)
+
+
+def _python_one_liner_is_write(command):
+    """True if a `python3 -c` invocation in `command` contains write operations.
+
+    If no `python3 -c` is present, returns False (not our problem).
+    If `python3 -c` is present but the code can't be extracted (unusual quoting),
+    returns True (fail safe — block it).
+    """
+    if not _PY_INTERP_RE.search(command):
+        return False
+    code = _extract_python_c_code(command)
+    if code is None:
+        # python3 -c is present but we can't extract the code → fail safe
+        return True
+    for pat in _PY_WRITE_PATTERNS:
+        if pat.search(code):
+            return True
+    return False
+
+
 def _check_mcp(tool, data):
     """Check if an MCP tool call is a write operation. Returns block dict or None."""
     # Extract the tool part of `mcp__<server>__<tool>`.

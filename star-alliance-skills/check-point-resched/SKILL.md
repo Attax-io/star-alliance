@@ -39,7 +39,7 @@ The four gates, each with the sentinel/condition they honor:
 
 1. **verify-gate** — independent-critic verification (armed by default). `turn-finalize.sh` mirrors `verify-gate.py`'s allow condition using `verify_hash.py` plus the markers `.claude/state/verify-baseline` and `.claude/state/verify-pass`. If source changed this turn and is unverified, the commit is skipped. *(Note: an empty base fails OPEN — the commit proceeds, because there is nothing to verify against.)*
 
-2. **delegation-gate** — drops `.claude/state/delegation-block` when a turn authored doer-grade inline bulk work with no doer call logged. If that sentinel exists, the commit is skipped.
+2. **delegation-gate** — drops `.claude/state/delegation-block` when a turn authored heavy inline bulk work with no Claude subagent spawned to carry it. If that sentinel exists, the commit is skipped.
 
 3. **conformance-gate** — drops `.claude/state/conformance-block` when a high-stakes source-changing turn has no Quartermaster conformance pass logged. If present, the commit is skipped.
 

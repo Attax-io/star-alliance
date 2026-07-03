@@ -24,10 +24,10 @@ Console output per step: `[i/total] <title>  ->  (<resolution>)`.
 For each step, exactly one of three resolutions, in this priority:
 
 1. **human** — if `kind == "gate"` or a `gate` field is present; OR `actor` is `user`/`you`; OR the lowercased `title` is in `HUMAN_TITLES`.
-2. **`script:<path>`** — the step carries a non-empty `script` field. Highest-priority *executing* resolver: a script step always runs the script, never a weapon.
-3. **`prose:<actor>/<weapon>`** — the fallback. The runner sends the prompt to a weapon via `delegate()`.
+2. **`script:<path>`** — the step carries a non-empty `script` field. Highest-priority *executing* resolver: a script step always runs the script, never spawns a subagent.
+3. **`prose:<actor>/<model>`** — the fallback. The runner routes the prompt to the member's Claude model — spawn a Claude subagent via the Task tool (`subagent_type` = the step's `actor`).
 
-`HUMAN_TITLES` (exact, lowercased): `place the order`, `report the bug`, `request the build`, `ask the question`. `DEFAULT_WEAPON` is `minimax-m3`.
+`HUMAN_TITLES` (exact, lowercased): `place the order`, `report the bug`, `request the build`, `ask the question`. `DEFAULT_MODEL` is `sonnet`.
 
 ## Step fields the runner honors (`guild/STEP-SCHEMA.md`)
 
@@ -36,7 +36,7 @@ For each step, exactly one of three resolutions, in this priority:
 | `title` | display name; also a `HUMAN_TITLES` routing key |
 | `act` | prose instruction → becomes the prompt for a prose step |
 | `actor` | member id, or `user`/`you` (⇒ human handoff) |
-| `weapon` | arsenal model id; defaults to `minimax-m3` |
+| `model` | the member's Claude model (`opus`/`sonnet`/`haiku`); defaults to `sonnet` |
 | `script` | repo-relative script path; **highest-priority resolver** |
 | `args` | `{key: value}` → `--key value` CLI flags for a script step |
 | `inputs` | earlier `produces` keys/paths; appended to a prose prompt, or resolved to `--in` for a script step that carries `args` |

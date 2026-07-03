@@ -16,7 +16,7 @@ What it touches (in order)
 1. Registry: star-alliance-arsenal/models.json
        - Re-key the entry in `models` from OLD_ID -> NEW_ID (preserves position).
        - Replace OLD_ID in seats.brain/default + fallback[].
-       - Replace OLD_ID in seats.doer/default + fallback[].
+       - Replace OLD_ID in seats.brain/default + fallback[].
        - Replace OLD_ID in seats.critic/default + fallback[] (if present).
        - Replace OLD_ID in seats.bench/default + fallback[] (if present).
        - Replace OLD_ID in swarm.* (if present).
@@ -195,7 +195,7 @@ def validate_json(path: Path, new_content: str) -> str | None:
 def count_occurrences(text: str, token: str) -> int:
     """Case-sensitive, exact-token count. Whole-token only via str.replace
     counting, which is safe here because we're matching the bare id string —
-    e.g. 'minimax-sub' would never appear as a substring of a different id
+    e.g. 'sonnet' would never appear as a substring of a different id
     in this registry."""
     return text.count(token)
 

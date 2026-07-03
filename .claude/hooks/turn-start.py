@@ -22,7 +22,7 @@ import sys, os, time, pathlib, subprocess
 RESET_SENTINELS = ("weapon-reminded", "wf-ledgered", "pe-nudged",
                    "delegation-block", "delegation-ledgered", "thinker-attested",
                    "solo-once", "version-bumped", "conformance-block",
-                   "conformance-passed")
+                   "conformance-passed", "strategist-dispatched")
 
 
 def main():

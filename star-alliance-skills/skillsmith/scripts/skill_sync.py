@@ -19,6 +19,11 @@ Subcommands:
 
 Direction is inferred from the versions unless --direction is given. Forks and externals
 (see EXCEPTIONS) are never auto-applied — they print a manual note instead.
+
+Note: the guild is Claude-only. Skills are served to other projects straight from the repo
+via the MCP server, and every member is a Claude subagent — there is no separate per-member
+on-disk arsenal to mirror. The `--profile-content` mode below is a legacy per-member skill
+mirror kept for backward compatibility; the live path is the repo → Claude-store sync above.
 """
 from __future__ import annotations
 
@@ -40,8 +45,9 @@ EXCEPTIONS = {
 
 RSYNC_EXCLUDES = ["--exclude", ".git", "--exclude", "__pycache__", "--exclude", "*.pyc"]
 
-# member_slug → installed profile folder name. Mirrors tools/publish_profiles.py so the
-# profile name on disk matches the profile the member runs under. Keep in sync if slugs change.
+# member_id → per-member skill-mirror folder name (legacy). The guild is Claude-only, so a
+# member is a Claude subagent, not a separate on-disk profile — this map only survives to drive
+# the backward-compatible `--profile-content` mirror. Keep in sync if member slugs change.
 PROFILE_MAP = {
     "the-architect":     "architect",
     "the-developer":     "developer",
@@ -298,9 +304,11 @@ def _member_skills_from_md(md_path: Path) -> list[str]:
 
 
 def cmd_profile_content(repo: Path, members_dir: Path | None, dry: bool) -> int:
-    """For each member in PROFILE_MAP, mirror that member's skills from
-    <repo>/star-alliance-skills/<id>/ into ~/.hermes/profiles/<slug>/skills/<id>/ using
+    """Legacy per-member skill mirror (Claude-only guild — kept for backward compatibility).
+    For each member in PROFILE_MAP, mirror that member's skills from
+    <repo>/star-alliance-skills/<id>/ into ~/.claude/member-skills/<id>/skills/<id>/ using
     rsync -a --delete (byte-faithful — never re-encodes; PNGs containing JPEG bytes survive).
+    The live sync path is repo → Claude store (see cmd_apply); this per-member copy is optional.
 
     Skill roster is read from guild-data.json:members[].skills; if that's missing or the
     member isn't there, falls back to star-alliance-members/<id>.md YAML frontmatter.
@@ -335,7 +343,7 @@ def cmd_profile_content(repo: Path, members_dir: Path | None, dry: bool) -> int:
             print(f"  - {member_id:20s} no skills found (json+md both empty) — skipped")
             total_skipped += 1
             continue
-        dest_root = Path.home() / ".hermes" / "profiles" / member_id / "skills"
+        dest_root = Path.home() / ".claude" / "member-skills" / member_id / "skills"
         for sid in skills:
             src = skills_base / sid
             dst = dest_root / sid
@@ -393,8 +401,9 @@ def main():
     ap.add_argument("--direction", choices=["install", "push"])
     ap.add_argument("--dry", action="store_true")
     ap.add_argument("--profile-content", action="store_true",
-                    help="mirror each member's skills from star-alliance-skills/ into the "
-                         "matching ~/.hermes/profiles/<slug>/skills/. Pairs with apply.")
+                    help="legacy per-member skill mirror: copy each member's skills from "
+                         "star-alliance-skills/ into ~/.claude/member-skills/<id>/skills/. Pairs "
+                         "with apply. Optional — the live sync is repo → Claude store.")
     ap.add_argument("--members-dir", type=Path,
                     help="override location of star-alliance-members/*.md "
                          "(fallback roster when guild-data.json is unavailable)")

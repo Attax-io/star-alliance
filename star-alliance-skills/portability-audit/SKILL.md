@@ -22,7 +22,7 @@ Audit each layer in order. Each one can independently block a deployment.
 | 1 | **Skills** | Are skills in `~/.claude/skills` (global) or `.claude/skills` (project)? Are versions current vs source repo? | Stale version silently runs old code |
 | 2 | **Members** | Are `.md` files in `.claude/agents/`? Do they reference any path that only exists here? | Member present but arsenal calls fail |
 | 3 | **Arsenal tools** | Does any script reference a relative path that only resolves from one directory? | Silent path failure in target project |
-| 4 | **Env vars** | Is `STAR_ALLIANCE_ROOT` (or equivalent) set in `.claude/settings.json`? | Arsenal calls resolve to nothing |
+| 4 | **Env vars** | Is `STAR_ALLIANCE_ROOT` (or equivalent) set in `.claude/settings.json`? | Repo-relative tool calls resolve to nothing |
 | 5 | **Hooks** | Are `.claude/hooks/*.py` present? Are they wired in `settings.json`? | Gate hooks silently absent; no routing enforcement |
 | 6 | **Workflows** | Is `workflows.json` present? Does it have the workflows the members reference? | Workflow-gate blocks every turn |
 
@@ -45,7 +45,7 @@ ls workflows.json 2>/dev/null && echo "present" || echo "MISSING"
 grep -n "python3\|STAR_ALLIANCE_ROOT\|arsenal" .claude/agents/*.md
 ```
 
-Fails = any bare `python3 minimax.py` or `python3 star-alliance-arsenal/` without `$STAR_ALLIANCE_ROOT`.
+Fails = any bare `python3 star-alliance-arsenal/…` or repo-relative tool path without `$STAR_ALLIANCE_ROOT`.
 
 ### Step 3 — Check skill versions
 

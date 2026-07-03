@@ -17,13 +17,13 @@ review (delete? merge? retrain?). Levels are never conferred by hand, never upwe
 
 Know what this skill is *not*:
 
-- Not **weapon selection** — that contract has moved out of this skill. The arsenal (Brain /
-  Doer / Critic / Bench) is defined once in `star-alliance-arsenal/models.json` → `seats`; which
-  weapon a member draws for a given job lives in the cross-system dispatch layer and the
-  `dual-model-review` skill, not here. v4.0.0 retires the old "which weapon do I draw" content;
-  the universal-seat doctrine is documented in `models.json` + `dispatch.py` + the agent SOULs.
+- Not **model selection** — that contract has moved out of this skill. The three Claude models
+  (`opus`, `sonnet`, `haiku`) are defined once in `star-alliance-arsenal/models.json`, and each
+  member's `model:` frontmatter names the one it runs as; when to fan a job out to parallel Claude
+  subagents lives in `decompose-and-swarm`, not here. v4.0.0 retires the old "which model do I run
+  as" content; the model doctrine is documented in `models.json` + the member cards.
 - Not **routing** — *which member* works a request is the Butler's `members-formation`. This
-  skill is one layer below that, measuring usage once a member (and its weapons) is already chosen.
+  skill is one layer below that, measuring usage once a member (and its Claude model) is already chosen.
 - Not **fitness for retirement** — the ledger records usage; deciding whether a level-1 item is
   *worth keeping* is a human judgement the Quartermaster owns.
 
@@ -89,22 +89,22 @@ This skill is the right answer when the user asks:
 - "usage meter" / "invocation log" / "how many times has X fired"
 - "should we retire X" / "is X still earning its keep" / "what's dead weight"
 
-Universal skill — every member reads it. It does **not** answer weapon-selection questions; if
-the user wants to know "which model should I draw for this job", route to the arsenal registry
-(`models.json` → `seats`) and the dispatch layer, not here.
+Universal skill — every member reads it. It does **not** answer model-selection questions; if
+the user wants to know "which Claude model runs this job", read the member's `model:` frontmatter
+and the registry (`models.json`), not here.
 
 ## Where it sits
 
 ```
 members-formation   →  which MEMBER works (the Butler)
    weapon-utility    →  how RELIED-ON each member / skill / workflow is  ← here
-   dual-model-review →  which WEAPON to draw + the critic loop
-   ultra-brainstorming →  fan every thinker at once
+   decompose-and-swarm →  when to fan a job out to parallel Claude subagents
 ```
 
-`weapon-utility` (usage), `dual-model-review` (selection), and `ultra-brainstorming` (fan-out)
-are three orthogonal axes of the arsenal contract. v4.0.0 collapses the old "which weapon do I
-draw" content out of this skill; selection doctrine lives where the seats are defined.
+`weapon-utility` (usage) and `decompose-and-swarm` (fan-out) are two orthogonal axes: one measures
+reliance, the other decides when one member's Claude model should split its work across several
+Claude subagents. v4.0.0 collapses the old "which model do I run as" content out of this skill;
+each member's model is named in its own frontmatter.
 
 ## Versioning
 
@@ -114,43 +114,34 @@ or new namespace · MAJOR: a change to the level contract or the seam model). Th
 must bump MAJOR here.
 
 ## Changelog
-- **4.0.0** — **Purpose split: usage-level meter (this skill) vs. weapon selection (elsewhere).** The skill is no longer about *which weapon a member draws*; that contract has moved to the arsenal registry (`models.json` → `seats`) and the cross-system dispatch layer. This skill is now the **usage-level doctrine**: every member, skill, and workflow carries a numeric LEVEL derived solely from append-only invocation logs (`tools/xp.py`); the level curve (cost(1→2)=10, cost(n→n+1)=floor(1.1×prev+1) → L2=10, L3=22, L4=36, L5=52, …) is the canonical truth; the seams are members per-dispatch (`dispatch-log`), skills per-fire (skill-seam PostToolUse), workflows once-per-turn (`workflow-gate`); build.py stamps level onto guild-data; the dashboard surfaces both load-bearing (high level) and unused (level-1 / 0 XP) craft. Universal skill — every member reads it. Trigger phrases: "what's the level", "how much is this used", "usage meter", "invocation log", "should we retire this". Retires the entire v3.x weapon-selection body (Brain/Doer/ doctrine, thinker↔doer loop, SWARM dispatch, per-seat backend rule, cost-per-tier baseline) — that content lives in `models.json` + `dispatch.py` + the agent SOULs + the `dual-model-review` skill going forward. Selection-contract change → MAJOR.
-- **3.2.0** — **Per-seat Hermes backend rule (HARD RULE).** New §Each seat loads through its own backend: when a member's doer-grade work runs inside its Hermes profile (`tools/dispatch.py`), the three seats do NOT share one provider — each loads through its own backend as named in `models.json`. **minimax-m3** (Doer) → `backend: "minimax-direct"`, direct API (NOT the cloud-pull route). **glm-5.2** (Brain / escalation, also Critic fallback) → `backend: "ollama-cloud"`, `cloud_tag: "glm-5.2:cloud"`. **kimi-k2.7** (Critic) → `backend: "ollama-cloud"`, `cloud_tag: "kimi-k2.7-code:cloud"`. Cross-routing a seat onto another seat's provider was the recurring Hermes dispatch stall; the rule names the canonical `models.json` backends so an unavailable seat falls through to the loop's next-of-kind instead of silently retrying on the wrong provider. New availability/selection rule → MINOR.
-- **3.1.1** — **Critic-seat re-sync.** The 3.0.0 universalization moved the arsenal into `models.json` seats but the prose still named the OLD critic (`glm-5.2`) and the OLD example (Opus-brain + GLM-critic). Registry truth is now Critic default `kimi-k2.7` (glm-5.2 → deepseek-v4-pro fallback) over GLM-5.2 brains — a GLM critic would now share the brain's family and violate the ST rule, which is precisely why the seat moved. Updated the Critic bullet, the Critic-seat default, and the family example to match. Refs/wording → PATCH.
-- **3.1.0** — **Member-instance swarm clause (second exception).** Adds the Butler's
-  [[decompose-and-swarm]] path as a second exception to the one-thinker-per-member rule. Each
-  instance runs as the member's Brain (tool-capable Claude model, e.g. Sonnet) — NEVER a
-  doer-tier model (minimax-m3 / Ollama weapons cannot hold Edit/Write/Bash tools). Doer seat
-  still works inside each instance; Butler (Opus) coordinates + integrates; Critic (glm-5.2)
-  reviews the aggregate diff. Instances never commit independently, cross-edit, or spawn
-  sub-instances. New selection rule (second thinker exception) → MINOR.
-- **3.0.0** — **Universal arsenal (4 seats).** The arsenal is no longer nine hand-kept per-member loadouts — it is ONE universal set of seats (Brain/Doer/Bench) defined in `models.json` → `seats`. New §The arsenal is universal. Only the **Brain/Doer/Bench_pull.py`. build.py now DERIVES each member's arsenal from the seats; per-member `weapons:`/`weaponsDesc` deleted (drift class killed); conformity retired A/PD/W/S/WT, added ST. Selection-contract change (source of the arsenal) → MAJOR. Phase 2–4 of the 4-seat Architecture Build.
-- **2.2.0** — ** (third seat).** New §The : Brain/Doer/Bench), emitted to guild-data. Phase 1 of the 4-seat Architecture Build (additive; the full per-member→universal arsenal rewrite is Phase 2). New seat doctrine → MINOR.
-- **2.1.1** — Removed the dead `gpt-5.5` reference from the escalation-thinker list and the availability example (model retired from the arsenal — Strategic Audit 2026-06-28). Refs → PATCH.
-- **2.1.0** — **Swarm dispatch (mined from SWARM Parallelism, `yandex-research/swarm`).** New §Swarm dispatch maps three ideas from training over unreliable/heterogeneous/preemptible nodes onto the doer fan-out: **(1) throughput-weighted fan-out** — split a mixed doer pool ∝ each doer's measured speed/reliability (give `minimax-m3` the bulk), not round-robin; heterogeneity self-balances. **(2) mid-flight slice reroute** — a `None` in the `delegate_many` result is a *preempted peer, not a dead job*: re-dispatch that one slice to the next doer right (same plan/prompt), the left→right doer-fallback applied at SLICE granularity mid-flight instead of whole-job; only an exhausted pool for that slice fails up to the thinker. Closes the prior gap where the skill cited `delegate_many`'s `None` contract (1.5.0) but gave no doctrine for handling it. **(3) stable-coordinator / swappable-workers** — names the *why* behind reroute: the thinker (Claude brain) is SWARM's stable cheap monitor (always reachable, holds plan + tool buttons); doers are the preemptible GPU peers — never put the plan or tool calls on a weapon that can vanish. New dispatch doctrine → MINOR.
-- **2.0.0** — **Brain = personality (the model the member runs as).** Redefines the member's mind: the **brain is its session model** (`model:`) — the live model that actually thinks and orchestrates in a session — NOT "whichever thinker leads the arsenal." `opus` and the other thinkers are reframed as **escalation weapons** the brain delegates to, not the member's identity. The dashboard now flags the **BRAIN** (session-model weapon) and the **DOER** (prime doer, `minimax-m3`) on each member's cards; `conformity_check.py` replaces the `PT` (prime-thinker==opus) check with **`BR`** (the session model is a carried, thinking weapon) + **`PD`** (prime doer leads). Supersedes the §5 "prime thinker = first thinker weapon = opus" decision. Selection-contract change → MAJOR.
-- **1.8.0** — **Draw no weapon — script it.** New lead rule in §Drawing the right weapon: before picking a thinker or doer, ask whether the job needs a *model* at all. An exact, mechanical transform (field-preserving JSON merge, literal extraction, deterministic rename) is a **script**, not a summon — an LLM doer *or* thinker silently drops a field or rewords a value on a precision-critical merge, where a `node -e` eval + Python merge will not. Draw a model only for generative/judgemental work. Mined from the model-armory consolidation, where the 15×16-field registry merge was done by script (not minimax) precisely to avoid transcription loss. New selection rule → MINOR.
-- **1.7.0** — **`gemma4` reclassed doer → thinker.** It now joins the thinker bench (light, fast
-  second mind, esp. content/marketing) — the guild leans on `minimax-m3` (direct API) as the prime
-  doer, so the Ollama bench is read as thinkers. `conformity_check.ROLE` updated to match. Also
-  enforced **≤ 3 Ollama thinkers per member** (best-3-by-craft): trimmed `nemotron-3-ultra` from
-  butler/architect/strategist/merchant and `qwen3.5` from butler; added `gemma4` to the-herald.
-  `nemotron-3-ultra`/`qwen3.5` stay valid reserve weapons, just not in any loadout. Also
-  **consolidated all model facts into one registry** `star-alliance-arsenal/models.json` (role ·
-  backend · cloud_tag · status · pull · weight); `summon.py`, `conformity_check.py`, the
-  weapon-gate hook, `serve.cjs`, `build.py`, and the model docs now all DERIVE from it instead of
-  hand-copying. New role classification → MINOR.
-- **1.6.0** — New §Cost-per-tier baseline: documents how to read the now-reliable tier split in `efficiency_report.py`, defines decision rules for tier calibration (when to loosen small-signals vs leave it), and restates the safety-first order (stakes check before any model-mix change). Depends on B1 sidecar fix (turn-cost.jsonl `tier` field now reliable). New doctrine → MINOR.
-- **1.5.0** — **Batched doer fan-out.** Named the concrete mechanism behind the always-available doer fan-out: `minimax.py --batch <file.jsonl>` (one process, one keep-alive HTTPS connection, ordered JSONL results) and its wrapper `guild/delegate.py:delegate_many(prompts)` (ordered list, failed slice → `None`). Prior to this the skill preached "fan doers in parallel" (1.2.0) but never pointed at the cheap path, so N-way doer splits kept paying N subprocess spawns + N TLS handshakes. The thinker↔doer review loop is unchanged — batch only removes the per-call tax; minimax-only today, other backends degrade to a sequential loop with the same ordered contract. Mined from the harness-efficiency build (Phase 2). New mechanism doctrine → MINOR.
-- **1.4.0** — **The tool boundary (hard rule).** Added an explicit section stating a doer **returns content as text** and **never invokes tools** — Edit/Write/Bash/git/MCP/computer-use are wielded **only by the thinker** (a Claude model). Splits "write" into *author content* (doer) vs *invoke the write tool* (thinker): doer authors the bytes, thinker reviews then runs `Write`/`Edit` itself to commit — no re-authoring. Forbids the category error of summoning a non-Claude doer to "use" a Claude Code tool; if a slice needs a tool inside the doer's own run, that is the Claude-only-tool case → draw `sonnet`. Closes the-developer's mistake of handing a tool call to a non-Claude model.
-- **1.3.0** — Named `opus` the **prime thinker** (best mind, first thinker in every arsenal) alongside `minimax-m3` the prime doer, and added the **Sonnet Claude-only-tool fallback**: when a doer needs a tool only Claude models can run, draw `sonnet` (the dual at the tail) directly — an expected fall-through, not a failure — so the run never stalls. `conformity_check` now enforces minimax-m3-first, opus-first-thinker, sonnet-last.
-- **1.2.0** — **Parallel doers.** A member's thinker may now dispatch several doer agents at once — many of one doer model or a mix of different doer models — each on an independent slice, with the thinker reviewing every return against the plan. Previously the doer side was strictly one-at-a-time (next doer only on failure); that is now the **floor, not the ceiling**. Thinker stays one-per-member except under [[ultra-brainstorming]], which now layers thinker fan-out on top of the always-available doer fan-out.
-- **1.1.1** — Added **"Sizing a big doer job"** to the thinker↔doer loop: for large reads/generations the backend default output cap (16k) and timeout (180s) silently truncate, so pass `--max-tokens`/`--timeout` through `summon.py` (now translated per backend — `--max-tokens` for minimax, `--num-predict` for cloud), loop chunks one at a time, and treat a mid-sentence draft as truncation → re-run larger. Mined from the `japanese-candlesticks` source-distillation run.
-- **1.1.0** — Thinker-bench reclass. `glm-5.2`, `kimi-k2.7`, `nemotron-3-ultra`, `qwen3.5` moved
-  from doer/dual → **thinker** (join `opus`, `gpt-5.5`, `deepseek-v4-pro`). `minimax-m3` named the
-  **prime doer** — every member's first-drawn hand. Doer pool now `minimax-m3`, `haiku`, `gemma4` +
-  forge doers; `sonnet` the sole remaining dual. All 9 member arsenals reordered minimax-first.
-- **1.0.0** — Initial release. Defines thinker vs doer weapons, the plan → do → review loop,
-  left-to-right priority selection with doer-fallback and availability rules, one-weapon-at-a-time
-  default, and the ultra-brainstorming exception (all thinkers fan out, top thinker consolidates
-  before the doer). Positioned as the atomic layer beneath members-formation and ultra-brainstorming.
+- **4.0.0** — **Purpose split: usage-level meter (this skill) vs. model selection (elsewhere).** The skill is no longer about *which model a member runs as*; that contract now lives in the model registry (`models.json`) and each member's `model:` frontmatter. This skill is now the **usage-level doctrine**: every member, skill, and workflow carries a numeric LEVEL derived solely from append-only invocation logs (`tools/xp.py`); the level curve (cost(1→2)=10, cost(n→n+1)=floor(1.1×prev+1) → L2=10, L3=22, L4=36, L5=52, …) is the canonical truth; the seams are members per-dispatch (`dispatch-log`), skills per-fire (skill-seam PostToolUse), workflows once-per-turn (`workflow-gate`); build.py stamps level onto guild-data; the dashboard surfaces both load-bearing (high level) and unused (level-1 / 0 XP) craft. Universal skill — every member reads it. Trigger phrases: "what's the level", "how much is this used", "usage meter", "invocation log", "should we retire this". Retires the entire v3.x model-selection body — that content now lives in `models.json` + the member cards + the `decompose-and-swarm` skill. Selection-contract change → MAJOR.
+- **3.2.0** — **Each member runs as its own Claude model (HARD RULE).** New §Each member's model: when a member does work it runs as the single Claude model named in its `model:` frontmatter — `opus` (the Architect), `haiku` (the Quartermaster), `sonnet` (everyone else), with the Butler being the live session. There is no separate provider or backend to route through; the member IS the Claude model. Bulk or parallel work is done by that model fanning out to Claude subagents (Task tool), never by handing off to an external engine. New model rule → MINOR.
+- **3.1.1** — **Model roster re-sync.** The 3.0.0 universalization moved the model list into `models.json` but the prose still named retired non-Claude models. Registry truth is now the three Claude models only (`opus`/`sonnet`/`haiku`); updated the model bullets and the example to match. Refs/wording → PATCH.
+- **3.1.0** — **Member-instance swarm clause.** Adds the Butler's
+  [[decompose-and-swarm]] path: a member may fan its work out to N parallel Claude subagents. Each
+  instance runs as the member's Claude model (Sonnet, tool-capable) — the same model the member
+  runs as, since every member IS a Claude model. The Butler (the live session, Opus) coordinates +
+  integrates and reviews the aggregate diff. Instances never commit independently, cross-edit, or
+  spawn sub-instances. New fan-out rule → MINOR.
+- **3.0.0** — **Universal roster (three Claude models).** The roster is no longer nine hand-kept per-member loadouts — it is ONE set of three Claude models (`opus`/`sonnet`/`haiku`) defined in `models.json`, with each member's `model:` frontmatter naming one. New §The roster is universal. build.py now DERIVES each member's model from the registry; per-member `weapons:` deleted (drift class killed); conformity retired the old loadout checks. Selection-contract change → MAJOR. Phase 2–4 of the Architecture Build.
+- **2.2.0** — New §The three Claude models, emitted to guild-data. Phase 1 of the Architecture Build (additive; the full per-member→universal rewrite is Phase 2). New model doctrine → MINOR.
+- **2.1.1** — Removed a retired non-Claude model reference from the escalation list and the availability example (model dropped from the roster — Strategic Audit 2026-06-28). Refs → PATCH.
+- **2.1.0** — **Swarm fan-out.** New §Swarm fan-out maps three ideas onto the Claude-subagent fan-out: **(1)** split a wave into disjoint slices and spawn one Claude subagent per slice, in parallel. **(2) mid-flight slice re-spawn** — a failed/empty subagent result is *a slice to relaunch, not a dead job*: re-spawn that one slice with the same brief; only an exhausted retry budget for that slice fails up to the coordinator. **(3) stable-coordinator / swappable-workers** — the coordinator (the live session, a Claude model) is the stable monitor holding the plan and the tool calls; the subagents are the replaceable workers — never put the plan or the commit on a worker that can fail. New fan-out doctrine → MINOR.
+- **2.0.0** — **A member IS the model it runs as (`model:`).** Redefines the member's mind: the **member runs as its session model** (`model:`) — the live Claude model that thinks and orchestrates in a session — NOT "whichever thinker leads a loadout." The dashboard now flags each member's **MODEL** on its cards; `conformity_check.py` enforces that the named model is one of the three Claude models. Selection-contract change → MAJOR.
+- **1.8.0** — **Run no model — script it.** New lead rule: before spawning any subagent, ask whether the job needs a *model* at all. An exact, mechanical transform (field-preserving JSON merge, literal extraction, deterministic rename) is a **script**, not a spawn — an LLM silently drops a field or rewords a value on a precision-critical merge, where a `node -e` eval + Python merge will not. Spawn a Claude subagent only for generative/judgemental work. Mined from the model-armory consolidation, where the 15×16-field registry merge was done by script precisely to avoid transcription loss. New rule → MINOR.
+- **1.7.0** — **Roster consolidation.** Consolidated all model facts into one registry
+  `star-alliance-arsenal/models.json` (the three Claude models + `seats.brain`); `conformity_check.py`,
+  the routing gate, `serve.cjs`, `build.py`, and the model docs now all DERIVE from it instead of
+  hand-copying. New roster classification → MINOR.
+- **1.6.0** — New §Cost-per-tier baseline: documents how to read the tier split in `efficiency_report.py`, defines decision rules for tier calibration, and restates the safety-first order (stakes check before any model-mix change). Depends on the sidecar fix (turn-cost.jsonl `tier` field now reliable). New doctrine → MINOR.
+- **1.5.0** — **Batched subagent fan-out.** Named the concrete mechanism behind the fan-out: spawn several Claude subagents in a single message (multiple Task calls) so they run concurrently, and collect the ordered results; a failed slice comes back to be re-spawned. Prior to this the skill preached "fan out in parallel" (1.2.0) but never pointed at the cheap path. The plan→do→review loop is unchanged — batching only removes the per-call tax. Mined from the harness-efficiency build (Phase 2). New mechanism doctrine → MINOR.
+- **1.4.0** — **The tool boundary (hard rule).** Every member is a Claude model, so it wields Edit/Write/Bash/git/MCP/computer-use directly — there is no non-Claude helper to hand a tool call to. When a big generative slice is fanned out, each Claude subagent authors its own bytes and the coordinator reviews and integrates. Forbids the old category error of routing a tool call to a non-Claude engine.
+- **1.3.0** — Named `opus` the **deepest model** (the Architect) and clarified the Claude-only fallback: work always runs on a Claude model, so there is no non-Claude fall-through to stall on. `conformity_check` enforces that every member's model is one of the three Claude models.
+- **1.2.0** — **Parallel subagents.** A member may now fan its work out to several Claude subagents at once — each on an independent slice, with the member reviewing every return against the plan. Previously fan-out was strictly one-at-a-time; that is now the **floor, not the ceiling**. Layers on top of [[decompose-and-swarm]].
+- **1.1.1** — Added **"Sizing a big subagent job"** to the plan→do→review loop: for large reads/generations, split the work into chunks, spawn one Claude subagent per chunk, and treat a mid-sentence draft as truncation → re-run larger. Mined from the `japanese-candlesticks` source-distillation run.
+- **1.1.0** — Model-roster reclass. The roster is the three Claude models (`opus`/`sonnet`/`haiku`);
+  `opus` is the deepest (the Architect), `haiku` the lightest (the Quartermaster), `sonnet` the
+  workhorse everyone else runs as. All member cards reordered to name their single Claude model.
+- **1.0.0** — Initial release. Defines the plan → do → review loop, the one-model-per-member
+  default, and the swarm exception (fan out to parallel Claude subagents, the coordinator
+  consolidates). Positioned as the atomic layer beneath members-formation and decompose-and-swarm.

@@ -307,43 +307,28 @@ def iter_agents(repo: Path):
 
 
 def derive_member_arsenal(brain_model, seats: dict, models: dict, errors: list[str] | None = None):
-    """Project the TWO-LAYER arsenal for one member from the seats SoT (models.json).
-    Stripped to the bones: Brain = the member's session model (an override of
-    seats.Brain/Doer/Bench.
-    Returns (seats_obj, weapons[{model,desc}]) — weapons[] is the derived projection
-    the dashboard renders (the Doer card and the Brain card)."""
+    """Project the CLAUDE-ONLY arsenal for one member from the seats SoT (models.json).
+    Every member runs as exactly one Claude model — its session `model:` (opus/sonnet/
+    haiku), an override of seats.brain.default. There is no non-Claude doer layer.
+    Returns (seats_obj, weapons[{model,desc}]) — weapons[] holds the single Brain card
+    the dashboard renders."""
     def dflt(seat):
         return (seats.get(seat) or {}).get("default")
     brain = brain_model or dflt("brain")
-    doer = dflt("doer")
-    # Build-time guard (conformity_check ST is the sweep backstop): a stale/typo'd seat
-    # default silently yields an empty desc() body below — fail loud instead.
-    if errors is not None:
-        for seat, mid, src in (("brain", brain, "session model" if brain_model else "default"),
-                               ("doer", doer, "default")):
-            if mid and mid not in models:
-                errors.append(f"seat '{seat}' {src} '{mid}' is not a models.json key")
+    # Build-time guard (conformity_check BR is the sweep backstop): a stale/typo'd model
+    # silently yields an empty desc() body below — fail loud instead.
+    if errors is not None and brain and brain not in models:
+        src = "session model" if brain_model else "seat default"
+        errors.append(f"member {src} '{brain}' is not a models.json key")
     seats_obj = {
         "brain": {"model": brain, "override": bool(brain_model) and brain_model != dflt("brain")},
-        "doer":  {"model": doer},
     }
-    seat_of = {}
-    for seat_mid, label in ((brain, "Brain"), (doer, "Doer")):
-        if seat_mid and seat_mid not in seat_of:
-            seat_of[seat_mid] = label
-    # Doer card first, then the Brain card — the hands beside the mind.
-    ordered, seen = [], set()
-    for m in (doer, brain):
-        if m and m not in seen:
-            seen.add(m)
-            ordered.append(m)
 
     def desc(mid):
         d = models.get(mid, {})
-        tag = seat_of.get(mid, "")
         body = d.get("summary") or d.get("desc") or ""
-        return (f"{tag} — {body}").strip(" —")
-    weapons = [{"model": m, "desc": desc(m)} for m in ordered]
+        return (f"Brain — {body}").strip(" —")
+    weapons = [{"model": brain, "desc": desc(brain)}] if brain else []
     return seats_obj, weapons
 
 
@@ -351,10 +336,6 @@ def build_member(agent: dict, meta: dict, errors: list[str], seats: dict, models
     mid = agent["id"]
     brain = agent.get("model")
     seats_obj, weapons = derive_member_arsenal(brain, seats, models, errors)
-    # Check if Hermes profile exists for this member (migration: dashboard)
-    hermes_home = os.environ.get("HERMES_HOME", str(Path.home() / ".hermes"))
-    profile_name = "star-alliance-butler" if mid == "the-butler" else f"star-alliance-{mid.replace('the-', '')}"
-    hermes_profile = (Path(hermes_home) / "profiles" / profile_name / "AGENTS.md").exists()
     return {
         "id": mid,
         "name": meta.get("name", mid),
@@ -373,7 +354,6 @@ def build_member(agent: dict, meta: dict, errors: list[str], seats: dict, models
         "does": meta.get("does", []),
         "doesnt": meta.get("doesnt", []),
         "skills": agent["skills"],
-        "hermes_profile": profile_name if hermes_profile else None,
     }
 
 

@@ -31,7 +31,8 @@ Run as the closing step of a Guild Self-Audit workflow.
 1. **Load** the last N cycle records + audit reports from `guild/journal/`, plus
    `star-alliance-arsenal/usage-log.jsonl` and `data/turn-cost.jsonl` for real behavior.
 2. **Weed.** Enumerate loaded skills; flag any with no productive retrieval in N cycles for demote
-   or sunset. (Delegate the inventory scan to a MiniMax doer; keep judgment in the thinker.)
+   or sunset. (Fan the inventory scan out to a Claude subagent via the Task tool; keep judgment in
+   the Quartermaster's own read.)
 3. **Retire bad ideas.** For each held assumption: evidence-for / falsifier / bad-idea-defended →
    KEEP-WITH-EVIDENCE / RETIRE / REPLACE. Append retirements to `retired-ideas.md` with evidence.
 4. **Rebalance.** Per-member load + error rate + skill usage vs declared intent. Flag imbalance.
@@ -41,12 +42,12 @@ Run as the closing step of a Guild Self-Audit workflow.
 7. **Write** `guild/journal/audit-<stamp>.md` and update the Quartermaster's memory if a finding
    earns a durable memory file.
 
-## Doer/thinker split
+## Fan-out / judgement split
 
-- **Doer (MiniMax first):** scan logs, enumerate skills, tally usage, draft the description field,
-  extract candidate patterns.
-- **Thinker (the Quartermaster):** decide root cause, decide what to retire, write the diff, judge
-  blast radius, apply or escalate.
+- **Fan out to Claude subagents (Task tool):** scan logs, enumerate skills, tally usage, draft the
+  description field, extract candidate patterns — the mechanical bulk, run in parallel.
+- **The Quartermaster (its own read):** decide root cause, decide what to retire, write the diff,
+  judge blast radius, apply or escalate.
 
 ## Guardrails
 

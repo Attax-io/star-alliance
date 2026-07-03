@@ -35,23 +35,24 @@ import sys, os, re, json, argparse, subprocess, datetime
 # (every directory is a hit, so noise becomes a flood).
 #
 # The 2026-07 widen was triggered specifically by okf_index.py exposing
-# folders per-file walks never touched: .hermes/plans, .retired/* (an
+# folders per-file walks never touched: legacy runtime dirs, .retired/* (an
 # explicitly-archived 'safe to delete' folder per its own README),
 # .scratch/*, and worst of all .scratch-thumbs-venv/lib/python3.14/site-packages/
 # — a full vendored Python venv (PIL/pip + pip's vendored deps) that nested
 # hundreds of site-packages subfolders. Entries added below shut the gate
 # on those families. NOTE: 'state' here means the top-level 'state/' runtime
-# dir at repo root (gitignored Hermes runtime state — wf-ledgered /
+# dir at repo root (gitignored workflow-runner state — wf-ledgered /
 # xp-workflow-*); it is NOT the same as '.claude/state' which is already
 # covered by the '.claude' entry above.
 EXCLUDE_DIR_PARTS = {
     ".git", ".claude", "worktrees", "node_modules", "__pycache__", ".venv", "venv",
     "scratchpad", "routine-logs", "routine-ledger",
     # Widened 2026-07 to stop okf_index.py from walking vendored / scratch /
-    # runtime folders that per-file iter_md never surfaced:
+    # runtime folders that per-file iter_md never surfaced (`.hermes` kept as a
+    # defensive no-op for any legacy runtime dir left on disk):
     ".hermes", ".retired", ".scratch", ".scratch-thumbs-venv",
     "site-packages", "dist-info", ".dylibs",
-    # Gitignored Hermes / workflow-runner runtime output dirs:
+    # Gitignored workflow-runner runtime output dirs:
     "state", "runs",
     # Vendored Rust / Tauri build output under desktop/src-tauri/ (gitignored;
     # 'target' = cargo build, 'gen' = Tauri generated bindings). Matched

@@ -78,7 +78,6 @@ See `references/push-channels.md` for the per-channel signature / test pattern.
 | `TAVILY_API_KEYS` | general English news |
 | `BOCHA_API_KEYS` | CN search with summaries |
 | `BRAVE_API_KEYS` | privacy-first, English |
-| `MINIMAX_API_KEYS` | structured search |
 | `SEARXNG_BASE_URLS` | self-hosted no-quota fallback |
 
 A multi-source setup improves the catalyst + sentiment fields; one source is

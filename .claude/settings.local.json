@@ -1,11 +1,9 @@
 {
   "permissions": {
     "allow": [
-      "WebFetch(domain:ollama.com)",
       "Skill(claude-api)",
       "Skill(claude-api:*)",
       "WebSearch",
-      "WebFetch(domain:platform.minimax.io)",
       "mcp__Claude_Preview__preview_start",
       "Bash(python3 ~/.claude/skills/cleanup/scripts/i18n_cleanup.py detect)",
       "Bash(python3 ~/Documents/Claude/Projects/star-alliance/star-alliance-skills/skillsmith/scripts/skill_registry.py write)",
@@ -22,7 +20,7 @@
       "Bash(python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write --repo .)",
       "Bash(cd ~/Documents/Claude/Projects/star-alliance *)",
       "Bash(sed -i '' 's|~/|~/|g' .claude/settings.local.json)",
-      "Bash(python3 -c \"import json; json.load\\(open\\('.claude/settings.local.json'\\)\\); print\\('settings.local.json valid ✓'\\)\")",
+      "Bash(python3 -c \"import json; json.load\\(open\\('.claude/settings.local.json'\\)\\); print\\('settings.local.json valid \u2713'\\)\")",
       "Bash(git checkout *)",
       "Bash(python3 evolution/reflect.py)",
       "Bash(python3 evolution/scoreboard.py)",

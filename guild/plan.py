@@ -6,14 +6,16 @@ system prompt, producing a plan: waves/roles/checkpoints (campaign), tickets
 panel seating (panel).
 
 Importable API:
-    plan(template, brief, weapon="minimax-sub") -> str
+    plan(template, brief, weapon="claude") -> str
 
 CLI:
     python3 guild/plan.py --template campaign|sprint|scope|spec|lens|panel \
         --in <brief> --out <plan.md> [--weapon <model>]
 
-Default weapon is minimax-sub (cheap, unattended-friendly). It reuses
-guild/delegate.py's delegate(), so token spend auto-logs to the arsenal ledger.
+NOTE: Star Alliance is now a Claude-only harness. The external doer that this
+step used to call (via guild/delegate.py's delegate()) has been removed, so
+plan() raises at run time — planning is done by the live session / a Claude
+subagent instead. This module is kept for its templates and CLI surface.
 
 Exit 0 on success, non-zero on failure.
 """
@@ -27,7 +29,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from delegate import delegate  # noqa: E402
 
-DEFAULT_WEAPON = "minimax-sub"
+DEFAULT_WEAPON = "claude"
 
 # Per-template planning directives. Each shapes the same brief into a
 # different deliverable the downstream agents can act on.

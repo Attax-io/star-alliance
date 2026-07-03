@@ -2,7 +2,7 @@
   "env": {
     "STAR_ALLIANCE_ROOT": "/Users/attaselim/Documents/Claude/Projects/star-alliance"
   },
-  "_comment": "LEAN HOOK SET (2026-07-03 cleanup). Only ONE hard block remains: destructive-gate (data-safety), reached via sa-pretool. Every routing/workflow/approval/verify rule is now a non-blocking reminder or logger, so a session can never freeze on a harness rule. Retired blockers still live in .claude/hooks/ but are NOT wired: executor-enforce, routing-enforce, approval-gate, approval-detect, cascade-check-gate, unity-gate, verify-gate, prove-it, delegation-gate, conformance-gate, conformity-precommit-gate, workflow-banner-enforcer. To re-enable strict mode, re-add them here.",
+  "_comment": "CLAUDE-ONLY HARNESS (Hermes/MiniMax doer layer removed 2026-07-03). One hard block remains: destructive-gate (data-safety), reached via sa-pretool. Everything else is a non-blocking reminder or logger, so a session can never freeze on a harness rule. The retired gate files live in .retired/ and are NOT wired.",
   "hooks": {
     "UserPromptSubmit": [
       {
@@ -24,14 +24,7 @@
       {
         "matcher": "Edit|Write|MultiEdit",
         "hooks": [
-          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/build-mark.py\"" },
-          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/hermes-upgrade-notify.py\"" }
-        ]
-      },
-      {
-        "matcher": "Bash",
-        "hooks": [
-          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch-log.py\"" }
+          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/build-mark.py\"" }
         ]
       },
       {
@@ -58,7 +51,6 @@
       {
         "hooks": [
           { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/turn-cost.py\"" },
-          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/thinker-attest.py\"" },
           { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/version-auto-bump.py\"" },
           { "type": "command", "command": "sh \"$CLAUDE_PROJECT_DIR/.claude/hooks/turn-finalize.sh\"" },
           { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/plain-english-nudge.py\"" },
@@ -66,13 +58,6 @@
           { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/vault-log-nudge.py\"" }
         ]
       }
-    ]
-  },
-  "permissions": {
-    "allow": [
-      "Bash(python3 star-alliance-arsenal/minimax.py:*)",
-      "Bash(python3 star-alliance-arsenal/summon.py:*)",
-      "Bash(python3 tools/dispatch.py:*)"
     ]
   }
 }

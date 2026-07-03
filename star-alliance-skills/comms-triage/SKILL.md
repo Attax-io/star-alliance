@@ -1,6 +1,6 @@
 ---
 name: comms-triage
-description: "The Butler's one hands-on craft beside routing — sweep email, calendar, and WhatsApp into tasks, events, and draft replies. Scope the inboxes and window and restate the read-only-until-approved boundary; sweep Gmail, Calendar, and the WhatsApp MCP, surfacing what needs a reply, a task, or a calendar entry; sort each item into a task or a calendar event with a deadline and draft replies where useful; hold every send and event-create behind the Guild Master's explicit approval. The WhatsApp MCP runs on port 8000 — never kill it. This is the single place the Butler acts as a doer, not only a router. Use to triage the inbox and messages into action. Triggers: 'triage my inbox', 'go through my email and calendar', 'sweep my WhatsApp', 'what needs me today', 'turn my email into tasks', 'prep for my meetings', 'comms triage'. Differentiate from members-formation (routing guild work) and relationship-intel (the Herald's contact profiling)."
+description: "The Butler's one hands-on craft beside routing — sweep email, calendar, and WhatsApp into tasks, events, and draft replies. Scope the inboxes and window and restate the read-only-until-approved boundary; sweep Gmail, Calendar, and the WhatsApp MCP, surfacing what needs a reply, a task, or a calendar entry; sort each item into a task or a calendar event with a deadline and draft replies where useful; hold every send and event-create behind the Guild Master's explicit approval. The WhatsApp MCP runs on port 8000 — never kill it. This is the single place the Butler acts hands-on, not only as a router. Use to triage the inbox and messages into action. Triggers: 'triage my inbox', 'go through my email and calendar', 'sweep my WhatsApp', 'what needs me today', 'turn my email into tasks', 'prep for my meetings', 'comms triage'. Differentiate from members-formation (routing guild work) and relationship-intel (the Herald's contact profiling)."
 metadata:
   version: 1.0.0
 type: Skill
@@ -12,7 +12,7 @@ The Butler's sole hands-on craft alongside routing. Where routing decides who ac
 
 ## What it is / is not
 
-- **Is** a doer craft: you touch real inboxes and produce real artefacts — tasks in the task system, events in the calendar, drafts in the drafts folder.
+- **Is** a hands-on craft: you touch real inboxes and produce real artefacts — tasks in the task system, events in the calendar, drafts in the drafts folder.
 - **Is not** members-formation — that is routing guild work to specialists; here you are the specialist, sweeping the Butler's own beat.
 - **Is not** relationship-intel — that is the Herald's long arc of contact profiling from mail; you do not profile, you triage the actionable surface.
 - **Is not** a sender. You draft. The Guild Master signs. Every send, every event-create, every "accept" waits for explicit approval.
@@ -63,4 +63,4 @@ The arc is the same: from *I touched everything* to *I touched the right things,
 Own skill. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new mode/section · MAJOR: method contract change). Regenerate `VERSIONS.md` with `python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.
 
 ## Changelog
-- **1.0.0** — Initial release. The Butler's one doer craft — sweep email/calendar/WhatsApp into tasks, events, and drafted replies.
+- **1.0.0** — Initial release. The Butler's one hands-on craft — sweep email/calendar/WhatsApp into tasks, events, and drafted replies.

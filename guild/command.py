@@ -11,20 +11,22 @@ The order shape (adapts the military BLUF / SMEAC order):
     CONSTRAINTS (scope + anti-goals) · OUTPUT CONTRACT (return shape + acceptance)
 
 Right-sizing (axiom 7) is chosen by --target:
-    doer     — full spec in the prompt; stateless; no autonomy assumed (maps to summon -s/-f)
     subagent — full spec + output contract; one-shot, isolated, no shared memory
     agent    — intent + latitude (mission command); trust the craft, don't micro-spec
     human    — plain English, BLUF, options + a recommendation; minimal jargon
 
 Importable API:
-    compose_command(target, intent, weapon="minimax-sub") -> str
+    compose_command(target, intent, weapon="claude") -> str
 
 CLI:
-    python3 guild/command.py --target doer|subagent|agent|human \
+    python3 guild/command.py --target subagent|agent|human \
         --in <intent_file_or_text> --out <order.md> [--weapon <model>]
 
-Default weapon is minimax-sub (cheap, unattended-friendly). Reuses guild/delegate.py's
-delegate(), so token spend auto-logs to the arsenal ledger. Exit 0 on success.
+NOTE: Star Alliance is now a Claude-only harness. The external doer that this
+step used to call (via guild/delegate.py's delegate()) has been removed, so
+compose_command() raises at run time — order composition is done by the live
+session / a Claude subagent instead. This module is kept for its target
+directives and CLI surface.  Exit 0 on success.
 """
 from __future__ import annotations
 
@@ -35,17 +37,10 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from delegate import delegate  # noqa: E402
 
-DEFAULT_WEAPON = "minimax-sub"
+DEFAULT_WEAPON = "claude"
 
 # Per-target right-sizing directive (axiom 7: match the order to who executes it).
 TARGETS: dict[str, str] = {
-    "doer": (
-        "The subordinate is a DOER weapon (a model that returns text, has no tools, no "
-        "memory, and one shot). Put the ENTIRE spec in the order — it cannot look anything "
-        "up or ask back. Be maximally explicit about the output contract. (In execution the "
-        "ORDER/INTENT/CONSTRAINTS/OUTPUT-CONTRACT become the -s system prompt and the CONTEXT "
-        "material becomes the -f file.)"
-    ),
     "subagent": (
         "The subordinate is a SUBAGENT (an isolated Claude agent with tools but NO shared "
         "memory of this conversation). Include every fact, path, and prior decision it needs; "

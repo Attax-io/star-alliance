@@ -24,13 +24,15 @@ Goal: drive the audit report to zero divergences without breaking a single surfa
 5. **Resolve orphans.** Promote a recurring one-off into a token/component, or delete a true one-off. Never
    leave it to multiply.
 
-## How to apply the fixes (doer + thinker)
+## How to apply the fixes (fan out, then review)
 
-- The **doer** (`minimax-m3`) does the mechanical sweep: raw `#3B82F6` → `var(--color-primary)`, `gap: 7px` →
-  `gap: var(--space-2)`, etc., across the flagged sites. Bulk find-and-replace is its job.
-- The **thinker** (sonnet) owns the judgement calls the doer can't make: which value is canonical when two
-  compete, which duplicate component is the keeper, whether a stray is intentional, whether an orphan is
-  promoted or deleted. Plan → dispatch the doer per finding-cluster → review the diff against the SoT → re-run.
+- The **mechanical sweep** — raw `#3B82F6` → `var(--color-primary)`, `gap: 7px` → `gap: var(--space-2)`, etc.,
+  across the flagged sites — is bulk find-and-replace. When it spans many files, the Designer fans it out to
+  parallel Claude subagents (spawned via the Task tool), one per disjoint finding-cluster.
+- The **judgement calls** stay with the Designer (running as its Claude model, sonnet): which value is canonical
+  when two compete, which duplicate component is the keeper, whether a stray is intentional, whether an orphan is
+  promoted or deleted. Plan → fan the mechanical clusters out to Claude subagents → review each diff against the
+  SoT → re-run.
 
 ## The non-negotiable: don't break functionality
 

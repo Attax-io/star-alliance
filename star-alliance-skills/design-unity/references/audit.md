@@ -55,9 +55,10 @@ comments — the annotation is usually right there). Report the split explicitly
 minus definitions, minus tests, minus no-var contexts, equals **genuine-drift candidates**. Never headline the
 raw match count as "drift to fix".
 
-## The scan recipe (hand the bulk to the doer)
+## The scan recipe (fan the bulk out to Claude subagents)
 
-The thinker frames the patterns and makes the keep/kill calls; `minimax-m3` (or `rg`) does the grepping.
+The Designer frames the patterns and makes the keep/kill calls; the grepping itself (`rg`, or a fan-out of
+parallel Claude subagents spawned via the Task tool when the surface is large) does the mechanical scan.
 Run this only on what survives Step 0.
 
 1. **Colours.** Grep every `#hex`, `rgb(/rgba(`, `hsl(`, `oklch(` in component/style files. Any literal that

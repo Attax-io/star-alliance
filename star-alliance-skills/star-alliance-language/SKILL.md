@@ -42,7 +42,7 @@ This skill turns that guarantee into a routine.
    - `--dir <subtree>` — scope to one area.
    - `--type Skill|Member|Workflow|Document|…` — only concepts of one type.
    - `--grep <term>` — title/description/tags/path match.
-   - `--json` — when a doer or another tool will consume the map.
+   - `--json` — when a subagent or another tool will consume the map.
 3. **Read frontmatter, not whole files.** The map already carries each concept's
    `type`, `title`, `description`, `tags`. That is usually enough to decide *which*
    concepts matter. Open the body only for those.
@@ -88,8 +88,8 @@ loose at root is a tidy violation; `okf_audit.py --layout` will name it.
 
 - **Session start in any repo** — orient via the concept map before touching code.
 - **"Where is X?"** — `--grep X` over the map beats spelunking.
-- **Handing context to a doer** — pipe `--json` map into a `summon.py` prompt so
-  the doer gets the repo's shape without you pasting files.
+- **Handing context to a subagent** — pass the `--json` map into a spawned Claude
+  subagent's prompt so it gets the repo's shape without you pasting files.
 - **After the Quartermaster tidies** — the map is the proof-of-tidy: it should read
   cleanly, every line with a real `type` and title.
 

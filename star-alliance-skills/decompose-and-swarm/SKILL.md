@@ -22,7 +22,7 @@ The underlying structure is a **capable-bookends engine**: a small capable gate 
 **It is not:**
 - A licence to spawn freely. The worthiness gate is the most important line in this skill.
 - A replacement for [[safe-agentic-orchestration]] (team structure and spec gates) or [[members-formation]] (workflow selection). Those run first; this runs when a selected workflow declares a swarm step.
-- A doer-tier routing rule. Workers are the member BRAIN (Sonnet, tool-capable), not MiniMax. See the MODEL RULE below.
+- A non-Claude routing rule. Workers are Claude subagents that run as the member's Claude model (Sonnet, tool-capable) — every worker is a Claude model. See the MODEL RULE below.
 
 **MAX_SWARM = 7.** The Butler never fans out more than seven workers in one message. _(Raised from 5 to 7 on 2026-07-01 to match the live 7-worker swarm demo; the per-slice critic reviews each slice independently, so a wider fan-out does not breach the 60KB aggregate threshold.)_
 
@@ -32,7 +32,7 @@ The underlying structure is a **capable-bookends engine**: a small capable gate 
 
 **FRONT (the thinker scouts and decomposes).** Decomposition is never a cheap-model job. The Butler — running on Opus — does the worthiness check, scouts the codebase surface, cuts the slices, and writes the seam contracts before any worker launches. This is the bookend that makes the rest safe.
 
-**MIDDLE (N workers, two-tier cheap).** Each worker runs as the member BRAIN (Sonnet) instead of Opus. That is already tier-one cheap. Inside each worker, bulk text generation and large reads go to the Doer seat (minimax-m3) — tier-two cheap. The saving is N Sonnet + MiniMax-inside versus one Opus doing all slices serially.
+**MIDDLE (N Claude subagents, cheap).** Each worker is a Claude subagent (spawned via the Task tool) that runs as the member's Claude model (Sonnet) instead of Opus. That is the saving: N Sonnet subagents versus one Opus doing all slices serially. Each subagent does its own reads and writes as that Claude model — there is no separate engine inside it.
 
 **BACK (capable, independent).** As each worker returns, the Butler runs `evolution/verdict.run_cold(worker_slice_diff)` on that worker's diff BEFORE integration. The aggregate diff from a swarm routinely exceeds the auto-critic's 60KB threshold — without per-slice review, every swarm would drop to a manual bypass and the "nothing enters without a critic verdict" invariant becomes theater. Per-slice review keeps every constituent blessed before the final commit. The Stop-hook aggregate review then has a per-slice ledger trail behind it.
 
@@ -110,7 +110,7 @@ python3 evolution/verdict.run_cold(worker_slice_diff)
 
 On the small diff for that slice — before integrating it. This is cheaper and parallel, and it keeps the critic invariant intact when the aggregate diff would exceed the 60KB auto-critic threshold. Record the verdict in the ledger. A BLOCK stops integration of that slice; re-dispatch or fix inline.
 
-**Integrate on the main thread.** The Butler assembles all blessed slices, reconciles the seams against the contract, runs the build, and verifies the aggregate result. The armed Stop verify-gate (glm-5.2) reviews the aggregate diff; this is backed by the per-slice ledger trail. Commit once. Serialised, revertible: one commit per slice in the merge sequence so `git revert` = surgical rollback.
+**Integrate on the main thread.** The Butler (the live session) assembles all blessed slices, reconciles the seams against the contract, runs the build, and verifies the aggregate result — reviewing the aggregate diff itself, backed by the per-slice ledger trail. Commit once. Serialised, revertible: one commit per slice in the merge sequence so `git revert` = surgical rollback.
 
 **Failure handling.**
 - One slice fails → re-dispatch just that slice with the same brief (fault-isolated).
@@ -121,11 +121,11 @@ On the small diff for that slice — before integrating it. This is cheaper and 
 
 ## The MODEL RULE
 
-A swarm worker that edits files must run as the member's BRAIN — a tool-capable Claude model (Sonnet, per each member's `model:` field). Never MiniMax or Ollama as the worker itself; they cannot hold the Edit / Write / Bash tools.
+A swarm worker that edits files is a Claude subagent (spawned via the Task tool) that runs as the member's Claude model — Sonnet, per each member's `model:` field. Every worker is a Claude model, so it holds the Edit / Write / Bash tools directly. There is no non-Claude engine to route the work to.
 
-MiniMax is the worker's **internal** bulk doer, not the worker. The saving is N Sonnet workers under one Opus Butler — not a doer-tier downgrade of the workers.
+The saving is N Sonnet subagents under one Opus Butler — the same work, split across cheaper Claude models instead of one deep model doing every slice serially.
 
-The brief's `model:` field makes this explicit and machine-checkable. Per [[weapon-utility]] seat doctrine: Brain = tool-capable thinker, Doer = MiniMax bulk text. The Doer seat works inside each instance; the worker IS the Brain.
+The brief's `model:` field makes this explicit and machine-checkable. Per [[weapon-utility]]: each member runs as its own Claude model; a subagent simply runs as that same model on its slice.
 
 ---
 
@@ -157,7 +157,7 @@ The **disjoint-partition invariant**, **integration-always-follows-swarm**, and 
 
 ## Cross-links
 
-- [[weapon-utility]] — seat doctrine; Brain = Sonnet worker, Doer = MiniMax-inside, Critic = glm-5.2 reviewer.
+- [[weapon-utility]] — model doctrine; each member (and each subagent it spawns) runs as its Claude model — Sonnet for the workers, Opus for the Butler coordinator.
 - [[members-formation]] — workflow selection; a swarm step is declared in the selected workflow, not improvised.
 - [[safe-agentic-orchestration]] — team structure doctrine; decompose-and-swarm is the execution method, safe-agentic-orchestration is the structural envelope.
 - [[codebase-memory-mcp]] — the scout tool for MOVE 0.5; the four calls + FILE_CHANGES_WITH Cypher recipe.

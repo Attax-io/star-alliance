@@ -10,7 +10,7 @@
       "category": "Guild Self",
       "class": "read-only",
       "tagline": "The intake lane: every request enters here so the Strategist can pick the right real workflow.",
-      "when": "Use this as the universal front door for any new request — quick or large. The Butler opens Routing on every intake turn; the Strategist then selects the real workflow (Quick Fix, Standard Mission, Architecture Build, Design Sprint, etc.) and the turn continues under that banner. Routing itself does no specialist or doer work — it routes.",
+      "when": "Use this as the universal front door for any new request — quick or large. The Butler opens Routing on every intake turn; the Strategist then selects the real workflow (Quick Fix, Standard Mission, Architecture Build, Design Sprint, etc.) and the turn continues under that banner. Routing itself does no specialist or specialist work — it routes.",
       "steps": [
         {
           "kind": "member",
@@ -88,7 +88,6 @@
           "inputs": [
             "cleared brief"
           ],
-          "thinker": "opus",
           "ultra": true,
           "exec": "spawn",
           "parallel": true
@@ -112,13 +111,6 @@
           "title": "Implement the Plan",
           "act": "The Developer writes the code, fixes any bugs, and self-tests everything before handing it back.",
           "produces": "working implementation",
-          "thinker": "sonnet",
-          "doers": [
-            {
-              "model": "minimax-sub",
-              "count": 3
-            }
-          ],
           "exec": "spawn",
           "parallel": true
         },
@@ -128,9 +120,6 @@
           "title": "Clean Up and Verify",
           "act": "The Quartermaster runs final cleanup checks and confirms the whole mission works end to end.",
           "produces": "verified build",
-          "doers": [
-            "minimax-sub"
-          ],
           "exec": "spawn"
         },
         {
@@ -641,11 +630,8 @@
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Log the Missing Entries",
-          "act": "The Quartermaster, drawing MiniMax M3, runs the two-tier pipeline — build_guild_log.py to backfill git-visible commits, log_event.py for the non-git events — then build.py to regenerate the dashboard data.",
+          "act": "The Quartermaster runs the two-tier pipeline — build_guild_log.py to backfill git-visible commits, log_event.py for the non-git events — then build.py to regenerate the dashboard data.",
           "produces": "synced guild log",
-          "doers": [
-            "minimax-sub"
-          ],
           "exec": "spawn"
         },
         {
@@ -713,7 +699,7 @@
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "OKF Migrate & Sweep (skip if mode=conformity)",
-          "act": "Runs , enriches concepts with title/description/tags and cross-links (handing bulk drafting to a doer weapon), places non-md files by concept-path, prunes confirmed dead files, then runs build.py. Re-runs until it passes clean. Confirms okf-gate hook is registered in .claude/settings.json.",
+          "act": "Runs , enriches concepts with title/description/tags and cross-links (fanning bulk drafting out to Claude subagents), places non-md files by concept-path, prunes confirmed dead files, then runs build.py. Re-runs until it passes clean. Confirms okf-gate hook is registered in .claude/settings.json.",
           "produces": "OKF-conformant repo",
           "exec": "spawn"
         },
@@ -721,7 +707,7 @@
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Conformity Audit (skip if mode=okf)",
-          "act": "Drawing MiniMax M3, runs conformity_check.py — reading every source (members, skills, arsenal, workflows, docs, guild log) plus generated guild data, cross-checking every reference and testing each against logged decisions — to assemble a contradiction map.",
+          "act": "Runs conformity_check.py — reading every source (members, skills, arsenal, workflows, docs, guild log) plus generated guild data, cross-checking every reference and testing each against logged decisions — to assemble a contradiction map.",
           "produces": "contradiction map",
           "exec": "spawn"
         },
@@ -1413,7 +1399,7 @@
       "accent": "rose",
       "category": "Design",
       "class": "mutating",
-      "tagline": "Forge Fallen Sword art — sigils, portraits, weapon and workflow tiles — via MiniMax, gated by the Designer.",
+      "tagline": "Forge Fallen Sword art — sigils, portraits, weapon and workflow tiles — gated by the Designer.",
       "when": "Use this whenever a new visual asset is needed — a member portrait, skill sigil, weapon tile, or workflow sigil.",
       "steps": [
         {
@@ -1440,8 +1426,8 @@
         {
           "kind": "member",
           "actor": "the-designer",
-          "title": "Forge via MiniMax",
-          "act": "The Designer commissions the image from the MiniMax doer-weapon, reviews each result, and sends rejects back with deltas until they land.",
+          "title": "Forge the art",
+          "act": "The Designer commissions the image from the image tool, reviews each result, and sends rejects back with deltas until they land.",
           "produces": "forged art",
           "script": "guild/commission_art.py",
           "args": {
@@ -1493,7 +1479,7 @@
       "accent": "blue",
       "category": "Guild Self",
       "class": "mutating",
-      "tagline": "Recruit or re-skin a weapon — art, thinker/doer role, and wiring into every loadout.",
+      "tagline": "Recruit or re-skin a weapon — art, role, and wiring into every loadout.",
       "when": "Use this when a new AI model joins the arsenal, or an existing weapon needs re-skinning or re-roleing.",
       "steps": [
         {
@@ -1513,7 +1499,7 @@
           "kind": "member",
           "actor": "the-strategist",
           "title": "Name the Weapon",
-          "act": "The Strategist sets the weapon's identity — model, element, colour, visual metaphor — and its role: thinker, doer, or both.",
+          "act": "The Strategist sets the weapon's identity — model, element, colour, visual metaphor — and its role.",
           "produces": "weapon identity",
           "exec": "spawn"
         },
@@ -1521,7 +1507,7 @@
           "kind": "member",
           "actor": "the-designer",
           "title": "Forge the Weapon Art",
-          "act": "The Designer commissions the weapon art via MiniMax and reviews it (runs Art Forge).",
+          "act": "The Designer commissions the weapon art and reviews it (runs Art Forge).",
           "produces": "weapon art",
           "script": "guild/commission_art.py",
           "args": {
@@ -2065,7 +2051,7 @@
           "kind": "member",
           "actor": "the-developer",
           "title": "Scout & Answer",
-          "act": "The routed member scouts read-only — grep/glob/read across the repo (handing bulk reads/summaries to a doer weapon) — verifies every claim against source, and returns a concise answer cited to file:line. Writes nothing.",
+          "act": "The routed member scouts read-only — grep/glob/read across the repo (fanning bulk reads/summaries out to Claude subagents) — verifies every claim against source, and returns a concise answer cited to file:line. Writes nothing.",
           "produces": "cited answer",
           "inputs": [
             "inquiry"
@@ -2103,7 +2089,7 @@
       "category": "Research & Intel",
       "class": "mutating",
       "tagline": "Spawn an isolated Claude subagent to scout or work, then verify what it brings back.",
-      "when": "Use this when the task should run in a fresh, isolated local session — 'start a new local session to investigate X', 'spawn a subagent', 'delegate this to a local Claude'. The routed member scopes the brief, spawns a CLAUDE session-doer via the Agent tool (a spawned session must be Claude — MiniMax doers run via summon.py and have NO tool access, so they cannot BE a session), gives it a disjoint scoped task, then verifies its findings against source before reporting. Pick the cheapest Claude doer the member carries: haiku where held (the-developer, the-interpreter, the-quartermaster), else sonnet.",
+      "when": "Use this when the task should run in a fresh, isolated local session — 'start a new local session to investigate X', 'spawn a subagent', 'delegate this to a local Claude'. The routed member scopes the brief, spawns a Claude subagent via the Agent tool, gives it a disjoint scoped task, then verifies its findings against source before reporting. Pick the cheapest Claude model the member carries: haiku where held (the-developer, the-interpreter, the-quartermaster), else sonnet.",
       "steps": [
         {
           "kind": "member",
@@ -2117,7 +2103,7 @@
           "kind": "member",
           "actor": "the-developer",
           "title": "Scope & Spawn",
-          "act": "The routed member scopes a disjoint brief and spawns a CLAUDE session-doer via the Agent tool — haiku if the member carries it (dev/interpreter/quartermaster), else sonnet; NEVER MiniMax, whose summon.py doers have no tool access and cannot be a session. The subagent runs its scoped task in isolation and returns structured findings.",
+          "act": "The routed member scopes a disjoint brief and spawns a Claude subagent via the Agent tool — haiku if the member carries it (dev/interpreter/quartermaster), else sonnet. The subagent runs its scoped task in isolation and returns structured findings.",
           "produces": "session findings",
           "inputs": [
             "session task"
@@ -2155,7 +2141,7 @@
         "investigate in a separate session",
         "delegate to a local claude",
         "run this in a subagent",
-        "local claude doer",
+        "local claude subagent",
         "isolated session"
       ]
     },
@@ -2296,7 +2282,7 @@
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Run the 6-Field Cycle",
-          "act": "Invokes guild-reflection (CYCLE mode): description (what ACTUALLY happened) → signals (friction) → evaluation (vs intent) → analysis (root cause, controllable vs not, trace to the SEED) → conclusion (one rule) → action_plan (a concrete diff naming a file). Delegate log/description drafting to a MiniMax doer; keep root-cause judgment in the thinker.",
+          "act": "Invokes guild-reflection (CYCLE mode): description (what ACTUALLY happened) → signals (friction) → evaluation (vs intent) → analysis (root cause, controllable vs not, trace to the SEED) → conclusion (one rule) → action_plan (a concrete diff naming a file). Fan log/description drafting out to a Claude subagent; keep root-cause judgment in the routed member.",
           "produces": "reflection record",
           "inputs": [
             "completed run"
@@ -2364,7 +2350,7 @@
           "kind": "member",
           "actor": "the-quartermaster",
           "title": "Weed, Retire, Rebalance, Interrogate",
-          "act": "Invokes guild-reflection (AUDIT mode): (1) weed skills with no productive retrieval in N cycles; (2) retire/replace held assumptions with evidence-for/falsifier/bad-idea-defended, appending to retired-ideas.md; (3) rebalance per-member load vs declared intent; (4) answer the fixed self-interrogation gut-honestly. Delegate scans/tallies to a MiniMax doer.",
+          "act": "Invokes guild-reflection (AUDIT mode): (1) weed skills with no productive retrieval in N cycles; (2) retire/replace held assumptions with evidence-for/falsifier/bad-idea-defended, appending to retired-ideas.md; (3) rebalance per-member load vs declared intent; (4) answer the fixed self-interrogation gut-honestly. Fan scans/tallies out to a Claude subagent.",
           "produces": "audit findings + proposed diffs",
           "inputs": [
             "behavior snapshot"
@@ -2533,7 +2519,7 @@
           "kind": "member",
           "actor": "the-designer",
           "title": "Forge the Member Art",
-          "act": "The Designer commissions the member portrait via MiniMax and reviews it (runs Art Forge).",
+          "act": "The Designer commissions the member portrait and reviews it (runs Art Forge).",
           "script": "guild/commission_art.py",
           "args": {
             "max-iter": 1

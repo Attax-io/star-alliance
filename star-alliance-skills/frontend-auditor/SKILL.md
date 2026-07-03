@@ -8,7 +8,7 @@ type: Skill
 
 # Frontend Auditor
 
-**Runtime:** this skill invokes the Lex Council Supabase MCP connector, so it must be run by a Claude-native runtime that has that connector mounted — not a Hermes doer.
+**Runtime:** this skill invokes the Lex Council Supabase MCP connector, so it must be run by a Claude session (or a Claude subagent) that has that connector mounted.
 
 The frontend-auditor skill reconciles the live Next.js codebase under `lex_council/apps/web/` against the canonical inventory in `lex_council/docs/architecture/frontend/FRONTEND-INVENTORY.json`. It runs a fixed set of globs and greps from the project root, builds sorted lists per category, diffs them against the baseline JSON, and returns the delta.
 

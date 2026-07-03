@@ -19,7 +19,7 @@ You are the ledger-warden of the Star Alliance. Your conformity craft is the clo
 
 ## The craft
 
-1. **Trigger.** A workflow closes, or the Compliance Audit workflow calls you. Confirm the doer (`minimax`) has dropped its artefacts and the thinker (opus / sonnet) has signed off in the per-step notes before you begin.
+1. **Trigger.** A workflow closes, or the Compliance Audit workflow calls you. Confirm the member (and any Claude subagents it spawned) have dropped their artefacts and that the reviewing Claude has signed off in the per-step notes before you begin.
 2. **Run the check, read-only.** From repo root: `python3 conformity_check.py`. Capture the full contradiction map to your working buffer. Edit nothing yet.
 3. **Triage before edit.** For each flag, classify: (a) real contradiction at source, (b) generator drift — `build.py` needs a refresh, no source change, (c) check false-positive — rule is over-strict, file an issue, skip. Only (a) is yours to fix this sweep.
 4. **Walk the source-of-truth chain.** For each real flag, find the canonical anchor in this precedence: `star-alliance-members/<id>.md` frontmatter (model, weapons, skills) → `members-meta.json` (presentation, weaponsDesc) → `skills-meta.json` → `star-alliance-skills/<id>/SKILL.md` (metadata.version) → `domains.json` → `workflows.json` → `guild-log.json`. Fix at the highest-precedence anchor that is wrong. Never edit `guild-data.js` or `guild-data.json` by hand.
@@ -27,6 +27,27 @@ You are the ledger-warden of the Star Alliance. Your conformity craft is the clo
 6. **Re-run the check.** Repeat steps 2–5 until `conformity_check.py` exits clean. Stop only on green; there is no "almost green."
 7. **Log the sweep.** Append a `guild-log.json` entry naming the workflow, the contradictions resolved (with their classification), the files touched, and the final check status. This is the audit trail the Strategist and the Butler will read.
 8. **Handoff.** Return the green light to the Butler so its `report` gate can close the workflow.
+
+## The current (lean) check set
+
+The sweep is Claude-only and lean. `conformity_check.py` runs these tags — know them by their two/three-letter codes:
+
+| Tag | What it proves |
+|---|---|
+| **P** | `guild-data.js` ↔ `guild-data.json` parity (byte-identical modulo wrapper). |
+| **MCP** | The MCP server (`mcp/server.py`) lists the real members and skills — no drift from source. |
+| **N** | `meta.counts` match the real member / skill / workflow / domain counts. |
+| **K** | Skill dirs == `skills-meta.json` == generated skill ids (no orphan / uncounted skill). |
+| **VER** | Every `SKILL.md` `metadata.version` is well-formed and mirrored in `VERSIONS.md`. |
+| **BR** | Every member's `model:` is one of the three Claude models (opus / sonnet / haiku) — no non-Claude model anywhere. |
+| **R** | Every carried skill exists in `skills-meta.json`. |
+| **D23** | The report gate: every workflow ends with the Butler `report` step. |
+| **C** | The-quartermaster is the last member step before `report` (the conformance close). |
+| **SD** | Skill ↔ member drill-row coupling, both directions (a carried skill has a `## Skill Drills` row; no stale row for a removed skill). |
+| **AG** | The generated `.claude/agents/*.md` cards match `star-alliance-members/` (the Butler is a Persona and gets no card). |
+| **REG** | Claude-only registry: `models.json` holds only opus / sonnet / haiku (+ `seats.brain`); nothing references a removed non-Claude model. |
+
+The old brain / doer / profile / dispatch-era checks are **gone** — there is no non-Claude doer layer, no Hermes profile surface, and no dispatch bridge to audit anymore. What follows (anti-drift family, mechanical checks) describes how a NEW invariant is authored and proven; several tags below predate the lean set and are kept as worked examples of the method.
 
 ## Adding a new invariant (Artisan rung)
 
@@ -58,9 +79,9 @@ becomes a drift risk. Seal each one with a gate rule that ties it back to the so
 makes a consolidation *stay* consolidated:
 
 - **`fallback == source`** — a fail-safe literal (a hardcoded dict kept so a broken registry never
-  bricks a gate) must equal the registry it shadows. `FB` checks `conformity_check._FALLBACK_ROLE` and
-  `summon._FALLBACK_CLOUD_TAG` against `models.json` — the exact guard that would have caught the
-  `app.js sonnet=doer` bug that started that whole consolidation.
+  bricks a gate) must equal the registry it shadows. `FB` checks any fallback role/model constant in
+  the gates against `models.json` — the exact guard that would have caught the early
+  wrong-model-in-a-seat bug that started that whole consolidation.
 - **`sidecar ⊆ source`** — an operational side-file (a cost/usage map) may only key ids that exist in
   the source. `MU` checks `models-usage.json` keys ⊆ registry ids.
 - **`asset exists per id`** — a convention-keyed asset (art tile, generated doc) must exist for every
@@ -72,41 +93,33 @@ makes a consolidation *stay* consolidated:
 Each still earns its negative test (hand-break the copy → confirm the tag fires → revert → green).
 Without these, copies silently re-diverge the moment someone edits one; with them the gate bites loudly.
 
-### The three skill surfaces — Hermes profiles, Claude store, and deployment
+### The two skill surfaces — repo and Claude store
 
-Skills live on THREE layers, each a copy to keep in sync:
+Skills live on TWO layers, each a copy to keep in sync (the guild is Claude-only; there is no separate per-member arsenal to mirror):
 
 | Layer | Location | Role | SoT |
 |---|---|---|---|
 | **Repo** | `star-alliance-skills/<id>/SKILL.md` | Distribution source; git version control | YES |
 | **Claude Store** | `~/.claude/skills/<id>/` | What Claude sessions load locally | derived |
-| **Hermes Profiles** | `~/.hermes/profiles/the-<member>/skills/<id>/` | Per-member live arsenal in Hermes | derived |
 
-**Key rule: Hermes profile SLUG must match PROFILE_MAP in skill_sync.py.** The slug is `the-<member>` (with prefix), NOT the bare member folder name. Using `architect` instead of `the-architect` creates a junk duplicate profile — this bug happened 2026-06-29 and was caught by the Lex-skill wiring audit.
+The repo is the single source of truth; the MCP server serves skills straight from it, so any other project reads the repo copy rather than a device-local mirror.
 
 **Drift detection and reconciliation:**
 
-- **HS (content drift):** The `skill_fingerprint.py` generates a SHA per skill; `conformity_check.py` compares repo fingerprint ↔ Claude store and profile copies. If they diverge, content is stale.
+- **HS (content drift):** The `skill_fingerprint.py` generates a SHA per skill; `conformity_check.py` compares the repo fingerprint ↔ the Claude store copy. If they diverge, the store copy is stale.
   - **Claude-store drift:** Run `python3 star-alliance-skills/skillsmith/scripts/skill_sync.py apply --skill <name> --direction install` to pull the repo copy into the Claude store.
-  - **Profile-content drift:** Run `python3 star-alliance-skills/skillsmith/scripts/skill_sync.py apply --profile-content` to sync all member profiles' skill rosters and their content from the repo.
-
-- **PS (present-but-undeclared):** A Hermes profile has a skill in its `skills/` folder, but the member's `skills:` array in the member's .md does NOT declare it. OR the reverse: declared but the profile dir is missing. Triage:
-  - **Profile has skill, member doesn't declare:** Decide per skill — is it a vendor/private skill the profile installed that the member should ignore (add to `HERMES_VENDOR_SKILLS` allow-list in `conformity_check.py`), or should the member add it to their `skills:` array? (Assignment requires adding a drill row too.)
-  - **Member declares skill, profile missing:** The skill must be installed in the profile. Re-run `skill_sync.py apply --profile-content` and re-check.
 
 **Device deployment — the install seal:**
 
-Deployment checklist (`guild/deploy_device.py` runs all 7 steps):
+Deployment checklist:
 
 1. ✓ STAR_ALLIANCE_ROOT set in `.claude/settings.json`
-2. ✓ `~/.config/minimax/m3.key` exists (MiniMax API key)
-3. ✓ `node` on PATH (for post-install hook)
-4. ✓ `hermes` CLI on PATH
-5. ✓ `pyyaml` installed (local dev)
-6. ✓ Repo `conformity_check.py` is GREEN
-7. ✓ Profile content synced: `skill_sync.py apply --profile-content` returns 0 errors
+2. ✓ `node` on PATH (for post-install hook)
+3. ✓ `pyyaml` installed (local dev)
+4. ✓ Repo `conformity_check.py` is GREEN
+5. ✓ Claude-store copies synced from the repo (no HS content drift)
 
-**Not ready until conformity_check.py is green and profile sync reports no errors.**
+**Not ready until conformity_check.py is green and the Claude store matches the repo.**
 
 ## Sharpening the craft
 
@@ -127,7 +140,7 @@ Track, always: green-sweep ratio, median rebuilds to green, count of hand-edits 
 - Per-member arsenal order is doers → thinkers / duals → sonnet last. Reordering for "readability" breaks the invariant and looks correct in the file.
 - Every workflow must END with the Butler `report` gate, and the last member step before `report` must be the-quartermaster. Inserting any step after you breaks the spine.
 - `metadata.version` is parsed. A stray pre-1.0 tag like `v0.3-rc` trips it. Bump through skillsmith, not here.
-- Every weapon must be routable by `summon.py` or be Claude-native. If a new model is named, route it first; conformity does not adopt ghosts.
+- Every member's model must be one of the three Claude models in `models.json` (opus / sonnet / haiku). If a new model is named, it must be Claude and in the registry first; conformity does not adopt ghosts (the `BR` / `REG` checks enforce this).
 - README and domains carry skill-count claims that the check verifies. If you add a skill, update the claim in the same commit, or the next sweep will flag it.
 - Never close a workflow on a red check. "One flag is a known false-positive" is a triage note for the log, not a green light.
 
@@ -193,9 +206,9 @@ file, and what's wrong.
   generators, guild scripts. Scans code/config + `CLAUDE.md` / `AGENTS.md` / `README.md`; skips
   installed mirrors (`.claude/arsenal|skills|agents`), generated files, historical logs, archives.
 - **MN (member-name consistency).** Flags any `the-<name>` member token in member-bearing files
-  (`dispatch.py`, `workflows.json`, `guild-routing-gate.sh`, `agents/members-meta`, `profiles/` dir
-  names) that is NOT a canonical `star-alliance-members/*.md` name. Catches a member renamed
-  everywhere-but-a-few-places (e.g. `the-translator` vs `the-interpreter`).
+  (`workflows.json`, `guild-routing-gate.sh`, `agents/`, `members-meta`) that is NOT a canonical
+  `star-alliance-members/*.md` name. Catches a member renamed everywhere-but-a-few-places (e.g.
+  `the-translator` vs `the-interpreter`).
 - **WR (control-surface wiring).** Flags a dashboard/config control that WRITES a field no
   consumer READS. Catches a "fake control" — e.g. the Model Control wrote `memberOverrides` that
   nothing read.
@@ -207,7 +220,7 @@ file, and what's wrong.
 - **1.5.0** — Added §Swarm-close: the orchestrator (Butler) runs the conformity check ONCE after ALL swarm workers finish; workers never run it themselves (intermediate parallel states would fail). New section → MINOR.
 - **1.4.2** — Updated §Member-table consistency check to the current build chain (`build-mark.py` PostToolUse → `turn-finalize.sh` Stop); the old `member-table-sync.py` + `autocommit.sh` invariant was stale (those hooks are archived under `.claude/hooks/.deprecated/`). Refs → PATCH.
 - **1.4.1** — Reconciled the workflow rename: live references to the old "Conformity Sweep" workflow now read **Compliance Audit** (the merged Conformity Sweep + OKF Tidy workflow); historical/changelog mentions left intact. Wording/refs → PATCH.
-- **1.4.0** — New §The anti-drift family under "Adding a new invariant": names the reusable invariant *class* that locks a source-of-truth consolidation — `fallback == source` (FB), `sidecar ⊆ source` (MU), `asset-per-id` (WART), `prose == data` lint (RG). Each ties a copy you couldn't delete back to the SoT so it can't silently re-diverge; each still earns its negative test. Mined from the model-armory consolidation onto `star-alliance-arsenal/models.json` (the FB check is the guard that would have caught the original `app.js sonnet=doer` bug). Pairs with `schema-evolution` 1.1.0 §Consolidation. New section → MINOR.
+- **1.4.0** — New §The anti-drift family under "Adding a new invariant": names the reusable invariant *class* that locks a source-of-truth consolidation — `fallback == source` (FB), `sidecar ⊆ source` (MU), `asset-per-id` (WART), `prose == data` lint (RG). Each ties a copy you couldn't delete back to the SoT so it can't silently re-diverge; each still earns its negative test. Mined from the model-armory consolidation onto `star-alliance-arsenal/models.json` (the FB check is the guard that would have caught the original wrong-model-in-a-seat bug in `app.js`). Pairs with `schema-evolution` 1.1.0 §Consolidation. New section → MINOR.
 - **1.3.0** — New §Member-table consistency check: documents the `member-table-sync.py` PostToolUse hook invariant, adds explicit `build.py` re-run to the conformity-close checklist, and instructs Quartermaster to verify hook wiring in `settings.json` before closing.
 - **1.2.0** — Added **§Edit-time fast-path (`--member`)** + the matching `conformity_check.py --member <name>` mode: a focused per-member skill↔drill audit (SD forward + R skills-meta + SD **reverse**, catching a stale drill row left after a removal — which the full forward-only SD check missed) the Quartermaster runs the instant a loadout changes, before the full sweep. Primary guard for skillsmith Invariant #9; the conformity-close stays the backstop. New mode + section → MINOR.
 - **1.1.0** — Added **§Adding a new invariant** — the Artisan-rung method for teaching the check to catch a *class* of contradiction, not just an instance: enforce at the source (`build.py`, fatal), re-assert at the gate (`conformity_check.py`, tagged, "when present" for optional fields), and **prove it with a negative test** (hand-break a record → confirm the tag fires → revert → confirm green). Mined from the `WPN`/`CLS`/tightened-`expected_order` rules added this session. New section → MINOR.

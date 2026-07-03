@@ -15,7 +15,7 @@ round-trip, a wrong result, or burned tokens. Score, then rewrite.
 |---|---|---|---|
 | 1 | **Buried lede** | The actual ask is in paragraph three; sentence one is throat-clearing | Move the deliverable to line one (axiom 2) |
 | 2 | **Ambiguity** | A word could mean two things — "the file", "soon", "clean it up", "etc." | Name the exact file/number/format; replace "etc." with the full list (axiom 3) |
-| 3 | **Missing input** | The subordinate would have to ask for a path, a constraint, or a prior decision to start | Add every fact it can't look up; for a doer/subagent, assume zero shared memory (axiom 4) |
+| 3 | **Missing input** | The subordinate would have to ask for a path, a constraint, or a prior decision to start | Add every fact it can't look up; for any subagent (one-shot worker or tool-having), assume zero shared memory (axiom 4) |
 | 4 | **No bounds** | No scope, no anti-goals — the subordinate could touch anything | State what NOT to do/touch and the limits (axiom 5) |
 | 5 | **No output contract** | "review this", "look into it" — no definition of done | Specify the return shape + acceptance criteria so the result is verifiable in one pass (axiom 6) |
 | 6 | **Wrong register** | Jargon aimed at the Guild Master, or hand-holding aimed at a peer member | Right-size: plain English + options for the human; intent + latitude for a member (axiom 7) |

@@ -1,13 +1,14 @@
 """commission_art.py — Art Forge: commission an image asset from a brief.
 
-Drives the REAL image weapon: star-alliance-arsenal/imagegen.py (MiniMax image-01,
-direct API, 1024x1024 JPEG-as-png — the same forge that makes every skill/agent/
-workflow tile). image-01 is NOT routable by summon.py (only text weapons are wired
-there), so this calls imagegen.py directly instead.
+Star Alliance is now a Claude-only harness — the external image doer (the
+MiniMax image-01 backend that imagegen.py used to drive) has been removed with
+the rest of the non-Claude doer layer. There is no image backend wired.
 
-Degrades gracefully: if imagegen.py or its API key is missing, it writes an
-art_log.md describing the brief + the exact prompt it WOULD send, and exits 0 with
-a clear "no image backend wired" notice. It never fakes an image.
+This tool therefore always degrades gracefully: it writes an art_log.md
+describing the brief + the exact prompt it WOULD send to an image model, and
+exits 0 with a clear "no image backend wired" notice. It never fakes an image.
+Image generation now belongs to the live session / a designer subagent using a
+real image tool, not to this script.
 
 CLI:
     python3 guild/commission_art.py --brief <brief.md> --out <asset.png> [--max-iter N]
@@ -15,20 +16,16 @@ CLI:
 from __future__ import annotations
 
 import argparse
-import os
-import subprocess
 import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
-IMAGEGEN = REPO_ROOT / "star-alliance-arsenal" / "imagegen.py"
-KEY_PATH = Path(os.path.expanduser("~/.config/minimax/m3.key"))
 IMAGE_WEAPON = "image-01"
 
 
 def image_backend_reachable() -> bool:
-    """True only if the real imagegen.py forge AND its API key are present."""
-    return IMAGEGEN.exists() and KEY_PATH.exists()
+    """Always False — the external image doer layer has been removed."""
+    return False
 
 
 def build_prompt(brief_text: str) -> str:
@@ -50,8 +47,9 @@ def write_art_log(out: Path, brief_path: Path, prompt: str, reason: str) -> Path
         f"- Status: NO IMAGE BACKEND WIRED — {reason}\n\n"
         "## Prompt that WOULD be sent\n\n"
         "```\n" + prompt.rstrip() + "\n```\n\n"
-        "> No image was generated (degraded gracefully). Wire image-01 into "
-        "summon.py to enable real generation.\n"
+        "> No image was generated (degraded gracefully). Star Alliance is now a "
+        "Claude-only harness with no external image doer — generate the asset "
+        "from the live session or a designer subagent using a real image tool.\n"
     )
     log_path.write_text(body, encoding="utf-8")
     return log_path
@@ -70,30 +68,15 @@ def commission(brief: Path, out: Path, max_iter: int) -> int:
     prompt = build_prompt(brief_text)
     out.parent.mkdir(parents=True, exist_ok=True)
 
-    if not image_backend_reachable():
-        log_path = write_art_log(
-            out, brief, prompt,
-            reason=f"{IMAGE_WEAPON} is not routable by summon.py on this device",
-        )
-        print(f"commission_art: no image backend wired — wrote {log_path}")
-        print("commission_art: degraded gracefully (no image faked). Exit 0.")
-        return 0
-
-    # Image backend reachable: drive imagegen.py for up to max_iter attempts.
-    # imagegen.py forges a real 1024x1024 JPEG-as-png at --out and exits 0.
-    print(f"commission_art: {IMAGE_WEAPON} reachable via imagegen.py — commissioning (max-iter={max_iter})")
-    for i in range(1, max_iter + 1):
-        proc = subprocess.run(
-            ["python3", str(IMAGEGEN), prompt, "-o", str(out)],
-            capture_output=True, text=True,
-        )
-        if proc.returncode == 0 and out.exists() and out.stat().st_size > 0:
-            print(f"commission_art: iteration {i} forged -> {out}")
-            return 0
-        err = (proc.stderr or proc.stdout or "").strip()
-        print(f"  iteration {i}: no asset (exit {proc.returncode})\n{err}")
-    print("commission_art: image backend reachable but produced no asset.", file=sys.stderr)
-    return 1
+    # No image backend is wired in a Claude-only harness — always degrade
+    # gracefully: record the brief + intended prompt and exit 0 without faking.
+    log_path = write_art_log(
+        out, brief, prompt,
+        reason="external image doer removed (Claude-only harness)",
+    )
+    print(f"commission_art: no image backend wired — wrote {log_path}")
+    print("commission_art: degraded gracefully (no image faked). Exit 0.")
+    return 0
 
 
 def main() -> int:

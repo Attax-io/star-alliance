@@ -8,7 +8,7 @@ type: Skill
 
 # Health Checker
 
-**Runtime:** this skill invokes the Lex Council Supabase MCP connector, so it must be run by a Claude-native runtime that has that connector mounted — not a Hermes doer.
+**Runtime:** this skill invokes the Lex Council Supabase MCP connector, so it must be run by the live Claude session (or a Claude subagent) that has that connector mounted.
 
 The health-checker skill surfaces three classes of database-health concern from the live Lex Council Supabase project by running read-only SQL via the Supabase MCP (connector prefix `mcp__1ee3ddfd-27aa-4176-9539-d9a2081c163d__execute_sql`).
 

@@ -5,7 +5,7 @@
 # Baseline OKF requires only `type:` in frontmatter. Real value comes from
 # adding `title`, `description`, and `tags`. okf_enrich.py reports every
 # governed .md that PASSES the baseline (so it has a type:) but is MISSING
-# any of those three enrichment keys — giving humans and doer weapons a
+# any of those three enrichment keys — giving humans and Claude subagents a
 # prioritized backlog per SKILL.md step 3 ("Enrich").
 #
 # Read-only on purpose: this script is advisory, never a gate. It must NEVER

@@ -24,7 +24,7 @@ Body kept: core philosophy, the seven pre-flight gates, standing principles, the
 - **One pattern, not two** — the existing "fan-out sweep" IS the shared-tree swarm; named the equivalence. The swarm is its formally-named, schema-governed, per-slice-critic'd version.
 - **Wave-level WORTHINESS gate** — reuse [[decompose-and-swarm]] MOVE 0: swarm only if slices are big (≳1.5k tok) + disjoint + loosely-coupled + cheaper-net; else run serial. Amp trip condition + over-decomposition warning.
 - **CONFORMITY-CLOSE-ONCE** — the orchestrator (campaign driver) runs conformity/verify/integration EXACTLY ONCE after all swarm workers finish; workers never run it (intermediate parallel states fail spuriously). The serialised single integration is the gate that lets parallel writers stay ungated.
-- **Model rule** — swarm workers run as the member BRAIN (Sonnet, tool-capable), NEVER a doer-tier model; MiniMax is the doer INSIDE each worker. Reconciled with the W0-Ollama / sonnet-mechanical / opus-security wave model-assignment.
+- **Model rule** — swarm workers are Claude subagents that run as the member's Claude model (Sonnet, tool-capable); every worker is a Claude model, spawned via the Task tool. Reconciled with the W0-Ollama / sonnet-mechanical / opus-security wave model-assignment.
 - **Per-slice critic** — `verdict.run_cold(slice_diff)` per worker before integration keeps the critic invariant intact when the aggregate diff exceeds the 60KB auto-critic threshold.
 - Cross-links added: [[decompose-and-swarm]] · [[core-swarm]] · [[weapon-utility]]. NEVER swarm DB/red writes or W4 synthesis.
 

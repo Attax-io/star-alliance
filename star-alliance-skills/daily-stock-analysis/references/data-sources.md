@@ -53,7 +53,6 @@ degrade to `not_configured` and the verdict weight is reduced.
 | **Tavily** | general news | global / English | optional |
 | **Bocha** | CN search with AI summaries | CN | optional; CN-optimised |
 | **Brave** | privacy-first, English | global / English | optional |
-| **MiniMax** | structured search results | mixed | optional |
 | **SearXNG** | self-hosted no-quota fallback | deployer-hosted | optional; private deployment |
 
 Recommended floor: one from {Anspire, SerpAPI} + one more for redundancy.

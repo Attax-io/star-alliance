@@ -73,10 +73,11 @@ grade** a domain expert would give + what to fix first.
 
 - **Inline (default, fast).** Run the four prompts in sequence in the conversation. ~5 minutes,
   one expert briefing. Best for most requests.
-- **Fan-out (heavier, parallel).** One sub-agent per persona, then the parent runs phases 2–4. Use
-  for high-stakes topics or when you want sourced evidence per persona.
-  - Per repo `CLAUDE.md`, **default the persona doers to MiniMax M3**: `python3 "$STAR_ALLIANCE_ROOT/star-alliance-arsenal/minimax.py" "<persona prompt>" --json`.
-  - Use Claude sub-agents / a `Workflow` instead when personas must use tools (web search, MCP,
+- **Fan-out (heavier, parallel).** One Claude subagent per persona, then the parent runs phases 2–4.
+  Use for high-stakes topics or when you want sourced evidence per persona.
+  - **Spawn one Claude subagent per persona** via the Task tool, briefing each with its lens; fan all
+    five out in a single message so they run concurrently.
+  - Reach for subagents / a `Workflow` especially when personas must use tools (web search, MCP,
     file reads) or return validated structured output. See `references/prompt-pack.md` §Fan-out.
 
 ## Grounding with sources (optional)

@@ -31,16 +31,15 @@ Keep the three layers clean: **skills** = solo craft, **workflows** = multi-memb
 
 5. **Compose `steps[]`.** For each productive beat, output an object: `{ kind, actor, title, act, produces }`. Mark `kind` as `member` for work steps and `gate` for review/sign-off beats. The gate rule applies — see below.
 
-   **Name the weapons as structured fields, not just prose.** A member step carries three OPTIONAL fields the build and the dashboard read directly (all enforced — see [[weapon-utility]]):
+   **Name the Claude model as a structured field, not just prose.** A member step carries two OPTIONAL fields the build and the dashboard read directly (all enforced — see [[weapon-utility]]):
 
-   - `thinker`: `"<model>"` — the prime thinker that plans and reviews. Must be a **thinker-role** weapon **in that member's loadout**.
-   - `doers`: a list — each entry either `"<model>"` or `{ "model": "<model>", "count": N }`. Several entries, or any `count` > 1, means the thinker **fans the work across parallel doers** (many of one model, or a mix). Each must be a **doer-role** weapon **in the member's loadout**.
-   - `ultra`: `true` — the member fires **all** its thinker models at once and its prime thinker synthesizes. Only valid if the actor **carries the `ultra-brainstorming` skill**.
+   - `model`: `"<opus|sonnet|haiku>"` — the Claude model this member runs as for the step. Every member is a Claude model; `opus`, `sonnet`, and `haiku` are the only valid values.
+   - `swarm`: an object (below) — when the step's work is big and splittable, the member **fans out to N parallel Claude subagents** (spawned via the Task tool) instead of doing it in one pass. See §Authoring a swarm stage.
 
-   Example — a developer step with one thinker reviewing three parallel doers:
-   `{ "kind": "member", "actor": "the-developer", "title": "Implement the Plan", "thinker": "opus", "doers": [{ "model": "minimax-m3", "count": 3 }, "haiku"], "produces": "working implementation" }`
+   Example — a developer step that fans out to three parallel Claude subagents:
+   `{ "kind": "member", "actor": "the-developer", "title": "Implement the Plan", "model": "sonnet", "swarm": { "member": "the-developer", "max_instances": 3, "min_instances": 2, "partition": "by-module", "isolation": "shared-tree", "integration_step": true }, "produces": "working implementation" }`
 
-   These fields are optional and backward-compatible: a step without them still validates. But `build.py` and `conformity_check.py` both **reject** a wrong-role weapon, a weapon outside the member's loadout, or `ultra` on a member who lacks the skill — so when you name a weapon, name it as a field, not only in the `act` prose.
+   These fields are optional and backward-compatible: a step without them still validates. But `build.py` and `conformity_check.py` both **reject** a model outside the Claude registry (`opus`/`sonnet`/`haiku`) or a malformed `swarm` object — so when you name a model, name it as a field, not only in the `act` prose.
 
 6. **Set the workflow `class`, then honour the standards for that class.** Every workflow declares `"class": "mutating"` or `"class": "read-only"`:
    - **mutating** — the run changes guild artefacts (code, skills, members, workflows, docs, the app, the repo). conformity_check can validate what it touched.
@@ -73,7 +72,7 @@ Keep a private ledger: workflow id, date forged, first re-use date, count of re-
 - **Conflating workflow and formation.** A formation is perishable; a workflow is permanent. If you catch yourself forking a workflow mid-run to handle a one-off detour, you are building a formation, not a workflow — let the Butler route it live instead.
 - **Naming in the mundane register.** Workflows named *Step 1, Step 2* or *New Workflow 7* carry no gravity and signal no intent. The guild speaks in the Fallen-Sword register; honour it.
 - **Skipping the artist.** A workflow without art is half a constellation. Always include a handoff so `gen-workflow-art.cjs` gets a prompt in the same pass as the JSON write.
-- **Shipping unreviewed.** You draft; the Quartermaster writes. Do not touch `workflows.json` yourself. The guild gate rule holds: thinker plans, doer executes, nothing ships unreviewed.
+- **Shipping unreviewed.** You draft; the Quartermaster writes. Do not touch `workflows.json` yourself. The guild gate rule holds: the member plans and does the work as its Claude model (fanning out to Claude subagents when big), then reviews — nothing ships unreviewed.
 
 ## Versioning
 Own skill. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new mode/section · MAJOR: method contract change). Regenerate `VERSIONS.md` with `python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.
@@ -129,7 +128,7 @@ When `integration_step: true`, the very next same-actor step in the **same `stag
 }
 ```
 
-This integration step is inline precisely so the Stop-hook Critic (glm-5.2) reviews the **aggregate
+This integration step is inline precisely so the Butler (the live session) reviews the **aggregate
 diff** — not individual slices — before the commit. Never make it a spawn; a spawned integration step
 bypasses the inline verify-gate.
 
@@ -177,5 +176,5 @@ Gotcha: `the-butler`, `the-developer`, etc. — the `the-` prefix is the canonic
   execution skill) and `guild/STEP-SCHEMA.md` (the canonical field reference).
 - **1.3.0** — New §Cast validation after forge: documents the cast-actor lookup gap (unknown actor → enforcer loops forever), adds a one-shot validation command to run after every `workflows.json` write, and calls out the `the-` prefix invariant. Prevents harness lock-up from a typo in `actor`.
 - **1.2.0** — Introduced the workflow **`class`** (`mutating` | `read-only`). The Quartermaster conformance-close is now required **only** for mutating workflows; read-only/advisory workflows end at the Butler report with the worker as the last step, and a ceremonial Quartermaster no-op close is now **rejected**. Stops force-fitting a conformance sweep onto conversation/research runs that change nothing.
-- **1.1.0** — Documented the **structured weapon fields** on member steps (`thinker`, `doers` with parallel `count`, `ultra`), now enforced by `build.py` + `conformity_check.py` and rendered on the dashboard. Step authoring names weapons as fields, not only prose.
+- **1.1.0** — Documented the **structured model fields** on member steps (`model`, and `swarm` for parallel Claude-subagent fan-out), now enforced by `build.py` + `conformity_check.py` and rendered on the dashboard. Step authoring names the Claude model as a field, not only prose.
 - **1.0.0** — Initial release. The Strategist's craft for distilling a finished run into a registered star-map workflow.

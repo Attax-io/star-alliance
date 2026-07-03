@@ -52,17 +52,21 @@ When working on any Supabase task that touches auth, RLS, views, storage, or use
 
 For any security concern not covered above, fetch the Supabase product security index: `https://supabase.com/docs/guides/security/product-security.md`
 
-## Star Alliance Hermes Path (supabase.py)
+## Star Alliance path (Supabase MCP)
 
-Within the Star Alliance guild, bulk SQL and DDL runs through the Hermes-direct path — not the MCP server. The connection string lives in an out-of-repo key file.
+Within the Star Alliance guild, Supabase work is done directly by the Claude session through the
+Supabase MCP — the guild has full read+write access (`execute_sql`, `apply_migration`, and the rest).
+There is no separate database process to shell out to; the live Claude model runs the SQL itself.
 
-```bash
-python3 star-alliance-arsenal/supabase.py 'SELECT count(*) FROM users'
-python3 star-alliance-arsenal/supabase.py -f migration.sql
+```
+execute_sql:     SELECT count(*) FROM users            -- interactive queries, exploration, bulk reads
+apply_migration: <a named migration's DDL/DML>          -- version-tracked schema changes
 ```
 
-Use `supabase.py` when: running DDL migrations, bulk data ops, any Hermes profile needs to touch the database directly.
-Use MCP `execute_sql` for: interactive exploration, one-off queries, when Hermes path unavailable.
+Use `execute_sql` for interactive exploration, one-off queries, and iterating on schema (see "Making
+and Committing Schema Changes" below). Use `apply_migration` only when you want a tracked migration
+history entry. When a job is large, fan the work out to Claude subagents (via the Task tool) — each
+subagent runs its own MCP calls; there is no external executor.
 
 ## Postgres Performance Best Practices
 

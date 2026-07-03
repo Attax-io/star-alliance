@@ -38,7 +38,10 @@ HUMAN_TITLES = {
     "ask the question",
 }
 
-DEFAULT_WEAPON = "minimax-sub"
+# Prose/"delegate" steps are legacy external-doer steps. The external doer
+# layer has been removed (Star Alliance is Claude-only), so delegate() now
+# raises; such steps surface a clear error at run time and the runner continues.
+DEFAULT_WEAPON = "claude"
 
 
 def slugify(s: str) -> str:

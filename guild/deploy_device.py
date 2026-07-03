@@ -4,27 +4,29 @@ deploy_device.py — Star Alliance DEPLOY DEVICE  (full fresh-device orchestrato
 
 Runs the complete setup sequence for bringing a new device up to working order:
 
-    1. Preflight (warn-only) — STAR_ALLIANCE_ROOT resolvable, minimax-sub key,
-       hermes on PATH, node on PATH, pyyaml importable.
-    2. Execute seven setup steps in order, streaming each step's stdout/stderr.
+    1. Preflight (warn-only) — STAR_ALLIANCE_ROOT resolvable, node on PATH,
+       pyyaml importable.
+    2. Execute the setup steps in order, streaming each step's stdout/stderr.
     3. Stop on the first hard error (returncode != 0).
     4. Print a final PASS / FAIL banner.
 
 Usage:
-    python3 guild/deploy_device.py            # run preflight + all 7 steps
+    python3 guild/deploy_device.py            # run preflight + all steps
     python3 guild/deploy_device.py --help     # show CLI options
 
-All seven commands are idempotent — safe to re-run after partial failures or
-on a machine that has already been deployed.
+All commands are idempotent — safe to re-run after partial failures or on a
+machine that has already been deployed.
+
+Star Alliance is a Claude-only harness: there is no external doer/Hermes layer,
+so the old Hermes profile-publish and profile-content steps are gone.
 
 Steps:
     1. python3 guild/install_agents.py
     2. python3 build.py
-    3. python3 tools/publish_profiles.py
-    4. python3 star-alliance-skills/skillsmith/scripts/skill_sync.py plan
-    5. python3 star-alliance-skills/skillsmith/scripts/skill_sync.py apply --profile-content
-    6. python3 .claude/tools/skill_fingerprint.py
-    7. python3 tools/conformity_check.py
+    3. python3 star-alliance-skills/skillsmith/scripts/skill_sync.py plan
+    4. python3 star-alliance-skills/skillsmith/scripts/skill_sync.py apply
+    5. python3 .claude/tools/skill_fingerprint.py
+    6. python3 tools/conformity_check.py
 """
 
 from __future__ import annotations
@@ -60,12 +62,8 @@ SEQUENCE: List[Tuple[str, List[str]]] = [
         [str(REPO_ROOT / "build.py")],
     ),
     (
-        "publish_profiles.py",
-        [str(REPO_ROOT / "tools" / "publish_profiles.py")],
-    ),
-    (
-        # step 4 only REPORTS the sync plan — the actual install of all skills
-        # into the profile directories happens in step 5 via `apply --profile-content`.
+        # step 3 only REPORTS the sync plan — the actual install of all skills
+        # happens in step 4 via `apply`.
         "skill_sync (plan)",
         [
             str(REPO_ROOT / "star-alliance-skills" / "skillsmith" / "scripts" / "skill_sync.py"),
@@ -73,10 +71,10 @@ SEQUENCE: List[Tuple[str, List[str]]] = [
         ],
     ),
     (
-        "skill_sync (apply --profile-content)",
+        "skill_sync (apply)",
         [
             str(REPO_ROOT / "star-alliance-skills" / "skillsmith" / "scripts" / "skill_sync.py"),
-            "apply", "--profile-content",
+            "apply",
         ],
     ),
     (
@@ -126,20 +124,11 @@ def preflight() -> List[str]:
             f"(env unset and default {DEFAULT_REPO} missing)"
         )
 
-    # 2. minimax-sub key on disk
-    key = Path.home() / ".config" / "minimax" / "m3.key"
-    if not key.is_file():
-        warnings.append(f"minimax-sub key missing: {key} (needed for minimax-sub model)")
-
-    # 3. hermes on PATH
-    if not _which("hermes"):
-        warnings.append("'hermes' not on PATH (run `hermes --version` to verify install)")
-
-    # 4. node on PATH
+    # 2. node on PATH
     if not _which("node"):
         warnings.append("'node' not on PATH (some skills require node)")
 
-    # 5. pyyaml importable
+    # 3. pyyaml importable
     try:
         import yaml  # noqa: F401
     except ImportError:

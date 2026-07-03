@@ -26,7 +26,7 @@ timestamp: 2026-06-27T00:00:00Z
 ## Constitution Check
 > GATE: must pass before design. Re-check after design. In this guild the constitution is
 > `CLAUDE.md` + guild conduct.
-- [ ] Plan obeys CLAUDE.md (reading discipline, guild conduct, doer-first, no unrequested changes)
+- [ ] Plan obeys CLAUDE.md (reading discipline, guild conduct, subagents for bulk, no unrequested changes)
 - [ ] No destructive op without the confirm gate
 - [ ] Reuses existing components/tokens before creating new (grep first)
 - [ ] [project-specific principle …]

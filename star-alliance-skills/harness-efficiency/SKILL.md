@@ -18,8 +18,9 @@ streams Phase 0 laid down and turns them into a number you act on — and tunes 
 
 Two append-only streams, joined by `tools/efficiency_report.py`:
 
-- **`star-alliance-arsenal/usage-log.jsonl`** — one record per offloaded model call (the cheap bench
-  doing doer-grade work), now carrying `phase` (`"offload"`) and `wall_ms` (the real round-trip).
+- **`star-alliance-arsenal/usage-log.jsonl`** — one record per subagent call (a cheaper Claude
+  worker — Haiku or Sonnet — doing bulk work fanned out from the session), now carrying `phase`
+  (`"offload"`) and `wall_ms` (the real round-trip).
 - **`data/turn-cost.jsonl`** — one record per assistant turn, written by the `turn-cost.py` Stop hook:
   the turn's Opus `in`/`out` tokens (+ cache) and the routing **tier** (`lite` / `full` / `unknown`),
   detected from the `SA-GATE:<TIER>` marker the routing gate injects.
@@ -32,16 +33,16 @@ python3 tools/efficiency_report.py --days 7        # trailing window
 python3 tools/efficiency_report.py --json          # raw, for further analysis
 ```
 
-It prints three blocks: **OFFLOAD** (calls, out-tokens, median `wall_ms` per bench model — proves
-where offload actually goes; ~99% is `minimax-m3`), **PREMIUM** (per-turn Opus tokens split by tier,
-with median in/turn — proves the LITE path is cheaper), and **NET** (a conservative proxy: bench
-out-tokens displaced − premium out-tokens, with the assumption printed inline so the number stays
-honest).
+It prints three blocks: **OFFLOAD** (calls, out-tokens, median `wall_ms` per worker model — proves
+where fanned-out work actually goes; almost all is cheaper Sonnet/Haiku subagents), **PREMIUM**
+(per-turn Opus tokens split by tier, with median in/turn — proves the LITE path is cheaper), and
+**NET** (a conservative proxy: subagent out-tokens displaced − premium out-tokens, with the
+assumption printed inline so the number stays honest).
 
 ## What to watch — the read each run
 
 1. **Net trend.** Is displaced output growing relative to premium spend? Falling net = the harness is
-   doing more bookkeeping than offloading; investigate which turns went FULL that should be LITE.
+   doing more bookkeeping than fanning out; investigate which turns went FULL that should be LITE.
 2. **Tier split.** `median in/turn` for **lite** should be materially below **full** (the gate's whole
    point — LITE injects ~200 tokens, FULL ~1060). If they converge, the classifier is sending too much
    to FULL — loosen the size signals, or the prompts genuinely are high-stakes.
@@ -84,11 +85,11 @@ proof. The baseline is complete when the LITE-vs-FULL split has enough turns on 
 data/harness.json policy   →  the stakes/size lever (what the gate reads)
 guild-routing-gate.sh      →  injects LITE/FULL + the SA-GATE marker
 turn-cost.py (Stop)        →  records per-turn premium + tier
-arsenal usage-log.jsonl    →  records every offload call + wall_ms
+arsenal usage-log.jsonl    →  records every subagent call + wall_ms
    efficiency_report.py    →  joins them → net-saved + tier split   ← this skill drives it
 ```
 
-Pairs with [[weapon-utility]] (offload is where the bench tokens come from) and the
+Pairs with [[weapon-utility]] (subagent fan-out is where the displaced tokens come from) and the
 [[scheduled-watch]] skill (run this weekly and alert on a regression rather than checking by hand).
 
 ## The doctrine behind the levers
@@ -103,7 +104,7 @@ guild-framed and efficiency-read:
 - **The error path is the main path** — design recovery, retry-caps, and anti-loop guards up front;
   on max-output-tokens, continue, don't re-summarize. Stops silent token burn from failure replays.
 - **Verification must be independent** — never let the implementer grade itself; verify in a separate
-  stage/role. An independent verify by a cheap doer beats a wrong premium turn.
+  stage/role. An independent verify by a cheaper Claude subagent beats a wrong premium turn.
 - **Multi-agent partitions uncertainty** — isolate state and roles (research / implement / verify /
   synthesize); parallelism's real win is smaller contexts and clearer boundaries.
 

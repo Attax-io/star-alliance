@@ -21,7 +21,7 @@ which path a brief is taking, because they look different and the user is owed t
 1. **Image-based video.** Generate (or fetch) still images, then a composition engine
    (Remotion, HyperFrames) animates them — crossfade, parallax, camera motion (zoom/pan/Ken
    Burns), particle overlays. Cheapest path, looks animated, but it is *not motion footage*.
-2. **Generated motion video.** A video model (Veo, Kling, Runway, MiniMax, WAN-local, …)
+2. **Generated motion video.** A video model (Veo, Kling, Runway, WAN-local, …)
    produces actual moving clips. Cinematic, costs more.
 3. **Real-footage / documentary montage.** Build a corpus of **actual motion clips** from
    free stock + open archives, rank them semantically, and cut them into a timeline. No paid

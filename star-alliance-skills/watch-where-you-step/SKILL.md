@@ -2,9 +2,9 @@
 name: watch-where-you-step
 description: "Use when about to run a direct write (UPDATE/DELETE/INSERT or DDL) against a database or via the Supabase MCP (execute_sql, apply_migration). Triggers: 'update this row', 'delete from this table', 'insert into', 'run this migration', 'truncate', 'drop column', 'apply this DDL', 'execute this SQL'. Teaches the cascade-check doctrine — walk FK ON DELETE/UPDATE CASCADE chains, dependent views, and triggers on the target table BEFORE the write runs, and stop if the blast radius is non-empty."
 metadata:
-  author: Hermes Agent
+  author: Star Alliance
   version: 1.0.0
-  hermes:
+  catalog:
     tags: [databases, postgresql, supabase, cascades, safety, doctrine, data-integrity]
     related_skills: [supabase, supabase-postgres-best-practices, schema-evolution, db-rename-sweep, bundled-rls, code-crime-scene, destructive-gate]
 type: Skill

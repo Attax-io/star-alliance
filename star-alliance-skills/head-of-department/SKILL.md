@@ -51,7 +51,7 @@ Each sub-worker reports to its head, not to the orchestrator above. The head run
 | Swarm MOVES (scout/cut/brief/fan-out/integrate) | [[decompose-and-swarm]] |
 | Team doctrine (roles, spec gates, QAS) | [[safe-agentic-orchestration]] |
 | Workflow selection (who runs what) | [[members-formation]] |
-| Model seats (Brain / Doer / Critic) | [[weapon-utility]] |
+| Which Claude model a member runs as | [[weapon-utility]] |
 | Swarm memory / shared state | [[core-swarm]] |
 | Caps (depth=2, swarm=5, tree=12) | **this skill** |
 

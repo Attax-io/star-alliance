@@ -121,9 +121,10 @@ Write the left column. The right column belongs in the plan, not the spec.
    WHAT/WHY only. Store feature artifacts under `specs/<NNN>-<short-name>/`.
 3. **Gate, don't gallop.** Run each phase's checklist before advancing. Unresolved
    `[NEEDS CLARIFICATION]` (max 3) or a failed Constitution Check stops the line.
-4. **Draw your doer.** Per `weapon-utility`, hand the bulk drafting of spec/plan/tasks to a
-   doer (minimax-m3 first): plan the structure → prompt the doer with the template → review
-   the draft against the gate → re-prompt until it conforms. The thinker holds the gate.
+4. **Fan out the drafting.** Per `weapon-utility`, hand the bulk drafting of spec/plan/tasks to a
+   Claude subagent (spawned via the Task tool, a cheaper Sonnet/Haiku worker): plan the structure →
+   prompt the subagent with the template → review the draft against the gate → re-prompt until it
+   conforms. The coordinating member holds the gate.
 5. **Slice to MVP.** Tasks grouped by user story, P1 is the smallest viable slice. Ship and
    validate US1 before US2.
 6. **Implement on checkpoints.** Stop after each story, prove it independently, then continue.
@@ -147,7 +148,7 @@ Write the left column. The right column belongs in the plan, not the spec.
 
 `ultra-brainstorming` (contested design inside /plan) · `conquering-campaign` (execution engine
 for the resulting tasks) · `schema-evolution` (when the plan adds a data-model field) ·
-`graphify` (visualize the plan's structure) · `weapon-utility` (doer dispatch for drafting).
+`graphify` (visualize the plan's structure) · `weapon-utility` (subagent fan-out for drafting).
 
 ## Changelog
 

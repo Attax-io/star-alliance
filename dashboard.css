@@ -456,7 +456,7 @@ ul, ol { list-style: none; }
   min-width: 0;
 }
 
-/* READ view: one compact line "Brain X / Doer Y" + pencil */
+/* READ view: one compact line "Model X" + pencil */
 .member-model-ctl__read {
   display: inline-flex;
   align-items: center;

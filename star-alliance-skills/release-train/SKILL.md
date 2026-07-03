@@ -55,7 +55,7 @@ Every version shown on any surface — the dashboard, the app, a status line —
 - **Adept** — predicts stamp drift before it surfaces, orders merges to minimize conflict surface, holds the build green as a reflex rather than a check.
 - **Master** — drives the train from a CI runbook; the manual checklist is a fallback for a release that genuinely needs human hands. The pace is steady; the seal is rarely broken.
 
-**The gate rule binds you here.** Your thinker weapon plans the train — merge order, version number, stamp targets — and reviews the final diff. Your doer weapon executes the merges, writes the log, and pushes. Nothing ships unreviewed; a release is a sealed document, not a draft.
+**The gate rule binds you here.** You (the member) plan the train — merge order, version number, stamp targets — and review the final diff; a spawned Claude subagent can carry out the mechanical merges, write the log, and push. Either way, a second, independent Claude reviews the final diff before it ships. Nothing ships unreviewed; a release is a sealed document, not a draft.
 
 **Measure:** time-to-release, number of post-release hotfixes, stamp-drift count per release, number of red builds caught before push, ratio of first-pass clean merges to those needing rework.
 

@@ -16,7 +16,7 @@ You are not authoring a procedure here (that is **workflow-forge**) and not choo
 
 - **Is:** running an existing `workflows.json` workflow via `python3 guild/run.py "<name>"`; reading its `run_summary.md`; invoking `frame_brief.py`, `plan.py`, `efficiency_report.py`, `member_level.py` standalone.
 - **Is not:** authoring a workflow (workflow-forge), selecting a workflow for a request (members-formation), or versioning a skill (skillsmith). It runs what already exists; it does not write to `workflows.json`.
-- **Is not:** a substitute for judgement. The runner mechanises the *mechanical* steps (scripts, prose delegations, gate halts); a member step that bundles judgement still stays prose and routes to a weapon — the runner does not replace the thinker.
+- **Is not:** a substitute for judgement. The runner mechanises the *mechanical* steps (scripts, prose delegations, gate halts); a member step that bundles judgement still stays prose and routes to a Claude subagent — the runner does not replace the member's own thinking.
 
 ## Principles
 
@@ -24,7 +24,7 @@ You are not authoring a procedure here (that is **workflow-forge**) and not choo
 `python3 guild/run.py "<Workflow Name>"` looks up the workflow case-insensitively in `workflows.json` and walks its `steps[]` in order. For each step it computes one of three resolutions and prints `[i/total] <title>  ->  (<resolution>)`:
 
 - `script:<path>` — the step carries a `script` field; the runner executes `python3 <path>` (highest-priority resolver).
-- `prose:<actor>/<weapon>` — no script, so the runner sends `act` + any `inputs` to the member's weapon via `delegate()` (defaults to `minimax-m3`).
+- `prose:<actor>/<model>` — no script, so the runner routes `act` + any `inputs` to the member's Claude model: spawn a Claude subagent via the Task tool (`subagent_type` = the step's `actor`; defaults to `sonnet`).
 - `human` — `actor` is `user`/`you`, the `title` is in `HUMAN_TITLES` (place the order, report the bug, request the build, ask the question), or the step is a gate.
 
 **Always dry-run first** to see the resolution without spending tokens or touching files:
@@ -45,11 +45,11 @@ cat runs/conformance-sweep/run_summary.md
 
 `runs/` is gitignored scratch and outside conformity scope — it is never flagged as stray. Cap it with `python3 guild/prune_runs.py --keep N`.
 
-### 3. A gate is a hard halt — the runner stops and waits for a human, never routes a gate to a weapon
+### 3. A gate is a hard halt — the runner stops and waits for a human, never routes a gate to a subagent
 A step with `kind: gate` (or a `gate` field) is an approval checkpoint. `resolve_step` forces it to `human`, and when the runner reaches it the run **breaks** with `⏸ step i '<title>' — approval gate: <label>` and exits non-zero (`return 1`). It does not skip ahead. Two other halt paths exist for `script` steps: a `gate`-marked script that exits non-zero halts the whole run, and a step's `verify` script that exits non-zero halts it too. A passive human step (actor `you`, e.g. "Place the Order") merely *continues* — only a true gate stops the run. So a workflow that ends at the Butler's report gate will halt there by design; resume by acting on the gate, then re-running the downstream steps.
 
 ### 4. For framing and planning, call the two primitives directly — a full workflow is often overkill
-Both reuse `guild/delegate.py` so spend auto-logs to the arsenal ledger, default to `minimax-m3`, and accept a file path *or* literal text as `--in`.
+Both reuse `guild/delegate.py` so spend auto-logs to the arsenal ledger, default to Claude model `sonnet`, and accept a file path *or* literal text as `--in`.
 
 **Frame a raw request into a structured brief** (summary / scope / acceptance):
 ```
@@ -81,7 +81,7 @@ python3 tools/member_level.py promote --all             # confer every due membe
 ```
 `report` is read-only and safe. `promote` writes a conferred level, logs a `member-upgrade` entry, rebuilds, and runs the conformity close — it **refuses** to confer a tier above what was earned, and needs `--demote` to regress. Add `--yes` to skip the prompt.
 
-### 6. Operating the machinery is itself doer-grade — run, then read the artifact, then judge
+### 6. Operating the machinery is itself hands-on work — run, then read the artifact, then judge
 The runner does the walking; you bring the judgement at the gates and on the produced artifacts. Run it, open `run_summary.md` or the `--out` file, and decide. Don't hand-simulate a workflow you could execute, and don't trust a console line you could verify by reading the file the step wrote.
 
 ## References

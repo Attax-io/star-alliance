@@ -836,8 +836,8 @@
     "blurb": "Mine past sessions for lessons, verify against the live repo, ship a ranked upgrade plan",
     "level": "Advanced",
     "tabler": "ti-pick",
-    "triggers": "'review the last N sessions', 'mine my sessions', 'what did we learn from these sessions', 'what should we upgrade/merge/create from past work', 'audit the sessions for lessons', 'note down skills we can extract', or any retrospective over prior runs. Locates all three session stores, signal-extracts with offset/limit discipline (no blind read), doer-summarizes via MiniMax, STORM-synthesizes, then VERIFIES against the repo to kill every lesson already shipped. Propose-only.",
-    "modes": "Six phases: locate stores → map (session_map.py) → signal-extract (mine_sessions.py, never blind-read) → doer-summarize (MiniMax) → STORM synthesize → verify-against-repo → propose-only register. On-demand companion to skillsmith's daily routine."
+    "triggers": "'review the last N sessions', 'mine my sessions', 'what did we learn from these sessions', 'what should we upgrade/merge/create from past work', 'audit the sessions for lessons', 'note down skills we can extract', or any retrospective over prior runs. Locates all three session stores, signal-extracts with offset/limit discipline (no blind read), fans summarizing out to Claude subagents, STORM-synthesizes, then VERIFIES against the repo to kill every lesson already shipped. Propose-only.",
+    "modes": "Six phases: locate stores → map (session_map.py) → signal-extract (mine_sessions.py, never blind-read) → summarize (Claude subagents) → STORM synthesize → verify-against-repo → propose-only register. On-demand companion to skillsmith's daily routine."
   },
   "skillsmith": {
     "icon": "🛠️",
@@ -869,7 +869,7 @@
     "level": "Advanced",
     "tabler": "ti-cyclone",
     "triggers": "on 'research this topic', 'run STORM', 'STORM this', 'investigate X deeply', 'deep dive on X', 'multi-perspective research', '5 expert perspectives', 'contradiction map', 'give me a research briefing', 'red-team this idea', or research before a decision — writing, investing, negotiating, interviewing, presenting, learning. The Stanford OVAL Lab method (NAACL 2024): one prompt returns the majority view; five contrasting personas catch the blind spots.",
-    "modes": "Inline (default) — run the four prompts in sequence, ~5 min, one briefing; Fan-out — one doer per persona in parallel (MiniMax M3 default, Claude sub-agents/Workflow when tools or structured output needed), then synthesize. Optional source-grounding via web/MCP."
+    "modes": "Inline (default) — run the four prompts in sequence, ~5 min, one briefing; Fan-out — one Claude subagent per persona in parallel (via the Task tool), then synthesize. Optional source-grounding via web/MCP."
   },
   "strategies-review": {
     "icon": "📋",

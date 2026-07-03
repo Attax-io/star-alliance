@@ -3,21 +3,23 @@ type: Document
 timestamp: 2026-07-02T12:28:13Z
 ---
 
-# Star Alliance — Hermes
+# Star Alliance
 
-A guild of AI agents. The Butler is the single Hermes profile the Guild Master
-talks to; every other agent is a specialist dispatched as a subagent via
-`delegate_task`. Each agent is defined as a `.md` file in this project directory
-— not a separate Hermes profile.
+A guild of AI agents — Claude-only. The Butler is the active session persona the
+Guild Master talks to; every other member is a Claude specialist the session
+routes to, and larger jobs fan out into Claude **subagents** (via the Task tool).
+Each member is defined as a `.md` file in this project directory. The guild is
+also published as an MCP server that other projects can draw skills and members
+from.
 
 ## Structure
 
 ```
-star-alliance-hermes/
-├── AGENTS.md                ← guild charter; auto-loaded by Hermes
+star-alliance/
+├── AGENTS.md                ← guild charter
 ├── IDEA.md                  ← this file
 ├── the-butler.md            ← the Butler's identity (the voice the Guild Master talks to)
-├── agents/                  ← source-of-truth agent definitions
+├── star-alliance-members/   ← source-of-truth member definitions
 │   ├── the-architect.md
 │   ├── the-developer.md
 │   ├── the-designer.md
@@ -25,11 +27,11 @@ star-alliance-hermes/
 │   ├── the-interpreter.md
 │   ├── the-herald.md
 │   ├── the-merchant.md
+│   ├── the-steward.md
 │   └── the-quartermaster.md
-├── star-alliance-skills/    ← 94 guild skills
-├── star-alliance-arsenal/   ← model registry + summon scripts
+├── star-alliance-skills/    ← guild skills
 ├── workflows.json           ← the routing star map
-├── server/                  ← MCP gate server
+├── server/                  ← MCP server (serves skills + members to other projects)
 ├── guild/                   ← guild Python scripts
 ├── tools/                   ← build and utility scripts
 ├── evolution/               ← autonomous skill evolution engine
@@ -39,44 +41,45 @@ star-alliance-hermes/
 
 ## The Roster
 
-| Agent | File | Role | Model seat |
-|---|---|---|---|
-| The Butler | `the-butler.md` | Orchestrator — intake, voice, approval, report | Thinker (GLM-5.2) |
-| The Strategist | `agents/the-strategist.md` | Router — decides who handles what | Thinker (GLM-5.2) |
-| The Architect | `agents/the-architect.md` | Systems design, domain modeling, databases | Thinker (GLM-5.2) |
-| The Developer | `agents/the-developer.md` | Code, bugs, implementation, dev servers | Thinker (GLM-5.2) + Doer (MiniMax M3) |
-| The Designer | `agents/the-designer.md` | UI/UX, visual quality, brand kits | Thinker (GLM-5.2) + Doer (MiniMax M3) |
-| The Interpreter | `agents/the-interpreter.md` | Legal codex, law translation, locales | Thinker (GLM-5.2) + Doer (MiniMax M3) |
-| The Herald | `agents/the-herald.md` | Marketing, growth, demand generation | Thinker (GLM-5.2) + Doer (MiniMax M3) |
-| The Merchant | `agents/the-merchant.md` | Investment analysis, trading, markets | Thinker (GLM-5.2) + Doer (MiniMax M3) |
-| The Quartermaster | `agents/the-quartermaster.md` | Skills, syncing, conformance | Thinker (GLM-5.2) |
+Every member is a single Claude model. The Architect runs as **opus**; the
+Quartermaster runs as **haiku**; every other member runs as **sonnet**. There is
+no second worker behind a member — the same Claude mind that thinks does the work,
+and spawns Claude subagents when a job needs many hands at once.
 
-**Model assignment:** Thinker (Brain) = GLM-5.2 · Doer = MiniMax M3 · Critic = Kimi K2.7.
-Claude models remain in the arsenal as reserve, never as default seats.
+| Member | File | Role | Model |
+|---|---|---|---|
+| The Butler | `the-butler.md` | Orchestrator — intake, voice, approval, report | Claude |
+| The Strategist | `star-alliance-members/the-strategist.md` | Router — decides who handles what | Claude (opus) |
+| The Architect | `star-alliance-members/the-architect.md` | Systems design, domain modeling, databases | Claude (opus) |
+| The Developer | `star-alliance-members/the-developer.md` | Code, bugs, implementation, dev servers | Claude (sonnet) |
+| The Designer | `star-alliance-members/the-designer.md` | UI/UX, visual quality, brand kits | Claude (sonnet) |
+| The Interpreter | `star-alliance-members/the-interpreter.md` | Legal codex, law translation, locales | Claude (sonnet) |
+| The Herald | `star-alliance-members/the-herald.md` | Marketing, growth, demand generation | Claude (sonnet) |
+| The Merchant | `star-alliance-members/the-merchant.md` | Investment analysis, trading, markets | Claude (sonnet) |
+| The Steward | `star-alliance-members/the-steward.md` | Customer service, support triage, relationships | Claude (sonnet) |
+| The Quartermaster | `star-alliance-members/the-quartermaster.md` | Skills, syncing, conformance | Claude (haiku) |
 
 ## How it works
 
-The Guild Master talks to the Butler — the single Hermes profile in this project.
-The Butler restates the order, hands it to the Strategist, and the Strategist
-scans **`workflows.json`** (the routing star map) to match the request's shape to
-a named workflow — each declaring its agents, arrangement, and gates. If no
+The Guild Master talks to the Butler — the active Claude session persona. The
+Butler restates the order, hands it to the Strategist, and the Strategist scans
+**`workflows.json`** (the routing star map) to match the request's shape to a
+named workflow — each declaring its members, arrangement, and gates. If no
 workflow fits, the Strategist forms a candidate and the Quartermaster's Workflow
 Forge crystallizes it.
 
-Each specialist is dispatched via `delegate_task` as a subagent: its own isolated
-conversation, terminal session, and tool context — but not a separate Hermes
-profile. The Butler tracks the work through its **gates**, which run automatically as
-Claude Code hook scripts (`.claude/hooks/*.py`, on `PreToolUse` and `Stop`) — the
-verify-gate (runs the Critic on the diff), the destructive-command gate, and the
-delegation gate fire at the right points in the loop with no explicit call. The
-guild's one MCP server, `mcp/server.py`, exposes the roster (`list_skills`,
-`list_agents`, `invoke_skill`, `dispatch_agent`) — it is not a gate server.
+Each specialist runs as a Claude subagent: its own isolated conversation and tool
+context. When a job is big enough to need several helpers at once, the session
+fans out multiple Claude subagents in parallel, then reviews and integrates their
+returns. The Butler tracks the work through its **gates**. The one hard gate left
+is the destructive-command gate (`.claude/hooks/destructive-gate.py`) that blocks
+irreversible shell and SQL commands; the rest of the old blocking gates are
+retired to non-blocking reminders and loggers.
 
-Agents draw weapons (models) from the **arsenal** (`star-alliance-arsenal/`) via
-`summon.py`, and wield skills from `star-alliance-skills/` (94 guild skills,
-referenced by name in each agent's frontmatter). The **evolution engine**
-(`evolution/`) runs a closed SENSE → DIAGNOSE → CHANGE → VERIFY → REMEMBER loop
-that autonomously improves skills — every change gets an independent Critic
-verdict (Kimi K2.7) and a fitness score before it sticks.
+Members wield skills from `star-alliance-skills/` (referenced by name in each
+member's frontmatter). The guild's MCP server (`server/`) serves those skills and
+members to other projects. The **evolution engine** (`evolution/`) runs a closed
+SENSE → DIAGNOSE → CHANGE → VERIFY → REMEMBER loop that improves skills — every
+change earns an independent review and a fitness score before it sticks.
 
 The Butler reports the result back to the Guild Master in plain English.

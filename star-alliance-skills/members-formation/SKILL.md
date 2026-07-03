@@ -245,7 +245,7 @@ MAJOR: method contract change). Regenerate `VERSIONS.md` with
   and route" section: members-formation recognizes `swarm` as a pattern and delegates all
   decomposition to `[[decompose-and-swarm]]`; no decomposition logic lives here. New pattern row
   + new section → MINOR.
-- **1.2.0** — New **failure-mode routing** section + `references/failure-mode-routing.md`: a table mapping every mid-work stuck (bug, missing spec, scope overflow, vague intent, high-stakes ambiguity, doer miss, no-workflow, missing-role) to a deterministic owner, so a blocked agent declares the failure mode instead of silently retrying. New section → MINOR.
+- **1.2.0** — New **failure-mode routing** section + `references/failure-mode-routing.md`: a table mapping every mid-work stuck (bug, missing spec, scope overflow, vague intent, high-stakes ambiguity, subagent miss, no-workflow, missing-role) to a deterministic owner, so a blocked agent declares the failure mode instead of silently retrying. New section → MINOR.
 - **1.1.1** — Workflow-catalog fix: the Hygiene & Release row now lists **Compliance Audit** (the merged Conformity Sweep + OKF Tidy) instead of the old "Conformity Sweep". Wording/refs → PATCH.
 - **1.1.0** — Reframed around the Butler's true job: **workflow selection, not member assembly**.
   Workflow-matching is now the primary five-step method (scan `workflows.json` `when` triggers →
