@@ -1,10 +1,26 @@
 model:
-  default: "opus"
-  provider: "ollama-launch"
-  api_key: "ollama"
-  base_url: "http://127.0.0.1:11434/v1"
+  default: MiniMax-M3
+  provider: custom:minimax-sub
+  primary: custom:minimax-sub
+  fallback: custom:minimax-payg
 
 providers:
+  custom:minimax-sub:
+    api: https://api.minimax.io/v1
+    default_model: MiniMax-M3
+    key_env: MINIMAX_SUB_KEY
+    models:
+      - MiniMax-M3
+      - glm-5.2
+    name: MiniMax Sub
+  custom:minimax-payg:
+    api: https://api.minimax.io/v1
+    default_model: MiniMax-M3
+    key_env: MINIMAX_PAYG_KEY
+    models:
+      - MiniMax-M3
+      - glm-5.2
+    name: MiniMax PayG
   ollama-launch:
     api: http://127.0.0.1:11434/v1
     default_model: glm-5.2:cloud
