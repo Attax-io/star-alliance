@@ -749,9 +749,9 @@ def load_models(repo: Path) -> dict:
 
 
 def load_seats(repo: Path) -> dict:
-    """The universal role seats (Brain/Doer/Critic/Bench) from models.json.
+    """The universal role seats (Brain/Doer/Bench) from models.json.
     Emitted into guild-data as GUILD.seats so the dashboard renders the seat layer
-    (and the Critic, which had no surface) instead of per-member loadouts."""
+    instead of per-member loadouts."""
     try:
         return json.loads((repo / "star-alliance-arsenal" / "models.json").read_text()).get("seats", {})
     except Exception:

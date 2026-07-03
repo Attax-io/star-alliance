@@ -846,3 +846,5 @@
 {"timestamp": "2026-07-03T08:12:11.215630Z", "kind": "spawn", "agent": "the-strategist", "description": "Route notes bug investigation"}
 {"timestamp": "2026-07-03T08:17:31.201149Z", "kind": "spawn", "agent": "the-strategist", "description": "Verify notes bug claims"}
 {"timestamp": "2026-07-03T08:21:17.019774Z", "kind": "spawn", "agent": "the-strategist", "description": "Route scheduled-tx audit task, retry 5"}
+{"timestamp": "2026-07-03T08:23:47.837758Z", "command": "cd /Users/attaselim/Documents/Claude/Projects/star-alliance 2>/dev/null; ls tools/dispatch.py star-alliance-arsenal/supabase.py 2>&1; echo \"---supabase reader help---\"; python3 star-alliance-arsenal/supabase.py --help 2>&1 | head -30", "agent": "star-alliance-arsenal/supabase.py"}
+{"timestamp": "2026-07-03T08:29:17.632268Z", "kind": "spawn", "agent": "the-strategist", "description": "Route bug 332 investigation"}

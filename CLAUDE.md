@@ -76,7 +76,7 @@ mode by default (SELECT/WITH only; `--write` flag required for writes, hidden fr
 This repo runs a three-layer system. Claude is the orchestrator; Hermes profiles
 do the actual specialist work. The `models.json` in `star-alliance-arsenal/`
 describes the Hermes-side model seats — **do not edit it from the Claude side**
-unless you understand the triple-seat system below.
+unless you understand the two-seat system below.
 
 **Layer 1 — Claude Butler (this repo, this session).**
 The Butler runs as a Claude model (Opus/Sonnet). It takes orders, restates them,

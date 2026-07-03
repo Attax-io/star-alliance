@@ -4241,6 +4241,13 @@
       "title": "Routing: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+8 more)",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Routing: CLAUDE.md, build.py, star-alliance-members/the-strategist.md (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130

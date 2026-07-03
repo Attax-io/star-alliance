@@ -15,7 +15,7 @@ Checks (each maps to a source-of-truth invariant or a logged decision):
   D23 report-gate  every workflow ENDS with a Butler 'report' gate   (decision #23)
   C  qm-close      every workflow's last agent step before report is the-quartermaster
   BR brain         each agent's session model (model:) is a registry thinker (brain = personality)
-  ST seats         models.json `seats` valid (Brain/Doer/Critic/Bench) + critic family != brain family
+  ST seats         models.json `seats` valid (Brain/Doer/Bench) + brain backend == claude, doer backend != claude
   R  refs          workflow actors ∈ agents∪{you}; gates valid; agent skills exist
   SD skill-drills  every agent-carried skill has a `## Skill Drills` table row
   SDC swarm-consumed swarm-declaring step also sets exec:"spawn", AND guild/run.py's
@@ -994,8 +994,8 @@ def main():
 
     # === AL — architecture-layer coherence (CLAUDE.md + AGENTS.md) ===
     # Both instruction files must describe the three-layer architecture and the
-    # triple-seat model system. If both exist, their model tables must match the
-    # seats in models.json (brain default, doer default, critic default).
+    # two-seat model system. If both exist, their model tables must match the
+    # seats in models.json (brain default, doer default).
     _AL_KEYWORDS = ["three-layer architecture"]
     try:
         models_json_seats = json.loads(
@@ -1003,7 +1003,7 @@ def main():
     except Exception:
         models_json_seats = {}
     _al_seat_defaults = {}
-    for seat in ("brain", "doer", "critic"):
+    for seat in ("brain", "doer"):
         s = models_json_seats.get(seat) or {}
         dflt = s.get("default")
         if dflt:
@@ -1018,7 +1018,7 @@ def main():
         for kw in _AL_KEYWORDS:
             if kw not in _al_txt:
                 fails.append(f"AL {_al_file_name}: missing keyword '{kw}' "
-                             f"(expected: three-layer architecture + triple-seat model names)")
+                             f"(expected: three-layer architecture + two-seat model names)")
         # If both files exist and we have seat defaults, verify the model table matches
         # Look for model table rows like "| **Thinker (Brain)** | GLM-5.2 |" or "| Brain | glm-5.2 |"
         if _al_seat_defaults:
@@ -1029,7 +1029,6 @@ def main():
                 seat_aliases = {
                     "brain": [r"brain", r"thinker"],
                     "doer":  [r"doer"],
-                    "critic": [r"critic"],
                 }
                 found = False
                 for alias in seat_aliases.get(seat, [seat]):
