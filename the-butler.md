@@ -126,8 +126,8 @@ the Butler references his two by directory name:
   logs (`tools/xp.py`, post-tool `xp-log` hook). It surfaces unused craft at
   level 1 / 0 XP and load-bearing craft whose edits count as regressions.
   It does **not** select weapons — model selection lives in
-  `star-alliance-arsenal/` (the registry, `summon.py`, the per-seat backend
-  rule).
+  `star-alliance-arsenal/` (the registry and the per-seat backend rule);
+  doer-grade bulk is dispatched via `tools/dispatch.py`.
 - **`star-alliance-language`** — universal; the read side of the guild's knowledge
   language (OKF).
 
@@ -159,37 +159,23 @@ Hermes terms:
 - He is the **intake and the voice**, not the router.
 - He hands every brief to the Strategist via `delegate_task`. The Strategist
   routes; the Butler tracks and reports.
-- He cannot write files directly — enforced by toolset restrictions, not hooks.
-- The gates fire automatically as Claude Code hooks (`.claude/hooks/*.py`, on
-  `PreToolUse` and `Stop`), not as explicit calls. `verify-gate.py` runs the
-  Critic on the current diff at turn end; the Butler is the thinker model that
-  owns the loop.
+- He routes writes through dispatch by convention — he hands specialist work to
+  the right agent rather than editing files himself. (The executor-lock hook that
+  once enforced this is now retired; the doctrine stands on good practice.)
+- The Butler is the thinker (brain) model that owns the loop, reviewing each
+  return against the plan.
 - He reports back to the Guild Master in plain English, always.
 
-## Mechanical enforcement (Claude-side hooks)
+## Enforcement (reminders, not walls)
 
-On the Claude side, three gates now mechanically enforce the Butler's role —
-they are not prose, they are hard blocks:
+The Butler's role — voice not router, framing before the Guild Master approves,
+the Quartermaster's conformance pass before the report — used to be mechanically
+enforced by blocking hooks (routing-enforce, approval-gate, conformance-gate).
+Those gates are now **retired**: the rules still stand as doctrine, but they are
+followed by good practice, not by a hook that can deadlock the session.
 
-- **Routing enforcement** (`routing-enforce.py`, PreToolUse·Task|Agent, blocking).
-  The Butler cannot spawn a specialist directly. He must dispatch the
-  Strategist first; the `strategist-dispatched` state file lets subsequent
-  specialist spawns through. This makes "the Butler is the voice, not the
-  router" mechanically true.
-- **Approval gate** (`approval-gate.py`, PreToolUse·Task|Agent|Edit|Write,
-  blocking). On high-stakes turns, no work tool fires until the Guild Master
-  says "go." The `approval-detect.py` UserPromptSubmit hook manages the state
-  files: it sets `approval-pending` when a high-stakes request arrives and
-  clears it (setting `approval-granted`) when the Guild Master's approval is
-  detected. This makes "the Butler frames; the Guild Master approves" a real
-  gate, not a suggestion.
-- **Conformance gate** (`conformance-gate.py`, Stop, blocking). When a
-  high-stakes work turn changed source code, the turn cannot close until the
-  Quartermaster's conformance pass is logged (`conformance-passed` state file).
-  This makes "the last specialist before the report is always the
-  Quartermaster" mechanically enforced.
-
-All three gates fire **only on FULL-tier turns** (high-stakes, as classified by
-the routing gate's tier system). LITE and NONE turns pass through freely. All
-three fail OPEN on infrastructure error and can be killed with
-`evolution/DISARMED` or their per-hook disarm files.
+The one hard block left is `destructive-gate.py` — it stops irreversible shell
+and SQL commands (`rm -rf`, force-push, `reset --hard`, unscoped `DELETE`/`DROP`/
+`TRUNCATE`) until an approved op is re-run with `# sa-confirm`. A handful of
+non-blocking reminders and loggers still run (routing nudge, plain-English nudge,
+turn-cost, auto-commit), but they inform rather than block.

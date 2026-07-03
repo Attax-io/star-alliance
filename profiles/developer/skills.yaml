@@ -35,7 +35,7 @@
   reason: Read other agents' diffs before and after my own work — and prepare mine for review.
 
 - name: requesting-code-review
-  reason: Hand my diffs to the Critic for an independent verdict before declaring work done.
+  reason: Review my own diffs against the request and the build before declaring work done.
 
 - name: hermes-agent-skill-authoring
   reason: When a new capability is needed mid-task, I can author or extend a skill instead of blocking the mission.
@@ -74,7 +74,7 @@
   reason: Open, label, review, and merge the pull requests that carry my work into the main branch.
 
 - name: dual-model-review
-  reason: The cross-system bridge's quality gate — MiniMax-M3 writes the code, Kimi K2.7 + GLM-5.2 fire as parallel reviewer sub-agents through Hermes; both must PASS before the report goes back. The Developer tunes the reviewer prompts to check correctness and security dimensions (different families → diverse blind spots); re-dispatches the doer on any BLOCK.
+  reason: The cross-system bridge's quality check — the Hermes doer writes the code, then the Developer reviews it against the request for correctness and security, and confirms the build builds, before the report goes back; re-dispatches the doer on any drift. The review is the member's own judgment, not a separate gate.
 
 - name: prove-it
-  reason: Universal request-fulfillment check - before declaring a task done, cross-check the original request against the actual diff/tool-call evidence; backed by the prove-it.py Stop hook critic gate.
+  reason: Universal request-fulfillment check - before declaring a task done, cross-check the original request against the actual diff/tool-call evidence; the member's own review, not a separate gate.

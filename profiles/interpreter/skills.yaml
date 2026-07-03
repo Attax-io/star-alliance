@@ -40,7 +40,7 @@
   reason: The numeric usage-level meter — every member, skill, and workflow has a level derived from append-only invocation logs (tools/xp.py + the post-tool xp-log hook). Read it before invoking a skill to know whether it's load-bearing or has gone cold at level 1. The Interpreter also uses it to flag skill edits that would touch load-bearing craft (treated as regressions) versus skill retirement candidates. Does NOT select weapons — model selection lives in star-alliance-arsenal/.
 
 - name: dual-model-review
-  reason: The cross-system bridge's quality gate — MiniMax-M3 produces the translation draft, Kimi K2.7 + GLM-5.2 fire as parallel reviewer sub-agents through Hermes; both must PASS before the report goes back. The Interpreter tunes the reviewer prompts to check legal register (voices-check) and source-fidelity (codex-law-translate) — the doer cannot be the only interpreter's eye on a statute.
+  reason: The cross-system bridge's quality check — the Hermes doer produces the translation draft, then the Interpreter reviews it against the source and the request for legal register (voices-check) and source-fidelity (codex-law-translate) before the report goes back. The review is the member's own judgment, not a separate gate.
 
 - name: prove-it
-  reason: Universal request-fulfillment check - before declaring a task done, cross-check the original request against the actual diff/tool-call evidence; backed by the prove-it.py Stop hook critic gate.
+  reason: Universal request-fulfillment check - before declaring a task done, cross-check the original request against the actual diff/tool-call evidence; the member's own review, not a separate gate.

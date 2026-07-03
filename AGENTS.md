@@ -50,31 +50,31 @@ Two role seats, each with a default model and fallback chain (defined in
 | Seat | Default | Fallback | Duty |
 |---|---|---|---|
 | **Brain** | the member's model (Opus / Sonnet / Haiku) — **Claude** | the Claude brain family | Plans, reviews, owns the standard, wields tools |
-| **Doer** | minimax-sub — **Hermes profile** | minimax-payg → glm-5.2 → kimi-k2.7 | Executes the plan, returns work as text. No tools |
+| **Doer** | minimax-sub — **Hermes profile** | minimax-payg | Executes the plan, returns work as text. No tools |
 
 **Claude is the Brain; Hermes is the Doer.** A non-Claude model never thinks
 or orchestrates; a Claude model is never a doer seat. This is enforced
 mechanically by `tools/conformity_check.py`.
 
-Non-Claude models (minimax-sub, minimax-payg, glm-5.2, kimi-k2.7) are available
-as fallbacks for the Doer seat. A guild agent's `model:` frontmatter overrides
-the brain default.
+Non-Claude models (minimax-sub, minimax-payg) are the Doer seat's default and
+fallback; `models.json` is the source of truth for the current roster. A guild
+agent's `model:` frontmatter overrides the brain default.
 
 ## Arsenal
 
-`star-alliance-arsenal/` holds the model registry and summon scripts — the
-guild's armory. Agents draw weapons via `summon.py` (the single entry point for
-routing prompts to model backends):
+`star-alliance-arsenal/` holds the model registry and runner scripts — the
+guild's armory. The primary path for doer-grade work is `tools/dispatch.py`
+(→ Hermes profile); `summon.py` and `minimax.py` are the underlying runners /
+fallback when Hermes is unreachable:
 
 ```
-python3 star-alliance-arsenal/summon.py minimax-sub "Explain quicksort."
-python3 star-alliance-arsenal/summon.py opus "Solve: 17 * 23" --json
+python3 tools/dispatch.py the-developer "Explain quicksort."
+python3 star-alliance-arsenal/minimax.py "Solve: 17 * 23" --json   # fallback
 ```
 
 The registry (`models.json`) is the one source of truth for per-weapon facts —
-roles, backends, status, fallback chains. `bench_pull.py` selects N available
-bench models for a swarm; `critique.py` runs the Critic seat; `doctor.py` is the
-connectivity health-check.
+roles, backends, status, fallback chains. `doctor.py` is the connectivity
+health-check.
 
 ## The three-layer architecture (Claude → dispatch → Hermes profiles)
 
@@ -110,10 +110,10 @@ with defaults drawn from `star-alliance-arsenal/models.json`:
 | Seat | Default Model | Fallback | Role |
 |---|---|---|---|
 | **Brain** | the member's model (Opus / Sonnet / Haiku) | the Claude brain family | Plans, reviews, wields tools |
-| **Doer** | minimax-sub | minimax-payg → glm-5.2 → kimi-k2.7 | Executes bulk work, returns text |
+| **Doer** | minimax-sub | minimax-payg | Executes bulk work, returns text |
 
-Non-Claude models (minimax-sub, minimax-payg, glm-5.2, kimi-k2.7) are available
-as fallbacks for the Doer seat only.
+Non-Claude models (minimax-sub, minimax-payg) serve the Doer seat only;
+`models.json` is the source of truth for the current roster.
 
 ### Profile distributions
 
@@ -138,20 +138,21 @@ gates sit. The **Strategist** scans the star map, matches the request's shape to
 a workflow, and picks the best fit. If no workflow fits, the Strategist forms a
 candidate formation and the Quartermaster's Workflow Forge crystallizes it.
 
-## Gates (Claude Code hooks)
+## Gates (reminders, not walls)
 
-The guild's gates are **not** an MCP server — they run automatically as Claude
-Code hook scripts under `.claude/hooks/` (registered on `PreToolUse` and `Stop`).
-They fire at the right points in the loop with no explicit call:
+The guild's rules used to be enforced by ~15 blocking hooks under `.claude/hooks/`.
+Those are now **retired** (the files remain but are no longer wired in
+`.claude/settings.json`) — the doctrine stands, followed by good practice rather
+than a hook that can deadlock a turn. The one hard block that remains is
+data-safety:
 
 | Hook | Purpose |
 |---|---|
-| `workflow-gate.py` | Block every tool until the turn declares a real workflow |
-| `verify-gate.py` | Run the Critic on the diff at turn end → pass/concerns/block |
-| `delegation-gate.py` | Block turns that did bulk work inline without a doer |
-| `destructive-gate.py` | Block irreversible shell and SQL commands before they run |
-| `executor-enforce.py` | Forbid the Butler from writing files directly |
-| `conformance-gate.py` | Hold turn-end until the conformance pass is logged |
+| `destructive-gate.py` | **Hard block** — stops irreversible shell and SQL (`rm -rf`, force-push, `reset --hard`, unscoped `DELETE`/`DROP`/`TRUNCATE`) until re-run with `# sa-confirm` |
+
+Still running as **non-blocking** reminders/loggers: routing nudge, plain-English
+nudge, guild-log and vault-log nudges, turn-cost, dispatch/spawn/xp loggers, and
+`turn-finalize.sh` (auto-commit).
 
 ## MCP server
 
@@ -173,13 +174,15 @@ ensures every self-modifying change gets independent review and fitness feedback
 
 ```
 SENSE ──▶ DIAGNOSE ──▶ CHANGE ──▶ VERIFY ──▶ REMEMBER
-ledger     engine       engine     critic     scoreboard
+ledger     engine       engine     verdict    scoreboard
 ```
 
-**Invariant:** nothing enters the repo without (a) an independent Critic verdict
-and (b) a ledger event. Tier-A changes (skills, memory, docs) may be auto-applied
-after a pass; Tier-B changes (hooks, gates, arsenal, workflows) are always
-human-gated. A `DISARMED` file is the kill switch.
+**Invariant:** every self-modifying change lands a ledger event and gets a
+verdict before it sticks. Tier-A changes (skills, memory, docs) may be
+auto-applied after a pass; Tier-B changes (doctrine, arsenal, workflows) are
+always human-gated. A `DISARMED` file is the kill switch. There are two seats
+only — Brain (Claude) and Doer (Hermes/MiniMax); there is no separate Critic
+seat.
 
 ## How to dispatch an agent
 

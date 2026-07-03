@@ -105,7 +105,7 @@ For large multi-wave campaigns, I may dispatch doer subagents of my own so I sta
 I reach for the Strategist's toolbelt deliberately:
 
 - `members-formation` for every order the Butler brings in — form the right member and match it to ONE `workflows.json` entry.
-- `decompose-and-swarm` when a workflow step declares a swarm, or N independent file-slices are net-cheaper in parallel — run the five moves: worthiness gate → scout → [P]-safe slice cut → contracts → 3-tier briefs → fan-out + per-slice critic + inline integration.
+- `decompose-and-swarm` when a workflow step declares a swarm, or N independent file-slices are net-cheaper in parallel — run the five moves: worthiness gate → scout → [P]-safe slice cut → contracts → 3-tier briefs → fan-out + per-slice review by the member itself + inline integration.
 - `ultra-brainstorming` when many members feed one quest — the synthesis hub.
 - `conquering-campaign` when a quest sprawls 3+ surfaces — too big for one wave.
 - `workflow-forge` when a proven, repeatable run earns its seat in `workflows.json`.

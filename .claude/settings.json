@@ -2,22 +2,13 @@
   "env": {
     "STAR_ALLIANCE_ROOT": "/Users/attaselim/Documents/Claude/Projects/star-alliance"
   },
+  "_comment": "LEAN HOOK SET (2026-07-03 cleanup). Only ONE hard block remains: destructive-gate (data-safety), reached via sa-pretool. Every routing/workflow/approval/verify rule is now a non-blocking reminder or logger, so a session can never freeze on a harness rule. Retired blockers still live in .claude/hooks/ but are NOT wired: executor-enforce, routing-enforce, approval-gate, approval-detect, cascade-check-gate, unity-gate, verify-gate, prove-it, delegation-gate, conformance-gate, conformity-precommit-gate, workflow-banner-enforcer. To re-enable strict mode, re-add them here.",
   "hooks": {
     "UserPromptSubmit": [
       {
         "hooks": [
-          {
-            "type": "command",
-            "command": "sh \"$CLAUDE_PROJECT_DIR/.claude/hooks/guild-routing-gate.sh\""
-          },
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/approval-detect.py\""
-          },
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/turn-start.py\""
-          }
+          { "type": "command", "command": "sh \"$CLAUDE_PROJECT_DIR/.claude/hooks/guild-routing-gate.sh\"" },
+          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/turn-start.py\"" }
         ]
       }
     ],
@@ -25,27 +16,7 @@
       {
         "matcher": "*",
         "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/sa-pretool.py\""
-          },
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/executor-enforce.py\""
-          },
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/cascade-check-gate.py\""
-          }
-        ]
-      },
-      {
-        "matcher": "Write|Edit|MultiEdit|Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/unity-gate.py\""
-          }
+          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/sa-pretool.py\"" }
         ]
       }
     ],
@@ -53,118 +24,55 @@
       {
         "matcher": "Edit|Write|MultiEdit",
         "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/build-mark.py\""
-          },
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/hermes-upgrade-notify.py\""
-          }
+          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/build-mark.py\"" },
+          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/hermes-upgrade-notify.py\"" }
         ]
       },
       {
         "matcher": "Bash",
         "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch-log.py\""
-          }
+          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/dispatch-log.py\"" }
         ]
       },
       {
         "matcher": "Skill",
         "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/xp-log.py\""
-          }
+          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/xp-log.py\"" }
         ]
       },
       {
         "matcher": "Task|Agent",
         "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/spawn-log.py\""
-          }
+          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/spawn-log.py\"" }
         ]
       }
     ],
     "PreCompact": [
       {
         "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/precompact-snapshot.py\""
-          }
+          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/precompact-snapshot.py\"" }
         ]
       }
     ],
     "Stop": [
       {
         "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/turn-cost.py\""
-          },
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/verify-gate.py\""
-          },
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/prove-it.py\""
-          },
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/delegation-gate.py\""
-          },
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/conformance-gate.py\""
-          },
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/conformity-precommit-gate.py\""
-          },
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/thinker-attest.py\""
-          },
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/version-auto-bump.py\""
-          },
-          {
-            "type": "command",
-            "command": "sh \"$CLAUDE_PROJECT_DIR/.claude/hooks/turn-finalize.sh\""
-          },
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/workflow-banner-enforcer.py\""
-          },
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/plain-english-nudge.py\""
-          },
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/guild-log-nudge.py\""
-          },
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/vault-log-nudge.py\""
-          }
+          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/turn-cost.py\"" },
+          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/thinker-attest.py\"" },
+          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/version-auto-bump.py\"" },
+          { "type": "command", "command": "sh \"$CLAUDE_PROJECT_DIR/.claude/hooks/turn-finalize.sh\"" },
+          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/plain-english-nudge.py\"" },
+          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/guild-log-nudge.py\"" },
+          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/vault-log-nudge.py\"" }
         ]
       }
     ]
   },
   "permissions": {
     "allow": [
-      "Bash(python3 .claude/arsenal/minimax.py:*)",
-      "Bash(python3 .claude/arsenal/ollama_cloud.py:*)",
-      "Bash(python3 .claude/arsenal/summon.py:*)"
+      "Bash(python3 star-alliance-arsenal/minimax.py:*)",
+      "Bash(python3 star-alliance-arsenal/summon.py:*)",
+      "Bash(python3 tools/dispatch.py:*)"
     ]
   }
 }

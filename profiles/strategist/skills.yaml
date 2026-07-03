@@ -6,7 +6,7 @@
   reason: Every order the Butler brings in — form the right member for the task and match it to ONE `workflows.json` star-map entry, deciding who works simultaneously or step by step.
 
 - name: decompose-and-swarm
-  reason: "When a workflow step declares a swarm, or N independent file-slices are net-cheaper in parallel -- run the five moves: worthiness gate, scout, P-safe slice cut, contracts, three-tier briefs, fan-out with per-slice critic and inline integration."
+  reason: "When a workflow step declares a swarm, or N independent file-slices are net-cheaper in parallel -- run the five moves: worthiness gate, scout, P-safe slice cut, contracts, three-tier briefs, fan-out with per-slice review by the member itself and inline integration."
 
 - name: ultra-brainstorming
   reason: When many members feed one quest — synthesize one war-plan from many minds via several thinking models at once, then converge to a ranked, peer-reviewed plan.
@@ -54,4 +54,4 @@
   reason: Shared house utility — operate the guild's instruments (arsenal, models, profiles) without leaking craft across the wrong boundary.
 
 - name: prove-it
-  reason: Universal request-fulfillment check - before declaring a task done, cross-check the original request against the actual diff/tool-call evidence; backed by the prove-it.py Stop hook critic gate.
+  reason: Universal request-fulfillment check - before declaring a task done, cross-check the original request against the actual diff/tool-call evidence; the member's own review, not a separate gate.

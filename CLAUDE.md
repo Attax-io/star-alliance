@@ -52,24 +52,18 @@ routing-gate roster==guild-data · `FB` fallback dicts==models.json. A green run
 drift. If you must change a member/agent, edit the member file then run
 `guild/install_agents.py` — never touch `.claude/agents/` by hand.
 
-**Helper-safety fact (updated 2026-06-29):** dispatch-enforce.py fires in child sessions (subagents) and blocks
-Write, Edit, MultiEdit, and shell file-writes. Helpers are NOT free to write files
-directly. The correct write path for a specialist subagent is: call python3 tools/dispatch.py with the agent name and task as arguments via Bash — this
-routes the work through Hermes, which has full terminal access and does the actual file
-write. Read-only Bash commands (ls, cat, grep, git status, git log, git diff) remain
-allowed in child sessions. The main session (Butler) is separately blocked by executor-enforce.py and must
-also route writes through dispatch. Kill switch shared by both gates: .claude/state/executor-enforce-disarmed or evolution/DISARMED.
+**Write path (helpers).** Specialist subagents don't have Write/Edit tools in
+their toolbox — their write path is `python3 tools/dispatch.py <agent> "<task>"`,
+which routes the work through the matching Hermes profile (full terminal, does the
+actual file write). Read-only Bash (ls, cat, grep, git status/log/diff) is always
+fine. This is now a matter of tooling and convention, not a blocking hook — see
+"Harness state" below.
 
-**Supabase exemption (updated 2026-07-03):** Both dispatch-enforce.py and executor-enforce.py
-exempt the Supabase MCP server (UUID `1ee3ddfd-...`) from the write-verb block. Claude
-models have FULL read+write access to Supabase via the MCP — execute_sql, apply_migration,
-all tools — but **only once dispatched as a subagent** (the Strategist or a specialist).
-The Butler acting alone does NOT get this access: routing-enforce.py (widened 2026-07-03)
-blocks the Butler from calling ANY tool, including Supabase MCP tools, until the Strategist
-has been dispatched this exchange. Supabase writes are NOT delegated to Hermes. Hermes
-profiles access Supabase via `star-alliance-arsenal/supabase.py`, which runs in read-only
-mode by default (SELECT/WITH only; `--write` flag required for writes, hidden from
-`--help`). This is enforced in the script itself, not in the hooks.
+**Supabase.** Claude models have FULL read+write access to Supabase via the MCP
+(execute_sql, apply_migration, all tools). Supabase writes are NOT delegated to
+Hermes. Hermes profiles access Supabase via `star-alliance-arsenal/supabase.py`,
+which runs read-only by default (SELECT/WITH only; `--write` flag required for
+writes, hidden from `--help`) — enforced inside the script, not the hooks.
 
 ## The three-layer architecture (Claude → dispatch → Hermes)
 
@@ -80,14 +74,14 @@ unless you understand the two-seat system below.
 
 **Layer 1 — Claude Butler (this repo, this session).**
 The Butler runs as a Claude model (Opus/Sonnet). It takes orders, restates them,
-hands them to the Strategist, tracks the gates, and reports the result. It never
-writes files directly — the executor-enforce hook blocks that.
+hands them to the Strategist, and reports the result. By convention it routes
+real writes through dispatch rather than editing files itself.
 
 **Layer 2 — Claude subagents (Strategist, specialists).**
 The Strategist and any specialist subagents run as Claude models too. They plan,
-route, and frame work. When a specialist needs to *write* files or execute code,
-the dispatch-enforce hook forces them through `tools/dispatch.py` — they cannot
-write files directly. The dispatch script calls the matching Hermes profile.
+route, and frame work. When a specialist needs to *write* files or execute bulk,
+it goes through `tools/dispatch.py` (its toolbox has no Write/Edit) — the dispatch
+script calls the matching Hermes profile.
 
 **Layer 3 — Hermes profiles (the doer seat).**
 Each Hermes profile (Architect, Developer, Designer, etc.) is the **doer** — it
@@ -102,10 +96,8 @@ assignments live in `star-alliance-arsenal/models.json` (the `seats` block +
 
 **The rule is absolute: Claude models are the BRAIN; non-Claude models are the
 DOER.** A non-Claude model never thinks or orchestrates; a Claude model is never a
-doer seat. There is no separate Critic seat — independent review is the
-`verify-gate` hook (see the Evolution Engine section). `conformity_check.py`
-mechanically enforces this: a brain seat with a non-Claude model, or a doer seat
-with a Claude model, is a hard build failure.
+doer seat. `conformity_check.py` mechanically enforces this: a brain seat with a
+non-Claude model, or a doer seat with a Claude model, is a hard build failure.
 
 **What this means for Claude:**
 - **`models.json` is the single source of truth for the model roster**, and the
@@ -249,14 +241,36 @@ _Distilled from the self-learning shelf, 2026-06-27 — see [docs/SELF-LEARNING-
 
 Standalone harness aids adopted from the gstack/harness-books mining — see [[skills-pool-strategic-audit-2026-06]]:
 
-- **The Evolution Engine** (`evolution/`) — the self-improving spine; **read [[core-evolution-engine]] before touching any self-improvement surface.** One closed loop (SENSE `ledger.py` → DIAGNOSE/CHANGE `engine.py` → VERIFY `verdict.py` → REMEMBER `scoreboard.py`) replacing the old scattered fragments. **Invariant:** nothing enters the repo without (a) an independent critic verdict and (b) a ledger event. Tier-A surfaces (skills/memory/docs) may auto-apply after a pass; Tier-B (hooks/doctrine/gates/arsenal/workflows) is human-gated. Kill switch: `touch evolution/DISARMED`. Doctrine: `evolution/README.md`.
-  - **Thinker = Sonnet** — a *conformity block + attestation*. The model is fixed at launch, so no hook can re-run it; instead `thinker-gate.py` (PreToolUse·Task|Agent, **blocking**) hard-blocks the only divergence path — an explicit `model` override on a member spawn that contradicts the member's declared `model:` — and `thinker-attest.py` (Stop, non-blocking) ledgers which model actually thought each turn (`message.model`) as proof for the deployment brief. Logged override: `SA_ALLOW_MODEL_OVERRIDE=1`.
-  - **Executor = MiniMax** — a *delegation* gate (`delegation-gate.py`, Stop, **blocking**, before `turn-finalize.sh`). A turn that authored doer-grade inline bulk (Write/Edit/MultiEdit ≥ ~6 KB) with **no** doer call logged in `usage-log.jsonl` is BLOCKED (and `turn-finalize.sh` mirrors the block to skip the commit). Going solo is allowed **on the record**, two channels: `SA_SOLO=1 SA_SOLO_REASON="why"` (human, from a shell) or `echo "why" > .claude/state/solo-once` (the agent itself, which can't set Stop-hook env mid-turn). Both ledger a `solo-override`. Both gates fail OPEN on infra error; kill switch `touch evolution/DISARMED`. Ledger kinds: `thinker`, `delegation`.
+- **The Evolution Engine** (`evolution/`) — the self-improving spine; **read [[core-evolution-engine]] before touching any self-improvement surface.** One closed loop (SENSE `ledger.py` → DIAGNOSE/CHANGE `engine.py` → VERIFY `verdict.py` → REMEMBER `scoreboard.py`). Every proposed change should still earn a ledger event and a review before landing on a Tier-B surface (hooks/doctrine/gates/arsenal/workflows), but this is now guidance the members follow, not a Stop-hook that freezes the turn. Kill switch: `touch evolution/DISARMED`. Doctrine: `evolution/README.md`.
+  - **Which model thought / did the work** — `thinker-attest.py` (Stop, non-blocking) ledgers which model actually thought each turn; `dispatch-log.py` records doer calls. These are for the scoreboard, not gates — they observe, they don't block.
 - **Context checkpoint** — `python3 .claude/context/context_save.py "<summary>" [--decisions …] [--remaining …]` snapshots git state + decisions + remaining work; `context_restore.py [--list|<stamp>]` resumes a cold session. Transient handoff, distinct from durable memory files.
 - **Learnings journal** — `python3 .claude/context/learn.py add|search|list` — append-only "didn't we fix this before?" recall in `.claude/state/learnings.jsonl`. Promote a recurring learning into a real memory file when it earns its place.
 - **Skill fingerprints** — `python3 .claude/tools/skill_fingerprint.py [--check]` writes/diffs a content hash per skill so sync reinstalls only what actually changed (Codex doctrine; complements [[guild-sync]]).
-- **Executor lock (`.claude/hooks/executor-enforce.py`, PreToolUse·ALL, blocking)** — STRICT MODE, no agent-controlled bypass. The Butler is forbidden from Edit/Write/MultiEdit/NotebookEdit, from bash write commands (`sed -i`, `cat >`, `rm`, `cp`, `mv`, `tee`, `touch`, `chmod`, `dd`, `>`, `>>`), and from MCP write-verb tools (`create_/update_/delete_/insert_/drop_/truncate_/set_/put_/patch_/write_`). Task/Agent spawns must pin `model=minimax-sub` to delegate the executor seat; brain-tier Claude spawns (sonnet/opus) pass. Subagents (`CLAUDE_CODE_CHILD_SESSION=1`) are exempt because they ARE the executor seat. The scoreboard (`evolution/scoreboard.py`) shows an "Executor Discipline" section with override count, direct-write blocks, and minimax-sub vs sonnet doer share. **No `SA_ALLOW_EXECUTOR` token, no env var, no in-prompt string grants bypass.** The ONLY ways out are the kill switches: `touch evolution/DISARMED` (engine-wide; affects verify-gate too) or `touch .claude/state/executor-enforce-disarmed` (this hook only). Re-enable with `rm <that-file>`. Use the kill switch only when MiniMax is genuinely unreachable — once disabled, the Butler can mutate freely.
-- **Role enforcement gates (2026-06-30, routing widened 2026-07-03).** Gates that mechanically enforce the Butler's role — hard blocks, not prose. Approval and conformance below fire **only on FULL-tier (high-stakes) turns**; routing enforcement now fires on **LITE and FULL** (only pure-chat NONE turns pass through). All fail OPEN on infrastructure error and can be killed with `evolution/DISARMED` or their per-hook disarm files.
-  - **Routing enforcement (`.claude/hooks/routing-enforce.py`, PreToolUse·ALL tools, blocking)** — the Butler cannot investigate, fix, or spawn a specialist directly. ANY tool call (Bash, Read, Supabase MCP, everything) is blocked until he dispatches the Strategist first; the `strategist-dispatched` state file then lets subsequent tool calls and specialist spawns through for the rest of the exchange. Widened 2026-07-03 after the Butler ran a live bug investigation and a direct Supabase fix inline on a LITE-tier "Quick Fix" turn without ever calling Task — the old Task/Agent-only filter never saw those calls. Kill switch: `touch .claude/state/routing-enforce-disarmed`.
-  - **Approval gate (`.claude/hooks/approval-gate.py`, PreToolUse·Task|Agent|Edit|Write|MultiEdit|NotebookEdit, blocking)** — on high-stakes turns, no work tool fires until the Guild Master says "go." `approval-detect.py` (UserPromptSubmit) manages the state machine: sets `approval-pending` when a high-stakes request arrives, clears it and sets `approval-granted` when the Guild Master's approval is detected. The Butler may always dispatch the Strategist (routing happens before approval). Kill switch: `touch .claude/state/approval-gate-disarmed`.
-  - **Conformance gate (`.claude/hooks/conformance-gate.py`, Stop, blocking)** — when a high-stakes work turn changed source code, the turn cannot close until the Quartermaster's conformance pass is logged (`conformance-passed` state file). Mirrors the verify-gate/delegation-gate pattern: drops a `conformance-block` sentinel that `turn-finalize.sh` honors to skip the commit. One-turn logged override: `SA_SKIP_CONFORMANCE=1`. Kill switch: `touch .claude/state/conformance-gate-disarmed`.
+
+## Harness state (2026-07-03 cleanup): reminders, not walls
+
+The harness used to enforce its rules with ~15 blocking hooks (executor-lock,
+routing-enforce, approval-gate, conformance-gate, delegation-gate, verify-gate,
+workflow-gate, thinker-gate, and more). They overlapped, misfired, and froze real
+sessions — so they were **retired**. The rules they expressed still stand as
+doctrine (route bulk to the doer, keep the Butler's role, log your work), but they
+are now followed by good practice, not enforced by a gate that can deadlock.
+
+What still runs:
+
+- **One hard block — data safety only.** `destructive-gate.py` (Bash) stops
+  `rm -rf`, force-push, `reset --hard`, `git clean -f`, unscoped `DELETE`/`DROP`/
+  `TRUNCATE`, etc. After an explicit **proceed**, re-run with `# sa-confirm`
+  appended (or `SA_CONFIRM=1`). This is the one wall left, and it protects your
+  data — leave it on.
+- **Reminders (never block).** `guild-routing-gate.sh` (workflow/tier hint on
+  intake), `high-alert.py` (workflow banner), `plain-english-nudge.py`,
+  `guild-log-nudge.py`, `vault-log-nudge.py`.
+- **Loggers (observe, never block).** `turn-cost.py`, `thinker-attest.py`,
+  `dispatch-log.py`, `xp-log.py`, `spawn-log.py`, `build-mark.py`,
+  `version-auto-bump.py`, `precompact-snapshot.py`; `turn-finalize.sh` auto-commits
+  the turn.
+
+The retired gate files still live in `.claude/hooks/` for reference but are not
+wired in `.claude/settings.json`. To bring strict enforcement back, re-add them to
+`settings.json` (Stop / PreToolUse) or to the `GATES` list in `sa-pretool.py`.

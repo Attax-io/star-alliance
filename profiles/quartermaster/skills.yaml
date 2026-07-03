@@ -77,7 +77,7 @@
   reason: Shared house utility — operate the guild's instruments (arsenal, models, profiles) without leaking craft across the wrong boundary when I am running the certify gate.
 
 - name: dual-model-review
-  reason: The cross-system bridge's quality gate — MiniMax-M3 produces the conformance report, Kimi K2.7 + GLM-5.2 fire as parallel reviewer sub-agents through Hermes; both must PASS before the report goes back. The Quartermaster's reviewer prompts check skill-tree integrity and arsenal registry consistency — the gatekeeper must not be the only gatekeeper on its own work.
+  reason: The cross-system bridge's quality check — the Hermes doer produces the conformance report, then the Quartermaster reviews it against the guild's state of record for skill-tree integrity and arsenal registry consistency before the report goes back. The review is the member's own judgment, not a separate gate.
 
 - name: prove-it
-  reason: Universal request-fulfillment check - before declaring a task done, cross-check the original request against the actual diff/tool-call evidence; backed by the prove-it.py Stop hook critic gate.
+  reason: Universal request-fulfillment check - before declaring a task done, cross-check the original request against the actual diff/tool-call evidence; the member's own review, not a separate gate.

@@ -61,7 +61,7 @@
   reason: Shared house utility — operate the guild's instruments (arsenal, models, profiles) without leaking marketing taste across the wrong boundary.
 
 - name: dual-model-review
-  reason: The cross-system bridge's quality gate — MiniMax-M3 drafts the campaign or article, Kimi K2.7 + GLM-5.2 fire as parallel reviewer sub-agents through Hermes; both must PASS before the report goes back. The Herald tunes the reviewer prompts to check voice/brand fit and evidence quality — never duplicates the same dimension across both reviewers.
+  reason: The cross-system bridge's quality check — the Hermes doer drafts the campaign or article, then the Herald reviews it against the request for voice/brand fit and evidence quality before the report goes back. The review is the member's own judgment, not a separate gate.
 
 - name: prove-it
-  reason: Universal request-fulfillment check - before declaring a task done, cross-check the original request against the actual diff/tool-call evidence; backed by the prove-it.py Stop hook critic gate.
+  reason: Universal request-fulfillment check - before declaring a task done, cross-check the original request against the actual diff/tool-call evidence; the member's own review, not a separate gate.

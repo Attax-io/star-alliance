@@ -60,7 +60,7 @@
   reason: Shared house utility — operate the guild's instruments (arsenal, models, profiles) without leaking design taste across the wrong boundary.
 
 - name: dual-model-review
-  reason: The cross-system bridge's quality gate — MiniMax-M3 produces the visual/UX draft, Kimi K2.7 + GLM-5.2 fire as parallel reviewer sub-agents through Hermes; both must PASS before the report goes back. The Designer tunes the reviewer prompts to check accessibility (a11y-craft) and unity (design-unity) dimensions, not just correctness.
+  reason: The cross-system bridge's quality check — the Hermes doer produces the visual/UX draft, then the Designer reviews it against the request for accessibility (a11y-craft) and unity (design-unity) before the report goes back. The review is the member's own judgment, not a separate gate.
 
 - name: prove-it
-  reason: Universal request-fulfillment check - before declaring a task done, cross-check the original request against the actual diff/tool-call evidence; backed by the prove-it.py Stop hook critic gate.
+  reason: Universal request-fulfillment check - before declaring a task done, cross-check the original request against the actual diff/tool-call evidence; the member's own review, not a separate gate.

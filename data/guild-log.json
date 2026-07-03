@@ -4269,6 +4269,34 @@
       "title": "Routing: .claude/hooks/executor-enforce.py, evolution/README.md, evolution/engine.py (+5 more)",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Routing: .claude/arsenal/minimax.py, .claude/arsenal/ollama_cloud.py, .claude/arsenal/summon.py (+31 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Routing: .claude/arsenal/minimax.py, .claude/arsenal/ollama_cloud.py, .claude/arsenal/summon.py (+31 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Routing: .claude/arsenal/minimax.py, .claude/arsenal/ollama_cloud.py, .claude/arsenal/summon.py (+31 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Routing: .claude/arsenal/minimax.py, .claude/arsenal/ollama_cloud.py, .claude/arsenal/summon.py (+31 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130

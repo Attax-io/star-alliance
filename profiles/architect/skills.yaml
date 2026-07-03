@@ -66,10 +66,10 @@
   reason: Shared house utility — operate the guild's instruments (arsenal, models, profiles) without leaking craft across the wrong boundary.
 
 - name: dual-model-review
-  reason: The cross-system bridge's quality gate — MiniMax-M3 does the work, Kimi K2.7 + GLM-5.2 fire as parallel reviewer sub-agents through Hermes; both must PASS before the report goes back. The Architect reviews for spec conformance and invariant drift; the doer draft and both verdicts are reported to the bridge.
+  reason: The cross-system bridge's quality check — the Hermes doer drafts the spec or model, then the Architect reviews it against the plan for spec conformance and invariant drift before the report goes back. The review is the member's own judgment, not a separate gate.
 
 - name: file-access-model
   reason: File access inherits from the three-gate RLS pattern — users_access, file_admin, org_users, subers — must be loaded before any access refactor.
 
 - name: prove-it
-  reason: Universal request-fulfillment check - before declaring a task done, cross-check the original request against the actual diff/tool-call evidence; backed by the prove-it.py Stop hook critic gate.
+  reason: Universal request-fulfillment check - before declaring a task done, cross-check the original request against the actual diff/tool-call evidence; the member's own review, not a separate gate.

@@ -27,30 +27,22 @@ import sys, os, json, importlib.util
 HOOKS_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # gate file → tools it governs (None = all tools)
+#
+# LEAN SET (2026-07-03 cleanup). Only two gates run here now:
+#   • high-alert      — Skill|Workflow|Agent|Task  (injects workflow banners; NEVER blocks)
+#   • destructive-gate— Bash  (data-safety: rm -rf / force-push / reset --hard / DROP …;
+#                              pass an approved destructive op with `# sa-confirm`)
+#
+# All the routing/workflow/approval/enforcement gates that used to run here were
+# retired because they froze real sessions. Their files still live in this dir
+# for reference; to bring one back, add it to this list. Retired set:
+#   workflow-gate, butler-skill-gate, unity-skill-gate, approval-gate,
+#   routing-enforce, thinker-gate, connector-gate, okf-gate,
+#   member-skill-lint-gate, stop-line-gate, weapon-gate, devserver-gate,
+#   dispatch-enforce.
 GATES = [
-    ("workflow-gate.py",    None),
-    ("butler-skill-gate.py", {"Skill"}),
     ("high-alert.py",       {"Skill", "Workflow", "Agent", "Task"}),
-    ("unity-skill-gate.py", {"Task", "Agent", "Bash"}),
-    ("approval-gate.py",    {"Task", "Agent", "Edit", "Write", "MultiEdit", "NotebookEdit"}),
-    # Widened 2026-07-03: routing-enforce now gates EVERY tool, not just
-    # Task/Agent — the Butler was investigating/fixing via Bash/Read/Supabase
-    # MCP directly, never touching Task at all, so a Task-only filter here
-    # never even called into the hook for the tools it was actually misusing.
-    ("routing-enforce.py",  None),
-    ("thinker-gate.py",     {"Task", "Agent"}),
-    ("connector-gate.py",   {"Task", "Agent"}),
-    ("okf-gate.py",         {"Write", "Edit", "MultiEdit"}),
-    ("member-skill-lint-gate.py", {"Write", "Edit", "MultiEdit"}),
-    ("stop-line-gate.py",   {"Write", "Edit", "MultiEdit"}),
-    ("weapon-gate.py",      {"Bash", "Task", "Agent"}),
     ("destructive-gate.py", {"Bash"}),
-    ("devserver-gate.py",  {"Bash", "mcp__Claude_Preview__preview_start"}),
-    # Dispatch enforcement — specialists must route through dispatch.py, not
-    # call hermes directly or write files themselves. Only fires in child
-    # sessions (subagents); the main session is handled by executor-enforce.py.
-    # Note: None = all tools, so MCP write tools are covered too.
-    ("dispatch-enforce.py", None),
 ]
 
 _cache = {}
