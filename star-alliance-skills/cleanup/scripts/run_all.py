@@ -263,7 +263,24 @@ def f_bundle():
     return out
 
 
-EXTRACTORS = [f_postgres, f_lint, f_errors, f_consolidate_code, f_docs, f_i18n, f_leaks, f_bundle, f_followups]
+def f_activity_coverage():
+    out = []
+    d = load_json("/tmp/activity_coverage_classified.json")
+    if isinstance(d, dict):
+        hi = d.get("high") or 0
+        med = d.get("med") or 0
+        if hi:
+            out.append({"mode": "activity-coverage", "sev": "HIGH",
+                        "title": f"{hi} activity event(s) emitted in code but ABSENT from the allow-list (silently rejected — 0 rows)",
+                        "count": hi, "drill": "/tmp/activity_coverage_classified.json"})
+        if med:
+            out.append({"mode": "activity-coverage", "sev": "MED",
+                        "title": f"{med} write path(s) not tracked by the activity monitor (uncovered verb / boundary bypass)",
+                        "count": med, "drill": "/tmp/activity_coverage_classified.json"})
+    return out
+
+
+EXTRACTORS = [f_postgres, f_lint, f_errors, f_consolidate_code, f_docs, f_i18n, f_leaks, f_bundle, f_activity_coverage, f_followups]
 
 # (mode-label, script, [argv per stage], timeout-seconds, skip-when-fast)
 RUNS = [
@@ -274,6 +291,7 @@ RUNS = [
     ("lint",             "lint_cleanup.py",        [["detect"], ["classify"]],        180,  True),
     ("leaks",            "i18n_extract.py",        [["leaks"]],                       120,  False),
     ("bundle",           "bundle_cleanup.py",      [["detect"]],                       60,  False),
+    ("activity-coverage","activity_coverage.py",   [["detect"], ["classify"]],         60,  False),
 ]
 
 LAST_RUN_PROBE = {
@@ -285,6 +303,7 @@ LAST_RUN_PROBE = {
     "language": "/tmp/translation_targets_fr.json",
     "leaks": "/tmp/i18n_leaks.json",
     "bundle": "/tmp/bundle_violations.json",
+    "activity-coverage": "/tmp/activity_coverage_classified.json",
     "followups": "/tmp/followup_classified.json",
 }
 

@@ -2,12 +2,26 @@
 name: cleanup
 description: "Multi-mode hygiene skill for Lex Council. Modes — language (i18n translations); consolidate (i18n key dedup); hardcoded (extract raw UI text to next-intl keys); leaks (i18n keys used in code but missing from JSON); errors (dev log sweep); postgres (Supabase advisors + pg health); lint (ESLint --fix + tsc); consolidate-code (duplicate code detection); bundle (Cloudflare Worker size-wall hygiene); release (version bump + hygiene gate); docs (frontmatter/wikilinks/orphans); followups (deferred items); manual (in-app user manual translated in all 6 locales). Run all via scripts/run_all.py. Triggers: \"run cleanup\", \"/cleanup\", \"i18n cleanup\", \"translate untranslated\", \"find hardcoded text\", \"find leaking keys\", \"raw key paths\", \"fix dev errors\", \"check postgres\", \"run lint\", \"consolidate code\", \"check the bundle size\", \"doc cleanup\", \"finish followups\", \"update the manual\", \"bump the version\", \"release X.Y.Z\", or any hygiene sweep after a campaign. Full mode recipes in references/."
 metadata:
-  version: 1.21.0
+  version: 1.22.0
 type: Skill
 
 ---
 
-# Cleanup — Lex Council hygiene sweeps (v1.21.0)
+# Cleanup — Lex Council hygiene sweeps (v1.22.0)
+
+<!-- v1.22.0 (2026-07-06) — NEW `activity-coverage` mode. Keeps the user-
+  activity monitor in lock-step with the app's mutation + UI surface so a new
+  page/action never goes silently untracked. Guards two rots: (1) an event_type
+  string emitted in code but never seeded into the DB allow-list — log_user_activity
+  silently rejects unknown types (0 rows; how record.create died ~6 weeks and how
+  document.move fired into the void); (2) a new write whose RPC verb isn't in the
+  VERB_EVENT auto-emit map at the mutation boundary (_shared.ts) or that bypasses
+  callServerRpc. New scripts/activity_coverage.py (detect/classify) parses the LIVE
+  VERB_EVENT + WRITE_ACTIVITY_DENY out of _shared.ts + the DB allow-list (committed-
+  constant fallback offline), reports 4 drift classes. Auto-wires the mechanical fix
+  (uncovered_verb → VERB_EVENT entry); surfaces the HIGH catalog-seed as approval-
+  gated SQL. Wired into run_all + router + Modes table + §Mode: activity-coverage.
+  New mode → MINOR. (Lex, 2026-07-06.) -->
 
 <!-- v1.21.0 (2026-07-01) — `bundle measure` auto-selects the 10 MiB paid wall.
   After the Workers Paid upgrade, every `measure` invocation on this account
@@ -119,6 +133,7 @@ skill body routes to the right workflow based on what the user asked for.
 | **hardcoded** | LIVE | Find raw hardcoded user-facing English text still in components (.tsx/.ts) and extract it to next-intl `t()` keys — the gap `language` (translates existing keys) / `consolidate` (dedups keys) never covered. `merge` UPSERTs the minted EN keys + `propagate` UPSERTs the placeholder rows into `app_translations` (DB, the source of truth) + mirror the JSON — **DB-native since v1.19.0 (#303)** so they survive the build dump and the `language` handoff sees them. Script: `scripts/i18n_extract.py` (detect/merge/propagate/verify); recipe `references/mode-hardcoded.md`. Scales 1-file → one-agent-per-file fan-out → `/conquering-campaign`. |
 | **leaks** | LIVE | The INVERSE of `hardcoded`: keys USED in code (`t('ns.key')`) but ABSENT from the locale source → render as the raw uppercased key-path (next-intl `getMessageFallback`) in the UI. `scripts/i18n_extract.py leaks` resolves every static `t()` key app-wide (matches `useTranslations` **and** `getTranslations`/`{namespace:}`), flags EN-absent (HIGH) + locale-parity (MED). Default source = committed JSON; **`--db` = deploy-truth check against `app_translations`** (flags keys not yet pushed to the DB that vanish on the next dump). Detect+surface only; remediation targets the DB (#303). The class that leaked the public Codex page twice. Recipe `references/mode-leaks.md`. |
 | **bundle** | LIVE | Cloudflare/OpenNext **Worker size-wall** hygiene. `detect` (static, build-free) flags heavy client-only libs (`recharts`) imported OUTSIDE the `.body`+`dynamic({ssr:false})` convention so they leak into the SSR/Worker bundle (the class that failed the 1.7.60 deploy); `measure` (build-gated) gzips the built worker vs the 3 MiB free / 10 MiB paid wall — **the 10 MiB wall is auto-selected when `CF_WORKERS_PAID` is set or a `.cloudflare-paid` marker is present at the web dir or any repo-root ancestor (FREE 3 MiB stays the default otherwise; `--paid` forces paid)**. Feeds the `release` gate + `run_all`. Script: `scripts/bundle_cleanup.py`. Recipe `references/mode-bundle.md`. |
+| **activity-coverage** | LIVE | Keep the **user-activity monitor** in lock-step with the app's mutation + UI surface so a new page/action never goes silently untracked. `detect` parses the LIVE `VERB_EVENT` + `WRITE_ACTIVITY_DENY` from `_shared.ts` + the DB allow-list (committed-constant fallback offline) and flags 4 drift classes: `unknown_literal` (HIGH — fired in code but absent from `user_activity_event_types`, silently rejected → 0 rows), `boundary_bypass` + `uncovered_verb` (MED — a write that skips the auto-emit boundary), `dead_type` (LOW). Auto-wires the mechanical fix (`uncovered_verb` → a `VERB_EVENT` entry, no DB change); surfaces the HIGH catalog seed as approval-gated SQL. Script: `scripts/activity_coverage.py`. Recipe `references/mode-activity-coverage.md`. |
 | **manual** | LIVE | Keep the DB-backed in-app user manual translated + fresh (like `docs` does for the planet hubs). Detects Parts whose EN `body_md` hash ≠ stored `source_md_hash` per locale (**stale**) or have no row (**missing**); re-translates the gaps and **auto-publishes** via a per-Part translation workflow (routes / backticked code / `§` numbers / heading anchors kept verbatim); also flags Parts whose EN may be drifted by recent app changes (surface-only). MCP + workflow driven (no static script). Recipe `references/mode-manual.md`. |
 
 ## When to invoke this skill
@@ -142,6 +157,7 @@ Trigger phrases (any of):
 - "find leaking keys", "missing translation keys", "keys showing as raw text", "raw key paths", "why is the UI showing the key name", "/cleanup leaks" → routes to `leaks`
 - "check the bundle size", "is the app too big", "worker size limit", "trim the bundle", "the deploy failed on size", "/cleanup bundle" → routes to `bundle`
 - "update the manual translations", "is the manual up to date", "translate the manual", "the manual is stale", "/cleanup manual" → routes to `manual`
+- "check activity coverage", "what actions aren't tracked", "is the activity monitor complete", "activity-monitor gaps", "/cleanup activity-coverage" → routes to `activity-coverage`
 
 Skip when: user is mid-feature and work isn't ready; a cleanup pass ran today and nothing new was added; user is asking about something else ("clean up this component" = refactoring, not this skill).
 
@@ -166,6 +182,7 @@ Look at the user's phrasing. Default mode is `language` unless they explicitly n
 | "find leaking keys", "missing translation keys", "raw key paths", "/cleanup leaks" | `leaks` |
 | "check the bundle size", "worker size limit", "the deploy failed on size", "/cleanup bundle" | `bundle` |
 | "update the manual translations", "is the manual up to date", "translate the manual", "/cleanup manual" | `manual` |
+| "check activity coverage", "what actions aren't tracked", "activity-monitor gaps", "/cleanup activity-coverage" | `activity-coverage` |
 | "run all cleanups", "/cleanup all", "what's drifted" | run `python3 ~/.claude/skills/cleanup/scripts/run_all.py run [--fast]` — runs local hygiene modes detect-only, writes severity-ranked `/tmp/cleanup_triage.md` + per-mode last-run age |
 | `/cleanup-routine`, the hourly `lex-cleanup-rotation` task, "do the next cleanup spot" | one mode this run = `python3 ~/.claude/skills/cleanup/scripts/rotate.py next`; full recipe in **§Step RT** — applies, commits, **never pushes** |
 
@@ -259,6 +276,16 @@ Read `references/mode-consolidate-code.md` for the full recipe (Steps CC1–CC5:
 
 Read `references/mode-bundle.md` for the full recipe: `detect` (static, build-free — flags heavy client-only libs imported outside the `.body`+`dynamic({ssr:false})` isolation convention; exit 2 on findings) + `measure` (build-gated — gzip `.open-next/worker.js` vs the 3 MiB free / 10 MiB paid wall; **the 10 MiB paid wall is auto-selected via the `CF_WORKERS_PAID` env or a `.cloudflare-paid` marker at the web dir or any repo-root ancestor, so the release gate stops false-failing at 3 MiB on paid projects; `--paid` still forces paid**; degrades-with-receipts when unbuilt or a stale placeholder). The `release` gate PR2 delegates its hard size check here; also wired into `run_all`.
 
+### Mode: activity-coverage
+
+Read `references/mode-activity-coverage.md` for the full recipe (Steps AC0–AC4:
+pre-flight, detect+classify, auto-wire the mechanical `uncovered_verb` fix,
+surface the approval-gated `unknown_literal` catalog seed + `dead_type` report,
+verify+closeout). Guards the user-activity monitor against the two ways its
+instrumentation rots — an event fired in code but never seeded into the DB
+allow-list (silently rejected → 0 rows) and a new write that skips the
+`callServerRpc` auto-emit boundary.
+
 ### Mode: release
 
 Read `references/mode-release.md` for the full gate recipe (Steps PR1–PR4: hygiene gate, release-specific hazard checks, doc-stamp staleness warning, gate verdict). Phase 2 (version bump) runs per `references/release-procedure.md`.
@@ -295,6 +322,7 @@ This skill carries a semantic version in its frontmatter (`version: X.Y.Z`) and 
 
 | Version | Date | Summary |
 |---|---|---|
+| **1.22.0** | 2026-07-06 | **New `activity-coverage` mode — keep the user-activity monitor in lock-step with the app's mutation + UI surface.** Guards the two rot paths: an `event_type` emitted in code but never seeded into `public.user_activity_event_types` (silently rejected → 0 rows; the class that killed `record.create` for ~6 weeks and hid `document.move`), and a new write whose RPC verb isn't in the `VERB_EVENT` auto-emit map (`_shared.ts`) or that bypasses `callServerRpc`. New `scripts/activity_coverage.py` (`detect`/`classify`) parses the live `VERB_EVENT`/`WRITE_ACTIVITY_DENY` + DB allow-list (committed-constant fallback), ranks 4 drift classes. Wired into `run_all` + router + Modes table + `references/mode-activity-coverage.md`. New mode → MINOR. |
 | **1.21.0** | 2026-07-01 | **`bundle measure` now auto-selects the 10 MiB paid wall via a project-scoped signal (`CF_WORKERS_PAID` env or `.cloudflare-paid` marker at the web dir or any repo-root ancestor), free 3 MiB default preserved for other projects — fixes the recurring release-gate false-fail after a Workers Paid upgrade (Lex, 2026-07-01).** New `_paid_plan_signal()` helper (env-first, then marker walk up to 3 levels); `cmd_measure` exposes `paid_source` in the JSON (`--paid flag` / `env CF_WORKERS_PAID` / marker path / `null`) and prints a `(paid 10 MiB wall auto-selected via …)` header line when the signal fires but `--paid` is absent. `--paid` help text + the §Modes `bundle` row + the `### Mode: bundle` prose + `references/mode-bundle.md` Step B3 + the `release` gate PR2 row all updated. New optional auto-detect capability, no invocation breakage → MINOR. |
 | **1.20.0** | 2026-06-26 | **Repo↔device fork reconciliation (skillsmith sync).** The repo distribution copy and the canonical device copy (developed in Lex Council App, symlinked into `~/.claude/skills`) had diverged on a colliding `1.18.0`: the skillsmith routine shipped a repo-only `1.18.0` (the `docs` D4+D5 systemic-threshold escape) on 2026-06-20, the same week the device shipped its own `1.18.0` (the i18n DB-native rewrite) + `1.19.0` (hardcoded DB-native) on 2026-06-21. Back-synced the device lineage into the repo: `scripts/_db_translations.py` (new), `i18n_cleanup.py`, `consolidate_cleanup.py`, `i18n_extract.py` (DB-native); `references/mode-language`, `mode-consolidate`, `mode-hardcoded`, `mode-leaks` + `landmines.md` (L41); the §Modes table rows + the v1.18.0/v1.19.0 comment blocks + §Related. The device lineage takes the canonical 1.18.0/1.19.0 changelog slots below; the repo-only `docs` D4+D5 escape is **retained** (`references/mode-docs.md` unchanged) and credited here. The Cowork-trimmed 991-char description is preserved (the device's richer one exceeds the ≤1024 installer limit). Device stays the canonical fork; this is the distribution mirror. Sync-only reconciliation, no new behavior → MINOR (supersedes the 1.18.0 collision). |
 | **1.19.0** | 2026-06-21 | **`hardcoded` mode goes DB-native too (#303, completes v1.18.0).** `i18n_extract.py merge` + `propagate` were the last i18n write-paths still JSON-only — wiped by the build dump, and (since v1.18.0's `language` detect reads the DB) a JSON-only propagate left the minted keys invisible to the translator → never filled, then wiped. Now `merge` UPSERTs each newly-added EN key and `propagate` UPSERTs the propagated placeholder rows into `public.app_translations` (both **added-only** — never clobber a pre-existing EN value or a real non-EN translation), reusing `scripts/_db_translations.upsert_rows`; JSON kept as a mirror. New `--files-only` (skip DB) + `--allow-other-project` flags; no-creds + real rows = FATAL exit 2 (same contract as `language apply`). `detect`/`verify`/`leaks` unchanged. Write-paths self-tested with the §L41 throwaway key against an isolated `/tmp` root (no tracked JSON touched), DB row deleted after. New optional flags + write-target change, same invocations → MINOR. Vault log `2026-06-21_cleanup-hardcoded-db-native.md`. |
@@ -338,6 +366,8 @@ This skill carries a semantic version in its frontmatter (`version: X.Y.Z`) and 
 - `references/mode-leaks.md` — leaks mode recipe (used-but-absent i18n keys → raw key-paths).
 - `references/mode-bundle.md` — bundle mode recipe (Cloudflare/OpenNext Worker size-wall hygiene).
 - `references/mode-manual.md` — manual mode recipe (DB-backed in-app user manual i18n freshness).
+- `references/mode-activity-coverage.md` — activity-coverage mode recipe (keep the user-activity monitor's instrumentation complete).
+- `scripts/activity_coverage.py` — activity-coverage machinery (detect/classify).
 - `scripts/i18n_extract.py` — hardcoded + leaks mode machinery (detect/merge/propagate/verify/leaks). `merge`/`propagate` are DB-native since v1.19.0 (#303): they UPSERT the minted EN keys + propagated placeholder rows into `app_translations` via `_db_translations.upsert_rows` and mirror the JSON (`--files-only` to skip).
 - `scripts/_db_translations.py` — shared DB transport for the i18n modes (#303, v1.18.0): service-role REST against `public.app_translations` (env-load + prod-ref guard, paginated read, chunked upsert, safe per-key DELETE, DB-or-JSON source resolver). Python counterpart to `apps/web/scripts/{push,dump}-translations.mjs`.
 - `scripts/bundle_cleanup.py` — bundle mode machinery (detect/measure).
