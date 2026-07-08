@@ -1,13 +1,26 @@
 ---
 name: cleanup
-description: "Multi-mode hygiene skill for Lex Council. Modes — language (i18n translations); consolidate (i18n key dedup); hardcoded (extract raw UI text to next-intl keys); leaks (i18n keys used in code but missing from JSON); errors (dev log sweep); postgres (Supabase advisors + pg health); lint (ESLint --fix + tsc); consolidate-code (duplicate code detection); bundle (Cloudflare Worker size-wall hygiene); release (version bump + hygiene gate); docs (frontmatter/wikilinks/orphans); followups (deferred items); manual (in-app user manual translated in all 6 locales). Run all via scripts/run_all.py. Triggers: \"run cleanup\", \"/cleanup\", \"i18n cleanup\", \"translate untranslated\", \"find hardcoded text\", \"find leaking keys\", \"raw key paths\", \"fix dev errors\", \"check postgres\", \"run lint\", \"consolidate code\", \"check the bundle size\", \"doc cleanup\", \"finish followups\", \"update the manual\", \"bump the version\", \"release X.Y.Z\", or any hygiene sweep after a campaign. Full mode recipes in references/."
+description: "Multi-mode hygiene skill for Lex Council. Modes — language (i18n translations); consolidate (i18n key dedup); hardcoded (extract raw UI text to next-intl keys); leaks (i18n keys used in code but missing from JSON); errors (dev log sweep); postgres (Supabase advisors + pg health); lint (ESLint --fix + tsc); consolidate-code (duplicate code detection); bundle (Cloudflare Worker size-wall hygiene); release (version bump + hygiene gate); docs (frontmatter/wikilinks/orphans); followups (deferred items); manual (in-app user manual translated in all 6 locales); rpc-authz (public SECURITY DEFINER RPCs that drifted open — ungated / over-exposed). Run all via scripts/run_all.py. Triggers: \"run cleanup\", \"/cleanup\", \"i18n cleanup\", \"translate untranslated\", \"find hardcoded text\", \"find leaking keys\", \"raw key paths\", \"fix dev errors\", \"check postgres\", \"run lint\", \"consolidate code\", \"check the bundle size\", \"doc cleanup\", \"finish followups\", \"update the manual\", \"bump the version\", \"release X.Y.Z\", or any hygiene sweep after a campaign. Full mode recipes in references/."
 metadata:
-  version: 1.22.0
+  version: 1.23.0
 type: Skill
 
 ---
 
-# Cleanup — Lex Council hygiene sweeps (v1.22.0)
+# Cleanup — Lex Council hygiene sweeps (v1.23.0)
+
+<!-- v1.23.0 (2026-07-06) — NEW `rpc-authz` mode. Recurring guard against
+  public SECURITY DEFINER RPCs drifting open. Such fns bypass RLS, so the FE
+  `perm` gate is UX-only — the DB body must re-check authz. New
+  scripts/security/rpc_authz_audit.py (in the lex_council repo) reads the LIVE
+  DB, call-graph-expands each public RPC into its private helpers, and flags
+  AUTH_UNGATED (any logged-in user, no perm/file/self gate) + ANON_REACHABLE
+  (logged-out, not an approved public read). Whitelists of known-safe fns carry
+  per-entry reasons. Detect + surface ONLY — never auto-applies. Wired into the
+  Modes table + router + Step-0 phrasing so `rotate.py sync-order` folds it into
+  the hourly rotation. New mode → MINOR. Origin: the 2026-07-06 RPC authz audit
+  (docs/vault-logs/2026-07-06_rpc-authz-audit.md) which found + fixed 8 gaps
+  (4 grant-lockdowns, 1 shared file-access gate covering 5 financial RPCs). (Lex, 2026-07-06.) -->
 
 <!-- v1.22.0 (2026-07-06) — NEW `activity-coverage` mode. Keeps the user-
   activity monitor in lock-step with the app's mutation + UI surface so a new
@@ -135,6 +148,7 @@ skill body routes to the right workflow based on what the user asked for.
 | **bundle** | LIVE | Cloudflare/OpenNext **Worker size-wall** hygiene. `detect` (static, build-free) flags heavy client-only libs (`recharts`) imported OUTSIDE the `.body`+`dynamic({ssr:false})` convention so they leak into the SSR/Worker bundle (the class that failed the 1.7.60 deploy); `measure` (build-gated) gzips the built worker vs the 3 MiB free / 10 MiB paid wall — **the 10 MiB wall is auto-selected when `CF_WORKERS_PAID` is set or a `.cloudflare-paid` marker is present at the web dir or any repo-root ancestor (FREE 3 MiB stays the default otherwise; `--paid` forces paid)**. Feeds the `release` gate + `run_all`. Script: `scripts/bundle_cleanup.py`. Recipe `references/mode-bundle.md`. |
 | **activity-coverage** | LIVE | Keep the **user-activity monitor** in lock-step with the app's mutation + UI surface so a new page/action never goes silently untracked. `detect` parses the LIVE `VERB_EVENT` + `WRITE_ACTIVITY_DENY` from `_shared.ts` + the DB allow-list (committed-constant fallback offline) and flags 4 drift classes: `unknown_literal` (HIGH — fired in code but absent from `user_activity_event_types`, silently rejected → 0 rows), `boundary_bypass` + `uncovered_verb` (MED — a write that skips the auto-emit boundary), `dead_type` (LOW). Auto-wires the mechanical fix (`uncovered_verb` → a `VERB_EVENT` entry, no DB change); surfaces the HIGH catalog seed as approval-gated SQL. Script: `scripts/activity_coverage.py`. Recipe `references/mode-activity-coverage.md`. |
 | **manual** | LIVE | Keep the DB-backed in-app user manual translated + fresh (like `docs` does for the planet hubs). Detects Parts whose EN `body_md` hash ≠ stored `source_md_hash` per locale (**stale**) or have no row (**missing**); re-translates the gaps and **auto-publishes** via a per-Part translation workflow (routes / backticked code / `§` numbers / heading anchors kept verbatim); also flags Parts whose EN may be drifted by recent app changes (surface-only). MCP + workflow driven (no static script). Recipe `references/mode-manual.md`. |
+| **rpc-authz** | LIVE | Prove no public `SECURITY DEFINER` RPC has drifted open. Every such function bypasses RLS, so the FE `perm` gate is UX-only — the DB body must re-check authz. `scripts/security/rpc_authz_audit.py` (in the **lex_council** repo) reads the LIVE DB, call-graph-expands each public RPC into its `private.*` helpers, and flags any reachable by `authenticated` with **no perm/file/self gate** (AUTH_UNGATED) or reachable by `anon` and not an approved public read (ANON_REACHABLE). Whitelists of known-safe fns live in the script with per-entry reasons. **Detect + surface only — NEVER auto-applies** (security fixes need review); exit 1 + report on any slip-up. Recipe `references/mode-rpc-authz.md`. Origin: 2026-07-06 RPC authz audit. |
 
 ## When to invoke this skill
 
@@ -158,6 +172,7 @@ Trigger phrases (any of):
 - "check the bundle size", "is the app too big", "worker size limit", "trim the bundle", "the deploy failed on size", "/cleanup bundle" → routes to `bundle`
 - "update the manual translations", "is the manual up to date", "translate the manual", "the manual is stale", "/cleanup manual" → routes to `manual`
 - "check activity coverage", "what actions aren't tracked", "is the activity monitor complete", "activity-monitor gaps", "/cleanup activity-coverage" → routes to `activity-coverage`
+- "check rpc security", "audit the rpcs", "are the rpcs gated", "can anyone call the rpcs", "check rpc authz", "rpc permission audit", "/cleanup rpc-authz" → routes to `rpc-authz`
 
 Skip when: user is mid-feature and work isn't ready; a cleanup pass ran today and nothing new was added; user is asking about something else ("clean up this component" = refactoring, not this skill).
 
@@ -183,6 +198,7 @@ Look at the user's phrasing. Default mode is `language` unless they explicitly n
 | "check the bundle size", "worker size limit", "the deploy failed on size", "/cleanup bundle" | `bundle` |
 | "update the manual translations", "is the manual up to date", "translate the manual", "/cleanup manual" | `manual` |
 | "check activity coverage", "what actions aren't tracked", "activity-monitor gaps", "/cleanup activity-coverage" | `activity-coverage` |
+| "audit the rpcs", "check rpc security", "are the rpcs gated", "can anyone call the rpcs", "/cleanup rpc-authz" | `rpc-authz` |
 | "run all cleanups", "/cleanup all", "what's drifted" | run `python3 ~/.claude/skills/cleanup/scripts/run_all.py run [--fast]` — runs local hygiene modes detect-only, writes severity-ranked `/tmp/cleanup_triage.md` + per-mode last-run age |
 | `/cleanup-routine`, the hourly `lex-cleanup-rotation` task, "do the next cleanup spot" | one mode this run = `python3 ~/.claude/skills/cleanup/scripts/rotate.py next`; full recipe in **§Step RT** — applies, commits, **never pushes** |
 

@@ -10,14 +10,20 @@
 # What it does: after the Butler's turn, it reads the prose he showed the Guild
 # Master (code blocks and `inline code` are stripped — those are legitimately
 # technical and not addressed to him), and flags any technical term used WITHOUT a
-# plain-language gloss nearby. If it finds some, it prints a short reminder. It
-# NEVER blocks (always exit 0): being understood is a standard we nudge toward, not
-# a wall we slam. A reminder the Butler reads on the next turn is enough.
+# plain-language gloss nearby. If it finds any, it BLOCKS the turn from ending
+# (exit 2) and tells the Butler to rewrite the WHOLE reply in plain English —
+# every line, not just a summary. Plain English is now a wall, not a nudge:
+# being understood is the guild's first rule, enforced on every reply, always.
 #
-# Once per turn: guarded by the .claude/state/pe-nudged sentinel, which
-# turn-start.py clears at the next real user turn (so it can fire again).
+# Never bricks: the block is bounded. .claude/state/pe-block-count caps how many
+# times one turn can be held (MAX_BLOCKS); once the cap is hit the turn is allowed
+# through with a final reminder so a reply we cannot satisfy never freezes the
+# session. turn-start.py clears the counter at each real user turn.
 #
-# Fails OPEN on any error — a broken reminder must never brick a turn.
+# Kill switch: touch .claude/state/plain-english-disarmed (or evolution/DISARMED)
+# to fall back to a soft, non-blocking reminder.
+#
+# Fails OPEN on any error — a broken gate must never brick a turn.
 # ─────────────────────────────────────────────────────────────────────────────
 import sys, os, re, json, pathlib
 
@@ -31,7 +37,7 @@ JARGON = {
     "idempotent", "fingerprint", "ledger", "hook", "hooks", "gate", "gates",
     "rls", "schema", "migration", "cli", "mcp", "endpoint", "payload",
     "sentinel", "frontmatter", "yaml", "json", "stack trace", "compaction",
-    "doer", "thinker", "", "fan-out", "fanout", "main thread",
+    "doer", "thinker", "fan-out", "fanout", "main thread",
     "token", "tokens", "cache", "transcript", "branch", "merge", "rebase",
 }
 
@@ -100,14 +106,14 @@ def main():
     except Exception:
         sys.exit(0)
 
-    state = pathlib.Path(project_dir()) / ".claude" / "state"
+    proj = pathlib.Path(project_dir())
+    state = proj / ".claude" / "state"
     # only run within a real turn (same anchor every other hook uses)
     if not (state / "turn-start").exists():
         sys.exit(0)
-    # once per turn
-    nudged = state / "pe-nudged"
-    if nudged.exists():
-        sys.exit(0)
+
+    # Kill switch — fall back to soft/off so a session can never freeze here.
+    disarmed = (proj / "evolution" / "DISARMED").exists() or (state / "plain-english-disarmed").exists()
 
     transcript = data.get("transcript_path")
     if not transcript or not os.path.exists(transcript):
@@ -122,23 +128,51 @@ def main():
         sys.exit(0)
 
     terms = undefined_terms(prose)
-    try:
-        state.mkdir(parents=True, exist_ok=True)
-        nudged.write_text("1")
-    except Exception:
-        pass
+    if not terms:
+        sys.exit(0)  # plain — let the turn end.
 
-    if terms:
-        shown = ", ".join(terms)
+    shown = ", ".join(terms)
+
+    if disarmed:
         print(
-            "🗣  PLAIN-ENGLISH NUDGE — your last reply showed the Guild Master "
-            f"technical words without a plain meaning beside them: {shown}. "
-            "He is not a programmer. Next message, define each in the same breath "
-            "(\"a worktree — a private copy of the project\") or replace it with a "
-            "plain phrase. Being understood is the guild's first rule.",
+            "🗣  PLAIN-ENGLISH — technical words without a plain meaning beside "
+            f"them: {shown}. (Gate disarmed; not blocking.) Say it plainer.",
             file=sys.stderr,
         )
+        sys.exit(0)
 
+    MAX_BLOCKS = 2
+    counter = state / "pe-block-count"
+    try:
+        n = int(counter.read_text().strip() or "0")
+    except Exception:
+        n = 0
+
+    if n < MAX_BLOCKS:
+        try:
+            state.mkdir(parents=True, exist_ok=True)
+            counter.write_text(str(n + 1))
+        except Exception:
+            pass
+        print(
+            "⛔ PLAIN-ENGLISH GATE — the Guild Master is not a programmer, and this "
+            f"reply shows technical words with no plain meaning beside them: {shown}. "
+            "Rewrite the WHOLE reply in simple English before it goes out — every "
+            "line, not just the summary. Define any unavoidable term in the same "
+            "breath (\"a worktree — a private copy of the project\") or swap it for a "
+            "plain phrase. Keep it short and clear: what happened, what it means, "
+            "what's next. Do not end the turn until the reply is plain.",
+            file=sys.stderr,
+        )
+        sys.exit(2)  # BLOCK the stop -> the Butler revises and tries again.
+
+    # Bound reached — let the turn end so nothing freezes, with a last nudge.
+    print(
+        "🗣  PLAIN-ENGLISH — still seeing technical words without a plain meaning "
+        f"({shown}). Letting this turn close so the session never freezes, but the "
+        "reply should be plainer.",
+        file=sys.stderr,
+    )
     sys.exit(0)
 
 

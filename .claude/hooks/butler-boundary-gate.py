@@ -2,22 +2,24 @@
 # ─────────────────────────────────────────────────────────────────────────────
 # Star Alliance — BUTLER BOUNDARY GATE  (PreToolUse: ALL tools, BLOCKING)
 #
-# THE DOCTRINE: the Butler is the guild's VOICE, not its hands. He never
-# investigates and never does work himself — no Bash, no Read/Grep/Glob, no
-# Edit/Write, no WebSearch/WebFetch, no MCP work (Supabase included). He ROUTES:
-# he hands the brief to the Strategist, the Strategist investigates and decides
-# which specialist does the craft.
+# THE DOCTRINE (LENIENT, 2026-07-04): the Butler is the guild's VOICE. He may
+# LOOK before he routes — read files, search, run read-only commands to
+# understand the order — but he never does the CRAFT himself. Writing, editing,
+# installing, moving, deleting, touching data, or spawning a craft specialist all
+# still route through the Strategist first. In short: looking is free, doing is
+# routed. (This replaces the old hard line that blocked the Butler from every
+# non-routing tool until he dispatched the Strategist.)
 #
 # HOW IT STAYS SAFE (the key trick): a PreToolUse hook cannot reliably tell the
 # Butler (main session) apart from a spawned specialist — on the Desktop app the
 # child-session env var is "1" for both. So this gate does NOT ask "who are you".
 # It asks "has the Strategist been dispatched this exchange yet?" (a per-turn
-# state file). Before that: only routing/clarifying tools are allowed — this is
-# what stops the Butler investigating. The instant anyone calls
-# Task(subagent_type="the-strategist"), the flag is written and every work tool
-# unlocks for the rest of the exchange — so the Strategist and the specialists it
-# names can freely do their jobs. turn-start.py clears the flag each new turn, so
-# every fresh request re-forces routing-first.
+# state file). Before that: read-only tools pass, but WRITE / destructive actions
+# are held. The instant anyone calls Task(subagent_type="the-strategist"), the
+# flag is written and every work tool unlocks for the rest of the exchange — so
+# the Strategist and the specialists it names can freely do their jobs.
+# turn-start.py clears the flag each new turn, so every fresh request re-forces
+# routing-first for the doing (not the looking).
 #
 # OVERRIDE / KILL SWITCH (no agent-controlled bypass):
 #   • evolution/DISARMED                         (engine-wide)
@@ -26,7 +28,7 @@
 # FAIL POSTURE: fail OPEN on any internal error — a broken gate must never brick
 # the session. Pure-chat turns (tier NONE) are exempt.
 # ─────────────────────────────────────────────────────────────────────────────
-import os, sys, json
+import os, sys, json, re
 
 ROUTER = "the-strategist"
 # The craft specialists the Butler must NOT spawn before the Strategist has routed.
@@ -37,13 +39,64 @@ SPECIALISTS = {
 # Claude's own generic agents — legitimately used by the guild, never foreign.
 KNOWN_BUILTINS = {"explore", "general-purpose", "plan", "claude",
                   "claude-code-guide", "statusline-setup", "fork"}
-# Tools the Butler may use BEFORE routing: the act of routing (Task/Agent), asking
-# the Guild Master, planning, loading a doctrine Skill, and managing the visible
-# task list. Everything else is "investigating / doing" and waits for routing.
-PRE_ROUTING_EXEMPT = {
-    "Task", "Agent", "AskUserQuestion", "ExitPlanMode", "Skill",
-    "TaskCreate", "TaskUpdate", "TaskList", "TaskGet", "TaskStop", "TodoWrite",
-}
+# ── Write / destructive classification (lenient routing) ─────────────────────
+# The Butler may investigate read-only before routing. Only WRITE actions are
+# held until the Strategist is dispatched. These are the tools / commands that
+# count as "doing", not "looking".
+WRITE_TOOLS = {"Write", "Edit", "MultiEdit", "NotebookEdit"}
+
+_MCP_READ_VERBS = ("get_", "list_", "fetch_", "read_", "find_", "search_",
+                   "query_", "describe_", "show_", "view_", "lookup_", "select_")
+_MCP_WRITE_VERBS = ("create_", "update_", "delete_", "insert_", "drop_",
+                    "truncate_", "put_", "patch_", "set_", "add_", "remove_",
+                    "upsert_", "merge_", "write_", "append_", "modify_",
+                    "rename_", "move_", "alter_", "execute_", "run_", "apply_",
+                    "save_", "send_", "post_", "publish_", "deploy_", "upload_",
+                    "schedule_", "cancel_", "trigger_", "submit_", "sign_")
+
+# Shell commands that mutate files / repo / system -> routed, not free.
+_BASH_WRITE_RE = re.compile("|".join((
+    r"\bcat\s*>\s*\S", r"\becho\s+.+?>\s*\S", r"\bprintf\s+.+?>\s*\S",
+    r"\btee\s+\S", r"(?:^|[;&|()\s])>\s*\S", r"(?:^|[;&|()\s])>>\s*\S",
+    r":\s*>\s*\S", r"\bsed\s+-i\b", r"\bcp\s+\S+\s+\S", r"\bmv\s+\S+\s+\S",
+    r"\brm\s+", r"\brmdir\s+\S", r"\bmkdir\s+", r"\btouch\s+\S",
+    r"\bchmod\b", r"\bchown\b", r"\bdd\b", r"\bln\s+-s", r"\bperl\s+-[ie]\b",
+    r"\bruby\s+-e\b", r"\bnode\s+-e\b", r"\bnode\s+--eval\b",
+    r"\bpip3?\s+install\b", r"\buv\s+pip\s+install\b", r"\bnpm\s+(install|i)\b",
+    r"\byarn\s+add\b", r"\bcargo\s+install\b",
+    r"\bgit\s+(checkout|reset|stash|rebase|clean|rm|commit|push|merge|apply|revert|tag)\b",
+    r"\binstall\s+-m\b", r"\brsync\b", r"\bscp\b", r"\bwget\b",
+    r"\bcurl\s+.+?>\s*\S", r"\bunzip\s+\S", r"\btar\s+.*-[a-zA-Z]*x",
+)), re.IGNORECASE)
+
+
+def _mcp_is_write(tool, data):
+    part = tool.split("__")[-1].lower()
+    if any(part.startswith(v) for v in _MCP_READ_VERBS):
+        return False
+    if part == "execute_sql":
+        q = ((data.get("tool_input") or {}).get("query", "") or "").strip().lower()
+        body = q[:-1] if q.endswith(";") else q
+        if (";" not in body
+                and re.match(r"^\s*(select|with)\b", body)
+                and not re.search(r"\b(insert|update|delete|drop|alter|truncate|create|grant|revoke|merge)\b", body)):
+            return False
+        return True
+    if any(part.startswith(v) for v in _MCP_WRITE_VERBS):
+        return True
+    return False   # unknown MCP tool -> lenient (treat as a read)
+
+
+def _is_write_action(tool, data):
+    """True if this tool call would DO work (write / change), not just look."""
+    if tool in WRITE_TOOLS:
+        return True
+    if tool == "Bash":
+        cmd = (data.get("tool_input") or {}).get("command", "") or ""
+        return bool(_BASH_WRITE_RE.search(cmd))
+    if tool.startswith("mcp__"):
+        return _mcp_is_write(tool, data)
+    return False
 
 
 def _proj():
@@ -109,11 +162,14 @@ def check(data):
     if _tier() == "none":
         return {"exit": 0}
 
-    # STEP 0 — blanket pre-routing gate: no investigating/doing before the Strategist.
-    if tool not in PRE_ROUTING_EXEMPT and not _routed():
-        return {"exit": 2, "stderr": (f"⛔ BUTLER BOUNDARY — the Butler tried to use '{tool}' directly. The "
-                   f"Butler routes; he does not investigate or do work himself. Dispatch "
-                   f"the Strategist first:\n{DISPATCH}")}
+    # STEP 0 — lenient pre-routing gate: looking is free, doing is routed.
+    # Read-only tools pass before the Strategist is dispatched; only WRITE /
+    # destructive actions (and spawning a specialist, handled below) are held.
+    if not _routed() and tool not in ("Task", "Agent") and _is_write_action(tool, data):
+        return {"exit": 2, "stderr": (f"⛔ BUTLER BOUNDARY — the Butler tried to DO something with '{tool}' "
+                   f"before routing. Looking is fine now — read and search freely — but "
+                   f"anything that writes a file, edits the repo, touches data, installs, "
+                   f"moves, or deletes still goes through the Strategist first:\n{DISPATCH}")}
 
     if tool not in ("Task", "Agent"):
         return {"exit": 0}

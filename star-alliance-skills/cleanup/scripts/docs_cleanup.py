@@ -106,7 +106,11 @@ DATE_FIELDS = ["last_full_audit", "counts_updated", "last_synced",
 RETIRED_NAMES = {
     "v2-schema": [
         "fd", "fd_access", "council_members", "ppl", "cm_hr", "admin_perms",
-        "whbd_responses", "evi", "evo", "is_verified", "cm_ap_js",
+        "whbd_responses", "evi", "evo", "is_verified",
+        # NOTE: cm_ap_js is deliberately NOT here — it is the LIVE view backing
+        # `cmAp` (FRONTEND.md, CLAUDE.md S1b), not a retired v2-schema name.
+        # A prior version of this list mis-flagged it; see
+        # docs/audits/2026-07-06_docs-drift-reconcile/99-synthesis.md.
     ],
     "retired-primitives": [
         "KpiStrip", "PageHeaderStrip", "AdminPageShell", "AdminFilterBar",
@@ -310,13 +314,18 @@ def cmd_wikilinks():
     md_files = walk_md_files()
     # basename (no .md) → list of relpaths
     by_stem = defaultdict(list)
+    # full relpath (no .md, forward slashes) → relpath — for path-aware links
+    by_relpath = {}
     for path in md_files:
+        relpath = os.path.relpath(path, DOCS)
         stem = os.path.splitext(os.path.basename(path))[0]
-        by_stem[stem].append(os.path.relpath(path, DOCS))
+        by_stem[stem].append(relpath)
+        relpath_noext = relpath[:-3] if relpath.endswith(".md") else relpath
+        by_relpath[relpath_noext.replace(os.sep, "/")] = relpath
 
     broken, archived, code_links = [], [], []
     resolved_count = 0
-    seen_targets = {}  # stem → broken/archived-pointer/resolved (cache)
+    seen_targets = {}  # cache key → broken/archived-pointer/resolved
 
     for rel, lineno, text in rows:
         for raw in WIKILINK_RE.findall(text):
@@ -343,18 +352,51 @@ def cmd_wikilinks():
             # [[X.md]] — normalize a trailing .md so both forms resolve.
             if stem_lc.endswith(".md"):
                 stem = stem[:-3]
-            if stem in seen_targets:
-                cls = seen_targets[stem]
-            else:
-                matches = by_stem.get(stem, [])
-                if not matches:
-                    cls = "broken"
-                elif all(ARCHIVED_SEGMENT in m for m in matches):
-                    cls = "archived-pointer"
+
+            target_norm = target.rstrip("/")
+            if target_norm.lower().endswith(".md"):
+                target_norm = target_norm[:-3]
+            has_dir = "/" in target_norm
+            reason = None
+
+            if has_dir:
+                # Path-aware resolution: a target with a directory component
+                # must match that exact relpath, not just share a basename
+                # with some file elsewhere. Prevents a renamed directory
+                # (e.g. audit-campaigns/ → audits/) from silently resolving
+                # against a same-named file under the OLD path.
+                cache_key = target_norm
+                if cache_key in seen_targets:
+                    cls, reason = seen_targets[cache_key]
                 else:
-                    cls = "resolved"
-                seen_targets[stem] = cls
+                    exact = by_relpath.get(target_norm)
+                    if exact:
+                        cls = ("archived-pointer" if ARCHIVED_SEGMENT in exact
+                               else "resolved")
+                    else:
+                        stem_matches = by_stem.get(stem, [])
+                        if stem_matches:
+                            cls, reason = "broken", "path_mismatch"
+                        else:
+                            cls, reason = "broken", "missing"
+                    seen_targets[cache_key] = (cls, reason)
+            else:
+                cache_key = stem
+                if cache_key in seen_targets:
+                    cls, reason = seen_targets[cache_key]
+                else:
+                    matches = by_stem.get(stem, [])
+                    if not matches:
+                        cls, reason = "broken", "missing"
+                    elif all(ARCHIVED_SEGMENT in m for m in matches):
+                        cls = "archived-pointer"
+                    else:
+                        cls = "resolved"
+                    seen_targets[cache_key] = (cls, reason)
+
             row = {"target": target, "stem": stem, "file": rel, "line": lineno}
+            if reason:
+                row["reason"] = reason
             if cls == "broken":
                 broken.append(row)
             elif cls == "archived-pointer":

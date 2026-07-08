@@ -1,11 +1,11 @@
 {
-  "last_run_start": "2026-07-03T23:07:00Z",
-  "last_run_end": "2026-07-03T23:08:35Z",
+  "last_run_start": "2026-07-04T00:30:00Z",
+  "last_run_end": "2026-07-04T00:30:00Z",
   "last_run_status": "ok",
-  "last_run_summary": "Run 11 — held-state holding pattern (hourly cron). Phase 1 reflector idle (cadence). Phase 2 SKIPPED — §R4 guards forbid committing skill work while 244-file held diff is unresolved + CRITIC-STRUCTURAL Tier-B (PATH-A/B) pending Atta decision. Declared-but-unused lens researched as notebook only (4 dormant skills share 'trigger not obvious' pattern). Phase 3/4/5 DEFERRED for same reason. Stale-scan unchanged (8 hits, chronicle-skip). OKF/CU/build numbers identical to Runs 5-10. 0 commits. Pending decision unchanged: PATH-A restore vs PATH-B adopt (CRITIC-STRUCTURAL from Run 6).",
+  "last_run_summary": "Run 12 — held-state RELEASED. Git tree clean (HEAD=64fe394 Cross-surface coherence resolved the 244-file held diff). routine_scan 129 skills (13 frictionful, 5 dormant — identical to Runs 5-11). Phase 1 reflector idle (cadence). Phase 2 triaged: §R4-verify confirmed 4/5 'dormant' = declared-but-unused (NOT orphan, loadout-loaded by Strategist/Architect/Developer); bug-fix-closer remains only true orphan; LOG_PATH/cmd_verify code-unity top hits §R4-verify KILLED (semantically distinct endpoints). Phase 3: 0 auto-apply (top hits fork-out-of-scope or semantically distinct). Phase 4 OKF: 785/785 + 258/258 + 0 violations. Phase 5 build+conformity: FULL CONFORMITY (members=10, skills=129, workflows=36). Critic fail-closed: verdict.py returns decision=error because critique.py was relocated to .retired/ by Cross-surface coherence (no PATH-A restore, no PATH-B new-backend adopted). 0 commits. 4 Tier-B proposals emitted (declared-but-unused sharpening, bug-fix-closer retirement carry, skill_sync.py --no-delete carry, CRITIC-STRUCTURAL opt summary) + 1 metric close.",
   "budget_spent": 0.0,
-  "next_expected_by": "2026-07-04T00:01:00Z",
-  "held_state": true,
-  "held_diff_files": 244,
-  "pending_decision": "PATH-A restore vs PATH-B adopt (CRITIC-STRUCTURAL escalation from Run 6)"
+  "next_expected_by": "2026-07-04T01:30:00Z",
+  "held_state": false,
+  "held_diff_files": 0,
+  "pending_decision": "CRITIC-STRUCTURAL (PATH-A restore critique.py OR PATH-B adopt new critic backend — Run 6 escalation still open). Routine auto-commits blocked by Invariant #10 fail-closed until resolved."
 }
