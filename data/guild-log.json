@@ -4318,6 +4318,13 @@
       "title": "Routing: .claude/hooks/butler-boundary-gate.py, .claude/hooks/guild-routing-gate.sh, .claude/hooks/plain-english-nudge.py (+9 more)",
       "who": "quartermaster-auto",
       "commit": ""
+    },
+    {
+      "date": "2026-07-08",
+      "type": "upgrade",
+      "title": "Routing: .retired/hooks-cleanup-2026-07-03/_saroot_probe.tmp, .retired/hooks-cleanup-2026-07-03/_write_test.tmp, .retired/hooks-cleanup-2026-07-03/_write_test2.tmp",
+      "who": "quartermaster-auto",
+      "commit": ""
     }
   ],
   "count": 130
