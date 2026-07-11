@@ -38,7 +38,10 @@
       "Bash(mv '/Users/atta/Documents/Claude/Projects/Lex Council App/.claude/arsenal' '/Users/atta/Documents/Claude/Projects/Lex Council App/.claude/.retired-2026-07/arsenal')",
       "Bash(mv '/Users/atta/Documents/Claude/Projects/Lex Council App/guild-data.json' '/Users/atta/Documents/Claude/Projects/Lex Council App/.claude/.retired-2026-07/guild-data.json')",
       "Bash(mv '/Users/atta/Documents/Claude/Projects/Lex Council App/.claude/settings.json.bak-20260704-033311' '/Users/atta/Documents/Claude/Projects/Lex Council App/.claude/.retired-2026-07/')",
-      "Bash(mv '/Users/atta/Documents/Claude/Projects/Lex Council App/.claude/settings.local.json.bak-20260704-042805' '/Users/atta/Documents/Claude/Projects/Lex Council App/.claude/.retired-2026-07/')"
+      "Bash(mv '/Users/atta/Documents/Claude/Projects/Lex Council App/.claude/settings.local.json.bak-20260704-042805' '/Users/atta/Documents/Claude/Projects/Lex Council App/.claude/.retired-2026-07/')",
+      "mcp__1ee3ddfd-27aa-4176-9539-d9a2081c163d__apply_migration",
+      "mcp__1ee3ddfd-27aa-4176-9539-d9a2081c163d__execute_sql",
+      "mcp__1ee3ddfd-27aa-4176-9539-d9a2081c163d__get_advisors"
     ]
   }
 }
