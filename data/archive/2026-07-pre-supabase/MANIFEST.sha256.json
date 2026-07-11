@@ -1,0 +1,8 @@
+{
+  ".claude/state/dispatch-log.jsonl": "260d917b0db6855eff1f2480846dacdfb962d7688d16b1bf826930c96dc76af1",
+  ".claude/state/xp-log.jsonl": "52f4f4da2df29a36c541a25f659c435724620337c44292025f51f9e9e7fbb98a",
+  "data/guild-log.json": "7846f8a667996c7fd41daba8469db768a02d3a32ee3d929815b04dde873024a2",
+  "data/mcp-telemetry.jsonl": "0ab1bac5f7b35d22030a58d267fb716b7517342394e7f759f8f4ca0a1ba3424e",
+  "data/turn-cost.jsonl": "4b017e05fd4ae4eece4c8974816639eb67907b9ca08e1e04977be4837abded4c",
+  "star-alliance-arsenal/usage-log.jsonl": "7e5d41826defada932db370b97f86841e19215dea27f43fb0dc4384079c0633b"
+}

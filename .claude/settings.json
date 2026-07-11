@@ -2,13 +2,19 @@
   "env": {
     "STAR_ALLIANCE_ROOT": "/Users/atta/Documents/Claude/Projects/star-alliance"
   },
-  "_comment": "CLAUDE-ONLY HARNESS (Hermes/MiniMax doer layer removed 2026-07-03). One hard block remains: destructive-gate (data-safety), reached via sa-pretool. Everything else is a non-blocking reminder or logger, so a session can never freeze on a harness rule. The retired gate files live in .retired/ and are NOT wired.",
+  "_comment": "CLAUDE-ONLY HARNESS (Hermes/MiniMax doer layer removed 2026-07-03; guild schema migration Phase 3 2026-07-12: turn-cost/spawn-log now sink to .claude/state/outbox.jsonl, drained by bin/sa flush on SessionStart + manually). One hard block remains: destructive-gate (data-safety), reached via sa-pretool. Everything else is a non-blocking reminder or logger, so a session can never freeze on a harness rule. Retired gate files live in .retired/ and are NOT wired.",
   "hooks": {
     "UserPromptSubmit": [
       {
         "hooks": [
-          { "type": "command", "command": "sh \"$CLAUDE_PROJECT_DIR/.claude/hooks/guild-routing-gate.sh\"" },
-          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/turn-start.py\"" }
+          {
+            "type": "command",
+            "command": "sh \"$CLAUDE_PROJECT_DIR/.claude/hooks/guild-routing-gate.sh\""
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/turn-start.py\""
+          }
         ]
       }
     ],
@@ -16,46 +22,59 @@
       {
         "matcher": "*",
         "hooks": [
-          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/sa-pretool.py\"" }
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/sa-pretool.py\""
+          }
         ]
       }
     ],
     "PostToolUse": [
       {
-        "matcher": "Edit|Write|MultiEdit",
-        "hooks": [
-          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/build-mark.py\"" }
-        ]
-      },
-      {
-        "matcher": "Skill",
-        "hooks": [
-          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/xp-log.py\"" }
-        ]
-      },
-      {
         "matcher": "Task|Agent",
         "hooks": [
-          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/spawn-log.py\"" }
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/spawn-log.py\""
+          }
         ]
       }
     ],
     "PreCompact": [
       {
         "hooks": [
-          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/precompact-snapshot.py\"" }
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/precompact-snapshot.py\""
+          }
         ]
       }
     ],
     "Stop": [
       {
         "hooks": [
-          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/turn-cost.py\"" },
-          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/version-auto-bump.py\"" },
-          { "type": "command", "command": "sh \"$CLAUDE_PROJECT_DIR/.claude/hooks/turn-finalize.sh\"" },
-          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/plain-english-nudge.py\"" },
-          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/guild-log-nudge.py\"" },
-          { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/vault-log-nudge.py\"" }
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/turn-cost.py\""
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/plain-english-nudge.py\""
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/vault-log-nudge.py\""
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh \"$CLAUDE_PROJECT_DIR/.claude/hooks/guild-flush.sh\""
+          }
         ]
       }
     ]

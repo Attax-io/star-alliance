@@ -14,11 +14,22 @@ import os
 from datetime import datetime
 from pathlib import Path
 
-LOG_PATH = Path(os.environ.get(
-    "STAR_ALLIANCE_DISPATCH_LOG",
-    Path(os.environ.get("CLAUDE_PROJECT_DIR", os.getcwd()))
-    / ".claude" / "state" / "dispatch-log.jsonl",
-))
+import uuid
+
+OUTBOX_PATH = Path(os.environ.get("CLAUDE_PROJECT_DIR", os.getcwd())) / ".claude" / "state" / "outbox.jsonl"
+
+PROJECT_NAME = "star-alliance"
+
+
+def device_id_slug():
+    """Stable per-machine id: 'mac-' + the OS user. Same convention used by
+    turn-cost.py, bin/sa (cmd_log), and tools/backfill_guild.py — never
+    derive this independently."""
+    import getpass
+    try:
+        return "mac-" + getpass.getuser()
+    except Exception:
+        return "mac-unknown"
 
 
 def main():
@@ -31,16 +42,33 @@ def main():
         sys.exit(0)
 
     inp = data.get("tool_input") or {}
+    agent = inp.get("subagent_type") or inp.get("subagentType") or "unknown"
     entry = {
         "timestamp": datetime.utcnow().isoformat() + "Z",
         "kind": "spawn",
-        "agent": inp.get("subagent_type") or inp.get("subagentType") or "unknown",
+        "agent": agent,
         "description": inp.get("description", ""),
     }
+    # Phase 3 decision (approved 2026-07-12): STOP the legacy dual-write to
+    # dispatch-log.jsonl — outbox only, from now on. Removes the double-count
+    # risk of the same spawn landing in both dispatch-log.jsonl (read by some
+    # local tooling) AND guild.events via a later backfill pass.
     try:
-        LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
-        with open(LOG_PATH, "a") as f:
-            f.write(json.dumps(entry) + "\n")
+        outbox_row = {
+            "table": "events",
+            "client_uuid": str(uuid.uuid4()),
+            "payload": {
+                "ts": entry["timestamp"],
+                "device_id": device_id_slug(),
+                "project": PROJECT_NAME,
+                "kind": "spawn",
+                "subject": agent,
+                "detail": entry,
+            },
+        }
+        OUTBOX_PATH.parent.mkdir(parents=True, exist_ok=True)
+        with open(OUTBOX_PATH, "a") as f:
+            f.write(json.dumps(outbox_row) + "\n")
     except Exception:
         pass  # telemetry must never break the session
     sys.exit(0)

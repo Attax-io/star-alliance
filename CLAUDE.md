@@ -6,10 +6,20 @@ timestamp: 2026-06-27T10:27:03Z
 # Star Alliance — Claude Instructions
 
 Star Alliance is a **Claude-only harness**: a guild of Claude members (personas)
-plus a shared skill library, wired for Claude Code, and **exposed to other projects
-as an MCP server** (`mcp/server.py`). There is no non-Claude "doer" layer — every
-member is a Claude model, and bulk or parallel work is done by spawning Claude
-subagents. (The old Hermes/MiniMax three-layer system was removed 2026-07-03.)
+plus a shared skill library, wired for Claude Code. The guild's living memory is a
+**Supabase database** (the `guild` schema — see "The database spine" below); files in
+this repo are the read cache Claude Code loads. There is no non-Claude "doer" layer —
+every member is a Claude model, and bulk or parallel work is done by spawning Claude
+subagents. (The old Hermes/MiniMax three-layer system was removed 2026-07-03; the
+local MCP server, build pipeline, and evolution engine were retired in the 2026-07
+Supabase migration — consumers now get materialized agent files via `sa pull`.)
+
+## STOP RULE — guild work is frozen
+
+**After the 2026-07 Supabase migration, guild work is frozen until Lex Council
+ships.** Bugfixes of 30 minutes or less are allowed; anything bigger waits. New
+ideas are not built — they are recorded as rows in `guild.findings`
+(`python3 bin/sa findings add ...`) for later.
 
 ## Plain English to the Guild Master (every member, every message)
 
@@ -75,35 +85,36 @@ gate — he knows the loop up front (it is injected each turn by `guild-routing-
 and routes before he reaches for anything. Kill switch:
 `touch .claude/state/butler-boundary-disarmed`.
 
-## Single source of truth (never hand-edit a generated file)
+## Single source of truth (the database, mirrored to files)
 
-Every fact lives in exactly ONE place; everything else is **generated** from it.
-Editing a generated file is a deviation the next build silently overwrites.
+**Skills and members live in the `guild` schema in Supabase** — that is the truth.
+Git holds the working copy and the history; the files Claude Code actually loads are
+a **read cache materialized from the database**:
 
-**Sources of truth (edit these):**
-- Members → `star-alliance-members/*.md` (frontmatter carries the member's `model:`)
-- Skills → `star-alliance-skills/<id>/SKILL.md` (version in its frontmatter)
-- Models → `star-alliance-arsenal/models.json` (the three Claude models + `seats.brain`)
-- Workflows → `workflows.json`
-- Domains → `data/domains.json`
+- Skills → truth in `guild.skills`; edit the working copy in
+  `star-alliance-skills/<id>/SKILL.md`, then `sa push` to the DB. `sa pull`
+  materializes skills into `~/.claude/skills` and the repo dirs.
+- Members → truth in `guild.members`; edit `star-alliance-members/*.md`, then
+  `sa push`. `.claude/agents/*.md` (here and in consumer repos like Lex Council)
+  is materialized by `sa pull` — never hand-edit it. The Butler is a Persona and
+  gets no agent card.
+- Models → `star-alliance-arsenal/models.json` (the three Claude models +
+  `seats.brain`) — still file-truth.
+- Workflows → `workflows.json` · Domains → `data/domains.json` — still file-truth.
+- Dashboard data → generated live by `sa dash` (the old `build.py` bundles —
+  `guild-data.js` etc. — are retired).
+- `VERSIONS.md` ← each `SKILL.md` frontmatter (skill registry; regenerate, don't
+  hand-edit the table).
 
-**Generated (DO NOT hand-edit — regenerate instead):**
-- `.claude/agents/*.md` ← from `star-alliance-members/` via `guild/install_agents.py`
-  (the Butler is a Persona and gets no agent card)
-- `guild-data.js` · `guild-data.json` · `skill-md.js` · `workflow-md.js` ← `build.py`
-- `VERSIONS.md` ← each `SKILL.md` frontmatter (skill registry)
-
-**Enforced by `tools/conformity_check.py`** — run it before trusting the repo. A green
-run means no drift. If you change a member, edit its file in `star-alliance-members/`
-then run `python3 guild/install_agents.py` — never touch `.claude/agents/` by hand.
+The flow is always: edit source file → `sa push` → other devices `sa pull`.
+Editing a materialized file directly is drift the next pull silently overwrites.
 
 ## Model roster (models.json is the one source of truth)
 
 `star-alliance-arsenal/models.json` holds ONLY the three Claude models — `opus`,
 `sonnet`, `haiku` — and a single `seats.brain` (default `sonnet`). Every member's
 `model:` frontmatter names one of the three. Consumers DERIVE from models.json; never
-hand-copy the model list elsewhere. `conformity_check.py` (REG/BR checks) fails the
-build if any model is non-Claude or a member names a model outside the registry.
+hand-copy the model list elsewhere.
 
 ## Supabase
 
@@ -190,19 +201,45 @@ good practice, not enforced by a gate that can deadlock.
 
 What still runs:
 
-- **One hard block — data safety only.** `destructive-gate.py` (Bash) stops `rm -rf`,
-  force-push, `reset --hard`, unscoped `DELETE`/`DROP`/`TRUNCATE`, etc. After an
-  explicit **proceed**, re-run with `# sa-confirm` appended. This is the one wall left.
+- **Blocks (safety only).** `sa-pretool.py` bundles the butler-boundary gate and the
+  destructive-command gate: it stops `rm -rf`, force-push, `reset --hard`, unscoped
+  `DELETE`/`DROP`/`TRUNCATE`, etc. After an explicit **proceed**, re-run with
+  `# sa-confirm` appended. These are the only walls left.
 - **Reminders (never block).** `guild-routing-gate.sh` (routing reminder on intake),
-  `plain-english-nudge.py`, `guild-log-nudge.py`, `vault-log-nudge.py`.
-- **Loggers (observe, never block).** `turn-cost.py`, `xp-log.py`, `spawn-log.py`,
-  `build-mark.py`, `version-auto-bump.py`, `precompact-snapshot.py`, `turn-start.py`;
-  `turn-finalize.sh` auto-commits the turn.
+  `plain-english-nudge.py`, `vault-log-nudge.py`.
+- **Loggers / telemetry (observe, never block).** `turn-start.py`,
+  `precompact-snapshot.py`, and the outbox producers `turn-cost.py` + `spawn-log.py`,
+  which append to `.claude/state/outbox.jsonl`; `guild-flush` (SessionStart) ships the
+  outbox to the database. XP, levels, and dead-skill detection are computed as
+  database views — no local scoring hooks.
 
-## The MCP server (for other projects)
+Retired in the 2026-07 Supabase migration (files in
+`.retired/2026-07-supabase-migration/`, unwired): the per-turn auto-commit
+`turn-finalize.sh`, `version-auto-bump`, `xp-log.py`, `build-mark`,
+`guild-log-nudge`, `skill_sync.py`, `deploy_device.py`, `install_agents.py`, the
+installer, `build.py` and its generated bundles, the evolution engine (replaced by
+the manual `guild-reflection` skill writing `guild.findings`), and the local MCP
+server.
 
-`mcp/server.py` exposes the guild's skills and members to any other project as an MCP
-server (registered in `.mcp.json` as `star-alliance`). It lists members and skills;
-`dispatch_agent` returns guidance to spawn the named member as a Claude subagent in the
-calling session (there is no external process to shell out to). Keep it importable and
-Claude-only.
+## The database spine (Supabase)
+
+The guild's source of truth is the **`guild` schema** in the Supabase project
+"Lex Council Pro" (`bqgrpnsvplvicnmzxwkm`): 128 skills, 10 members, the full
+activity history (turns / events / log), findings, and the device registry.
+
+The bridge is **`bin/sa`** — a single-file, stdlib-only Python CLI:
+`init · pull · push · seed · flush · log · list · findings · dash · doctor`. It
+authenticates with the publishable API key (`~/.config/star-alliance/config.json`)
+plus a `guild_agent` JWT stored in the macOS Keychain (service
+`star-alliance-guild`).
+
+**The fence:** the `guild_agent` role can only touch the `guild` schema — it cannot
+read or write the Lex Council app's `public` schema, and it cannot DELETE anything.
+
+**Offline behavior:** files keep working. The repo and `~/.claude/skills` are the
+read cache; if the database is unreachable, sessions run from the cache and hook
+telemetry queues in `.claude/state/outbox.jsonl` until the next SessionStart flush.
+Never fabricate a DB write — queue it or say it didn't happen.
+
+Cross-project MCP exposure is over: consumer repos (like Lex Council) get
+materialized agent files via `sa pull` instead of talking to a server.

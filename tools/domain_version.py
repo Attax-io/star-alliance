@@ -36,13 +36,15 @@ from pathlib import Path
 
 # ── External, read-only paths (outside this repo) ───────────────────────────
 
-LEX_APP_PACKAGE_JSON = Path(
-    "/Users/attaselim/Documents/Claude/Projects/Lex Council App/lex_council/apps/web/package.json"
-)
-LEX_APP_REPO_ROOT = Path("/Users/attaselim/Documents/Claude/Projects/Lex Council App")
+_PROJECTS = Path.home() / "Documents" / "Claude" / "Projects"
 
-LEX_BUSINESS_VAULT_LOGS = Path(
-    "/Users/attaselim/Documents/Claude/Projects/Lex Council Business/The Business/vault-logs"
+LEX_APP_REPO_ROOT = _PROJECTS / "Lex Council App"
+LEX_APP_PACKAGE_JSON = (
+    LEX_APP_REPO_ROOT / "lex_council" / "apps" / "web" / "package.json"
+)
+
+LEX_BUSINESS_VAULT_LOGS = (
+    _PROJECTS / "Lex Council Business" / "The Business" / "vault-logs"
 )
 
 # ── Business vault-log tiering ───────────────────────────────────────────────
@@ -70,16 +72,25 @@ def _fmt_version(major: int, minor: int, patch: int) -> str:
 # ── Branch: star-alliance (reuse build.py's derive_version) ─────────────────
 
 def _resolve_star_alliance(repo: Path) -> dict:
-    """Reuse build.py's own log-replay (derive_version) rather than
-    reimplementing SemVer-from-log logic a second time. Imported lazily to
-    avoid a circular import at module load (build.py imports this module)."""
+    """Replay the guild log into SemVer (same rules as the retired build.py /
+    `sa dash`: structure=major; skill-create/member-create/dashboard/workflow=
+    minor; decision ignored; everything else=patch)."""
     try:
-        import sys
-        sys.path.insert(0, str(repo))
-        import build as _build  # noqa: PLC0415  (intentional lazy/circular-safe import)
-
-        log = _build.load_log(repo)
-        version, tiers = _build.derive_version(log)
+        import json
+        entries = json.loads((repo / "data" / "guild-log.json").read_text()).get("entries", [])
+        log = {"entries": entries}
+        major = minor = patch = 0
+        for e in entries:
+            t = e.get("type", "")
+            if t == "decision":
+                continue
+            if t == "structure":
+                major += 1
+            elif t in ("skill-create", "member-create", "dashboard", "workflow"):
+                minor += 1
+            else:
+                patch += 1
+        version = f"{major}.{minor}.{patch}"
         # History: the guild log itself is the append-only ledger. Give the
         # last N entries (cap ~10, matched by the dashboard tooltip cap) as
         # a running-version-esque trail. We don't replay a running version

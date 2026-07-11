@@ -16,16 +16,16 @@
   double-run.
 
   PER-MACHINE: this plist is authored directly for this machine. All paths below are
-  already absolute for /Users/attaselim — there is no REPLACE_ME templating; do not
-  copy it to another user account without replacing the `/Users/attaselim` literal
+  already absolute for /Users/atta — there is no REPLACE_ME templating; do not
+  copy it to another user account without replacing the `/Users/atta` literal
   everywhere it appears. There is no `sed` install command because the file is
   meant to live on this box only.
 
   Install:    launchctl load ~/Library/LaunchAgents/com.attax.skillsmith-watchdog.plist
   Disable:    launchctl unload ~/Library/LaunchAgents/com.attax.skillsmith-watchdog.plist
   Retime:     edit StartCalendarInterval below, then unload + load again.
-  Logs:       /Users/attaselim/Documents/Claude/Projects/star-alliance/star-alliance-skills/skillsmith/routine-logs/watchdog-launchd.out
-              /Users/attaselim/Documents/Claude/Projects/star-alliance/star-alliance-skills/skillsmith/routine-logs/watchdog-launchd.err
+  Logs:       /Users/atta/Documents/Claude/Projects/star-alliance/star-alliance-skills/skillsmith/routine-logs/watchdog-launchd.out
+              /Users/atta/Documents/Claude/Projects/star-alliance/star-alliance-skills/skillsmith/routine-logs/watchdog-launchd.err
 
   Installed by the skillsmith integration step (project-start / init). Do NOT run
   `launchctl load` by hand here — the integration step is responsible for both
@@ -40,11 +40,11 @@
     <key>ProgramArguments</key>
     <array>
         <string>/usr/bin/python3</string>
-        <string>/Users/attaselim/Documents/Claude/Projects/star-alliance/star-alliance-skills/skillsmith/scripts/routine_watchdog.py</string>
+        <string>/Users/atta/Documents/Claude/Projects/star-alliance/star-alliance-skills/skillsmith/scripts/routine_watchdog.py</string>
     </array>
 
     <key>WorkingDirectory</key>
-    <string>/Users/attaselim/Documents/Claude/Projects/star-alliance</string>
+    <string>/Users/atta/Documents/Claude/Projects/star-alliance</string>
 
     <key>StartCalendarInterval</key>
     <dict>
@@ -62,13 +62,13 @@
         <key>PATH</key>
         <string>/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
         <key>HOME</key>
-        <string>/Users/attaselim</string>
+        <string>/Users/atta</string>
     </dict>
 
     <key>StandardOutPath</key>
-    <string>/Users/attaselim/Documents/Claude/Projects/star-alliance/star-alliance-skills/skillsmith/routine-logs/watchdog-launchd.out</string>
+    <string>/Users/atta/Documents/Claude/Projects/star-alliance/star-alliance-skills/skillsmith/routine-logs/watchdog-launchd.out</string>
     <key>StandardErrorPath</key>
-    <string>/Users/attaselim/Documents/Claude/Projects/star-alliance/star-alliance-skills/skillsmith/routine-logs/watchdog-launchd.err</string>
+    <string>/Users/atta/Documents/Claude/Projects/star-alliance/star-alliance-skills/skillsmith/routine-logs/watchdog-launchd.err</string>
 
     <key>ProcessType</key>
     <string>Background</string>

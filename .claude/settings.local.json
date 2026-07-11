@@ -41,7 +41,20 @@
       "Bash(mv '/Users/atta/Documents/Claude/Projects/Lex Council App/.claude/settings.local.json.bak-20260704-042805' '/Users/atta/Documents/Claude/Projects/Lex Council App/.claude/.retired-2026-07/')",
       "mcp__1ee3ddfd-27aa-4176-9539-d9a2081c163d__apply_migration",
       "mcp__1ee3ddfd-27aa-4176-9539-d9a2081c163d__execute_sql",
-      "mcp__1ee3ddfd-27aa-4176-9539-d9a2081c163d__get_advisors"
+      "mcp__1ee3ddfd-27aa-4176-9539-d9a2081c163d__get_advisors",
+      "Bash(cp .claude/settings.json .claude/settings.json.pre-phase3.bak)",
+      "Bash(cat)",
+      "Bash(mkdir -p .claude/hooks)",
+      "Bash(cp /tmp/sa-flush-session.sh .claude/hooks/guild-flush.sh)",
+      "Bash(chmod +x .claude/hooks/guild-flush.sh)",
+      "Bash(python3 bin/sa doctor)",
+      "Bash(rm -f .claude/settings.json.pre-phase3.bak)",
+      "mcp__1ee3ddfd-27aa-4176-9539-d9a2081c163d__get_publishable_keys",
+      "Bash(python3 bin/sa dash)",
+      "Bash(curl -s http://localhost:4178/guild-data.js)",
+      "Bash(cp star-alliance-skills/guild-reflection/SKILL.md ~/.claude/skills/guild-reflection/SKILL.md)",
+      "Bash(cp star-alliance-skills/guild-reflection/SKILL.md .claude/skills/guild-reflection/SKILL.md)",
+      "Read(//Users/atta/.claude/skills/guild-reflection/**)"
     ]
   }
 }

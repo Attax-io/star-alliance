@@ -1,9 +1,3 @@
 {
-  "mcpServers": {
-    "star-alliance": {
-      "type": "stdio",
-      "command": "${CLAUDE_PROJECT_DIR}/mcp/.venv/bin/python",
-      "args": ["${CLAUDE_PROJECT_DIR}/mcp/server.py"]
-    }
-  }
+  "mcpServers": {}
 }

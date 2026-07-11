@@ -8,45 +8,40 @@ timestamp: 2026-06-27T10:27:03Z
 A guild of AI agents — each member is a specialist with their own skill set, deployed to help
 with specific kinds of work. Members share common skills and carry unique ones.
 
+> **STOP RULE:** guild work is frozen after the 2026-07 Supabase migration until Lex Council
+> ships. Bugfixes ≤30 minutes only; new ideas become `guild.findings` rows (`sa findings add`).
+
 ## How it works
+
+The guild's **source of truth is a Supabase database** — the `guild` schema in the
+"Lex Council Pro" project: 128 skills, 10 members, full activity history, findings, and the
+device registry. This repo is the working copy and read cache Claude Code loads.
 
 ```
 star-alliance/
-├── star-alliance-members/  ← guild roster (agent definitions)
-│   ├── the-architect.md
-│   ├── the-designer.md
-│   ├── the-developer.md
-│   ├── the-herald.md
-│   ├── the-merchant.md
-│   ├── the-quartermaster.md
-│   ├── the-strategist.md
-│   └── the-interpreter.md
-├── star-alliance-skills/  ← shared skill pool (129 skills, each a directory with SKILL.md)
-│   ├── algorithmic-trading-chan/
-│   ├── article-creator/
-│   ├── bug-fix-workflow/
-│   ├── ...
-│   └── skillsmith/        ← the quartermaster's toolkit (manages skills + members)
-├── build.py              ← one generator: skills + agents + *-meta.json → guild-data.js
-├── skills-meta.json      ← hand-edited per-skill icon/blurb/level/triggers
-├── members-meta.json     ← hand-edited per-member presentation (color, avatar, weapons, …)
-├── domains.json          ← hand-edited project domains (linked skills + members)
-├── guild-data.js         ← auto-generated data (const GUILD), loaded by index.html
-├── index.html · app.css · app.js  ← the cosmic "command center" dashboard (buildless)
-├── build_guild_log.py · log_event.py · guild-log.json  ← the guild-log pipeline
-├── VERSIONS.md            ← skill version registry
-└── README.md              ← this file
+├── star-alliance-members/  ← guild roster (member cards; pushed to guild.members)
+├── star-alliance-skills/   ← shared skill pool (each dir a SKILL.md; pushed to guild.skills)
+│   └── skillsmith/         ← the quartermaster's toolkit (manages skills + members)
+├── bin/sa                  ← the bridge CLI: init/pull/push/seed/flush/log/list/findings/dash/doctor
+├── workflows.json · data/domains.json · star-alliance-arsenal/models.json  ← file-truth configs
+├── VERSIONS.md             ← skill version registry
+├── docs/SECOND-MAC-SETUP.md ← day-1 card for a new device
+└── README.md               ← this file
 ```
 
-The dashboard is **buildless** — open `index.html` directly in a browser (or serve the folder).
-It loads one generated file, `guild-data.js`, which `build.py` regenerates from the sources above.
+The bridge is **`bin/sa`**, a single-file stdlib Python CLI. It authenticates with the
+publishable key (`~/.config/star-alliance/config.json`) plus a `guild_agent` JWT in the macOS
+Keychain. The `guild_agent` role is fenced to the `guild` schema — it cannot touch the app's
+`public` schema and cannot DELETE. The dashboard is generated live by `sa dash` (the old
+`build.py`/`guild-data.js` pipeline is retired to `.retired/2026-07-supabase-migration/`).
 
 **Skills** live in `star-alliance-skills/` — each subdirectory is one skill (a `SKILL.md` plus
 optional `scripts/`, `references/`, `assets/`). All skills are shared property of the guild.
+`sa pull` materializes them into `~/.claude/skills` and the repo dirs; `sa push` sends edits back.
 
 **Members** live in `star-alliance-members/` — each `.md` file is a Claude Code agent definition
-with a system prompt and a curated `skills` list. Deploy a member by copying their file into
-your project's `.claude/agents/` and installing their skills.
+with a system prompt and a curated `skills` list. Consumer repos (like Lex Council) get members
+materialized into their `.claude/agents/` via `sa pull` — no copying by hand, no MCP server.
 
 ## The Roster
 
@@ -66,7 +61,8 @@ your project's `.claude/agents/` and installing their skills.
 
 Each member carries a **craft-depth level** — a meter of arsenal depth + specialty, **decoupled
 from standing** (the Butler leads regardless of tier). It's *earned* by an objective checklist
-`build.py` computes from the repo and *conferred* by the Quartermaster, recorded in the guild log.
+computed from the guild database (XP/levels are DB views, surfaced by `sa dash`) and
+*conferred* by the Quartermaster, recorded in the guild log.
 The standard and the promotion procedure live in
 [`docs/archive/STRATEGIST-MEMBER-LEVELING.md`](docs/archive/STRATEGIST-MEMBER-LEVELING.md) and the Quartermaster's manual
 [`skillsmith/references/member-leveling.md`](star-alliance-skills/skillsmith/references/member-leveling.md);
@@ -116,24 +112,22 @@ These skills belong to one member only — they define the member's specialty:
 ## Deploying a member
 
 ```sh
-# 1. Copy the member's agent file into your project
-cp star-alliance-members/the-architect.md ~/my-project/.claude/agents/
+# 1. From the consumer project (e.g. Lex Council), pull from the guild database
+python3 bin/sa pull        # materializes members → .claude/agents/ and skills → ~/.claude/skills
 
-# 2. Install the member's skills to the device
-python3 star-alliance-skills/skillsmith/scripts/skill_sync.py apply --skill transactions-domain-model
-python3 star-alliance-skills/skillsmith/scripts/skill_sync.py apply --skill supabase
-# ... or sync all at once
-
-# 3. Invoke in Claude Code
+# 2. Invoke in Claude Code
 @the-architect model the transaction domain for this project
 ```
+
+New device? See [`docs/SECOND-MAC-SETUP.md`](docs/SECOND-MAC-SETUP.md).
 
 ## Recruiting a new member
 
 1. Create `star-alliance-members/<name>.md` with the agent definition (see `star-alliance-members/README.md` for format).
 2. List the skills they should carry in the `skills` frontmatter field.
 3. Install any new skills they need via `skillsmith create` (from `star-alliance-skills/skillsmith/`).
-4. Update the roster table in this README.
+4. `python3 bin/sa push` so the new member lands in the guild database.
+5. Update the roster table in this README.
 
 ## Skill versioning — every skill is upgradable
 
@@ -163,8 +157,8 @@ metadata:
 1. Bump the skill's `metadata.version`.
 2. Regenerate [`VERSIONS.md`](VERSIONS.md) (`python3 skillsmith/scripts/skill_registry.py write`).
 3. If the skill keeps its own changelog (e.g. `cleanup`, `conquering-campaign`), add an entry there too.
-4. Re-sync the on-device copy if the skill runs from `~/.claude/skills/` (a stale device copy
-   silently runs old code — the `cleanup` §L24 lesson).
+4. `sa push` the change to the guild database, then `sa pull` on other devices — a stale
+   device copy silently runs old code (the `cleanup` §L24 lesson).
 
 The **`skillsmith`** skill (The Quartermaster's toolkit) automates all of this —
 `/skillsmith` sync / upgrade / create. See its `SKILL.md`.

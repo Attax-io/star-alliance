@@ -4,7 +4,7 @@ Campaign 2026-07-02_self-enclosed-harness, P0 (portability) + P2 (fail-closed).
 
 P0 — every gate used `os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()` and some
 tools trusted a HARD-CODED STAR_ALLIANCE_ROOT from settings.json. On a second device
-(atta/attaselim home-path mismatch) or a fresh landing that env points at a missing
+(home-path mismatch across usernames) or a fresh landing that env points at a missing
 folder and path-resolving tools silently no-op. resolve_root() prefers the ACTUAL
 location of the running code (walk up to the repo markers) and treats env vars as
 hints that are VALIDATED before use.

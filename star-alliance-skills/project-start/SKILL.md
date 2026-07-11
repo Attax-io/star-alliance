@@ -45,7 +45,7 @@ bash "$STAR_ALLIANCE_ROOT/star-alliance-arsenal/install.sh" <member-name> . --ti
 ```json
 {
   "env": {
-    "STAR_ALLIANCE_ROOT": "/Users/attaselim/Documents/Claude/Projects/star-alliance"
+    "STAR_ALLIANCE_ROOT": "/Users/atta/Documents/Claude/Projects/star-alliance"
   }
 }
 ```

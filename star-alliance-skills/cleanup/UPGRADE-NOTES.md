@@ -7,7 +7,7 @@ timestamp: 2026-06-27T10:27:03Z
 
 **Baseline:** v1.16.0 (last upgrade 2026-06-17 ~11:37, added `manual` mode).
 **Window mined:** every session 2026-06-17 11:37 → 2026-06-19 15:30 (~60 sessions: 8 cleanup-rotation runs + the RPC-thinning campaign, FileActionBar migration, 29-lock RPC audit, batch-task fix, news-wall build, marketing audit, codex/customs work).
-**Method:** 3 parallel transcript readers over `~/.claude/projects/-Users-attaselim-…/*.jsonl`.
+**Method:** 3 parallel transcript readers over `~/.claude/projects/-Users-atta-…/*.jsonl`.
 
 This file is the input to the next skill bump. Nothing here is applied yet.
 

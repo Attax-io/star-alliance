@@ -1,0 +1,1354 @@
+#!/usr/bin/env python3
+"""
+sa — Star Alliance guild CLI (Phase 3).
+
+Single-file, stdlib-only. No pip deps, no venv. Bridges local hooks/state to
+the `guild` schema in Supabase over PostgREST (HTTPS + JWT).
+
+Design contract (see /Users/atta/.claude/plans/before-fixing-upgrading-the-star-radiant-mitten.md):
+  - Reads never touch the network in-session (Claude Code loads local files only).
+  - Writes never block sessions (outbox write-ahead log, flushed opportunistically).
+  - Every network call fails OPEN: short timeout, try/except, never raises to caller.
+  - This file is import-safe: `python3 -c "import importlib.util; ..."` loads it as
+    a module without executing main() (guarded by `if __name__ == "__main__"`).
+"""
+import sys
+import os
+import json
+import hashlib
+import hmac
+import base64
+import time
+import uuid
+import subprocess
+import urllib.request
+import urllib.error
+import urllib.parse
+from pathlib import Path
+
+# ── Root self-location ──────────────────────────────────────────────────────
+ROOT = Path(__file__).resolve().parent.parent
+
+PROJECT_REF = "bqgrpnsvplvicnmzxwkm"
+POSTGREST_BASE = f"https://{PROJECT_REF}.supabase.co/rest/v1/"
+KEYCHAIN_SERVICE = "star-alliance-guild"
+KEYCHAIN_ACCOUNT = PROJECT_REF
+
+STATE_DIR = ROOT / ".claude" / "state"
+CURSOR_PATH = STATE_DIR / "sa-cursor.json"
+OUTBOX_PATH = STATE_DIR / "outbox.jsonl"
+CONSUMERS_CONFIG = Path.home() / ".config" / "star-alliance" / "consumers.json"
+CLI_CONFIG = Path.home() / ".config" / "star-alliance" / "config.json"
+DEFAULT_PUBLISHABLE_KEY = "sb_publishable_211wI3-f4Z34HJNgwYdlOw_3xNke-B0"
+CLI_VERSION = "0.3.0"
+
+SKILLS_DIR = ROOT / "star-alliance-skills"
+MEMBERS_DIR = ROOT / "star-alliance-members"
+AGENTS_DIR = ROOT / ".claude" / "agents"
+LOCAL_SKILLS_MIRROR_HOME = Path.home() / ".claude" / "skills"
+LOCAL_SKILLS_MIRROR_REPO = ROOT / ".claude" / "skills"
+
+DEFAULT_TIMEOUT = 5.0
+FLUSH_BUDGET_S = 3.0
+
+
+def device_id_slug():
+    """Stable per-machine id: 'mac-' + the OS user. Same convention used by
+    turn-cost.py, spawn-log.py, and tools/backfill_guild.py — never derive
+    this independently."""
+    import getpass
+    try:
+        return "mac-" + getpass.getuser()
+    except Exception:
+        return "mac-unknown"
+
+
+# ── HS256 JWT minting (stdlib hmac/hashlib/base64) ──────────────────────────
+
+def _b64url(data: bytes) -> str:
+    return base64.urlsafe_b64encode(data).rstrip(b"=").decode("ascii")
+
+
+def _b64url_decode(s: str) -> bytes:
+    pad = "=" * (-len(s) % 4)
+    return base64.urlsafe_b64decode(s + pad)
+
+
+def mint_jwt(secret: str, role: str = "guild_agent", iss: str = "star-alliance",
+             years: int = 10, now: float = None) -> str:
+    """Mint an HS256 JWT locally. The secret is used only in-process and never
+    persisted — caller discards it immediately after calling this."""
+    now = now if now is not None else time.time()
+    header = {"alg": "HS256", "typ": "JWT"}
+    payload = {
+        "role": role,
+        "iss": iss,
+        "iat": int(now),
+        "exp": int(now + years * 365 * 24 * 3600),
+    }
+    header_b64 = _b64url(json.dumps(header, separators=(",", ":")).encode())
+    payload_b64 = _b64url(json.dumps(payload, separators=(",", ":")).encode())
+    signing_input = f"{header_b64}.{payload_b64}".encode()
+    sig = hmac.new(secret.encode(), signing_input, hashlib.sha256).digest()
+    sig_b64 = _b64url(sig)
+    return f"{header_b64}.{payload_b64}.{sig_b64}"
+
+
+def decode_jwt_unverified(token: str) -> dict:
+    """Decode a JWT's payload without verifying (used by tests / doctor)."""
+    parts = token.split(".")
+    if len(parts) != 3:
+        raise ValueError("not a JWT")
+    return json.loads(_b64url_decode(parts[1]))
+
+
+def verify_jwt(token: str, secret: str) -> bool:
+    parts = token.split(".")
+    if len(parts) != 3:
+        return False
+    header_b64, payload_b64, sig_b64 = parts
+    signing_input = f"{header_b64}.{payload_b64}".encode()
+    expected = hmac.new(secret.encode(), signing_input, hashlib.sha256).digest()
+    actual = _b64url_decode(sig_b64)
+    return hmac.compare_digest(expected, actual)
+
+
+# ── Keychain (macOS `security`) ─────────────────────────────────────────────
+
+def publishable_key() -> str:
+    """Resolve the Supabase publishable (anon-safe) API key for the `apikey`
+    header. NOT a secret — safe to print/log. Precedence: SA_PUBLISHABLE_KEY
+    env > ~/.config/star-alliance/config.json {"publishable_key": "..."} >
+    built-in default (this project's known publishable key)."""
+    env_key = os.environ.get("SA_PUBLISHABLE_KEY")
+    if env_key:
+        return env_key
+    try:
+        if CLI_CONFIG.exists():
+            cfg = json.loads(CLI_CONFIG.read_text())
+            k = cfg.get("publishable_key")
+            if k:
+                return k
+    except Exception:
+        pass
+    return DEFAULT_PUBLISHABLE_KEY
+
+
+def ensure_cli_config():
+    """Write config.json with the default publishable key if it doesn't
+    exist yet, so `sa doctor` / `sa init` leave a discoverable, editable
+    plain file. Never overwrites an existing file."""
+    try:
+        if not CLI_CONFIG.exists():
+            CLI_CONFIG.parent.mkdir(parents=True, exist_ok=True)
+            CLI_CONFIG.write_text(json.dumps(
+                {"publishable_key": DEFAULT_PUBLISHABLE_KEY}, indent=2))
+    except Exception as e:
+        print(f"warning: could not write {CLI_CONFIG}: {e}", file=sys.stderr)
+
+
+def keychain_store_jwt(jwt: str) -> bool:
+    try:
+        subprocess.run(
+            ["security", "add-generic-password", "-U",
+             "-s", KEYCHAIN_SERVICE, "-a", KEYCHAIN_ACCOUNT, "-w", jwt],
+            check=True, capture_output=True, timeout=10,
+        )
+        return True
+    except Exception as e:
+        print(f"warning: keychain store failed: {e}", file=sys.stderr)
+        return False
+
+
+def keychain_read_jwt() -> str:
+    env_jwt = os.environ.get("SA_GUILD_JWT")
+    if env_jwt:
+        return env_jwt
+    try:
+        r = subprocess.run(
+            ["security", "find-generic-password", "-s", KEYCHAIN_SERVICE,
+             "-a", KEYCHAIN_ACCOUNT, "-w"],
+            check=True, capture_output=True, timeout=10, text=True,
+        )
+        return r.stdout.strip()
+    except Exception:
+        return ""
+
+
+# ── Hash manifest (shared by push / seed / cursor) ──────────────────────────
+
+def sha256_hex(data: bytes) -> str:
+    return hashlib.sha256(data).hexdigest()
+
+
+def hash_manifest(dir_path: Path) -> str:
+    """Content hash over sorted (relpath, sha256(content)) manifest for a
+    skill/member directory. Deterministic regardless of filesystem order."""
+    dir_path = Path(dir_path)
+    entries = []
+    if dir_path.is_file():
+        content = dir_path.read_bytes()
+        entries.append((dir_path.name, sha256_hex(content)))
+    else:
+        for p in sorted(dir_path.rglob("*")):
+            if p.is_file():
+                rel = str(p.relative_to(dir_path))
+                if "__pycache__" in rel or rel.startswith("."):
+                    continue
+                try:
+                    content = p.read_bytes()
+                except Exception:
+                    continue
+                entries.append((rel, sha256_hex(content)))
+    entries.sort(key=lambda t: t[0])
+    manifest_str = "\n".join(f"{rel}:{h}" for rel, h in entries)
+    return sha256_hex(manifest_str.encode())
+
+
+def build_files_payload(dir_path: Path) -> dict:
+    """{relpath: content-string} (or {relpath: {"content_b64": "..."}} for
+    binaries) for push_skill's p_files jsonb param. Confirmed live against
+    prod 2026-07-12: the RPC does `jsonb_each(p_files)` on the TOP-LEVEL
+    argument, so p_files must be a flat JSON *object* keyed by relpath —
+    never a JSON array of {path, content, hash} descriptors (that shape
+    raises 22023 "cannot call jsonb_each on a non-object"). There is no
+    per-file hash column in guild.skill_files — content-hashing lives on
+    guild.skills.content_hash / guild.skill_versions instead."""
+    dir_path = Path(dir_path)
+    files = {}
+    for p in sorted(dir_path.rglob("*")):
+        if not p.is_file():
+            continue
+        rel = str(p.relative_to(dir_path))
+        if "__pycache__" in rel or rel.startswith("."):
+            continue
+        try:
+            raw = p.read_bytes()
+        except Exception:
+            continue
+        try:
+            files[rel] = raw.decode("utf-8")
+        except UnicodeDecodeError:
+            files[rel] = {"content_b64": base64.b64encode(raw).decode("ascii")}
+    return files
+
+
+# ── SKILL.md frontmatter parsing (metadata for push, not the source of body) ──
+
+def parse_skill_frontmatter(skill_dir: Path) -> dict:
+    """Best-effort YAML-lite frontmatter parse from SKILL.md: name, description,
+    metadata.version. Never raises — falls back to sane defaults."""
+    meta = {"name": skill_dir.name, "description": "", "version": "0.0.0"}
+    md = skill_dir / "SKILL.md"
+    if not md.exists():
+        return meta
+    try:
+        text = md.read_text(encoding="utf-8")
+    except Exception:
+        return meta
+    if not text.startswith("---"):
+        return meta
+    end = text.find("\n---", 3)
+    if end == -1:
+        return meta
+    fm = text[3:end]
+    in_metadata = False
+    for line in fm.splitlines():
+        stripped = line.strip()
+        if stripped.startswith("name:"):
+            meta["name"] = stripped.split(":", 1)[1].strip().strip('"')
+        elif stripped.startswith("description:"):
+            meta["description"] = stripped.split(":", 1)[1].strip().strip('"')
+        elif stripped.startswith("metadata:"):
+            in_metadata = True
+        elif in_metadata and stripped.startswith("version:"):
+            meta["version"] = stripped.split(":", 1)[1].strip().strip('"')
+            in_metadata = False
+    return meta
+
+
+# ── Cursor state ─────────────────────────────────────────────────────────
+
+def load_cursor() -> dict:
+    if CURSOR_PATH.exists():
+        try:
+            return json.loads(CURSOR_PATH.read_text())
+        except Exception:
+            return {}
+    return {}
+
+
+def save_cursor(data: dict) -> None:
+    STATE_DIR.mkdir(parents=True, exist_ok=True)
+    CURSOR_PATH.write_text(json.dumps(data, indent=2, sort_keys=True))
+
+
+# ── PostgREST client (fail-open) ────────────────────────────────────────────
+
+class PostgrestError(Exception):
+    def __init__(self, status, body):
+        self.status = status
+        self.body = body
+        super().__init__(f"HTTP {status}: {body}")
+
+
+def _headers(jwt: str, prefer: str = None) -> dict:
+    # New Supabase api-key gateway: `apikey` must be a recognized project key
+    # (the publishable key), NOT the minted guild JWT. The Bearer token stays
+    # the minted guild_agent JWT — that is what supplies the `guild_agent`
+    # role via the legacy JWT signing secret.
+    h = {
+        "apikey": publishable_key(),
+        "Authorization": f"Bearer {jwt}",
+        "Accept-Profile": "guild",
+        "Content-Profile": "guild",
+        "Content-Type": "application/json",
+    }
+    if prefer:
+        h["Prefer"] = prefer
+    return h
+
+
+def pg_request(method: str, path: str, jwt: str, params: dict = None,
+               body=None, prefer: str = None, timeout: float = DEFAULT_TIMEOUT):
+    """Raw PostgREST call. Raises PostgrestError/URLError — caller decides
+    fail-open behavior. Never used bare in a hook path."""
+    url = POSTGREST_BASE + path.lstrip("/")
+    if params:
+        url += "?" + urllib.parse.urlencode(params)
+    data = json.dumps(body).encode() if body is not None else None
+    req = urllib.request.Request(url, data=data, method=method,
+                                  headers=_headers(jwt, prefer))
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+        raw = resp.read()
+        if not raw:
+            return None
+        try:
+            return json.loads(raw)
+        except Exception:
+            return raw.decode("utf-8", "replace")
+
+
+def pg_request_safe(method: str, path: str, jwt: str, **kw):
+    """Never raises. Returns (ok, result_or_error_str)."""
+    try:
+        return True, pg_request(method, path, jwt, **kw)
+    except urllib.error.HTTPError as e:
+        try:
+            body = e.read().decode("utf-8", "replace")
+        except Exception:
+            body = str(e)
+        return False, f"HTTP {e.code}: {body}"
+    except Exception as e:
+        return False, str(e)
+
+
+# ── outbox (write-ahead log) ────────────────────────────────────────────────
+
+def outbox_append(table: str, payload: dict, client_uuid: str = None) -> dict:
+    """Append one row to the local outbox. Never touches the network."""
+    row = {
+        "table": table,
+        "client_uuid": client_uuid or str(uuid.uuid4()),
+        "payload": payload,
+    }
+    STATE_DIR.mkdir(parents=True, exist_ok=True)
+    with open(OUTBOX_PATH, "a", encoding="utf-8") as f:
+        f.write(json.dumps(row, separators=(",", ":")) + "\n")
+    return row
+
+
+def outbox_read_lines() -> list:
+    if not OUTBOX_PATH.exists():
+        return []
+    lines = []
+    with open(OUTBOX_PATH, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line:
+                lines.append(line)
+    return lines
+
+
+def outbox_flush(jwt: str = None, budget_s: float = FLUSH_BUDGET_S) -> dict:
+    """Batch-POST outbox rows to their tables, grouped by table, with
+    Prefer: resolution=ignore-duplicates. Shrinks the log to just the
+    still-pending rows on success, keeps everything on failure. ALWAYS
+    returns a summary dict; never raises."""
+    summary = {"flushed": 0, "kept": 0, "errors": [], "reachable": False}
+    lines = outbox_read_lines()
+    if not lines:
+        return summary
+
+    jwt = jwt or keychain_read_jwt()
+    if not jwt:
+        summary["errors"].append("no JWT available")
+        summary["kept"] = len(lines)
+        return summary
+
+    start = time.time()
+    by_table = {}
+    for raw in lines:
+        try:
+            row = json.loads(raw)
+        except Exception:
+            continue
+        t = row.get("table")
+        by_table.setdefault(t, []).append(row)
+
+    failed_raw_lines = []
+    for table, rows in by_table.items():
+        if time.time() - start > budget_s:
+            failed_raw_lines.extend(json.dumps(r, separators=(",", ":")) for r in rows)
+            summary["errors"].append(f"budget exceeded before flushing {table}")
+            continue
+        payload = [r["payload"] | {"client_uuid": r["client_uuid"]} for r in rows]
+        # PostgREST's bulk insert requires every object in the JSON array to
+        # carry the SAME keys ("All object keys must match", PGRST102) — a
+        # straggler row from an older producer schema (missing a column
+        # later rows gained) breaks the whole batch. Normalize to the union
+        # of keys across the batch, filling absent ones with None, so one
+        # stale row can't block every fresh row behind it in the same table.
+        all_keys = set()
+        for row in payload:
+            all_keys.update(row.keys())
+        if any(set(row.keys()) != all_keys for row in payload):
+            payload = [{k: row.get(k) for k in all_keys} for row in payload]
+        remaining = max(0.1, budget_s - (time.time() - start))
+        ok, result = pg_request_safe(
+            "POST", table, jwt, body=payload,
+            prefer="resolution=ignore-duplicates,return=minimal",
+            timeout=remaining,
+        )
+        if ok:
+            summary["flushed"] += len(rows)
+            summary["reachable"] = True
+        else:
+            failed_raw_lines.extend(json.dumps(r, separators=(",", ":")) for r in rows)
+            summary["errors"].append(f"{table}: {result}")
+
+    summary["kept"] = len(failed_raw_lines)
+    try:
+        STATE_DIR.mkdir(parents=True, exist_ok=True)
+        if failed_raw_lines:
+            with open(OUTBOX_PATH, "w", encoding="utf-8") as f:
+                f.write("\n".join(failed_raw_lines) + "\n")
+        else:
+            OUTBOX_PATH.write_text("")
+    except Exception as e:
+        summary["errors"].append(f"rewrite failed: {e}")
+
+    return summary
+
+
+# ── consumers.json ───────────────────────────────────────────────────────
+
+def default_consumers() -> dict:
+    return {
+        "consumers": [
+            {
+                "name": "lex-council",
+                "agents_dir": "/Users/atta/Documents/Claude/Projects/Lex Council App/.claude/agents",
+            }
+        ]
+    }
+
+
+def load_consumers() -> dict:
+    if CONSUMERS_CONFIG.exists():
+        try:
+            return json.loads(CONSUMERS_CONFIG.read_text())
+        except Exception:
+            return {"consumers": []}
+    CONSUMERS_CONFIG.parent.mkdir(parents=True, exist_ok=True)
+    data = default_consumers()
+    CONSUMERS_CONFIG.write_text(json.dumps(data, indent=2))
+    return data
+
+
+# ── pull materialization ─────────────────────────────────────────────────
+
+def materialize_member(member: dict, target_dirs: list) -> None:
+    mid = member.get("id") or member.get("member_id") or "unknown"
+    content = member.get("content", "")
+    for d in target_dirs:
+        d = Path(d)
+        try:
+            d.mkdir(parents=True, exist_ok=True)
+            (d / f"{mid}.md").write_text(content)
+        except Exception as e:
+            print(f"warning: could not materialize member {mid} into {d}: {e}", file=sys.stderr)
+
+
+def materialize_skill(skill_id: str, files: list, target_dirs: list) -> None:
+    """`files` is the list of rows PostgREST returns from guild.skill_files:
+    each row carries `relpath` (not `path`) + either `content` or
+    `content_b64`. Confirmed live against prod 2026-07-12."""
+    for d in target_dirs:
+        d = Path(d)
+        skill_dir = d / skill_id
+        try:
+            skill_dir.mkdir(parents=True, exist_ok=True)
+            for f in files:
+                rel = f.get("relpath")
+                if not rel:
+                    continue
+                out_path = skill_dir / rel
+                out_path.parent.mkdir(parents=True, exist_ok=True)
+                if f.get("content_b64"):
+                    out_path.write_bytes(base64.b64decode(f["content_b64"]))
+                else:
+                    out_path.write_text(f.get("content") or "")
+        except Exception as e:
+            print(f"warning: could not materialize skill {skill_id} into {d}: {e}", file=sys.stderr)
+
+
+def pull_materialize(jwt: str, member_target_dirs: list = None,
+                      skill_target_dirs: list = None, since: str = None) -> dict:
+    """Pull members + skills (changed since cursor) and materialize them.
+    Fails open: on network error, returns {"ok": False, "reason": ...} and
+    touches no local files."""
+    result = {"ok": False, "members": 0, "skills": 0, "reason": None}
+    member_target_dirs = member_target_dirs if member_target_dirs is not None else [AGENTS_DIR]
+    skill_target_dirs = skill_target_dirs if skill_target_dirs is not None else [
+        SKILLS_DIR, LOCAL_SKILLS_MIRROR_HOME, LOCAL_SKILLS_MIRROR_REPO,
+    ]
+
+    params = {}
+    if since:
+        params["updated_at"] = f"gt.{since}"
+
+    ok, members = pg_request_safe("GET", "members", jwt, params=params)
+    if not ok:
+        result["reason"] = f"members fetch failed: {members}"
+        return result
+
+    ok2, skills = pg_request_safe("GET", "skills", jwt, params=params)
+    if not ok2:
+        result["reason"] = f"skills fetch failed: {skills}"
+        return result
+
+    for m in (members or []):
+        materialize_member(m, member_target_dirs)
+        result["members"] += 1
+
+    for s in (skills or []):
+        sid = s.get("id") or s.get("skill_id")
+        ok3, files = pg_request_safe(
+            "GET", "skill_files", jwt, params={"skill_id": f"eq.{sid}"}
+        )
+        if ok3 and files:
+            materialize_skill(sid, files, skill_target_dirs)
+            result["skills"] += 1
+
+    result["ok"] = True
+    return result
+
+
+# ── dash: dashboard data generator on the DB spine ─────────────────────────
+# Faithful port of the retired build.py's output shapes (guild-data.js/.json,
+# skill-md.js, workflow-md.js). Sources: local materialized files (the read
+# cache) for structure/presentation; guild.member_levels / skill_usage /
+# events / log views for XP, levels, and the change log. Fails open: DB
+# unreachable -> zeros + local guild-log.json fallback.
+
+_VENDORED = {"performance": "vendored", "supabase": "vendored",
+             "supabase-postgres-best-practices": "vendored", "impeccable": "external"}
+_VERSION_MAJOR_TYPES = {"structure"}
+_VERSION_MINOR_TYPES = {"skill-create", "member-create", "dashboard", "workflow"}
+_VERSION_IGNORE_TYPES = {"decision"}
+_SCHEMA_VERSION = 3
+
+
+def _split_fm(text):
+    if not text.startswith("---"):
+        return "", text
+    parts = text.split("---", 2)
+    return ("", text) if len(parts) < 3 else (parts[1], parts[2])
+
+
+def _fm_field(fm, key):
+    import re
+    m = re.search(rf"(?im)^{key}:\s*(.+)$", fm)
+    return m.group(1).strip().strip('"').strip("'") if m else ""
+
+
+def _fm_version(fm):
+    import re
+    m = re.search(r"(?m)^metadata:\s*$", fm)
+    if m:
+        tail = fm[m.end():]
+        block = re.match(r"((?:\n[ \t]+.*|\n[ \t]*)*)", tail)
+        seg = block.group(0) if block else tail
+        vm = re.search(r"(?m)^[ \t]+version:\s*(.+)$", seg)
+        if vm:
+            return vm.group(1).strip().strip('"').strip("'")
+    tm = re.search(r"(?m)^version:\s*(.+)$", fm)
+    return tm.group(1).strip().strip('"').strip("'") if tm else ""
+
+
+def _fm_description(fm):
+    import re
+    lines = fm.splitlines()
+    i, n, out = 0, len(lines), []
+    while i < n:
+        m = re.match(r"(?i)^description:\s*(.*)$", lines[i])
+        if m:
+            head = m.group(1).strip()
+            if head in (">", "|", ">-", "|-", ">+", "|+", ""):
+                i += 1
+                while i < n and (re.match(r"^\s+\S", lines[i]) or lines[i].strip() == ""):
+                    if lines[i].strip():
+                        out.append(lines[i].strip())
+                    i += 1
+                return " ".join(out)
+            return head.strip('"').strip("'").replace('\\"', '"')
+        i += 1
+    return ""
+
+
+def _fm_list(fm, key):
+    import re
+    m = re.search(rf"(?im)^{key}:\s*\[(.*?)\]", fm, re.DOTALL)
+    if not m:
+        return []
+    return [s.strip().strip('"').strip("'") for s in m.group(1).split(",") if s.strip()]
+
+
+def _extract_intro(body):
+    import re
+    first_para, started, in_comment = [], False, False
+    for line in body.split("\n"):
+        s = line.strip()
+        if "<!--" in s:
+            if "-->" not in s:
+                in_comment = True
+            continue
+        if in_comment:
+            if "-->" in s:
+                in_comment = False
+            continue
+        if s.startswith("# ") and not started:
+            started = True
+            continue
+        if not started:
+            continue
+        if s == "":
+            if first_para:
+                break
+            continue
+        if s.startswith("#") or s.startswith(">") or (s.startswith("|") and s.count("|") >= 3):
+            continue
+        if re.match(r"^[-*]\s", s):
+            continue
+        clean = re.sub(r'`([^`]+)`', r'\1', s)
+        clean = re.sub(r'\*\*([^*]+)\*\*', r'\1', clean)
+        clean = re.sub(r'\*([^*]+)\*', r'\1', clean)
+        first_para.append(clean)
+    return " ".join(first_para)[:300]
+
+
+def _extract_sections(body):
+    import re
+    return [re.sub(r'[*_`]', '', h.strip())
+            for h in re.findall(r'^##\s+(.+)$', body, re.MULTILINE)]
+
+
+def _list_files(skill_dir, subdir):
+    d = skill_dir / subdir
+    if not d.is_dir():
+        return []
+    return sorted(f.name for f in d.iterdir()
+                  if f.name != "__pycache__" and not f.name.startswith("."))
+
+
+def _load_json(path, default):
+    try:
+        return json.loads(Path(path).read_text())
+    except Exception:
+        return default
+
+
+def _db_level_shape(total_xp, level=None):
+    """{xp, level, xpIntoLevel, xpForNextLevel, neverInvoked} from the DB
+    curve (guild.member_levels: level = floor(sqrt(xp/25)), floor 1)."""
+    import math
+    xp = max(0, int(total_xp or 0))
+    lvl = int(level) if level is not None else max(1, math.isqrt(xp // 25))
+    lvl = max(1, lvl)
+    base = 25 * lvl * lvl if lvl > 1 else 0
+    nxt = 25 * (lvl + 1) * (lvl + 1)
+    return {"xp": xp, "level": lvl, "xpIntoLevel": max(0, xp - base),
+            "xpForNextLevel": nxt - base, "neverInvoked": xp <= 0}
+
+
+def _dash_db_fetch(jwt):
+    """One fail-open sweep of the DB spine. Returns dict of maps (empty on outage)."""
+    db = {"member_levels": {}, "skill_usage": {}, "workflow_xp": {},
+          "log_entries": None, "skill_md": {}, "reachable": False}
+    if not jwt:
+        return db
+    ok, rows = pg_request_safe("GET", "member_levels", jwt)
+    if not ok:
+        return db
+    db["reachable"] = True
+    for r in rows or []:
+        db["member_levels"][r["member_id"]] = r
+    ok, rows = pg_request_safe("GET", "skill_usage", jwt)
+    if ok:
+        for r in rows or []:
+            db["skill_usage"][r["skill_id"]] = r
+    ok, rows = pg_request_safe("GET", "events", jwt,
+                               params={"kind": "eq.workflow", "select": "subject"})
+    if ok:
+        for r in rows or []:
+            s = r.get("subject")
+            if s:
+                db["workflow_xp"][s] = db["workflow_xp"].get(s, 0) + 15
+    ok, rows = pg_request_safe("GET", "log", jwt, params={
+        "select": "id,entry_date,type,title,who,detail",
+        "order": "entry_date.desc,id.desc"})
+    if ok and rows is not None:
+        db["log_entries"] = [
+            {"id": r["id"], "date": r.get("entry_date") or "", "type": r.get("type") or "",
+             "title": r.get("title") or "", "who": r.get("who") or "",
+             "detail": r.get("detail") or ""} for r in rows]
+    ok, rows = pg_request_safe("GET", "skill_files", jwt, params={
+        "relpath": "eq.SKILL.md", "select": "skill_id,content"}, timeout=30.0)
+    if ok:
+        for r in rows or []:
+            if r.get("content"):
+                db["skill_md"][r["skill_id"]] = r["content"]
+    return db
+
+
+def _dash_workflow_md(wf):
+    """Serialize one workflow to markdown (port of build.py workflow_to_md)."""
+    def tok(x):
+        if isinstance(x, dict):
+            name = x.get("model") or x.get("name") or x.get("actor") or "?"
+            cnt = x.get("count")
+            return f"{name}×{cnt}" if cnt else str(name)
+        return str(x)
+    out = [f"# {wf.get('name', wf.get('id', 'Workflow'))}"]
+    meta = [wf[k] for k in ("category", "class") if wf.get(k)]
+    if meta:
+        out += ["", " · ".join(f"**{m}**" for m in meta)]
+    if wf.get("tagline"):
+        out += ["", f"> {wf['tagline']}"]
+    if wf.get("when"):
+        out += ["", "## When to use", "", wf["when"]]
+    steps = wf.get("steps", [])
+    if steps:
+        out += ["", "## The pipeline"]
+        n = 0
+        for s in steps:
+            if s.get("kind") == "gate":
+                out += ["", f"- **⛔ Gate — {s.get('gate', '')}.** {s.get('label', '')}"]
+                continue
+            n += 1
+            actor = s.get("actor", "")
+            who = "You" if actor == "you" else actor
+            out += ["", f"### {n}. {s.get('title', '')}"]
+            if who:
+                out += ["", f"**Actor:** {who}"]
+            if s.get("act"):
+                out += ["", s["act"]]
+            bullets = []
+            if s.get("produces"): bullets.append(f"**Produces:** {s['produces']}")
+            if s.get("inputs"): bullets.append(f"**Inputs:** {', '.join(tok(x) for x in s['inputs'])}")
+            if s.get("script"): bullets.append(f"**Script:** `{s['script']}`")
+            if s.get("doers"): bullets.append(f"**Doers:** {', '.join(tok(x) for x in s['doers'])}")
+            if s.get("swarm"):
+                sw = s["swarm"]
+                parts = [str(sw[k]) for k in ("member",) if sw.get(k)]
+                if sw.get("max_instances"): parts.append(f"×{sw['max_instances']}")
+                parts += [str(sw[k]) for k in ("partition", "isolation") if sw.get(k)]
+                bullets.append(f"**Swarm:** {' · '.join(parts)}")
+            if s.get("parallel"): bullets.append("**Runs:** in parallel (fan-out)")
+            if bullets:
+                out.append("")
+                out += [f"- {b}" for b in bullets]
+    phrases = wf.get("trigger_phrases", [])
+    if phrases:
+        out += ["", "## Trigger phrases", ""] + [f"- {p}" for p in phrases]
+    return "\n".join(out) + "\n"
+
+
+def cmd_dash(args):
+    from datetime import datetime, timezone
+    jwt = keychain_read_jwt()
+    db = _dash_db_fetch(jwt)
+    if not db["reachable"]:
+        print("note: DB unreachable — dashboard generated with local fallbacks "
+              "(XP zeros, local guild-log.json)", file=sys.stderr)
+
+    skills_meta = _load_json(ROOT / "data/skills-meta.json", {})
+    members_meta_file = _load_json(ROOT / "data/members-meta.json", {"members": {}})
+    members_meta = members_meta_file.get("members", {})
+    models_file = _load_json(ROOT / "star-alliance-arsenal/models.json", {})
+    seats = models_file.get("seats", {})
+    models = models_file.get("models", {})
+
+    # skills — local materialized dirs for structure; DB SKILL.md body preferred
+    global_dir = Path.home() / ".claude" / "skills"
+    installed = ({p.name for p in global_dir.iterdir() if p.is_dir()}
+                 if global_dir.is_dir() else set())
+    skills, md_map = [], {}
+    for d in sorted(SKILLS_DIR.iterdir()):
+        if not d.is_dir() or d.name.startswith("."):
+            continue
+        f = d / "SKILL.md"
+        if not f.exists():
+            continue
+        name = d.name
+        text = db["skill_md"].get(name) or f.read_text()
+        fm, body = _split_fm(text)
+        desc = _fm_description(fm)
+        m = skills_meta.get(name, {})
+        usage = db["skill_usage"].get(name, {})
+        md_map[name] = body
+        skills.append({
+            "id": name,
+            "name": _fm_field(fm, "name") or name,
+            "version": _fm_version(fm) or "—",
+            "icon": m.get("icon", "📦"),
+            "art": m.get("art", ""),
+            "artPng": (ROOT / "art" / "skill-art" / f"{name}.png").exists(),
+            "blurb": m.get("blurb") or (desc.split(". ")[0][:90] + ("…" if len(desc) > 90 else "")),
+            "craftLevel": m.get("level", "Foundational"),
+            "tabler": m.get("tabler", ""),
+            "src": _VENDORED.get(name, "own"),
+            "desc": desc,
+            "intro": _extract_intro(body),
+            "sections": _extract_sections(body),
+            "triggers": m.get("triggers", ""),
+            "modes": m.get("modes", ""),
+            "disabled": bool(m.get("disabled", False)),
+            "refs": _list_files(d, "references"),
+            "scripts": _list_files(d, "scripts"),
+            "stats": {"lines": body.count("\n"), "words": len(body.split())},
+            "global": name in installed,
+            "members": [],
+            **_db_level_shape(usage.get("total_xp", 0)),
+        })
+
+    # members — local .md for structure; guild.member_levels for XP
+    agents = {}
+    for md in sorted(MEMBERS_DIR.glob("*.md")):
+        if md.stem.lower() in ("readme", "index", "log"):
+            continue
+        fm, body = _split_fm(md.read_text())
+        agents[md.stem] = {"id": md.stem, "model": _fm_field(fm, "model"),
+                           "skills": _fm_list(fm, "skills"),
+                           "description": _fm_description(fm), "prompt": body.strip()}
+    ordered = [a for a in members_meta if a in agents]
+    ordered += [a for a in agents if a not in members_meta]
+    brain_default = (seats.get("brain") or {}).get("default")
+    members = []
+    for aid in ordered:
+        ag, mm = agents[aid], members_meta.get(aid, {})
+        brain = ag.get("model") or brain_default
+        mdesc = models.get(brain, {})
+        wdesc = ("Brain — " + (mdesc.get("summary") or mdesc.get("desc") or "")).strip(" —")
+        lv = db["member_levels"].get(aid, {})
+        members.append({
+            "id": aid, "name": mm.get("name", aid), "role": mm.get("role", ""),
+            "model": brain, "version": mm.get("version", "1.0.0"),
+            "color": mm.get("color", "#888888"), "avatar": mm.get("avatar", ""),
+            "summary": mm.get("summary", ""), "deploy": mm.get("deploy", ""),
+            "triggers": mm.get("triggers", ""), "description": ag["description"],
+            "prompt": ag.get("prompt", ""),
+            "seats": {"brain": {"model": brain,
+                                "override": bool(ag.get("model")) and ag.get("model") != brain_default}},
+            "weapons": [{"model": brain, "desc": wdesc}] if brain else [],
+            "does": mm.get("does", []), "doesnt": mm.get("doesnt", []),
+            "skills": ag["skills"],
+            **_db_level_shape(lv.get("total_xp", 0), lv.get("level")),
+        })
+
+    # reverse index skill -> carrying members
+    by_id = {s["id"]: s for s in skills}
+    for m in members:
+        for sid in m["skills"]:
+            if sid in by_id:
+                by_id[sid]["members"].append(m["id"])
+    for s in skills:
+        s["members"].sort()
+
+    # domains (with version enrichment), workflows, hooks
+    domains = _load_json(ROOT / "data/domains.json", {}).get("domains", [])
+    try:
+        sys.path.insert(0, str(ROOT / "tools"))
+        import domain_version as _dv
+        resolved = _dv.resolve_all(domains, ROOT)
+        for d in domains:
+            info = resolved.get(d.get("id", ""), {})
+            d["version"] = info.get("version")
+            d["versionSource"] = info.get("versionSource", "unavailable")
+            d["versionHistory"] = info.get("versionHistory", [])
+    except Exception as exc:
+        print(f"[dash] warning: domain version enrichment failed: {exc}", file=sys.stderr)
+        for d in domains:
+            d.setdefault("version", None)
+            d.setdefault("versionSource", "unavailable")
+            d.setdefault("versionHistory", [])
+    workflows = _load_json(ROOT / "workflows.json", {}).get("workflows", [])
+    for wf in workflows:
+        wf["artPng"] = (ROOT / "art" / "workflow-art" / f"{wf.get('id', '')}.png").exists()
+        wf.update(_db_level_shape(db["workflow_xp"].get(wf.get("name", ""), 0)))
+    hooks = _load_json(ROOT / "data/hooks.json", {}).get("hooks", [])
+
+    # log — DB is truth; local guild-log.json only as offline fallback
+    if db["log_entries"] is not None:
+        entries = db["log_entries"]
+    else:
+        entries = _load_json(ROOT / "data/guild-log.json", {}).get("entries", [])
+    log = {"entries": entries, "count": len(entries)}
+
+    # project version = log replayed as SemVer (same rules as build.py)
+    major = minor = patch = 0
+    for e in entries:
+        t = e.get("type", "")
+        if t in _VERSION_IGNORE_TYPES:
+            continue
+        if t in _VERSION_MAJOR_TYPES:
+            major += 1
+        elif t in _VERSION_MINOR_TYPES:
+            minor += 1
+        else:
+            patch += 1
+
+    guild = {
+        "meta": {
+            "name": "Star Alliance",
+            "version": f"{major}.{minor}.{patch}",
+            "versionTiers": {"major": major, "minor": minor, "patch": patch},
+            "generated": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
+            "schemaVersion": _SCHEMA_VERSION,
+            "weaponStatus": {mid: d.get("status", "") for mid, d in models.items() if d.get("status")},
+            "counts": {"members": len(members), "skills": len(skills),
+                       "domains": len(domains), "workflows": len(workflows),
+                       "hooks": sum(len(h.get("scripts", [])) for h in hooks),
+                       "log": log["count"]},
+        },
+        "members": members, "skills": skills, "domains": domains,
+        "workflows": workflows, "hooks": hooks, "log": log,
+        "models": models, "seats": seats,
+    }
+
+    body = json.dumps(guild, ensure_ascii=False, indent=2)
+    (ROOT / "guild-data.js").write_text(
+        "// Auto-generated by `sa dash` — do not edit by hand.\n"
+        "// Re-run: bin/sa dash\n"
+        f"const GUILD = {body};\n")
+    (ROOT / "guild-data.json").write_text(body + "\n")
+    (ROOT / "skill-md.js").write_text(
+        "// Auto-generated by `sa dash` — do not edit by hand.\n"
+        "// Full SKILL.md bodies keyed by skill id. Powers the in-panel reader,\n"
+        "// loaded via <script> so it works on file:// (where fetch() is blocked).\n"
+        f"const SKILL_MD = {json.dumps(md_map, ensure_ascii=False, indent=0)};\n")
+    wf_map = {wf["id"]: _dash_workflow_md(wf) for wf in workflows}
+    (ROOT / "workflow-md.js").write_text(
+        "// Auto-generated by `sa dash` — do not edit by hand.\n"
+        "// Markdown per workflow (serialized from workflows.json), keyed by id.\n"
+        "// Loaded via <script> so the workflow reader works on file:// too.\n"
+        f"const WORKFLOW_MD = {json.dumps(wf_map, ensure_ascii=False, indent=0)};\n")
+    try:
+        subprocess.run(["python3", str(ROOT / "guild" / "gen_workflows_lite.py")],
+                       check=False, capture_output=True, timeout=30)
+    except Exception:
+        pass
+    print(f"Wrote guild-data.js + guild-data.json + skill-md.js ({len(md_map)} skills) "
+          f"+ workflow-md.js ({len(wf_map)} workflows) "
+          f"[{'DB spine' if db['reachable'] else 'LOCAL FALLBACK'}]")
+    return 0
+
+
+# ── subcommands ──────────────────────────────────────────────────────────
+
+def cmd_init(args):
+    print("sa init — registering this device")
+    ensure_cli_config()
+    existing = keychain_read_jwt()
+    if existing:
+        print("A guild JWT already exists in the Keychain (or SA_GUILD_JWT is set).")
+        resp = input("Overwrite? [y/N] ").strip().lower()
+        if resp != "y":
+            print("Keeping existing credential.")
+            return _post_init(existing)
+
+    print("\nPaste EITHER:")
+    print("  1) a ready guild_agent JWT, or")
+    print("  2) the project's JWT signing secret (a local HS256 JWT will be minted")
+    print("     and the secret discarded immediately — never stored).")
+    raw = input("> ").strip()
+    if not raw:
+        print("error: nothing pasted", file=sys.stderr)
+        return 1
+
+    if raw.count(".") == 2 and raw.split(".")[0]:
+        jwt = raw
+    else:
+        jwt = mint_jwt(raw)
+        raw = None  # discard secret reference immediately
+
+    if not keychain_store_jwt(jwt):
+        print("error: failed to store JWT in Keychain", file=sys.stderr)
+        return 1
+    print("Stored guild JWT in macOS Keychain (service=star-alliance-guild).")
+    return _post_init(jwt)
+
+
+def _post_init(jwt: str):
+    device_id = device_id_slug()
+    hostname = os.uname().nodename if hasattr(os, "uname") else "unknown"
+    import getpass
+    try:
+        os_user = getpass.getuser()
+    except Exception:
+        os_user = "unknown"
+    row = {
+        "id": device_id,
+        "hostname": hostname,
+        "os_user": os_user,
+        "repo_root": str(ROOT),
+        "cli_version": CLI_VERSION,
+    }
+    ok, result = pg_request_safe("POST", "devices", jwt, body=row, prefer="resolution=merge-duplicates")
+    if ok:
+        print(f"Registered device row (id={device_id}).")
+    else:
+        print(f"note: device registration deferred (not yet connected): {result}")
+        outbox_append("devices", row)
+
+    cursor = load_cursor()
+    cursor["device_id"] = device_id
+    save_cursor(cursor)
+
+    for kind in ("skills", "members"):
+        sync_row = {"device_id": device_id, "kind": kind}
+        ok_s, result_s = pg_request_safe("POST", "sync_state", jwt, body=sync_row, prefer="resolution=merge-duplicates")
+        if not ok_s:
+            print(f"note: sync_state({kind}) registration deferred: {result_s}")
+            outbox_append("sync_state", sync_row)
+
+    print("Running first pull...")
+    res = pull_materialize(jwt)
+    if res["ok"]:
+        cursor["last_pull"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+        save_cursor(cursor)
+        print(f"Pulled {res['members']} members, {res['skills']} skills.")
+    else:
+        print(f"note: pull deferred (not yet connected): {res['reason']}")
+    return 0
+
+
+def cmd_pull(args):
+    jwt = keychain_read_jwt()
+    if not jwt:
+        print("error: no guild JWT. Run `sa init` first.", file=sys.stderr)
+        return 1
+
+    cursor = load_cursor()
+    since = cursor.get("last_pull")
+
+    consumers = load_consumers()
+    member_dirs = [AGENTS_DIR] + [c["agents_dir"] for c in consumers.get("consumers", [])]
+    skill_dirs = [SKILLS_DIR, LOCAL_SKILLS_MIRROR_HOME, LOCAL_SKILLS_MIRROR_REPO]
+
+    res = pull_materialize(jwt, member_target_dirs=member_dirs, skill_target_dirs=skill_dirs, since=since)
+    if res["ok"]:
+        now = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+        cursor["last_pull"] = now
+        save_cursor(cursor)
+        device_id = cursor.get("device_id") or device_id_slug()
+        for kind in ("skills", "members"):
+            sync_row = {"device_id": device_id, "kind": kind, "cursor": now, "last_pulled_at": now}
+            ok_s, result_s = pg_request_safe("POST", "sync_state", jwt, body=sync_row, prefer="resolution=merge-duplicates")
+            if not ok_s:
+                outbox_append("sync_state", sync_row)
+        print(f"Pulled {res['members']} members, {res['skills']} skills.")
+        return 0
+    else:
+        print(f"not yet connected — pull skipped: {res['reason']}")
+        return 0  # fail open
+
+
+def cmd_push(args):
+    jwt = keychain_read_jwt()
+    if not jwt:
+        print("error: no guild JWT. Run `sa init` first.", file=sys.stderr)
+        return 1
+
+    if getattr(args, "members", False):
+        return _push_members(jwt, force=args.force)
+
+    skill_ids = args.skill_ids or [
+        p.name for p in SKILLS_DIR.iterdir()
+        if p.is_dir() and not p.name.startswith("_") and (p / "SKILL.md").exists()
+    ]
+    cursor = load_cursor()
+    base_hashes = cursor.setdefault("skill_hashes", {})
+    device_id = cursor.get("device_id", "unknown")
+
+    any_conflict = False
+    for sid in skill_ids:
+        skill_dir = SKILLS_DIR / sid
+        if not skill_dir.is_dir():
+            print(f"skip: {sid} not found under star-alliance-skills/")
+            continue
+        new_hash = hash_manifest(skill_dir)
+        base_hash = base_hashes.get(sid, "")
+        files = build_files_payload(skill_dir)
+        fm = parse_skill_frontmatter(skill_dir)
+        params = {
+            "p_id": sid, "p_name": fm["name"], "p_description": fm["description"],
+            "p_new_version": fm["version"], "p_new_hash": new_hash,
+            "p_base_hash": base_hash, "p_files": files,
+            "p_device": device_id, "p_force": bool(args.force),
+        }
+        # Larger timeout than the module default (5s): push_skill's payload can
+        # be several MB for a many-file skill (e.g. a vendored upstream dir),
+        # and the RPC itself does real writes (skills + skill_files +
+        # skill_versions) — a short read-path timeout was truncating pushes.
+        ok, result = pg_request_safe("POST", "rpc/push_skill", jwt, body=params, timeout=60.0)
+        if ok:
+            base_hashes[sid] = result if isinstance(result, str) else new_hash
+            print(f"pushed {sid} -> {base_hashes[sid]}")
+        else:
+            if "CONFLICT" in str(result):
+                any_conflict = True
+                print(f"CONFLICT pushing {sid}: {result}")
+                print(f"  -> re-run with --force to override: sa push {sid} --force")
+            else:
+                print(f"not yet connected — queued {sid} to outbox: {result}")
+                outbox_append("events", {"kind": "skill_fire", "detail": {"skill": sid, "action": "push-deferred", "hash": new_hash}})
+    save_cursor(cursor)
+    return 1 if any_conflict else 0
+
+
+def _push_members(jwt, force=False):
+    any_fail = False
+    device_id = device_id_slug()
+    # the-*.md only — README.md / index.md are docs, not guild members
+    # (matches tools/conformity_check.py's own members_dir.glob("the-*.md")).
+    for md in sorted(MEMBERS_DIR.glob("the-*.md")):
+        mid = md.stem
+        content = md.read_text()
+        row = {
+            "id": mid,
+            "name": mid,
+            "description": "",
+            "content": content,
+            "status": "active",
+            "updated_by": device_id,
+        }
+        ok, result = pg_request_safe("POST", "members", jwt, body=row, prefer="resolution=merge-duplicates")
+        if ok:
+            print(f"upserted member {mid}")
+        else:
+            any_fail = True
+            print(f"not yet connected — queued member {mid} to outbox: {result}")
+            outbox_append("events", {"kind": "note", "detail": {"member": mid, "action": "push-deferred"}})
+    return 1 if any_fail else 0
+
+
+def cmd_seed(args):
+    jwt = keychain_read_jwt()
+    if not jwt:
+        print("error: no guild JWT. Run `sa init` first.", file=sys.stderr)
+        return 1
+    print("Seeding all skills + members (force=True; DB assumed empty)...")
+    skill_ids = [
+        p.name for p in sorted(SKILLS_DIR.iterdir())
+        if p.is_dir() and not p.name.startswith("_") and (p / "SKILL.md").exists()
+    ]
+    fake_args = type("A", (), {"skill_ids": skill_ids, "force": True, "members": False})()
+    rc1 = cmd_push(fake_args)
+    fake_args2 = type("A", (), {"skill_ids": [], "force": True, "members": True})()
+    rc2 = cmd_push(fake_args2)
+    print(f"Seed attempted for {len(skill_ids)} skills + members.")
+    return rc1 or rc2
+
+
+def cmd_flush(args):
+    summary = outbox_flush()
+    print(json.dumps(summary, indent=2))
+    return 0  # always exit 0 per contract
+
+
+def cmd_log(args):
+    title = args.title
+    log_type = args.type or "note"
+    row = {
+        "entry_date": time.strftime("%Y-%m-%d", time.gmtime()),
+        "type": log_type,
+        "title": title,
+        "who": device_id_slug(),
+        "detail": getattr(args, "detail", "") or "",
+        "device_id": device_id_slug(),
+    }
+    outbox_append("log", row)
+    print(f"queued log entry: {title!r} (type={log_type})")
+    # opportunistic immediate flush attempt, fail-open
+    outbox_flush()
+    return 0
+
+
+def cmd_list(args):
+    jwt = keychain_read_jwt()
+    if jwt:
+        ok, members = pg_request_safe("GET", "members", jwt, params={"select": "id"})
+        ok2, skills = pg_request_safe("GET", "skills", jwt, params={"select": "id"})
+        if ok and ok2:
+            print(f"members (live): {len(members)}")
+            print(f"skills (live): {len(skills)}")
+            return 0
+    # fall back to local cache
+    local_members = list(AGENTS_DIR.glob("*.md")) if AGENTS_DIR.exists() else []
+    local_skills = [p for p in SKILLS_DIR.iterdir() if p.is_dir()] if SKILLS_DIR.exists() else []
+    print(f"members (local cache): {len(local_members)}")
+    print(f"skills (local cache): {len(local_skills)}")
+    return 0
+
+
+def cmd_findings(args):
+    jwt = keychain_read_jwt()
+    if not jwt:
+        print("no JWT — cannot fetch findings (not yet connected)")
+        return 0
+    ok, findings = pg_request_safe("GET", "findings", jwt, params={"status": "eq.open"})
+    if ok:
+        for f in findings or []:
+            print(f"- {f}")
+        if not findings:
+            print("no open findings")
+    else:
+        print(f"not yet connected: {findings}")
+    return 0
+
+
+def cmd_doctor(args):
+    print("sa doctor — green/red board\n")
+    ok_all = True
+    ensure_cli_config()
+
+    jwt = keychain_read_jwt()
+    if jwt:
+        print("[green] keychain: JWT present")
+    else:
+        print("[red]   keychain: no JWT found (run `sa init`)")
+        ok_all = False
+
+    pk = publishable_key()
+    if pk:
+        print(f"[green] apikey: publishable key resolved ({pk[:18]}...)")
+    else:
+        print("[red]   apikey: no publishable key resolved")
+        ok_all = False
+
+    reachable = False
+    if jwt:
+        ok, result = pg_request_safe("GET", "devices", jwt, params={"select": "id", "limit": "1"})
+        if ok:
+            print("[green] DB reachable: guild.devices responded")
+            reachable = True
+        else:
+            print(f"[red]   DB reachable: {result}")
+    else:
+        print("[red]   DB reachable: skipped (no JWT)")
+
+    cursor = load_cursor()
+    last_pull = cursor.get("last_pull")
+    if last_pull:
+        print(f"[green] cursor: last_pull={last_pull}")
+    else:
+        print("[amber] cursor: never pulled")
+
+    local_members = len(list(AGENTS_DIR.glob("*.md"))) if AGENTS_DIR.exists() else 0
+    local_skills = len([p for p in SKILLS_DIR.iterdir() if p.is_dir()]) if SKILLS_DIR.exists() else 0
+    print(f"[info]  local counts: members={local_members} skills={local_skills}")
+
+    if reachable:
+        ok, remote_members = pg_request_safe("GET", "members", jwt, params={"select": "id"})
+        ok2, remote_skills = pg_request_safe("GET", "skills", jwt, params={"select": "id"})
+        if ok and ok2:
+            print(f"[info]  remote counts: members={len(remote_members)} skills={len(remote_skills)}")
+
+    if CONSUMERS_CONFIG.exists():
+        try:
+            json.loads(CONSUMERS_CONFIG.read_text())
+            print("[green] consumers.json: valid")
+        except Exception as e:
+            print(f"[red]   consumers.json: invalid JSON ({e})")
+            ok_all = False
+    else:
+        print("[amber] consumers.json: not created yet (will default on first pull)")
+
+    outbox_n = len(outbox_read_lines())
+    print(f"[info]  outbox: {outbox_n} pending row(s)")
+
+    return 0 if ok_all else 1
+
+
+# ── argparse dispatcher ─────────────────────────────────────────────────
+
+def build_parser():
+    import argparse
+    p = argparse.ArgumentParser(prog="sa", description="Star Alliance guild CLI")
+    sub = p.add_subparsers(dest="cmd")
+
+    sub.add_parser("init", help="register this device + credential setup")
+
+    sub.add_parser("pull", help="pull members + skills, materialize locally")
+
+    pp = sub.add_parser("push", help="push changed skills (or --members)")
+    pp.add_argument("skill_ids", nargs="*", default=None)
+    pp.add_argument("--force", action="store_true")
+    pp.add_argument("--members", action="store_true")
+
+    sub.add_parser("seed", help="one-time: push all skills + members (force)")
+
+    sub.add_parser("flush", help="flush the local outbox to the DB")
+
+    lp = sub.add_parser("log", help="insert a guild.log row (via outbox)")
+    lp.add_argument("title")
+    lp.add_argument("--type", default="note")
+
+    sub.add_parser("dash", help="regenerate dashboard data files from the DB spine")
+    sub.add_parser("list", help="pretty-print skills/members")
+    sub.add_parser("findings", help="pretty-print open findings")
+    sub.add_parser("doctor", help="green/red board")
+
+    return p
+
+
+def main():
+    parser = build_parser()
+    args = parser.parse_args()
+    if not args.cmd:
+        parser.print_help()
+        return 1
+
+    dispatch = {
+        "init": cmd_init,
+        "pull": cmd_pull,
+        "push": cmd_push,
+        "seed": cmd_seed,
+        "flush": cmd_flush,
+        "dash": cmd_dash,
+        "log": cmd_log,
+        "list": cmd_list,
+        "findings": cmd_findings,
+        "doctor": cmd_doctor,
+    }
+    fn = dispatch.get(args.cmd)
+    if not fn:
+        parser.print_help()
+        return 1
+    return fn(args) or 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

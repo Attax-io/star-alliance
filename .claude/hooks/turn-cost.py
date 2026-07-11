@@ -21,6 +21,20 @@ import sys, os, json, time, re, pathlib
 
 TIER_RE = re.compile(r"SA-GATE:(LITE|FULL)")
 
+PROJECT_NAME = "star-alliance"
+
+
+def device_id_slug():
+    """Stable per-machine id: 'mac-' + the OS user. Same convention used by
+    spawn-log.py, bin/sa (cmd_log), and tools/backfill_guild.py — never
+    derive this independently."""
+    import getpass
+    try:
+        return "mac-" + getpass.getuser()
+    except Exception:
+        return "mac-unknown"
+
+
 
 def project_dir():
     return os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
@@ -142,21 +156,31 @@ def main():
 
     rec = {
         "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "device_id": device_id_slug(),
+        "project": PROJECT_NAME,
         "tier": tier,
         "assistant_msgs": n_msgs,
-        "in": tin,
-        "out": tout,
+        "tokens_in": tin,
+        "tokens_out": tout,
         "cache_read": cache_read,
         "cache_create": cache_create,
+        "wall_ms": wall_ms if wall_ms is not None else 0,
     }
-    if wall_ms is not None:
-        rec["wall_ms"] = wall_ms
 
+    # Phase 3: sink to the outbox (schema: {"table","client_uuid","payload"}),
+    # not directly to data/turn-cost.jsonl. `bin/sa flush` drains it to
+    # guild.turns; a per-turn auto-commit no longer needs to see this file.
     try:
-        out_dir = os.path.join(project_dir(), "data")
+        import uuid as _uuid
+        out_dir = os.path.join(project_dir(), ".claude", "state")
         os.makedirs(out_dir, exist_ok=True)
-        with open(os.path.join(out_dir, "turn-cost.jsonl"), "a", encoding="utf-8") as fh:
-            fh.write(json.dumps(rec, separators=(",", ":")) + "\n")
+        outbox_row = {
+            "table": "turns",
+            "client_uuid": str(_uuid.uuid4()),
+            "payload": rec,
+        }
+        with open(os.path.join(out_dir, "outbox.jsonl"), "a", encoding="utf-8") as fh:
+            fh.write(json.dumps(outbox_row, separators=(",", ":")) + "\n")
     except Exception:
         pass
 

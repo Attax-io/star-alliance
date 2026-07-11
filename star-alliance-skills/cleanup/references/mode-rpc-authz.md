@@ -29,7 +29,7 @@ check, a `user_can_see_file` / file-access check, or a self-scope on
    **not** one of the approved public reads (marketing / codex / newsletter /
    captcha-gated form intake). Anonymous data exposure.
 
-**Script:** `python3 "/Users/attaselim/Documents/Claude/Projects/Lex Council App/lex_council/scripts/security/rpc_authz_audit.py"`
+**Script:** `python3 "/Users/atta/Documents/Claude/Projects/Lex Council App/lex_council/scripts/security/rpc_authz_audit.py"`
 (read-only; lives in the **lex_council** repo, versioned with the app — NOT in
 the skill scripts dir, because it is Lex-schema-specific and needs the prod DB).
 
@@ -46,7 +46,7 @@ authorization state can only be judged against the live grants + bodies).
 #### Step RA1 — Detect
 
 ```sh
-cd "/Users/attaselim/Documents/Claude/Projects/Lex Council App/lex_council"
+cd "/Users/atta/Documents/Claude/Projects/Lex Council App/lex_council"
 python3 scripts/security/rpc_authz_audit.py ; echo "EXIT=$?"
 ```
 

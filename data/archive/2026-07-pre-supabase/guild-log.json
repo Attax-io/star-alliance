@@ -1,0 +1,4359 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "id": 122,
+      "date": "2026-07-02",
+      "type": "chore",
+      "title": "build.py: skip index.md/log.md when discovering member agents",
+      "who": "the-quartermaster",
+      "detail": "iter_agents() in build.py globbed star-alliance-members/*.md and treated every file there as a member agent except readme.md. The new OKF folder-index requirement (okf skill 1.5.0) put an index.md in every governed folder including star-alliance-members/ itself, which build.py then mis-read as a phantom agent named 'index.md' and aborted the build. Extended the existing readme.md skip to also skip index.md and log.md (the two OKF-reserved non-concept filenames a governed folder may carry). Verified: python3 build.py completes clean.",
+      "ref": [
+        "okf"
+      ]
+    },
+    {
+      "id": 121,
+      "date": "2026-07-02",
+      "type": "skill-upgrade",
+      "title": "okf 1.4.0→1.5.0: new folder-index requirement (okf_index.py)",
+      "who": "the-quartermaster",
+      "detail": "Extended OKF to a third audit dimension: every governed folder now requires an index.md carrying a description + a machine-regenerable ## Contents block delimited by HTML comment markers. New star-alliance-skills/okf/scripts/okf_index.py mirrors okf_audit.py's conventions (report / --fix / --json / --path), reuses its shared scope constants, and MERGES rather than overwrites an existing index.md (hand-written prose preserved, only frontmatter type: and the delimited Contents section injected/refreshed; idempotent, verified with two consecutive --fix runs producing zero additional file changes). Found and closed a governance-scope gap in the same pass: EXCLUDE_DIR_PARTS in okf_audit.py (shared by all three OKF scripts) was widened to cover vendored/scratch/runtime folders that per-file walks never surfaced (.hermes, .retired, .scratch, .scratch-thumbs-venv, site-packages, dist-info, .dylibs, state, runs, target, gen) — a vendored Python venv alone nested hundreds of site-packages subfolders before the fix, taking the initial folder count from 937 down to a real 261. Also fixed a Python 3.9 portability bug (PEP 604 union syntax X|None needs 3.10+; changed to typing.Optional) and a build.py cross-system collision (iter_agents() globbed star-alliance-members/*.md and mis-read the new index.md as a member agent file — extended its existing readme.md skip to also skip index.md and log.md). 258 folders got a new index.md, 3 already had one merged into conformance (0 stale after), 0 skipped as leaf-noise since none were empty after exclusion. Repo-wide: 261 governed folders, all conformant. python3 build.py and python3 tools/conformity_check.py both green (FULL CONFORMITY) after the fixes; skill_sync.py apply --profile-content and tools/publish_profiles.py --update both ran clean (0 errors).",
+      "ref": [
+        "okf"
+      ]
+    },
+    {
+      "id": 120,
+      "date": "2026-07-02",
+      "type": "skill-upgrade",
+      "title": "okf 1.3.0→1.4.0: shared output-path convention (resolve_output.py)",
+      "who": "the-quartermaster",
+      "detail": "New tools/resolve_output.py (env -> .claude/output.json config -> OKF LAYOUT_RULES convention, imported live from okf_audit.py -> scaffold fallback, mirroring resolve_vault.py's resolution strategy) + .claude/output.json (six kinds: report/diagnostic->docs/, generated-script->tools/generators/, data/log->data/, state->.claude/state/). Audited six candidate skill scripts for wiring (cleanup/errors_cleanup.py, cleanup/consolidate_code.py, skillsmith/routine_watchdog.py, skillsmith/routine_scan.py, session-mining's session_map.py+mine_sessions.py, law-harvest prose) — all found already conformant by their own existing convention (scratch to /tmp/, explicit --out flags, or already-correct fixed paths), so none were wired. guild-log and vault-log-writer left untouched as the reference patterns this convention mirrors. New §Output-path convention section documents the whole system in star-alliance-skills/okf/SKILL.md. MINOR bump — new capability, no breaking change.",
+      "ref": [
+        "okf"
+      ]
+    },
+    {
+      "id": 119,
+      "date": "2026-07-01",
+      "type": "chore",
+      "title": "Fixed 4 conformity contradictions: K filter, HS fork-exception, MP Persona type",
+      "who": "the-quartermaster",
+      "detail": "K: skills-meta.json key set wasn't filtered for the leading-underscore vendored-mirror convention the same way skill-dir/guild-data sets already were, so _impeccable-upstream-source (a real, correctly-unwired vendored dir) falsely reported as only-meta — fixed by filtering meta_keys identically. MP: the-butler.md frontmatter still said type: Member despite decision #104 reclassifying it to Persona (install_agents.py already skips agent-card generation for Personas, correctly, per that decision) — fixed the frontmatter, and taught the MP check itself to exclude Persona-type members from the parity requirement so this class of drift cannot recur. HS x2: cleanup and impeccable are documented forks/externals (skill_sync.py EXCEPTIONS, sync-playbook.md) whose repo copy PERMANENTLY diverges from the Claude-store/device copy by design (cleanup = slim Cowork stub vs full device monolith; impeccable = npx-managed external) - the HS check had no awareness of this and was hard-failing on expected divergence, telling the operator to run a blind overwrite that skillsmith's own Invariant #4 forbids. Added a mirrored _HS_FORK_EXCEPTIONS set so these two now surface as non-blocking notes instead of false-positive fails. Verified: python3 tools/conformity_check.py now reports FULL CONFORMITY (was 4 contradictions).",
+      "ref": [
+        "conformity_check.py",
+        "the-butler",
+        "cleanup",
+        "impeccable"
+      ]
+    },
+    {
+      "id": 118,
+      "date": "2026-07-01",
+      "type": "dashboard",
+      "title": "Wired art tiles for butler-voice, helpless, the-butler",
+      "who": "Atta",
+      "detail": "wired art tiles for butler-voice, helpless, and the-butler member; reconciled stray butler.png",
+      "ref": [
+        "butler-voice",
+        "helpless",
+        "the-butler"
+      ]
+    },
+    {
+      "id": 117,
+      "date": "2026-07-01",
+      "type": "member-upgrade",
+      "title": "the-butler: stress voice-not-member framing",
+      "who": "the-quartermaster",
+      "detail": "Stressed voice-not-member framing across member file and card; clarified he is in the roster only to track his evolution.",
+      "ref": [
+        "the-butler"
+      ]
+    },
+    {
+      "id": 116,
+      "date": "2026-07-01",
+      "type": "member-upgrade",
+      "title": "the-butler: drop weapon-utility, retire butler-lockout, add helpless",
+      "who": "the-quartermaster",
+      "detail": "Butler loadout reshaped to three skills: butler-voice (voice contract), helpless (refusal — replaces butler-lockout), star-alliance-language (house idiom). Dropped weapon-utility: the Butler is the voice, not a craft practitioner; carrying a numeric usage meter served no role. PreToolUse hook butler-skill-gate.py still enforces the boundary; refusal text now cites helpless.",
+      "ref": [
+        "the-butler",
+        "helpless",
+        "butler-lockout",
+        "weapon-utility"
+      ],
+      "from": "1.0.0",
+      "to": "1.0.1"
+    },
+    {
+      "id": 115,
+      "date": "2026-07-01",
+      "type": "skill-remove",
+      "title": "Retire butler-lockout skill",
+      "who": "the-quartermaster",
+      "detail": "Superseded by helpless — the doctrine moved into one skill with a clearer name and self-identifying refrain. The mechanical gate (butler-skill-gate.py) now cites helpless instead of butler-lockout.",
+      "ref": [
+        "butler-lockout"
+      ]
+    },
+    {
+      "id": 114,
+      "date": "2026-07-01",
+      "type": "skill-create",
+      "title": "Add helpless skill (replaces butler-lockout)",
+      "who": "the-quartermaster",
+      "detail": "Refusal doctrine: invoked by scripts and hooks (not the Butler) to hand craft to the Strategist. Single refusal skill, named to make the gate's refrain explicit. Replaces butler-lockout (retired).",
+      "ref": [
+        "helpless"
+      ]
+    },
+    {
+      "id": 113,
+      "date": "2026-07-01",
+      "type": "decision",
+      "title": "Vault log follows the target project; guild log stays repo-fixed",
+      "who": "the-quartermaster",
+      "detail": "Chose a resolver-driven per-vault model over one hardcoded project. Guild log always writes to the star-alliance repo (guild history); vault log resolves to whichever project the guild is deployed into (that projects change log). Unknown project auto-detects docs/vault-logs then offers to scaffold, never falling back to Lex. Full P8/P13 ceremony applies to every vault.",
+      "ref": [
+        "vault-log-compliance"
+      ]
+    },
+    {
+      "id": 112,
+      "date": "2026-07-01",
+      "type": "chore",
+      "title": "Portable guild-log and per-vault vault-log tooling",
+      "who": "the-quartermaster",
+      "detail": "New tools/resolve_vault.py resolves the active target project vault-log dir from any cwd (env VAULT_LOG_DIR, then .claude/vault.json, then docs/vault-logs convention, else offer --scaffold). New tools/guild_log.py portable wrapper self-locates the repo and runs build/event/rebuild. build_guild_log.py and log_event.py now honor STAR_ALLIANCE_ROOT as well as STAR_ALLIANCE_REPO. Two new Stop hooks guild-log-nudge.py and vault-log-nudge.py. Lex registered via its .claude/vault.json.",
+      "ref": [
+        "guild-log",
+        "vault-log-compliance",
+        "vault-log-writer"
+      ]
+    },
+    {
+      "id": 111,
+      "date": "2026-07-01",
+      "type": "skill-create",
+      "title": "Add butler-lockout skill",
+      "who": "Atta",
+      "detail": "Refusal rule: when a craft skill surfaces in the Butlers context, hand it to the Strategist. Enforced mechanically by the PreToolUse hook butler-skill-gate.py."
+    },
+    {
+      "id": 110,
+      "date": "2026-07-01",
+      "type": "skill-create",
+      "title": "Add butler-voice skill",
+      "who": "Atta",
+      "detail": "Voice contract for the Butler: lead with status, restate the brief, plain English, attribute the model honestly. Pairs with butler-lockout (the floor it guards)."
+    },
+    {
+      "id": 109,
+      "date": "2026-07-01",
+      "type": "member-create",
+      "title": "Add the-butler as Star Alliance voice",
+      "who": "Atta",
+      "detail": "Butler is the guilds voice: restates the Guild Master order in plain English, holds the approval gate, delivers the final report. Pinned to skills [butler-voice, butler-lockout, star-alliance-language, weapon-utility] with a PreToolUse hook (butler-skill-gate.py) enforcing the lockout so the Butler can never wield craft."
+    },
+    {
+      "id": 108,
+      "date": "2026-07-01",
+      "type": "skill-create",
+      "title": "Absorbed 6 Lex housekeeping subagents as Quartermaster skills",
+      "who": "the-quartermaster",
+      "detail": "backend-auditor, frontend-auditor, health-checker (Claude-native only — invoke the Lex Supabase MCP connector), heat-map-analyst, cold-doc-rotator, pattern-detector moved from Lex .claude/agents/ into star-alliance-skills/ and registered on the-quartermaster (skills[] + Skill Drills). Lex .claude/agents/ retired so the single SA roster is the source of truth. Decision: the-translator was NOT migrated — SA the-interpreter already supersets it; no member downgrade."
+    },
+    {
+      "id": 107,
+      "date": "2026-07-01",
+      "type": "decision",
+      "title": "XP/leveling Architecture Build closed: device skill sync + conformance verified",
+      "who": "the-quartermaster",
+      "detail": "Sync housekeeping: weapon-utility v4.0.0 (Phase 2 universal arsenal) and release-train v1.1.0 (commit-scope rule) installed to device via skillsmith; fork exceptions (conquering-campaign, impeccable) left as-is; conformity re-verified GREEN on the two new syncs. The Architecture Build (decision #66) approved in prior sessions is now fully sealed with no drift.",
+      "ref": [
+        "weapon-utility",
+        "release-train",
+        "skillsmith"
+      ]
+    },
+    {
+      "id": 106,
+      "date": "2026-06-29",
+      "type": "chore",
+      "title": "9 Lex skills wired + guild-conformity 1.6.0 deployed",
+      "who": "Atta",
+      "detail": "Architecture Build close: 9 new Lex-Council skills (file-access-model, add-admin-permission, add-new-trigger, add-new-view, lex-system-audit, phased-db-refactor, admin-page-fixer, admin-page-builder, design-taste-frontend) assigned to Architect and Developer members; added version:1.0.0 to all; auto-registered via wire_skill.py --all; synced Hermes profile-content via skill_sync.py apply --profile-content. Upgraded guild-conformity to 1.6.0: new section on three-layer skill surfaces (repo/Claude-store/Hermes-profiles), profile-slug bug fix (the-<member> not bare), PS/HS triage, 7-step device deployment checklist. Conformity check: 208 contradictions remain (133 pre-existing SD Skill Drills backlog, 59 HS Claude-store drift expected, 4 PS profile-roster decisions awaiting Guild Master). Repo source green, Hermes synced, ready for device deployment.",
+      "ref": [
+        "guild-conformity",
+        "skillsmith",
+        "the-architect",
+        "the-developer"
+      ]
+    },
+    {
+      "id": 105,
+      "date": "2026-06-29",
+      "type": "skill-upgrade",
+      "title": "9 Lex Council skills wired + conformity fold",
+      "who": "the-quartermaster",
+      "detail": "Architecture Build close: wired 9 new Lex-Council skills (file-access-model, add-admin-permission, add-new-trigger, add-new-view, lex-system-audit, phased-db-refactor, admin-page-fixer, admin-page-builder, design-taste-frontend) to Architect and Developer members; added version: 1.0.0 to all; ran wire_skill.py --all to auto-register in skills-meta.json; synced Hermes profile-content via skill_sync.py --profile-content; upgraded guild-conformity skill to 1.6.0 with new section on three-layer skill surfaces (repo/Claude-store/Hermes-profiles), profile-slug bug fix doc (the-<member> not bare name), PS/HS triage doctrine, and 7-step device deployment checklist. Conformity check: 208 remaining contradictions (133 SD Skill Drills rows pre-existing backlog, 59 HS Claude-store drift expected, 4 PS profile-roster decisions for Guild Master). Final status: repo source green, Hermes profile content synced, ready for dashboard wiring and device deployment per deploy_device.py checklist.",
+      "ref": [
+        "guild-conformity",
+        "skillsmith",
+        "the-architect",
+        "the-developer"
+      ],
+      "to": "1.6.0"
+    },
+    {
+      "id": 104,
+      "date": "2026-06-28",
+      "type": "decision",
+      "title": "Butler is now a Persona (the voice), not a spawnable agent; the Strategist owns routing",
+      "who": "Atta",
+      "detail": "the-butler reclassified type Member->Persona: runs as the active session model, gets NO .claude/agents file (install_agents.py skips personas and removes the stale file). It stays a valid workflow actor and the report-gate owner (D23 bookend intact). Routing — forming the right member and sequencing work — moved from the Butler to the Strategist, along with the members-formation, decompose-and-swarm, and safe-agentic-orchestration skills. Updated: guild-routing-gate.sh (Butler=voice, Strategist routes), swarm coordinator butler-brain->strategist-brain. Nothing spawns the Butler as a subagent, so removing its agent file breaks nothing.",
+      "ref": [
+        "the-butler",
+        "the-strategist"
+      ]
+    },
+    {
+      "id": 103,
+      "date": "2026-06-28",
+      "type": "decision",
+      "title": "Uniform arsenal seats: Sonnet thinks · MiniMax does · GLM reviews · Opus benched off-seat",
+      "who": "Atta",
+      "detail": "Every member's brain = sonnet (a tool-capable Claude model — GLM cannot hold Edit/Write/Bash without a gateway, so the thinker stays Claude); doer = minimax-m3; critic = glm-5.2 (a different model family for diverse review). Opus removed from ALL seat defaults/fallbacks and reserved off-seat for a separate plan. When a seat's model is dry it walks its fallback to the strongest available bench model. Rationale: resilience — when Opus runs dry, no member breaks. Source: star-alliance-arsenal/models.json seats. Conformity green.",
+      "ref": [
+        "the-arsenal"
+      ]
+    },
+    {
+      "id": 102,
+      "date": "2026-06-28",
+      "type": "member-upgrade",
+      "title": "Promote The Herald: Elite → Master",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Elite → Master (craft-depth tier). Prerequisite checklist for Master verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-herald"
+      ],
+      "from": "Elite",
+      "to": "Master"
+    },
+    {
+      "id": 101,
+      "date": "2026-06-28",
+      "type": "member-upgrade",
+      "title": "Promote The Butler: Foundational → Advanced",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Foundational → Advanced (craft-depth tier). Prerequisite checklist for Advanced verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-butler"
+      ],
+      "from": "Foundational",
+      "to": "Advanced"
+    },
+    {
+      "id": 100,
+      "date": "2026-06-28",
+      "type": "member-upgrade",
+      "title": "Promote The Herald: Advanced → Elite",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Advanced → Elite (craft-depth tier). Prerequisite checklist for Elite verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-herald"
+      ],
+      "from": "Advanced",
+      "to": "Elite"
+    },
+    {
+      "id": 99,
+      "date": "2026-06-28",
+      "type": "dashboard",
+      "title": "Refined Console — dashboard redesign: ink surfaces, gold accent, Star Map split",
+      "who": "Atta",
+      "detail": "Ground-up visual remake of the control panel (approved direction: keep guild gold/stone heritage, refined). app.css: rewrote :root token values (calm ink surfaces, hairline borders, gold as the single signature accent, slate-blue info; killed neon cyan/violet glow + glass blur) and appended a Refined Console override block retuning every view. app.js: renderStarMap restructured into a split layout (constellation left + scrollable workflow sidebar right). index.html: removed the animated starfield/nebula DOM for a flat ink backdrop. All 6 views verified live at 1440px, zero console errors, palette + inline-edit + flow-trace intact. Cold critic (glm-5.2) reviewed the diff; 2 real findings fixed (--ink layering restored below --panel, --accent-border defined).",
+      "ref": [
+        "the-designer",
+        "the-developer"
+      ]
+    },
+    {
+      "id": 98,
+      "date": "2026-06-28",
+      "type": "chore",
+      "title": "4-seat arsenal: dead-code cleanup + member promotions",
+      "who": "Atta",
+      "detail": "Closed the 4-seat Architecture Build. Removed now-dead weapon-table machinery: build.py (render_weapons_table/replace_weapons_table/sync_member_tables/ORDINAL_LABELS + the sync call), conformity_check.py (expected_order, _parse_weapons_table orphans; docstring updated to drop retired A/PD/W/S and document ST), serve.cjs (syncWeaponsMeta dead fn; setMemberField rejects weapons; createMember no longer writes weapons/weaponsDesc), app.js (grant/revoke/reorder no-op, revoke button removed, dossier hint rewritten to the 4 seats). Conferred the due member promotions (earned tiers) via member_level.py promote --all. build --check idempotent, FULL CONFORMITY, node --check + py_compile all green, zero dangling refs to removed symbols."
+    },
+    {
+      "id": 97,
+      "date": "2026-06-28",
+      "type": "member-upgrade",
+      "title": "Promote The Translator: Intermediate → Advanced",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Intermediate → Advanced (craft-depth tier). Prerequisite checklist for Advanced verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-translator"
+      ],
+      "from": "Intermediate",
+      "to": "Advanced"
+    },
+    {
+      "id": 96,
+      "date": "2026-06-28",
+      "type": "member-upgrade",
+      "title": "Promote The Developer: Elite → Master",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Elite → Master (craft-depth tier). Prerequisite checklist for Master verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-developer"
+      ],
+      "from": "Elite",
+      "to": "Master"
+    },
+    {
+      "id": 95,
+      "date": "2026-06-28",
+      "type": "chore",
+      "title": "Universal 4-seat arsenal Phases 2-4: derived arsenal, Critic on dashboard, swarm pull",
+      "who": "Atta",
+      "detail": "Completed the 4-seat Architecture Build (Brain/Doer/Critic/Bench). Phase 2 (universalize): deleted per-member weapons[] from 9 member .md + all weaponsDesc from members-meta (kills the 4-copy drift class); build.py now DERIVES each member's seats+weapons from the universal seats (models.json) via derive_member_arsenal() — brain = the member's model: (override, default opus), doer=minimax-m3, critic=glm-5.2, bench=every other live text model; conformity_check retired per-member checks A/PD/W/S/WT and rewrote BR (brain must be a registry thinker) — ST (seats valid + critic-family!=brain-family) is the new guard. Phase 3 (dashboard): app.js renders the CRITIC flag (+ .is-critic CSS) alongside BRAIN/DOER from member.seats; GUILD.seats emitted; retired the now-inert per-member weapon-editing UI (grant/revoke/reorder no-op, revoke button removed, hint rewritten) and serve.cjs write paths (setMemberField rejects weapons, createMember no longer writes weapons/weaponsDesc). Phase 4 (swarm): new bench_pull.py selects N bench models for doer-swarm/thinker-swarm; weapon-utility -> 3.0.0 (universal seats doctrine). Validated: build idempotent, FULL CONFORMITY, node --check app.js/serve.cjs, all py_compile; dashboard verified in-browser (Brain/Doer/Critic badges render, no edit controls). Independent grounded review: PASS non-blocking; its flagged stale weapon-edit paths were fixed in this same wave. Builds on Phase 1 (guild-log #94)."
+    },
+    {
+      "id": 94,
+      "date": "2026-06-28",
+      "type": "chore",
+      "title": "Strategic Audit harness-fix: gpt-5.5 fully removed + verify-gate loop fixed",
+      "who": "Atta",
+      "detail": "Audit of the whole harness (hooks/arsenal/members/skills/turn-lifecycle) executed as a multi-wave fix. (1) verify-gate 'triple response' loop ROOT-CAUSED + fixed: it had no per-turn baseline (fired on any dirty tree incl. pre-existing files) and turn-finalize (a sibling Stop hook) committed regardless, so its 'nothing committed while blocked' claim was false. Fix: turn-start.py snapshots a source fingerprint (.claude/state/verify-baseline); verify-gate stands aside when cur==baseline and fails open if the baseline is missing; turn-finalize now honors the gate (commits nothing while blocked). (2) turn-cost tier bug (45% 'unknown') fixed: dedup via the turn-start sentinel (one record/turn across blocking re-prompts) + stop deleting last-tier. (3) gpt-5.5 REMOVED from every live surface: models.json, summon.py, conformity_check.py, gen_model_docs.py, 7 member loadouts + members-meta, 9 agents (regen), weapon-utility + ultra-brainstorming live prose, both READMEs, app.js (ARSENAL + TIER_RANK — ghost-tile bug), serve.cjs fallback+comment, gen-weapon-art/gif.cjs, and deleted weapon-art/gpt-5.5.png + models/gpt-5.5.md; only historical records (changelogs, guild-log, docs/) retain it. (4) Dead hooks archived to .claude/hooks/.deprecated/ (autocommit.sh, member-table-sync.py, guild-source-rebuild.py) + README; stale prose in guild-conformity (1.4.2) + the-quartermaster rewritten to the real build-mark->turn-finalize chain. (5) Token diet: LITE policy retuned (size_short_chars + conversational small-signals; explain-prompts now LITE, stakes still FULL), weapon-gate reminder once/turn, minimax 401/403 auth message. (6) Readable commits: turn-finalize subject now leads with the workflow name. weapon-utility 2.1.1, ultra-brainstorming 1.3.1 bumped. Independent multi-agent adversarial review (4 reviewers) caught the app.js ghost-tile miss (macOS grep skipped its null-byte content); re-verified PASS. build --check idempotent, conformity FULL."
+    },
+    {
+      "id": 93,
+      "date": "2026-06-27",
+      "type": "chore",
+      "title": "design-unity field run on Lex Council App: conformity audit + no-hardcoded-color lint guard",
+      "who": "the-designer",
+      "detail": "Ran design-unity establish/audit on the Lex Council App (separate repo, not git-visible here). Confirmed a healthy multi-layer single source of truth (packages/md/src/tokens -> globals.css -> DESIGN.md). Of 408 raw-hex hits, ~97 are INTENTIONAL theme-flat dark-mode-contrast locks (the navy/gold token flips in dark mode; these stay fixed for AA) — a naive hex-to-token sweep would have broken dark mode. Wrote docs/ui-ux/design-unity-audit.md backlog; wired a theme-flat-aware no-hardcoded-color ESLint rule (apps/web/eslint.design.config.js + npm run lint:colors), non-blocking until the backlog clears. No app component code changed. Lesson folded into design-unity 1.1.0 (audit Step 0 subtracts intentional locks before counting drift).",
+      "ref": [
+        "design-unity",
+        "the-designer"
+      ]
+    },
+    {
+      "id": 92,
+      "date": "2026-06-27",
+      "type": "decision",
+      "title": "Kept impeccable standalone — a 23-command npm external, not foldable into design-taste",
+      "who": "the-quartermaster",
+      "detail": "During the Designer skill merge the Guild Master approved folding impeccable into design-taste. Ground-truth before acting: impeccable is a 23-command npm-published product (npx impeccable) with a CLI anti-pattern detector, Chrome extension, and release pipeline; its ~15 platform-mirror dirs are load-bearing (npx skills reads them directly). Folding would destroy ~20 capabilities; stripping the dirs breaks its installer. Rejected the fold; kept it standalone (skillsmith already skips externals). Merge proceeded on the 3 imagegen skills only.",
+      "ref": [
+        "the-designer",
+        "impeccable"
+      ]
+    },
+    {
+      "id": 91,
+      "date": "2026-06-27",
+      "type": "member-upgrade",
+      "title": "Promote The Designer: Elite → Master",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Elite → Master (craft-depth tier). Prerequisite checklist for Master verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-designer"
+      ],
+      "from": "Elite",
+      "to": "Master"
+    },
+    {
+      "id": 90,
+      "date": "2026-06-27",
+      "type": "member-upgrade",
+      "title": "Promote The Merchant: Advanced → Elite",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Advanced → Elite (craft-depth tier). Prerequisite checklist for Elite verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-merchant"
+      ],
+      "from": "Advanced",
+      "to": "Elite"
+    },
+    {
+      "id": 89,
+      "date": "2026-06-27",
+      "type": "member-upgrade",
+      "title": "Promote The Developer: Advanced → Elite",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Advanced → Elite (craft-depth tier). Prerequisite checklist for Elite verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-developer"
+      ],
+      "from": "Advanced",
+      "to": "Elite"
+    },
+    {
+      "id": 88,
+      "date": "2026-06-27",
+      "type": "member-upgrade",
+      "title": "Promote The Architect: Advanced → Master",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Advanced → Master (craft-depth tier). Prerequisite checklist for Master verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-architect"
+      ],
+      "from": "Advanced",
+      "to": "Master"
+    },
+    {
+      "id": 87,
+      "date": "2026-06-27",
+      "type": "decision",
+      "title": "Brain = personality: a member's thinker is its session model, not arsenal-leading opus",
+      "who": "the-architect",
+      "detail": "Reverses the earlier 'prime thinker = first thinker weapon = opus' decision. A member's BRAIN is now its session model (model: in the .md) — the live Claude model that actually thinks, orchestrates, and holds the tools in a session: sonnet for the 5 sonnet-run members, opus for the 4 opus-run. The other arsenal thinkers (opus included, for sonnet-run members) are ESCALATION weapons the brain delegates to, not the member's identity. UI: per-member weapon cards now flag BRAIN (the session-model weapon, purple) and DOER (the prime doer minimax-m3, orange); a thinker carries no flag unless the member runs as it. conformity_check.py PT check (==opus) replaced by BR (session model is a carried thinking weapon) + PD (prime doer leads). weapon-utility -> 2.0.0. Why: in Claude Code the session model IS the live brain, so calling opus the brain was fiction and bred the recurring 'why sonnet when prime is opus' confusion. Brain=runs-as removes the mismatch at the root and loses nothing — opus stays a reachable escalation weapon."
+    },
+    {
+      "id": 86,
+      "date": "2026-06-27",
+      "type": "decision",
+      "title": "Member Skill Drills tables are AUTHORED (judgment), not generated like weapon tables",
+      "who": "the-quartermaster",
+      "detail": "Decision #77 mandates weapon tables be generated from the loadout. Skill Drills are different: the Invoke-WHEN / Do-NOT / Pairs-with columns are per-skill judgment calls and anti-misfire boundaries that cannot be derived from the skills[] list alone, so they are hand-authored in guild voice. The conformity guarantee is mechanical instead: every skills[] entry MUST appear in a Skill Drills table row (verified). Rejected alternative: auto-generating rows from each skill's description — too coarse, loses the anti-trigger and the member's own slice of shared skills."
+    },
+    {
+      "id": 85,
+      "date": "2026-06-27",
+      "type": "member-upgrade",
+      "title": "All 9 members gain a Skill Drills table — when/how to invoke each carried skill",
+      "who": "the-quartermaster",
+      "detail": "Strategic Audit on member skill-invocation guidance. Added a '## Skill Drills' table (Skill | Invoke WHEN | Do NOT invoke for | Pairs with) to every working member, plus a shared universal block for weapon-utility + star-alliance-language. Closed 5 finding classes: F1 universal skills orphaned in all 9, F2 listed-but-undrilled skills (supabase, relationship-intel, release-train, okf, high-alert, legal-drafting, law-harvest, workflow-forge, arsenal-forge, scheduled-watch, etc.), F3 no anti-triggers anywhere, F4 numbering defects (dev/architect dup steps; designer image-to-code mislabel), F5 format drift. Conformity verifier: 78/78 skill refs now drilled. Audit report at star-alliance-members/SKILL-DRILLS-AUDIT.md.",
+      "ref": [
+        "the-architect",
+        "the-developer",
+        "the-designer",
+        "the-herald",
+        "the-merchant",
+        "the-strategist",
+        "the-translator",
+        "the-quartermaster",
+        "the-butler"
+      ]
+    },
+    {
+      "id": 84,
+      "date": "2026-06-27",
+      "type": "workflow",
+      "title": "OKF Tidy workflow",
+      "who": "the-quartermaster",
+      "detail": "New Hygiene & Release star-map workflow: Quartermaster migrate-first audit/fix/enrich/sweep to OKF conformance, with approval+certify gates and okf-gate verification."
+    },
+    {
+      "id": 83,
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "star-alliance-language skill — OKF reading protocol (consumer)",
+      "who": "the-quartermaster",
+      "detail": "Universal skill (rides every member like weapon-utility): the fast reading protocol for OKF-tidied repos. Ships okf_read.py emitting a one-shot concept map from frontmatter + cross-links so members read by type/title, never blind full-reads."
+    },
+    {
+      "id": 82,
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "okf skill — whole-repo OKF hygiene (producer)",
+      "who": "the-quartermaster",
+      "detail": "Quartermaster skill keeps the whole repo tidy and OKF v0.1 conformant; ships okf_audit.py and is enforced by the okf-gate hook."
+    },
+    {
+      "id": 81,
+      "date": "2026-06-27",
+      "type": "chore",
+      "title": "race guard: banner-enforcer no longer false-blocks turns read before transcript flush",
+      "who": "the-developer",
+      "detail": "workflow-banner-enforcer.py (Stop hook) read the transcript .jsonl before the finished assistant turn was flushed, so it saw no assistant text, found no banner, and hard-blocked fully-compliant replies (the banner IS text) — masked only by the CAP=3 relent. Fix: if there is no assistant text since the last user message, the turn isn't judgeable yet → fail open (exit 0). A real answer always carries text, so this only catches the flush race, never a genuine miss. Member gate + workflow gate stay fully strict."
+    },
+    {
+      "id": 80,
+      "date": "2026-06-27",
+      "type": "chore",
+      "title": "⚡ skill klaxon now fires for /slash skills (guild-routing-gate.sh)",
+      "who": "the-developer",
+      "detail": "high-alert.py only fires the ⚡ 'Member Skill Activated' banner on the Skill TOOL, but a user-typed /slash skill loads via a <command-name> injection and never calls the tool, so that path was silent. Fix: guild-routing-gate.sh (UserPromptSubmit) now parses the prompt for a leading /skill, validates it (local ~/.claude/skills dir OR /plugin:skill namespaced form, with a builtin denylist for /caveman /config /loop etc.), and directs the model to emit the ⚡ banner as its first line — same model-emitted pattern as ⚔/🗺. Payload passed via env var (SA_INPUT), not stdin, because python3 - <<heredoc steals stdin for the script."
+    },
+    {
+      "id": 79,
+      "date": "2026-06-27",
+      "type": "decision",
+      "title": "⚔ banner fires per MEMBER from the workflow cast — not one per workflow",
+      "who": "the-developer",
+      "detail": "The ⚔ 'Member reports for duty' banner was prose-only (high-alert.py never fired it) and worded as a single STEP-1 event, so a multi-member workflow announced only its lead; the closing the-quartermaster (and any mid specialist) acted silently. Fix: (1) guild-routing-gate.sh klaxon reworded — ⚔ is per-member, per step, derived from the workflow's own steps[].actor (skip you+gates), explicitly multiple banners per multi-member workflow. (2) high-alert.py now also fires ⚔ on a real Agent/Task dispatch, but ONLY when subagent_type is a known guild-member id (no false klaxon for Explore/general-purpose). (3) workflow-banner-enforcer.py derives the cast from the declared workflow and blocks a working turn where NO cast member reported (≥1 required; the whole cast can't be forced per-turn because in-context persona switches have no tool footprint, and a workflow spans turns). Full per-member firing stays behavioral, backed by the ≥1 gate + auto-fire on genuine dispatch.",
+      "ref": [
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": 78,
+      "date": "2026-06-27",
+      "type": "decision",
+      "title": "EVERY turn runs inside a workflow — enforced at turn-end (Stop), not just on tools",
+      "who": "the-developer",
+      "detail": "workflow-gate.py is PreToolUse — it only bit a TOOL call, so a turn that fired zero tools (a plain answer, a greeting) escaped the 'every turn runs in a workflow' rule entirely. Fix: a new Stop hook workflow-banner-enforcer.py scans the finished turn for a valid 🗺 Starmap Workflow Started: <name>! naming a real workflows.json entry; missing → hard block (exit 2), CAP=3 anti-brick relent so a turn can never loop-freeze. Added a catch-all 'Conversation' workflow (you→the-butler→the-quartermaster→report) so greeting/ack/meta turns have a real lane; inquiry-recon covers read-only code/guild questions. Hooks load at session start, so it bites from the next session.",
+      "ref": [
+        "the-butler"
+      ]
+    },
+    {
+      "id": 77,
+      "date": "2026-06-27",
+      "type": "decision",
+      "title": "Member weapon tables are GENERATED from the loadout, never hand-kept",
+      "who": "the-developer",
+      "detail": "The '## Your Weapons' table in each member .md duplicated the frontmatter weapons: order + members-meta.json weaponsDesc — two hand-kept copies, so 8 of 9 members had drifted (4 dropped minimax-m3 entirely). Fix: build.py now renders the table from loadout order + weaponsDesc and writes it back into the .md (self-heals every build); conformity_check.py check WT asserts table order+desc == loadout (backstop for hand-edits); a PostToolUse member-table-sync.py hook runs build.py whenever a member .md or members-meta.json is edited, before autocommit, so a loadout change can never leave a stale table. Changing which weapon a member uses = edit frontmatter weapons: only; the table follows. Upgrading weapon-utility (behavior) is untouched and still propagates to all members.",
+      "ref": [
+        "weapon-utility",
+        "the-developer"
+      ]
+    },
+    {
+      "id": 76,
+      "date": "2026-06-27",
+      "type": "chore",
+      "title": "Wire the Guild campaign — workflow runner wired end-to-end",
+      "who": "Quartermaster",
+      "detail": "Waves 0-4: additive step schema in workflows.json + data-driven guild/run.py; frame_brief.py and plan.py primitives; 7 new guild/ scripts (session_scout, hygiene_run, version_bump, wire, commission_art, sync_act, prune_runs); 55 scripted steps' act text normalized; gate steps resolve to human; the-merchant recruited for the trading project (skills 42->44: market-recon reused + trading-strategy + portfolio-risk new) and promoted Foundational->Advanced; dark/deactivated models marked via members-meta weaponStatus (gpt-5.5 deactivated, nemotron-3-ultra dark), now carried to the dashboard through build.py meta + app.js seed."
+    },
+    {
+      "id": 75,
+      "date": "2026-06-27",
+      "type": "member-upgrade",
+      "title": "Promote The Merchant: Foundational → Advanced",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Foundational → Advanced (craft-depth tier). Prerequisite checklist for Advanced verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-merchant"
+      ],
+      "from": "Foundational",
+      "to": "Advanced"
+    },
+    {
+      "id": 74,
+      "date": "2026-06-27",
+      "type": "decision",
+      "title": "Butler must hold the approval gate: restate-brief-and-halt before any build",
+      "who": "the-butler",
+      "detail": "During the Oracle's Scrying workflow forge, the Butler asked design-clarifying questions (owner + weight) and then started building immediately — skipping the approval gate entirely. Clarifying/design questions are NOT the approval gate: narrowing a spec is not signing off on it. CORRECTION: before any build, file write, git op, or other hard-to-reverse action, the Butler restates the request as a one-line brief (member, workflow, what gets touched) and HALTS for the Guild Master's explicit 'go'. The Butler frames; the Guild Master approves; the producer never self-approves. Enforced in .claude/hooks/guild-routing-gate.sh as STEP 0."
+    },
+    {
+      "id": 73,
+      "date": "2026-06-27",
+      "type": "member-upgrade",
+      "title": "Promote The Quartermaster: Foundational → Advanced",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Foundational → Advanced (craft-depth tier). Prerequisite checklist for Advanced verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-quartermaster"
+      ],
+      "from": "Foundational",
+      "to": "Advanced"
+    },
+    {
+      "id": 72,
+      "date": "2026-06-27",
+      "type": "member-upgrade",
+      "title": "Promote The Herald: Foundational → Advanced",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Foundational → Advanced (craft-depth tier). Prerequisite checklist for Advanced verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-herald"
+      ],
+      "from": "Foundational",
+      "to": "Advanced"
+    },
+    {
+      "id": 71,
+      "date": "2026-06-27",
+      "type": "member-upgrade",
+      "title": "Promote The Translator: Foundational → Intermediate",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Foundational → Intermediate (craft-depth tier). Prerequisite checklist for Intermediate verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-translator"
+      ],
+      "from": "Foundational",
+      "to": "Intermediate"
+    },
+    {
+      "id": 70,
+      "date": "2026-06-27",
+      "type": "member-upgrade",
+      "title": "Promote The Strategist: Foundational → Master",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Foundational → Master (craft-depth tier). Prerequisite checklist for Master verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-strategist"
+      ],
+      "from": "Foundational",
+      "to": "Master"
+    },
+    {
+      "id": 69,
+      "date": "2026-06-27",
+      "type": "member-upgrade",
+      "title": "Promote The Designer: Foundational → Elite",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Foundational → Elite (craft-depth tier). Prerequisite checklist for Elite verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-designer"
+      ],
+      "from": "Foundational",
+      "to": "Elite"
+    },
+    {
+      "id": 68,
+      "date": "2026-06-27",
+      "type": "member-upgrade",
+      "title": "Promote The Developer: Foundational → Advanced",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Foundational → Advanced (craft-depth tier). Prerequisite checklist for Advanced verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-developer"
+      ],
+      "from": "Foundational",
+      "to": "Advanced"
+    },
+    {
+      "id": 67,
+      "date": "2026-06-27",
+      "type": "member-upgrade",
+      "title": "Promote The Architect: Foundational → Advanced",
+      "who": "The Quartermaster",
+      "detail": "Conferred member level Foundational → Advanced (craft-depth tier). Prerequisite checklist for Advanced verified against the build-derived signals per skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-architect"
+      ],
+      "from": "Foundational",
+      "to": "Advanced"
+    },
+    {
+      "id": 66,
+      "date": "2026-06-27",
+      "type": "decision",
+      "title": "Member leveling system: craft-depth tiers, earned-by-checklist, conferred by the Quartermaster",
+      "who": "The Strategist",
+      "detail": "Guild Master ordered per-member levels graded on skills+specialty, with the Quartermaster conferring on prerequisite. DECISION: a member's level is a CRAFT-DEPTH meter (Arsenal Depth = Σ skill-level-weights + unique/specialty + weapons), explicitly DECOUPLED from standing (the Butler leads regardless of tier). Rejected per-role rubric and leadership-floor models — both need subjective judgment the guild can't recompute identically, breaking the 'clear standard for future runs' requirement. Standard = objective per-tier prerequisite CHECKLIST (not a weighted score) computed by build.py; the five tiers reuse LEVEL_RAMP (Foundational→Master, Elite/amber was reserved+unused). Earned tier is build-derived; conferred tier is the members-meta.json 'level' field, ratified by the Quartermaster and logged as a member-upgrade entry (PATCH). Demotion policy: (A) honest meter — overConferred is a loud notice, never a build-breaker. Usage/activity metering deferred to Wave 6 as a SIBLING axis, never folded into level (gated on log member-attribution). Plan: STRATEGIST-MEMBER-LEVELING.md; QM manual: skillsmith/references/member-leveling.md.",
+      "ref": [
+        "the-strategist",
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": 65,
+      "date": "2026-06-26",
+      "type": "member-upgrade",
+      "title": "the-quartermaster — add commit-scope step to How you work",
+      "who": "the-quartermaster",
+      "detail": "New step 8: finalize commits scoped to the task's own files, auto-scope without asking, leave foreign changes for their owner.",
+      "ref": [
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": 64,
+      "date": "2026-06-26",
+      "type": "skill-upgrade",
+      "title": "release-train 1.0.1 — add the commit-scope rule to Gotchas",
+      "who": "the-quartermaster",
+      "detail": "Finalize by staging only the task's own files; never bundle unrelated in-flight work; don't ask the Guild Master to confirm scope.",
+      "ref": [
+        "release-train"
+      ],
+      "from": "1.0.0",
+      "to": "1.0.1"
+    },
+    {
+      "id": 63,
+      "date": "2026-06-26",
+      "type": "decision",
+      "title": "Finalize commits scoped to the task's own files; never bundle unrelated in-flight work",
+      "who": "the-quartermaster",
+      "detail": "Guild Master's standing policy: when finalizing, stage ONLY the files the current task produced and commit without asking to confirm scope. Rejected: bundling everything in the working tree (sweeps in other sessions' WIP / plan docs awaiting approval) and asking the Guild Master each time. Foreign changes are surfaced but left for their owner. Routine work finishes on main; branch only for DB/live-data changes.",
+      "ref": [
+        "release-train",
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": 62,
+      "date": "2026-06-26",
+      "type": "decision",
+      "title": "Generalize fallen-sword-design-language into design-language voice engine",
+      "who": "Atta",
+      "detail": "Evolved the lone Fallen Sword lore skill into a multi-mode NARRATIVE-VOICE engine (sibling to design-taste's visual axis). Original playbook preserved verbatim as references/fallen-sword.md (mode #1), joined by star-alliance (guild-dev meta-voice: forge/sigil/quest/wave/conformity) and lex-council (legal-finance product voice: vault/codex/ledger/certify/statute). Languages now extensible by dropping a references/*.md in. fallen-sword-design-language retired; skill count held at 41. conformity_check.py ✓ FULL CONFORMITY.",
+      "ref": [
+        "design-language",
+        "fallen-sword-design-language"
+      ]
+    },
+    {
+      "id": 41,
+      "date": "2026-06-26",
+      "type": "workflow",
+      "title": "Deep Cowork dive: +2 workflows (relationship-intel, law-harvest); document 23 crons",
+      "who": "The Strategist",
+      "detail": "Second Cowork pass read the nested session sandboxes (2856 jsonl transcripts/audits + outputs/ + ~/Documents/Claude/Scheduled). Added relationship-intel (Gmail→profiles→retention, Herald+Strategist) and law-harvest (PDF→rename→verbatim extract→verify→index, Architect+Translator, feeds legal-codex). Enriched scheduled-routine to cover all 23 cron automations. Star map 22 → 24."
+    },
+    {
+      "id": 40,
+      "date": "2026-06-26",
+      "type": "workflow",
+      "title": "Expand the star map: 9 → 22 workflows (mined from archived sessions)",
+      "who": "The Strategist",
+      "detail": "The Strategist mined 1100+ archived sessions (546 Claude Code + 562 Cowork) and added 13 workflows: bug-cycle, security-sweep, cleanup-rotation, release-train, tool-forge, legal-draft, comms-triage, scheduled-routine, marketing-audit (Herald-led), art-forge, arsenal-forge, strategic-audit, workflow-forge. Added a category field to all; added matching art prompts to gen-workflow-art.cjs. See STRATEGIST-WORKFLOWS.md."
+    },
+    {
+      "id": 39,
+      "date": "2026-06-26",
+      "type": "decision",
+      "title": "Recruit the-herald — the guild's marketing member",
+      "who": "the-quartermaster",
+      "detail": "Marketing was a total gap: zero marketing skills in the pool and no marketing member (Merchant is trading; the lex-council-business 'marketing-agent' was an unbuilt stub reference). Recruited the-herald (opus) with a NEW unique skill growth-marketing (4 modes: content-seo, brand-positioning, email-nurture, social-paid; tuned for legal-services + trust-led businesses) plus assembled article-creator, brandkit, storm-investigation. Avoids the hollow-member trap the Strategist audit flagged on the Merchant. Roster 8->9, skills 35->36. Skill body drafted by MiniMax M3 (doer), curated + Cowork-checked by the guild (thinker).",
+      "ref": [
+        "the-herald",
+        "growth-marketing"
+      ]
+    },
+    {
+      "id": 38,
+      "date": "2026-06-26",
+      "type": "decision",
+      "title": "Fold the-engineer into the-developer; keep the-merchant for a coming trading project",
+      "who": "the-strategist",
+      "detail": "Strategist audit (ultra-brainstorm, 4-model panel): the-engineer was a strict subset of the-developer (only graphify unique) and the-developer had zero unique skills. Folded — the-developer absorbs graphify + the minimax-m3 weapon and the dev-server/tooling/knowledge-graph craft; the-engineer retired. Roster 9->8. the-merchant kept despite 0 unique skills because a separate trading project (incoming) will recruit its tools.",
+      "ref": [
+        "the-developer",
+        "the-engineer",
+        "the-merchant"
+      ]
+    },
+    {
+      "id": 37,
+      "date": "2026-06-26",
+      "type": "decision",
+      "title": "skillsmith modes close with the Conformity Sweep (Invariant #8)",
+      "who": "the-quartermaster",
+      "detail": "From now on every skillsmith skill-changing mode (sync/upgrade/create/routine) runs the Conformity Sweep (build.py + conformity_check.py) as the Quartermaster's final gate before commit — it must report FULL CONFORMITY (parity, counts, workflow gates/actors, arsenal order, decision-conformity, and the K-invariant skill-dirs==skills-meta==guild-data). Extends decisions #26/#27 (conformance-close on workflows) to skillsmith's own operations so a synced/merged/created/removed skill can never silently drift from the dashboard arsenal. conformity_check.py committed as the skillsmith dependency (skillsmith 1.2.0, ce1d5df).",
+      "ref": [
+        "skillsmith",
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": 36,
+      "date": "2026-06-26",
+      "type": "decision",
+      "title": "weapon-utility is a foundational skill carried by every member",
+      "who": "the-quartermaster",
+      "detail": "Every member loads weapon-utility — the standing rule for which weapon (model) to draw and how thinker and doer weapons cooperate (thinker plans+reviews, doer executes; leftmost-available by decision #25 priority; one weapon at a time unless ultra-brainstorming fans the thinkers out). It is the atomic layer beneath members-formation and ultra-brainstorming. Enforced by conformity_check.py check U.",
+      "ref": [
+        "weapon-utility"
+      ]
+    },
+    {
+      "id": 35,
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "ultra-brainstorming skill created — the Strategist's cross-model fan-in",
+      "who": "the-quartermaster",
+      "detail": "The Strategist's craft skill: fans a problem across several members/models in parallel, then converges their outputs into one plan. The fan-in layer that weapon-utility defers to when active (all thinkers fire, top thinker consolidates). Created earlier, logged now for ledger conformity.",
+      "ref": [
+        "ultra-brainstorming",
+        "the-strategist"
+      ]
+    },
+    {
+      "id": 34,
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "members-formation skill created — the Butler's roster-routing protocol",
+      "who": "the-quartermaster",
+      "detail": "The Butler's craft skill: decides which member(s) work a request and in what arrangement (solo, relay, parallel). The 'which member' layer above weapon-utility's 'which weapon'. Created in an earlier session, logged now to bring the ledger into conformity.",
+      "ref": [
+        "members-formation",
+        "the-butler"
+      ]
+    },
+    {
+      "id": 33,
+      "date": "2026-06-26",
+      "type": "decision",
+      "title": "cleanup skill — reconciled repo/device 1.18.0 fork collision at 1.20.0",
+      "who": "the-quartermaster",
+      "detail": "Repo and device each shipped a different 1.18.0 — repo = docs D4+D5 systemic-threshold escape (skillsmith routine 06-20); device = DB-native i18n rewrite (Lex Council App 06-21). Rejected blind device->repo overwrite (erases the repo-only docs escape) and rejected renumbering the device lineage. Chose: graft the device DB-native guts into the repo, give the device lineage the canonical 1.18.0/1.19.0 changelog slots, fold the repo docs-escape credit into a new 1.20.0, keep the repo's Cowork-trimmed 991-char description (device's busts the 1024 limit). Device stays the canonical fork (symlinked from Lex Council App); repo is the distribution mirror.",
+      "ref": [
+        "cleanup",
+        "skillsmith"
+      ]
+    },
+    {
+      "id": 32,
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "weapon-utility skill created — every member's weapon-selection protocol",
+      "who": "the-quartermaster",
+      "detail": "New foundational skill used by all 9 members: defines thinker vs doer weapons, the plan→do→review loop, left-to-right priority selection with doer-fallback + availability rules, one-weapon-at-a-time default, and the ultra-brainstorming exception (all thinkers fan out, top thinker consolidates before the doer). Wired into all member .md skills lists; MiniMax image-01 sigil forged. Atomic layer beneath members-formation and ultra-brainstorming; reads arsenal order from decision #25.",
+      "ref": [
+        "weapon-utility"
+      ]
+    },
+    {
+      "id": 31,
+      "date": "2026-06-26",
+      "type": "chore",
+      "title": "Fixed log_event.py — 'workflow' type now loggable (matched build.py)",
+      "who": "the-quartermaster",
+      "detail": "First conformity sweep found build.py classified 'workflow' as a MINOR version type but log_event.py could not log it (dead config). Added 'workflow' to VALID_TYPES + doc line; added auditor check T to prevent regression."
+    },
+    {
+      "id": 30,
+      "date": "2026-06-26",
+      "type": "chore",
+      "title": "Conformity Sweep enforcement added",
+      "who": "the-quartermaster",
+      "detail": "New conformity_check.py auditor (9 check classes); Quartermaster conformance step appended to all prior workflows; the-quartermaster dossier updated; gen-workflow-art.cjs + MiniMax image-01 tile for conformity-sweep. Enacts decisions #26/#27.",
+      "ref": [
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": 29,
+      "date": "2026-06-26",
+      "type": "chore",
+      "title": "Arsenal reordered roster-wide — doers → thinkers/duals → Sonnet last",
+      "who": "the-quartermaster",
+      "detail": "All 9 members' weapon loadouts reordered in star-alliance-members/*.md and members-meta.json, guild-data rebuilt. Enacts decision #25.",
+      "ref": [
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": 28,
+      "date": "2026-06-26",
+      "type": "workflow",
+      "title": "Conformity Sweep workflow created",
+      "who": "the-quartermaster",
+      "detail": "New star-map workflow 'conformity-sweep': you → Butler restate → approval → Quartermaster audit (conformity_check.py) → certify → Quartermaster reconcile (build.py) → Butler report. Audits the whole repo for internal conformity and conformity with logged decisions.",
+      "ref": [
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": 27,
+      "date": "2026-06-26",
+      "type": "decision",
+      "title": "Repo conformity with logged decisions is enforced by the Conformity Sweep",
+      "who": "the-quartermaster",
+      "detail": "The conformity-sweep workflow runs conformity_check.py over the whole repo to prove it agrees with itself and with every type:decision entry on record. Decisions are the durable WHY; the sweep is the structural enforcement. Rationale: decisions must not silently rot out of conformity with the code/data.",
+      "ref": [
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": 26,
+      "date": "2026-06-26",
+      "type": "decision",
+      "title": "Every workflow closes with a Quartermaster conformance step before the Butler's report",
+      "who": "the-quartermaster",
+      "detail": "The last member step of every star-map workflow is the-quartermaster, confirming repo-wide conformity, immediately before the closing Butler 'report' gate. Rationale: no run ends without proving it left the project internally consistent. Machine-enforced by conformity_check.py check C.",
+      "ref": [
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": 25,
+      "date": "2026-06-26",
+      "type": "decision",
+      "title": "Arsenal loadouts ordered doers → thinkers/duals → Sonnet last",
+      "who": "the-quartermaster",
+      "detail": "Every member's weapon list is ordered: pure doers first (minimax-m3 pinned to lead, the rest in their declared order), then thinkers and dual thinker/doer models (opus pinned to lead, the rest in declared order), then Sonnet pinned last. Sonnet is role 'both' but is always the tail. Rationale: the Guild Master wanted doers prioritised for execution, thinkers held in reserve, and Sonnet as the universal fallback. Machine-enforced by conformity_check.py check A — expected_order() pins the prime lead of each group and preserves declared order within it (not a best-first sort). [detail corrected 2026-06-27 to match the implemented rule.]",
+      "ref": [
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": 24,
+      "date": "2026-06-26",
+      "type": "dashboard",
+      "title": "Guild log gains decision entries; Butler report-back standard enforced across all workflows",
+      "who": "the-quartermaster",
+      "detail": "log_event.py: new 'decision' type — records a choice + its rationale for future runs, rendered with its own chip on the Guild Log view; excluded from the project version (VERSION_IGNORE_TYPES in build.py) since a record is not an upgrade. workflows.json: all 8 report gates restated to the standard — Butler reports back in plain English and flags whether the run could be saved as a reusable star-map workflow. build.py: validate() now hard-rejects any workflow that does not end with a 'report' gate. Docs updated: the-butler.md (Closing every workflow), the-quartermaster.md (log decisions), guild-log SKILL.md 1.1.1->1.2.0.",
+      "ref": [
+        "guild-log",
+        "the-butler",
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": 23,
+      "date": "2026-06-26",
+      "type": "decision",
+      "title": "Butler's plain-English report-back is a hard standard on every star-map workflow",
+      "who": "the-butler",
+      "detail": "Every workflow must end with the Butler reporting to the Guild Master in plain English — what was done, what was decided, what's left — and flagging whether the run could be saved as a reusable star-map workflow. Enforced structurally: build.py validate() rejects any workflow whose last step is not a 'report' gate. Rationale: the Guild Master should never have to dig through the transcript to learn the outcome, and repeatable sequences should be captured as workflows instead of re-improvised.",
+      "ref": [
+        "the-butler"
+      ]
+    },
+    {
+      "id": 22,
+      "date": "2026-06-26",
+      "type": "dashboard",
+      "title": "Project version: Star Alliance now carries one SemVer, derived from the guild log",
+      "who": "the-quartermaster",
+      "detail": "build.py derives GUILD.meta.version by replaying the guild log as SemVer — structure→MAJOR, skill-create/member-create/dashboard/workflow→MINOR, everything else→PATCH. Shown as a chip on the dashboard brand mark and in the footer (release vX.Y.Z). No hand-edited number: logging any change and rebuilding pumps the version. Tier map = VERSION_MAJOR_TYPES/VERSION_MINOR_TYPES in build.py. The Quartermaster owns it.",
+      "ref": [
+        "guild-log"
+      ],
+      "to": "5.25.26"
+    },
+    {
+      "id": 21,
+      "date": "2026-06-26",
+      "type": "dashboard",
+      "title": "Add Guild Log Sync workflow to the star map",
+      "who": "the-quartermaster",
+      "detail": "New 'guild-log-sync' workflow in workflows.json: you -> Butler restates the order in plain English -> you approve -> Butler (Sonnet) scouts today+yesterday sessions + reads the guild log + build_guild_log.py --dry-run -> Quartermaster certify gate -> Quartermaster (MiniMax M3) runs the two-tier pipeline (build_guild_log.py + log_event.py + build.py) -> Butler report. 8 workflows total on the star map.",
+      "ref": [
+        "guild-log-sync"
+      ]
+    },
+    {
+      "id": 20,
+      "date": "2026-06-26",
+      "type": "chore",
+      "title": "Generated storm-investigation skill art + fixed Fallen Sword art size in gen-skill-art.cjs",
+      "who": "the-quartermaster",
+      "detail": "skill-art/storm-investigation.png backfilled; gen-skill-art.cjs size fix; create-playbook.md updated to require dashboard wiring (commit b02f830 — art/script parts non-derivable).",
+      "ref": [
+        "storm-investigation",
+        "fallen-sword-design-language"
+      ]
+    },
+    {
+      "id": 19,
+      "date": "2026-06-26",
+      "type": "chore",
+      "title": "Generated 11 weapon card art PNGs (weapon-art/)",
+      "who": "the-quartermaster",
+      "detail": "First-ever weapon art for all 11 arsenal weapons, committed in 13983c2 via gen-weapon-art.cjs. Binary blobs, non-derivable.",
+      "ref": [
+        "deepseek-v4-pro",
+        "gemma4",
+        "glm-5.2",
+        "gpt-5.5",
+        "haiku",
+        "kimi-k2.7",
+        "minimax-m3",
+        "nemotron-3-ultra",
+        "opus",
+        "qwen3.5",
+        "sonnet"
+      ]
+    },
+    {
+      "id": 18,
+      "date": "2026-06-26",
+      "type": "chore",
+      "title": "Regenerated all 9 member portrait PNGs (member-art/)",
+      "who": "the-quartermaster",
+      "detail": "All 9 member profile pictures regenerated in the 'Member profile pictures' session, committed as binary blobs in 13983c2. Script derives from .md diffs, not PNG blobs.",
+      "ref": [
+        "the-architect",
+        "the-butler",
+        "the-designer",
+        "the-developer",
+        "the-engineer",
+        "the-merchant",
+        "the-quartermaster",
+        "the-strategist",
+        "the-translator"
+      ]
+    },
+    {
+      "id": 17,
+      "date": "2026-06-26",
+      "type": "structure",
+      "title": "Add harness installer: harness.json + install.py + workflows.json",
+      "who": "the-quartermaster",
+      "detail": "Three NEW untracked files (?? in git status, not in any commit). harness.json = harness manifest v1.0.0. install.py = full guild installer (--to/--domain/--all/--dev/--global/status/uninstall). workflows.json = 3 guild workflows (standard-mission, quick-task, solo-sprint). build_guild_log.py cannot see uncommitted files.",
+      "ref": [
+        "harness.json",
+        "install.py",
+        "workflows.json"
+      ]
+    },
+    {
+      "id": 16,
+      "date": "2026-06-26",
+      "type": "dashboard",
+      "title": "Phase 2 control panel: edit descriptions/workflow, enable/disable skills, create/delete members",
+      "who": "the-quartermaster",
+      "detail": "Completed the control-panel write-through. The member dossier is now fully editable: role, summary, deploy-when, triggers, mandate (.md description) and the full workflow/system-prompt body are click-to-edit fields that save to source on blur. Added a Danger zone with delete-member and a Recruit-a-member button on the roster. Skill enable/disable now persists to skills-meta.json (build.py carries a disabled flag into guild-data, seeded on load). serve.cjs gained six MiniMax-authored writers (setSkillFlag, setMemberMeta, setMemberDescription, setMemberBody, createMember, deleteMember) behind a /api/save dispatcher, each with .bak backups and a build.py regen; build.py now emits the member prompt body and the skill disabled flag. Offline (file://) everything falls back to the browser overlay. All six write kinds were tested end-to-end (create/meta/description/body/skill-flag/delete) and self-cleaned.",
+      "ref": [
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": 15,
+      "date": "2026-06-26",
+      "type": "dashboard",
+      "title": "Dashboard is now a control panel: loadout edits write through to source .md (+ removed Arsenal Refresh button)",
+      "who": "the-quartermaster",
+      "detail": "Removed the manual Arsenal Refresh button (pulled-status auto-loads on page visit). Bigger change: editing a member's skills or models in the dashboard now persists to the source files automatically, instead of browser-only localStorage. A new POST /api/save endpoint in serve.cjs rewrites the member .md frontmatter (skills[] / weapons[] inline arrays, with a .bak backup and round-trip verify), and for weapons it also re-syncs members-meta.json weaponsDesc (build.py requires the two to match exactly), then re-runs build.py so guild-data regenerates. app.js saveMemberField() fires on every grant/revoke/assign/unassign and folds the change into the in-memory base. With no dev server (file://) it silently falls back to the old localStorage overlay. The save endpoint and its frontmatter writer were authored by MiniMax M3 via minimax.py. PHASE 1 covers skills + models; editing descriptions/workflow text and member create/delete are deferred to a later phase (need new inline-edit UI).",
+      "ref": [
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": 14,
+      "date": "2026-06-26",
+      "type": "structure",
+      "title": "Renamed star-alliance-agents/ → star-alliance-members/",
+      "who": "the-quartermaster",
+      "detail": "The guild roster folder was renamed from star-alliance-agents to star-alliance-members. build.py, build_guild_log.py, log_event.py, both READMEs, and the guild-log skill were updated to the new path; guild-data.js/json regenerated. Historical guild-log entries keep the old name (accurate to when they happened)."
+    },
+    {
+      "id": 13,
+      "date": "2026-06-26",
+      "type": "structure",
+      "title": "Moved model callers into star-alliance-arsenal/ folder",
+      "who": "the-quartermaster",
+      "detail": "minimax.py, ollama_cloud.py, summon.py and models-usage.json relocated from repo root into a new star-alliance-arsenal/ folder with its own README. summon.py still finds its siblings (same-dir resolution). serve.cjs loadUsage path and all Arsenal how-to-summon recipes in app.js updated to the new star-alliance-arsenal/ prefix.",
+      "ref": [
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": 12,
+      "date": "2026-06-26",
+      "type": "chore",
+      "title": "Added ollama_cloud.py + summon.py; Arsenal recipes now route through the offload scripts",
+      "who": "the-quartermaster",
+      "detail": "Two new stdlib-only callers join minimax.py at repo root. ollama_cloud.py runs any Ollama Cloud model (python3 ollama_cloud.py <tag>:cloud \"<prompt>\") with the same flags as minimax.py (-s, --json, -f, stdin) plus num_predict>=4096 and <think> stripping. summon.py is a single dispatcher: python3 summon.py <model-id> \"<prompt>\" routes minimax-m3 to minimax.py, the six bench models to ollama_cloud.py with the right cloud tag, prints a native-Task-tool note for opus/sonnet/haiku, and reports gpt-5.5 as not provisioned. Every model card's How to summon recipe was rewritten to lead with the script command. Both scripts were authored by MiniMax M3 through the new minimax.py tool itself (dogfooding) and smoke-tested end to end (GLM ONLINE via real glm-5.2:cloud).",
+      "ref": [
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": 11,
+      "date": "2026-06-26",
+      "type": "chore",
+      "title": "Added minimax.py — reusable CLI to offload text generation to MiniMax direct",
+      "who": "the-quartermaster",
+      "detail": "New stdlib-only script at repo root wraps the MiniMax direct API so future sessions stop hand-rolling curl and save Opus tokens. Usage: python3 minimax.py \"<prompt>\" (or stdin); flags -s system, --json (strips code fences and validates), -f file, --model, --max-tokens (default 16000 so reasoning never starves the output), --timeout. Key comes from $MINIMAX_API_KEY or ~/.config/minimax/m3.key; content prints to stdout, token usage to stderr. The Arsenal 'how to summon' recipe for MiniMax now points at this script. MiniMax M3 wrote the script itself.",
+      "ref": [
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": 10,
+      "date": "2026-06-26",
+      "type": "dashboard",
+      "title": "Rebuilt dashboard as buildless cosmic command center",
+      "who": "Atta",
+      "detail": "Replaced guild-dashboard.html + four separate data files with a single buildless dashboard: index.html, app.css, app.js loaded via const GUILD in guild-data.js. Removed build_dashboard.py, guild-dashboard.html, skills-data.js, dashboard-meta.json. Added build_guild_log.py, log_event.py, guild-log.json, skills-meta.json, members-meta.json, domains.json pipeline. Dashboard now serves without a build step — open index.html directly.",
+      "ref": [
+        "the-butler"
+      ]
+    },
+    {
+      "id": 9,
+      "date": "2026-06-26",
+      "type": "structure",
+      "title": "Migrated all 31 skills to star-alliance-skills/, agents to star-alliance-agents/",
+      "who": "Atta",
+      "detail": "Moved every skill directory from the repo root into star-alliance-skills/ (31 skills). Moved member agent definitions from members/ into star-alliance-agents/. Updated VERSIONS.md links and regeneration command to point to star-alliance-skills/. Updated README to reflect new directory layout.",
+      "ref": [
+        "skillsmith"
+      ]
+    },
+    {
+      "id": 8,
+      "date": "2026-06-26",
+      "type": "dashboard",
+      "title": "Arsenal page upgraded with summon recipes, pull badges, and MiniMax M3 backend integration",
+      "who": "the-quartermaster",
+      "detail": "Each model card now displays a How to summon block with the exact invocation recipe: Claude via the native Task tool, MiniMax M3 via direct api.minimax.io with the key at ~/.config/minimax/m3.key (not the retired Ollama route), bench models via ollama run <tag>:cloud, and GPT-5.5 via OpenAI direct. A new GET /api/arsenal endpoint in .claude/serve.cjs runs ollama list on demand, and app.js refreshes the pulled/not-pulled badges on visit and on button click. A consumption gauge was built and then removed at the user's request; while present it had a live Claude 5-hour token parser reading transcript logs and a numberless auto-estimate bar for other models, and those backend parser and estimator functions plus models-usage.json still exist but are unused. Most of the new backend code was authored by MiniMax M3 itself through its direct API and integrated by Opus, confirming the MiniMax-direct wiring works end to end.",
+      "ref": [
+        "the-quartermaster",
+        "the-butler"
+      ]
+    },
+    {
+      "id": 7,
+      "date": "2026-06-24",
+      "type": "dashboard",
+      "title": "Added Domains drawer + extracted hardcoded MEMBERS into members.json",
+      "who": "Atta",
+      "detail": "New drawer in the sidebar shows 3 project domains (Star Alliance, Lex Council App, Lex Council Business), each with linked skills + linked members. Domain cards link to a detail view that lists every skill (with 'not in guild' warnings for skills referenced but not installed) and every member (with 'external' warnings for non-guild members). Refactored the hardcoded MEMBERS array out of guild-dashboard.html into members.json, generated by extract_members.py which overlays fresh skills arrays from star-alliance-agents/*.md frontmatter (fixing the staleness bug where Quartermaster's guild-log skill was added to .md but never showed in the dashboard). build_dashboard.py now regenerates skills-data.js, guild-log.js, members.js, and the new domains.js from sources. All 5 show*() functions hide/show the new #domainsView alongside the other views.",
+      "ref": [
+        "the-butler",
+        "the-quartermaster"
+      ]
+    },
+    {
+      "id": 6,
+      "date": "2026-06-24",
+      "type": "dashboard",
+      "title": "Bug fix: Guild Log view leaked into Members view after navigation",
+      "who": "Atta",
+      "detail": "showMembers(), showSkillPool(), and showProfile() all failed to hide #logView, so once a user clicked Guild Log, switching to any other view left the log rendered below the active view (3772px of log content visible below member cards, with pageTitle showing 'Guild Members'). Fixed by adding 'document.getElementById(logView).style.display=none' to all three functions. Verified: after Guild Log → Members flow, logView is now display:none with offsetHeight 0. Root cause: logView was added to the HTML after the original three-view pattern was established, so the older show functions were never updated to hide it.",
+      "ref": [
+        "the-butler"
+      ]
+    },
+    {
+      "id": 5,
+      "date": "2026-06-24",
+      "type": "member-upgrade",
+      "title": "Assigned guild-log to the Quartermaster (was on Butler)",
+      "who": "Atta",
+      "detail": "Moved the guild-log skill from The Butler's skills list back to The Quartermaster's, since The Quartermaster owns skill management + hygiene. Updated the-quartermaster.md: added 'guild-log' to skills array, added a new 'How you work' step 6 explaining the two-tier pipeline, updated the agent description's trigger phrases ('log this', 'guild log this', 'did you log it?', '/guild-log'). Reverted the same change from the Butler's roster row in README.md. Rebuilt the dashboard.",
+      "ref": [
+        "the-quartermaster",
+        "guild-log"
+      ]
+    },
+    {
+      "id": 4,
+      "date": "2026-06-24",
+      "type": "skill-create",
+      "title": "Add skill: guild-log",
+      "who": "Atta",
+      "detail": "New skill enforces logging of non-git-visible changes (dashboard edits, UI renames, folder reorganizations) via the two-tier pipeline: build_guild_log.py for git-visible changes + log_event.py for manual entries + build_dashboard.py to regenerate the JS mirror. Codifies the workflow + 7 named pitfalls drawn from the rename work earlier this session. Registered in VERSIONS.md (v1.0.0, ✓ lean, 808 char description).",
+      "ref": [
+        "guild-log"
+      ]
+    },
+    {
+      "id": 3,
+      "date": "2026-06-24",
+      "type": "dashboard",
+      "title": "Renamed dashboard nav: Roster → Members (full internal sweep)",
+      "who": "Atta",
+      "detail": "Sidebar label, page title, page-load invocation, and JS function/variable names all renamed. Generic CSS class .roster (used on all 3 view panels: members, skill pool, log) renamed to .view-panel. data-view attribute updated from 'roster' to 'members'. Historical log entries also updated. Bug fix: log_event.py next_id() crashed on entries missing 'id' field.",
+      "ref": [
+        "the-butler"
+      ]
+    },
+    {
+      "id": 2,
+      "date": "2026-06-24",
+      "type": "dashboard",
+      "title": "Removed members list from dashboard sidebar",
+      "who": "Atta",
+      "detail": "Sidebar Guild Log nav item retained; Members list (and the Members count in the sidebar footer) removed. Members page still shows all 9 members as cards."
+    },
+    {
+      "id": 1,
+      "date": "2026-06-24",
+      "type": "structure",
+      "title": "Reorganised repo: star-alliance-skills/ + star-alliance-agents/ folders",
+      "who": "Atta",
+      "detail": "30 skills moved into star-alliance-skills/, 9 agents moved into star-alliance-agents/. build_dashboard.py updated, README + member files updated. Removed the legacy flat layout and members/ folder."
+    },
+    {
+      "id": 42,
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: guild-conformity",
+      "who": "the-quartermaster",
+      "detail": "The Quartermaster's repo-wide conformity audit + reconcile loop (the close of every workflow).",
+      "ref": [
+        "guild-conformity"
+      ]
+    },
+    {
+      "id": 43,
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: market-recon",
+      "who": "the-quartermaster",
+      "detail": "The Merchant's read-only market/investment/risk analysis — ships a graded report, never trades.",
+      "ref": [
+        "market-recon"
+      ]
+    },
+    {
+      "id": 44,
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: legal-drafting",
+      "who": "the-quartermaster",
+      "detail": "The Translator's client-correspondence + bilingual legal-instrument drafting craft.",
+      "ref": [
+        "legal-drafting"
+      ]
+    },
+    {
+      "id": 45,
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: relationship-intel",
+      "who": "the-quartermaster",
+      "detail": "The Herald's email-to-relationship-intelligence pipeline (harvest→profile→strategise).",
+      "ref": [
+        "relationship-intel"
+      ]
+    },
+    {
+      "id": 46,
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: release-train",
+      "who": "the-quartermaster",
+      "detail": "The Quartermaster's release closeout — merge branches/PRs, bump version, stamp, push.",
+      "ref": [
+        "release-train"
+      ]
+    },
+    {
+      "id": 47,
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: workflow-forge",
+      "who": "the-quartermaster",
+      "detail": "The Strategist's craft for distilling a finished run into a registered star-map workflow.",
+      "ref": [
+        "workflow-forge"
+      ]
+    },
+    {
+      "id": 48,
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: arsenal-forge",
+      "who": "the-quartermaster",
+      "detail": "The Strategist's craft for recruiting/re-roleing a weapon and wiring it into every loadout.",
+      "ref": [
+        "arsenal-forge"
+      ]
+    },
+    {
+      "id": 49,
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: scheduled-watch",
+      "who": "the-quartermaster",
+      "detail": "The Strategist's craft for defining a safe-to-resume unattended cron routine.",
+      "ref": [
+        "scheduled-watch"
+      ]
+    },
+    {
+      "id": 50,
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: law-harvest",
+      "who": "the-quartermaster",
+      "detail": "The Architect+Translator craft for ingesting law PDFs verbatim into the Source-Law library.",
+      "ref": [
+        "law-harvest"
+      ]
+    },
+    {
+      "id": 51,
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: comms-triage",
+      "who": "the-quartermaster",
+      "detail": "The Butler's one doer craft — sweep email/calendar/WhatsApp into tasks, events, drafts.",
+      "ref": [
+        "comms-triage"
+      ]
+    },
+    {
+      "id": 52,
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: legal-rule-modeling",
+      "who": "the-quartermaster",
+      "detail": "The Architect's craft for modelling a law into deterministic calculator rules.",
+      "ref": [
+        "legal-rule-modeling"
+      ]
+    },
+    {
+      "id": 53,
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: design-taste",
+      "who": "the-quartermaster",
+      "detail": "Consolidates 7 Designer style skills into one 7-mode taste engine (playbooks in references/).",
+      "ref": [
+        "design-taste"
+      ]
+    },
+    {
+      "id": 54,
+      "date": "2026-06-26",
+      "type": "skill-remove",
+      "title": "Remove skill: design-taste-frontend",
+      "who": "the-quartermaster",
+      "detail": "Merged into design-taste (mode/reference). Playbook preserved under design-taste/references/.",
+      "ref": [
+        "design-taste-frontend"
+      ]
+    },
+    {
+      "id": 55,
+      "date": "2026-06-26",
+      "type": "skill-remove",
+      "title": "Remove skill: high-end-visual-design",
+      "who": "the-quartermaster",
+      "detail": "Merged into design-taste (mode/reference). Playbook preserved under design-taste/references/.",
+      "ref": [
+        "high-end-visual-design"
+      ]
+    },
+    {
+      "id": 56,
+      "date": "2026-06-26",
+      "type": "skill-remove",
+      "title": "Remove skill: minimalist-ui",
+      "who": "the-quartermaster",
+      "detail": "Merged into design-taste (mode/reference). Playbook preserved under design-taste/references/.",
+      "ref": [
+        "minimalist-ui"
+      ]
+    },
+    {
+      "id": 57,
+      "date": "2026-06-26",
+      "type": "skill-remove",
+      "title": "Remove skill: industrial-brutalist-ui",
+      "who": "the-quartermaster",
+      "detail": "Merged into design-taste (mode/reference). Playbook preserved under design-taste/references/.",
+      "ref": [
+        "industrial-brutalist-ui"
+      ]
+    },
+    {
+      "id": 58,
+      "date": "2026-06-26",
+      "type": "skill-remove",
+      "title": "Remove skill: gpt-taste",
+      "who": "the-quartermaster",
+      "detail": "Merged into design-taste (mode/reference). Playbook preserved under design-taste/references/.",
+      "ref": [
+        "gpt-taste"
+      ]
+    },
+    {
+      "id": 59,
+      "date": "2026-06-26",
+      "type": "skill-remove",
+      "title": "Remove skill: stitch-design-taste",
+      "who": "the-quartermaster",
+      "detail": "Merged into design-taste (mode/reference). Playbook preserved under design-taste/references/.",
+      "ref": [
+        "stitch-design-taste"
+      ]
+    },
+    {
+      "id": 60,
+      "date": "2026-06-26",
+      "type": "skill-remove",
+      "title": "Remove skill: redesign-existing-projects",
+      "who": "the-quartermaster",
+      "detail": "Merged into design-taste (mode/reference). Playbook preserved under design-taste/references/.",
+      "ref": [
+        "redesign-existing-projects"
+      ]
+    },
+    {
+      "id": 61,
+      "date": "2026-06-26",
+      "type": "decision",
+      "title": "Member skill-gap forge: 11 new craft skills, Designer style-cluster merged, Butler gains comms-triage",
+      "who": "the-quartermaster",
+      "detail": "The Quartermaster looped every member against their role in the 24 star-map workflows and forged an upgradeable skill for each craft a member performed with no covering skill: guild-conformity + release-train (Quartermaster), market-recon (Merchant), legal-drafting + law-harvest (Translator; law-harvest shared with Architect), relationship-intel (Herald), workflow-forge + arsenal-forge + scheduled-watch (Strategist), legal-rule-modeling (Architect), comms-triage (Butler). The Designer's 14-skill loadout was investigated for bloat: 7 overlapping style-taste skills (design-taste-frontend, high-end-visual-design, minimalist-ui, industrial-brutalist-ui, gpt-taste, stitch-design-taste, redesign-existing-projects) were consolidated into one 7-mode design-taste engine with each playbook preserved verbatim under references/; impeccable kept separate (external/npx). Butler exception: comms-triage makes the Butler a doer for inbox/calendar/WhatsApp triage — his one hands-on craft beside routing; his prompt was updated to carve this single exception. Every new skill carries metadata.version 1.0.0 and a Sharpening-the-craft progression so members can perfect their trade.",
+      "ref": [
+        "the-quartermaster",
+        "the-designer",
+        "the-butler"
+      ]
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/turn-start.py, .claude/settings.json, .claude/hooks/version-auto-bump.py",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Skill Forge: .claude/hooks/routing-enforce.py",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Skill Forge: .claude/hooks/approval-detect.py",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Skill Forge: .claude/hooks/approval-gate.py",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Skill Forge: .claude/hooks/conformance-gate.py",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Skill Forge: star-alliance-members/the-architect.md, star-alliance-members/the-developer.md, star-alliance-members/the-strategist.md",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Skill Forge: agents/the-architect.md, agents/the-developer.md, agents/the-strategist.md",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Skill Forge: star-alliance-members/the-architect.md, star-alliance-members/the-developer.md, star-alliance-members/the-quartermaster.md",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "member-create",
+      "title": "Skill Forge: star-alliance-members/the-interpreter.md",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Skill Forge: .claude/agents/backend-auditor.md, .claude/agents/cold-doc-rotator.md, .claude/agents/frontend-auditor.md (+9 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "workflow",
+      "title": "Skill Forge: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, workflows.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Skill Forge: .claude/agents/the-translator.md, agents/the-translator.md, agents/the-interpreter.md",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Standard Mission: data/members-meta.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "workflow",
+      "title": "Architecture Build: .gitignore, star-alliance-members/the-architect.md, star-alliance-members/the-designer.md (+9 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Architecture Build: Star-Alliance.command, agents/the-architect.md, agents/the-designer.md (+9 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Architecture Build: agents/the-architect.md, agents/the-designer.md, agents/the-developer.md (+6 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Architecture Build: data/mcp-telemetry.jsonl",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Conversation: agents/the-steward 2.md",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Conversation: agents/the-steward 2.md",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Quick Fix: star-alliance-members/the-designer.md, star-alliance-members/the-herald.md",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Quick Fix: agents/the-designer.md, agents/the-herald.md",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Quick Fix: install-star-alliance.command",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/skills/impeccable/SKILL 2.md",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Standard Mission: dashboard.css, dashboard.html, dashboard.js (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "workflow",
+      "title": "Sync Rotation: star-alliance-arsenal/workflows-lite.json, workflows.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Sync Rotation: .claude/hooks/guild-routing-gate.sh, README.md, agents/the-steward 2.md",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Sync Rotation: data/skills-meta.json, tools/generators/gen-skill-art.cjs",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "workflow",
+      "title": "Sync Rotation: AGENTS.md, IDEA.md, README.md (+10 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Sync Rotation: data/skills-meta.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-06-30",
+      "type": "upgrade",
+      "title": "Sync Rotation: .claude/arsenal/models-usage.json, .gitignore, audits/archive/HARNESS-EFFICIENCY-AUDIT.md (+15 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Inquiry / Recon: art/skill-art/bug-fix-closer.png, art/skill-art/code-crime-scene.png, art/skill-art/code-unity.png (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Inquiry / Recon: art/member-art-thumb/the-interpreter.png, art/member-art/the-interpreter.png, art/skill-art-thumb/bug-fix-closer.png (+9 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/executor-enforce.py, build.py, dashboard.css (+4 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: serve.cjs",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: dashboard.js",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Skill Forge: tools/dispatch.py",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: CLAUDE.md, star-alliance-arsenal/models/README.md, star-alliance-arsenal/models/deepseek-v4-pro.md (+9 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "workflow",
+      "title": "Architecture Build: star-alliance-arsenal/workflows-lite.json, tools/conformity_check.py, workflows.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: Star-Alliance.command, star-alliance-arsenal/summon.py, tools/conformity_check.py (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/workflow-gate.py, .claude/settings.json, AGENTS.md (+19 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/_test_executor_enforce.sh, .claude/hooks/delegation-gate.py, .claude/hooks/guild-routing-gate.sh (+23 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: star-alliance-arsenal/models/README.md, star-alliance-arsenal/models/glm-5.2.md, star-alliance-arsenal/models/kimi-k2.7.md",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "skill-create",
+      "title": "Architecture Build: star-alliance-members/the-strategist.md, art/logo-transparent.png, star-alliance-skills/head-of-department/SKILL.md",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Design Sprint: README.md, data/skills-meta.json, star-alliance-members/the-architect.md (+9 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Design Sprint: dashboard.css, dashboard.html, dashboard.js (+15 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Design Sprint: skill-art/admin-page-builder.png, skill-art/admin-page-fixer.png, skill-art/design-taste-frontend.png (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Design Sprint: art/_make_installer_icon.py, art/_preview_installer.png, art/logo-installer.png (+14 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Design Sprint: art/logo-installer.png, skill-art/algorithmic-trading-chan.png, skill-art/python-master.png (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Design Sprint: skill-art/article-creator.png, skill-art/bug-fix-workflow.png, skill-art/claude-code-hooks.png (+4 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Quick Fix: dashboard.css, dashboard.js, skill-art/conquering-campaign.png (+23 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Conversation: dashboard.js, skill-art/arsenal-forge.png, skill-art/comms-triage.png (+16 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Conversation: skill-art/portability-audit.png, skill-art/project-start.png",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Conversation: art/skill-art/head-of-department.png, skill-art/agent-web-reach.png, skill-art/agentic-video-production.png (+7 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Conversation: skill-art/automated-testing.png, skill-art/codebase-memory-mcp.png, skill-art/frontend-react-engineering.png (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: art/skill-art-thumb/head-of-department.png",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Arsenal Forge: dashboard.html, star-alliance-members/the-architect.md",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Routing: .claude/agents/the-architect.md, .claude/agents/the-quartermaster.md, .claude/agents/the-steward.md (+4 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Routing: tools/conformity_check.py",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Quick Fix: dashboard.js, star-alliance-arsenal/models.json, tools/conformity_check.py",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/skills/okf/SKILL.md, AGENTS.md, data/harness.json (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Quick Fix: star-alliance-arsenal/models.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/agents/the-architect.md, .claude/agents/the-quartermaster.md, .claude/agents/the-steward.md (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/agents/the-architect.md, .claude/agents/the-quartermaster.md, .claude/agents/the-steward.md",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: .gitignore, tools/wire_skill.py, art/skill-art-thumb/__thumbtest__.png (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/skills/impeccable/SKILL 2.md, art/skill-art-thumb/__thumbtest__.png, art/skill-art/__thumbtest__.png (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Strategic Audit: profiles/architect/config.yaml, profiles/designer/config.yaml, profiles/developer/config.yaml (+5 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Strategic Audit: tools/conformity_check.py",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Compliance Audit: agents/the-architect.md, agents/the-developer.md, agents/the-merchant.md (+10 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Strategic Audit: star-alliance-arsenal/install.sh, tools/conformity_check.py, tools/dispatch.py",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Strategic Audit: art/member-art-thumb/the-butler.png, art/member-art/the-butler.png",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: data/harness.json, star-alliance-members/the-butler.md, star-alliance-skills/butler-voice/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: star-alliance-members/the-butler.md",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: build.py",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/guild-routing-gate.sh, .claude/hooks/workflow-banner-enforcer.py",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: guild/run.py, tools/conformity_check.py, guild/swarm.py",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: tools/conformity_check.py",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: art/member-art-thumb/the-butler-alt.png, art/member-art/the-butler-alt.png",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: art/member-art-thumb/the-butler-alt.png, art/member-art-thumb/the-butler.png, art/member-art/the-butler-alt.png (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/dispatch-enforce.py",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: CLAUDE.md",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/guild-routing-gate.sh",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Hygiene Rotation: .claude/hooks/executor-enforce.py, profiles/architect/config.yaml, star-alliance-members/the-butler.md",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Conversation: data/mcp-telemetry.jsonl, install-star-alliance.command, tools/conformity_check.py (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Hygiene Rotation: guild/swarm.py, profiles/architect/config.yaml",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Hygiene Rotation: data/mcp-telemetry.jsonl, server/serve.py, server/star_alliance_mcp.py",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Standard Mission: star-alliance-skills/skillsmith/references/routine-playbook.md, star-alliance-skills/skillsmith/assets/com.attax.skillsmith-watchdog.plist, star-alliance-skills/skillsmith/scripts/routine_watchdog.py",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: serve.cjs, tools/schedule_scan.js",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: serve.cjs",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: dashboard.css, dashboard.html, dashboard.js",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Routing: star-alliance-arsenal/install.sh",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Routing: star-alliance-arsenal/install.sh, star-alliance-skills/skillsmith/references/deploy-ledger.md",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "skill-create",
+      "title": "Routing: .gitignore, AGENTS.md, IDEA.md (+9 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Routing: skill-art/backend-auditor.png, skill-art/cold-doc-rotator.png, skill-art/frontend-auditor.png (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Routing: skill-art/data-analysis-viz.png, skill-art/financial-data-reach.png, skill-art/leaders-command.png (+4 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/sa-pretool.py, .claude/hooks/turn-finalize.sh, .claude/settings.json (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/sa-pretool 2.py",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: tools/conformity_check.py",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/sa-pretool 2.py",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "workflow",
+      "title": "Architecture Build: data/harness.json, star-alliance-skills/decompose-and-swarm/SKILL.md, tools/generators/gen-workflow-art.cjs (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Strategic Audit: serve.out",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Strategic Audit: data/mcp-telemetry.jsonl",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-01",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Quick Fix: dashboard.css",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Quick Fix: dashboard.css",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Quick Fix: dashboard.css",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Quick Fix: dashboard.css",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Quick Fix: dashboard.css, dashboard.js",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Quick Fix: dashboard.css, dashboard.js",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Quick Fix: guild/_briefs/scheduler-art/ai.openclaw.gateway.md, guild/_briefs/scheduler-art/com.attax.skillsmith-routine.md, guild/_briefs/scheduler-art/com.attax.skillsmith-watchdog.md (+11 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Quick Fix: guild/_briefs/scheduler-art/ai.openclaw.gateway.md, guild/_briefs/scheduler-art/com.attax.skillsmith-routine.md, guild/_briefs/scheduler-art/com.attax.skillsmith-watchdog.md (+16 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Compliance Audit: .claude/hooks/butler-skill-gate.py, .claude/hooks/delegation-gate.py, .claude/hooks/member-skill-lint-gate.py (+11 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Skill Forge: guild/_briefs/scheduler-art/com.attax.skillsmith-routine.md, art/scheduler-art-thumb/com.attax.skillsmith-routine.png",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Skill Forge: .claude/hooks/dispatch-enforce.py, guild/_briefs/scheduler-art/com.attax.skillsmith-watchdog.md, art/scheduler-art-thumb/com.attax.skillsmith-watchdog.png (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Skill Forge: guild/_briefs/scheduler-art/com.whatsapp-mcp.server.md, guild/_briefs/scheduler-art/com.whatsapp-mcp.tunnel.md, guild/_briefs/scheduler-art/homebrew.mxcl.ollama.md (+7 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Skill Forge: .claude/settings.json, art/scheduler-art-thumb/lex-daily-bug-triage.png, dashboard.css (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Skill Forge: .claude/settings.json, art/scheduler-art-thumb/lex-daily-bug-triage.png, dashboard.css (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Quick Fix: dashboard.js",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "skill-create",
+      "title": "Quick Fix: README.md, dashboard.js, data/skills-meta.json (+25 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "skill-create",
+      "title": "Quick Fix: README.md, dashboard.js, data/skills-meta.json (+26 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Quick Fix: .scratch/prove-it-wire-members.py, .scratch/prove-it-wire-profiles.py, art/skill-art-thumb/butler-onboarding.png",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/dispatch-enforce.py",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Strategic Audit: .claude/hooks/dispatch-enforce.py, docs/audit-self-enclosed-guild-2026-07-02.md",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Strategic Audit: .claude/hooks/butler-skill-gate.py, .claude/hooks/dispatch-enforce.py, .claude/hooks/executor-enforce.py (+17 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Strategic Audit: .claude/hooks/butler-skill-gate.py, .claude/hooks/dispatch-enforce.py, .claude/hooks/executor-enforce.py (+18 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Strategic Audit: .claude/hooks/butler-skill-gate.py, .claude/hooks/dispatch-enforce.py, .claude/hooks/executor-enforce.py (+18 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/hooks/butler-skill-gate.py, .claude/hooks/dispatch-enforce.py, .claude/hooks/executor-enforce.py (+20 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Art Forge: .claude/hooks/butler-skill-gate.py, .claude/hooks/dispatch-enforce.py, .claude/hooks/executor-enforce.py (+20 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Art Forge: .claude/hooks/butler-skill-gate.py, .claude/hooks/dispatch-enforce.py, .claude/hooks/executor-enforce.py (+20 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Art Forge: .claude/agents/the-architect.md, .claude/agents/the-designer.md, .claude/agents/the-developer.md (+43 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Routing: .claude/agents/the-architect.md, .claude/agents/the-designer.md, .claude/agents/the-developer.md (+52 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/agents/the-architect.md, .claude/agents/the-designer.md, .claude/agents/the-developer.md (+54 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/agents/the-architect.md, .claude/agents/the-designer.md, .claude/agents/the-developer.md (+54 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/agents/the-architect.md, .claude/agents/the-designer.md, .claude/agents/the-developer.md (+54 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/agents/the-architect.md, .claude/agents/the-designer.md, .claude/agents/the-developer.md (+54 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/agents/the-architect.md, .claude/agents/the-designer.md, .claude/agents/the-developer.md (+54 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/agents/the-architect.md, .claude/agents/the-designer.md, .claude/agents/the-developer.md (+54 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/agents/the-architect.md, .claude/agents/the-designer.md, .claude/agents/the-developer.md (+54 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/agents/the-architect.md, .claude/agents/the-designer.md, .claude/agents/the-developer.md (+50 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: dashboard.css",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "workflow",
+      "title": "Design Sprint: .claude/agents/the-quartermaster.md, README.md, agents/the-quartermaster.md (+17 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "workflow",
+      "title": "Design Sprint: .claude/agents/the-quartermaster.md, README.md, agents/the-quartermaster.md (+17 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "workflow",
+      "title": "Design Sprint: .claude/agents/the-quartermaster.md, README.md, agents/the-quartermaster.md (+17 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "workflow",
+      "title": "Design Sprint: .claude/agents/the-quartermaster.md, README.md, agents/the-quartermaster.md (+17 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "workflow",
+      "title": "Design Sprint: .claude/agents/the-quartermaster.md, README.md, agents/the-quartermaster.md (+17 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "workflow",
+      "title": "Design Sprint: .claude/agents/the-quartermaster.md, README.md, agents/the-quartermaster.md (+17 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "workflow",
+      "title": "Design Sprint: .claude/agents/the-quartermaster.md, .claude/settings.local.json, .retired/README.md (+15 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/okf/SKILL.md, star-alliance-skills/okf/scripts/okf_enrich.py (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/okf/SKILL.md, star-alliance-skills/okf/scripts/okf_enrich.py (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/okf/SKILL.md, star-alliance-skills/okf/scripts/okf_enrich.py (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Design Sprint: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Market Recon: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Market Recon: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Market Recon: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Market Recon: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Market Recon: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Market Recon: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Market Recon: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Market Recon: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Market Recon: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Market Recon: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Market Recon: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Market Recon: .claude/settings.local.json, star-alliance-skills/file-access-model/SKILL.md, star-alliance-skills/okf/SKILL.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Market Recon: .claude/hooks/workflow-gate.py, .claude/settings.local.json, star-alliance-skills/butler-voice/SKILL.md (+6 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Compliance Audit: .claude/hooks/okf-gate.py, .claude/hooks/workflow-gate.py, .claude/settings.local.json (+159 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/okf-gate.py, .claude/hooks/workflow-gate.py, .claude/settings.local.json (+160 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Compliance Audit: .claude/hooks/okf-gate.py, .claude/hooks/workflow-gate.py, .claude/output.json (+161 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Architecture Build: .gitignore, .scratch/prove-it-wire-members.py, .scratch/prove-it-wire-profiles.py (+23 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "member-create",
+      "title": "Architecture Build: star-alliance-skills/okf/scripts/okf_audit.py, star-alliance-skills/okf/scripts/okf_index.py, agents/index.md (+260 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "member-create",
+      "title": "Quick Fix: star-alliance-skills/okf/scripts/okf_audit.py, star-alliance-skills/okf/scripts/okf_index.py, tools/schedule_scan.js (+261 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "skill-upgrade",
+      "title": "Upgrade code-unity: 1.0.0 → 1.0.1",
+      "who": "Atta",
+      "ref": [
+        "code-unity"
+      ],
+      "from": "1.0.0",
+      "to": "1.0.1",
+      "commit": "fd889902",
+      "_derived": true
+    },
+    {
+      "date": "2026-07-02",
+      "type": "skill-upgrade",
+      "title": "Upgrade new-member-onboarding: 1.0.0 → 1.0.1",
+      "who": "Atta",
+      "ref": [
+        "new-member-onboarding"
+      ],
+      "from": "1.0.0",
+      "to": "1.0.1",
+      "commit": "fd889902",
+      "_derived": true
+    },
+    {
+      "date": "2026-07-02",
+      "type": "skill-upgrade",
+      "title": "Upgrade obedience: 1.0.0 → 1.0.1",
+      "who": "Atta",
+      "ref": [
+        "obedience"
+      ],
+      "from": "1.0.0",
+      "to": "1.0.1",
+      "commit": "fd889902",
+      "_derived": true
+    },
+    {
+      "date": "2026-07-02",
+      "type": "skill-upgrade",
+      "title": "Upgrade skillsmith to 1.8.0",
+      "who": "Atta",
+      "ref": [
+        "skillsmith"
+      ],
+      "from": "",
+      "to": "1.8.0",
+      "commit": "fd889902",
+      "_derived": true
+    },
+    {
+      "date": "2026-07-02",
+      "type": "dashboard",
+      "title": "Add prove-it skill (universal tier) - request-fulfillment check documenting the prove-it.py Stop hook",
+      "who": "Atta",
+      "commit": "e79114c9",
+      "_derived": true
+    },
+    {
+      "date": "2026-07-02",
+      "type": "skill-upgrade",
+      "title": "Upgrade prove-it to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "prove-it"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "e79114c9",
+      "_derived": true
+    },
+    {
+      "date": "2026-07-02",
+      "type": "skill-create",
+      "title": "Add skill: prove-it",
+      "who": "Atta",
+      "ref": [
+        "prove-it"
+      ],
+      "commit": "e79114c9",
+      "_derived": true
+    },
+    {
+      "date": "2026-07-02",
+      "type": "skill-upgrade",
+      "title": "Bulk skill upgrades: 5 skills",
+      "who": "Atta",
+      "ref": [
+        "admin-page-builder",
+        "butler-voice",
+        "okf",
+        "redesign-existing-projects",
+        "vault-log-writer"
+      ],
+      "commit": "a9610e38",
+      "bulk": true,
+      "_derived": true
+    },
+    {
+      "date": "2026-07-02",
+      "type": "skill-create",
+      "title": "Bulk skill additions: 7 skills",
+      "who": "Atta",
+      "ref": [
+        "add-admin-permission",
+        "add-new-trigger",
+        "add-new-view",
+        "admin-page-fixer",
+        "file-access-model",
+        "lex-system-audit",
+        "phased-db-refactor"
+      ],
+      "commit": "a9610e38",
+      "bulk": true,
+      "_derived": true
+    },
+    {
+      "date": "2026-07-02",
+      "type": "member-upgrade",
+      "title": "Update member: the-architect",
+      "who": "Atta",
+      "ref": [
+        "the-architect"
+      ],
+      "commit": "4a98d523",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade volume-price-analysis to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "volume-price-analysis"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "ed772ec6",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "Add skill: volume-price-analysis",
+      "who": "Atta",
+      "ref": [
+        "volume-price-analysis"
+      ],
+      "commit": "ed772ec6",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade dashboard-parity to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "dashboard-parity"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "ed4a310a",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "Add skill: dashboard-parity",
+      "who": "Atta",
+      "ref": [
+        "dashboard-parity"
+      ],
+      "commit": "ed4a310a",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade chart-patterns to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "chart-patterns"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "eba20ff0",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "Add skill: chart-patterns",
+      "who": "Atta",
+      "ref": [
+        "chart-patterns"
+      ],
+      "commit": "eba20ff0",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade motion-design: 1.0.0 → 2.0.0",
+      "who": "Atta",
+      "ref": [
+        "motion-design"
+      ],
+      "from": "1.0.0",
+      "to": "2.0.0",
+      "commit": "c2274942",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "member-upgrade",
+      "title": "Update member: the-translator",
+      "who": "Atta",
+      "ref": [
+        "the-translator"
+      ],
+      "commit": "c2274942",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade invariant-inference to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "invariant-inference"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "a9a2571a",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "Add skill: invariant-inference",
+      "who": "Atta",
+      "ref": [
+        "invariant-inference"
+      ],
+      "commit": "a9a2571a",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Bulk skill upgrades: 5 skills",
+      "who": "Atta",
+      "ref": [
+        "guild-reflection",
+        "letting-go",
+        "metamorphosis-check",
+        "skillsmith",
+        "voices-check"
+      ],
+      "commit": "8801993b",
+      "bulk": true,
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "Add skill: guild-reflection",
+      "who": "Atta",
+      "ref": [
+        "guild-reflection"
+      ],
+      "commit": "8801993b",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "Add skill: letting-go",
+      "who": "Atta",
+      "ref": [
+        "letting-go"
+      ],
+      "commit": "8801993b",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "Add skill: metamorphosis-check",
+      "who": "Atta",
+      "ref": [
+        "metamorphosis-check"
+      ],
+      "commit": "8801993b",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "Add skill: voices-check",
+      "who": "Atta",
+      "ref": [
+        "voices-check"
+      ],
+      "commit": "8801993b",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade letting-go to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "letting-go"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "82f7609a",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade metamorphosis-check to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "metamorphosis-check"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "82f7609a",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade voices-check to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "voices-check"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "82f7609a",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade guild-sync to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "guild-sync"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "577d2037",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "Add skill: guild-sync",
+      "who": "Atta",
+      "ref": [
+        "guild-sync"
+      ],
+      "commit": "577d2037",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade probability-statistics to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "probability-statistics"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "311ec672",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "Add skill: probability-statistics",
+      "who": "Atta",
+      "ref": [
+        "probability-statistics"
+      ],
+      "commit": "311ec672",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade python-master to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "python-master"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "30d356c2",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "Add skill: python-master",
+      "who": "Atta",
+      "ref": [
+        "python-master"
+      ],
+      "commit": "30d356c2",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade harness-efficiency to 1.2.0",
+      "who": "Atta",
+      "ref": [
+        "harness-efficiency"
+      ],
+      "from": "",
+      "to": "1.2.0",
+      "commit": "26fd81fc",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade spec-driven-development to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "spec-driven-development"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "26d66913",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "Add skill: spec-driven-development",
+      "who": "Atta",
+      "ref": [
+        "spec-driven-development"
+      ],
+      "commit": "26d66913",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade design-taste to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "design-taste"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "0f5a01d0",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "member-upgrade",
+      "title": "Update member: the-herald",
+      "who": "Atta",
+      "ref": [
+        "the-herald"
+      ],
+      "commit": "0f5a01d0",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade algorithmic-trading-chan to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "algorithmic-trading-chan"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "0e93f1e5",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "Add skill: algorithmic-trading-chan",
+      "who": "Atta",
+      "ref": [
+        "algorithmic-trading-chan"
+      ],
+      "commit": "0e93f1e5",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade session-mining: 1.1.0 → 1.2.0",
+      "who": "Atta",
+      "ref": [
+        "session-mining"
+      ],
+      "from": "1.1.0",
+      "to": "1.2.0",
+      "commit": "0a0d49af",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade imagegen-frontend to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "imagegen-frontend"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "023e57ca",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "Add skill: imagegen-frontend",
+      "who": "Atta",
+      "ref": [
+        "imagegen-frontend"
+      ],
+      "commit": "023e57ca",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-upgrade",
+      "title": "Upgrade design-unity to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "design-unity"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "019b41ca",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-27",
+      "type": "skill-create",
+      "title": "Add skill: design-unity",
+      "who": "Atta",
+      "ref": [
+        "design-unity"
+      ],
+      "commit": "019b41ca",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-26",
+      "type": "skill-upgrade",
+      "title": "Upgrade release-train: 1.0.0 → 1.0.1",
+      "who": "Atta",
+      "ref": [
+        "release-train"
+      ],
+      "from": "1.0.0",
+      "to": "1.0.1",
+      "commit": "fd8221fd",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-26",
+      "type": "skill-upgrade",
+      "title": "Upgrade members-formation to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "members-formation"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "a05b6ab7",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-26",
+      "type": "skill-upgrade",
+      "title": "Upgrade ultra-brainstorming to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "ultra-brainstorming"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "a05b6ab7",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-26",
+      "type": "skill-upgrade",
+      "title": "Upgrade weapon-utility to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "weapon-utility"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "a05b6ab7",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: members-formation",
+      "who": "Atta",
+      "ref": [
+        "members-formation"
+      ],
+      "commit": "a05b6ab7",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: ultra-brainstorming",
+      "who": "Atta",
+      "ref": [
+        "ultra-brainstorming"
+      ],
+      "commit": "a05b6ab7",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: weapon-utility",
+      "who": "Atta",
+      "ref": [
+        "weapon-utility"
+      ],
+      "commit": "a05b6ab7",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-26",
+      "type": "skill-upgrade",
+      "title": "Upgrade fallen-sword-design-language to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "fallen-sword-design-language"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "a0014acb",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-26",
+      "type": "skill-upgrade",
+      "title": "Bulk skill upgrades: 12 skills",
+      "who": "Atta",
+      "ref": [
+        "arsenal-forge",
+        "comms-triage",
+        "design-taste",
+        "guild-conformity",
+        "law-harvest",
+        "legal-drafting",
+        "legal-rule-modeling",
+        "market-recon",
+        "relationship-intel",
+        "release-train",
+        "scheduled-watch",
+        "workflow-forge"
+      ],
+      "commit": "88e82b0c",
+      "bulk": true,
+      "_derived": true
+    },
+    {
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Bulk skill additions: 12 skills",
+      "who": "Atta",
+      "ref": [
+        "arsenal-forge",
+        "comms-triage",
+        "design-taste",
+        "guild-conformity",
+        "law-harvest",
+        "legal-drafting",
+        "legal-rule-modeling",
+        "market-recon",
+        "relationship-intel",
+        "release-train",
+        "scheduled-watch",
+        "workflow-forge"
+      ],
+      "commit": "88e82b0c",
+      "bulk": true,
+      "_derived": true
+    },
+    {
+      "date": "2026-06-26",
+      "type": "skill-upgrade",
+      "title": "Upgrade storm-investigation to 1.0.0",
+      "who": "Atta",
+      "ref": [
+        "storm-investigation"
+      ],
+      "from": "",
+      "to": "1.0.0",
+      "commit": "78513bd5",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-26",
+      "type": "skill-create",
+      "title": "Add skill: storm-investigation",
+      "who": "Atta",
+      "ref": [
+        "storm-investigation"
+      ],
+      "commit": "78513bd5",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-26",
+      "type": "member-upgrade",
+      "title": "Update member: the-butler",
+      "who": "Atta",
+      "ref": [
+        "the-butler"
+      ],
+      "commit": "78513bd5",
+      "_derived": true
+    },
+    {
+      "date": "2026-06-26",
+      "type": "member-upgrade",
+      "title": "Update member: the-merchant",
+      "who": "Atta",
+      "ref": [
+        "the-merchant"
+      ],
+      "commit": "78513bd5",
+      "_derived": true
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Quick Fix: dashboard.js",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Quick Fix: guild/_briefs/cron/merged-routine-prompt.md",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Quick Fix: dashboard.css, dashboard.html, dashboard.js",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Quick Fix: dashboard.html",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Quick Fix: data/routine-heartbeat.json, evolution/schedule.json, audit-campaigns/2026-07-02_skills-frontmatter/_raw.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Strategic Audit: data/routine-heartbeat.json, evolution/schedule.json, audit-campaigns/2026-07-02_skills-frontmatter/00-campaign-plan.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Strategic Audit: audit-campaigns/2026-07-02_skills-frontmatter/00-campaign-plan.md, audit-campaigns/2026-07-02_skills-frontmatter/01-frontmatter-drift.md, audit-campaigns/2026-07-02_skills-frontmatter/02-references-rot.md (+5 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Strategic Audit: dashboard.css",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Strategic Audit: dashboard.css",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Bug Cycle: dashboard.css, star-alliance-members/the-designer.md, star-alliance-members/the-herald.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Bug Cycle: dashboard.css, star-alliance-members/the-designer.md, star-alliance-members/the-herald.md (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Bug Cycle: .claude/hooks/xp-log.py, audit-campaigns/2026-07-02_skills-frontmatter/00-campaign-plan.md, evolution/proposals/2026-07-02_mode-aware-standard-mission.md (+9 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "skill-create",
+      "title": "Bug Cycle: star-alliance-arsenal/supabase.py, .claude/hooks/cascade-check-gate.py, star-alliance-skills/watch-where-you-step/SKILL.md (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "skill-create",
+      "title": "Bug Cycle: .claude/settings.json, README.md, data/skills-meta.json (+8 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "skill-create",
+      "title": "Skill Forge: .claude/settings.json, README.md, data/skills-meta.json (+8 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "skill-create",
+      "title": "Routing: star-alliance-members/the-architect.md, star-alliance-members/the-developer.md, star-alliance-skills/check-point-resched/SKILL.md",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Routing: README.md, data/skills-meta.json, tools/generators/gen-skill-art.cjs",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Routing: README.md, data/skills-meta.json, tools/generators/gen-skill-art.cjs (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Routing: star-alliance-members/the-developer.md, star-alliance-members/the-quartermaster.md",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Quick Fix: art/skill-art-thumb/check-point-resched.png, art/skill-art-thumb/watch-where-you-step.png",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Quick Fix: star-alliance-members/the-quartermaster.md",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Bug Cycle: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Bug Cycle: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Bug Cycle: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Bug Cycle: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Bug Cycle: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Bug Cycle: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Local Session: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Local Session: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Local Session: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Local Session: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Inquiry / Recon: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Strategic Audit: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Strategic Audit: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-02",
+      "type": "upgrade",
+      "title": "Strategic Audit: .claude/hooks/routing-enforce.py, .claude/settings.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Strategic Audit: .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py, .claude/settings.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Strategic Audit: .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py, .claude/settings.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Strategic Audit: .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py, .claude/settings.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py, .claude/settings.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py, .claude/settings.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py, .claude/settings.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py, .claude/settings.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py, .claude/settings.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py, .claude/settings.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py, .claude/settings.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py, .claude/settings.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py, .claude/settings.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py, .claude/settings.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py, .claude/settings.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py, .claude/settings.json (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+2 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Architecture Build: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+3 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Routing: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+4 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Routing: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+4 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Routing: .claude/hooks/guild-routing-gate.sh, .claude/hooks/okf-gate.py, .claude/hooks/routing-enforce.py (+5 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Standard Mission: .claude/hooks/guild-routing-gate.sh, .claude/hooks/okf-gate.py, .claude/hooks/routing-enforce.py (+6 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Routing: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+5 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Routing: .claude/hooks/guild-routing-gate.sh, .claude/hooks/routing-enforce.py, .claude/hooks/sa-pretool.py (+8 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Routing: CLAUDE.md, build.py, star-alliance-members/the-strategist.md (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: AGENTS.md, star-alliance-members/the-steward.md",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Quick Fix: profiles/strategist/config.yaml",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Routing: .claude/hooks/executor-enforce.py, evolution/README.md, evolution/engine.py (+5 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Routing: .claude/arsenal/minimax.py, .claude/arsenal/ollama_cloud.py, .claude/arsenal/summon.py (+31 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Routing: .claude/arsenal/minimax.py, .claude/arsenal/ollama_cloud.py, .claude/arsenal/summon.py (+31 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Routing: .claude/arsenal/minimax.py, .claude/arsenal/ollama_cloud.py, .claude/arsenal/summon.py (+31 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "upgrade",
+      "title": "Routing: .claude/arsenal/minimax.py, .claude/arsenal/ollama_cloud.py, .claude/arsenal/summon.py (+31 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "workflow",
+      "title": "Routing: .claude/agents/the-architect.md, .claude/agents/the-designer.md, .claude/agents/the-developer.md (+349 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-03",
+      "type": "workflow",
+      "title": "Routing: .claude/agents/the-architect.md, .claude/agents/the-designer.md, .claude/agents/the-developer.md (+349 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-08",
+      "type": "upgrade",
+      "title": "Routing: .claude/hooks/butler-boundary-gate.py, .claude/hooks/guild-routing-gate.sh, .claude/hooks/plain-english-nudge.py (+9 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-08",
+      "type": "upgrade",
+      "title": "Routing: .retired/hooks-cleanup-2026-07-03/_saroot_probe.tmp, .retired/hooks-cleanup-2026-07-03/_write_test.tmp, .retired/hooks-cleanup-2026-07-03/_write_test2.tmp",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-08",
+      "type": "upgrade",
+      "title": "Routing: .retired/hooks-cleanup-2026-07-03/_saroot_probe.tmp, .retired/hooks-cleanup-2026-07-03/_write_test.tmp, .retired/hooks-cleanup-2026-07-03/_write_test2.tmp",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-11",
+      "type": "upgrade",
+      "title": "Routing: .retired/hooks-cleanup-2026-07-03/_saroot_probe.tmp, .retired/hooks-cleanup-2026-07-03/_write_test.tmp, .retired/hooks-cleanup-2026-07-03/_write_test2.tmp (+1 more)",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-11",
+      "type": "upgrade",
+      "title": "Routing: .claude/hooks/butler-boundary-gate.py, .claude/settings.json, .claude/settings.local.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    },
+    {
+      "date": "2026-07-11",
+      "type": "upgrade",
+      "title": "Routing: .claude/settings.local.json",
+      "who": "quartermaster-auto",
+      "commit": ""
+    }
+  ],
+  "count": 130
+}

@@ -226,7 +226,7 @@ If Phase 1 flagged dead skills (never fired in trusted window), include them in 
 
 ## Hard rules (apply to ALL phases)
 
-- **NEVER edit code outside the star-alliance repo** at `/Users/attaselim/Documents/Claude/Projects/star-alliance` (set workdir).
+- **NEVER edit code outside the star-alliance repo** at `/Users/atta/Documents/Claude/Projects/star-alliance` (set workdir).
 - **NEVER force-push, rebase, or push anything other than `origin main`.**
 - **NEVER touch, create, or delete the `evolution/DISARMED` file.** If it exists, exit cleanly and log "routine skipped — DISARMED".
 - **Tier-B (hooks/doctrine/gates/arsenal/workflows) is NEVER auto-applied** — only proposed in the ledger.

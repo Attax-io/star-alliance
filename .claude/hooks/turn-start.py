@@ -61,11 +61,10 @@ def main():
         except Exception:
             pass
 
-        # Fix 1 (level auto-refresh): once per day, rebuild guild-data so usage-based
-        # levels (skills / members / workflows) move on their own — no manual build.
-        # Throttled by a dated sentinel; launched DETACHED so it never slows the turn;
-        # fail-silent. build.py regenerates only generated files (guild-data.*), so a
-        # daily run is the sanctioned refresh path, not a hand-edit.
+        # Level auto-refresh: once per day, regenerate guild-data from the DB spine
+        # (`bin/sa dash`) so usage-based levels move on their own. Throttled by a
+        # dated sentinel; launched DETACHED so it never slows the turn; fail-silent
+        # (sa dash itself falls back to local data when the DB is unreachable).
         try:
             import datetime as _dt
             marker = state / f"level-refresh-{_dt.date.today().isoformat()}"
@@ -77,11 +76,11 @@ def main():
                             old.unlink()
                         except OSError:
                             pass
-                build_py = pathlib.Path(proj) / "build.py"
-                if build_py.exists():
+                sa_cli = pathlib.Path(proj) / "bin" / "sa"
+                if sa_cli.exists():
                     logf = open(state / "level-refresh.log", "a")
                     subprocess.Popen(
-                        ["python3", str(build_py)], cwd=proj,
+                        ["python3", str(sa_cli), "dash"], cwd=proj,
                         stdout=logf, stderr=subprocess.STDOUT, start_new_session=True,
                     )
         except Exception:

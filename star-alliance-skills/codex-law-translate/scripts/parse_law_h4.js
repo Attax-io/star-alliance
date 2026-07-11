@@ -20,7 +20,7 @@
  */
 const fs = require('fs')
 const path = require('path')
-const cfg = require('/Users/attaselim/.claude/skills/codex-law-translate/scripts/_config')
+const cfg = require(require('os').homedir() + '/.claude/skills/codex-law-translate/scripts/_config')
 
 const AR_DIGITS = '٠١٢٣٤٥٦٧٨٩'
 const toAr = (s) => String(s).replace(/\d/g, (d) => AR_DIGITS[+d])

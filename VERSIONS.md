@@ -52,7 +52,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`chart-patterns`](star-alliance-skills/chart-patterns/SKILL.md) | 1.0.0 | own | 130 / 1012 | 1106 / 66 | ✓ lean | The Merchant's read-only craft for identifying and interpreting chart patterns, distilled … |
 | [`check-point-resched`](star-alliance-skills/check-point-resched/SKILL.md) | 1.0.0 | own | 54 / 380 | 1074 / 82 | ✓ lean | Reference documentation for Star Alliance's automatic per-turn checkpoint commit (turn-fin… |
 | [`claude-code-hooks`](star-alliance-skills/claude-code-hooks/SKILL.md) | 1.1.0 | own | 146 / 962 | 1920 / 134 | ✓ lean | The Developer's craft for authoring Claude Code hooks — the shell scripts the harness fire… |
-| [`cleanup`](star-alliance-skills/cleanup/SKILL.md) | 1.22.0 | own | 135 / 991 | 6418 / 376 | ○ large | Multi-mode hygiene skill for Lex Council |
+| [`cleanup`](star-alliance-skills/cleanup/SKILL.md) | 1.23.0 | own | 147 / 1076 | 6708 / 392 | ✗ desc>1024 | Multi-mode hygiene skill for Lex Council |
 | [`cn-market-strategy-pack`](star-alliance-skills/cn-market-strategy-pack/SKILL.md) | 1.1.0 | own | 111 / 898 | 1094 / 123 | ✓ lean | The Merchant's read-only pack of 15 named CN/HK/US/JP/KR-market stock strategies distilled… |
 | [`code-crime-scene`](star-alliance-skills/code-crime-scene/SKILL.md) | 1.0.0 | own | 98 / 676 | 1161 / 166 | ✓ lean | Forensic investigation style for any codebase, system, or process — treat it as a crime sc… |
 | [`code-review-craft`](star-alliance-skills/code-review-craft/SKILL.md) | 1.1.1 | own | 123 / 769 | 1281 / 141 | ✓ lean | A deliberate, member-invoked code review of a diff, PR, or file |
@@ -85,7 +85,7 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`growth-marketing`](star-alliance-skills/growth-marketing/SKILL.md) | 1.0.0 | own | 110 / 851 | 2506 / 97 | ✓ lean | The Herald's marketing craft — turn a business's invisibility into a repeatable demand eng… |
 | [`guild-conformity`](star-alliance-skills/guild-conformity/SKILL.md) | 1.6.1 | own | 131 / 916 | 3128 / 221 | ✓ lean | The Quartermaster's craft for proving the whole guild repo agrees with itself and with eve… |
 | [`guild-log`](star-alliance-skills/guild-log/SKILL.md) | 1.3.0 | own | 118 / 801 | 2632 / 244 | ✓ lean | Enforce logging of non-git-visible changes to the Star Alliance guild log |
-| [`guild-reflection`](star-alliance-skills/guild-reflection/SKILL.md) | 1.1.0 | own | 148 / 1020 | 1295 / 134 | ✓ lean | The Quartermaster's self-improvement engine — turn finished work into durable guild upgrad… |
+| [`guild-reflection`](star-alliance-skills/guild-reflection/SKILL.md) | 2.0.0 | own | 114 / 749 | 456 / 71 | ✓ lean | Manual-trigger guild health review on the Supabase spine (v2 — replaces the retired evolut… |
 | [`harness-efficiency`](star-alliance-skills/harness-efficiency/SKILL.md) | 1.3.0 | own | 150 / 1010 | 1522 / 162 | ✓ lean | The Strategist's craft for proving the Star Alliance harness actually saves tokens and tim… |
 | [`head-of-department`](star-alliance-skills/head-of-department/SKILL.md) | 1.0.0 | own | 79 / 523 | 641 / 52 | ✓ lean | The thin authority-and-limits layer that sits between a worker and a sub-tree |
 | [`health-checker`](star-alliance-skills/health-checker/SKILL.md) | 1.0.0 | own | 66 / 441 | 241 / 54 | ✓ lean | Runs three read-only Supabase health queries (missing FK indexes, public tables without RL… |
@@ -159,4 +159,4 @@ compatibility` are allowed). This table mirrors it. Regenerate with
 | [`workflow-forge`](star-alliance-skills/workflow-forge/SKILL.md) | 1.4.0 | own | 153 / 997 | 2234 / 174 | ✓ lean | The Strategist's craft for distilling a finished run into a reusable star-map workflow in … |
 | [`workflow-runner`](star-alliance-skills/workflow-runner/SKILL.md) | 1.0.0 | own | 123 / 875 | 1118 / 90 | ✓ lean | The Quartermaster's craft for operating the guild's own machinery — RUN a star-map workflo… |
 
-_129 skills — 124 lean · 5 large (installable, over the 500-line ideal) · 0 near the word ceiling · 0 hard violations._
+_129 skills — 124 lean · 4 large (installable, over the 500-line ideal) · 0 near the word ceiling · 1 hard violations._

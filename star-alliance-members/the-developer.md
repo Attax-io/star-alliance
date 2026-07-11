@@ -62,7 +62,7 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 | `graphify` | any input (code, docs, papers, images) must become a knowledge graph or answer a repo question | prose docs (→ `obsidian-markdown`) or hand-editing source | `obsidian-markdown` |
 | `head-of-department` | invoke WHEN a mid-task sub-task outgrows you and the work needs a department head (parallel workers, bounded depth, shared state) | a single-file edit or a task already scoped to one worker (→ work it inline) | `decompose-and-swarm`, `safe-agentic-orchestration` |
 | `claude-code-hooks` | authoring a PreToolUse/PostToolUse hook or fail-open shell gate | general app tooling (→ `dev-server`) or DB validation (→ `supabase`) | `full-output-enforcement` |
-| `check-point-resched` | a turn's auto-commit was skipped — diagnose which of the four turn-finalize.sh veto gates fired and forward-fix | writing a new hook (→ `claude-code-hooks`) or a routine passing turn | `claude-code-hooks`, `prove-it` |
+| `check-point-resched` | historical only — it documents the retired turn-finalize.sh auto-commit checkpoint; commits are now manual | any live turn (the checkpoint no longer runs) | `claude-code-hooks`, `prove-it` |
 | `supabase` | any Supabase app feature — client, SSR, auth, RLS, edge fns, realtime, storage | pure query/index tuning (→ `supabase-postgres-best-practices`) or schema design (→ Architect) | `supabase-postgres-best-practices`, `dev-server` |
 | `supabase-postgres-best-practices` | writing, reviewing, or tuning Postgres queries, indexes, perf | full Supabase app features (→ `supabase`) or fresh schema design (→ Architect) | `supabase`, `db-rename-sweep` |
 | `full-output-enforcement` | output must be exhaustive, untruncated, free of placeholders | brief replies, or design/strategy talk (→ Architect/Strategist) | `bug-fix-workflow`, `graphify` |
@@ -120,7 +120,7 @@ When to draw each skill, and the adjacent task that wrongly pulls it.
 11. Supabase database writes (SQL, DDL, migrations) are yours to run directly via the
     Supabase MCP — you have full read+write access. When a migration touches many
     surfaces, spawn Claude subagents to gather findings in parallel, then apply it yourself.
-12. When a turn ends, `check-point-resched` explains the auto-commit checkpoint (turn-finalize.sh) and its four veto gates — read it to understand why a commit was skipped and how to forward-fix rather than fight the gate.
+12. The auto-commit checkpoint (turn-finalize.sh) was retired in the 2026-07 Supabase migration — commit manually, scoped to the task's own files; `check-point-resched` is historical reference only.
 13. You write clean, working code. You test before you say it's done. A blade isn't
     finished until it's been swung.
 
