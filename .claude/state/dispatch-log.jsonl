@@ -870,3 +870,4 @@
 {"timestamp": "2026-07-09T01:15:57.296877Z", "kind": "spawn", "agent": "the-strategist", "description": "Run full Celestial improvement plan"}
 {"timestamp": "2026-07-09T01:41:21.576381Z", "kind": "spawn", "agent": "the-strategist", "description": "Rewire Celestial hooks + restore killswitch"}
 {"timestamp": "2026-07-09T02:00:55.687108Z", "kind": "spawn", "agent": "the-strategist", "description": "Sweep unused Celestial cruft"}
+{"timestamp": "2026-07-11T18:25:16.958543Z", "kind": "spawn", "agent": "the-strategist", "description": "Analyze last week's guild usage"}
