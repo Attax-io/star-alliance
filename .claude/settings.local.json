@@ -20,13 +20,25 @@
       "Bash(python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write --repo .)",
       "Bash(cd ~/Documents/Claude/Projects/star-alliance *)",
       "Bash(sed -i '' 's|~/|~/|g' .claude/settings.local.json)",
-      "Bash(python3 -c \"import json; json.load\\(open\\('.claude/settings.local.json'\\)\\); print\\('settings.local.json valid \u2713'\\)\")",
+      "Bash(python3 -c \"import json; json.load\\(open\\('.claude/settings.local.json'\\)\\); print\\('settings.local.json valid ✓'\\)\")",
       "Bash(git checkout *)",
       "Bash(python3 evolution/reflect.py)",
       "Bash(python3 evolution/scoreboard.py)",
       "Bash(python3 evolution/ledger.py tail -n 12)",
       "Bash(cd /Users/atta/Documents/Claude/Projects/star-alliance *)",
-      "Bash(python3 /Users/atta/Documents/Claude/Projects/star-alliance/.claude/hooks/verify_hash.py > /Users/atta/Documents/Claude/Projects/star-alliance/.claude/state/verify-pass && cat /Users/atta/Documents/Claude/Projects/star-alliance/.claude/state/verify-pass)"
+      "Bash(python3 /Users/atta/Documents/Claude/Projects/star-alliance/.claude/hooks/verify_hash.py > /Users/atta/Documents/Claude/Projects/star-alliance/.claude/state/verify-pass && cat /Users/atta/Documents/Claude/Projects/star-alliance/.claude/state/verify-pass)",
+      "Bash(mkdir -p '/Users/atta/Documents/Claude/Projects/Lex Council App/.claude/.retired-2026-07')",
+      "Bash(cp '/Users/atta/Documents/Claude/Projects/Lex Council App/.claude/settings.local.json' '/Users/atta/Documents/Claude/Projects/Lex Council App/.claude/.retired-2026-07/settings.local.json.orig')",
+      "Read(//Users/atta/Documents/Claude/Projects/Lex Council App/.claude/**)",
+      "Bash(mkdir -p '/Users/atta/Documents/Claude/Projects/Lex Council App/.claude/agents')",
+      "Bash(cp /Users/atta/Documents/Claude/Projects/star-alliance/.claude/agents/*.md '/Users/atta/Documents/Claude/Projects/Lex Council App/.claude/agents/')",
+      "Bash(mkdir -p '/Users/atta/Documents/Claude/Projects/Lex Council App/.claude/.retired-2026-07/hooks' '/Users/atta/Documents/Claude/Projects/Lex Council App/.claude/.retired-2026-07/state')",
+      "Bash(mv '/Users/atta/Documents/Claude/Projects/Lex Council App/.claude/hooks' '/Users/atta/Documents/Claude/Projects/Lex Council App/.claude/.retired-2026-07/hooks-dir-full')",
+      "Bash(mkdir -p '/Users/atta/Documents/Claude/Projects/Lex Council App/.claude/hooks')",
+      "Bash(mv '/Users/atta/Documents/Claude/Projects/Lex Council App/.claude/arsenal' '/Users/atta/Documents/Claude/Projects/Lex Council App/.claude/.retired-2026-07/arsenal')",
+      "Bash(mv '/Users/atta/Documents/Claude/Projects/Lex Council App/guild-data.json' '/Users/atta/Documents/Claude/Projects/Lex Council App/.claude/.retired-2026-07/guild-data.json')",
+      "Bash(mv '/Users/atta/Documents/Claude/Projects/Lex Council App/.claude/settings.json.bak-20260704-033311' '/Users/atta/Documents/Claude/Projects/Lex Council App/.claude/.retired-2026-07/')",
+      "Bash(mv '/Users/atta/Documents/Claude/Projects/Lex Council App/.claude/settings.local.json.bak-20260704-042805' '/Users/atta/Documents/Claude/Projects/Lex Council App/.claude/.retired-2026-07/')"
     ]
   }
 }

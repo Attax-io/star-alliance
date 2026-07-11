@@ -56,7 +56,9 @@ _MCP_WRITE_VERBS = ("create_", "update_", "delete_", "insert_", "drop_",
 
 # Shell commands that mutate files / repo / system -> routed, not free.
 _BASH_WRITE_RE = re.compile("|".join((
-    r"\bcat\s*>\s*\S", r"\becho\s+.+?>\s*\S", r"\bprintf\s+.+?>\s*\S",
+    r"\bcat\s*>\s*\S",
+    r"\becho\b[^;&|]*?(?<!\d)>(?!\s*&)\s*(?!/dev/null)\S",
+    r"\bprintf\b[^;&|]*?(?<!\d)>(?!\s*&)\s*(?!/dev/null)\S",
     r"\btee\s+\S", r"(?:^|[;&|()\s])>\s*\S", r"(?:^|[;&|()\s])>>\s*\S",
     r":\s*>\s*\S", r"\bsed\s+-i\b", r"\bcp\s+\S+\s+\S", r"\bmv\s+\S+\s+\S",
     r"\brm\s+", r"\brmdir\s+\S", r"\bmkdir\s+", r"\btouch\s+\S",
@@ -66,7 +68,8 @@ _BASH_WRITE_RE = re.compile("|".join((
     r"\byarn\s+add\b", r"\bcargo\s+install\b",
     r"\bgit\s+(checkout|reset|stash|rebase|clean|rm|commit|push|merge|apply|revert|tag)\b",
     r"\binstall\s+-m\b", r"\brsync\b", r"\bscp\b", r"\bwget\b",
-    r"\bcurl\s+.+?>\s*\S", r"\bunzip\s+\S", r"\btar\s+.*-[a-zA-Z]*x",
+    r"\bcurl\b[^;&|]*?(?<!\d)>(?!\s*&)\s*(?!/dev/null)\S",
+    r"\bunzip\s+\S", r"\btar\s+.*-[a-zA-Z]*x",
 )), re.IGNORECASE)
 
 

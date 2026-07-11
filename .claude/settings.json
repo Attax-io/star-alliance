@@ -1,6 +1,6 @@
 {
   "env": {
-    "STAR_ALLIANCE_ROOT": "/Users/attaselim/Documents/Claude/Projects/star-alliance"
+    "STAR_ALLIANCE_ROOT": "/Users/atta/Documents/Claude/Projects/star-alliance"
   },
   "_comment": "CLAUDE-ONLY HARNESS (Hermes/MiniMax doer layer removed 2026-07-03). One hard block remains: destructive-gate (data-safety), reached via sa-pretool. Everything else is a non-blocking reminder or logger, so a session can never freeze on a harness rule. The retired gate files live in .retired/ and are NOT wired.",
   "hooks": {
