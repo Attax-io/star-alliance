@@ -237,7 +237,15 @@ def build_files_payload(dir_path: Path) -> dict:
 
 def parse_skill_frontmatter(skill_dir: Path) -> dict:
     """Best-effort YAML-lite frontmatter parse from SKILL.md: name, description,
-    metadata.version. Never raises — falls back to sane defaults."""
+    metadata.version. Never raises — falls back to sane defaults.
+
+    Delegates to the shared _fm_field/_fm_description/_fm_version helpers
+    (defined further down this file) so this function inherits their YAML
+    block-scalar handling (`description: >-`, `>`, `>+`, `|`, `|-`, `|+`
+    followed by indented body lines) instead of re-implementing a single-line
+    -only parser. Previously this duplicated a naive single-line parser that
+    captured only the block-scalar indicator token (e.g. literally ">") and
+    dropped the real multi-line description body — fixed 2026-07-12."""
     meta = {"name": skill_dir.name, "description": "", "version": "0.0.0"}
     md = skill_dir / "SKILL.md"
     if not md.exists():
@@ -252,18 +260,13 @@ def parse_skill_frontmatter(skill_dir: Path) -> dict:
     if end == -1:
         return meta
     fm = text[3:end]
-    in_metadata = False
-    for line in fm.splitlines():
-        stripped = line.strip()
-        if stripped.startswith("name:"):
-            meta["name"] = stripped.split(":", 1)[1].strip().strip('"')
-        elif stripped.startswith("description:"):
-            meta["description"] = stripped.split(":", 1)[1].strip().strip('"')
-        elif stripped.startswith("metadata:"):
-            in_metadata = True
-        elif in_metadata and stripped.startswith("version:"):
-            meta["version"] = stripped.split(":", 1)[1].strip().strip('"')
-            in_metadata = False
+    name = _fm_field(fm, "name")
+    if name:
+        meta["name"] = name
+    meta["description"] = _fm_description(fm)
+    version = _fm_version(fm)
+    if version:
+        meta["version"] = version
     return meta
 
 

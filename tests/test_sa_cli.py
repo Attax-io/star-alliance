@@ -93,6 +93,75 @@ class TestHashManifest(unittest.TestCase):
         self.assertEqual(h1, h2)
 
 
+class TestParseSkillFrontmatter(unittest.TestCase):
+    """Regression coverage for the YAML block-scalar description bug (fixed
+    2026-07-12): parse_skill_frontmatter previously captured only the
+    block-scalar indicator token (e.g. literally ">") instead of the
+    indented body lines that follow it."""
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp())
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _write_skill(self, name, frontmatter_body):
+        d = self.tmp / name
+        d.mkdir()
+        (d / "SKILL.md").write_text(
+            "---\n" + frontmatter_body + "\n---\n\n# Body\n\nSkill body text.\n"
+        )
+        return d
+
+    def test_folded_block_scalar_description(self):
+        d = self._write_skill(
+            "folded-skill",
+            'name: folded-skill\n'
+            'description: >-\n'
+            '  This is a folded description that spans\n'
+            '  multiple indented lines and should be\n'
+            '  joined into one string.\n'
+            'metadata:\n'
+            '  version: "1.2.3"',
+        )
+        meta = sa.parse_skill_frontmatter(d)
+        self.assertEqual(meta["name"], "folded-skill")
+        self.assertEqual(meta["version"], "1.2.3")
+        self.assertNotIn(">", meta["description"])
+        self.assertIn("folded description", meta["description"])
+        self.assertIn("joined into one string", meta["description"])
+
+    def test_literal_block_scalar_description(self):
+        d = self._write_skill(
+            "literal-skill",
+            'name: literal-skill\n'
+            'description: |\n'
+            '  Line one of the literal description.\n'
+            '  Line two of the literal description.\n'
+            'metadata:\n'
+            '  version: "2.0.0"',
+        )
+        meta = sa.parse_skill_frontmatter(d)
+        self.assertEqual(meta["name"], "literal-skill")
+        self.assertEqual(meta["version"], "2.0.0")
+        self.assertNotEqual(meta["description"].strip(), "|")
+        self.assertIn("Line one of the literal description.", meta["description"])
+        self.assertIn("Line two of the literal description.", meta["description"])
+
+    def test_single_line_description_still_works(self):
+        d = self._write_skill(
+            "simple-skill",
+            'name: simple-skill\n'
+            'description: "A plain one-line description."\n'
+            'metadata:\n'
+            '  version: "0.1.0"',
+        )
+        meta = sa.parse_skill_frontmatter(d)
+        self.assertEqual(meta["name"], "simple-skill")
+        self.assertEqual(meta["version"], "0.1.0")
+        self.assertEqual(meta["description"], "A plain one-line description.")
+
+
 class TestJWT(unittest.TestCase):
     def test_mint_and_decode(self):
         secret = "test-secret-value"
