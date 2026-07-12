@@ -1,7 +1,7 @@
 ---
 name: lex-system-audit
-description: Methodology for auditing any backend subsystem in Lex Council — surveys schema, RLS, triggers, view security, state machines, dead aliases, inactive catalog entries; cross-references vault-logs and architecture docs; reads frontend for silent failures; produces a P1/P2/P3 finding list with effort and risk. Use when the user asks to audit, review, re-evaluate, health-check, find issues in, or assess the cleanliness of any subsystem — notifications, file access, attendance, transactions, advances, chat, agreements, ETO, customer portal, permissions, or any X system the user names. Also trigger on "is X clean", "find issues across X", "system review of Y", "what's wrong with Z", "what would you improve in W". This skill exists because the codebase has recurring trap families — security_invoker dropped on view rewrites, stale trigger bodies after renames, silent-swallow frontend patterns, dead aliases, namespace collisions, never-fired catalog rows — that reward a methodical pass over freeform investigation.
-version: 1.0.0
+description: Methodology for auditing any backend subsystem in Lex Council — surveys schema, RLS, triggers, view security, state machines, dead aliases, inactive catalog entries; cross-references vault-logs and docs; reads frontend for silent failures; runs mechanical lint/postgres guards for the silent-failure family; produces a P1/P2/P3 finding list with effort and risk. Runs as a Strategic Audit, not an Architecture Build. Use when the user asks to audit, review, health-check, or assess any subsystem — notifications, file access, attendance, transactions, chat, agreements, ETO, customer portal, permissions, or any X system named. Also trigger on "is X clean", "what's wrong with Z", "what would you improve in W". Exists because the codebase has recurring trap families — security_invoker dropped on view rewrites, stale trigger/SECURITY DEFINER bodies after renames, silent-swallow frontend patterns, dead aliases, never-fired catalog rows — that reward a methodical pass over freeform investigation.
+version: 1.1.0
 type: Skill
 
 ---
@@ -12,6 +12,8 @@ type: Skill
 Walks through a structured five-phase audit of a named subsystem (notifications, file access, attendance, transactions, etc.). Produces a ranked finding list at the end — **real bugs (P1)**, **design smells with small fixes (P2)**, **improvements (P3)** — plus a recommended next move.
 
 Don't free-form. The phases below exist because each one catches a different class of issue. Skipping phases means missing findings.
+
+**Workflow routing.** This runs as a **Strategic Audit**, not an Architecture Build. Its deliverable is a ranked finding list — it surveys and diagnoses, it does not restructure the system or ship a build plan. If the Strategist arrived here via an Architecture Build banner, re-route: an audit that ends in a mega-refactor is the wrong shape. Fixes are a separate, later pass.
 
 ## Phase 1 · Scope the audit
 
@@ -58,7 +60,14 @@ This takes two minutes and prevents recommending something the project already t
 
 ## Phase 3 · Survey the live DB
 
-Run these queries against the live schema. Each one targets a specific class of issue. The query block is generic; substitute the prefix or table list from Phase 2.
+### 3·0 · Run the automated guards first
+
+Before hand-reading anything, run the mechanical checks — they catch the high-severity silent-failure family without eyeballing, and they're fast. Two masked failures in this family have each burned real time (a swallowed catch hid a bug for 13 hours; a view rewritten without `security_invoker` silently bypassed RLS), and both are lint/advisor-detectable.
+
+- **`postgres` guard** — `cleanup` skill, postgres mode (Supabase advisors + pg health). Its security advisor flags views defined `SECURITY DEFINER` / missing `security_invoker=true`, RLS-disabled tables, and functions with a mutable `search_path`. Run it, then filter the advisor output to the subsystem's prefix. Every view it flags is a P1 candidate — confirm against 3b.
+- **`lint` guard** — `cleanup` skill, lint mode (ESLint `--fix` + `tsc`). Surfaces empty/swallowed `catch {}` blocks (`no-empty`) and type errors on unchecked returns where the repo's rules cover them. This mechanizes part of Phase 4; pair it with the greps there.
+
+These guards are a **floor, not a ceiling** — they mechanize the two traps that have bitten hardest (missing `security_invoker`; swallowed writes under optimistic UI). They do **not** replace the hand phases: a linter can't see stale trigger bodies, dead catalog rows, or state-machine drift. Note honestly what the guards caught vs. what you found by hand, and treat any guard hit as a finding to triage, not auto-file.
 
 ### 3a · Object inventory
 
@@ -86,7 +95,7 @@ SELECT c.relname, c.reloptions
    AND c.relname LIKE '<prefix>_%';
 ```
 
-Every member/customer-facing view should have `['security_invoker=true']`. A view that's missing it bypasses RLS for the calling user and runs as the owner — usually `postgres`, which has no RLS. This is the #1 silent security regression after a `CREATE OR REPLACE VIEW`.
+Every member/customer-facing view should have `['security_invoker=true']`. A view that's missing it bypasses RLS for the calling user and runs as the owner — usually `postgres`, which has no RLS. This is the #1 silent security regression after a `CREATE OR REPLACE VIEW`. The 3·0 postgres guard flags this mechanically now; this query is the manual confirmation and the place to eyeball views the advisor scoped out.
 
 ### 3c · RLS enabled on tables
 
@@ -109,7 +118,7 @@ SELECT tablename, policyname, cmd, roles::text
  ORDER BY tablename, cmd;
 ```
 
-### 3d · Trigger inventory + stale body scan
+### 3d · Trigger + SECURITY DEFINER stale-body scan
 
 ```sql
 -- All triggers on subsystem tables
@@ -132,6 +141,17 @@ SELECT n.nspname, p.proname
 ```
 
 If anything comes back, that function will error at runtime when next fired. (See `db-rename-sweep` skill / memory `feedback_rename_trigger_bodies`.)
+
+Trigger bodies are only half the stale-body family. **SECURITY DEFINER functions** (RPCs, not just triggers) run as owner and are the other half — a stale reference there errors for every caller, and because it runs as owner it can also mask an RLS gap. Scan them after any migration touching the subsystem's tables:
+
+```sql
+SELECT n.nspname, p.proname, p.prosecdef
+  FROM pg_proc p
+  JOIN pg_namespace n ON n.oid = p.pronamespace
+ WHERE n.nspname IN ('public','private')
+   AND p.prosecdef = true
+   AND pg_get_functiondef(p.oid) ILIKE '%<old_name>%';
+```
 
 **PostgREST 42501 masking trap:** a `RAISE EXCEPTION` inside a trigger body that fires inside a WITH/RETURNING CTE surfaces to the frontend as `"new row violates row-level security policy"`, not as the actual error. If any recent vault-log or OPEN-ITEMS entry mentions an RLS error that appeared after a migration or rename, re-check trigger bodies first before auditing policies. Run: `SELECT pg_get_functiondef(p.oid) FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace WHERE n.nspname IN ('public','private') AND pg_get_functiondef(p.oid) ILIKE '%<renamed_column>%'` — if a match comes back, that trigger is the real culprit.
 
@@ -196,7 +216,7 @@ For each subsystem, identify the React surfaces (the leaf doc usually lists them
 | Anti-pattern | Why it matters |
 |---|---|
 | `.then(() => {})` after `.from(…).insert/update/delete` | Swallows DB errors. The notification-bell-not-marking-read bug hid for 13 hours because of this (2026-04-24). |
-| Bare `catch {}` around supabase calls | Same as above. |
+| Bare `catch {}` around supabase calls | Same as above. The 3·0 lint guard flags empty catches via `no-empty`, but it can't see `.then(() => {})` — grep for that below. |
 | `await supabase.from(…)…` without checking `{ error }` | Same. |
 | Direct `.from('<base_table>')` write where a `_js` view exists | Bypasses Law 2. RLS may behave differently than intended. |
 | Hardcoded category colors / hex in JSX | Token drift. Should reference `@repo/md` `colors` or the C constants. (Memory: `feedback_never_guess_design_tokens`.) |
@@ -207,13 +227,18 @@ For each subsystem, identify the React surfaces (the leaf doc usually lists them
 Concrete grep recipes:
 
 ```bash
-# Silent-swallow audit
+# Silent-swallow audit (the lint guard covers empty catches; this covers .then swallows)
 grep -rn "\.then(() => {})" apps/web/app
 grep -rn "catch {" apps/web/app | grep -v "catch (e" | grep -v "catch(e"
 
 # Direct base-table writes (substitute the system's tables)
 grep -rn "\.from('<table>')" apps/web/app | grep -E "\.(insert|update|delete)"
+
+# pg_dump / backup scripts that swallow stderr or ignore exit codes
+grep -rn "pg_dump" scripts | grep -E "2>\s*/dev/null|\|\| true|;\s*true"
 ```
+
+A `pg_dump` whose stderr is discarded (or piped into something that always exits 0) silently produces a truncated or empty backup — the failure only shows when a restore is attempted. Treat any such invocation as a P1; the fix is to capture stderr and check the exit code (`set -o pipefail`).
 
 ## Phase 5 · Rank findings and propose
 
@@ -239,6 +264,7 @@ End the audit with a "What I'd tackle first" paragraph: pick 1-2 P1/P2 items tha
 
 - **Don't audit without scoping.** "Audit the system" without a named subsystem produces shallow noise. Force scope in Phase 1.
 - **Don't skip the docs.** Reading the leaf doc first prevents recommendations that contradict design decisions or `[!atta]` blocks.
+- **Don't trust the guards alone.** The 3·0 postgres/lint guards are a floor — they catch the two hardest-biting traps mechanically, but a clean guard run is not a clean subsystem. Run every hand phase.
 - **Don't propose retention without volume data.** "Add a retention cron" is a P3 unless you've shown row counts that make it P2. Always pull a `count(*)` + age-distribution before proposing pruning.
 - **Don't fix during audit.** Audit produces findings; fix is a separate session unless Atta explicitly says "and fix what you find". This skill is the surveyor, not the construction crew.
 - **Don't aggregate findings into mega-PRs.** Each P1/P2 should be ship-able independently with its own vault-log.
@@ -246,6 +272,7 @@ End the audit with a "What I'd tackle first" paragraph: pick 1-2 P1/P2 items tha
 ## Done means
 
 ✓ Phase 1-2 captured: subsystem named, depth chosen, docs + recent vault-logs read
+✓ Automated guards (3·0 postgres + lint) run before the hand phases; every flagged view/catch triaged, guard-caught vs. hand-caught noted honestly
 ✓ Phase 3 queries run; results pasted into the audit (don't summarise away the numbers — they ARE the evidence)
 ✓ Phase 4 frontend surfaces scanned; specific file:line citations for any anti-pattern hit
 ✓ Findings tiered P1/P2/P3 with the standard write-up format

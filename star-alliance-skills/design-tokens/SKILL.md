@@ -2,7 +2,7 @@
 name: design-tokens
 description: "The Designer's token-architecture craft — structure a design-token system that scales, themes, and ports across platforms. Modes: architect (three-tier layering — primitive tokens for raw palette/type/space, semantic tokens named by role, component-scoped tokens; components consume only semantic tokens, theming happens at the semantic layer); theme (light, dark, high-contrast from ONE semantic layer by remapping values; OKLCH for perceptually-uniform tonal ramps and accessible lightness); responsive (fluid type/space scales with clamp(), container queries, logical properties for RTL-safe layout); format (the W3C Design Tokens JSON spec so one source compiles to CSS/iOS/Android). Use to design a token system, set up theming, structure tokens, or build dark mode. Triggers: 'design tokens', 'token architecture', 'set up theming', 'dark mode tokens', 'semantic tokens', 'OKLCH palette', 'W3C design tokens'. Differentiate from design-unity (audits drift) and a11y-craft (the accessibility gate)."
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 type: Skill
 
 ---
@@ -50,6 +50,34 @@ ship to a second platform by editing *values at one layer* — never hunting har
 5. **Keep the source portable.** Author in the W3C format so the same tokens feed Figma, the web
    build, and native — one source of truth, many outputs. You specify the system; the Developer
    wires the build pipeline.
+6. **Consolidate a raw hex onto the *nearest existing* token, not a new one.** When you replace a
+   hardcoded colour, first map it to the closest semantic token already in the system and confirm
+   the swap doesn't shift the rendered value (compare in OKLCH — an imperceptible delta is fine, a
+   visible one is a mismatch). Mint a new token only when nothing existing is close; a near-duplicate
+   token is drift you just authored.
+
+## Modern CSS: you own the fallback
+
+`color-mix()` and CSS nesting are the sharp edges of a token layer, and there is **no lint** that
+catches a missing fallback — so it is the token author's job, not a scan you defer to a tool.
+
+- **Every token whose *value* uses `color-mix()` needs an `@supports` fallback.** A token defined as
+  `color-mix(in oklch, var(--color-action) 12%, transparent)` resolves to *nothing* in a browser
+  that lacks `color-mix()` — the property is dropped, and with it the hover tint, the badge
+  background, or the gradient stop that consumed it. Define a real static fallback value first, then
+  override it inside `@supports (color: color-mix(in oklch, red, blue))`. The fallback must be a
+  believable approximation of the mix (a pre-computed flat colour), never omitted.
+- **The three silent-drop hotspots** to give a fallback: **hover / active state tints**, **badge and
+  pill backgrounds**, and **gradient stops** — these are where a dropped `color-mix()` reads as an
+  invisible element, not a graceful degrade.
+- **Nesting needs the same guard when the build doesn't flatten it.** If nested selectors ship raw
+  (no PostCSS/Lightning flatten step), gate them or provide a flat equivalent so the styles they
+  carry don't vanish on older engines. When the build *does* flatten, nesting is safe — confirm which
+  you're in before relying on it.
+
+This is authoring discipline at the token layer, in the same spirit as rule 4's contrast gate: the
+token is only correct if it renders its intended value in every browser you support. It is **not** a
+codebase drift scan — that remains [[design-unity]]'s job.
 
 ## Versioning
 
@@ -58,6 +86,13 @@ MAJOR: method-contract change). Regenerate VERSIONS.md with
 python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write, then python3 build.py.
 
 ## Changelog
+- **1.1.0** — Added two token-authoring disciplines. `How you work` rule 6: consolidate a raw hex
+  onto the nearest *existing* semantic token and verify the swap doesn't shift the rendered value
+  (OKLCH compare), minting new only when nothing fits. New section `Modern CSS: you own the fallback`:
+  every `color-mix()`-valued token needs an `@supports` fallback (no lint exists for it) so
+  unsupported browsers don't silently drop hover tints, badge backgrounds, and gradient stops; same
+  guard for un-flattened nesting. Framed as construction craft, explicitly not the drift audit that
+  belongs to design-unity.
 - **1.0.0** — Initial release. Token architecture as a designer craft. Four modes — architect
   (primitive/semantic/component layering), theme (multi-theme from one semantic layer + OKLCH),
   responsive (fluid scales + logical properties for RTL), format (W3C Design Tokens spec for

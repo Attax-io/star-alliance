@@ -119,6 +119,14 @@
     "triggers": "'audit the backend', 'is BACKEND.md current', 'schema drift', 'compare DB to BACKEND.md', 'RLS sensitivity gate'",
     "modes": ""
   },
+  "budget-points-domain-loader": {
+    "icon": "💰",
+    "blurb": "Loads the Lex Council files-budget / lawyer-points / partner-pool spending subdomain before any work",
+    "level": "Advanced",
+    "tabler": "ti-coin",
+    "triggers": "file budget, credits cap, remaining budget, partner pool, lawyer points, GES, budget_consumed, bug #347, or credits-vs-budget naming. Also \"fix a budget/credits bug\", \"partner can not add credits\". Load silently",
+    "modes": ""
+  },
   "bug-fix-closer": {
     "icon": "🧩",
     "blurb": "Mark one or more Lex Council bug_reports rows as Fixed (br_status=4) in the DB.",

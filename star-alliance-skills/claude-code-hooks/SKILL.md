@@ -2,7 +2,7 @@
 name: claude-code-hooks
 description: "The Developer's craft for authoring Claude Code hooks — the shell scripts the harness fires on tool and session events to enforce guild standards. Covers the event contract (PreToolUse / PostToolUse / UserPromptSubmit / Stop / SessionStart), reading the tool call as JSON on stdin, exit-code semantics (0 allow, 2 block with stderr fed back to the model), JSON output for non-blocking systemMessage banners and additionalContext, matcher scoping in settings.json, and the cardinal rule: fail open so a broken hook never bricks a session. Use when writing, debugging, or hardening a hook, or wiring an automated 'whenever X happens, do Y' behavior the harness must run. Triggers: 'write a hook', 'add a PreToolUse hook', 'gate this tool', 'block this command', 'fire a banner on', 'why is my hook blocking', 'fail-open hook', 'test my hook', 'claude code hooks'. Differentiate from update-config (settings.json keys/permissions) and skillsmith (skill versioning)."
 metadata:
-  version: 1.1.0
+  version: 1.2.0
 type: Skill
 
 ---
@@ -75,6 +75,34 @@ passes context (cwd, session id) — parse what you need, ignore the rest.
    echo "exit=$?"`. Prove it blocks the bad case (exit 2 + reason on stderr) AND allows the good case
    (exit 0, silent). An untested hook is a guess.
 
+## Enforcement-gate pitfalls (the false-block failure modes)
+
+An enforcement gate that over-blocks is worse than no gate: it stalls real work and trains everyone to
+disarm it. Every rule below is a "gate fired on an innocent call" bug seen in the field — a stall, not
+a caught violation. Design against them up front.
+
+- **Anchor the command regex; carve out read-only.** A write-detector like `grep -E 'write|>'` with no
+  `^` anchor or word boundary fires on read-only compounds it never meant to catch — `python3 -c '...'`,
+  heredocs (`<<'EOF'`), a redirect into the scratchpad, a `git log` whose text merely contains "write".
+  Match the actual command *verb* at a boundary, and add an explicit allow-list carve-out: recognised
+  read-only tools and any write under the scratchpad / tmp dir pass untouched. (An unanchored gate
+  false-blocked ~37% of one agent's read-only calls before it was anchored.)
+- **A disarm authorizes the whole operation — never auto-re-arm per tool-call.** A gate that re-arms the
+  instant its condition clears will re-block the *next* step of a multi-step repair, deadlocking the very
+  fix meant to satisfy it. A disarm or confirmation persists for the entire operation it authorizes;
+  model it as an explicit, manual, persistent kill switch (`touch …/disarmed` → `rm` to re-arm), not a
+  flag the gate resets after every call.
+- **Confirmation classifiers accept the affirmation family, not one exact phrase.** If the gate only
+  clears on one canonical string, ordinary approvals — `go`, `yes`, `proceed`, `try again` — get rejected
+  and the session stalls at the gate. Match a set of short affirmations, case-insensitive and trimmed.
+  Balance the other way too: match genuine affirmations, don't loosen so far you read `no` / `don't` as
+  consent.
+- **Resolve the repo root dynamically; never hardcode a home path.** A hook with `/Users/<name>/…` baked
+  in hard-fails on any other machine, a renamed directory, or a fresh clone. Derive the root from
+  `$CLAUDE_PROJECT_DIR`, `git rev-parse --show-toplevel`, or the script's own `__file__` — and if every
+  resolution fails, exit 0 (allow), never crash. Portability failures are just fail-open failures wearing
+  a different hat.
+
 ## Sharpening the craft
 
 You improve along four rungs; your measure is sessions enforced cleanly versus sessions a hook of
@@ -113,7 +141,8 @@ hooks that block the wrong tool, hooks that hang the session (must be zero).
 - **Hooks run synchronously in the loop.** No network calls, no long sleeps, no waiting on a server —
   you're holding up every tool call. Defer slow work to a background job the hook merely triggers.
 - **Relative paths resolve against the harness, not your cwd.** Use an absolute path or
-  `$CLAUDE_PROJECT_DIR` in the `command`, and make the script `chmod +x`.
+  `$CLAUDE_PROJECT_DIR` in the `command`, and make the script `chmod +x`. Inside the script, resolve the
+  repo root dynamically (never a hardcoded home path) and fail open if resolution fails.
 - **Test the allow branch too.** It's easy to prove a hook blocks; the dangerous bug is one that
   blocks the *good* case. Pipe both a should-block and a should-allow event and check each exit code.
 
@@ -136,5 +165,6 @@ Three patterns mined from the harness-efficiency build — reach for them when t
 Own skill. Bump `metadata.version` on any change (PATCH: wording/refs · MINOR: new section/template · MAJOR: contract change). Regenerate `VERSIONS.md` with `python3 star-alliance-skills/skillsmith/scripts/skill_registry.py write` after a bump, then `python3 build.py`.
 
 ## Changelog
+- **1.2.0** — **Enforcement-gate pitfalls section** added, mined from 8 sessions where PreToolUse gates false-positived and stalled real work: (1) anchor the command regex and carve out read-only tools + scratchpad writes — an unanchored write-detector misread `python3 -c`, heredocs, and redirects as writes (~37% false-block rate); (2) a disarm authorizes the whole operation — never auto-re-arm per tool-call, or a mid-repair gate deadlocks the next fix; (3) confirmation classifiers accept the affirmation family (`go`/`yes`/`proceed`/`try again`), not one exact phrase, without loosening onto `no`/`don't`; (4) resolve the repo root dynamically (`$CLAUDE_PROJECT_DIR` / `git rev-parse` / `__file__`) and fail open — a hardcoded home path hard-fails on any other machine. New section → MINOR.
 - **1.1.0** — **Proven patterns section** added, mined from the harness-efficiency build: (1) per-turn coalescing — move view/bookkeeping work off `PostToolUse: Edit|Write` (per-edit) onto a single `Stop` hook (per-turn, one coalesced commit), killing the `auto: Edit` storm; (2) marker-injection — a deciding hook prints a unique marker into context, a later `Stop` hook greps the transcript for it (the transcript is the cross-event channel); (3) proportional injection — tier a `UserPromptSubmit` hook's output by a stakes/size policy config, stakes-beats-size, unknown→heavy, env override + fail-to-heavy classifier. New section → MINOR.
 - **1.0.0** — Initial release. The Developer's craft for authoring Claude Code hooks: the five-event contract, stdin-JSON parsing, exit-code vs JSON-output decisions, matcher scoping, fail-open discipline, and the pipe-a-synthetic-event test loop — with a fail-open template and a two-branch test harness.

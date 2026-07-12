@@ -7,12 +7,13 @@ description: >
   "push law X to DB", "translate the codes", "add Law N/YYYY to the codex", "translate and
   publish a law", "do the social/labour/whatever law like we did before", "revise the codex
   translations", or "publish the codex law". Covers parse → insert (source_laws + law_articles,
-  AR canonical) → translate via Claude subagents → upsert (law_article_translations) → law-metadata
-  translation (source_law_translations) → full adversarial QA revision (Opus reviewers) → publish
-  (published=true on all articles + the source law). Translation is done by Claude subagents
-  (Ollama is gone). All writes go to production via service-role REST — no DDL, idempotent.
+  AR canonical) → translate via Claude subagents → mechanical pre-validation → upsert
+  (law_article_translations) → law-metadata translation (source_law_translations) → full
+  adversarial QA revision (Opus reviewers) → publish (published=true on all articles + the
+  source law). Translation is done by Claude subagents (Ollama is gone). All writes go to
+  production via service-role REST — no DDL, idempotent.
 metadata:
-  version: 1.1.0
+  version: 1.2.0
 type: Skill
 
 ---
@@ -77,8 +78,11 @@ Writes `<tmp>/articles.json` + `<tmp>/frontmatter.json` and prints a structure r
 parsed rows against EVERY article/table heading in the source (promulgation / main / table counts must
 match), flags any unrecognized `### مادة …`/`### Article …` heading that matched no regex (would be silently
 dropped — extend the regex if so), reports how many `مكرر` (bis) articles were captured, and asserts every
-row has non-empty `content_ar`. **Do not proceed unless validation passes** (exit 0). Spot-check one
-multi-paragraph article and one table (pipe grid preserved, `[[wikilinks]]` stripped to display text).
+row has non-empty `content_ar`. **The bis reconcile is a HARD FAIL, not a printed count:** independently
+`grep -c 'مكرر'` the source and assert the parser captured exactly that many bis slots — a bis heading that
+matched no regex is the single most common silent drop (both digit-suffixed `مكرر 3` and letter-suffixed
+`مكرر أ/ب` forms). **Do not proceed unless validation passes** (exit 0). Spot-check one multi-paragraph
+article and one table (pipe grid preserved, `[[wikilinks]]` stripped to display text).
 
 ### Phase 2 — Insert source law + articles
 
@@ -99,13 +103,44 @@ of ~5, not all at once** — high concurrency causes API socket timeouts; re-run
 - **Model:** prose batches → `sonnet` (strong + cost-aware); table batches → `opus` (grid/number integrity).
 - Each subagent: reads `references/TRANSLATE_INSTRUCTIONS.md` + its `in_<id>.json`, translates into
   en/fr/es/ru/zh, writes `<tmp>/batches/out_<id>.json` keyed by sort_order, self-validates coverage.
+- **Verbatim copy-through (mandatory):** every subagent MUST re-emit EVERY row in its batch — including rows
+  it left unchanged (already-good drafts, pure-numeric tables, "repealed" stubs) — copied through verbatim.
+  Completeness is measured on the merged output, so a batch that omits its untouched rows fails the merge
+  even though the agent did correct work. Say this in the brief: "emit all N rows; copy unchanged rows
+  through unmodified — never drop a row because it needed no change."
+- **CJK quote hygiene:** instruct ZH (and any locale) agents to write plain JSON — the JSON string escape is
+  the straight `"`; Chinese curly/smart quotes （“ ” 「」 『』) belong only INSIDE the translated text, never
+  as JSON structure. A smart quote emitted as a delimiter breaks `JSON.parse` on the whole `out_*.json`.
 - Tell table-batch agents to emphasize the table rules (preserve pipe grid + numeric cells verbatim).
 
 Then merge + validate full coverage:
 ```sh
 node scripts/merge_validate.js --phase translate   # → <tmp>/translations.json + cur_<id>.json slices
 ```
-Must report full coverage (rows × 5 × 4 fields, content/article_number non-empty). Upsert:
+
+### Phase 3.5 — Mechanical pre-validation (gate before EVERY upsert)
+
+Subagent output is untrusted text; never upsert it un-checked. Run a deterministic pass over the merged
+`out_*/rev_*` set **before** `upsert_translations.js`, on both the translate and review phases. It does four
+mechanical things and exits non-zero on any failure — no human eyeballing required:
+
+1. **JSON-parse each file in isolation.** A single malformed `out_*.json` (the CJK smart-quote-as-delimiter
+   bug above, a trailing comma, an unterminated string) must name the offending file, not fail the whole
+   merge anonymously. Report the file + byte offset so the batch can be re-spawned.
+2. **Digit + quote normalization.** Normalize Arabic-Indic digits (٠-٩) to Western in the 5 target locales,
+   and normalize stray smart/curly quotes that landed at JSON boundaries. Normalize in the *values*, never
+   silently rewrite AR `content_ar`. Log every substitution so a real content change can't hide inside a
+   "normalization".
+3. **Row completeness — count KEYED rows, not Write blocks.** The self-check must assert
+   `distinct sort_order keys present == expected article count`, comparing against `<tmp>/article_ids.json`.
+   The prior check miscounted by counting Write operations / top-level objects; a split→merge batch (large-law
+   half-split) produces one logical row map from two Writes, and a verbatim copy-through batch re-emits rows
+   from a neighbour — both fooled the old count. Diff the two key sets and print the exact missing/extra
+   `sort_order` list.
+4. **Key completeness per row.** Every present row must carry all 5 locales × 4 fields
+   (`content`, `article_number`, plus `chapter`/`section` where the AR row has them), each non-empty.
+
+Only after this pass exits 0:
 ```sh
 node scripts/upsert_translations.js
 ```
@@ -127,10 +162,13 @@ For each batch, spawn an **Opus reviewer** (groups of ~5). Each reads `reference
 + its `in_<id>.json` (Arabic source) + `cur_<id>.json` (current draft), hunts for omissions /
 mistranslations / wrong legal terms / number-and-reference drift / leftover Arabic / broken structure,
 **rewrites faulty fields**, writes `<tmp>/batches/rev_<id>.json` + `<tmp>/batches/changelog_<id>.json`
-(`[]` if clean). Use Opus reviewers even for the prose that Sonnet translated — independent, stronger pass.
+(`[]` if clean). Reviewers MUST also obey verbatim copy-through: re-emit every row in the slice, clean rows
+unchanged — a `rev_*` that contains only the rows it edited will fail Phase 3.5 completeness. Use Opus
+reviewers even for the prose that Sonnet translated — independent, stronger pass.
 
 ```sh
 node scripts/merge_validate.js --phase review   # merge rev_*, aggregate qa_fixes.json, count changed cells
+# then Phase 3.5 pre-validation again, then:
 node scripts/upsert_translations.js             # re-upsert corrected rows (idempotent)
 ```
 Surface the fix count + headline catches to the user (number errors, dropped content, hallucinations).
@@ -161,6 +199,7 @@ grep -cE '^### مادة'   "$SRC"   # H3 main  → parse_law.js (standard)
 grep -cE '^#### مادة'  "$SRC"   # H4 main  → parse_law_h4.js
 grep -cE '^##### مادة' "$SRC"   # H5 main  → parse_law_h5.js
 grep -cE '^### المادة' "$SRC"   # "al-" + spelled ordinal → parse_law_ordinal.js
+grep -cE 'مكرر'        "$SRC"   # bis count → must equal the parser's captured-bis number (hard fail if not)
 ```
 
 | Parser | Grammar it handles |
@@ -172,12 +211,17 @@ grep -cE '^### المادة' "$SRC"   # "al-" + spelled ordinal → parse_law_or
 | `parse_law_ordinal.js` | `### المادة N` (with al-) + spelled-out ordinal promulgation (`### المادة الأولى…`); normalises to house format. |
 | `parse_law_h3h4.js` | MIXED H3+H4 main (first arts at H3, rest at H4 — built for Y2018 L181 Consumer Protection). |
 
+**Bis is the recurring silent drop.** The `مكرر` regex must match BOTH digit-suffixed (`مادة 46 مكرر 3`) and
+Arabic-letter-suffixed (`مادة 12 مكرر أ`) forms, and the Phase-1 reconcile asserts the captured bis count
+equals `grep -cE 'مكرر' "$SRC"`. If a law uses letter-suffix bis, use `parse_law_h3.js` (or fork) — the
+standard parser drops those. A bis mismatch is exit-non-zero; do not "note it and continue."
+
 Body = lines after the heading until the next heading at/above the article level (so deeper `#`/`| … |` stay
 inside table bodies). Triage rules of thumb: H3-heavy → standard; H4-heavy → `parse_law_h4.js`; a law with
 **zero** `### مادة`/`#### مادة` headings is a different format entirely — investigate before forcing a parser.
 **Fork a per-law parser only when heading levels truly differ** (e.g. the Civil Code's H4-with-reused-`####`
 needed a campaign-local `parse_law_civil.js`); the validation asserts catch a mis-parse (gaps, wrong counts,
-empty content), so eyeball the structure report before proceeding.
+empty content, bis mismatch), so eyeball the structure report before proceeding.
 
 ## Large-law gotchas (>1000 articles)
 
@@ -187,8 +231,9 @@ Small laws (≤300 arts) never hit these; the Civil Code (1,151), Commercial Cod
   one Write can exceed Claude's 32k subagent output ceiling → `exceeded 32000 output token maximum`, 0 output
   after a long stall. **Fix:** split each undone batch into halves, translate the halves, merge back into the
   `out_*.json` name `merge_validate.js` expects (it keys off manifest ids + `Object.assign` by sort_order, so
-  split→merge is transparent). **Do NOT regenerate batches at a smaller cap** — that renumbers the manifest and
-  orphans done outputs.
+  split→merge is transparent). Phase-3.5 completeness counts KEYED rows, so a two-Write half-split reads as one
+  correct row map. **Do NOT regenerate batches at a smaller cap** — that renumbers the manifest and orphans
+  done outputs.
 - **Char-cap-only batching blows the cap a second way on row-heavy regions.** A region of many short rows (e.g.
   ~200 one-line "repealed" stubs) packs legally under the char cap but its output (`rows × 5 locales × 4 fields`
   + repeated chapter/section labels) can hit ~49k tokens. **Pre-empt:** re-batch with BOTH a char cap (~5500)
@@ -203,7 +248,8 @@ Small laws (≤300 arts) never hit these; the Civil Code (1,151), Commercial Cod
 
 - At ≤40 rows/batch the standard full `rev_`-slice flow stays under the 32k cap. For very large laws, use
   **changelog-only Opus reviewers** (output only `[{sort_order,locale,field,issue,corrected}]` → small output
-  regardless of batch size), apply programmatically, then re-upsert.
+  regardless of batch size), apply programmatically, then re-upsert. Changelog-only output sidesteps the
+  verbatim copy-through requirement (only changed cells are emitted, applied over the existing draft).
 - **Header drift:** per-batch reviewers each normalise the same Arabic chapter/section heading to their own
   batch's majority → cross-batch inconsistency. Cure = one deterministic global pass that sets the modal
   translation per locale across the whole law, AFTER apply-review, BEFORE the final upsert.
@@ -218,6 +264,11 @@ Small laws (≤300 arts) never hit these; the Civil Code (1,151), Commercial Cod
 ## Hard rules
 
 - **Translation = Claude subagents.** Ollama (the old qwen3:14b engine) is uninstalled. Do not reinstall it.
+- **Never upsert un-validated subagent output.** The Phase 3.5 mechanical pass (JSON-parse per file, digit/quote
+  normalization, keyed-row + per-row-key completeness) gates every `upsert_translations.js` on both translate
+  and review phases, and exits non-zero on any failure.
+- **Verbatim copy-through.** Full-slice translators and reviewers re-emit EVERY row in their batch, copying
+  unchanged rows through unmodified. Completeness is measured on the merge; dropping an untouched row fails it.
 - **Attached tables:** translate the title/headers/descriptive cells; **numeric codes, percentages, ages,
   coefficients are copied VERBATIM**; the markdown pipe grid is preserved exactly. Reviewers verify pipe-count
   + number parity per locale.
@@ -228,11 +279,14 @@ Small laws (≤300 arts) never hit these; the Civil Code (1,151), Commercial Cod
 ## Checklist
 
 - [ ] `config.json` written, `CODEX_CONFIG` exported, grammar triaged + matching fleet parser picked.
-- [ ] Parse validation passed (contiguous, non-empty, table count); spot-checked an article + a table.
+- [ ] Parse validation passed (contiguous, non-empty, table count, **bis count matches `grep -cE 'مكرر'`**);
+      spot-checked an article + a table.
 - [ ] source_laws + law_articles inserted (drafts); id map saved.
-- [ ] All batches translated (groups of ~5), merge reports full coverage, translations upserted.
+- [ ] All batches translated (groups of ~5), every row copied through, merge reports full coverage.
+- [ ] **Phase 3.5 pre-validation exits 0** (JSON-parse, digit/quote normalize, keyed-row + key completeness),
+      then translations upserted.
 - [ ] Law metadata translated + upserted (5 rows).
-- [ ] (If asked) Adversarial QA run; `qa_fixes.json` reviewed; corrections re-upserted.
+- [ ] (If asked) Adversarial QA run; `qa_fixes.json` reviewed; **pre-validation re-run**; corrections re-upserted.
 - [ ] (If asked) Published; `verify.js` confirms article_count = total, all published.
 - [ ] Vault log + INDEX row written; docs committed + pushed to `main`.
 
@@ -240,5 +294,6 @@ Small laws (≤300 arts) never hit these; the Civil Code (1,151), Commercial Cod
 
 | Version | Date | Summary |
 |---|---|---|
+| **1.2.0** | 2026-07-12 | Add-validation-pass upgrade (3 sessions). Added **Phase 3.5 — Mechanical pre-validation**, a deterministic gate before EVERY translation upsert: JSON-parse each `out_*/rev_*` file in isolation (names the file breaking on CJK smart-quote-as-delimiter), digit/quote normalization with logged substitutions, keyed-row completeness (count `distinct sort_order` vs `article_ids.json`, not Write blocks — the old count was fooled by half-splits and copy-through), and per-row 5×4 key completeness. Hardened the **bis/`مكرر` reconcile** into a hard failure covering both digit- and letter-suffixed forms. Made **verbatim copy-through** an explicit rule for full-slice translators and reviewers. Added CJK quote-hygiene guidance to the translate brief. Additive; parse/insert/publish mechanics unchanged. |
 | **1.1.0** | 2026-06-22 | Body-vs-reality upgrade (skillsmith routine, conf 9/10). Promoted 5 reusable parsers into the repo `scripts/` (`parse_law_h3/h4/h5/ordinal/h3h4.js`) that previously existed only on the device global copy — a fresh repo install now ships every grammar, not just standard H3. Rewrote the parser section into a **Parser fleet + grammar triage** table, and added **Large-law gotchas (>1000 articles)** (32k subagent output cap → half-split; char+row-cap re-batching; `verify.js` 1000-row false-green) and **QA-at-scale + domain watches** (changelog-only reviewers, header-drift canonicalization, criminal-law `السجن`→"rigorous imprisonment", cross-law ZH normalization, 0-tool-use subagent-abort/injection detect+respawn). Predecessors line updated 2 → ~12 laws. Additive only; pipeline mechanics unchanged. |
 | **1.0.0** | 2026-06-11 | Initial codex-law-translate pipeline (parse → insert → translate → meta → revise → publish). |

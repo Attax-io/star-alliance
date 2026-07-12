@@ -1,9 +1,9 @@
 ---
 name: observability-incident-response
 metadata:
-  version: 1.1.0
+  version: 1.2.0
 type: Skill
-description: "Keep a live service observable and respond when it breaks. Covers the three signals (structured logs, RED/USE metrics, distributed traces), alerting thresholds tied to SLOs and error budgets, and the incident lifecycle: detect, triage, mitigate, resolve, then a blameless post-mortem with a runbook. Grounded in the guild stack (Next.js on Cloudflare/OpenNext Workers, Supabase/Postgres). Triggers: 'the app is down', 'triage this outage', 'set up alerting', 'write a runbook', 'post-mortem this incident', 'add logging', 'add metrics', 'what's our SLO', 'are we paging on the right thing'. Differs from dev-ops-command-pack (the deploy/rollback/release loop), performance (profiling and optimization of healthy code), and bug-fix-workflow (a single tracked bug in the table) — this is run-time visibility and the live-failure response that surrounds them."
+description: "Keep a live service observable and respond when it breaks. Covers the three signals (structured logs, RED/USE metrics, distributed traces), alerting tied to SLOs and error budgets, heartbeat/dead-man's-switch alerting for unattended jobs (backups, cron, batch) that fail silently, and the incident lifecycle: detect, triage, mitigate, resolve, then a blameless post-mortem with a runbook. Grounded in the guild stack (Next.js on Cloudflare/OpenNext Workers, Supabase/Postgres). Triggers: 'the app is down', 'triage this outage', 'set up alerting', 'write a runbook', 'post-mortem this incident', 'add logging', 'add metrics', 'what's our SLO', 'are we paging on the right thing', 'my backup is stale', 'heartbeat this cron job', 'why didn't this job alert'. Differs from dev-ops-command-pack (the deploy/rollback/release loop), performance (profiling and optimization of healthy code), and bug-fix-workflow (a single tracked bug in the table) — this is run-time visibility and the live-failure response that surrounds them."
 ---
 
 # Observability & Incident Response
@@ -29,7 +29,8 @@ are stack-agnostic; the examples are not.
 - A **signals doctrine**: structured logs, metrics (RED for request-driven
   surfaces, USE for resources), and distributed traces — and when to reach for each.
 - An **alerting philosophy**: page on symptoms users feel, derived from SLOs and
-  spent against an error budget — not on every twitchy internal metric.
+  spent against an error budget — plus heartbeats on unattended jobs so a stalled
+  backup or cron is caught by its *silence*, not weeks later by hand.
 - An **incident lifecycle**: detect → triage → mitigate → resolve → post-mortem,
   with mitigation ranked above root-cause during the live event.
 - A **memory discipline**: runbooks that capture the response, and blameless
@@ -105,7 +106,42 @@ budget is burning *fast*, not at every momentary blip.
 If a pager goes off and the right human response was "ignore it," the alert is the
 bug. Delete or re-threshold it.
 
-### 4. In a live incident, mitigate before you diagnose — the clock is the boss
+### 4. Alert on the absence of success, not only the presence of errors — heartbeat every unattended job
+
+RED watches request-driven surfaces and USE watches live resources, but a whole
+class of failure is invisible to both: the **unattended periodic job** — a backup,
+a cron, a batch ETL, a scheduled refresh — that simply stops running or dies at
+startup. Nothing errors in your request path; a graph you weren't watching just
+goes flat. The only reliable signal is the **missing heartbeat**: alert when an
+expected success does *not* arrive on schedule.
+
+- Give every scheduled job a **dead-man's switch**. On success it pings a
+  heartbeat — a monitored URL, a Healthchecks-style check, or a
+  `last_success_at` row the monitor watches — and the alert fires when the ping is
+  **late**. This catches the silent stall an error-only alert never will, because
+  a job that stopped running emits no error to catch.
+- **A job that swallows its own stderr is worse than one that crashes loudly.** A
+  `pg_dump` that fails at connection and still exits cleanly, or whose error goes
+  to a log nobody reads, lets backups go stale for days undetected. Check exit
+  codes, capture stderr somewhere alerted, and never trust "it ran" — trust "it
+  produced a fresh, correctly-sized artifact."
+- **Assert on the artifact and its freshness, not just the run.** The newest DB
+  dump is younger than its interval *and* larger than a floor size; the search
+  index is under its row/size cap; replica lag is bounded. Staleness and silent
+  truncation are the failure modes; a mtime + size check on the latest artifact
+  is the cheapest guard against both.
+- **Watch the slow-fuse failures no request will report.** A credential — DB
+  password, API token, TLS cert — that expires or is rotated out from under a
+  background job, or a disk/index filling toward a hard cap, degrades silently
+  until it hits a wall. A freshness or utilization check catches these while
+  there's still runway; the moment a backup depends on a secret, its rotation is
+  an incident waiting to happen unless a heartbeat covers it.
+
+The test mirrors principle 1, inverted: if a job you rely on stopped right now,
+how long until something *other than a human eyeballing it* told you? If the
+answer is "days," or "when we needed the backup," heartbeat it.
+
+### 5. In a live incident, mitigate before you diagnose — the clock is the boss
 
 Root cause is a luxury of calm. During an incident the goal is to **stop user
 pain fastest**, even if the why is still unknown. The lifecycle is
@@ -121,7 +157,7 @@ deliberately ahead of resolve.
 - Resolve (the real fix) and the *understanding* come **after** mitigation. Note
   the hypothesis, but don't gate stopping the bleed on proving it.
 
-### 5. Close every incident into the system — runbook and blameless retro, or it recurs
+### 6. Close every incident into the system — runbook and blameless retro, or it recurs
 
 An incident isn't over when the graph recovers; it's over when it can't recur the
 same way unnoticed. The artifacts are a **runbook** (so the next responder is
@@ -133,21 +169,27 @@ faster) and a **blameless post-mortem** (so the system, not a person, changes).
 - Run the retro **blameless**: assume everyone acted reasonably on the information
   they had. The output is system change — an alert, a guardrail, a fixed runbook,
   an instrumentation gap closed — with an owner and a date, never "be more careful."
-- Feed the loop back to principle 1: the incident named a question you couldn't
-  answer fast enough. Instrument it now, so next time you can.
+- Feed the loop back to principles 1 and 4: the incident named a question you
+  couldn't answer fast enough, or a silence nothing alerted on. Instrument it, or
+  heartbeat it, now — so next time the system tells you before a human has to.
 
 ## References
 
 - `references/observability-signals.md` — logs, metrics (RED/USE), tracing, and
   what each looks like on the Next.js / Cloudflare-OpenNext / Supabase stack.
 - `references/slos-and-alerting.md` — SLIs, SLOs, error budgets, burn-rate
-  alerting, and the symptom-vs-cause paging rule with worked thresholds.
+  alerting, and the symptom-vs-cause paging rule with worked thresholds; plus
+  heartbeat / dead-man's-switch alerting for unattended jobs — how to monitor a
+  backup, cron, or batch job by the *absence* of an on-schedule success, with
+  artifact-freshness and size-floor checks.
 - `references/incident-lifecycle.md` — the detect→resolve loop, incident roles and
   severity, and the live-event mitigation playbook for the guild stack.
-- `references/runbooks-and-postmortem.md` — runbook anatomy with two fill-in
-  templates (a minimal incident-response one and a full operational one — Overview,
+- `references/runbooks-and-postmortem.md` — runbook anatomy with fill-in templates
+  (a minimal incident-response one and a full operational one — Overview,
   Prerequisites, per-step Procedure, Verification, Rollback, Troubleshooting,
-  Contacts, Revision History), plus the blameless post-mortem structure, a
+  Contacts, Revision History), a worked **backup / restore operational runbook**
+  (verify a dump is fresh and complete, restore-drill it, and rotate the
+  credentials the job depends on), plus the blameless post-mortem structure, a
   post-mortem fill-in skeleton, a knowledge-transfer (KT) skeleton, and action-item
   discipline.
 
@@ -156,6 +198,17 @@ authoring) and `engineering:incident-response` (incident process patterns).
 
 ## Changelog
 
+- **1.2.0** — Added principle 4, *Alert on the absence of success* — heartbeat /
+  dead-man's-switch monitoring for unattended jobs (backups, cron, batch) that fail
+  silently, with artifact-freshness/size-floor checks and the slow-fuse credential/
+  capacity failure modes. Renumbered mitigate (now 5) and close-the-loop (now 6).
+  Extended the `slos-and-alerting.md` and `runbooks-and-postmortem.md` reference
+  notes with heartbeat alerting and a backup/restore operational runbook. Prompted
+  by a real silent degradation: a NAS/Supabase `pg_dump` job died at connection and
+  swallowed its stderr, letting DB dumps go stale 13+ days (root cause: an unrotated
+  DB password) with no heartbeat to surface the stall. The skill covered
+  error-driven and resource alerting but had no doctrine for the job that simply
+  stops; this closes that gap.
 - **1.1.0** — Added concrete fill-in templates to `runbooks-and-postmortem.md`: a
   full operational runbook template (Overview · Prerequisites · per-step Procedure
   with expected-output and on-error · Verification · Rollback · Troubleshooting

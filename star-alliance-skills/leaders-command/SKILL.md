@@ -1,8 +1,8 @@
 ---
 name: leaders-command
-description: "The Butler's down-command craft — take the Guild Master's words and re-issue them to a member or Claude subagent as one concise, precise, complete order, so it executes correctly first-time: no round-trips, minimal tokens. Built on seven axioms (intent first, bottom-line-up-front, one reading, complete-the-brief, bound-the-field, contract-the-return, right-size-to-the-subordinate) and an order shape from military mission-command and BLUF/SMEAC. Two modes: COMPOSE (write an order, right-sized to who executes it) and AUDIT (critique and rewrite a draft order). A runnable composer (guild/command.py) drafts an order from intent. Triggers: 'command the team', 'turn this into a clear order', 'write the prompt for the subagent', 'brief the agent', 'make this instruction precise', 'audit this order'. Differs from frame_brief (frames the request UP into a brief), members-formation (chooses WHO), and system-prompt-design-patterns (a model's persistent system prompt)."
+description: "The Butler's down-command craft — take the Guild Master's words and re-issue them to a member or Claude subagent as one concise, precise, complete order, so it executes correctly first-time: no round-trips, minimal tokens. Opens with the dispatch obligation: a leader issues the order and never absorbs builder-grade work (code, structural, bulk) inline. Built on seven axioms (intent first, bottom-line-up-front, one reading, complete-the-brief, bound-the-field, contract-the-return, right-size-to-the-subordinate) and an order shape from military mission-command and BLUF/SMEAC. Two modes: COMPOSE (write an order, right-sized to the executor) and AUDIT (critique and rewrite a draft order). A runnable composer (guild/command.py) drafts an order from intent. Triggers: 'command the team', 'turn this into a clear order', 'write the prompt for the subagent', 'audit this order'. Differs from frame_brief (frames UP), members-formation (chooses WHO), and system-prompt-design-patterns (a persistent system prompt)."
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 type: Skill
 ---
 # Leader's Command — the Butler's down-command craft
@@ -16,6 +16,28 @@ buries under detail. The craft is the **minimal sufficient order**.
 This is the Butler's signature move: the Guild Master speaks in plain, sometimes loose
 words; the Butler re-issues them DOWN to the chosen member or subagent as a clear,
 precise, complete order — so the work comes back right the first time.
+
+## The dispatch obligation — issue the order, don't absorb the work
+
+The purpose of this whole craft is to **move work down**, not to absorb it. A leader
+(the Butler, or the Strategist) holds the picture precisely so they can *hand it off* — the
+command IS the deliverable, the builder-grade work is not the leader's to do.
+
+**Bright-line self-check.** If you — Butler or Strategist — reach for `Edit`, `Write`, or
+`Bash` on product code, or start a structural refactor, or begin a bulk/parallel change
+inline, that reach IS the signal you skipped the dispatch. Stop. Compose the order and
+send it down instead:
+
+- **code** (features, fixes, tooling) → **the-developer** (or a spawned Claude subagent).
+- **structural** (system design, data model, structural refactor) → **the-architect**.
+- **bulk / parallel** (a job too big for one pass) → **fan out Claude subagents** — that
+  is the guild's bulk path, and (for the Butler) swarm orchestration is his to run.
+
+"Delegate appropriately" is exactly the soft line that never moved behavior — axiom 3
+(one reading) applies to this rule too. The rule is concrete: leaders write the order;
+builders build. The only inline work a leader does is *composing the command itself*.
+(Choosing *who* is `members-formation`; this section is only the obligation to hand off,
+not to do.)
 
 ## What it is / is not
 
@@ -106,6 +128,11 @@ mode/section · MAJOR contract change); regenerate `VERSIONS.md` and rebuild.
 
 ## Changelog
 
+- **1.1.0** — Added the dispatch obligation: a prominent bright-line rule (right after the
+  intro) that a leader — Butler or Strategist — issues the order and never absorbs
+  builder-grade work (code → Developer, structural → Architect, bulk → subagents) inline.
+  Written as a concrete self-check tied to reaching for Edit/Write/Bash, because the soft
+  "delegate appropriately" line never moved behavior. Seven axioms and both modes unchanged.
 - **1.0.0** — Initial release. Seven axioms, the BLUF/SMEAC order shape, COMPOSE + AUDIT
   modes, the runnable `guild/command.py` composer (right-sized by --target), and three
   references. Carried by the-butler — his craft of turning the Guild Master's words into

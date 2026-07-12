@@ -1,13 +1,35 @@
 ---
 name: cleanup
-description: "Multi-mode hygiene skill for Lex Council. Modes — language (i18n translations); consolidate (i18n key dedup); hardcoded (extract raw UI text to next-intl keys); leaks (i18n keys used in code but missing from JSON); errors (dev log sweep); postgres (Supabase advisors + pg health); lint (ESLint --fix + tsc); consolidate-code (duplicate code detection); bundle (Cloudflare Worker size-wall hygiene); release (version bump + hygiene gate); docs (frontmatter/wikilinks/orphans); followups (deferred items); manual (in-app user manual translated in all 6 locales); rpc-authz (public SECURITY DEFINER RPCs that drifted open — ungated / over-exposed). Run all via scripts/run_all.py. Triggers: \"run cleanup\", \"/cleanup\", \"i18n cleanup\", \"translate untranslated\", \"find hardcoded text\", \"find leaking keys\", \"raw key paths\", \"fix dev errors\", \"check postgres\", \"run lint\", \"consolidate code\", \"check the bundle size\", \"doc cleanup\", \"finish followups\", \"update the manual\", \"bump the version\", \"release X.Y.Z\", or any hygiene sweep after a campaign. Full mode recipes in references/."
+description: "Multi-mode hygiene skill for Lex Council. Modes — language (i18n translations); consolidate (i18n key dedup); hardcoded (extract raw UI text to keys); leaks (i18n keys used in code but missing from JSON → raw key-paths; also flags double-prefixed t() calls); errors (dev log sweep); postgres (advisors + pg health); lint (ESLint --fix + tsc); consolidate-code (dup code detect); bundle (Worker size-wall hygiene); release (version bump + gate); docs (frontmatter/wikilinks); followups (deferred items); manual (in-app user manual, 6 locales); rpc-authz (ungated public SECURITY DEFINER RPCs). Run all via scripts/run_all.py. Triggers: \"run cleanup\", \"/cleanup\", \"i18n cleanup\", \"translate untranslated\", \"find hardcoded text\", \"find leaking keys\", \"raw key paths\", \"fix dev errors\", \"check postgres\", \"run lint\", \"consolidate code\", \"check the bundle size\", \"doc cleanup\", \"finish followups\", \"update the manual\", \"bump the version\", \"release X.Y.Z\", or any hygiene sweep after a campaign. Full mode recipes in references/."
 metadata:
-  version: 1.23.0
+  version: 1.24.0
 type: Skill
 
 ---
 
-# Cleanup — Lex Council hygiene sweeps (v1.23.0)
+# Cleanup — Lex Council hygiene sweeps (v1.24.0)
+
+<!-- v1.24.0 (2026-07-12) — `leaks` mode hardening. The single most recurrent
+  product task is i18n keys rendering as raw uppercased key-paths in the UI;
+  8 sessions of that class drove four fixes to `scripts/i18n_extract.py leaks`:
+  (1) the resolver now TRUSTS each component's own `useTranslations()` /
+  `getTranslations()` declaration instead of its unreliable first-guess
+  namespace — this kills both phantom leaks (a wrong-ns false HIGH) and missed
+  real ones (a key resolved under the wrong ns looked present);
+  (2) before minting any EN value it greps the WHOLE locale set for an existing
+  key path, so a real key already living under another namespace is reused, not
+  duplicated;
+  (3) new `double_prefixed` HIGH class — a `t('ns.key')` written under
+  `useTranslations('ns')` resolves to `ns.ns.key` and leaks even though the key
+  exists (a top real-world cause the old resolver silently accepted);
+  (4) new `--ci` pre-ship guard (exit 1 on any `en_absent`/`double_prefixed`) so
+  leaks are caught mechanically before deploy, not after.
+  §Modes `leaks` row + `### Mode: leaks` prose + `references/mode-leaks.md`
+  updated. New detection classes + optional flag, same invocations → MINOR.
+  Also: v1.23.0's `rpc-authz` addition had left the frontmatter description at
+  1110 chars (over the ≤1024 installer limit); trimmed the per-mode
+  parentheticals back under 1024 (full mode list + every trigger phrase
+  preserved). (Lex, 2026-07-12.) -->
 
 <!-- v1.23.0 (2026-07-06) — NEW `rpc-authz` mode. Recurring guard against
   public SECURITY DEFINER RPCs drifting open. Such fns bypass RLS, so the FE
@@ -144,7 +166,7 @@ skill body routes to the right workflow based on what the user asked for.
 | **docs** | LIVE | Sync stale frontmatter dates + counts on planet hubs; flag broken wikilinks + archived-pointers; find orphan vault-logs; bump app version stamp in Vault Core; grep for retired-primitive names; detect post-rename narrative artifacts. Script: `scripts/docs_cleanup.py`. |
 | **followups** | LIVE | After a campaign closes, sweep vault-logs + risk-sweep files for deferred items. Classify as doable-autonomously / needs-user-hands / accepted-permanent-exception. Execute doable ones in parallel; surface the rest. Script: `scripts/followups_cleanup.py`. |
 | **hardcoded** | LIVE | Find raw hardcoded user-facing English text still in components (.tsx/.ts) and extract it to next-intl `t()` keys — the gap `language` (translates existing keys) / `consolidate` (dedups keys) never covered. `merge` UPSERTs the minted EN keys + `propagate` UPSERTs the placeholder rows into `app_translations` (DB, the source of truth) + mirror the JSON — **DB-native since v1.19.0 (#303)** so they survive the build dump and the `language` handoff sees them. Script: `scripts/i18n_extract.py` (detect/merge/propagate/verify); recipe `references/mode-hardcoded.md`. Scales 1-file → one-agent-per-file fan-out → `/conquering-campaign`. |
-| **leaks** | LIVE | The INVERSE of `hardcoded`: keys USED in code (`t('ns.key')`) but ABSENT from the locale source → render as the raw uppercased key-path (next-intl `getMessageFallback`) in the UI. `scripts/i18n_extract.py leaks` resolves every static `t()` key app-wide (matches `useTranslations` **and** `getTranslations`/`{namespace:}`), flags EN-absent (HIGH) + locale-parity (MED). Default source = committed JSON; **`--db` = deploy-truth check against `app_translations`** (flags keys not yet pushed to the DB that vanish on the next dump). Detect+surface only; remediation targets the DB (#303). The class that leaked the public Codex page twice. Recipe `references/mode-leaks.md`. |
+| **leaks** | LIVE | The INVERSE of `hardcoded`: keys USED in code (`t('ns.key')`) but ABSENT from the locale source → render as the raw uppercased key-path (next-intl `getMessageFallback`) in the UI. `scripts/i18n_extract.py leaks` resolves every static `t()` key app-wide **trusting each component's own `useTranslations()`/`getTranslations()` declaration** (not the resolver's first-guess namespace — the v1.24.0 fix that kills both phantom and missed leaks), and flags EN-absent (HIGH), locale-parity (MED), and **`double_prefixed` (HIGH)** — a `t('ns.key')` under `useTranslations('ns')` that resolves to `ns.ns.key` and leaks even though the key exists. **Before minting any EN value it greps the whole locale set for an existing key path** so a real key under another namespace is reused, not duplicated. Default source = committed JSON; **`--db` = deploy-truth check against `app_translations`** (flags keys not yet pushed to the DB that vanish on the next dump). **`--ci` = pre-ship guard** (exit 1 on any `en_absent`/`double_prefixed`) so leaks are caught mechanically before deploy. Detect+surface only; remediation targets the DB (#303). The class that leaked the public Codex page twice. Recipe `references/mode-leaks.md`. |
 | **bundle** | LIVE | Cloudflare/OpenNext **Worker size-wall** hygiene. `detect` (static, build-free) flags heavy client-only libs (`recharts`) imported OUTSIDE the `.body`+`dynamic({ssr:false})` convention so they leak into the SSR/Worker bundle (the class that failed the 1.7.60 deploy); `measure` (build-gated) gzips the built worker vs the 3 MiB free / 10 MiB paid wall — **the 10 MiB wall is auto-selected when `CF_WORKERS_PAID` is set or a `.cloudflare-paid` marker is present at the web dir or any repo-root ancestor (FREE 3 MiB stays the default otherwise; `--paid` forces paid)**. Feeds the `release` gate + `run_all`. Script: `scripts/bundle_cleanup.py`. Recipe `references/mode-bundle.md`. |
 | **activity-coverage** | LIVE | Keep the **user-activity monitor** in lock-step with the app's mutation + UI surface so a new page/action never goes silently untracked. `detect` parses the LIVE `VERB_EVENT` + `WRITE_ACTIVITY_DENY` from `_shared.ts` + the DB allow-list (committed-constant fallback offline) and flags 4 drift classes: `unknown_literal` (HIGH — fired in code but absent from `user_activity_event_types`, silently rejected → 0 rows), `boundary_bypass` + `uncovered_verb` (MED — a write that skips the auto-emit boundary), `dead_type` (LOW). Auto-wires the mechanical fix (`uncovered_verb` → a `VERB_EVENT` entry, no DB change); surfaces the HIGH catalog seed as approval-gated SQL. Script: `scripts/activity_coverage.py`. Recipe `references/mode-activity-coverage.md`. |
 | **manual** | LIVE | Keep the DB-backed in-app user manual translated + fresh (like `docs` does for the planet hubs). Detects Parts whose EN `body_md` hash ≠ stored `source_md_hash` per locale (**stale**) or have no row (**missing**); re-translates the gaps and **auto-publishes** via a per-Part translation workflow (routes / backticked code / `§` numbers / heading anchors kept verbatim); also flags Parts whose EN may be drifted by recent app changes (surface-only). MCP + workflow driven (no static script). Recipe `references/mode-manual.md`. |
@@ -168,7 +190,7 @@ Trigger phrases (any of):
 - "sync the doc footers", "doc cleanup", "check the docs are fresh" → routes to `docs`
 - "finish the followups", "close the followups", "sweep the campaign followups" → routes to `followups`
 - "find hardcoded text", "extract hardcoded strings", "key-ify the hardcoded strings", "/cleanup hardcoded" → routes to `hardcoded`
-- "find leaking keys", "missing translation keys", "keys showing as raw text", "raw key paths", "why is the UI showing the key name", "/cleanup leaks" → routes to `leaks`
+- "find leaking keys", "missing translation keys", "keys showing as raw text", "raw key paths", "double-prefixed keys", "the key name shows in the UI", "why is the UI showing the key name", "/cleanup leaks" → routes to `leaks`
 - "check the bundle size", "is the app too big", "worker size limit", "trim the bundle", "the deploy failed on size", "/cleanup bundle" → routes to `bundle`
 - "update the manual translations", "is the manual up to date", "translate the manual", "the manual is stale", "/cleanup manual" → routes to `manual`
 - "check activity coverage", "what actions aren't tracked", "is the activity monitor complete", "activity-monitor gaps", "/cleanup activity-coverage" → routes to `activity-coverage`
@@ -194,7 +216,7 @@ Look at the user's phrasing. Default mode is `language` unless they explicitly n
 | "sync the doc footers", "doc cleanup", "/cleanup docs" | `docs` |
 | "finish the followups", "close the followups", "/cleanup followups" | `followups` |
 | "find hardcoded text", "extract hardcoded strings", "key-ify the hardcoded strings", "/cleanup hardcoded" | `hardcoded` |
-| "find leaking keys", "missing translation keys", "raw key paths", "/cleanup leaks" | `leaks` |
+| "find leaking keys", "missing translation keys", "raw key paths", "double-prefixed keys", "/cleanup leaks" | `leaks` |
 | "check the bundle size", "worker size limit", "the deploy failed on size", "/cleanup bundle" | `bundle` |
 | "update the manual translations", "is the manual up to date", "translate the manual", "/cleanup manual" | `manual` |
 | "check activity coverage", "what actions aren't tracked", "activity-monitor gaps", "/cleanup activity-coverage" | `activity-coverage` |
@@ -252,7 +274,7 @@ Read `references/mode-hardcoded.md` for the full recipe (Steps H1–H8: detect c
 
 ### Mode: leaks
 
-Read `references/mode-leaks.md` for the full recipe (Steps LK1–LK3: detect via `i18n_extract.py leaks` — resolve every static `t()` key app-wide, classify EN-absent HIGH / locale-absent MED; mint the EN value (never auto-added) + propagate/translate; verify + log). The INVERSE of `hardcoded` and the blind spot of `language` — keys used in code but absent from the JSON render as raw key-paths in the UI.
+Read `references/mode-leaks.md` for the full recipe (Steps LK1–LK3: detect via `i18n_extract.py leaks` — resolve every static `t()` key app-wide **against the component's own declared `useTranslations()`/`getTranslations()` namespace** (never the resolver's first-guess), classify EN-absent HIGH / locale-absent MED / **double-prefixed HIGH** (a `t('ns.key')` under `useTranslations('ns')` resolving to `ns.ns.key`); **grep the full locale set for an existing key path before minting** so a real key is reused not duplicated; mint the EN value (never auto-added) + propagate/translate; verify + log). The INVERSE of `hardcoded` and the blind spot of `language` — keys used in code but absent from the JSON render as raw key-paths in the UI. **`--ci` gives a pre-ship/CI guard** (non-zero exit on any HIGH leak) so a leak fails the build instead of shipping to the UI.
 
 ### Mode: docs
 
@@ -312,7 +334,7 @@ Read `references/mode-release.md` for the full gate recipe (Steps PR1–PR4: hyg
 
 > **Read `references/landmines.md`** before any cleanup pass that touches DB schema, consolidation, or release.
 
-Lessons also wired into scripts: L9/L10/L15/L17 → `postgres_cleanup.py`; L11 + L19 → `lint_cleanup.py`; L14 → `errors_cleanup.py`; L16 → `i18n_cleanup.py`; L27 → `commit_scope.py` (v1.10.0); L33 → `i18n_extract.py detect` (`expr` context, v1.12.0); L34/L36/L37 → `followups_cleanup.py` (`parity` / `orphan-index` / classifier guard, v1.12.0); L38 → `i18n_extract.py leaks` (v1.13.0); L39 → `bundle_cleanup.py` (v1.14.0); L40 → `rotate.py` (v1.16.0).
+Lessons also wired into scripts: L9/L10/L15/L17 → `postgres_cleanup.py`; L11 + L19 → `lint_cleanup.py`; L14 → `errors_cleanup.py`; L16 → `i18n_cleanup.py`; L27 → `commit_scope.py` (v1.10.0); L33 → `i18n_extract.py detect` (`expr` context, v1.12.0); L34/L36/L37 → `followups_cleanup.py` (`parity` / `orphan-index` / classifier guard, v1.12.0); L38 → `i18n_extract.py leaks` (v1.13.0, hardened v1.24.0 — declaration-trusted namespace + double-prefix class + `--ci` guard); L39 → `bundle_cleanup.py` (v1.14.0); L40 → `rotate.py` (v1.16.0).
 
 ## Why this skill exists
 
@@ -338,6 +360,7 @@ This skill carries a semantic version in its frontmatter (`version: X.Y.Z`) and 
 
 | Version | Date | Summary |
 |---|---|---|
+| **1.24.0** | 2026-07-12 | **`leaks` mode hardening — the single most recurrent product task (i18n keys rendering as raw uppercased key-paths; 8 sessions of that class).** Four fixes to `scripts/i18n_extract.py leaks`: (1) the resolver now **trusts each component's own `useTranslations()`/`getTranslations()` namespace declaration** instead of its unreliable first-guess — killing both phantom leaks (a wrong-ns false HIGH) and missed real ones (a key resolved under the wrong ns looked present); (2) **before minting any EN value it greps the whole locale set for an existing key path**, so a key already living under another namespace is reused, not duplicated; (3) new **`double_prefixed` HIGH class** — a `t('ns.key')` written under `useTranslations('ns')` resolves to `ns.ns.key` and leaks even though the key exists; (4) new **`--ci` pre-ship guard** (exit 1 on any `en_absent`/`double_prefixed`) so leaks fail the build mechanically before deploy. §Modes `leaks` row + `### Mode: leaks` prose + `references/mode-leaks.md` updated. New detection classes + optional flag, same invocations → MINOR. Also: v1.23.0's `rpc-authz` addition had left the frontmatter description at 1110 chars (over the ≤1024 installer limit); trimmed the per-mode parentheticals back under 1024 (full mode list + every trigger phrase preserved). |
 | **1.22.0** | 2026-07-06 | **New `activity-coverage` mode — keep the user-activity monitor in lock-step with the app's mutation + UI surface.** Guards the two rot paths: an `event_type` emitted in code but never seeded into `public.user_activity_event_types` (silently rejected → 0 rows; the class that killed `record.create` for ~6 weeks and hid `document.move`), and a new write whose RPC verb isn't in the `VERB_EVENT` auto-emit map (`_shared.ts`) or that bypasses `callServerRpc`. New `scripts/activity_coverage.py` (`detect`/`classify`) parses the live `VERB_EVENT`/`WRITE_ACTIVITY_DENY` + DB allow-list (committed-constant fallback), ranks 4 drift classes. Wired into `run_all` + router + Modes table + `references/mode-activity-coverage.md`. New mode → MINOR. |
 | **1.21.0** | 2026-07-01 | **`bundle measure` now auto-selects the 10 MiB paid wall via a project-scoped signal (`CF_WORKERS_PAID` env or `.cloudflare-paid` marker at the web dir or any repo-root ancestor), free 3 MiB default preserved for other projects — fixes the recurring release-gate false-fail after a Workers Paid upgrade (Lex, 2026-07-01).** New `_paid_plan_signal()` helper (env-first, then marker walk up to 3 levels); `cmd_measure` exposes `paid_source` in the JSON (`--paid flag` / `env CF_WORKERS_PAID` / marker path / `null`) and prints a `(paid 10 MiB wall auto-selected via …)` header line when the signal fires but `--paid` is absent. `--paid` help text + the §Modes `bundle` row + the `### Mode: bundle` prose + `references/mode-bundle.md` Step B3 + the `release` gate PR2 row all updated. New optional auto-detect capability, no invocation breakage → MINOR. |
 | **1.20.0** | 2026-06-26 | **Repo↔device fork reconciliation (skillsmith sync).** The repo distribution copy and the canonical device copy (developed in Lex Council App, symlinked into `~/.claude/skills`) had diverged on a colliding `1.18.0`: the skillsmith routine shipped a repo-only `1.18.0` (the `docs` D4+D5 systemic-threshold escape) on 2026-06-20, the same week the device shipped its own `1.18.0` (the i18n DB-native rewrite) + `1.19.0` (hardcoded DB-native) on 2026-06-21. Back-synced the device lineage into the repo: `scripts/_db_translations.py` (new), `i18n_cleanup.py`, `consolidate_cleanup.py`, `i18n_extract.py` (DB-native); `references/mode-language`, `mode-consolidate`, `mode-hardcoded`, `mode-leaks` + `landmines.md` (L41); the §Modes table rows + the v1.18.0/v1.19.0 comment blocks + §Related. The device lineage takes the canonical 1.18.0/1.19.0 changelog slots below; the repo-only `docs` D4+D5 escape is **retained** (`references/mode-docs.md` unchanged) and credited here. The Cowork-trimmed 991-char description is preserved (the device's richer one exceeds the ≤1024 installer limit). Device stays the canonical fork; this is the distribution mirror. Sync-only reconciliation, no new behavior → MINOR (supersedes the 1.18.0 collision). |
@@ -379,12 +402,12 @@ This skill carries a semantic version in its frontmatter (`version: X.Y.Z`) and 
 - `references/mode-consolidate-code.md` — consolidate-code mode recipe.
 - `references/mode-release.md` — release mode gate recipe (Phase 1).
 - `references/mode-hardcoded.md` — hardcoded mode recipe (find + extract raw UI text to keys).
-- `references/mode-leaks.md` — leaks mode recipe (used-but-absent i18n keys → raw key-paths).
+- `references/mode-leaks.md` — leaks mode recipe (used-but-absent i18n keys → raw key-paths; declaration-trusted namespace + double-prefix class + `--ci` guard since v1.24.0).
 - `references/mode-bundle.md` — bundle mode recipe (Cloudflare/OpenNext Worker size-wall hygiene).
 - `references/mode-manual.md` — manual mode recipe (DB-backed in-app user manual i18n freshness).
 - `references/mode-activity-coverage.md` — activity-coverage mode recipe (keep the user-activity monitor's instrumentation complete).
 - `scripts/activity_coverage.py` — activity-coverage machinery (detect/classify).
-- `scripts/i18n_extract.py` — hardcoded + leaks mode machinery (detect/merge/propagate/verify/leaks). `merge`/`propagate` are DB-native since v1.19.0 (#303): they UPSERT the minted EN keys + propagated placeholder rows into `app_translations` via `_db_translations.upsert_rows` and mirror the JSON (`--files-only` to skip).
+- `scripts/i18n_extract.py` — hardcoded + leaks mode machinery (detect/merge/propagate/verify/leaks). `merge`/`propagate` are DB-native since v1.19.0 (#303): they UPSERT the minted EN keys + propagated placeholder rows into `app_translations` via `_db_translations.upsert_rows` and mirror the JSON (`--files-only` to skip). `leaks` since v1.24.0 resolves keys against each component's own `useTranslations()`/`getTranslations()` declaration, greps the full locale set before minting, flags the `double_prefixed` class, and offers a `--ci` pre-ship guard.
 - `scripts/_db_translations.py` — shared DB transport for the i18n modes (#303, v1.18.0): service-role REST against `public.app_translations` (env-load + prod-ref guard, paginated read, chunked upsert, safe per-key DELETE, DB-or-JSON source resolver). Python counterpart to `apps/web/scripts/{push,dump}-translations.mjs`.
 - `scripts/bundle_cleanup.py` — bundle mode machinery (detect/measure).
 - `scripts/rotate.py` — hourly rotation driver (R15, §L40): next/advance/show/sync-order over the routine cursor; never commits or pushes.

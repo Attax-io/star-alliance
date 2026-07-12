@@ -2,18 +2,18 @@
 name: session-mining
 description: >-
   Mine your own Claude session history for lessons, then turn them into ranked, verified upgrade
-  proposals. Use when the user says 'review the last N sessions', 'what did we learn from these
-  sessions', 'mine my sessions', 'what should we upgrade/merge/create from past work', 'audit the
-  sessions for lessons', or any retrospective over prior runs. Also CHECKPOINT: 'save my progress',
-  'checkpoint this', 'resume where I left off' — saves/reads working context.
-  Locates the three session stores (Claude Code project transcripts, Cowork wrappers, scheduled-task
-  runs), extracts only signal-bearing turns (corrections + proposals, never tool noise) with
-  offset/limit discipline so a 68MB store never blind-reads, hands bulk summarizing to parallel Claude
-  subagents, synthesizes a deduped lesson register, then runs a VERIFY pass against the live repo that kills
-  every 'lesson' already shipped. Output is propose-only (apply-gate OFF). The on-demand companion to
-  skillsmith's daily routine; uses storm-investigation to synthesize.
+  proposals. Use when the user says 'review the last N sessions', 'what did we learn', 'mine my
+  sessions', 'what to upgrade/merge/create from past work', or any retrospective over prior runs. Also
+  CHECKPOINT: 'save my progress', 'resume where I left off' — saves/reads working context. Locates the
+  session stores (Claude Code transcripts, Cowork wrappers, scheduled-task runs, plus subagent
+  transcripts where the orchestrator, not the human, holds the 'user' role), extracts signal-bearing
+  turns (corrections + proposals, never tool noise) — widening the keyword lens past the guild default
+  when the window is app-work — with offset/limit discipline so a big store never blind-reads, fans
+  summarizing to Claude subagents, synthesizes a deduped register, then VERIFIES against the live repo
+  to kill every 'lesson' already shipped. Propose-only. Companion to skillsmith's daily routine; uses
+  storm-investigation to synthesize.
 metadata:
-  version: 1.3.0
+  version: 1.4.0
 type: Skill
 
 ---
@@ -30,17 +30,20 @@ recurs constantly and was re-improvised by hand every time. This is the saved pi
 
 ## Where the sessions live (Phase 0 — locate)
 
-Three stores. The harness only knows one of them; find all three.
+Four stores. The harness only knows one of them; find all four.
 
 | Store | Path | Holds |
 |---|---|---|
 | **Claude Code transcripts** | `~/.claude/projects/<slug>/<cliSessionId>.jsonl` | The real conversation bodies (slug = cwd, `/`→`-`). |
 | **Cowork wrappers** | `~/Library/Application Support/Claude/claude-code-sessions/**/local_*.json` | Metadata only — `title` + `cwd`, keyed by `cliSessionId` → resolves to the `.jsonl`. |
 | **local-agent-mode** | `~/Library/Application Support/Claude/local-agent-mode-sessions/` | Older Cowork store; one message per file, extension-less. Treat as text. |
+| **Subagent transcripts** | `~/.claude/projects/<slug>/<cliSessionId>/subagents/agent-*.jsonl` | The bodies of spawned Task subagents. **The top-level `user` turn is the ORCHESTRATOR's brief, not the human** — the real signal is in the assistant turns. NOT joined by `session_map.py`; glob separately. |
 
 `scripts/session_map.py --match <cwd-substring>` joins the first two for you: emits a size-sorted TSV
 of `bytes · title · cliSessionId · jsonl-path`. The Cowork wrapper's `cliSessionId` is the join key —
-a wrapper titled "X" is NOT its own transcript; it points at one.
+a wrapper titled "X" is NOT its own transcript; it points at one. `session_map.py` resolves only the
+top-level `<cliSessionId>.jsonl`; **subagent transcripts are not in the TSV** — reach them via the
+`--jsonl` glob in Phase 2.
 
 ## The pipeline (run in order)
 
@@ -52,9 +55,38 @@ table of contents of what was done. Pick the window (a project, a date range, "l
 Transcripts routinely exceed token caps — a star-alliance window was **68MB / 50 sessions**. NEVER
 full-read. `scripts/mine_sessions.py --map map.tsv --out digest.txt` pulls only signal turns (user
 corrections/requests + assistant proposals/gap-flags), deduped, optionally `--cap` per session and
-`--min-bytes` to drop stubs. The default keyword sets target guild/skill mining; override with
-`--user-kw`/`--asst-kw` for another lens (bugs, decisions, naming). Output is small enough to Read
-directly.
+`--min-bytes` to drop stubs. Output is small enough to Read directly.
+
+**Match the lens to the window — the default is guild-narrow.** The built-in keyword sets target
+*guild/skill self-improvement* (they require an action verb + a guild noun like skill/workflow/member).
+On an ordinary **app-work** window (product bugs, feature decisions, refactors) those defaults hit
+almost nothing and the digest comes back near-empty. Don't accept the empty digest — **always widen the
+lens with `--user-kw`/`--asst-kw`** for a non-guild window. A ready-made app-work lens:
+
+```sh
+python3 scripts/mine_sessions.py --map map.tsv --out digest.txt \
+  --user-kw '\b(bug|broken|regression|wrong|revert|undo|instead|actually|should|shouldn.?t|don.?t|why (is|does|did)|not working|does ?n.?t work|the (issue|problem|bug) is|root cause|prefer|from now on)\b' \
+  --asst-kw '\b(the (bug|issue|root cause|fix) (was|is)|turns out|caused by|the fix|gotcha|lesson|takeaway|going forward|we should|reusable|missing workflow|should be a skill|real gap|not built)\b'
+```
+
+Pick the lens up front from the map titles: guild/skill work → defaults; app/product work → the wide
+lens above (or a bespoke one for naming, security, perf). The cache (below) is fingerprinted on the
+keyword strings, so switching lenses rebuilds cleanly.
+
+**Mine subagent transcripts too — but read them differently.** Big quests fan out Task subagents, and
+their transcripts (`.../subagents/agent-*.jsonl`) hold real findings the parent session never restates.
+They are not in `map.tsv`; glob and pass them explicitly:
+
+```sh
+python3 scripts/mine_sessions.py --out agents-digest.txt \
+  --jsonl ~/.claude/projects/<slug>/*/subagents/agent-*.jsonl \
+  --asst-kw '<the wide asst-kw from above>'
+```
+
+In a subagent transcript the **first `user` turn is the orchestrator's task brief — context, not a
+human correction** — so the user-correction lens is the wrong tool there. Read the **assistant**
+paragraphs for the signal (the findings, root causes, decisions); treat the opening brief as framing.
+Lean on `--asst-kw` for these files.
 
 **Incremental re-mining (`--cache <path>`).** Stores only grow — re-running over the same window
 re-regexes every transcript from scratch. Pass `--cache mine.cache` and each transcript's extracted
@@ -65,15 +97,32 @@ and it rebuilds itself, so a stale cache can never serve wrong-lens lines. Safe 
 
 ### Phase 3 — Summarize (fan out Claude subagents)
 For a big window, shard the digest and fan **Claude subagents** (spawned via the Task tool, per
-`weapon-utility` / CLAUDE.md) over the shards — each subagent returns lesson candidates as JSON:
-`{lesson, evidence, target, confidence}`. For a small window (a handful of sessions) the member reads
-`digest.txt` directly and skips the fan-out. The proven funnel at scale: **8,695 windows → 1,806 raw
-lessons → 112 distinct.**
+`weapon-utility` / CLAUDE.md) over the shards. Each subagent returns lesson candidates as JSON with
+**exactly these four keys and no others**:
+
+```json
+{"lesson": "...", "evidence": "...", "target": "...", "confidence": 0.0}
+```
+
+**Schema guardrail — this is a recurring failure.** Distillers keep bolting a fifth field on (an
+`excerpt` holding the raw quote), which breaks the StructuredOutput schema and drops the whole batch.
+There is no `excerpt` key — the raw supporting quote goes **inside `evidence`**. Before synthesis,
+reject any object carrying an extra key. Say it in the subagent prompt in one line: *"Return objects
+with exactly {lesson, evidence, target, confidence}; put quotes in `evidence`; any other key is
+invalid."* For a small window (a handful of sessions) the member reads `digest.txt` directly and skips
+the fan-out. The proven funnel at scale: **8,695 windows → 1,806 raw lessons → 112 distinct.**
 
 ### Phase 4 — Synthesize (storm-investigation)
 Run `storm-investigation` over the candidates: dedup + cluster, build the **contradiction map**, and
 **normalize every free-text target against the real roster** (skills / workflows / members) — a summarizing
 subagent guesses targets loosely; bind them to canonical ids or bucket as new-idea / cross-cutting.
+
+**Drop catalog-text noise here.** The guild keyword lens ("skill", "workflow") also fires on
+*catalog* text that carries no lesson: markdown table rows (`| … |`), `VERSIONS.md` registry dumps,
+skill-id bullet lists, and the harness's giant available-skills roster. These slip into the digest and
+masquerade as candidates. Filter them out before clustering — a candidate whose `evidence` is mostly
+pipe-delimited rows, a bulleted list of ids, or a run of hyphenated skill names is registry text, not a
+lesson. Keep the filter conservative: kill obvious catalogs, never real prose.
 
 ### Phase 5 — VERIFY against the live repo (the pass that earns its keep)
 For each surviving lesson, check the **current** repo: does the target file still exist? Is the rule
@@ -95,8 +144,17 @@ already built.
 ## Doctrine baked in (from the runs that forged this)
 - **Offset/limit on every big read; the harness page/size hint lies** — verify real length from the
   tool that reads the file.
+- **Match the lens to the window** — the default keywords are the guild self-improvement lens; on
+  app-work they mine to near-zero. Widen with `--user-kw`/`--asst-kw` rather than accept an empty
+  digest.
+- **Subagent transcripts hold un-restated signal** — mine `subagents/agent-*.jsonl` via `--jsonl`;
+  their top `user` turn is the orchestrator's brief, so read the assistant turns for the lesson.
 - **Subagents read, the member synthesizes** — Claude subagents carry the bulk transcript summarizing;
   the member owns Phases 4–6.
+- **Distiller output is exactly four keys** — `{lesson, evidence, target, confidence}`, quotes inside
+  `evidence`; a stray `excerpt` breaks the schema and drops the batch.
+- **Catalog text is not a lesson** — registry rows / skill-id lists match the guild lens but say
+  nothing; filter them at synthesis.
 - **Verify kills redundancy** — a lesson already in the repo is not a lesson.
 - **Propose-only** — this skill never auto-applies. That's `skillsmith routine`'s job, gated at 8/10.
 
@@ -171,6 +229,14 @@ tree can drift between sessions. A checkpoint older than the last commit on the 
 the commit history and re-checkpoint. Keep it one file, overwritten per save — it is not a log.
 
 ## Changelog
+- **1.4.0** — Harden-miner (operating procedure; default script keywords unchanged). Phase 2 now
+  prescribes matching the lens to the window and ships a ready-made **app-work `--user-kw`/`--asst-kw`
+  override** so ordinary product sessions stop mining to near-zero, and documents reaching **subagent
+  transcripts** (`subagents/agent-*.jsonl`) via `--jsonl` — where the top `user` turn is the
+  orchestrator's brief, so signal is read from the assistant turns (Phase 0 gains a 4th store row).
+  Phase 3 tightens the distiller contract to **exactly `{lesson, evidence, target, confidence}`** (no
+  stray `excerpt`; quotes go in `evidence`). Phase 4 adds a **catalog-noise filter** (drop registry
+  rows / skill-id lists). New pipeline capability → MINOR.
 - **1.3.0** — `mine_sessions.py` gains `--cache <path>`: per-transcript signal lines are memoized by
   `size:mtime`, so an unchanged `.jsonl` is reused instead of re-read+re-regexed on every re-mine.
   Cache is fingerprinted on `--user-kw`/`--asst-kw`/`--cap` → any change auto-rebuilds (never serves

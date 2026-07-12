@@ -3,7 +3,7 @@ name: supabase
 description: "Use when doing ANY task involving Supabase. Triggers: Supabase products (Database, Auth, Edge Functions, Realtime, Storage, Vectors, Cron, Queues); client libraries and SSR integrations (supabase-js, @supabase/ssr) in Next.js, React, SvelteKit, Astro, Remix; auth issues (login, logout, sessions, JWT, cookies, getSession, getUser, getClaims, RLS); Supabase CLI or MCP server; schema changes, migrations, security audits, Postgres extensions (pg_graphql, pg_cron, pg_vector)."
 metadata:
   author: supabase
-  version: "0.1.4"
+  version: "0.2.0"
 type: Skill
 
 ---
@@ -65,8 +65,72 @@ apply_migration: <a named migration's DDL/DML>          -- version-tracked schem
 
 Use `execute_sql` for interactive exploration, one-off queries, and iterating on schema (see "Making
 and Committing Schema Changes" below). Use `apply_migration` only when you want a tracked migration
-history entry. When a job is large, fan the work out to Claude subagents (via the Task tool) — each
-subagent runs its own MCP calls; there is no external executor.
+history entry. When a job is large, fan the work out to Claude subagents (via the Task tool); there is
+no external executor. Subagents do **not** always inherit the live session's MCP connection — before
+delegating any DB work, confirm the subagent can reach the MCP (see "No MCP in subagents" under
+Recurring Gotchas). If it can't, have the parent run the SQL and pass results down.
+
+## Recurring Gotchas (codified from field use)
+
+Traps repeatedly rediscovered across guild sessions. Each is an observed symptom plus the remedy that
+resolved it — reach for these before re-deriving them from scratch.
+
+**1. Stale / unattached MCP handle after a reconnect.**
+Right after a reconnect or session resume, the first Supabase MCP call can fail even though the server
+is up. The handle is unattached to a project — it is **not** a bad `project_id`. Re-attach (re-select /
+re-initialize the project connection) and retry; do not chase or "fix" the `project_id`, and do not
+loop the same call. Confirm the server itself is up first with
+`curl -so /dev/null -w "%{http_code}" https://mcp.supabase.com/mcp` (a `401` means it's up).
+
+**2. An RLS-guarded view returns empty — it may be RLS, not missing data.**
+A `security_invoker` view over RLS-protected tables can return zero rows depending on the role the
+query actually runs as. An empty result is often RLS filtering under the querying role, not absent
+data. Before concluding the data is gone: run `SELECT current_user, current_role;` to see who you are,
+and `SELECT ... FROM <base_table>` directly to confirm rows exist underneath. Then reconcile the view's
+`security_invoker` setting and the role's policies rather than assuming the query is wrong.
+
+**3. `pg_get_functiondef()` (and similar catalog fns) errors when filtered in WHERE.**
+Filtering `WHERE pg_get_functiondef(oid) LIKE '%…%'` over an unfiltered `pg_proc` can error. Narrow to
+the target function **first** (e.g. `prokind = 'f'` and by name/schema), then call the function in the
+`SELECT` list — or compute it in a CTE and filter the outer query. Same pattern for other
+catalog-introspection functions that misbehave when evaluated across every row.
+
+**4. Silent `{ error }` on reads.**
+`const { data } = await supabase.from(...).select(...)` drops the error — a failed read then looks
+identical to an empty table. Destructure and check `error` on **reads**, not just writes:
+`const { data, error } = ...; if (error) throw error;`. An unexplained "empty" result is frequently a
+swallowed error (RLS denial, missing grant, bad column).
+
+**5. No MCP in subagents — precheck before delegating.**
+Spawned Claude subagents do not reliably inherit the parent session's Supabase MCP connection. Before
+handing a subagent DB work, have it prove access with a trivial `execute_sql SELECT 1` (or the
+`get_project`/`list_tables` probe). If it can't reach the MCP, run the SQL in the parent and pass the
+results down. Never let a subagent fabricate or narrate a write it couldn't actually perform — queue it
+or report that it didn't happen.
+
+**6. List real columns before writing SQL.**
+Do not write `INSERT`/`UPDATE`/`SELECT` from memory or from the app's TypeScript types — names and
+types drift from the live schema. Query the actual columns first, then write SQL against what exists:
+```sql
+select column_name, data_type, is_nullable
+from information_schema.columns
+where table_schema = '<schema>' and table_name = '<table>'
+order by ordinal_position;
+```
+
+**7. Trigger- and FK-aware safe deletes.**
+Before deleting rows, map the dependents and triggers first. Check foreign keys pointing **at** the
+table and any `BEFORE`/`AFTER DELETE` triggers:
+```sql
+-- FKs that reference this table
+select conrelid::regclass as referencing_table, conname
+from pg_constraint
+where confrelid = '<schema>.<table>'::regclass and contype = 'f';
+```
+Delete children before parents, or rely on `ON DELETE CASCADE` only after confirming it is actually
+declared. Account for triggers that may block, rewrite, or cascade the delete. In the guild, the
+`guild_agent` role **cannot DELETE at all** — this ordering applies to app-schema work done under a
+privileged role, and unscoped `DELETE`/`TRUNCATE` is gated by the destructive-command hook regardless.
 
 ## Postgres Performance Best Practices
 
@@ -114,6 +178,8 @@ For setup instructions, server URL, and configuration, see the [MCP setup guide]
 3. **Authenticate the MCP server:**
    If the server is reachable and `.mcp.json` is correct but tools aren't visible, the user needs to authenticate. The Supabase MCP server uses OAuth 2.1 — tell the user to trigger the auth flow in their agent, complete it in the browser, and reload the session.
 
+> After a reconnect the handle can come back unattached — see Recurring Gotchas #1 (re-attach the project; it is not a `project_id` error).
+
 ## Supabase Documentation
 
 Before implementing any Supabase feature, find the relevant documentation. Use these methods in priority order:
@@ -148,5 +214,6 @@ Do NOT use `apply_migration` to change a local database schema — it writes a m
 
 ## Changelog
 
+- **0.2.0** — Added a "Recurring Gotchas (codified from field use)" section capturing seven MCP/SQL traps rediscovered across guild sessions: stale/unattached MCP handle on reconnect (re-attach, not a `project_id` error), RLS-guarded view returning empty under the querying role, `pg_get_functiondef()` erroring when filtered in `WHERE`, silent `{ error }` destructuring on reads, no-MCP-in-subagents precheck before delegating DB work, list-real-columns-before-writing-SQL, and trigger/FK-aware safe-delete ordering. Reconciled the Star Alliance subagent-MCP note and the MCP-troubleshooting section with these gotchas.
 - **0.1.3** — Added a Postgres Performance Best Practices section (RLS `(select auth.uid())` caching rule for up to ~100x speedup, `SECURITY DEFINER` helper-fn pattern, PgBouncer connection pooling, WHERE/JOIN/RLS indexing, N+1 avoidance, schema-design reminders) in `references/postgres-performance.md`, with a SKILL.md pointer and cross-links to the companion `supabase-postgres-best-practices` skill.
 - **0.1.2** — Prior guild baseline (core principles, security checklist, CLI/MCP, schema-change workflow).

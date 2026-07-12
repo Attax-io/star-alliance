@@ -2,7 +2,7 @@
 name: admin-page-builder
 description: Build a new admin page for the Lex Council app under apps/web/app/(admin)/admin/. Use this skill whenever the user asks to create an admin page, build a management UI, add a page under the Files/Users/Finances tab, scaffold a new page inside (admin)/admin/, build a kind/list/grid/table admin screen, add an admin tool, or create a dashboard for admins. Also trigger on "new admin page for X", "admin management UI", "build an admin panel for Y", "admin screen that lets me edit Z", even if design tokens aren't mentioned. This skill exists because without it Claude tends to invent hex colors, miss the navy page frame, and skip the KpiStrip pattern — resulting in pages that read as foreign against every other admin page.
 metadata:
-  version: 1.0.0
+  version: 1.1.0
 type: Skill
 
 ---
@@ -41,6 +41,32 @@ const pageStyle: CSSProperties = {
 ```
 
 It's a scrollable work surface, NOT a centered document with page padding. Never wrap the page in a `<main style={{ maxWidth: 800, margin: '0 auto', padding: '24px 28px' }}>` — that's the signature of a foreign page.
+
+## Page chrome conventions — back button, Views, and detail panels
+
+Three structural conventions are easy to get wrong, and they were re-directed on repeatedly across sessions. Treat them as defaults, not options — like every other step here, each is a specific thing that got built wrong first.
+
+### Back navigation lives in a "Page Actions" card
+
+A page you can navigate back from does NOT put a bare back arrow in the filter bar or float it over the grid. The top row is two side-by-side elements:
+
+- **left: a "Page Actions" card** holding the back button (and any nav-level controls), and
+- **right: a separate named-button panel** holding the page's primary named actions (e.g. "New Advance", "Export").
+
+Left = navigation, right = named actions — two distinct siblings in the top row, not one merged bar. Don't scatter the back button into the filter/search bar.
+
+### Tab views get their own "Views" card — never the filter bar
+
+Two controls look similar but belong in different places:
+
+- **Filter chips** (status, level, type) narrow the *current* list — these live in the filter bar (Step 4).
+- **View tabs** switch between whole views of the page ("Active / Archived / All", or per-section tabs) — these get their own dedicated **Views** card, separate from the search-and-filter card.
+
+Never put view tabs inside the filter/search bar. The Views card is its own row; the filter bar stays about searching and filtering one view.
+
+### Row detail opens the shared PortalSidebar
+
+For viewing or editing a single list row, open the shared **PortalSidebar** (the app's right-side detail panel) — not a bespoke per-page drawer. PortalSidebar keeps width, stacking, and close behavior consistent across the admin surface. (The `modalOverlayStyle`/`modalPanelStyle` tokens in Step 10 are for genuine modals and one-off drawers, not list-row detail.)
 
 ## Required pattern: Two Zustand stores + file hierarchy filter
 
@@ -171,7 +197,7 @@ If a color need doesn't map to a token, stop and ask the user. **Do not invent h
 </div>
 ```
 
-Never build a custom light-background filter bar. It breaks every other admin page's visual rhythm.
+Never build a custom light-background filter bar. It breaks every other admin page's visual rhythm. The chips here are **filter chips** (narrow the current list) — if you instead need to switch between whole views, that's a Views card, not the filter bar (see Page chrome conventions).
 
 ## Step 5: KPI strip (when the page has summary metrics)
 
@@ -299,7 +325,7 @@ Tab numbers (from `AdminNavPanel.tsx`): 0 = Home/Quick, 1 = Files, 2 = Users, 3 
 </div>
 ```
 
-Never hand-roll a backdrop RGBA or a custom border-radius-per-modal — the tokens keep stacking and backdrop opacity consistent across the app.
+Never hand-roll a backdrop RGBA or a custom border-radius-per-modal — the tokens keep stacking and backdrop opacity consistent across the app. These tokens are for genuine modals and one-off drawers only; for **list-row detail/edit**, use the shared **PortalSidebar** instead (see Page chrome conventions).
 
 ## Step 11: Data fetching
 
@@ -326,11 +352,13 @@ useEffect(() => {
 }, [refetch])
 ```
 
-## Layout variant: Table layout (for list/management pages)
+## Layout variant: List rows (for list/management pages)
 
-Not all admin pages use the card-grid layout. Many pages — tasks, documents, transactions, cases, bugs — use a data table instead. The two layouts share the same outer frame (navy shell, filter bar, KpiStrip if needed), but the scrollable body is a `<table>` instead of a card grid.
+Not all admin pages use the card-grid layout. Many pages — tasks, documents, transactions, cases, bugs — are lists. **Default to `ListRowBase` rows, not a hand-rolled `<table>`.** `ListRowBase` gives you the shared row chrome (fixed columns, hover, selection, sticky navy header) that every other list page already uses, and its rows open the shared **PortalSidebar** for detail/edit. This is a convention the user re-directed on repeatedly: raw tables read as foreign — convert them to `ListRowBase` cards with `PortalSidebar`.
 
-### Table body scaffold
+Reach for a raw `<table>` only when you need dense multi-column comparison that `ListRowBase` genuinely can't express — and even then, keep the sticky navy `<thead>`, `TableShell`, and `PaginationBar` shown below. Read the canonical list page before building a custom row; do not invent a bespoke drawer for row detail.
+
+### Raw-table fallback scaffold
 
 ```typescript
 // Wrap table in TableShell (handles loading skeleton, error state, empty state)
@@ -400,9 +428,10 @@ The scrollable wrapper for a table page uses the same `flex: 1, minHeight: 0, ov
 
 `tableLayout: 'fixed'` is required — without it, columns resize to content and the table jumps on every data change. Always pair it with `<colgroup>` to set explicit widths.
 
-**When to use card grid vs table:**
+**When to use card grid vs list rows vs raw table:**
 - **Card grid** — when each entity has rich metadata to show at a glance (advances, members, transactions). Cards work well for ≤ ~50 visible items.
-- **Table** — when you need to scan many rows quickly and compare columns (tasks, documents, cases). Tables work well for paginated sets of 20–100 rows per page.
+- **ListRowBase rows** (default for lists) — when you need to scan many rows quickly and compare a few columns (tasks, documents, cases). Row detail opens the shared PortalSidebar.
+- **Raw table** — only for dense multi-column comparison ListRowBase can't express; keep sticky navy `<thead>`, `TableShell`, `PaginationBar`.
 
 ## Step 13: Before you ship — self-check
 
@@ -410,16 +439,18 @@ Do all of these pass?
 
 - [ ] Outer div uses `pageStyle` (navy, flex column, overflow hidden, height 100%) — not a max-width centered layout
 - [ ] Every color comes from `C.*` or the filter-bar/modal style tokens — no hand-picked hex
+- [ ] Back navigation sits in a left "Page Actions" card with a separate right named-button panel — not floated over the grid or dropped into the filter bar
+- [ ] View tabs live in a dedicated "Views" card — the filter/search bar holds only search + filter chips
 - [ ] Filter bar uses `filterBarShellStyle` + `filterBarCountStyle` + `filterBarSearchContainerStyle` + `filterBarSearchInputStyle` + `filterChipBaseStyle` — no custom light container
 - [ ] Grid uses `cardGridStyle` — `C.rowEven` background, `flex: 1` + `minHeight: 0`
 - [ ] Cards use `C.rowOdd` background, `C.border`, `borderRadius: 12`, the `0 1px 3px rgba(10,26,59,0.06)` shadow
 - [ ] Page wrapped in `<PermissionGate perm="..." mode="page">`
 - [ ] Nav entry added in `AdminNavPanel.tsx` under the correct tab, gated by the `canXxx` const
-- [ ] Any modals/drawers use `modalOverlayStyle` + `modalPanelStyle`
+- [ ] Modals/one-off drawers use `modalOverlayStyle` + `modalPanelStyle`; list-row detail uses the shared `PortalSidebar` (not a bespoke drawer)
 - [ ] Every entity query filters by `.contains('branches_access', ...)` using `activeFilesState.activeLexBranch`
 - [ ] Member pickers filter `.eq('in_service', true).eq('has_left', false)` (display surfaces exempt)
 - [ ] `useFilesStore` (shared) + page-specific store both wired — never one store alone
-- [ ] Table pages use `tableLayout: 'fixed'` + `<colgroup>` + sticky navy `<thead>` + `TableShell` + `PaginationBar`
+- [ ] List/management pages default to `ListRowBase` rows (raw `<table>` only for dense comparison, and then with `tableLayout: 'fixed'` + `<colgroup>` + sticky navy `<thead>` + `TableShell` + `PaginationBar`)
 
 If any of these is missing, fix it before declaring the page done — it will stand out as foreign otherwise.
 
@@ -427,4 +458,6 @@ If any of these is missing, fix it before declaring the page done — it will st
 
 On 2026-04-24 I built `/admin/files/notifications-management` without reading `advances/page.tsx` first. I invented container colors (`#E6EDF4`, `#EFEBDC`), invented a border (`#C4CAD3`), built a centered-document layout with page-level padding, and made floating KPI cards instead of a strip. Atta pushed back three times on color tone ("darker", "blueish not yellowish", "revert") before saying "why is it so inconsistent with the design language we use? check the last made advances page and make it like it." A full rewrite followed.
 
-Every step in this skill is a specific thing I got wrong in that session. Follow the skill the first time and save the rewrite.
+The page-chrome conventions (Page Actions card, Views card, ListRowBase + PortalSidebar over raw tables) were added later for the same reason — they were re-directed on across several members/admin panel sessions until they became the standing default.
+
+Every step in this skill is a specific thing I got wrong. Follow the skill the first time and save the rewrite.
