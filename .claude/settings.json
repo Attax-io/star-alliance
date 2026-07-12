@@ -1,6 +1,6 @@
 {
   "env": {
-    "STAR_ALLIANCE_ROOT": "/Users/atta/Documents/Claude/Projects/star-alliance"
+    "STAR_ALLIANCE_ROOT": "/Users/atta/Downloads/star-alliance"
   },
   "_comment": "CLAUDE-ONLY HARNESS (Hermes/MiniMax doer layer removed 2026-07-03; guild schema migration Phase 3 2026-07-12: turn-cost/spawn-log now sink to .claude/state/outbox.jsonl, drained by bin/sa flush on SessionStart + manually). One hard block remains: destructive-gate (data-safety), reached via sa-pretool. Everything else is a non-blocking reminder or logger, so a session can never freeze on a harness rule. Retired gate files live in .retired/ and are NOT wired.",
   "hooks": {
